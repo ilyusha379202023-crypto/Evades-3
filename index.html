@@ -558,118 +558,174 @@
         <div class="menu-button" data-i18n="languages">Языки ▼</div>
         <div class="language-dropdown">
             <div class="language-scroll">
-                <div class="lang-item" onclick="changeLanguage('ru')">
-                    <span class="lang-flag">🇷🇺</span>
-                    <span class="lang-code">RUS</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('en')">
-                    <span class="lang-flag">🇬🇧</span>
-                    <span class="lang-code">ENG</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('uk')">
-                    <span class="lang-flag">🇺🇦</span>
-                    <span class="lang-code">UKR</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('de')">
-                    <span class="lang-flag">🇩🇪</span>
-                    <span class="lang-code">DEU</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('es')">
-                    <span class="lang-flag">🇪🇸</span>
-                    <span class="lang-code">ESP</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('fr')">
-                    <span class="lang-flag">🇫🇷</span>
-                    <span class="lang-code">FRA</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('it')">
-                    <span class="lang-flag">🇮🇹</span>
-                    <span class="lang-code">ITA</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('pt')">
-                    <span class="lang-flag">🇵🇹</span>
-                    <span class="lang-code">POR</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('pl')">
-                    <span class="lang-flag">🇵🇱</span>
-                    <span class="lang-code">POL</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('tr')">
-                    <span class="lang-flag">🇹🇷</span>
-                    <span class="lang-code">TUR</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('nl')">
-                    <span class="lang-flag">🇳🇱</span>
-                    <span class="lang-code">NLD</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('sv')">
-                    <span class="lang-flag">🇸🇪</span>
-                    <span class="lang-code">SWE</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('no')">
-                    <span class="lang-flag">🇳🇴</span>
-                    <span class="lang-code">NOR</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('fi')">
-                    <span class="lang-flag">🇫🇮</span>
-                    <span class="lang-code">FIN</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('da')">
-                    <span class="lang-flag">🇩🇰</span>
-                    <span class="lang-code">DAN</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('cs')">
-                    <span class="lang-flag">🇨🇿</span>
-                    <span class="lang-code">CZE</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('ro')">
-                    <span class="lang-flag">🇷🇴</span>
-                    <span class="lang-code">ROM</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('hu')">
-                    <span class="lang-flag">🇭🇺</span>
-                    <span class="lang-code">HUN</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('el')">
-                    <span class="lang-flag">🇬🇷</span>
-                    <span class="lang-code">GRE</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('ja')">
-                    <span class="lang-flag">🇯🇵</span>
-                    <span class="lang-code">JPN</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('zh')">
-                    <span class="lang-flag">🇨🇳</span>
-                    <span class="lang-code">CHN</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('ko')">
-                    <span class="lang-flag">🇰🇷</span>
-                    <span class="lang-code">KOR</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('ar')">
-                    <span class="lang-flag">🇸🇦</span>
-                    <span class="lang-code">ARA</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('hi')">
-                    <span class="lang-flag">🇮🇳</span>
-                    <span class="lang-code">HIN</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('th')">
-                    <span class="lang-flag">🇹🇭</span>
-                    <span class="lang-code">THA</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('vi')">
-                    <span class="lang-flag">🇻🇳</span>
-                    <span class="lang-code">VIE</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('id')">
-                    <span class="lang-flag">🇮🇩</span>
-                    <span class="lang-code">IND</span>
-                </div>
-                <div class="lang-item" onclick="changeLanguage('ms')">
-                    <span class="lang-flag">🇲🇾</span>
-                    <span class="lang-code">MAL</span>
-                </div>
+<div class="lang-item" data-lang="ru" onclick="changeLanguage('ru')">
+    <span class="lang-flag">ru</span>
+    <span class="lang-code">RUS</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="en" onclick="changeLanguage('en')">
+    <span class="lang-flag">gb</span>
+    <span class="lang-code">ENG</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="uk" onclick="changeLanguage('uk')">
+    <span class="lang-flag">ua</span>
+    <span class="lang-code">RUS</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="de" onclick="changeLanguage('de')">
+    <span class="lang-flag">de</span>
+    <span class="lang-code">DEU</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="es" onclick="changeLanguage('es')">
+    <span class="lang-flag">es</span>
+    <span class="lang-code">ESP</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="fr" onclick="changeLanguage('fr')">
+    <span class="lang-flag">fr</span>
+    <span class="lang-code">FRA</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="it" onclick="changeLanguage('it')">
+    <span class="lang-flag">it</span>
+    <span class="lang-code">ITA</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="pt" onclick="changeLanguage('pt')">
+    <span class="lang-flag">pt</span>
+    <span class="lang-code">POR</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="pl" onclick="changeLanguage('pl')">
+    <span class="lang-flag">pl</span>
+    <span class="lang-code">POL</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="tr" onclick="changeLanguage('tr')">
+    <span class="lang-flag">tr</span>
+    <span class="lang-code">TUR</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="nl" onclick="changeLanguage('nl')">
+    <span class="lang-flag">nl</span>
+    <span class="lang-code">NLD</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="sv" onclick="changeLanguage('sv')">
+    <span class="lang-flag">se</span>
+    <span class="lang-code">SWE</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="no" onclick="changeLanguage('no')">
+    <span class="lang-flag">no</span>
+    <span class="lang-code">NOR</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="fi" onclick="changeLanguage('fi')">
+    <span class="lang-flag">fi</span>
+    <span class="lang-code">FIN</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="da" onclick="changeLanguage('da')">
+    <span class="lang-flag">dk</span>
+    <span class="lang-code">DAN</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="sc" onclick="changeLanguage('sc')">
+    <span class="lang-flag">sz</span>
+    <span class="lang-code">SZE</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="ro" onclick="changeLanguage('ro')">
+    <span class="lang-flag">ro</span>
+    <span class="lang-code">ROM</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="hu" onclick="changeLanguage('hu')">
+    <span class="lang-flag">hu</span>
+    <span class="lang-code">HUN</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="el" onclick="changeLanguage('el')">
+    <span class="lang-flag">gr</span>
+    <span class="lang-code">GRE</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="ja" onclick="changeLanguage('ja')">
+    <span class="lang-flag">jp</span>
+    <span class="lang-code">JPN</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="zh" onclick="changeLanguage('zh')">
+    <span class="lang-flag">cn</span>
+    <span class="lang-code">CHN</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="ko" onclick="changeLanguage('ko')">
+    <span class="lang-flag">kr</span>
+    <span class="lang-code">KOR</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="ar" onclick="changeLanguage('ar')">
+    <span class="lang-flag">sa</span>
+    <span class="lang-code">ARA</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="hi" onclick="changeLanguage('hi')">
+    <span class="lang-flag">in</span>
+    <span class="lang-code">HIN</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="th" onclick="changeLanguage('th')">
+    <span class="lang-flag">th</span>
+    <span class="lang-code">THA</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="vi" onclick="changeLanguage('vi')">
+    <span class="lang-flag">vn</span>
+    <span class="lang-code">VIE</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="id" onclick="changeLanguage('id')">
+    <span class="lang-flag">id</span>
+    <span class="lang-code">IND</span>
+    <span class="lang-check"></span>
+</div>
+
+<div class="lang-item" data-lang="ru" onclick="changeLanguage('ms')">
+    <span class="lang-flag">my</span>
+    <span class="lang-code">MAL</span>
+    <span class="lang-check"></span>
+</div>
+
             </div>
         </div>
     </div>
