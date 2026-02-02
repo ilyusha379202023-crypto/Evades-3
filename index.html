@@ -3,25 +3,24 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Evades 3 — speed & tactics</title>
-  <meta name="description" content="Evades 3 — быстрые забеги, тактика и удобный интерфейс. Вдохновлено evades.io, но более понятно и плавно." />
+  <title>Evades 3 — Скорость. Тактика.</title>
+  <meta name="description" content="Evades 3 — динамичная игра в стиле evades.io, но заметно удобнее и понятнее." />
 
   <style>
     :root{
-      --bg-a:#071a12;
-      --bg-b:#0b3a24;
-      --bg-c:#0bb36b;
+      --bg1:#071a12;
+      --bg2:#0a3a24;
+      --bg3:#0bb36b;
 
       --glass: rgba(255,255,255,.10);
-      --glass-2: rgba(255,255,255,.16);
+      --glass2: rgba(255,255,255,.16);
+      --border: rgba(255,255,255,.18);
 
       --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.72);
+      --muted: rgba(255,255,255,.74);
 
       --shadow: rgba(0,0,0,.45);
-      --ring: rgba(255,255,255,.14);
-
-      --card-radius: 26px;
+      --cardRadius: 28px;
     }
 
     *{ box-sizing:border-box }
@@ -29,25 +28,26 @@
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color: var(--text);
+      color:var(--text);
       overflow-x:hidden;
       background:
-        radial-gradient(1200px 900px at 10% 15%, rgba(255,255,255,.10), transparent 55%),
-        radial-gradient(900px 700px at 85% 25%, rgba(0,0,0,.30), transparent 55%),
+        radial-gradient(1100px 800px at 12% 20%, rgba(255,255,255,.10), transparent 55%),
+        radial-gradient(900px 700px at 85% 25%, rgba(0,0,0,.32), transparent 55%),
         radial-gradient(900px 700px at 35% 95%, rgba(255,255,255,.08), transparent 55%),
-        linear-gradient(135deg, var(--bg-a), var(--bg-b) 45%, var(--bg-c));
+        linear-gradient(135deg, var(--bg1), var(--bg2) 45%, var(--bg3));
     }
 
-    /* Animated aurora */
+    /* Animated aurora / fog */
     .aurora{
-      position:fixed; inset:-25%;
-      z-index:-2;
+      position:fixed;
+      inset:-30%;
+      z-index:-3;
       pointer-events:none;
       background:
-        radial-gradient(700px 520px at 30% 40%, rgba(0,255,170,.22), transparent 60%),
-        radial-gradient(600px 480px at 65% 30%, rgba(255,255,255,.12), transparent 58%),
-        radial-gradient(520px 520px at 55% 70%, rgba(70,140,255,.10), transparent 55%);
-      filter: blur(45px);
+        radial-gradient(700px 520px at 30% 40%, rgba(0,255,170,.22), transparent 62%),
+        radial-gradient(600px 480px at 70% 35%, rgba(255,255,255,.10), transparent 60%),
+        radial-gradient(560px 560px at 55% 72%, rgba(70,140,255,.10), transparent 60%);
+      filter: blur(50px);
       opacity:.9;
       animation: drift 14s ease-in-out infinite alternate;
     }
@@ -56,36 +56,30 @@
       to  { transform: translate3d( 2.5%,  1.8%, 0) scale(1.06) rotate( 1deg) }
     }
 
-    /* Micro sparkles */
+    /* subtle sparkles */
     .sparkles{
       position:fixed; inset:0;
+      z-index:-2;
       pointer-events:none;
-      z-index:-1;
       background:
-        radial-gradient(2px 2px at 12% 22%, rgba(255,255,255,.75), transparent 65%),
+        radial-gradient(2px 2px at 12% 22%, rgba(255,255,255,.70), transparent 65%),
         radial-gradient(1.5px 1.5px at 26% 78%, rgba(255,255,255,.55), transparent 70%),
         radial-gradient(2px 2px at 68% 28%, rgba(255,255,255,.60), transparent 65%),
-        radial-gradient(1.5px 1.5px at 84% 46%, rgba(255,255,255,.55), transparent 70%),
         radial-gradient(1.6px 1.6px at 52% 62%, rgba(255,255,255,.45), transparent 70%),
         radial-gradient(2px 2px at 90% 82%, rgba(255,255,255,.55), transparent 70%);
       opacity:.55;
-      animation: twinkle 4.2s ease-in-out infinite alternate;
+      animation: twinkle 4.3s ease-in-out infinite alternate;
     }
-    @keyframes twinkle{
-      from{ opacity:.38 }
-      to  { opacity:.65 }
-    }
+    @keyframes twinkle{ from{opacity:.35} to{opacity:.65} }
 
     /* Top bar */
-    .topbar{
-      position:sticky;
-      top:0;
-      z-index:10;
-      padding: 16px 18px;
+    header{
+      position:sticky; top:0;
+      z-index:50;
+      padding:16px 18px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap: 12px;
       background: linear-gradient(to bottom, rgba(0,0,0,.22), rgba(0,0,0,0));
       backdrop-filter: blur(10px);
     }
@@ -97,7 +91,7 @@
       user-select:none;
     }
 
-    /* Clean “Evades 3” icon: red glossy sphere + minimal crown */
+    /* clean Evades 3 icon */
     .logo{
       width:44px; height:44px;
       border-radius:50%;
@@ -108,9 +102,10 @@
       box-shadow:
         0 16px 36px rgba(0,0,0,.38),
         inset 0 0 0 2px rgba(255,255,255,.14);
-      animation: bob 3.6s ease-in-out infinite;
       transform: translateZ(0);
+      animation: bob 3.6s ease-in-out infinite;
     }
+    @keyframes bob{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-2px)} }
     .logo .num{
       position:absolute; inset:0;
       display:grid; place-items:center;
@@ -125,24 +120,17 @@
       transform: translateX(-50%);
       width:28px; height:18px;
       background: linear-gradient(180deg, #ffe9a6, #f1c84f 55%, #b98516);
-      border-radius: 7px;
+      border-radius:7px;
       clip-path: polygon(8% 100%, 8% 60%, 22% 48%, 34% 64%, 50% 34%, 66% 64%, 78% 48%, 92% 60%, 92% 100%);
-      box-shadow:
-        0 10px 16px rgba(0,0,0,.28),
-        inset 0 0 0 1px rgba(255,255,255,.24);
+      box-shadow: 0 10px 16px rgba(0,0,0,.28), inset 0 0 0 1px rgba(255,255,255,.24);
     }
-    @keyframes bob{
-      0%,100%{ transform: translateY(0) }
-      50%{ transform: translateY(-2px) }
-    }
-
-    .brand .name{
+    .brand .title{
       font-weight:950;
-      letter-spacing:.2px;
       opacity:.95;
+      letter-spacing:.2px;
     }
 
-    /* Language dropdown (stable) */
+    /* Language dropdown — stable */
     .dropdown{
       position:relative;
       display:inline-flex;
@@ -151,18 +139,18 @@
       padding:10px 12px;
       border-radius:14px;
       background: rgba(255,255,255,.10);
-      border: 1px solid rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.18);
       box-shadow: 0 12px 26px rgba(0,0,0,.16);
       user-select:none;
     }
-    .dropdown .label{ font-weight:900; }
+    .dropdown .label{ font-weight:950; }
     .dropdown .chev{
       width:10px;height:10px;
       border-right:2px solid rgba(255,255,255,.78);
       border-bottom:2px solid rgba(255,255,255,.78);
       transform: rotate(45deg);
-      margin-top:-2px;
       transition: transform .16s ease;
+      margin-top:-2px;
     }
     .dropdown:hover .chev{ transform: rotate(225deg); margin-top:2px; }
 
@@ -170,8 +158,8 @@
       position:absolute;
       right:0;
       top:100%;
-      padding-top:10px; /* removes hover gap */
-      width: 240px;
+      padding-top:10px; /* critical: no hover-gap */
+      width: 250px;
       opacity:0;
       transform: translateY(-8px);
       pointer-events:none;
@@ -185,8 +173,8 @@
     }
     .panel{
       background: rgba(8,14,10,.74);
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:16px;
       box-shadow: 0 22px 60px rgba(0,0,0,.35);
       backdrop-filter: blur(12px);
       padding: 10px;
@@ -197,10 +185,10 @@
       justify-content:space-between;
       gap:10px;
       padding:10px 10px;
-      border-radius: 12px;
+      border-radius:12px;
       color: rgba(255,255,255,.92);
       text-decoration:none;
-      font-weight:900;
+      font-weight:950;
       cursor:pointer;
     }
     .lang:hover{ background: rgba(255,255,255,.10); }
@@ -210,67 +198,73 @@
       padding:4px 8px;
       border-radius:999px;
       background: rgba(255,255,255,.12);
-      border: 1px solid rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.14);
     }
 
-    /* Layout */
-    .wrap{
+    /* Main */
+    main{
       max-width: 1100px;
       margin: 0 auto;
       padding: 42px 18px 90px;
     }
 
-    .hero{
+    /* Stage: decor layer behind content */
+    .stage{
       position:relative;
-      border-radius: var(--card-radius);
+      border-radius: var(--cardRadius);
+      border:1px solid var(--border);
       background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
-      border: 1px solid rgba(255,255,255,.18);
       box-shadow: 0 32px 90px rgba(0,0,0,.30);
       overflow:hidden;
-      padding: 36px 22px 30px;
+      isolation:isolate; /* make stacking safe */
     }
 
-    .hero:before{
+    /* Safe-zone padding ensures content never touches decor edges */
+    .content{
+      position:relative;
+      z-index:5;
+      padding: 44px 72px 34px;
+      text-align:center;
+    }
+
+    /* Decorative layer always behind */
+    .decor{
+      position:absolute; inset:0;
+      z-index:1;
+      pointer-events:none;
+    }
+
+    /* Light sweep */
+    .stage:before{
       content:"";
       position:absolute; inset:-60px;
+      z-index:2;
+      pointer-events:none;
       background: linear-gradient(120deg, transparent 34%, rgba(255,255,255,.10) 50%, transparent 66%);
       transform: translateX(-35%);
-      animation: sweep 6.8s ease-in-out infinite;
-      pointer-events:none;
+      animation: sweep 7s ease-in-out infinite;
     }
     @keyframes sweep{
       0%,35%{ transform: translateX(-35%) }
       65%,100%{ transform: translateX(35%) }
     }
 
-    .headline{
-      text-align:center;
+    h1{
       margin: 6px 0 0;
       font-size: clamp(34px, 5vw, 66px);
-      line-height: 1.04;
+      line-height: 1.06;
       font-weight: 1000;
-      letter-spacing:.4px;
+      letter-spacing:.3px;
       text-shadow: 0 12px 34px rgba(0,0,0,.35);
     }
-    .headline .shine{
-      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.70));
+    h1 .shine{
+      background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.72));
       -webkit-background-clip:text;
       background-clip:text;
-      color: transparent;
+      color:transparent;
       filter: drop-shadow(0 8px 18px rgba(0,0,0,.25));
     }
 
-    .subline{
-      margin: 16px auto 0;
-      max-width: 820px;
-      text-align:center;
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.65;
-      text-shadow: 0 6px 18px rgba(0,0,0,.25);
-    }
-
-    /* Chips row */
     .chips{
       margin: 18px auto 0;
       display:flex;
@@ -279,43 +273,38 @@
       flex-wrap:wrap;
     }
     .chip{
-      padding: 8px 12px;
-      border-radius: 999px;
+      padding:8px 12px;
+      border-radius:999px;
       background: rgba(0,0,0,.18);
-      border: 1px solid rgba(255,255,255,.14);
-      font-weight: 900;
+      border:1px solid rgba(255,255,255,.14);
+      font-weight: 950;
       letter-spacing:.3px;
       text-transform: uppercase;
-      opacity:.94;
+      opacity:.95;
     }
 
-    /* CTA */
-    .cta{
-      margin-top: 26px;
-      display:flex;
-      justify-content:center;
+    .desc{
+      margin: 16px auto 0;
+      max-width: 820px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+      text-shadow: 0 6px 18px rgba(0,0,0,.25);
     }
 
-    .btnWrap{
-      position:relative;
-      display:inline-block;
-      animation: float 3.0s ease-in-out infinite;
-    }
-    @keyframes float{
-      0%,100%{ transform: translateY(0) }
-      50%{ transform: translateY(-3px) }
-    }
+    /* 3D disabled button */
+    .cta{ margin-top: 26px; display:flex; justify-content:center; }
+    .btnWrap{ position:relative; display:inline-block; animation: float 3.0s ease-in-out infinite; }
+    @keyframes float{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
 
     .btn{
-      min-width: 310px;
+      min-width: 320px;
       padding: 16px 22px;
       border:0;
       border-radius: 18px;
       font-weight: 1000;
       letter-spacing:.2px;
       color: rgba(255,255,255,.88);
-
-      /* premium disabled 3D */
       background:
         radial-gradient(18px 14px at 24% 20%, rgba(255,255,255,.34), transparent 60%),
         linear-gradient(180deg, #71757d, #3b3f46 55%, #272a2f 100%);
@@ -324,7 +313,7 @@
         0 34px 70px rgba(0,0,0,.45),
         inset 0 0 0 2px rgba(255,255,255,.10),
         inset 0 -10px 18px rgba(0,0,0,.32);
-      cursor: not-allowed;
+      cursor: not-allowed; /* circle with slash on disabled */
       user-select:none;
       position:relative;
     }
@@ -337,7 +326,6 @@
       background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,0));
       pointer-events:none;
     }
-
     .status{
       position:absolute;
       top:-10px; right:-10px;
@@ -352,16 +340,17 @@
       backdrop-filter: blur(10px);
     }
 
-    /* Modern spheres (not “drawn”) */
-    .fx{
-      position:absolute;
-      inset:0;
-      pointer-events:none;
+    .fine{
+      margin-top: 16px;
+      text-align:center;
+      color: rgba(255,255,255,.62);
+      font-size: 12px;
     }
 
+    /* ======= Premium Orbs (decor) ======= */
     .orb{
       position:absolute;
-      width: 140px; height:140px;
+      width: 128px; height:128px;
       border-radius:50%;
       background:
         radial-gradient(22px 18px at 30% 26%, rgba(255,255,255,.92), transparent 62%),
@@ -369,31 +358,32 @@
       box-shadow:
         0 34px 80px rgba(0,0,0,.35),
         inset 0 0 0 2px rgba(255,255,255,.14);
-      filter: saturate(1.05);
+      filter: saturate(1.06);
       transform: translateZ(0);
-      animation: orbFloat 7s ease-in-out infinite;
+      animation: orbFloat 7.2s ease-in-out infinite;
     }
     @keyframes orbFloat{
       0%,100%{ transform: translateY(0) rotate(0deg) }
       50%{ transform: translateY(-12px) rotate(2deg) }
     }
-
     .orb.small{ width:92px; height:92px; }
-    .orb.tiny{ width:66px; height:66px; }
+    .orb.tiny{ width:64px; height:64px; }
 
-    /* subtle “ring” accessory (looks premium, not cartoony) */
-    .ring:after{
+    /* accessories */
+    .crown:before{
       content:"";
       position:absolute;
-      inset: 18%;
-      border-radius: 999px;
-      border: 3px solid rgba(255,255,255,.16);
-      box-shadow: inset 0 0 0 2px rgba(0,0,0,.18);
-      transform: rotate(-12deg);
-      opacity:.9;
+      left:50%;
+      top:-7%;
+      transform: translateX(-50%);
+      width: 46%;
+      height: 22%;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #ffe9a6, #f1c84f 55%, #b98516);
+      clip-path: polygon(8% 100%, 8% 60%, 22% 48%, 34% 64%, 50% 34%, 66% 64%, 78% 48%, 92% 60%, 92% 100%);
+      box-shadow: 0 12px 22px rgba(0,0,0,.22), inset 0 0 0 1px rgba(255,255,255,.22);
     }
 
-    /* glasses (clean) */
     .glasses:before, .glasses:after{
       content:"";
       position:absolute;
@@ -418,22 +408,6 @@
       transform: translate(-50%,-50%);
     }
 
-    /* crown (minimal accessory) */
-    .crowned:before{
-      content:"";
-      position:absolute;
-      left:50%;
-      top:-7%;
-      transform: translateX(-50%);
-      width: 46%;
-      height: 22%;
-      border-radius: 8px;
-      background: linear-gradient(180deg, #ffe9a6, #f1c84f 55%, #b98516);
-      clip-path: polygon(8% 100%, 8% 60%, 22% 48%, 34% 64%, 50% 34%, 66% 64%, 78% 48%, 92% 60%, 92% 100%);
-      box-shadow: 0 12px 22px rgba(0,0,0,.22), inset 0 0 0 1px rgba(255,255,255,.22);
-    }
-
-    /* jacket vibe (clean) */
     .jacket:before{
       content:"";
       position:absolute;
@@ -449,57 +423,81 @@
       opacity:.9;
     }
 
-    /* Premium labels */
+    .hat:before{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:10%;
+      transform: translateX(-50%);
+      width: 58%;
+      height: 18%;
+      border-radius: 999px;
+      background: rgba(0,0,0,.55);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.10);
+      opacity:.9;
+    }
+    .hat:after{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:-2%;
+      transform: translateX(-50%);
+      width: 36%;
+      height: 20%;
+      border-radius: 10px;
+      background: rgba(0,0,0,.60);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.10);
+      opacity:.9;
+    }
+
+    /* VIP / PRO as background labels */
     .vip, .pro{
       position:absolute;
-      font-weight:1000;
-      letter-spacing:1px;
+      z-index:1;
+      font-weight: 1000;
+      letter-spacing: 1px;
       text-shadow: 0 2px 0 rgba(0,0,0,.25), 0 10px 26px rgba(0,0,0,.35);
-      animation: labelFloat 4.6s ease-in-out infinite;
+      opacity:.55;
+      animation: labelFloat 4.8s ease-in-out infinite;
       white-space:nowrap;
     }
-    @keyframes labelFloat{
-      0%,100%{ transform: translateY(0) }
-      50%{ transform: translateY(-6px) }
-    }
+    @keyframes labelFloat{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+
     .vip{
-      left: 6%;
-      top: 62%;
-      font-size: 40px;
+      left: 5%;
+      top: 70%;
+      font-size: 28px;
       background: linear-gradient(180deg, #fff2b3, #f5c54d 55%, #b98516);
       -webkit-background-clip:text; background-clip:text; color:transparent;
       filter: drop-shadow(0 10px 16px rgba(0,0,0,.25));
     }
     .pro{
-      right: 6%;
-      top: 18%;
-      font-size: 38px;
+      right: 5%;
+      top: 12%;
+      font-size: 26px;
       background: linear-gradient(90deg, #ff4d4d, #ffcc00, #3cff6a, #36b2ff, #b56bff, #ff4db8);
       -webkit-background-clip:text; background-clip:text; color:transparent;
       filter: drop-shadow(0 10px 16px rgba(0,0,0,.25));
       animation-duration: 5.3s;
     }
 
-    /* Orb positions */
-    .o1{ left:-40px; top: 130px; }
-    .o2{ right:-54px; top: 250px; animation-duration: 7.6s; }
-    .o3{ left: 90px; bottom: -40px; animation-duration: 6.4s; }
-    .o4{ right: 160px; bottom: -32px; animation-duration: 7.0s; }
-    .o5{ left: 52%; top: 92px; transform: translateX(-50%); animation-duration: 8.2s; }
+    /* positions — intentionally pushed to edges */
+    .o1{ left:-70px; top: 160px; }
+    .o2{ right:-90px; top: 260px; animation-duration: 7.8s; }
+    .o3{ left: 70px; bottom: -55px; animation-duration: 6.6s; }
+    .o4{ right: 140px; bottom: -55px; animation-duration: 7.2s; }
+    .o5{ left: 50%; top: 140px; transform: translateX(-50%); animation-duration: 8.4s; }
 
-    /* Footer */
-    .fine{
-      margin-top: 16px;
-      text-align:center;
-      color: rgba(255,255,255,.62);
-      font-size: 12px;
+    /* Responsiveness */
+    @media (max-width: 1100px){
+      .content{ padding: 44px 40px 34px; }
     }
-
+    @media (max-width: 900px){
+      .o5, .vip, .pro{ display:none; } /* prevents clutter */
+    }
     @media (max-width: 720px){
-      .vip{ font-size: 32px; left: 4%; top: 68%; }
-      .pro{ font-size: 30px; right: 4%; top: 12%; }
-      .orb{ width: 120px; height: 120px; }
-      .o2{ right:-45px; }
+      main{ padding: 28px 12px 70px; }
+      .content{ padding: 34px 16px 26px; }
       .btn{ min-width: 250px; }
     }
   </style>
@@ -509,13 +507,13 @@
   <div class="aurora"></div>
   <div class="sparkles"></div>
 
-  <header class="topbar">
+  <header>
     <div class="brand">
       <div class="logo" aria-hidden="true">
         <div class="crown"></div>
         <div class="num">3</div>
       </div>
-      <div class="name">Evades 3</div>
+      <div class="title">Evades 3</div>
     </div>
 
     <div class="dropdown" aria-label="Language menu">
@@ -532,53 +530,53 @@
     </div>
   </header>
 
-  <main class="wrap">
-    <section class="hero">
-      <div class="fx" aria-hidden="true">
+  <main>
+    <section class="stage">
+      <div class="decor" aria-hidden="true">
         <div class="vip">VIP</div>
         <div class="pro">PRO</div>
 
-        <!-- clean premium orbs, different colors + different accessories -->
+        <!-- Orbs: different colors + different accessories -->
         <div class="orb o1 glasses small" style="--a:#57ffb3;--b:#16b96d;--c:#0b5a36;">
           <div class="bridge"></div>
         </div>
 
-        <div class="orb o2 crowned" style="--a:#ffe57a;--b:#ffb400;--c:#7a4c00;"></div>
+        <div class="orb o2 crown" style="--a:#ffe57a;--b:#ffb400;--c:#7a4c00;"></div>
 
         <div class="orb o3 jacket tiny" style="--a:#79a8ff;--b:#2f6fff;--c:#142f87;"></div>
 
-        <div class="orb o4 glasses crowned" style="--a:#ff78b7;--b:#d82b7b;--c:#6d0c3a;">
+        <div class="orb o4 hat glasses" style="--a:#ff78b7;--b:#d82b7b;--c:#6d0c3a;">
           <div class="bridge"></div>
         </div>
 
-        <div class="orb o5 ring tiny jacket" style="--a:#b56bff;--b:#7c2cff;--c:#2d0a66;"></div>
+        <div class="orb o5 crown jacket tiny" style="--a:#b56bff;--b:#7c2cff;--c:#2d0a66;"></div>
       </div>
 
-      <h1 class="headline">
-        <span class="shine" data-i18n="title">Скорость. Тактика. Evades 3</span>
-      </h1>
+      <div class="content">
+        <h1><span class="shine" data-i18n="title">Скорость. Тактика. Evades 3</span></h1>
 
-      <div class="chips" aria-hidden="true">
-        <div class="chip" data-i18n="chip1">FAST</div>
-        <div class="chip" data-i18n="chip2">TACTICAL</div>
-        <div class="chip" data-i18n="chip3">SMOOTH UI</div>
-      </div>
-
-      <p class="subline" data-i18n="desc">
-        Evades 3 — быстрая аркада, вдохновлённая <em>evades.io</em>, но с более понятным интерфейсом,
-        мягкими анимациями и логичной навигацией. Здесь всё сделано так, чтобы ты сразу понимал, где что находится —
-        и просто играл.
-      </p>
-
-      <div class="cta">
-        <div class="btnWrap">
-          <button class="btn" disabled data-i18n="btn" title="Пока что недоступно">Скачать Evades 3</button>
-          <div class="status" data-i18n="status">В разработке</div>
+        <div class="chips" aria-hidden="true">
+          <div class="chip" data-i18n="chip1">СКОРОСТЬ</div>
+          <div class="chip" data-i18n="chip2">ТАКТИКА</div>
+          <div class="chip" data-i18n="chip3">УДОБНЫЙ UI</div>
         </div>
-      </div>
 
-      <div class="fine" data-i18n="fine">
-        Это стартовая страница. Скоро добавим скриншоты, новости и лаунчер.
+        <p class="desc" data-i18n="desc">
+          Evades 3 — быстрая аркада, вдохновлённая <em>evades.io</em>, но с более понятным интерфейсом,
+          мягкими анимациями и логичной навигацией. Здесь всё сделано так, чтобы ты сразу понимал,
+          где что находится — и просто играл.
+        </p>
+
+        <div class="cta">
+          <div class="btnWrap">
+            <button class="btn" disabled data-i18n="btn" title="Пока что недоступно">Скачать Evades 3</button>
+            <div class="status" data-i18n="status">В разработке</div>
+          </div>
+        </div>
+
+        <div class="fine" data-i18n="fine">
+          Это стартовая страница. Скоро добавим скриншоты, новости и лаунчер.
+        </div>
       </div>
     </section>
   </main>
@@ -622,6 +620,7 @@
 
     function setLang(lang){
       const dict = I18N[lang] || I18N.ru;
+
       document.querySelectorAll("[data-i18n]").forEach(el=>{
         const key = el.getAttribute("data-i18n");
         if(!(key in dict)) return;
@@ -633,7 +632,7 @@
       });
 
       localStorage.setItem("ev3_lang", lang);
-      document.documentElement.lang = lang === "uk" ? "uk" : (lang === "en" ? "en" : "ru");
+      document.documentElement.lang = (lang === "uk") ? "uk" : (lang === "en" ? "en" : "ru");
     }
 
     document.querySelectorAll(".lang[data-lang]").forEach(a=>{
