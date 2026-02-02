@@ -31,7 +31,7 @@
         linear-gradient(135deg, var(--bg1), var(--bg2) 45%, var(--bg3));
     }
 
-    /* subtle moving light */
+    /* moving light */
     .aurora{
       position:fixed; inset:-20%;
       background:
@@ -85,64 +85,102 @@
       backdrop-filter: blur(10px);
     }
 
-    /* Brand icon (red crowned ball with white "3") */
+    /* Brand icon */
     .brand{
       display:flex; align-items:center; gap:12px;
       user-select:none;
     }
     .brand .logo{
-      width:46px; height:46px;
+      width:48px; height:48px;
       position:relative;
       border-radius:50%;
       background:
         radial-gradient(18px 18px at 30% 28%, rgba(255,255,255,.85), transparent 60%),
         radial-gradient(circle at 35% 30%, #ff6a6a, #cc1515 55%, #7a0a0a 100%);
       box-shadow:
-        0 14px 28px rgba(0,0,0,.35),
+        0 16px 30px rgba(0,0,0,.36),
         inset 0 0 0 2px rgba(255,255,255,.18);
-      transform: translateZ(0);
       animation: bob 3.5s ease-in-out infinite;
+      transform: translateZ(0);
     }
-    .brand .logo:before{
-      content:"3";
+    .brand .logo .num{
       position:absolute; inset:0;
       display:grid; place-items:center;
-      font-weight:900;
+      font-weight:950;
       font-size:24px;
       color:#fff;
       text-shadow: 0 2px 0 rgba(0,0,0,.35);
       transform: translateY(1px);
     }
-    .brand .logo:after{
-      /* crown */
+
+    /* Nicer crown: base + 3 spikes + jewels */
+    .brand .logo .crown{
+      position:absolute;
+      left:50%; top:-10px;
+      transform:translateX(-50%);
+      width:34px; height:22px;
+      pointer-events:none;
+      filter: drop-shadow(0 10px 12px rgba(0,0,0,.30));
+    }
+    .brand .logo .crown:before{
+      /* crown body */
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, #ffe08a 0%, #f4c94f 45%, #b98516 100%);
+      border-radius: 6px;
+      clip-path: polygon(
+        6% 100%,
+        6% 55%,
+        20% 45%,
+        32% 62%,
+        50% 30%,
+        68% 62%,
+        80% 45%,
+        94% 55%,
+        94% 100%
+      );
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.28),
+        inset 0 -8px 12px rgba(0,0,0,.18);
+    }
+    .brand .logo .crown:after{
+      /* crown base bar */
       content:"";
       position:absolute;
-      width:28px; height:16px;
-      left:50%; top:-8px;
-      transform:translateX(-50%);
-      background:
-        linear-gradient(180deg, #ffd36a, #caa23b);
-      clip-path: polygon(0% 100%, 0% 55%, 18% 35%, 33% 60%, 50% 25%, 67% 60%, 82% 35%, 100% 55%, 100% 100%);
-      border-radius: 3px 3px 6px 6px;
+      left:10%;
+      right:10%;
+      bottom:2px;
+      height:8px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #ffefb5, #d5a533);
       box-shadow:
-        0 8px 14px rgba(0,0,0,.25),
         inset 0 0 0 1px rgba(255,255,255,.25);
     }
-    .brand .name{
-      font-weight:800;
-      letter-spacing:.2px;
-      opacity:.9;
+    .brand .logo .jewel{
+      position:absolute;
+      width:6px; height:6px;
+      border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #fff, #47a7ff 55%, #1d4aa0 100%);
+      box-shadow: 0 4px 10px rgba(0,0,0,.25);
+      top:10px;
     }
+    .brand .logo .j1{ left:8px; }
+    .brand .logo .j2{ left:50%; transform:translateX(-50%); background: radial-gradient(circle at 30% 30%, #fff, #ff6ad5 55%, #8a1b66 100%); }
+    .brand .logo .j3{ right:8px; background: radial-gradient(circle at 30% 30%, #fff, #7dff75 55%, #1f7a2c 100%); }
 
+    .brand .name{
+      font-weight:900;
+      letter-spacing:.2px;
+      opacity:.95;
+    }
     @keyframes bob{
       0%,100%{transform:translateY(0)}
       50%{transform:translateY(-2px)}
     }
 
-    /* Language dropdown */
-    .nav{
-      display:flex; align-items:center; gap:10px;
-    }
+    /* Language dropdown — fixed hover */
+    .nav{ display:flex; align-items:center; gap:10px; }
+
     .dropdown{
       position:relative;
       display:inline-flex;
@@ -156,10 +194,7 @@
       cursor: default;
       user-select:none;
     }
-    .dropdown .label{
-      font-weight:700;
-      opacity:.92;
-    }
+    .dropdown .label{ font-weight:800; opacity:.92; }
     .dropdown .chev{
       width:10px; height:10px;
       border-right:2px solid rgba(255,255,255,.75);
@@ -170,27 +205,33 @@
       transition: transform .18s ease;
     }
     .dropdown:hover .chev{ transform: rotate(225deg); margin-top:2px; }
+
     .menu{
       position:absolute;
-      top:calc(100% + 10px);
+      top:100%;
       right:0;
-      min-width: 220px;
+      padding-top:10px; /* IMPORTANT: removes hover-gap */
+      min-width: 240px;
+      opacity:0;
+      transform: translateY(-6px);
+      pointer-events:none;
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .menu .panel{
       padding:10px;
       border-radius:16px;
       background: rgba(10,18,14,.72);
       border: 1px solid rgba(255,255,255,.18);
       box-shadow: 0 20px 50px rgba(0,0,0,.35);
       backdrop-filter: blur(12px);
-      transform: translateY(-6px);
-      opacity:0;
-      pointer-events:none;
-      transition: opacity .18s ease, transform .18s ease;
     }
-    .dropdown:hover .menu{
+    .dropdown:hover .menu,
+    .menu:hover{
       opacity:1;
       pointer-events:auto;
       transform: translateY(0);
     }
+
     .item{
       display:flex;
       align-items:center;
@@ -200,11 +241,12 @@
       border-radius:12px;
       color: rgba(255,255,255,.92);
       text-decoration:none;
-      font-weight:700;
+      font-weight:850;
+      cursor:pointer;
     }
-    .item:hover{
-      background: rgba(255,255,255,.10);
-    }
+    .item:hover{ background: rgba(255,255,255,.10); }
+    .item.active{ background: rgba(255,255,255,.12); outline:1px solid rgba(255,255,255,.18); }
+
     .tag{
       font-size:12px;
       padding:4px 8px;
@@ -232,7 +274,6 @@
       overflow:hidden;
     }
 
-    /* subtle animated shine in hero */
     .hero:before{
       content:"";
       position:absolute; inset:-60px;
@@ -252,7 +293,7 @@
       justify-content:center;
       gap:10px;
       flex-wrap:wrap;
-      font-weight:800;
+      font-weight:900;
       letter-spacing:.4px;
       opacity:.92;
       margin: 8px 0 12px;
@@ -313,8 +354,8 @@
     .download-wrap{
       position:relative;
       display:inline-block;
-      transform: translateZ(0);
       animation: ctaFloat 3.2s ease-in-out infinite;
+      transform: translateZ(0);
     }
     @keyframes ctaFloat{
       0%,100%{transform: translateY(0)}
@@ -327,8 +368,8 @@
       border:0;
       border-radius: 18px;
       padding: 16px 22px;
-      min-width: 260px;
-      font-weight: 900;
+      min-width: 280px;
+      font-weight: 950;
       letter-spacing:.2px;
       color: rgba(255,255,255,.88);
       background:
@@ -339,13 +380,11 @@
         0 34px 70px rgba(0,0,0,.45),
         inset 0 0 0 2px rgba(255,255,255,.12),
         inset 0 -8px 16px rgba(0,0,0,.35);
-      transform: translateY(0);
-      cursor: not-allowed; /* запрет */
+      cursor: not-allowed; /* 🚫 */
       position:relative;
       user-select:none;
     }
     .download:before{
-      /* glossy top edge */
       content:"";
       position:absolute;
       left:12px; right:12px; top:10px;
@@ -356,7 +395,6 @@
       opacity:.9;
     }
     .download:after{
-      /* inner bevel */
       content:"";
       position:absolute;
       inset: 7px;
@@ -367,18 +405,14 @@
         inset 0 -10px 18px rgba(0,0,0,.28);
       pointer-events:none;
     }
-    .download:hover{
-      filter: brightness(.98) saturate(.95);
-    }
 
-    /* "В разработке" corner badge */
     .badge{
       position:absolute;
       top:-10px;
       right:-10px;
       padding: 10px 12px;
       border-radius: 14px;
-      font-weight: 900;
+      font-weight: 950;
       font-size: 12px;
       letter-spacing:.4px;
       background:
@@ -388,20 +422,16 @@
       backdrop-filter: blur(10px);
     }
 
-    /* Decorations: spheres, VIP/PRO */
-    .decor{
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-    }
+    /* Decorations */
+    .decor{ position:absolute; inset:0; pointer-events:none; }
 
     .sphere{
       position:absolute;
       width: 150px; height:150px;
       border-radius:50%;
       background:
-        radial-gradient(26px 22px at 28% 28%, rgba(255,255,255,.85), transparent 60%),
-        radial-gradient(circle at 35% 30%, #62ffb2, #19b66b 55%, #0d5a36 100%);
+        radial-gradient(26px 22px at 28% 28%, rgba(255,255,255,.88), transparent 60%),
+        radial-gradient(circle at 35% 30%, var(--c1), var(--c2) 55%, var(--c3) 100%);
       box-shadow:
         0 30px 70px rgba(0,0,0,.35),
         inset 0 0 0 2px rgba(255,255,255,.16);
@@ -432,9 +462,9 @@
     .glasses:after{ right:18%; }
     .glasses .bridge{
       position:absolute;
-      left:48%;
+      left:50%;
       top:52%;
-      width: 10%;
+      width: 12%;
       height: 6%;
       background: rgba(0,0,0,.55);
       border-radius: 999px;
@@ -450,13 +480,13 @@
       left:50%;
       top:-6%;
       transform:translateX(-50%);
-      background: linear-gradient(180deg, #ffd36a, #caa23b);
-      clip-path: polygon(0% 100%, 0% 55%, 18% 35%, 33% 60%, 50% 25%, 67% 60%, 82% 35%, 100% 55%, 100% 100%);
-      border-radius: 4px 4px 10px 10px;
+      background: linear-gradient(180deg, #ffe08a, #f4c94f 55%, #b98516);
+      clip-path: polygon(6% 100%, 6% 55%, 20% 45%, 32% 62%, 50% 30%, 68% 62%, 80% 45%, 94% 55%, 94% 100%);
+      border-radius: 6px;
       box-shadow: 0 12px 24px rgba(0,0,0,.22), inset 0 0 0 1px rgba(255,255,255,.22);
     }
 
-    /* "jacket" hint as a collar + lapels */
+    /* jacket */
     .jacket:before{
       content:"";
       position:absolute;
@@ -465,11 +495,11 @@
       width:70%;
       height:42%;
       transform:translateX(-50%);
-      background: linear-gradient(180deg, rgba(10,10,10,.35), rgba(10,10,10,.55));
+      background: linear-gradient(180deg, rgba(10,10,10,.30), rgba(10,10,10,.58));
       border-radius: 26px;
       clip-path: polygon(0 30%, 20% 0, 40% 18%, 50% 8%, 60% 18%, 80% 0, 100% 30%, 100% 100%, 0 100%);
       box-shadow: inset 0 0 0 1px rgba(255,255,255,.10);
-      opacity:.85;
+      opacity:.88;
     }
 
     /* VIP / PRO 3D text */
@@ -522,11 +552,12 @@
       z-index:-1;
     }
 
-    /* Place decor items */
+    /* Positions */
     .s1{ left:-40px; top: 110px; }
     .s2{ right:-55px; top: 250px; animation-duration: 7.2s; }
     .s3{ left: 80px; bottom: -40px; animation-duration: 5.6s; }
     .s4{ right: 130px; bottom: -34px; animation-duration: 6.4s; }
+    .s5{ left: 52%; top: 80px; transform: translateX(-50%); animation-duration: 6.8s; }
 
     /* Responsive */
     @media (max-width: 720px){
@@ -538,15 +569,12 @@
       .download{min-width: 240px;}
     }
 
-    /* Small footer */
     .footer{
       margin-top: 16px;
       text-align:center;
       color: rgba(255,255,255,.62);
       font-size: 12px;
     }
-    .footer a{ color: rgba(255,255,255,.78); text-decoration:none; border-bottom:1px dashed rgba(255,255,255,.35); }
-    .footer a:hover{ color:#fff; border-bottom-color:rgba(255,255,255,.65); }
   </style>
 </head>
 
@@ -556,22 +584,27 @@
 
   <header class="topbar">
     <div class="brand">
-      <div class="logo" aria-hidden="true"></div>
+      <div class="logo" aria-hidden="true">
+        <div class="crown"></div>
+        <div class="jewel j1"></div>
+        <div class="jewel j2"></div>
+        <div class="jewel j3"></div>
+        <div class="num">3</div>
+      </div>
       <div class="name">Evades 3</div>
     </div>
 
     <nav class="nav">
       <div class="dropdown" aria-label="Language menu">
-        <span class="label">Языки</span>
+        <span class="label" data-i18n="menu_languages">Языки</span>
         <span class="chev" aria-hidden="true"></span>
 
         <div class="menu" role="menu" aria-label="Languages">
-          <a class="item" href="#" role="menuitem"><span>RUS</span><span class="tag">🇷🇺</span></a>
-          <a class="item" href="#" role="menuitem"><span>ENG</span><span class="tag">🇬🇧</span></a>
-          <a class="item" href="#" role="menuitem"><span>UKR</span><span class="tag">🇺🇦</span></a>
-          <a class="item" href="#" role="menuitem"><span>DEU</span><span class="tag">🇩🇪</span></a>
-          <a class="item" href="#" role="menuitem"><span>ESP</span><span class="tag">🇪🇸</span></a>
-          <a class="item" href="#" role="menuitem"><span>FRA</span><span class="tag">🇫🇷</span></a>
+          <div class="panel">
+            <a class="item" data-lang="ru" href="#" role="menuitem"><span>RUS</span><span class="tag">🇷🇺</span></a>
+            <a class="item" data-lang="en" href="#" role="menuitem"><span>ENG</span><span class="tag">🇬🇧</span></a>
+            <a class="item" data-lang="uk" href="#" role="menuitem"><span>UKR</span><span class="tag">🇺🇦</span></a>
+          </div>
         </div>
       </div>
     </nav>
@@ -583,29 +616,34 @@
         <div class="vip">VIP</div>
         <div class="pro">PRO</div>
 
-        <div class="sphere s1 glasses small">
+        <!-- разноцветные шары + разные аксессуары -->
+        <div class="sphere s1 glasses small" style="--c1:#7dff75;--c2:#23c96d;--c3:#0d5a36;">
           <div class="bridge"></div>
         </div>
 
-        <div class="sphere s2 crowned"></div>
+        <div class="sphere s2 crowned" style="--c1:#ffe56b;--c2:#ffb400;--c3:#8a5a00;"></div>
 
-        <div class="sphere s3 jacket tiny"></div>
+        <div class="sphere s3 jacket tiny" style="--c1:#7aa6ff;--c2:#2f6fff;--c3:#12308f;"></div>
 
-        <div class="sphere s4 glasses crowned">
+        <div class="sphere s4 glasses crowned" style="--c1:#ff76b1;--c2:#d82b7b;--c3:#6d0c3a;">
+          <div class="bridge"></div>
+        </div>
+
+        <div class="sphere s5 jacket glasses tiny" style="--c1:#b56bff;--c2:#7c2cff;--c3:#2d0a66;">
           <div class="bridge"></div>
         </div>
       </div>
 
       <div class="kicker">
-        <span>Скорость</span>
-        <span>Тактика</span>
+        <span data-i18n="k_speed">Скорость</span>
+        <span data-i18n="k_tactics">Тактика</span>
       </div>
 
       <h1 class="title">
         <span class="ev">Evades 3</span>
       </h1>
 
-      <p class="desc">
+      <p class="desc" data-i18n="description">
         <strong>Evades 3</strong> — динамичная игра в духе <em>evades.io</em>, но с гораздо более удобным интерфейсом,
         понятной навигацией и “живыми” анимациями. Быстрые забеги, продуманные решения, стильные персонажи и режимы,
         где всё ощущается плавно и логично — с первой секунды.
@@ -613,25 +651,85 @@
 
       <div class="cta">
         <div class="download-wrap">
-          <button class="download" type="button" disabled aria-disabled="true" title="Пока что недоступно">
+          <button class="download" type="button" disabled aria-disabled="true" title="Пока что недоступно" data-i18n="btn_download">
             Скачать Evades 3
           </button>
-          <div class="badge">В разработке</div>
+          <div class="badge" data-i18n="badge_wip">В разработке</div>
         </div>
       </div>
 
-      <div class="footer">
+      <div class="footer" data-i18n="footer">
         Пока что это стартовая страница. Скоро добавим новости, скриншоты и загрузчик.
       </div>
     </section>
   </main>
 
   <script>
-    // Никаких кликов на отключённой кнопке + маленький приятный эффект
-    const btn = document.querySelector('.download');
-    btn?.addEventListener('click', (e) => {
-      e.preventDefault();
+    // простая система переводов (можно расширять)
+    const I18N = {
+      ru: {
+        menu_languages: "Языки",
+        k_speed: "Скорость",
+        k_tactics: "Тактика",
+        description: "<strong>Evades 3</strong> — динамичная игра в духе <em>evades.io</em>, но с гораздо более удобным интерфейсом, понятной навигацией и “живыми” анимациями. Быстрые забеги, продуманные решения, стильные персонажи и режимы, где всё ощущается плавно и логично — с первой секунды.",
+        btn_download: "Скачать Evades 3",
+        badge_wip: "В разработке",
+        footer: "Пока что это стартовая страница. Скоро добавим новости, скриншоты и загрузчик."
+      },
+      en: {
+        menu_languages: "Languages",
+        k_speed: "Speed",
+        k_tactics: "Tactics",
+        description: "<strong>Evades 3</strong> is a fast-paced game inspired by <em>evades.io</em>, but with a much more convenient UI, clear navigation, and smooth animations. Quick runs, smart decisions, stylish characters, and modes that feel intuitive from the very first second.",
+        btn_download: "Download Evades 3",
+        badge_wip: "In development",
+        footer: "This is the landing page for now. Soon: news, screenshots, and the launcher."
+      },
+      uk: {
+        menu_languages: "Мови",
+        k_speed: "Швидкість",
+        k_tactics: "Тактика",
+        description: "<strong>Evades 3</strong> — динамічна гра в стилі <em>evades.io</em>, але з набагато зручнішим інтерфейсом, зрозумілою навігацією та плавними анімаціями. Швидкі забіги, продумані рішення, стильні персонажі й режими — усе відчувається логічно з першої секунди.",
+        btn_download: "Завантажити Evades 3",
+        badge_wip: "У розробці",
+        footer: "Поки це стартова сторінка. Скоро додамо новини, скріншоти та лаунчер."
+      }
+    };
+
+    function setLanguage(lang){
+      const dict = I18N[lang] || I18N.ru;
+
+      // обновляем все элементы с data-i18n
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        const val = dict[key];
+        if (val === undefined) return;
+        // если там есть разметка (strong/em) — используем innerHTML
+        el.innerHTML = val;
+      });
+
+      // подсветка активного языка
+      document.querySelectorAll(".item[data-lang]").forEach(a => {
+        a.classList.toggle("active", a.dataset.lang === lang);
+      });
+
+      localStorage.setItem("ev3_lang", lang);
+      document.documentElement.lang = (lang === "uk" ? "uk" : (lang === "en" ? "en" : "ru"));
+    }
+
+    // клики по языкам
+    document.querySelectorAll(".item[data-lang]").forEach(a => {
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        setLanguage(a.dataset.lang);
+      });
     });
+
+    // disabled button safety
+    document.querySelector(".download")?.addEventListener("click", (e) => e.preventDefault());
+
+    // init
+    setLanguage(localStorage.getItem("ev3_lang") || "ru");
   </script>
 </body>
 </html>
