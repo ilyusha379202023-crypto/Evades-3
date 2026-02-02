@@ -284,39 +284,74 @@
             }
         }
 
-        .download-button {
-            background: linear-gradient(145deg, #a8a8a8, #707070);
-            color: #e0e0e0;
-            padding: 35px 90px;
-            font-size: 32px;
-            font-weight: 900;
-            border: none;
-            border-radius: 60px;
-            cursor: not-allowed;
-            position: relative;
-            box-shadow: 
-                12px 12px 24px rgba(0,0,0,0.5),
-                -6px -6px 16px rgba(255,255,255,0.1),
-                inset -3px -3px 10px rgba(0,0,0,0.4),
-                inset 3px 3px 10px rgba(255,255,255,0.15);
-            transition: all 0.3s ease;
-            transform: perspective(800px) rotateX(15deg);
-            text-shadow: 
-                2px 2px 4px rgba(0,0,0,0.8),
-                -1px -1px 2px rgba(255,255,255,0.3),
-                0 0 10px rgba(0,0,0,0.5);
-            font-family: 'Exo 2', sans-serif;
-            letter-spacing: 2px;
-        }
+        .download-button{
+    background: linear-gradient(180deg, #bdbdbd 0%, #8a8a8a 45%, #6b6b6b 100%);
+    color: #f2f2f2;
+    padding: 35px 90px;
+    font-size: 32px;
+    font-weight: 900;
+    border: 0;
+    border-radius: 60px;
+    cursor: not-allowed;
+    position: relative;
 
-        .download-button:hover {
-            transform: perspective(800px) rotateX(20deg) translateY(3px);
-            box-shadow: 
-                10px 10px 20px rgba(0,0,0,0.6),
-                -5px -5px 14px rgba(255,255,255,0.1),
-                inset -3px -3px 10px rgba(0,0,0,0.5),
-                inset 3px 3px 10px rgba(255,255,255,0.15);
-        }
+    /* ВАЖНО: никаких дерганий */
+    transform: none;
+    will-change: box-shadow, filter;
+    transition: box-shadow 0.25s ease, filter 0.25s ease;
+
+    /* 3D объем: многослойная тень + "подошва" */
+    box-shadow:
+        0 18px 0 #4e4e4e,                 /* нижняя "подошва" (глубина) */
+        0 22px 35px rgba(0,0,0,0.55),     /* большая мягкая тень */
+        inset 0 2px 0 rgba(255,255,255,0.55), /* верхний блик */
+        inset 0 -10px 18px rgba(0,0,0,0.45);  /* внутренняя глубина */
+
+    text-shadow:
+        0 2px 0 rgba(0,0,0,0.6),
+        0 10px 25px rgba(0,0,0,0.35);
+
+    font-family: 'Exo 2', sans-serif;
+    letter-spacing: 2px;
+}
+
+/* Блик сверху (делает кнопку именно "объёмной") */
+.download-button::before{
+    content: "";
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    top: 10px;
+    height: 40%;
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0));
+    opacity: 0.9;
+    pointer-events: none;
+}
+
+/* Тонкая кайма + дополнительный объем */
+.download-button::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 60px;
+    box-shadow:
+        inset 0 0 0 2px rgba(255,255,255,0.18),
+        inset 0 -2px 0 rgba(0,0,0,0.35);
+    pointer-events: none;
+}
+
+/* Hover БЕЗ движения: только подсветка */
+.download-button:hover{
+    transform: none;
+    filter: brightness(1.03);
+    box-shadow:
+        0 18px 0 #4e4e4e,
+        0 24px 45px rgba(0,0,0,0.6),
+        inset 0 2px 0 rgba(255,255,255,0.65),
+        inset 0 -12px 22px rgba(0,0,0,0.5);
+}
+
 
         .dev-badge {
             position: absolute;
