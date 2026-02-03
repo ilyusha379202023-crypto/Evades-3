@@ -275,16 +275,86 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .subtitle {
-            font-family: 'Exo 2', 'Rajdhani', sans-serif;
-            font-size: 36px;
-            color: rgba(255,255,255,0.95);
-            margin-bottom: 20px;
-            font-weight: 600;
-            letter-spacing: 8px;
-            text-transform: uppercase;
-            text-shadow: 0 0 20px rgba(255,255,255,0.4);
-        }
+/* ===== UPGRADE: фирменный subtitle ===== */
+.subtitle{
+  position: relative;
+  display: inline-block;
+  padding: 12px 26px;
+  border-radius: 999px;
+
+  /* стекло + лёгкий градиент */
+  background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  font-size: 34px;
+  letter-spacing: 10px;
+  text-transform: uppercase;
+
+  /* премиум: мягкое свечение + тень */
+  color: rgba(255,255,255,0.95);
+  text-shadow:
+    0 1px 0 rgba(0,0,0,0.25),
+    0 0 20px rgba(255,255,255,0.25);
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.18);
+}
+
+/* тонкая “линия-акцент” под subtitle */
+.subtitle::after{
+  content:"";
+  position:absolute;
+  left: 14%;
+  right: 14%;
+  bottom: -8px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(255,215,0,0.75), transparent);
+  filter: blur(0.2px);
+  opacity: 0.9;
+}
+
+/* ===== UPGRADE: EVADES 3 “дороже” (двойной слой + блик) ===== */
+.main-title{
+  position: relative;
+  display: inline-block;
+  font-size: 88px;
+  letter-spacing: 14px;
+
+  /* твой золото-градиент оставляем, усилим объём */
+  filter: drop-shadow(0 18px 25px rgba(0,0,0,0.35))
+          drop-shadow(0 0 30px rgba(255,215,0,0.35));
+}
+
+/* “внутренний” объём (как будто экструзия) */
+.main-title::before{
+  content: attr(data-title);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  transform: translate(0px, 10px);
+  color: rgba(0,0,0,0.32);
+  filter: blur(0.3px);
+}
+
+/* блик сверху (премиум) */
+.main-title::after{
+  content: "";
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 0;
+  height: 42%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0));
+  opacity: 0.55;
+  pointer-events: none;
+}
+
 
         .main-title {
             font-family: 'Exo 2', 'Orbitron', sans-serif;
@@ -383,28 +453,58 @@
                 inset 0 -12px 22px rgba(0,0,0,0.5);
         }
 
-        .dev-badge {
-            position: absolute;
-            top: -20px;
-            right: -20px;
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c44569 100%);
-            color: white;
-            padding: 12px 28px;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: 900;
-            box-shadow:
-                6px 6px 20px rgba(0,0,0,0.5),
-                inset -2px -2px 6px rgba(0,0,0,0.3),
-                inset 2px 2px 6px rgba(255,100,100,0.4),
-                0 0 20px rgba(255,107,107,0.4);
-            transform: rotate(12deg);
-            animation: badgePulse 2s ease-in-out infinite;
-            font-family: 'Exo 2', sans-serif;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border: 2px solid rgba(255,255,255,0.3);
-        }
+        .dev-badge{
+  position: absolute;
+  top: -26px;
+  right: -26px;
+
+  padding: 12px 28px;
+  border-radius: 999px;
+
+  /* материал */
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c44569 100%);
+  border: 2px solid rgba(255,255,255,0.35);
+
+  /* “стежок” по краю */
+  outline: 2px dashed rgba(255,255,255,0.35);
+  outline-offset: -6px;
+
+  color: white;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 14px;
+
+  /* 3D */
+  box-shadow:
+    0 18px 0 rgba(0,0,0,0.20),
+    0 28px 50px rgba(0,0,0,0.50),
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    inset 0 -10px 18px rgba(0,0,0,0.30);
+
+  transform: rotate(12deg);
+  animation: badgePulse 2s ease-in-out infinite;
+
+  /* лёгкая “текстура” */
+  background-image:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.28), transparent 45%),
+    linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c44569 100%);
+}
+
+/* блик-полоска, как на наклейке */
+.dev-badge::before{
+  content:"";
+  position:absolute;
+  left: 12%;
+  right: 12%;
+  top: 6px;
+  height: 40%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0));
+  opacity: 0.7;
+  pointer-events:none;
+}
+
 
         @keyframes badgePulse {
             0%, 100% { transform: rotate(15deg) scale(1); }
