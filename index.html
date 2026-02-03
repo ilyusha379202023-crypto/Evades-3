@@ -1,1160 +1,1066 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evades 3 - Скорость. Тактика. Победа.</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;600;700&family=Exo+2:wght@300;600;800;900&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="/logo.png">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        /* Флаги в меню языков */
-        .lang-flag img{
-            width: 22px !important;
-            height: 16px !important;
-            object-fit: cover;
-            border-radius: 3px;
-            display: block;
-            box-shadow: 0 0 4px rgba(0,0,0,0.3);
-        }
-
-        /* ===== Галочка (SVG с анимацией "рисования") ===== */
-        .lang-check {
-            width: 22px;
-            height: 22px;
-            margin-left: auto;
-            opacity: 0;
-            transform: scale(0.85);
-            transition: opacity .18s ease, transform .18s ease;
-        }
-         
-        .lang-item.is-selected .lang-check {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .lang-check svg { width: 22px; height: 22px; display: block; }
-        .lang-check path {
-            fill: none;
-            stroke: rgba(255,255,255,0.95);
-            stroke-width: 3.2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-dasharray: 30;
-            stroke-dashoffset: 30;
-        }
-
-        .lang-item.is-selected .lang-check path { animation: checkDraw 260ms ease-out forwards; }
-        @keyframes checkDraw { to { stroke-dashoffset: 0; } }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #1a4d2e 0%, #2d7a4f 25%, #4a9d6f 50%, #2d7a4f 75%, #1a4d2e 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            overflow-x: hidden;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background:
-                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.03) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Блёстки */
-        .sparkle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: white;
-            border-radius: 50%;
-            animation: sparkleFloat 3s ease-in-out infinite;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-            pointer-events: none;
-            z-index: 2; /* чтобы точно не прятались */
-        }
-
-        @keyframes sparkleFloat {
-            0%, 100% { transform: translateY(0) scale(1); opacity: 0; }
-            50% { transform: translateY(-30px) scale(1.5); opacity: 1; }
-        }
-
-        /* 3D шары с украшениями */
-        .decoration-sphere {
-            position: absolute;
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        /* Логотип */
-        .logo-image {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            width: 130px;
-            height: 130px;
-            object-fit: contain;
-            filter: drop-shadow(0 8px 20px rgba(255,0,0,0.6));
-            z-index: 1000;
-        }
-/* ===== По-словная анимация subtitle ===== */
-.subtitle .word{
-  opacity: 0;
-  transform: translateY(10px);
-  filter: blur(2px);
-  display: inline-block;
-}
-
-.hero-anim .subtitle .word.word1{
-  animation: wordIn 520ms ease-out forwards;
-  animation-delay: 150ms;
-}
-
-.hero-anim .subtitle .word.word2{
-  animation: wordIn 520ms ease-out forwards;
-  animation-delay: 850ms;
-}
-
-@keyframes wordIn{
-  to{
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-
-/* ===== EVADES 3 "BURST" ===== */
-.main-title{
-  opacity: 0;
-  transform: scale(0.92);
-  filter: blur(2px) drop-shadow(0 0 0 rgba(255,215,0,0));
-}
-
-.hero-anim .main-title{
-  animation: titleBurst 900ms cubic-bezier(.15,1.15,.25,1) forwards;
-  animation-delay: 1500ms; /* после 2-го слова */
-}
-
-@keyframes titleBurst{
-  0%{
-    opacity: 0;
-    transform: scale(0.92);
-    filter: blur(2px) drop-shadow(0 0 0 rgba(255,215,0,0));
-  }
-  55%{
-    opacity: 1;
-    transform: scale(1.12);
-    filter: blur(0) drop-shadow(0 0 28px rgba(255,215,0,0.65));
-  }
-  100%{
-    opacity: 1;
-    transform: scale(1);
-    filter: blur(0) drop-shadow(0 0 18px rgba(255,215,0,0.45));
-  }
-}
-
-/* ===== Нижний интерфейс скрыт до конца анимации ===== */
-.button-container,
-.description{
-  opacity: 0;
-  transform: translateY(18px);
-  pointer-events: none;
-}
-
-/* Появляется только после полного появления EVADES 3 */
-.ui-ready .button-container,
-.ui-ready .description{
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-  transition: opacity 600ms ease, transform 600ms ease;
-}
-
-        /* Меню языков */
-        .language-menu {
-            position: absolute;
-            top: 20px;
-            right: 50px;
-            z-index: 1000;
-        }
-
-        .menu-button {
-            background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.15));
-            color: white;
-            padding: 15px 35px;
-            cursor: pointer;
-            border: 2px solid rgba(255,255,255,0.4);
-            border-radius: 50px;
-            font-size: 18px;
-            font-weight: 900;
-            backdrop-filter: blur(15px);
-            transition: all 0.3s ease;
-            font-family: 'Exo 2', sans-serif;
-            letter-spacing: 2px;
-            box-shadow:
-                6px 6px 16px rgba(0,0,0,0.3),
-                -3px -3px 10px rgba(255,255,255,0.1),
-                inset -2px -2px 6px rgba(0,0,0,0.2),
-                inset 2px 2px 6px rgba(255,255,255,0.2);
-        }
-
-        .menu-button:hover {
-            background: linear-gradient(145deg, rgba(255,255,255,0.35), rgba(255,255,255,0.25));
-            transform: translateY(-2px);
-            box-shadow:
-                8px 8px 20px rgba(0,0,0,0.4),
-                -4px -4px 12px rgba(255,255,255,0.15),
-                inset -2px -2px 6px rgba(0,0,0,0.2),
-                inset 2px 2px 6px rgba(255,255,255,0.2);
-        }
-
-        :root{
-            --langBorder: rgba(255,255,255,0.28);
-        }
-
-        .language-dropdown{
-            border: 2px solid var(--langBorder) !important;
-        }
-
-        .language-dropdown {
-            position: absolute;
-            top: calc(100% + 10px);
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.12));
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border-radius: 28px;
-            overflow: hidden;
-            max-height: 0;
-            opacity: 0;
-            transition: max-height 0.35s ease, opacity 0.25s ease;
-            border: 2px solid rgba(255,255,255,0.35);
-            box-shadow:
-                10px 10px 30px rgba(0,0,0,0.35),
-                -5px -5px 14px rgba(255,255,255,0.12),
-                inset -2px -2px 8px rgba(0,0,0,0.25),
-                inset 2px 2px 8px rgba(255,255,255,0.2);
-            min-width: 170px;
-        }
-
-        .language-menu:hover .language-dropdown {
-            max-height: 400px;
-            opacity: 1;
-        }
-
-        .language-scroll {
-            max-height: 400px;
-            overflow-y: auto;
-            overflow-x: hidden;
-            padding: 10px 12px 10px 0; /* отступ справа */
-        }
-
-        /* ===== Скроллбар ===== */
-        .language-scroll::-webkit-scrollbar{ width: 5px; }
-        .language-scroll::-webkit-scrollbar-track{
-            background: rgba(255,255,255,0.08);
-            border-radius: 999px;
-        }
-        .language-scroll::-webkit-scrollbar-thumb{
-            background: var(--langBorder);
-            border-radius: 999px;
-            min-height: 160px;
-        }
-        .language-scroll::-webkit-scrollbar-thumb:hover{
-            background: rgba(255,255,255,0.45);
-        }
-
-        /* ===== Hover подсветка слева (круглая) ===== */
-        .lang-item{ position: relative; }
-
-        .lang-item::before{
-            content: "";
-            position: absolute;
-            left: 8px;
-            top: 8px;
-            bottom: 8px;
-            width: 6px;
-            border-radius: 999px;
-            background: transparent;
-            opacity: 0;
-            transition: opacity 0.18s ease, background 0.18s ease;
-        }
-
-        .lang-item:hover::before{
-            background: var(--langBorder);
-            opacity: 1;
-        }
-
-        /* Пункты */
-        .lang-item {
-            padding: 12px 20px;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.2s ease;
-            border-left: 3px solid transparent;
-        }
-
-        .lang-item:hover {
-            background: linear-gradient(90deg, rgba(74,222,128,0.2), transparent);
-            border-left-color: transparent; /* старая полоса выключена */
-            transform: translateX(5px);
-        }
-
-        .lang-code {
-            font-weight: bold;
-            min-width: 45px;
-            font-family: 'Exo 2', sans-serif;
-        }
-
-        /* Основной контент */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 200px 20px 50px;
-            text-align: center;
-            position: relative;
-            z-index: 10;
-        }
-
-        .title-section {
-            margin-bottom: 60px;
-            animation: fadeInDown 1s ease;
-        }
-/* ===== HERO layout: всегда в колонку и по центру ===== */
-.title-section{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
-}
-
-.subtitle{
-  display: inline-flex;   /* важно: внутри будут 2 слова */
-  gap: 18px;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  white-space: normal;
-}
-
-.main-title{
-  display: block;
-  text-align: center;
-}
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-/* ===== UPGRADE: фирменный subtitle ===== */
-.subtitle{
-  position: relative;
-  display: inline-block;
-  padding: 12px 26px;
-  border-radius: 999px;
-
-  /* стекло + лёгкий градиент */
-  background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04));
-  border: 1px solid rgba(255,255,255,0.18);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-
-  font-size: 34px;
-  letter-spacing: 10px;
-  text-transform: uppercase;
-
-  /* премиум: мягкое свечение + тень */
-  color: rgba(255,255,255,0.95);
-  text-shadow:
-    0 1px 0 rgba(0,0,0,0.25),
-    0 0 20px rgba(255,255,255,0.25);
-
-  box-shadow:
-    0 18px 40px rgba(0,0,0,0.22),
-    inset 0 1px 0 rgba(255,255,255,0.18);
-}
-
-/* тонкая “линия-акцент” под subtitle */
-.subtitle::after{
-  content:"";
-  position:absolute;
-  left: 14%;
-  right: 14%;
-  bottom: -8px;
-  height: 3px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, transparent, rgba(255,215,0,0.75), transparent);
-  filter: blur(0.2px);
-  opacity: 0.9;
-}
-
-/* ===== UPGRADE: EVADES 3 “дороже” (двойной слой + блик) ===== */
-.main-title{
-  position: relative;
-  display: inline-block;
-  font-size: 88px;
-  letter-spacing: 14px;
-
-  /* твой золото-градиент оставляем, усилим объём */
-  filter: drop-shadow(0 18px 25px rgba(0,0,0,0.35))
-          drop-shadow(0 0 30px rgba(255,215,0,0.35));
-}
-
-/* “внутренний” объём (как будто экструзия) */
-.main-title::before{
-  content: attr(data-title);
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: -1;
-  transform: translate(0px, 10px);
-  color: rgba(0,0,0,0.32);
-  filter: blur(0.3px);
-}
-
-/* блик сверху (премиум) */
-.main-title::after{
-  content: "";
-  position: absolute;
-  left: 6%;
-  right: 6%;
-  top: 0;
-  height: 42%;
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0));
-  opacity: 0.55;
-  pointer-events: none;
-}
-
-
-        .main-title {
-            font-family: 'Exo 2', 'Orbitron', sans-serif;
-            font-size: 80px;
-            font-weight: 900;
-            background: linear-gradient(45deg, #ffd700, #ffed4e, #ffd700, #ffaa00);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: titlePulse 2s ease-in-out infinite, goldShine 3s linear infinite;
-            letter-spacing: 12px;
-            position: relative;
-            filter: drop-shadow(0 0 30px rgba(255,215,0,0.6));
-        }
-
-        @keyframes titlePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes goldShine {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 200% 50%; }
-        }
-
-        /* 3D кнопка */
-        .button-container {
-            position: relative;
-            display: inline-block;
-            margin: 40px 0;
-            animation: fadeInUp 1s ease 0.5s both;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .download-button{
-            background: linear-gradient(180deg, #bdbdbd 0%, #8a8a8a 45%, #6b6b6b 100%);
-            color: #f2f2f2;
-            padding: 35px 90px;
-            font-size: 32px;
-            font-weight: 900;
-            border: 0;
-            border-radius: 60px;
-            cursor: not-allowed;
-            position: relative;
-            transform: none;
-            will-change: box-shadow, filter;
-            transition: box-shadow 0.25s ease, filter 0.25s ease;
-            box-shadow:
-                0 18px 0 #4e4e4e,
-                0 22px 35px rgba(0,0,0,0.55),
-                inset 0 2px 0 rgba(255,255,255,0.55),
-                inset 0 -10px 18px rgba(0,0,0,0.45);
-            text-shadow:
-                0 2px 0 rgba(0,0,0,0.6),
-                0 10px 25px rgba(0,0,0,0.35);
-            font-family: 'Exo 2', sans-serif;
-            letter-spacing: 2px;
-        }
-
-        .download-button::before{
-            content: "";
-            position: absolute;
-            left: 10%;
-            right: 10%;
-            top: 10px;
-            height: 40%;
-            border-radius: 999px;
-            background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0));
-            opacity: 0.9;
-            pointer-events: none;
-        }
-
-        .download-button::after{
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: 60px;
-            box-shadow:
-                inset 0 0 0 2px rgba(255,255,255,0.18),
-                inset 0 -2px 0 rgba(0,0,0,0.35);
-            pointer-events: none;
-        }
-
-        .download-button:hover{
-            transform: none;
-            filter: brightness(1.03);
-            box-shadow:
-                0 18px 0 #4e4e4e,
-                0 24px 45px rgba(0,0,0,0.6),
-                inset 0 2px 0 rgba(255,255,255,0.65),
-                inset 0 -12px 22px rgba(0,0,0,0.5);
-        }
-
-        .dev-badge{
-  position: absolute;
-  top: -26px;
-  right: -26px;
-
-  padding: 12px 28px;
-  border-radius: 999px;
-
-  /* материал */
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c44569 100%);
-  border: 2px solid rgba(255,255,255,0.35);
-
-  /* “стежок” по краю */
-  outline: 2px dashed rgba(255,255,255,0.35);
-  outline-offset: -6px;
-
-  color: white;
-  font-weight: 900;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-size: 14px;
-
-  /* 3D */
-  box-shadow:
-    0 18px 0 rgba(0,0,0,0.20),
-    0 28px 50px rgba(0,0,0,0.50),
-    inset 0 1px 0 rgba(255,255,255,0.35),
-    inset 0 -10px 18px rgba(0,0,0,0.30);
-
-  transform: rotate(12deg);
-  animation: badgePulse 2s ease-in-out infinite;
-
-  /* лёгкая “текстура” */
-  background-image:
-    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.28), transparent 45%),
-    linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c44569 100%);
-}
-
-/* блик-полоска, как на наклейке */
-.dev-badge::before{
-  content:"";
-  position:absolute;
-  left: 12%;
-  right: 12%;
-  top: 6px;
-  height: 40%;
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0));
-  opacity: 0.7;
-  pointer-events:none;
-}
-
-
-        @keyframes badgePulse {
-            0%, 100% { transform: rotate(15deg) scale(1); }
-            50% { transform: rotate(15deg) scale(1.1); }
-        }
-
-        /* Описание */
-        .description {
-            max-width: 900px;
-            margin: 60px auto;
-            padding: 0;
-            animation: fadeIn 1s ease 1s both;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .glass-card {
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            border: 1px solid rgba(255,255,255,0.15);
-            padding: 50px;
-            box-shadow:
-                0 20px 60px rgba(0,0,0,0.3),
-                inset 0 1px 0 rgba(255,255,255,0.2);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-
-        .glass-card:hover { transform: translateY(-5px); }
-
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% { left: -100%; }
-            50%, 100% { left: 100%; }
-        }
-
-        .description h2 {
-            color: white;
-            font-size: 48px;
-            margin-bottom: 30px;
-            text-shadow: 0 0 30px rgba(255,255,255,0.3);
-            font-weight: 900;
-            letter-spacing: 2px;
-        }
-
-        .description p {
-            color: rgba(255,255,255,0.95);
-            font-size: 20px;
-            line-height: 2;
-            margin-bottom: 25px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-        }
-
-        .highlight {
-            color: #ffd700;
-            font-weight: bold;
-            text-shadow: 0 0 10px rgba(255,215,0,0.5);
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 40px;
-        }
-
-        .feature-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            border-radius: 20px;
-            padding: 30px;
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .feature-card:hover::before { opacity: 1; }
-
-        .feature-card:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-            border-color: rgba(255,255,255,0.4);
-        }
-
-        .feature-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-            display: block;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
-        }
-
-        .feature-title {
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .feature-text {
-            color: rgba(255,255,255,0.8);
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .stats-container {
-            display: flex;
-            justify-content: space-around;
-            margin: 50px 0;
-            flex-wrap: wrap;
-            gap: 30px;
-        }
-
-        .stat-item {
-            text-align: center;
-            flex: 1;
-            min-width: 150px;
-        }
-
-        .stat-number {
-            font-size: 56px;
-            font-weight: 900;
-            background: linear-gradient(45deg, #ffd700, #ffed4e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 30px rgba(255,215,0,0.5);
-            animation: statPulse 2s ease-in-out infinite;
-        }
-
-        .stat-label {
-            color: rgba(255,255,255,0.9);
-            font-size: 16px;
-            margin-top: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        @keyframes statPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evades 3 - Скорость. Тактика. Победа.</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;600;700&family=Exo+2:wght@300;600;800;900&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="icon" type="image/png" href="/logo.png" />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root{
+      --langBorder: rgba(255,255,255,0.28);
+    }
+
+    /* Флаги в меню языков */
+    .lang-flag img{
+      width: 22px !important;
+      height: 16px !important;
+      object-fit: cover;
+      border-radius: 3px;
+      display: block;
+      box-shadow: 0 0 4px rgba(0,0,0,0.3);
+    }
+
+    /* ===== Галочка (SVG с анимацией "рисования") ===== */
+    .lang-check {
+      width: 22px;
+      height: 22px;
+      margin-left: auto;
+      opacity: 0;
+      transform: scale(0.85);
+      transition: opacity .18s ease, transform .18s ease;
+      pointer-events: none;
+    }
+
+    .lang-item.is-selected .lang-check {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .lang-check svg { width: 22px; height: 22px; display: block; }
+    .lang-check path {
+      fill: none;
+      stroke: rgba(255,255,255,0.95);
+      stroke-width: 3.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 30;
+      stroke-dashoffset: 30;
+    }
+
+    .lang-item.is-selected .lang-check path {
+      animation: checkDraw 260ms ease-out forwards;
+    }
+    @keyframes checkDraw { to { stroke-dashoffset: 0; } }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #1a4d2e 0%, #2d7a4f 25%, #4a9d6f 50%, #2d7a4f 75%, #1a4d2e 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.03) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Блёстки */
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      animation: sparkleFloat 3s ease-in-out infinite;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    @keyframes sparkleFloat {
+      0%, 100% { transform: translateY(0) scale(1); opacity: 0; }
+      50% { transform: translateY(-30px) scale(1.5); opacity: 1; }
+    }
+
+    /* Логотип */
+    .logo-image {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      width: 130px;
+      height: 130px;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 20px rgba(255,0,0,0.6));
+      z-index: 1000;
+    }
+
+    /* ===== По-словная анимация subtitle ===== */
+    .subtitle .word{
+      opacity: 0;
+      transform: translateY(10px);
+      filter: blur(2px);
+      display: inline-block;
+    }
+
+    .hero-anim .subtitle .word.word1{
+      animation: wordIn 520ms ease-out forwards;
+      animation-delay: 150ms;
+    }
+
+    .hero-anim .subtitle .word.word2{
+      animation: wordIn 520ms ease-out forwards;
+      animation-delay: 850ms;
+    }
+
+    @keyframes wordIn{
+      to{
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    /* ===== EVADES 3 "BURST" ===== */
+    .main-title{
+      opacity: 0;
+      transform: scale(0.92);
+      filter: blur(2px) drop-shadow(0 0 0 rgba(255,215,0,0));
+    }
+
+    .hero-anim .main-title{
+      animation: titleBurst 900ms cubic-bezier(.15,1.15,.25,1) forwards;
+      animation-delay: 1500ms;
+    }
+
+    @keyframes titleBurst{
+      0%{
+        opacity: 0;
+        transform: scale(0.92);
+        filter: blur(2px) drop-shadow(0 0 0 rgba(255,215,0,0));
+      }
+      55%{
+        opacity: 1;
+        transform: scale(1.12);
+        filter: blur(0) drop-shadow(0 0 28px rgba(255,215,0,0.65));
+      }
+      100%{
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0) drop-shadow(0 0 18px rgba(255,215,0,0.45));
+      }
+    }
+
+    /* ===== Нижний интерфейс скрыт до конца анимации ===== */
+    .button-container,
+    .description{
+      opacity: 0;
+      transform: translateY(18px);
+      pointer-events: none;
+    }
+
+    .ui-ready .button-container,
+    .ui-ready .description{
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+      transition: opacity 600ms ease, transform 600ms ease;
+    }
+
+    /* Меню языков */
+    .language-menu {
+      position: absolute;
+      top: 20px;
+      right: 50px;
+      z-index: 1000;
+    }
+
+    .menu-button {
+      background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.15));
+      color: white;
+      padding: 15px 35px;
+      cursor: pointer;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: 900;
+      backdrop-filter: blur(15px);
+      transition: all 0.3s ease;
+      font-family: 'Exo 2', sans-serif;
+      letter-spacing: 2px;
+      box-shadow:
+        6px 6px 16px rgba(0,0,0,0.3),
+        -3px -3px 10px rgba(255,255,255,0.1),
+        inset -2px -2px 6px rgba(0,0,0,0.2),
+        inset 2px 2px 6px rgba(255,255,255,0.2);
+    }
+
+    .menu-button:hover {
+      background: linear-gradient(145deg, rgba(255,255,255,0.35), rgba(255,255,255,0.25));
+      transform: translateY(-2px);
+      box-shadow:
+        8px 8px 20px rgba(0,0,0,0.4),
+        -4px -4px 12px rgba(255,255,255,0.15),
+        inset -2px -2px 6px rgba(0,0,0,0.2),
+        inset 2px 2px 6px rgba(255,255,255,0.2);
+    }
+
+    .language-dropdown{
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.12));
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 28px;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.35s ease, opacity 0.25s ease;
+      border: 2px solid var(--langBorder);
+      box-shadow:
+        10px 10px 30px rgba(0,0,0,0.35),
+        -5px -5px 14px rgba(255,255,255,0.12),
+        inset -2px -2px 8px rgba(0,0,0,0.25),
+        inset 2px 2px 8px rgba(255,255,255,0.2);
+      min-width: 170px;
+    }
+
+    .language-menu:hover .language-dropdown {
+      max-height: 400px;
+      opacity: 1;
+    }
+
+    .language-scroll {
+      max-height: 400px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 10px 12px 10px 0;
+    }
+
+    .language-scroll::-webkit-scrollbar{ width: 5px; }
+    .language-scroll::-webkit-scrollbar-track{
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+    }
+    .language-scroll::-webkit-scrollbar-thumb{
+      background: var(--langBorder);
+      border-radius: 999px;
+      min-height: 160px;
+    }
+    .language-scroll::-webkit-scrollbar-thumb:hover{
+      background: rgba(255,255,255,0.45);
+    }
+
+    .lang-item{ position: relative; }
+
+    .lang-item::before{
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      bottom: 8px;
+      width: 6px;
+      border-radius: 999px;
+      background: transparent;
+      opacity: 0;
+      transition: opacity 0.18s ease, background 0.18s ease;
+    }
+
+    .lang-item:hover::before{
+      background: var(--langBorder);
+      opacity: 1;
+    }
+
+    .lang-item {
+      padding: 12px 20px;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s ease;
+      border-left: 3px solid transparent;
+    }
+
+    .lang-item:hover {
+      background: linear-gradient(90deg, rgba(74,222,128,0.2), transparent);
+      transform: translateX(5px);
+    }
+
+    .lang-code {
+      font-weight: bold;
+      min-width: 45px;
+      font-family: 'Exo 2', sans-serif;
+    }
+
+    /* Основной контент */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 200px 20px 50px;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ===== HERO layout: всегда в колонку и по центру ===== */
+    .title-section{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 60px;
+      animation: fadeInDown 1s ease;
+    }
+
+    .subtitle{
+      display: inline-flex;
+      gap: 18px;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      white-space: normal;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== UPGRADE: фирменный subtitle ===== */
+    .subtitle{
+      position: relative;
+      display: inline-block;
+      padding: 12px 26px;
+      border-radius: 999px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04));
+      border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      font-size: 34px;
+      letter-spacing: 10px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.95);
+      text-shadow:
+        0 1px 0 rgba(0,0,0,0.25),
+        0 0 20px rgba(255,255,255,0.25);
+      box-shadow:
+        0 18px 40px rgba(0,0,0,0.22),
+        inset 0 1px 0 rgba(255,255,255,0.18);
+    }
+
+    .subtitle::after{
+      content:"";
+      position:absolute;
+      left: 14%;
+      right: 14%;
+      bottom: -8px;
+      height: 3px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, rgba(255,215,0,0.75), transparent);
+      opacity: 0.9;
+    }
+
+    /* ===== UPGRADE: EVADES 3 “дороже” (двойной слой + блик) ===== */
+    .main-title{
+      position: relative;
+      display: inline-block;
+      font-family: 'Exo 2', 'Orbitron', sans-serif;
+      font-size: 80px;
+      font-weight: 900;
+      letter-spacing: 12px;
+      background: linear-gradient(45deg, #ffd700, #ffed4e, #ffd700, #ffaa00);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: titlePulse 2s ease-in-out infinite, goldShine 3s linear infinite;
+      filter: drop-shadow(0 0 30px rgba(255,215,0,0.6));
+    }
+
+    .main-title::before{
+      content: attr(data-title);
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: -1;
+      transform: translate(0px, 10px);
+      color: rgba(0,0,0,0.32);
+      filter: blur(0.3px);
+    }
+
+    .main-title::after{
+      content: "";
+      position: absolute;
+      left: 6%;
+      right: 6%;
+      top: 0;
+      height: 42%;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0));
+      opacity: 0.55;
+      pointer-events: none;
+    }
+
+    @keyframes titlePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes goldShine {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    /* 3D кнопка */
+    .button-container {
+      position: relative;
+      display: inline-block;
+      margin: 40px 0;
+      animation: fadeInUp 1s ease 0.5s both;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .download-button{
+      background: linear-gradient(180deg, #bdbdbd 0%, #8a8a8a 45%, #6b6b6b 100%);
+      color: #f2f2f2;
+      padding: 35px 90px;
+      font-size: 32px;
+      font-weight: 900;
+      border: 0;
+      border-radius: 60px;
+      cursor: not-allowed;
+      position: relative;
+      transform: none;
+      will-change: box-shadow, filter;
+      transition: box-shadow 0.25s ease, filter 0.25s ease;
+      box-shadow:
+        0 18px 0 #4e4e4e,
+        0 22px 35px rgba(0,0,0,0.55),
+        inset 0 2px 0 rgba(255,255,255,0.55),
+        inset 0 -10px 18px rgba(0,0,0,0.45);
+      text-shadow:
+        0 2px 0 rgba(0,0,0,0.6),
+        0 10px 25px rgba(0,0,0,0.35);
+      font-family: 'Exo 2', sans-serif;
+      letter-spacing: 2px;
+    }
+
+    .download-button::before{
+      content: "";
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      top: 10px;
+      height: 40%;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0));
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .download-button::after{
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 60px;
+      box-shadow:
+        inset 0 0 0 2px rgba(255,255,255,0.18),
+        inset 0 -2px 0 rgba(0,0,0,0.35);
+      pointer-events: none;
+    }
+
+    .download-button:hover{
+      transform: none;
+      filter: brightness(1.03);
+      box-shadow:
+        0 18px 0 #4e4e4e,
+        0 24px 45px rgba(0,0,0,0.6),
+        inset 0 2px 0 rgba(255,255,255,0.65),
+        inset 0 -12px 22px rgba(0,0,0,0.5);
+    }
+
+    .dev-badge{
+      position: absolute;
+      top: -26px;
+      right: -26px;
+      padding: 12px 28px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c44569 100%);
+      border: 2px solid rgba(255,255,255,0.35);
+      outline: 2px dashed rgba(255,255,255,0.35);
+      outline-offset: -6px;
+      color: white;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-size: 14px;
+      box-shadow:
+        0 18px 0 rgba(0,0,0,0.20),
+        0 28px 50px rgba(0,0,0,0.50),
+        inset 0 1px 0 rgba(255,255,255,0.35),
+        inset 0 -10px 18px rgba(0,0,0,0.30);
+      transform: rotate(12deg);
+      animation: badgePulse 2s ease-in-out infinite;
+      background-image:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.28), transparent 45%),
+        linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c44569 100%);
+    }
+
+    .dev-badge::before{
+      content:"";
+      position:absolute;
+      left: 12%;
+      right: 12%;
+      top: 6px;
+      height: 40%;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0));
+      opacity: 0.7;
+      pointer-events:none;
+    }
+
+    @keyframes badgePulse {
+      0%, 100% { transform: rotate(15deg) scale(1); }
+      50% { transform: rotate(15deg) scale(1.1); }
+    }
+
+    /* Описание */
+    .description {
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 0;
+      animation: fadeIn 1s ease 1s both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .glass-card {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(20px);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 50px;
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .glass-card:hover { transform: translateY(-5px); }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      animation: shine 3s infinite;
+    }
+
+    @keyframes shine {
+      0% { left: -100%; }
+      50%, 100% { left: 100%; }
+    }
+
+    .description h2 {
+      color: white;
+      font-size: 48px;
+      margin-bottom: 30px;
+      text-shadow: 0 0 30px rgba(255,255,255,0.3);
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    .description p {
+      color: rgba(255,255,255,0.95);
+      font-size: 20px;
+      line-height: 2;
+      margin-bottom: 25px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .highlight {
+      color: #ffd700;
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(255,215,0,0.5);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 40px;
+    }
+
+    .feature-card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+      border-radius: 20px;
+      padding: 30px;
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-card:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+      border-color: rgba(255,255,255,0.4);
+    }
+
+    .feature-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+      display: block;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+    }
+
+    .feature-title {
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .feature-text {
+      color: rgba(255,255,255,0.8);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .stats-container {
+      display: flex;
+      justify-content: space-around;
+      margin: 50px 0;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .stat-item {
+      text-align: center;
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .stat-number {
+      font-size: 56px;
+      font-weight: 900;
+      background: linear-gradient(45deg, #ffd700, #ffed4e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 30px rgba(255,215,0,0.5);
+      animation: statPulse 2s ease-in-out infinite;
+    }
+
+    .stat-label {
+      color: rgba(255,255,255,0.9);
+      font-size: 16px;
+      margin-top: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    @keyframes statPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+  </style>
 </head>
+
 <body>
+  <!-- Логотип -->
+  <img src="logo.png" alt="Evades 3 Logo" class="logo-image" />
 
-    <!-- Логотип -->
-    <img src="logo.png" alt="Evades 3 Logo" class="logo-image">
+  <!-- Меню языков -->
+  <div class="language-menu">
+    <div class="menu-button" data-i18n="languages">Языки ▼</div>
 
-    <!-- Меню языков -->
-    <div class="language-menu">
-        <div class="menu-button" data-i18n="languages">Языки ▼</div>
+    <div class="language-dropdown">
+      <div class="language-scroll">
 
-        <div class="language-dropdown">
-            <div class="language-scroll">
-
-                <div class="lang-item" data-lang="ru" onclick="changeLanguage('ru')">
-                    <span class="lang-flag"><img src="flags/ru.png" alt="RU"></span>
-                    <span class="lang-code">RUS</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="en" onclick="changeLanguage('en')">
-                    <span class="lang-flag"><img src="flags/gb.png" alt="GB"></span>
-                    <span class="lang-code">ENG</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="uk" onclick="changeLanguage('uk')">
-                    <span class="lang-flag"><img src="flags/ua.png" alt="UA"></span>
-                    <span class="lang-code">UAH</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="de" onclick="changeLanguage('de')">
-                    <span class="lang-flag"><img src="flags/de.jpg" alt="DE"></span>
-                    <span class="lang-code">DEU</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="es" onclick="changeLanguage('es')">
-                    <span class="lang-flag"><img src="flags/es.png" alt="ES"></span>
-                    <span class="lang-code">ESP</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="fr" onclick="changeLanguage('fr')">
-                    <span class="lang-flag"><img src="flags/fr.png" alt="FR"></span>
-                    <span class="lang-code">FRA</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="it" onclick="changeLanguage('it')">
-                    <span class="lang-flag"><img src="flags/it.png" alt="IT"></span>
-                    <span class="lang-code">ITA</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="pt" onclick="changeLanguage('pt')">
-                    <span class="lang-flag"><img src="flags/pt.png" alt="PT"></span>
-                    <span class="lang-code">POR</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="pl" onclick="changeLanguage('pl')">
-                    <span class="lang-flag"><img src="flags/pl.png" alt="PL"></span>
-                    <span class="lang-code">POL</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="tr" onclick="changeLanguage('tr')">
-                    <span class="lang-flag"><img src="flags/tr.png" alt="TR"></span>
-                    <span class="lang-code">TUR</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="nl" onclick="changeLanguage('nl')">
-                    <span class="lang-flag"><img src="flags/nl.png" alt="NL"></span>
-                    <span class="lang-code">NLD</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="sv" onclick="changeLanguage('sv')">
-                    <span class="lang-flag"><img src="flags/sv.png" alt="SE"></span>
-                    <span class="lang-code">SWE</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="no" onclick="changeLanguage('no')">
-                    <span class="lang-flag"><img src="flags/no.png" alt="NO"></span>
-                    <span class="lang-code">NOR</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="fi" onclick="changeLanguage('fi')">
-                    <span class="lang-flag"><img src="flags/fi.png" alt="FI"></span>
-                    <span class="lang-code">FIN</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="da" onclick="changeLanguage('da')">
-                    <span class="lang-flag"><img src="flags/da.png" alt="DK"></span>
-                    <span class="lang-code">DAN</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="cs" onclick="changeLanguage('cs')">
-                    <span class="lang-flag"><img src="flags/cs.png" alt="CZ"></span>
-                    <span class="lang-code">CZE</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="ro" onclick="changeLanguage('ro')">
-                    <span class="lang-flag"><img src="flags/ro.png" alt="RO"></span>
-                    <span class="lang-code">ROM</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="hu" onclick="changeLanguage('hu')">
-                    <span class="lang-flag"><img src="flags/hu.png" alt="HU"></span>
-                    <span class="lang-code">HUN</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="el" onclick="changeLanguage('el')">
-                    <span class="lang-flag"><img src="flags/el.png" alt="GR"></span>
-                    <span class="lang-code">GRE</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="ja" onclick="changeLanguage('ja')">
-                    <span class="lang-flag"><img src="flags/ja.png" alt="JP"></span>
-                    <span class="lang-code">JPN</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="zh" onclick="changeLanguage('zh')">
-                    <span class="lang-flag"><img src="flags/zh.png" alt="CN"></span>
-                    <span class="lang-code">CHN</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="ko" onclick="changeLanguage('ko')">
-                    <span class="lang-flag"><img src="flags/ko.png" alt="KR"></span>
-                    <span class="lang-code">KOR</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="ar" onclick="changeLanguage('ar')">
-                    <span class="lang-flag"><img src="flags/ar.png" alt="SA"></span>
-                    <span class="lang-code">ARA</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="hi" onclick="changeLanguage('hi')">
-                    <span class="lang-flag"><img src="flags/hi.png" alt="IN"></span>
-                    <span class="lang-code">HIN</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="th" onclick="changeLanguage('th')">
-                    <span class="lang-flag"><img src="flags/th.png" alt="TH"></span>
-                    <span class="lang-code">THA</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="vi" onclick="changeLanguage('vi')">
-                    <span class="lang-flag"><img src="flags/vi.png" alt="VN"></span>
-                    <span class="lang-code">VIE</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="id" onclick="changeLanguage('id')">
-                    <span class="lang-flag"><img src="flags/id.png" alt="ID"></span>
-                    <span class="lang-code">IND</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-                <div class="lang-item" data-lang="ms" onclick="changeLanguage('ms')">
-                    <span class="lang-flag"><img src="flags/ms.png" alt="MY"></span>
-                    <span class="lang-code">MAL</span>
-                    <span class="lang-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" class="check-svg">
-                            <path d="M4 12l5 5L20 6"></path>
-                        </svg>
-                    </span>
-                </div>
-
-            </div>
+        <div class="lang-item" data-lang="ru">
+          <span class="lang-flag"><img src="flags/ru.png" alt="RU"></span>
+          <span class="lang-code">RUS</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
         </div>
+
+        <div class="lang-item" data-lang="en">
+          <span class="lang-flag"><img src="flags/gb.png" alt="GB"></span>
+          <span class="lang-code">ENG</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="uk">
+          <span class="lang-flag"><img src="flags/ua.png" alt="UA"></span>
+          <span class="lang-code">UKR</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="de">
+          <span class="lang-flag"><img src="flags/de.jpg" alt="DE"></span>
+          <span class="lang-code">DEU</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="es">
+          <span class="lang-flag"><img src="flags/es.png" alt="ES"></span>
+          <span class="lang-code">ESP</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="fr">
+          <span class="lang-flag"><img src="flags/fr.png" alt="FR"></span>
+          <span class="lang-code">FRA</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="it">
+          <span class="lang-flag"><img src="flags/it.png" alt="IT"></span>
+          <span class="lang-code">ITA</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="pt">
+          <span class="lang-flag"><img src="flags/pt.png" alt="PT"></span>
+          <span class="lang-code">POR</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="pl">
+          <span class="lang-flag"><img src="flags/pl.png" alt="PL"></span>
+          <span class="lang-code">POL</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="tr">
+          <span class="lang-flag"><img src="flags/tr.png" alt="TR"></span>
+          <span class="lang-code">TUR</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="nl">
+          <span class="lang-flag"><img src="flags/nl.png" alt="NL"></span>
+          <span class="lang-code">NLD</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="sv">
+          <span class="lang-flag"><img src="flags/sv.png" alt="SE"></span>
+          <span class="lang-code">SWE</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="no">
+          <span class="lang-flag"><img src="flags/no.png" alt="NO"></span>
+          <span class="lang-code">NOR</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="fi">
+          <span class="lang-flag"><img src="flags/fi.png" alt="FI"></span>
+          <span class="lang-code">FIN</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="da">
+          <span class="lang-flag"><img src="flags/da.png" alt="DK"></span>
+          <span class="lang-code">DAN</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="cs">
+          <span class="lang-flag"><img src="flags/cs.png" alt="CZ"></span>
+          <span class="lang-code">CZE</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="ro">
+          <span class="lang-flag"><img src="flags/ro.png" alt="RO"></span>
+          <span class="lang-code">ROM</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="hu">
+          <span class="lang-flag"><img src="flags/hu.png" alt="HU"></span>
+          <span class="lang-code">HUN</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="el">
+          <span class="lang-flag"><img src="flags/el.png" alt="GR"></span>
+          <span class="lang-code">GRE</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="ja">
+          <span class="lang-flag"><img src="flags/ja.png" alt="JP"></span>
+          <span class="lang-code">JPN</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="zh">
+          <span class="lang-flag"><img src="flags/zh.png" alt="CN"></span>
+          <span class="lang-code">CHN</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="ko">
+          <span class="lang-flag"><img src="flags/ko.png" alt="KR"></span>
+          <span class="lang-code">KOR</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="ar">
+          <span class="lang-flag"><img src="flags/ar.png" alt="SA"></span>
+          <span class="lang-code">ARA</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="hi">
+          <span class="lang-flag"><img src="flags/hi.png" alt="IN"></span>
+          <span class="lang-code">HIN</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="th">
+          <span class="lang-flag"><img src="flags/th.png" alt="TH"></span>
+          <span class="lang-code">THA</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="vi">
+          <span class="lang-flag"><img src="flags/vi.png" alt="VN"></span>
+          <span class="lang-code">VIE</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="id">
+          <span class="lang-flag"><img src="flags/id.png" alt="ID"></span>
+          <span class="lang-code">IND</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+        <div class="lang-item" data-lang="ms">
+          <span class="lang-flag"><img src="flags/ms.png" alt="MY"></span>
+          <span class="lang-code">MAL</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Основной контент -->
+  <div class="container">
+    <div class="title-section">
+      <div class="subtitle" data-i18n="subtitle">Скорость. Тактика.</div>
+      <h1 class="main-title" data-title="EVADES 3">EVADES 3</h1>
     </div>
 
-    <!-- Основной контент -->
-    <div class="container">
-        <div class="title-section">
-            <div class="subtitle" data-i18n="subtitle">Скорость. Тактика.</div>
-            <h1 class="main-title">EVADES 3</h1>
-        </div>
-
-        <div class="button-container">
-            <button class="download-button" data-i18n="download-btn">Скачать Evades 3</button>
-            <div class="dev-badge" data-i18n="dev-badge">В разработке</div>
-        </div>
-
-        <div class="description">
-            <div class="glass-card">
-                <h2 data-i18n="about-title">🎮 О ИГРЕ</h2>
-                <p data-i18n="about-p1">
-                    <span class="highlight">Evades 3</span> — это эволюция легендарной evades.io, переосмысленная для нового поколения геймеров!
-                </p>
-                <p data-i18n="about-p2">
-                    Почувствуй адреналин скоростных маневров, где каждая миллисекунда решает исход битвы. Уворачивайся от смертельных препятствий, обгоняй соперников и доминируй на арене!
-                </p>
-
-                <div class="stats-container">
-                    <div class="stat-item">
-                        <div class="stat-number">60</div>
-                        <div class="stat-label">FPS</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">100+</div>
-                        <div class="stat-label" data-i18n="stat-arenas">Арены</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">24/7</div>
-                        <div class="stat-label" data-i18n="stat-online">Онлайн</div>
-                    </div>
-                </div>
-
-                <div class="feature-grid">
-                    <div class="feature-card">
-                        <span class="feature-icon">⚡</span>
-                        <div class="feature-title" data-i18n="feature1-title">Молниеносная реакция</div>
-                        <div class="feature-text" data-i18n="feature1-text">Плавная анимация 60 FPS без лагов и зависаний</div>
-                    </div>
-                    <div class="feature-card">
-                        <span class="feature-icon">🎯</span>
-                        <div class="feature-title" data-i18n="feature2-title">Точное управление</div>
-                        <div class="feature-text" data-i18n="feature2-text">Улучшенная физика движения для идеальных маневров</div>
-                    </div>
-                    <div class="feature-card">
-                         <span class="feature-icon">🎬</span>
-                         <div class="feature-title">Крутые анимации</div>
-                         <div class="feature-text">Плавные современные анимации, делающие игру живой и динамичной</div>
-                    </div>
-
-                    <div class="feature-card">
-                        <span class="feature-icon">👑</span>
-                        <div class="feature-title" data-i18n="feature3-title">VIP привилегии</div>
-                        <div class="feature-text" data-i18n="feature3-text">Эксклюзивные режимы и уникальные награды</div>
-                    </div>
-                    <div class="feature-card">
-                        <span class="feature-icon">🌈</span>
-                        <div class="feature-title" data-i18n="feature4-title">PRO статус</div>
-                        <div class="feature-text" data-i18n="feature4-text">Расширенная кастомизация и особые возможности</div>
-                    </div>
-                    <div class="feature-card">
-                        <span class="feature-icon">🎨</span>
-                        <div class="feature-title" data-i18n="feature5-title">Редактор карт и персонажей</div>
-                        <div class="feature-text" data-i18n="feature5-text">Создавай свои карты и персонажей, делись ими с миром</div>
-                    </div>
-                    <div class="feature-card">
-                        <span class="feature-icon">✨</span>
-                        <div class="feature-title" data-i18n="feature6-title">Коллекция скинов</div>
-                        <div class="feature-text" data-i18n="feature6-text">Огромный выбор крутых скинов для персонализации</div>
-                    </div>
-                    <div class="feature-card">
-                        <span class="feature-icon">🏆</span>
-                        <div class="feature-title" data-i18n="feature7-title">Система рангов</div>
-                        <div class="feature-text" data-i18n="feature7-text">Поднимайся по лестнице от новичка до легенды</div>
-                    </div>
-                    <div class="feature-card">
-                        <span class="feature-icon">🌍</span>
-                        <div class="feature-title" data-i18n="feature8-title">Глобальные битвы</div>
-                        <div class="feature-text" data-i18n="feature8-text">Соревнуйся с игроками со всех уголков мира</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="button-container">
+      <button class="download-button" data-i18n="download-btn">Скачать Evades 3</button>
+      <div class="dev-badge" data-i18n="dev-badge">В разработке</div>
     </div>
 
-    <script>
+    <div class="description">
+      <div class="glass-card">
+        <h2 data-i18n="about-title">🎮 О ИГРЕ</h2>
+
+        <p data-i18n="about-p1">
+          <span class="highlight">Evades 3</span> — это эволюция легендарной evades.io, переосмысленная для нового поколения геймеров!
+        </p>
+
+        <p data-i18n="about-p2">
+          Почувствуй адреналин скоростных маневров, где каждая миллисекунда решает исход битвы. Уворачивайся от смертельных препятствий, обгоняй соперников и доминируй на арене!
+        </p>
+
+        <div class="stats-container">
+          <div class="stat-item">
+            <div class="stat-number">60</div>
+            <div class="stat-label">FPS</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">100+</div>
+            <div class="stat-label" data-i18n="stat-arenas">Арены</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label" data-i18n="stat-online">Онлайн</div>
+          </div>
+        </div>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <span class="feature-icon">⚡</span>
+            <div class="feature-title" data-i18n="feature1-title">Молниеносная реакция</div>
+            <div class="feature-text" data-i18n="feature1-text">Плавная анимация 60 FPS без лагов и зависаний</div>
+          </div>
+
+          <div class="feature-card">
+            <span class="feature-icon">🎯</span>
+            <div class="feature-title" data-i18n="feature2-title">Точное управление</div>
+            <div class="feature-text" data-i18n="feature2-text">Улучшенная физика движения для идеальных маневров</div>
+          </div>
+
+          <!-- ВАЖНО: добавил data-i18n, чтобы ЭТО тоже переводилось -->
+          <div class="feature-card">
+            <span class="feature-icon">🎬</span>
+            <div class="feature-title" data-i18n="featureAnim-title">Крутые анимации</div>
+            <div class="feature-text" data-i18n="featureAnim-text">Плавные современные анимации, делающие игру живой и динамичной</div>
+          </div>
+
+          <div class="feature-card">
+            <span class="feature-icon">👑</span>
+            <div class="feature-title" data-i18n="feature3-title">VIP привилегии</div>
+            <div class="feature-text" data-i18n="feature3-text">Эксклюзивные режимы и уникальные награды</div>
+          </div>
+
+          <div class="feature-card">
+            <span class="feature-icon">🌈</span>
+            <div class="feature-title" data-i18n="feature4-title">PRO статус</div>
+            <div class="feature-text" data-i18n="feature4-text">Расширенная кастомизация и особые возможности</div>
+          </div>
+
+          <div class="feature-card">
+            <span class="feature-icon">🎨</span>
+            <div class="feature-title" data-i18n="feature5-title">Редактор карт и персонажей</div>
+            <div class="feature-text" data-i18n="feature5-text">Создавай свои карты и персонажей, делись ими с миром</div>
+          </div>
+
+          <div class="feature-card">
+            <span class="feature-icon">✨</span>
+            <div class="feature-title" data-i18n="feature6-title">Коллекция скинов</div>
+            <div class="feature-text" data-i18n="feature6-text">Огромный выбор крутых скинов для персонализации</div>
+          </div>
+
+          <div class="feature-card">
+            <span class="feature-icon">🏆</span>
+            <div class="feature-title" data-i18n="feature7-title">Система рангов</div>
+            <div class="feature-text" data-i18n="feature7-text">Поднимайся по лестнице от новичка до легенды</div>
+          </div>
+
+          <div class="feature-card">
+            <span class="feature-icon">🌍</span>
+            <div class="feature-title" data-i18n="feature8-title">Глобальные битвы</div>
+            <div class="feature-text" data-i18n="feature8-text">Соревнуйся с игроками со всех уголков мира</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
         // Переводы для всех языков
         const translations = {
             ru: {
@@ -1932,122 +1838,110 @@
             }
         };
 
-        function applyTranslations(lang) {
-            const elements = document.querySelectorAll('[data-i18n]');
+    function applyTranslations(lang) {
+      const elements = document.querySelectorAll('[data-i18n]');
+      elements.forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const t =
+          (translations[lang] && translations[lang][key]) ||
+          (translations.en && translations.en[key]) ||
+          el.innerHTML;
 
-            elements.forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                const t =
-                    (translations[lang] && translations[lang][key]) ||
-                    (translations.en && translations.en[key]) ||
-                    el.innerHTML;
+        el.innerHTML = t;
+      });
+    }
 
-                el.innerHTML = t;
-            });
-        }
+    // ====== UI: выбранный язык + галочка ======
+    function setSelectedLangUI(lang) {
+      document.querySelectorAll('.lang-item').forEach(item => {
+        item.classList.toggle('is-selected', item.dataset.lang === lang);
+      });
+    }
 
-        function setSelectedLangUI(lang) {
-            document.querySelectorAll('.lang-item').forEach(item => {
-                item.classList.toggle('is-selected', item.dataset.lang === lang);
-            });
-        }
+    // ====== subtitle: разбить на 2 "слова" для анимации ======
+    function wrapSubtitleWords() {
+      const sub = document.querySelector('.subtitle');
+      if (!sub) return;
 
-        function changeLanguage(lang) {
-            if (!translations[lang]) {
-                lang = translations.en ? 'en' : 'ru';
-            }
-function wrapSubtitleWords() {
-  const sub = document.querySelector('.subtitle');
-  if (!sub) return;
+      const text = sub.textContent.trim();
+      if (!text) return;
 
-  // Берём чистый текст (без HTML)
-  const text = sub.textContent.trim();
+      const parts = text.split(/\s+/);
+      const first = parts.shift() || '';
+      const rest = parts.join(' ') || '';
 
-  // Если пусто — выходим
-  if (!text) return;
+      sub.innerHTML = `
+        <span class="word word1">${first}</span>
+        <span class="word word2">${rest}</span>
+      `;
+    }
 
-  // Делим на 2 части: первое "слово" и остаток.
-  // Работает для "Скорость. Тактика." и аналогов.
-  const parts = text.split(/\s+/);
-  const first = parts.shift() || '';
-  const rest = parts.join(' ') || '';
+    // ====== перезапуск hero-анимации ======
+    function restartHeroSequence() {
+      document.body.classList.remove('hero-anim', 'ui-ready');
 
-  sub.innerHTML = `
-    <span class="word word1">${first}</span>
-    <span class="word word2">${rest}</span>
-  `;
-}
+      wrapSubtitleWords();
 
-function restartHeroSequence() {
-  // Сбрасываем классы, чтобы анимации перезапускались
-  document.body.classList.remove('hero-anim', 'ui-ready');
-
-  // Пересобираем subtitle в 2 слова (после переводов!)
-  wrapSubtitleWords();
-
-  // Запускаем анимации заголовка
-  // маленькая задержка, чтобы браузер “увидел” reset
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      document.body.classList.add('hero-anim');
-
-      // Показ нижнего интерфейса ПОСЛЕ окончания titleBurst
-      // word1: 0.15+0.52 ≈ 0.67s
-      // word2: 0.85+0.52 ≈ 1.37s
-      // title: 1.5+0.9 ≈ 2.4s
-      // ставим чуть с запасом:
-      setTimeout(() => {
-        document.body.classList.add('ui-ready');
-      }, 2550);
-    });
-  });
-}
-
-            applyTranslations(lang);
-            localStorage.setItem('selectedLanguage', lang);
-            setSelectedLangUI(lang);
-
-            // легкий “refresh” анимации контейнера (как у тебя было)
-            const container = document.querySelector('.container');
-            if (container) {
-                container.style.animation = 'none';
-                setTimeout(() => { container.style.animation = ''; }, 10);
-            }
-        }
-
-        // ВАЖНО: твой код ломался из-за лишней закрывающей скобки/}); в конце.
-        // Я собрал всё в один DOMContentLoaded, чтобы больше не "потерять" блёстки и языки.
-        window.addEventListener('DOMContentLoaded', () => {
-  const savedLang = localStorage.getItem('selectedLanguage') || 'ru';
-  changeLanguage(savedLang);
-
-  // Запускаем последовательность (после применения переводов)
-  restartHeroSequence();
-});
-
-
-            // Блёстки
-            for (let i = 0; i < 50; i++) {
-                const sparkle = document.createElement('div');
-                sparkle.className = 'sparkle';
-                sparkle.style.left = Math.random() * 100 + '%';
-                sparkle.style.top = Math.random() * 100 + '%';
-                sparkle.style.animationDelay = Math.random() * 3 + 's';
-                document.body.appendChild(sparkle);
-            }
-
-            // Parallax эффект при движении мыши
-            document.addEventListener('mousemove', (e) => {
-                const mouseX = e.clientX / window.innerWidth - 0.5;
-                const mouseY = e.clientY / window.innerHeight - 0.5;
-
-                document.querySelectorAll('.sparkle').forEach(el => {
-                    const x = mouseX * 20;
-                    const y = mouseY * 20;
-                    el.style.transform = `translate(${x}px, ${y}px)`;
-                });
-            });
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          document.body.classList.add('hero-anim');
+          setTimeout(() => {
+            document.body.classList.add('ui-ready');
+          }, 2550);
         });
-    </script>
+      });
+    }
+
+    // ====== смена языка ======
+    function changeLanguage(lang) {
+      if (!translations[lang]) lang = 'en';
+
+      applyTranslations(lang);
+      localStorage.setItem('selectedLanguage', lang);
+      setSelectedLangUI(lang);
+
+      // перезапускаем hero после смены текста
+      restartHeroSequence();
+    }
+
+    // ====== блёстки ======
+    function createSparkles(count = 50) {
+      for (let i = 0; i < count; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = Math.random() * 100 + '%';
+        sparkle.style.top = Math.random() * 100 + '%';
+        sparkle.style.animationDelay = Math.random() * 3 + 's';
+        document.body.appendChild(sparkle);
+      }
+    }
+
+    // ====== init ======
+    window.addEventListener('DOMContentLoaded', () => {
+      // клики по языкам (убрал inline onclick — так чище и ничего не ломается)
+      document.querySelectorAll('.lang-item').forEach(item => {
+        item.addEventListener('click', () => changeLanguage(item.dataset.lang));
+      });
+
+      // выставляем сохранённый язык
+      const savedLang = localStorage.getItem('selectedLanguage') || 'ru';
+      changeLanguage(savedLang);
+
+      // блёстки
+      createSparkles(50);
+
+      // parallax на блёстках
+      document.addEventListener('mousemove', (e) => {
+        const mouseX = e.clientX / window.innerWidth - 0.5;
+        const mouseY = e.clientY / window.innerHeight - 0.5;
+
+        document.querySelectorAll('.sparkle').forEach(el => {
+          const x = mouseX * 20;
+          const y = mouseY * 20;
+          el.style.transform = `translate(${x}px, ${y}px)`;
+        });
+      });
+    });
+  </script>
 </body>
 </html>
