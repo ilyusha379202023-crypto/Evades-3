@@ -137,6 +137,66 @@
                 inset -2px -2px 6px rgba(0,0,0,0.2),
                 inset 2px 2px 6px rgba(255,255,255,0.2);
         }
+:root{
+  /* Цвет рамки (и всего, что ты просишь под него подогнать) */
+  --langBorder: rgba(255,255,255,0.28);
+}
+
+/* Если хочешь, можно здесь задать цвет прямо у dropdown вместо rgba */
+.language-dropdown{
+  border: 2px solid var(--langBorder) !important;
+}
+
+/* ===== Скроллбар: уже + цвет как рамка ===== */
+.language-scroll::-webkit-scrollbar{
+  width: 6px;               /* было 8px → стало уже */
+}
+
+.language-scroll::-webkit-scrollbar-track{
+  background: rgba(255,255,255,0.06);
+  border-radius: 999px;
+  margin: 8px 0;            /* чтобы не упирался в края */
+}
+
+.language-scroll::-webkit-scrollbar-thumb{
+  background: var(--langBorder);
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.12);
+}
+
+.language-scroll::-webkit-scrollbar-thumb:hover{
+  background: rgba(255,255,255,0.42); /* можно тоже var(--langBorder) если хочешь без изменения */
+}
+
+/* ===== Hover подсветка слева: круглая + цвет как рамка ===== */
+.lang-item{
+  position: relative; /* нужно для псевдоэлемента */
+}
+
+/* левая полоска */
+.lang-item::before{
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  bottom: 8px;
+  width: 4px;
+  border-radius: 999px;
+  background: transparent;
+  opacity: 0;
+  transition: opacity 0.18s ease, background 0.18s ease;
+}
+
+/* включаем на hover */
+.lang-item:hover::before{
+  background: var(--langBorder);
+  opacity: 1;
+}
+
+/* важно: убираем старую "полосу" если она была через border-left */
+.lang-item:hover{
+  border-left-color: transparent !important;
+}
 
 .language-dropdown {
     position: absolute;
