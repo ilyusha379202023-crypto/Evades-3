@@ -720,7 +720,7 @@
     <span class="lang-check"></span>
 </div>
 
-<div class="lang-item" data-lang="ru" onclick="changeLanguage('ms')">
+<div class="lang-item" data-lang="ms" onclick="changeLanguage('ms')">
     <span class="lang-flag">my</span>
     <span class="lang-code">MAL</span>
     <span class="lang-check"></span>
@@ -1591,38 +1591,62 @@
                 'feature8-text': 'Bersaing dengan pemain dari seluruh dunia'
             }
         };
+    // Переводы (ОСТАВЬ СВОЙ ОБЪЕКТ translations КАК ЕСТЬ — он у тебя уже огромный)
+    // ВАЖНО: ниже я НЕ переписываю translations, просто использую его.
+    // const translations = { ... }  <-- у тебя уже есть выше в этом же <script>
 
-        // Функция смены языка с поддержкой fallback
-        function changeLanguage(lang) {
-            const elements = document.querySelectorAll('[data-i18n]');
-            elements.forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                // Используем выбранный язык, если перевод есть, иначе английский
-                const translation = (translations[lang] && translations[lang][key]) || 
-                                  (translations['en'] && translations['en'][key]) || 
-                                  el.innerHTML;
-                el.innerHTML = translation;
-            });
-            
-            // Сохраняем выбранный язык в localStorage
-            localStorage.setItem('selectedLanguage', lang);
-            
-            // Добавляем эффект при смене языка
-            document.querySelector('.container').style.animation = 'none';
-            setTimeout(() => {
-                document.querySelector('.container').style.animation = '';
-            }, 10);
+    function applyTranslations(lang) {
+        const elements = document.querySelectorAll('[data-i18n]');
+
+        elements.forEach(el => {
+            const key = el.getAttribute('data-i18n');
+
+            // выбранный язык -> если нет ключа, fallback на EN -> иначе оставляем как есть
+            const t =
+                (translations[lang] && translations[lang][key]) ||
+                (translations.en && translations.en[key]) ||
+                el.innerHTML;
+
+            el.innerHTML = t;
+        });
+    }
+
+    function setActiveLangUI(lang) {
+        // Галочки/активный пункт (работает для ВСЕХ языков, которые есть в меню)
+        document.querySelectorAll('.lang-item').forEach(item => {
+            const itemLang = item.getAttribute('data-lang');
+            item.classList.toggle('active', itemLang === lang);
+        });
+    }
+
+    function changeLanguage(lang) {
+        // Если вдруг передали язык которого нет — fallback на en, а если и en нет — ru
+        if (!translations[lang]) {
+            lang = translations.en ? 'en' : 'ru';
         }
 
-        // Загружаем сохранённый язык при загрузке страницы
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedLang = localStorage.getItem('selectedLanguage');
-            if (savedLang && translations[savedLang]) {
-                changeLanguage(savedLang);
-            }
-        });
+        applyTranslations(lang);
+        localStorage.setItem('selectedLanguage', lang);
+        setActiveLangUI(lang);
 
-        // Создание блёсток
+        // легкий “refresh” анимации контейнера (как у тебя было)
+        const container = document.querySelector('.container');
+        if (container) {
+            container.style.animation = 'none';
+            setTimeout(() => {
+                container.style.animation = '';
+            }, 10);
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        // Язык по умолчанию — RU
+        const savedLang = localStorage.getItem('selectedLanguage');
+        const startLang = (savedLang && translations[savedLang]) ? savedLang : 'ru';
+
+        changeLanguage(startLang);
+
+        // Блёстки (твоя логика, оставил как есть)
         for (let i = 0; i < 50; i++) {
             const sparkle = document.createElement('div');
             sparkle.className = 'sparkle';
@@ -1632,7 +1656,7 @@
             document.body.appendChild(sparkle);
         }
 
-        // Parallax эффект при движении мыши
+        // Parallax эффект при движении мыши (как у тебя было)
         document.addEventListener('mousemove', (e) => {
             const mouseX = e.clientX / window.innerWidth - 0.5;
             const mouseY = e.clientY / window.innerHeight - 0.5;
@@ -1643,6 +1667,7 @@
                 el.style.transform = `translate(${x}px, ${y}px)`;
             });
         });
-    </script>
+    });
+</script>
 </body>
 </html>
