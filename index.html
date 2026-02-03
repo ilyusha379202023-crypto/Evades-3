@@ -161,7 +161,7 @@
 .language-scroll::-webkit-scrollbar-thumb{
   background: var(--langBorder);
   border-radius: 999px;
-  border: 1px solid rgba(0,0,0,0.12);
+  min-height: 120px; /* ← вот это возвращает длину */
 }
 
 .language-scroll::-webkit-scrollbar-thumb:hover{
