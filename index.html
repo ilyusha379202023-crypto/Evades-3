@@ -30,7 +30,7 @@
             transform: scale(0.85);
             transition: opacity .18s ease, transform .18s ease;
         }
-
+         
         .lang-item.is-selected .lang-check {
             opacity: 1;
             transform: scale(1);
@@ -114,6 +114,78 @@
             filter: drop-shadow(0 8px 20px rgba(255,0,0,0.6));
             z-index: 1000;
         }
+/* ===== По-словная анимация subtitle ===== */
+.subtitle .word{
+  opacity: 0;
+  transform: translateY(10px);
+  filter: blur(2px);
+  display: inline-block;
+}
+
+.hero-anim .subtitle .word.word1{
+  animation: wordIn 520ms ease-out forwards;
+  animation-delay: 150ms;
+}
+
+.hero-anim .subtitle .word.word2{
+  animation: wordIn 520ms ease-out forwards;
+  animation-delay: 850ms;
+}
+
+@keyframes wordIn{
+  to{
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* ===== EVADES 3 "BURST" ===== */
+.main-title{
+  opacity: 0;
+  transform: scale(0.92);
+  filter: blur(2px) drop-shadow(0 0 0 rgba(255,215,0,0));
+}
+
+.hero-anim .main-title{
+  animation: titleBurst 900ms cubic-bezier(.15,1.15,.25,1) forwards;
+  animation-delay: 1500ms; /* после 2-го слова */
+}
+
+@keyframes titleBurst{
+  0%{
+    opacity: 0;
+    transform: scale(0.92);
+    filter: blur(2px) drop-shadow(0 0 0 rgba(255,215,0,0));
+  }
+  55%{
+    opacity: 1;
+    transform: scale(1.12);
+    filter: blur(0) drop-shadow(0 0 28px rgba(255,215,0,0.65));
+  }
+  100%{
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0) drop-shadow(0 0 18px rgba(255,215,0,0.45));
+  }
+}
+
+/* ===== Нижний интерфейс скрыт до конца анимации ===== */
+.button-container,
+.description{
+  opacity: 0;
+  transform: translateY(18px);
+  pointer-events: none;
+}
+
+/* Появляется только после полного появления EVADES 3 */
+.ui-ready .button-container,
+.ui-ready .description{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  transition: opacity 600ms ease, transform 600ms ease;
+}
 
         /* Меню языков */
         .language-menu {
@@ -269,6 +341,28 @@
             margin-bottom: 60px;
             animation: fadeInDown 1s ease;
         }
+/* ===== HERO layout: всегда в колонку и по центру ===== */
+.title-section{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.subtitle{
+  display: inline-flex;   /* важно: внутри будут 2 слова */
+  gap: 18px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  white-space: normal;
+}
+
+.main-title{
+  display: block;
+  text-align: center;
+}
 
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-30px); }
@@ -1862,6 +1956,52 @@
             if (!translations[lang]) {
                 lang = translations.en ? 'en' : 'ru';
             }
+function wrapSubtitleWords() {
+  const sub = document.querySelector('.subtitle');
+  if (!sub) return;
+
+  // Берём чистый текст (без HTML)
+  const text = sub.textContent.trim();
+
+  // Если пусто — выходим
+  if (!text) return;
+
+  // Делим на 2 части: первое "слово" и остаток.
+  // Работает для "Скорость. Тактика." и аналогов.
+  const parts = text.split(/\s+/);
+  const first = parts.shift() || '';
+  const rest = parts.join(' ') || '';
+
+  sub.innerHTML = `
+    <span class="word word1">${first}</span>
+    <span class="word word2">${rest}</span>
+  `;
+}
+
+function restartHeroSequence() {
+  // Сбрасываем классы, чтобы анимации перезапускались
+  document.body.classList.remove('hero-anim', 'ui-ready');
+
+  // Пересобираем subtitle в 2 слова (после переводов!)
+  wrapSubtitleWords();
+
+  // Запускаем анимации заголовка
+  // маленькая задержка, чтобы браузер “увидел” reset
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.body.classList.add('hero-anim');
+
+      // Показ нижнего интерфейса ПОСЛЕ окончания titleBurst
+      // word1: 0.15+0.52 ≈ 0.67s
+      // word2: 0.85+0.52 ≈ 1.37s
+      // title: 1.5+0.9 ≈ 2.4s
+      // ставим чуть с запасом:
+      setTimeout(() => {
+        document.body.classList.add('ui-ready');
+      }, 2550);
+    });
+  });
+}
 
             applyTranslations(lang);
             localStorage.setItem('selectedLanguage', lang);
@@ -1878,8 +2018,13 @@
         // ВАЖНО: твой код ломался из-за лишней закрывающей скобки/}); в конце.
         // Я собрал всё в один DOMContentLoaded, чтобы больше не "потерять" блёстки и языки.
         window.addEventListener('DOMContentLoaded', () => {
-            const savedLang = localStorage.getItem('selectedLanguage') || 'ru';
-            changeLanguage(savedLang);
+  const savedLang = localStorage.getItem('selectedLanguage') || 'ru';
+  changeLanguage(savedLang);
+
+  // Запускаем последовательность (после применения переводов)
+  restartHeroSequence();
+});
+
 
             // Блёстки
             for (let i = 0; i < 50; i++) {
