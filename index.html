@@ -581,25 +581,33 @@
 <!-- Логотип -->
 <img src="logo.png" alt="Evades 3 Logo" class="logo-image">
 
+.lang-flag img {
+    width: 22px;
+    height: 16px;
+    object-fit: cover;
+    border-radius: 3px;
+    box-shadow: 0 0 4px rgba(0,0,0,0.3);
+}
+
     <!-- Меню языков -->
     <div class="language-menu">
         <div class="menu-button" data-i18n="languages">Языки ▼</div>
         <div class="language-dropdown">
             <div class="language-scroll">
 <div class="lang-item" data-lang="ru" onclick="changeLanguage('ru')">
-    <span class="lang-flag">ru</span>
+    <span class="lang-flag"><img src="flags/ru.png" alt="RU"></span>
     <span class="lang-code">RUS</span>
     <span class="lang-check"></span>
 </div>
 
 <div class="lang-item" data-lang="en" onclick="changeLanguage('en')">
-    <span class="lang-flag">gb</span>
+<span class="lang-flag"><img src="flags/gb.png" alt="GB"></span>
     <span class="lang-code">ENG</span>
     <span class="lang-check"></span>
 </div>
 
 <div class="lang-item" data-lang="uk" onclick="changeLanguage('uk')">
-    <span class="lang-flag">ua</span>
+<span class="lang-flag"><img src="flags/ua.png" alt="UA"></span>
     <span class="lang-code">UAH</span>
     <span class="lang-check"></span>
 </div>
