@@ -129,22 +129,34 @@
                 inset 2px 2px 6px rgba(255,255,255,0.2);
         }
 
-        .language-dropdown {
-            position: absolute;
-            top: calc(100% + 10px);
-            right: 0;
-            background: rgba(20,20,20,0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            margin-top: 5px;
-            overflow: hidden;
-            max-height: 0;
-            transition: max-height 0.4s ease, opacity 0.3s ease;
-            opacity: 0;
-            border: 2px solid rgba(255,255,255,0.2);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            min-width: 200px;
-        }
+.language-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+
+    /* СТЕКЛЯННЫЙ стиль как у кнопки */
+    background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.12));
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-radius: 28px;
+    overflow: hidden;
+
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.35s ease, opacity 0.25s ease;
+
+    border: 2px solid rgba(255,255,255,0.35);
+
+    box-shadow:
+        10px 10px 30px rgba(0,0,0,0.35),
+        -5px -5px 14px rgba(255,255,255,0.12),
+        inset -2px -2px 8px rgba(0,0,0,0.25),
+        inset 2px 2px 8px rgba(255,255,255,0.2);
+
+    min-width: 260px;
+}
 
         .language-menu:hover .language-dropdown {
             max-height: 400px;
