@@ -175,6 +175,22 @@
         .language-scroll::-webkit-scrollbar-thumb:hover {
             background: linear-gradient(180deg, #22c55e, #16a34a);
         }
+.lang-check{
+    justify-self: end;
+    font-size: 18px;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.lang-item.active .lang-check::before{
+    content: "✓";
+}
+
+.lang-item.active .lang-check{
+    opacity: 1;
+    transform: scale(1);
+}
 
         .lang-item {
             padding: 12px 20px;
