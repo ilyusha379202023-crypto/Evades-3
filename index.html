@@ -1124,6 +1124,84 @@
       margin-top: 10px;
     }
 
+    .micro-title-row{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .info-badge{
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.12));
+      border: 1px solid rgba(255,255,255,0.5);
+      color: #fff;
+      font-weight: 800;
+      font-size: 14px;
+      box-shadow:
+        0 6px 16px rgba(0,0,0,0.25),
+        inset 0 1px 0 rgba(255,255,255,0.4);
+      backdrop-filter: blur(12px);
+      cursor: pointer;
+      transition: box-shadow 0.2s ease, filter 0.2s ease;
+    }
+
+    .info-badge:hover{
+      filter: brightness(1.08);
+      box-shadow:
+        0 8px 18px rgba(0,0,0,0.3),
+        0 0 12px rgba(255, 255, 255, 0.35),
+        inset 0 1px 0 rgba(255,255,255,0.5);
+    }
+
+    .info-tooltip{
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      opacity: 0;
+      pointer-events: none;
+      padding: 8px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.4);
+      box-shadow:
+        0 10px 22px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.35);
+      backdrop-filter: blur(16px);
+      color: #fff;
+      font-size: 12px;
+      white-space: nowrap;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 2;
+    }
+
+    .info-tooltip::after{
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid rgba(255,255,255,0.3);
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.25));
+    }
+
+    .info-badge:hover .info-tooltip{
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
     .sfx-toggle{
       display: inline-flex;
       align-items: center;
@@ -2156,7 +2234,15 @@
       <div class="showcase-header">
         <div>
           <div class="showcase-title" data-i18n="showcase-title">Animation Showcase</div>
-          <div class="showcase-subtitle" data-i18n="showcase-subtitle">Быстрые микросцены анимаций в действии</div>
+          <div class="showcase-subtitle micro-title-row" data-i18n="showcase-subtitle">
+            Быстрые микросцены анимаций в действии
+            <span class="info-badge" aria-label="info">
+              i
+              <span class="info-tooltip" data-i18n="micro-previews-tip">
+                Эти анимации — лишь превью. В реальной игре они будут намного круче.
+              </span>
+            </span>
+          </div>
         </div>
         <button class="sfx-toggle is-off" type="button" aria-pressed="false">
           <span class="sfx-indicator" aria-hidden="true"></span>
@@ -2241,6 +2327,7 @@
                 'dev-tooltip': 'Игра ещё в разработке',
                 'showcase-title': 'Витрина анимаций',
                 'showcase-subtitle': 'Быстрые микросцены анимаций в действии (ещё обновляются)',
+                'micro-previews-tip': 'Эти анимации — лишь превью. В реальной игре они будут намного круче.',
                 'showcase-dash': 'Рывок',
                 'showcase-slide': 'Скольжение',
                 'showcase-parry': 'Парирование',
@@ -2284,6 +2371,7 @@
                 'dev-tooltip': 'The game is still in development',
                 'showcase-title': 'Animation Showcase',
                 'showcase-subtitle': 'Quick micro-scenes of animation in action (still updating)',
+                'micro-previews-tip': 'These animations are just previews. In the actual game, they will be much cooler.',
                 'showcase-dash': 'Dash',
                 'showcase-slide': 'Slide',
                 'showcase-parry': 'Parry',
@@ -2327,6 +2415,7 @@
                 'dev-tooltip': 'Гра ще у розробці',
                 'showcase-title': 'Вітрина анімацій',
                 'showcase-subtitle': 'Швидкі мікросцени анімацій у дії (ще оновлюються)',
+                'micro-previews-tip': 'Ці анімації — лише превʼю. У реальній грі вони будуть набагато крутіші.',
                 'showcase-dash': 'Ривок',
                 'showcase-slide': 'Ковзання',
                 'showcase-parry': 'Парирування',
