@@ -684,7 +684,7 @@
       right: -18px;
       padding: 10px 22px;
       border-radius: 999px;
-      background: linear-gradient(135deg, rgba(255, 200, 120, 0.9) 0%, rgba(255, 123, 65, 0.95) 55%, rgba(219, 70, 86, 0.98) 100%);
+      background: linear-gradient(180deg, rgba(255, 229, 176, 0.95) 0%, rgba(255, 196, 128, 0.92) 100%);
       border: 2px solid rgba(255,255,255,0.55);
       color: #1b0a05;
       font-weight: 900;
@@ -694,6 +694,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      overflow: hidden;
       box-shadow:
         0 12px 26px rgba(0,0,0,0.35),
         0 0 18px rgba(255, 177, 94, 0.45),
@@ -725,6 +726,26 @@
       opacity: 0.4;
       z-index: -1;
       animation: statusPulse 2.6s ease-in-out infinite;
+    }
+
+    .dev-badge .status-sash{
+      position: absolute;
+      left: -12%;
+      right: -12%;
+      bottom: -8px;
+      height: 60%;
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c44569 100%);
+      transform: rotate(-4deg);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.35),
+        0 6px 12px rgba(130, 20, 36, 0.35);
+      opacity: 0.95;
+      z-index: 0;
+    }
+
+    .dev-badge > *:not(.status-sash){
+      position: relative;
+      z-index: 1;
     }
 
     .dev-badge .status-icon{
@@ -1239,9 +1260,10 @@
     <div class="button-container">
       <button class="download-button" data-i18n="download-btn">Скачать Evades 3</button>
       <div class="dev-badge" data-tooltip="Игра ещё в разработке">
+        <span class="status-sash" aria-hidden="true"></span>
         <span class="status-icon" aria-hidden="true">⏳</span>
         <span class="status-text" data-i18n="dev-badge">В разработке</span>
-        <span class="status-tooltip" role="tooltip">Игра ещё в разработке</span>
+        <span class="status-tooltip" role="tooltip" data-i18n="dev-tooltip">Игра ещё в разработке</span>
       </div>
     </div>
 
@@ -1339,6 +1361,7 @@
                 'subtitle': 'Скорость. Тактика.',
                 'download-btn': 'Скачать Evades 3',
                 'dev-badge': 'В разработке',
+                'dev-tooltip': 'Игра ещё в разработке',
                 'about-title': '🎮 О ИГРЕ',
                 'about-p1': '<span class="highlight">Evades 3</span> — это эволюция легендарной evades.io, переосмысленная для нового поколения геймеров!',
                 'about-p2': 'Почувствуй адреналин скоростных маневров, где каждая миллисекунда решает исход битвы. Уворачивайся от смертельных препятствий, обгоняй соперников и доминируй на арене!',
@@ -1368,6 +1391,7 @@
                 'subtitle': 'Speed. Tactics.',
                 'download-btn': 'Download Evades 3',
                 'dev-badge': 'In Development',
+                'dev-tooltip': 'The game is still in development',
                 'about-title': '🎮 ABOUT THE GAME',
                 'about-p1': '<span class="highlight">Evades 3</span> is the evolution of legendary evades.io, reimagined for a new generation of gamers!',
                 'about-p2': 'Feel the adrenaline of high-speed maneuvers where every millisecond decides the battle outcome. Dodge deadly obstacles, outpace rivals, and dominate the arena!',
@@ -1397,6 +1421,7 @@
                 'subtitle': 'Швидкість. Тактика.',
                 'download-btn': 'Завантажити Evades 3',
                 'dev-badge': 'У розробці',
+                'dev-tooltip': 'Гра ще у розробці',
                 'about-title': '🎮 ПРО ГРУ',
                 'about-p1': '<span class="highlight">Evades 3</span> — це еволюція легендарної evades.io, переосмислена для нового покоління геймерів!',
                 'about-p2': 'Відчуй адреналін швидкісних маневрів, де кожна мілісекунда вирішує результат битви. Ухиляйся від смертельних перешкод, випереджай суперників та домінуй на арені!',
@@ -1426,6 +1451,7 @@
                 'subtitle': 'Geschwindigkeit. Taktik.',
                 'download-btn': 'Evades 3 herunterladen',
                 'dev-badge': 'In Entwicklung',
+                'dev-tooltip': 'Das Spiel ist noch in Entwicklung',
                 'about-title': '🎮 ÜBER DAS SPIEL',
                 'about-p1': '<span class="highlight">Evades 3</span> ist die Evolution des legendären evades.io, neu gedacht für eine neue Gamer-Generation!',
                 'about-p2': 'Spüre den Adrenalinrausch schneller Manöver, in denen jede Millisekunde den Ausgang entscheidet. Weiche tödlichen Hindernissen aus, überhole Rivalen und dominiere die Arena!',
@@ -1455,6 +1481,7 @@
                 'subtitle': 'Velocidad. Táctica.',
                 'download-btn': 'Descargar Evades 3',
                 'dev-badge': 'En Desarrollo',
+                'dev-tooltip': 'El juego aún está en desarrollo',
                 'about-title': '🎮 SOBRE EL JUEGO',
                 'about-p1': '<span class="highlight">Evades 3</span> es la evolución del legendario evades.io, reimaginado para una nueva generación de gamers.',
                 'about-p2': 'Siente la adrenalina de las maniobras a alta velocidad, donde cada milisegundo decide la batalla. Esquiva obstáculos mortales, supera a tus rivales y domina la arena.',
@@ -1484,6 +1511,7 @@
                 'subtitle': 'Vitesse. Tactique.',
                 'download-btn': 'Télécharger Evades 3',
                 'dev-badge': 'En Développement',
+                'dev-tooltip': 'Le jeu est encore en développement',
                 'about-title': '🎮 À PROPOS DU JEU',
                 'about-p1': '<span class="highlight">Evades 3</span> est l’évolution du légendaire evades.io, repensée pour une nouvelle génération de joueurs.',
                 'about-p2': 'Ressentez l’adrénaline des manœuvres à grande vitesse où chaque milliseconde compte. Évitez les obstacles mortels, dépassez vos rivaux et dominez l’arène.',
@@ -1513,6 +1541,7 @@
                 'subtitle': 'Velocità. Tattica.',
                 'download-btn': 'Scarica Evades 3',
                 'dev-badge': 'In Sviluppo',
+                'dev-tooltip': 'Il gioco è ancora in sviluppo',
                 'about-title': '🎮 SUL GIOCO',
                 'about-p1': '<span class="highlight">Evades 3</span> è l’evoluzione del leggendario evades.io, ripensata per una nuova generazione di gamer.',
                 'about-p2': 'Senti l’adrenalina delle manovre ad alta velocità, dove ogni millisecondo decide la battaglia. Schiva ostacoli mortali, supera i rivali e domina l’arena.',
@@ -1542,6 +1571,7 @@
                 'subtitle': 'Velocidade. Tática.',
                 'download-btn': 'Baixar Evades 3',
                 'dev-badge': 'Em Desenvolvimento',
+                'dev-tooltip': 'O jogo ainda está em desenvolvimento',
                 'about-title': '🎮 SOBRE O JOGO',
                 'about-p1': '<span class="highlight">Evades 3</span> é a evolução do lendário evades.io, reinventado para uma nova geração de gamers.',
                 'about-p2': 'Sinta a adrenalina de manobras em alta velocidade, onde cada milissegundo decide a batalha. Desvie de obstáculos mortais, ultrapasse rivais e domine a arena.',
@@ -1571,6 +1601,7 @@
                 'subtitle': 'Prędkość. Taktyka.',
                 'download-btn': 'Pobierz Evades 3',
                 'dev-badge': 'W Rozwoju',
+                'dev-tooltip': 'Gra jest nadal w rozwoju',
                 'about-title': '🎮 O GRZE',
                 'about-p1': '<span class="highlight">Evades 3</span> to ewolucja legendarnego evades.io, stworzona na nowo dla nowej generacji graczy.',
                 'about-p2': 'Poczuj adrenalinę szybkich manewrów, gdzie każda milisekunda decyduje o wyniku. Unikaj śmiertelnych przeszkód, wyprzedzaj rywali i dominuj na arenie.',
@@ -1600,6 +1631,7 @@
                 'subtitle': 'Hız. Taktik.',
                 'download-btn': 'Evades 3 İndir',
                 'dev-badge': 'Geliştiriliyor',
+                'dev-tooltip': 'Oyun hâlâ geliştirme aşamasında',
                 'about-title': '🎮 OYUN HAKKINDA',
                 'about-p1': '<span class="highlight">Evades 3</span>, efsanevi evades.io’nun yeni nesil oyuncular için yeniden tasarlanmış evrimidir.',
                 'about-p2': 'Her milisaniyenin sonucu belirlediği yüksek hızlı manevraların adrenaliniyle tanış. Ölümcül engellerden kaç, rakiplerini geç ve arenayı domine et.',
@@ -1629,6 +1661,7 @@
                 'subtitle': 'Snelheid. Tactiek.',
                 'download-btn': 'Download Evades 3',
                 'dev-badge': 'In ontwikkeling',
+                'dev-tooltip': 'De game is nog in ontwikkeling',
                 'about-title': '🎮 OVER HET SPEL',
                 'about-p1': '<span class="highlight">Evades 3</span> is de evolutie van het legendarische evades.io, opnieuw ontworpen voor een nieuwe generatie gamers.',
                 'about-p2': 'Voel de adrenaline van razendsnelle manoeuvres waarin elke milliseconde telt. Ontwijk dodelijke obstakels, haal rivalen in en domineer de arena.',
@@ -1658,6 +1691,7 @@
                 'subtitle': 'Hastighet. Taktik.',
                 'download-btn': 'Ladda ner Evades 3',
                 'dev-badge': 'Under utveckling',
+                'dev-tooltip': 'Spelet är fortfarande under utveckling',
                 'about-title': '🎮 OM SPELET',
                 'about-p1': '<span class="highlight">Evades 3</span> är utvecklingen av legendariska evades.io, omgjord för en ny generation spelare.',
                 'about-p2': 'Känn adrenalinet i snabba manövrar där varje millisekund räknas. Undvik dödliga hinder, kör om rivaler och dominera arenan.',
@@ -1687,6 +1721,7 @@
                 'subtitle': 'Fart. Taktikk.',
                 'download-btn': 'Last ned Evades 3',
                 'dev-badge': 'Under utvikling',
+                'dev-tooltip': 'Spillet er fortsatt under utvikling',
                 'about-title': '🎮 OM SPILLET',
                 'about-p1': '<span class="highlight">Evades 3</span> er evolusjonen av legendariske evades.io, laget på nytt for en ny generasjon spillere.',
                 'about-p2': 'Kjenn adrenalinet i lynraske manøvrer der hvert millisekund teller. Unngå dødelige hindringer, slå rivaler og dominer arenaen.',
@@ -1716,6 +1751,7 @@
                 'subtitle': 'Nopeus. Taktiikka.',
                 'download-btn': 'Lataa Evades 3',
                 'dev-badge': 'Kehitteillä',
+                'dev-tooltip': 'Peli on yhä kehitteillä',
                 'about-title': '🎮 PELISTÄ',
                 'about-p1': '<span class="highlight">Evades 3</span> on legendaarisen evades.io:n evoluutio, uudistettuna uudelle pelaajasukupolvelle.',
                 'about-p2': 'Tunne nopeatempoisten manööverien adrenaliini, jossa jokainen millisekunti ratkaisee. Väistele tappavia esteitä, ohita kilpakumppanit ja hallitse areenaa.',
@@ -1745,6 +1781,7 @@
                 'subtitle': 'Hastighed. Taktik.',
                 'download-btn': 'Download Evades 3',
                 'dev-badge': 'Under udvikling',
+                'dev-tooltip': 'Spillet er stadig under udvikling',
                 'about-title': '🎮 OM SPILLET',
                 'about-p1': '<span class="highlight">Evades 3</span> er evolutionen af det legendariske evades.io, gentænkt til en ny generation af gamere.',
                 'about-p2': 'Mærk adrenalinen i hurtige manøvrer, hvor hvert millisekund afgør kampen. Undvig dødelige forhindringer, overhal rivaler og dominér arenaen.',
@@ -1774,6 +1811,7 @@
                 'subtitle': 'Rychlost. Taktika.',
                 'download-btn': 'Stáhnout Evades 3',
                 'dev-badge': 'Ve vývoji',
+                'dev-tooltip': 'Hra je stále ve vývoji',
                 'about-title': '🎮 O HŘE',
                 'about-p1': '<span class="highlight">Evades 3</span> je evoluce legendárního evades.io, přepracovaná pro novou generaci hráčů.',
                 'about-p2': 'Pociť adrenalin rychlých manévrů, kde každá milisekunda rozhoduje. Vyhýbej se smrtelným překážkám, předbíhej soupeře a ovládni arénu.',
@@ -1803,6 +1841,7 @@
                 'subtitle': 'Viteză. Tactică.',
                 'download-btn': 'Descarcă Evades 3',
                 'dev-badge': 'În dezvoltare',
+                'dev-tooltip': 'Jocul este încă în dezvoltare',
                 'about-title': '🎮 DESPRE JOC',
                 'about-p1': '<span class="highlight">Evades 3</span> este evoluția legendarului evades.io, regândit pentru o nouă generație de gameri.',
                 'about-p2': 'Simte adrenalina manevrelor rapide, unde fiecare milisecundă contează. Evită obstacolele mortale, depășește rivalii și domină arena.',
@@ -1832,6 +1871,7 @@
                 'subtitle': 'Sebesség. Taktika.',
                 'download-btn': 'Evades 3 letöltése',
                 'dev-badge': 'Fejlesztés alatt',
+                'dev-tooltip': 'A játék még fejlesztés alatt áll',
                 'about-title': '🎮 A JÁTÉKRÓL',
                 'about-p1': '<span class="highlight">Evades 3</span> a legendás evades.io evolúciója, újragondolva egy új játékosgenerációnak.',
                 'about-p2': 'Érezd a nagy sebességű manőverek adrenalinját, ahol minden ezredmásodperc számít. Kerüld el a halálos akadályokat, előzd meg a riválisokat és urald az arénát.',
@@ -1861,6 +1901,7 @@
                 'subtitle': 'Ταχύτητα. Τακτική.',
                 'download-btn': 'Λήψη Evades 3',
                 'dev-badge': 'Υπό ανάπτυξη',
+                'dev-tooltip': 'Το παιχνίδι είναι ακόμη υπό ανάπτυξη',
                 'about-title': '🎮 ΓΙΑ ΤΟ ΠΑΙΧΝΙΔΙ',
                 'about-p1': '<span class="highlight">Evades 3</span> είναι η εξέλιξη του θρυλικού evades.io, επανασχεδιασμένο για μια νέα γενιά παικτών.',
                 'about-p2': 'Νιώσε την αδρεναλίνη των γρήγορων ελιγμών όπου κάθε χιλιοστό του δευτερολέπτου μετράει. Απόφυγε θανατηφόρα εμπόδια, ξεπέρασε αντιπάλους και κυριάρχησε στην αρένα.',
@@ -1890,6 +1931,7 @@
                 'subtitle': 'スピード. 戦術.',
                 'download-btn': 'Evades 3 をダウンロード',
                 'dev-badge': '開発中',
+                'dev-tooltip': 'ゲームはまだ開発中です',
                 'about-title': '🎮 ゲームについて',
                 'about-p1': '<span class="highlight">Evades 3</span> は伝説の evades.io を新世代向けに再構築した進化版です。',
                 'about-p2': '一瞬が勝敗を分ける高速マニューバのアドレナリンを体感せよ。致命的な障害物を避け、ライバルを抜き去り、アリーナを支配しよう。',
@@ -1919,6 +1961,7 @@
                 'subtitle': '速度. 战术.',
                 'download-btn': '下载 Evades 3',
                 'dev-badge': '开发中',
+                'dev-tooltip': '游戏仍在开发中',
                 'about-title': '🎮 关于游戏',
                 'about-p1': '<span class="highlight">Evades 3</span> 是传奇 evades.io 的进化版本，为新一代玩家重新打造。',
                 'about-p2': '感受高速机动的肾上腺素，每一毫秒都决定战局。躲避致命障碍，超越对手，统治竞技场。',
@@ -1948,6 +1991,7 @@
                 'subtitle': '속도. 전술.',
                 'download-btn': 'Evades 3 다운로드',
                 'dev-badge': '개발 중',
+                'dev-tooltip': '게임은 아직 개발 중입니다',
                 'about-title': '🎮 게임 소개',
                 'about-p1': '<span class="highlight">Evades 3</span>는 전설적인 evades.io를 새로운 세대에 맞게 재해석한 진화판입니다.',
                 'about-p2': '매 밀리초가 승부를 가르는 고속 기동의 아드레날린을 느껴보세요. 치명적인 장애물을 피하고, 라이벌을 추월해, 아레나를 지배하세요.',
@@ -1977,6 +2021,7 @@
                 'subtitle': 'السرعة. التكتيك.',
                 'download-btn': 'تحميل Evades 3',
                 'dev-badge': 'قيد التطوير',
+                'dev-tooltip': 'اللعبة ما زالت قيد التطوير',
                 'about-title': '🎮 عن اللعبة',
                 'about-p1': '<span class="highlight">Evades 3</span> هي تطور اللعبة الأسطورية evades.io، معاد تصورها لجيل جديد من اللاعبين.',
                 'about-p2': 'اشعر بأدرينالين المناورات السريعة حيث يحدد كل جزء من الثانية نتيجة المعركة. تفادَ العقبات القاتلة، تجاوز خصومك وسيطر على الساحة.',
@@ -2006,6 +2051,7 @@
                 'subtitle': 'स्पीड. रणनीति.',
                 'download-btn': 'Evades 3 डाउनलोड करें',
                 'dev-badge': 'विकास में',
+                'dev-tooltip': 'गेम अभी भी विकास में है',
                 'about-title': '🎮 गेम के बारे में',
                 'about-p1': '<span class="highlight">Evades 3</span> लेजेंडरी evades.io का नया रूप है, जिसे नई पीढ़ी के खिलाड़ियों के लिए फिर से बनाया गया है।',
                 'about-p2': 'तेज़ रफ्तार मैन्युवरों का एड्रेनालिन महसूस करें, जहाँ हर मिलीसेकंड निर्णायक होता है। घातक बाधाओं से बचें, प्रतिद्वंद्वियों को पीछे छोड़ें और एरीना पर राज करें।',
@@ -2035,6 +2081,7 @@
                 'subtitle': 'ความเร็ว. แทคติก.',
                 'download-btn': 'ดาวน์โหลด Evades 3',
                 'dev-badge': 'อยู่ระหว่างพัฒนา',
+                'dev-tooltip': 'เกมยังอยู่ระหว่างการพัฒนา',
                 'about-title': '🎮 เกี่ยวกับเกม',
                 'about-p1': '<span class="highlight">Evades 3</span> คือวิวัฒนาการของ evades.io ในตำนาน ที่ถูกออกแบบใหม่เพื่อเกมเมอร์รุ่นใหม่.',
                 'about-p2': 'สัมผัสอะดรีนาลีนของการหลบหลีกความเร็วสูง ที่ทุกมิลลิวินาทีชี้ชะตา หลีกเลี่ยงอุปสรรคอันตราย แซงคู่แข่ง และครองสนาม.',
@@ -2064,6 +2111,7 @@
                 'subtitle': 'Tốc độ. Chiến thuật.',
                 'download-btn': 'Tải Evades 3',
                 'dev-badge': 'Đang phát triển',
+                'dev-tooltip': 'Trò chơi vẫn đang được phát triển',
                 'about-title': '🎮 VỀ TRÒ CHƠI',
                 'about-p1': '<span class="highlight">Evades 3</span> là phiên bản tiến hóa của evades.io huyền thoại, được tái thiết kế cho thế hệ game thủ mới.',
                 'about-p2': 'Cảm nhận adrenaline của những pha né tránh tốc độ cao, nơi từng mili giây quyết định trận đấu. Tránh chướng ngại chết người, vượt qua đối thủ và thống trị đấu trường.',
@@ -2093,6 +2141,7 @@
                 'subtitle': 'Kecepatan. Taktik.',
                 'download-btn': 'Unduh Evades 3',
                 'dev-badge': 'Dalam Pengembangan',
+                'dev-tooltip': 'Game masih dalam pengembangan',
                 'about-title': '🎮 TENTANG GAME',
                 'about-p1': '<span class="highlight">Evades 3</span> adalah evolusi dari evades.io legendaris, dirancang ulang untuk generasi gamer baru.',
                 'about-p2': 'Rasakan adrenalin manuver kecepatan tinggi, di mana setiap milidetik menentukan hasil. Hindari rintangan mematikan, salip rival, dan kuasai arena.',
@@ -2122,6 +2171,7 @@
                 'subtitle': 'Kelajuan. Taktik.',
                 'download-btn': 'Muat turun Evades 3',
                 'dev-badge': 'Dalam pembangunan',
+                'dev-tooltip': 'Permainan ini masih dalam pembangunan',
                 'about-title': '🎮 TENTANG PERMAINAN',
                 'about-p1': '<span class="highlight">Evades 3</span> ialah evolusi evades.io yang legenda, direka semula untuk generasi gamer baharu.',
                 'about-p2': 'Rasai adrenalin manuver kelajuan tinggi di mana setiap milisaat menentukan hasil. Elak halangan maut, pintas pesaing, dan kuasai arena.',
