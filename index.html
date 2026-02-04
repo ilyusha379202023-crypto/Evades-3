@@ -63,14 +63,16 @@
     @keyframes checkDraw { to { stroke-dashoffset: 0; } }
 
     body {
-      font-family: 'Arial', sans-serif;
-      background: linear-gradient(135deg, #1a4d2e 0%, #2d7a4f 25%, #4a9d6f 50%, #2d7a4f 75%, #1a4d2e 100%);
-      background-size: 400% 400%;
-      animation: gradientShift 15s ease infinite;
-      overflow-x: hidden;
-      min-height: 100vh;
-      position: relative;
-    }
+  font-family: 'Exo 2', 'Orbitron', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #1a4d2e 0%, #2d7a4f 25%, #4a9d6f 50%, #2d7a4f 75%, #1a4d2e 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+}
 
     body::before {
       content: '';
@@ -391,44 +393,63 @@
 
     /* ===== UPGRADE: EVADES 3 “дороже” (двойной слой + блик) ===== */
     .main-title{
-      position: relative;
-      display: inline-block;
-      font-family: 'Exo 2', 'Orbitron', sans-serif;
-      font-size: 80px;
-      font-weight: 900;
-      letter-spacing: 12px;
-      background: linear-gradient(45deg, #ffd700, #ffed4e, #ffd700, #ffaa00);
-      background-size: 200% 200%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: titlePulse 2s ease-in-out infinite, goldShine 3s linear infinite;
-      filter: drop-shadow(0 0 30px rgba(255,215,0,0.6));
-    }
+  position: relative;
+  display: inline-block;
+  font-family: 'Orbitron', 'Exo 2', sans-serif;
+  font-size: 86px;
+  font-weight: 900;
+  letter-spacing: 10px;
 
-    .main-title::before{
-      content: attr(data-title);
-      position: absolute;
-      left: 0;
-      top: 0;
-      z-index: -1;
-      transform: translate(0px, 10px);
-      color: rgba(0,0,0,0.32);
-      filter: blur(0.3px);
-    }
+  /* золото */
+  background: linear-gradient(180deg, #fff3a1 0%, #ffd700 35%, #ffb300 75%, #ffec6a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 
-    .main-title::after{
-      content: "";
-      position: absolute;
-      left: 6%;
-      right: 6%;
-      top: 0;
-      height: 42%;
-      border-radius: 999px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0));
-      opacity: 0.55;
-      pointer-events: none;
-    }
+  /* обводка */
+  -webkit-text-stroke: 2px rgba(0,0,0,0.28);
+
+  /* 3D "экструзия" (много слоев) */
+  text-shadow:
+    0 1px 0 rgba(0,0,0,0.18),
+    0 2px 0 rgba(0,0,0,0.22),
+    0 3px 0 rgba(0,0,0,0.26),
+    0 4px 0 rgba(0,0,0,0.30),
+    0 6px 0 rgba(0,0,0,0.34),
+    0 8px 0 rgba(0,0,0,0.38),
+    0 12px 18px rgba(0,0,0,0.45),
+    0 0 28px rgba(255,215,0,0.55);
+
+  filter: drop-shadow(0 0 26px rgba(255,215,0,0.45));
+  transform: translateZ(0);
+  opacity: 0;
+}
+
+/* дополнительная "тень-слой" как глубина */
+.main-title::before{
+  content: attr(data-title);
+  position: absolute;
+  left: 0; top: 0;
+  transform: translate(0px, 14px);
+  z-index: -1;
+  color: rgba(0,0,0,0.32);
+  filter: blur(0.5px);
+}
+
+/* вспышка-линза */
+.main-title::after{
+  content:"";
+  position:absolute;
+  left: 6%;
+  right: 6%;
+  top: -6px;
+  height: 52%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.38), rgba(255,255,255,0));
+  opacity: 0.55;
+  pointer-events: none;
+}
+
 
     @keyframes titlePulse {
       0%, 100% { transform: scale(1); }
@@ -1877,20 +1898,34 @@
     }
 
     // ====== перезапуск hero-анимации ======
-    function restartHeroSequence() {
-      document.body.classList.remove('hero-anim', 'ui-ready');
+function restartHeroSequence() {
+  document.body.classList.remove('hero-anim', 'ui-ready', 'screen-shake');
 
-      wrapSubtitleWords();
+  wrapSubtitleWords();
 
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          document.body.classList.add('hero-anim');
-          setTimeout(() => {
-            document.body.classList.add('ui-ready');
-          }, 2550);
-        });
-      });
-    }
+  const title = document.querySelector('.main-title');
+  if (!title) return;
+
+  // 1) старт анимации
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.body.classList.add('hero-anim');
+
+      // 2) включаем UI ТОЛЬКО когда закончится titleBurst
+      const onEnd = (e) => {
+        if (e.animationName !== 'titleBurst') return;
+        title.removeEventListener('animationend', onEnd);
+        document.body.classList.add('ui-ready');
+      };
+      title.addEventListener('animationend', onEnd);
+
+      // 3) синхро-эффекты “взрыва” (частицы + шейк)
+      //    (тайминги под твои задержки: subtitle 150/850, titleBurst 1500)
+      setTimeout(() => explodeTitle(), 1500 + 520); // середина бурста
+    });
+  });
+}
+
 
     // ====== смена языка ======
     function changeLanguage(lang) {
