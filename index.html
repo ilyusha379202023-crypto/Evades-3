@@ -362,7 +362,7 @@
       position: absolute;
       top: calc(100% + 10px);
       left: 50%;
-      transform: translateX(-50%);
+      transform: translateX(-50%) scale(0.96);
       background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.12));
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
@@ -370,7 +370,7 @@
       overflow: hidden;
       max-height: 0;
       opacity: 0;
-      transition: max-height 0.35s ease, opacity 0.25s ease;
+      transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.25s ease;
       border: 2px solid var(--langBorder);
       box-shadow:
         10px 10px 30px rgba(0,0,0,0.35),
@@ -383,6 +383,7 @@
     .language-menu:hover .language-dropdown {
       max-height: 400px;
       opacity: 1;
+      transform: translateX(-50%) scale(1);
     }
 
     .language-scroll {
@@ -433,8 +434,16 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
       border-left: 3px solid transparent;
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+
+    .language-menu:hover .lang-item {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: var(--item-delay, 0ms);
     }
 
     .lang-item:hover {
@@ -446,6 +455,27 @@
       font-weight: bold;
       min-width: 45px;
       font-family: 'Exo 2', sans-serif;
+    }
+
+    .lang-item.is-selected::before{
+      background: rgba(255, 220, 120, 0.8);
+      opacity: 1;
+      box-shadow: 0 0 12px rgba(255, 220, 120, 0.9);
+    }
+
+    .lang-item.is-selected .lang-check::after{
+      content: "";
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.65);
+      opacity: 0;
+      animation: checkPing 1.4s ease-out infinite;
+    }
+
+    @keyframes checkPing{
+      0% { transform: scale(0.6); opacity: 0.8; }
+      100% { transform: scale(1.6); opacity: 0; }
     }
 
     /* Основной контент */
@@ -556,6 +586,53 @@
       filter: drop-shadow(0 0 40px rgba(255,215,0,0.8));
       transform: translateZ(0);
       opacity: 0;
+    }
+
+    .hero-orb{
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #ff8b8b, #d62828 60%, #8b0d0d 100%);
+      position: relative;
+      box-shadow:
+        0 10px 18px rgba(0,0,0,0.35),
+        0 0 20px rgba(255, 80, 80, 0.6),
+        inset 0 2px 4px rgba(255,255,255,0.6);
+      animation: orbIdle 3s ease-in-out infinite;
+    }
+
+    .hero-orb::after{
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), transparent 60%);
+      opacity: 0.8;
+    }
+
+    .hero-orb .orb-crown{
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 18px;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+      animation: crownFloat 2.8s ease-in-out infinite;
+    }
+
+    .hero-orb--title{
+      margin-left: 14px;
+      align-self: center;
+    }
+
+    @keyframes orbIdle{
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-6px) scale(1.03); }
+    }
+
+    @keyframes crownFloat{
+      0%, 100% { transform: translate(-50%, 0); }
+      50% { transform: translate(-50%, -4px); }
     }
 
     /* дополнительная тень как глубина */
@@ -1005,12 +1082,341 @@
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.1); }
     }
+
+    .reveal-target{
+      opacity: 0;
+      transform: translateY(20px);
+      filter: blur(6px);
+      transition: opacity 0.6s ease, transform 0.6s ease, filter 0.6s ease;
+    }
+
+    .reveal-target.reveal-in{
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    .animation-showcase{
+      margin: 80px auto 0;
+      max-width: 1100px;
+    }
+
+    .showcase-header{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .showcase-title{
+      font-size: 42px;
+      color: #fff;
+      text-shadow: 0 0 25px rgba(255,255,255,0.3);
+      letter-spacing: 2px;
+      font-weight: 900;
+    }
+
+    .showcase-subtitle{
+      color: rgba(255,255,255,0.85);
+      font-size: 18px;
+      margin-top: 10px;
+    }
+
+    .sfx-toggle{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .sfx-toggle:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px rgba(0,0,0,0.3);
+    }
+
+    .sfx-toggle .sfx-indicator{
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #9fffc1;
+      box-shadow: 0 0 10px rgba(159, 255, 193, 0.9);
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .sfx-toggle.is-off .sfx-indicator{
+      background: #ff9f9f;
+      box-shadow: 0 0 10px rgba(255, 160, 160, 0.8);
+    }
+
+    .showcase-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+    }
+
+    .showcase-card{
+      position: relative;
+      border-radius: 24px;
+      padding: 22px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+      border: 1px solid rgba(255,255,255,0.2);
+      box-shadow:
+        0 18px 40px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+    }
+
+    .showcase-card:hover{
+      transform: translateY(-6px) rotateX(3deg) rotateY(-3deg);
+      border-color: rgba(255, 215, 120, 0.8);
+      box-shadow:
+        0 20px 50px rgba(0,0,0,0.4),
+        0 0 25px rgba(255, 215, 120, 0.4);
+    }
+
+    .showcase-title-mini{
+      font-size: 16px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+
+    .mini-scene{
+      position: relative;
+      height: 140px;
+      border-radius: 18px;
+      background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.15), transparent 60%),
+        rgba(0,0,0,0.35);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
+    }
+
+    .hero-orb--scene{
+      width: 32px;
+      height: 32px;
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      animation: none;
+    }
+
+    .scene-obstacle{
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      width: 26px;
+      height: 26px;
+      transform: translateY(-50%);
+      border-radius: 6px;
+      background: linear-gradient(135deg, #7dd3fc, #2563eb);
+      box-shadow: 0 0 12px rgba(80, 140, 255, 0.6);
+    }
+
+    .scene-trail{
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      width: 90px;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(255, 180, 100, 0.8), transparent);
+      opacity: 0;
+    }
+
+    .showcase-card .scene-toggle{
+      margin-top: 14px;
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.25);
+      color: #fff;
+      font-weight: 700;
+      padding: 8px 0;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: background 0.2s ease;
+    }
+
+    .showcase-card .scene-toggle:hover{
+      background: rgba(255,255,255,0.15);
+    }
+
+    .showcase-card.is-paused .hero-orb--scene,
+    .showcase-card.is-paused .scene-obstacle,
+    .showcase-card.is-paused .scene-trail{
+      animation-play-state: paused;
+    }
+
+    .showcase-card[data-anim="dash"] .hero-orb--scene{
+      animation: sceneDash 1.6s ease-in-out infinite;
+    }
+
+    .showcase-card[data-anim="dash"] .scene-trail{
+      animation: trailFlash 1.6s ease-in-out infinite;
+    }
+
+    .showcase-card[data-anim="slide"] .hero-orb--scene{
+      animation: sceneSlide 1.8s ease-in-out infinite;
+    }
+
+    .showcase-card[data-anim="parry"] .hero-orb--scene{
+      animation: sceneParry 1.6s ease-in-out infinite;
+    }
+
+    .showcase-card[data-anim="parry"] .scene-obstacle{
+      animation: obstaclePulse 1.6s ease-in-out infinite;
+    }
+
+    .showcase-card[data-anim="hit"] .hero-orb--scene{
+      animation: sceneHit 1.4s ease-in-out infinite;
+    }
+
+    .showcase-card[data-anim="spawn"] .hero-orb--scene{
+      animation: sceneSpawn 1.8s ease-in-out infinite;
+    }
+
+    @keyframes sceneDash{
+      0% { transform: translate(0, -50%); }
+      40% { transform: translate(80px, -50%); }
+      60% { transform: translate(100px, -50%); }
+      100% { transform: translate(0, -50%); }
+    }
+
+    @keyframes trailFlash{
+      0%, 30% { opacity: 0; transform: translateY(-50%) scaleX(0.4); }
+      50% { opacity: 0.8; transform: translateY(-50%) scaleX(1); }
+      80%, 100% { opacity: 0; transform: translateY(-50%) scaleX(0.4); }
+    }
+
+    @keyframes sceneSlide{
+      0%, 100% { transform: translate(0, -50%); }
+      50% { transform: translate(60px, -30%); }
+    }
+
+    @keyframes sceneParry{
+      0% { transform: translate(0, -50%); }
+      40% { transform: translate(50px, -50%) scale(1); }
+      50% { transform: translate(50px, -50%) scale(1.2); }
+      60% { transform: translate(40px, -50%) scale(1); }
+      100% { transform: translate(0, -50%); }
+    }
+
+    @keyframes obstaclePulse{
+      0%, 100% { transform: translateY(-50%) scale(1); }
+      50% { transform: translateY(-50%) scale(1.2); }
+    }
+
+    @keyframes sceneHit{
+      0% { transform: translate(0, -50%); }
+      45% { transform: translate(70px, -50%); }
+      50% { transform: translate(60px, -50%) scale(0.9); }
+      60% { transform: translate(20px, -50%); }
+      100% { transform: translate(0, -50%); }
+    }
+
+    @keyframes sceneSpawn{
+      0% { transform: translate(0, -50%) scale(0); opacity: 0; }
+      30% { transform: translate(0, -50%) scale(1); opacity: 1; }
+      70% { transform: translate(60px, -50%) scale(1); }
+      100% { transform: translate(0, -50%) scale(1); }
+    }
+
+    .demo-reel{
+      margin-top: 40px;
+      padding: 30px;
+      border-radius: 28px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      box-shadow:
+        0 18px 45px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      color: rgba(255,255,255,0.9);
+      font-size: 20px;
+      letter-spacing: 1px;
+    }
+
+    .demo-reel::before{
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,0.08),
+        rgba(255,255,255,0.08) 2px,
+        transparent 2px,
+        transparent 5px
+      );
+      opacity: 0.4;
+      animation: scanlines 3s linear infinite;
+      pointer-events: none;
+    }
+
+    .demo-reel::after{
+      content: "";
+      position: absolute;
+      inset: -20%;
+      background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 60%);
+      opacity: 0.5;
+      animation: noiseDrift 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes scanlines{
+      0% { transform: translateY(0); }
+      100% { transform: translateY(10px); }
+    }
+
+    @keyframes noiseDrift{
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(10px, -8px); }
+    }
+
+    .explosion-layer{
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9996;
+      overflow: hidden;
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{
+        animation: none !important;
+        transition: none !important;
+      }
+      .reveal-target{
+        opacity: 1;
+        transform: none;
+        filter: none;
+      }
+    }
   </style>
 </head>
 
 <body>
   <!-- Вспышка-оверлей для взрыва -->
   <div class="flash-overlay"></div>
+  <div class="explosion-layer" aria-hidden="true"></div>
 
   <img class="logo-image" src="logo.png" alt="Evades 3 logo" />
 
@@ -1254,7 +1660,12 @@
   <div class="container">
     <div class="title-section">
       <div class="subtitle" data-i18n="subtitle">Скорость. Тактика.</div>
-      <h1 class="main-title" data-title="EVADES 3">EVADES 3</h1>
+      <div style="display:flex; align-items:center; justify-content:center;">
+        <h1 class="main-title" data-title="EVADES 3">EVADES 3</h1>
+        <div class="hero-orb hero-orb--title" aria-hidden="true">
+          <span class="orb-crown">👑</span>
+        </div>
+      </div>
     </div>
 
     <div class="button-container">
@@ -1351,6 +1762,70 @@
         </div>
       </div>
     </div>
+
+    <section class="animation-showcase">
+      <div class="showcase-header">
+        <div>
+          <div class="showcase-title" data-i18n="showcase-title">Animation Showcase</div>
+          <div class="showcase-subtitle" data-i18n="showcase-subtitle">Быстрые микросцены анимаций в действии</div>
+        </div>
+        <button class="sfx-toggle is-off" type="button" aria-pressed="false">
+          <span class="sfx-indicator" aria-hidden="true"></span>
+          <span data-i18n="sfx-label">SFX:</span>
+          <span class="sfx-state" data-i18n="sfx-off">OFF</span>
+        </button>
+      </div>
+
+      <div class="showcase-grid">
+        <div class="showcase-card" data-anim="dash">
+          <div class="showcase-title-mini" data-i18n="showcase-dash">Dash</div>
+          <div class="mini-scene">
+            <div class="hero-orb hero-orb--scene"><span class="orb-crown">👑</span></div>
+            <div class="scene-trail"></div>
+            <div class="scene-obstacle"></div>
+          </div>
+          <button class="scene-toggle" type="button" data-i18n="play">Play</button>
+        </div>
+
+        <div class="showcase-card" data-anim="slide">
+          <div class="showcase-title-mini" data-i18n="showcase-slide">Slide</div>
+          <div class="mini-scene">
+            <div class="hero-orb hero-orb--scene"><span class="orb-crown">👑</span></div>
+            <div class="scene-obstacle"></div>
+          </div>
+          <button class="scene-toggle" type="button" data-i18n="play">Play</button>
+        </div>
+
+        <div class="showcase-card" data-anim="parry">
+          <div class="showcase-title-mini" data-i18n="showcase-parry">Parry</div>
+          <div class="mini-scene">
+            <div class="hero-orb hero-orb--scene"><span class="orb-crown">👑</span></div>
+            <div class="scene-obstacle"></div>
+          </div>
+          <button class="scene-toggle" type="button" data-i18n="play">Play</button>
+        </div>
+
+        <div class="showcase-card" data-anim="hit">
+          <div class="showcase-title-mini" data-i18n="showcase-hit">Hit FX</div>
+          <div class="mini-scene">
+            <div class="hero-orb hero-orb--scene"><span class="orb-crown">👑</span></div>
+            <div class="scene-obstacle"></div>
+          </div>
+          <button class="scene-toggle" type="button" data-i18n="play">Play</button>
+        </div>
+
+        <div class="showcase-card" data-anim="spawn">
+          <div class="showcase-title-mini" data-i18n="showcase-spawn">Spawn</div>
+          <div class="mini-scene">
+            <div class="hero-orb hero-orb--scene"><span class="orb-crown">👑</span></div>
+            <div class="scene-obstacle"></div>
+          </div>
+          <button class="scene-toggle" type="button" data-i18n="play">Play</button>
+        </div>
+      </div>
+
+      <div class="demo-reel" data-i18n="demo-reel">Gameplay Animation Reel (coming soon)</div>
+    </section>
   </div>
 
   <script>
@@ -1362,6 +1837,19 @@
                 'download-btn': 'Скачать Evades 3',
                 'dev-badge': 'В разработке',
                 'dev-tooltip': 'Игра ещё в разработке',
+                'showcase-title': 'Animation Showcase',
+                'showcase-subtitle': 'Быстрые микросцены анимаций в действии',
+                'showcase-dash': 'Рывок',
+                'showcase-slide': 'Скольжение',
+                'showcase-parry': 'Парирование',
+                'showcase-hit': 'Удар FX',
+                'showcase-spawn': 'Появление',
+                'demo-reel': 'Gameplay Animation Reel (coming soon)',
+                'play': 'Воспроизвести',
+                'pause': 'Пауза',
+                'sfx-label': 'SFX:',
+                'sfx-on': 'ON',
+                'sfx-off': 'OFF',
                 'about-title': '🎮 О ИГРЕ',
                 'about-p1': '<span class="highlight">Evades 3</span> — это эволюция легендарной evades.io, переосмысленная для нового поколения геймеров!',
                 'about-p2': 'Почувствуй адреналин скоростных маневров, где каждая миллисекунда решает исход битвы. Уворачивайся от смертельных препятствий, обгоняй соперников и доминируй на арене!',
@@ -1392,6 +1880,19 @@
                 'download-btn': 'Download Evades 3',
                 'dev-badge': 'In Development',
                 'dev-tooltip': 'The game is still in development',
+                'showcase-title': 'Animation Showcase',
+                'showcase-subtitle': 'Quick micro-scenes of animation in action',
+                'showcase-dash': 'Dash',
+                'showcase-slide': 'Slide',
+                'showcase-parry': 'Parry',
+                'showcase-hit': 'Hit FX',
+                'showcase-spawn': 'Spawn',
+                'demo-reel': 'Gameplay Animation Reel (coming soon)',
+                'play': 'Play',
+                'pause': 'Pause',
+                'sfx-label': 'SFX:',
+                'sfx-on': 'ON',
+                'sfx-off': 'OFF',
                 'about-title': '🎮 ABOUT THE GAME',
                 'about-p1': '<span class="highlight">Evades 3</span> is the evolution of legendary evades.io, reimagined for a new generation of gamers!',
                 'about-p2': 'Feel the adrenaline of high-speed maneuvers where every millisecond decides the battle outcome. Dodge deadly obstacles, outpace rivals, and dominate the arena!',
@@ -1422,6 +1923,19 @@
                 'download-btn': 'Завантажити Evades 3',
                 'dev-badge': 'У розробці',
                 'dev-tooltip': 'Гра ще у розробці',
+                'showcase-title': 'Animation Showcase',
+                'showcase-subtitle': 'Швидкі мікросцени анімацій у дії',
+                'showcase-dash': 'Ривок',
+                'showcase-slide': 'Ковзання',
+                'showcase-parry': 'Парирування',
+                'showcase-hit': 'Удар FX',
+                'showcase-spawn': 'Поява',
+                'demo-reel': 'Gameplay Animation Reel (coming soon)',
+                'play': 'Відтворити',
+                'pause': 'Пауза',
+                'sfx-label': 'SFX:',
+                'sfx-on': 'ON',
+                'sfx-off': 'OFF',
                 'about-title': '🎮 ПРО ГРУ',
                 'about-p1': '<span class="highlight">Evades 3</span> — це еволюція легендарної evades.io, переосмислена для нового покоління геймерів!',
                 'about-p2': 'Відчуй адреналін швидкісних маневрів, де кожна мілісекунда вирішує результат битви. Ухиляйся від смертельних перешкод, випереджай суперників та домінуй на арені!',
@@ -2211,6 +2725,33 @@
       });
     }
 
+    function updateDynamicLabels(lang) {
+      const sfxToggle = document.querySelector('.sfx-toggle');
+      if (sfxToggle) {
+        const state = sfxToggle.classList.contains('is-off') ? 'sfx-off' : 'sfx-on';
+        const stateText = (translations[lang] && translations[lang][state]) ||
+          (translations.en && translations.en[state]) || sfxToggle.querySelector('.sfx-state')?.textContent;
+        const labelText = (translations[lang] && translations[lang]['sfx-label']) ||
+          (translations.en && translations.en['sfx-label']);
+        if (labelText) {
+          const labelNode = sfxToggle.querySelector('[data-i18n="sfx-label"]');
+          if (labelNode) labelNode.textContent = labelText;
+        }
+        const stateNode = sfxToggle.querySelector('.sfx-state');
+        if (stateNode && stateText) stateNode.textContent = stateText;
+      }
+
+      document.querySelectorAll('.showcase-card').forEach(card => {
+        const button = card.querySelector('.scene-toggle');
+        if (!button) return;
+        const isPaused = card.classList.contains('is-paused');
+        const key = isPaused ? 'play' : 'pause';
+        const label = (translations[lang] && translations[lang][key]) ||
+          (translations.en && translations.en[key]) || button.textContent;
+        button.textContent = label;
+      });
+    }
+
     function setSelectedLangUI(lang) {
       document.querySelectorAll('.lang-item').forEach(item => {
         item.classList.toggle('is-selected', item.dataset.lang === lang);
@@ -2235,20 +2776,43 @@
     }
 
     // ====== ВЗРЫВНЫЕ ЧАСТИЦЫ ======
+    let lastExplodeTime = 0;
+    let lowEffects = false;
+    const frameTimes = [];
+    function monitorFPS() {
+      let last = performance.now();
+      const tick = (now) => {
+        const delta = now - last;
+        last = now;
+        frameTimes.push(delta);
+        if (frameTimes.length > 30) frameTimes.shift();
+        if (frameTimes.length === 30) {
+          const avg = frameTimes.reduce((a, b) => a + b, 0) / frameTimes.length;
+          lowEffects = avg > 24;
+        }
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+
     function explodeTitle() {
+      const now = performance.now();
+      if (now - lastExplodeTime < 1200) return;
+      lastExplodeTime = now;
       const title = document.querySelector('.main-title');
       if (!title) return;
 
       const rect = title.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
+      const overlay = document.querySelector('.explosion-layer') || document.body;
 
-      // Создаём 40 частиц
-      for (let i = 0; i < 40; i++) {
+      const particleCount = lowEffects ? 18 : 40;
+      for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.className = 'explosion-particle';
         
-        const angle = (Math.PI * 2 * i) / 40;
+        const angle = (Math.PI * 2 * i) / particleCount;
         const velocity = 150 + Math.random() * 200;
         const tx = Math.cos(angle) * velocity;
         const ty = Math.sin(angle) * velocity;
@@ -2259,7 +2823,7 @@
         particle.style.setProperty('--ty', ty + 'px');
         particle.style.animation = `explode ${0.8 + Math.random() * 0.4}s ease-out forwards`;
         
-        document.body.appendChild(particle);
+        overlay.appendChild(particle);
         
         setTimeout(() => particle.remove(), 1500);
       }
@@ -2269,7 +2833,7 @@
       shockwave.className = 'shockwave';
       shockwave.style.left = centerX + 'px';
       shockwave.style.top = centerY + 'px';
-      document.body.appendChild(shockwave);
+      overlay.appendChild(shockwave);
       setTimeout(() => shockwave.remove(), 1000);
     }
 
@@ -2304,10 +2868,13 @@
       });
     }
 
+    let currentLang = 'ru';
     function changeLanguage(lang) {
       if (!translations[lang]) lang = 'en';
+      currentLang = lang;
 
       applyTranslations(lang);
+      updateDynamicLabels(lang);
       localStorage.setItem('selectedLanguage', lang);
       setSelectedLangUI(lang);
 
@@ -2326,14 +2893,98 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const prefersReducedTransparency = window.matchMedia('(prefers-reduced-transparency: reduce)').matches;
+      let sfxEnabled = !prefersReducedMotion && !prefersReducedTransparency;
+      let audioContext = null;
+
+      const playBeep = (freq = 680, duration = 0.08) => {
+        if (!sfxEnabled || prefersReducedMotion || prefersReducedTransparency) return;
+        if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        oscillator.type = 'sine';
+        oscillator.frequency.value = freq;
+        gainNode.gain.value = 0.06;
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + duration);
+      };
+
+      monitorFPS();
+
       document.querySelectorAll('.lang-item').forEach(item => {
-        item.addEventListener('click', () => changeLanguage(item.dataset.lang));
+        item.addEventListener('click', () => {
+          playBeep(720, 0.06);
+          changeLanguage(item.dataset.lang);
+        });
       });
 
       const savedLang = localStorage.getItem('selectedLanguage') || 'ru';
       changeLanguage(savedLang);
 
-      createSparkles(50);
+      if (!prefersReducedMotion) createSparkles(50);
+
+      document.querySelectorAll('.lang-item').forEach((item, index) => {
+        item.style.setProperty('--item-delay', `${index * 20}ms`);
+      });
+
+      const revealTargets = [];
+      const description = document.querySelector('.description');
+      const stats = document.querySelector('.stats-container');
+      if (description) revealTargets.push(description);
+      if (stats) revealTargets.push(stats);
+      document.querySelectorAll('.feature-card').forEach((card, idx) => {
+        card.style.transitionDelay = `${idx * 70}ms`;
+        revealTargets.push(card);
+      });
+      if (!prefersReducedMotion && 'IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('reveal-in');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.2 });
+        revealTargets.forEach(el => {
+          el.classList.add('reveal-target');
+          observer.observe(el);
+        });
+      } else {
+        revealTargets.forEach(el => {
+          el.classList.add('reveal-target', 'reveal-in');
+        });
+      }
+
+      document.querySelectorAll('.showcase-card').forEach(card => {
+        const button = card.querySelector('.scene-toggle');
+        if (!button) return;
+        card.classList.remove('is-paused');
+        button.addEventListener('click', () => {
+          playBeep(520, 0.05);
+          const shouldPause = !card.classList.contains('is-paused');
+          card.classList.toggle('is-paused', shouldPause);
+          updateDynamicLabels(currentLang);
+        });
+      });
+
+      const sfxToggle = document.querySelector('.sfx-toggle');
+      if (sfxToggle) {
+        sfxToggle.classList.toggle('is-off', !sfxEnabled);
+        sfxToggle.setAttribute('aria-pressed', String(sfxEnabled));
+        sfxToggle.addEventListener('click', () => {
+          sfxEnabled = !sfxEnabled;
+          sfxToggle.classList.toggle('is-off', !sfxEnabled);
+          sfxToggle.setAttribute('aria-pressed', String(sfxEnabled));
+          updateDynamicLabels(currentLang);
+          playBeep(840, 0.05);
+        });
+      }
 
       document.addEventListener('mousemove', (e) => {
         const mouseX = e.clientX / window.innerWidth - 0.5;
@@ -2345,6 +2996,15 @@
           el.style.transform = `translate(${x}px, ${y}px)`;
         });
       });
+
+      const menuButton = document.querySelector('.menu-button');
+      if (menuButton) {
+        menuButton.addEventListener('click', () => playBeep(640, 0.05));
+      }
+      const downloadButton = document.querySelector('.download-button');
+      if (downloadButton) {
+        downloadButton.addEventListener('click', () => playBeep(400, 0.08));
+      }
     });
   </script>
 </body>
