@@ -1261,6 +1261,20 @@
       will-change: transform, opacity;
     }
 
+    .preview .flash{
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff4c0, transparent 70%);
+      opacity: 0;
+      transform: translateY(-50%) scale(0.6);
+      filter: blur(1px);
+      will-change: transform, opacity;
+    }
+
     .preview .afterimage{
       position: absolute;
       left: 20px;
@@ -1321,8 +1335,8 @@
       width: 12px;
       height: 12px;
       border-radius: 50%;
-      background: radial-gradient(circle, #ffd66b, #ff7b1c);
-      box-shadow: 0 0 12px rgba(255, 160, 80, 0.9);
+      background: radial-gradient(circle, #ff8a8a, #7c1cff);
+      box-shadow: 0 0 12px rgba(255, 120, 180, 0.9);
       will-change: transform, opacity;
     }
 
@@ -1363,6 +1377,19 @@
       background: #ffe7a3;
       box-shadow: 0 0 10px rgba(255, 235, 160, 0.9);
       opacity: 0;
+      will-change: transform, opacity;
+    }
+
+    .preview .sparkle{
+      position: absolute;
+      left: 52px;
+      top: 50%;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #fff2bf;
+      opacity: 0;
+      box-shadow: 0 0 8px rgba(255, 235, 160, 0.9);
       will-change: transform, opacity;
     }
 
@@ -1465,43 +1492,55 @@
     }
 
     .showcase-card[data-anim="dash"] .ball{
-      animation: dashMove 1.4s ease-in-out infinite;
+      animation: dashMove 1.5s ease-in-out infinite;
     }
 
     .showcase-card[data-anim="dash"] .trail{
-      animation: dashTrail 1.4s ease-in-out infinite;
+      animation: dashTrail 1.5s ease-in-out infinite;
     }
 
     .showcase-card[data-anim="dash"] .afterimage{
-      animation: dashAfter 1.4s ease-in-out infinite;
+      animation: dashAfter 1.5s ease-in-out infinite;
     }
 
     .showcase-card[data-anim="dash"] .dust{
-      animation: dashDust 1.4s ease-in-out infinite;
+      animation: dashDust 1.5s ease-in-out infinite;
+    }
+
+    .showcase-card[data-anim="dash"] .flash{
+      animation: dashFlash 1.5s ease-in-out infinite;
     }
 
     .showcase-card[data-anim="slide"] .ball{
-      animation: slideMove 1.9s ease-in-out infinite;
+      animation: slideMove 2s ease-in-out infinite;
     }
 
     .showcase-card[data-anim="slide"] .slide-trail{
-      animation: slideTrail 1.9s ease-in-out infinite;
+      animation: slideTrail 2s ease-in-out infinite;
     }
 
     .showcase-card[data-anim="parry"] .projectile{
-      animation: parryShot 2s ease-in-out infinite;
+      animation: parryShot 2.4s ease-in-out infinite;
     }
 
     .showcase-card[data-anim="parry"] .shield{
-      animation: parryShield 2s ease-in-out infinite;
+      animation: parryShield 2.4s ease-in-out infinite;
     }
 
     .showcase-card[data-anim="parry"] .shockwave-ring{
-      animation: parryRing 2s ease-in-out infinite;
+      animation: parryRing 2.4s ease-in-out infinite;
     }
 
     .showcase-card[data-anim="parry"] .spark{
-      animation: parrySpark 2s ease-in-out infinite;
+      animation: parrySpark 2.4s ease-in-out infinite;
+    }
+
+    .showcase-card[data-anim="parry"] .flash{
+      animation: parryFlash 2.4s ease-in-out infinite;
+    }
+
+    .showcase-card[data-anim="parry"] .sparkle{
+      animation: parrySparkle 2.4s ease-in-out infinite;
     }
 
     .showcase-card[data-anim="hit"] .ball{
@@ -1537,76 +1576,100 @@
     }
 
     @keyframes dashMove{
-      0%, 18% { transform: translate(0, -50%); }
-      35% { transform: translate(95px, -50%); }
-      45% { transform: translate(95px, -50%) scale(0.96); }
-      70% { transform: translate(95px, -50%); }
+      0%, 18% { transform: translate(0, -50%) scale(1); }
+      24% { transform: translate(12px, -50%) scale(1.05); }
+      32% { transform: translate(110px, -50%) scale(1.02); }
+      40% { transform: translate(110px, -50%) scale(0.96); }
+      55% { transform: translate(110px, -50%) scale(1); }
+      78% { transform: translate(110px, -50%); }
       100% { transform: translate(0, -50%); }
     }
 
     @keyframes dashTrail{
-      0%, 18% { opacity: 0; transform: translateY(-50%) scaleX(0.4); }
-      30% { opacity: 0.9; transform: translateY(-50%) scaleX(1); }
-      50% { opacity: 0; transform: translateY(-50%) scaleX(0.4); }
+      0%, 20% { opacity: 0; transform: translateY(-50%) scaleX(0.3); }
+      32% { opacity: 1; transform: translateY(-50%) scaleX(1.1); }
+      52% { opacity: 0; transform: translateY(-50%) scaleX(0.4); }
       100% { opacity: 0; }
     }
 
     @keyframes dashAfter{
-      0%, 15% { opacity: 0; transform: translate(0, -50%); }
-      30% { opacity: 0.6; transform: translate(60px, -50%); }
-      45% { opacity: 0; transform: translate(80px, -50%); }
+      0%, 18% { opacity: 0; transform: translate(0, -50%); }
+      30% { opacity: 0.7; transform: translate(70px, -50%); }
+      44% { opacity: 0; transform: translate(92px, -50%); }
       100% { opacity: 0; }
     }
 
     @keyframes dashDust{
-      0%, 38% { opacity: 0; transform: translate(0, 0); }
-      48% { opacity: 1; transform: translate(8px, 2px) scale(1.1); }
-      70% { opacity: 0; transform: translate(16px, 4px) scale(1.4); }
+      0%, 34% { opacity: 0; transform: translate(0, 0); }
+      44% { opacity: 1; transform: translate(10px, 2px) scale(1.1); }
+      68% { opacity: 0; transform: translate(18px, 5px) scale(1.4); }
+      100% { opacity: 0; }
+    }
+
+    @keyframes dashFlash{
+      0%, 20% { opacity: 0; transform: translateY(-50%) scale(0.6); }
+      26% { opacity: 1; transform: translateY(-50%) scale(1.2); }
+      40% { opacity: 0; transform: translateY(-50%) scale(1.6); }
       100% { opacity: 0; }
     }
 
     @keyframes slideMove{
       0%, 20% { transform: translate(0, -50%) scale(1); }
-      35% { transform: translate(30px, -45%) scale(1.1, 0.75); }
-      55% { transform: translate(90px, -45%) scale(1.2, 0.7); }
-      70% { transform: translate(90px, -50%) scale(1, 1); }
+      36% { transform: translate(30px, -46%) scale(1.1, 0.72); }
+      60% { transform: translate(110px, -46%) scale(1.2, 0.7); }
+      78% { transform: translate(110px, -50%) scale(1.05, 1); }
       100% { transform: translate(0, -50%) scale(1); }
     }
 
     @keyframes slideTrail{
-      0%, 25% { opacity: 0; transform: translateY(-50%) scaleX(0.4); }
-      45% { opacity: 0.8; transform: translateY(-50%) scaleX(1); }
-      70% { opacity: 0; transform: translateY(-50%) scaleX(0.4); }
+      0%, 30% { opacity: 0; transform: translateY(-50%) scaleX(0.3); }
+      52% { opacity: 0.85; transform: translateY(-50%) scaleX(1); }
+      78% { opacity: 0; transform: translateY(-50%) scaleX(0.4); }
       100% { opacity: 0; }
     }
 
     @keyframes parryShot{
       0% { transform: translate(0, 0); opacity: 0; }
       10% { opacity: 1; }
-      45% { transform: translate(-90px, 0); opacity: 1; }
-      55% { transform: translate(-70px, -8px); opacity: 1; }
-      85% { transform: translate(80px, -16px); opacity: 0; }
+      42% { transform: translate(-95px, -2px); opacity: 1; }
+      46% { transform: translate(-95px, -2px); opacity: 1; }
+      60% { transform: translate(80px, -18px); opacity: 1; }
+      85% { transform: translate(130px, -26px); opacity: 0; }
       100% { opacity: 0; }
     }
 
     @keyframes parryShield{
-      0%, 38% { opacity: 0; transform: translateY(-50%) scale(0.7); }
-      45% { opacity: 1; transform: translateY(-50%) scale(1); }
-      60% { opacity: 0; transform: translateY(-50%) scale(1.2); }
+      0%, 36% { opacity: 0; transform: translateY(-50%) scale(0.7); }
+      42% { opacity: 1; transform: translateY(-50%) scale(1); }
+      58% { opacity: 0; transform: translateY(-50%) scale(1.3); }
       100% { opacity: 0; }
     }
 
     @keyframes parryRing{
       0%, 40% { opacity: 0; transform: translateY(-50%) scale(0.6); }
-      55% { opacity: 0.9; transform: translateY(-50%) scale(1.2); }
-      75% { opacity: 0; transform: translateY(-50%) scale(1.5); }
+      50% { opacity: 0.9; transform: translateY(-50%) scale(1.1); }
+      70% { opacity: 0; transform: translateY(-50%) scale(1.6); }
       100% { opacity: 0; }
     }
 
     @keyframes parrySpark{
-      0%, 42% { opacity: 0; transform: translate(0, 0); }
-      55% { opacity: 1; transform: translate(12px, -8px); }
-      70% { opacity: 0; transform: translate(20px, -14px); }
+      0%, 41% { opacity: 0; transform: translate(0, 0); }
+      52% { opacity: 1; transform: translate(14px, -10px); }
+      72% { opacity: 0; transform: translate(22px, -16px); }
+      100% { opacity: 0; }
+    }
+
+    @keyframes parryFlash{
+      0%, 40% { opacity: 0; transform: translateY(-50%) scale(0.6); }
+      46% { opacity: 1; transform: translateY(-50%) scale(1.4); }
+      55% { opacity: 0; transform: translateY(-50%) scale(1.8); }
+      100% { opacity: 0; }
+    }
+
+    @keyframes parrySparkle{
+      0%, 44% { opacity: 0; transform: translate(0, 0); }
+      52% { opacity: 1; transform: translate(10px, 6px); }
+      70% { opacity: 0; transform: translate(18px, 12px); }
       100% { opacity: 0; }
     }
 
@@ -2109,6 +2172,7 @@
             <div class="trail"></div>
             <div class="afterimage"></div>
             <div class="dust"></div>
+            <div class="flash"></div>
           </div>
           <button class="scene-toggle" type="button" data-i18n="pause">Пауза</button>
         </div>
@@ -2131,6 +2195,8 @@
             <div class="shield"></div>
             <div class="shockwave-ring"></div>
             <div class="spark"></div>
+            <div class="flash"></div>
+            <div class="sparkle"></div>
           </div>
           <button class="scene-toggle" type="button" data-i18n="pause">Пауза</button>
         </div>
