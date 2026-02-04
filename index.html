@@ -1260,8 +1260,9 @@
 
     .showcase-card.is-paused .hero-orb--scene,
     .showcase-card.is-paused .scene-obstacle,
-    .showcase-card.is-paused .scene-trail{
-      animation-play-state: paused;
+    .showcase-card.is-paused .scene-trail,
+    .showcase-card.is-paused .mini-scene *{
+      animation-play-state: paused !important;
     }
 
     .showcase-card[data-anim="dash"] .hero-orb--scene{
@@ -1660,12 +1661,7 @@
   <div class="container">
     <div class="title-section">
       <div class="subtitle" data-i18n="subtitle">Скорость. Тактика.</div>
-      <div style="display:flex; align-items:center; justify-content:center;">
-        <h1 class="main-title" data-title="EVADES 3">EVADES 3</h1>
-        <div class="hero-orb hero-orb--title" aria-hidden="true">
-          <span class="orb-crown">👑</span>
-        </div>
-      </div>
+      <h1 class="main-title" data-title="EVADES 3">EVADES 3</h1>
     </div>
 
     <div class="button-container">
@@ -1838,7 +1834,7 @@
                 'dev-badge': 'В разработке',
                 'dev-tooltip': 'Игра ещё в разработке',
                 'showcase-title': 'Витрина анимаций',
-                'showcase-subtitle': 'Быстрые микросцены анимаций в действии',
+                'showcase-subtitle': 'Быстрые микросцены анимаций в действии (ещё обновляются)',
                 'showcase-dash': 'Рывок',
                 'showcase-slide': 'Скольжение',
                 'showcase-parry': 'Парирование',
@@ -1881,7 +1877,7 @@
                 'dev-badge': 'In Development',
                 'dev-tooltip': 'The game is still in development',
                 'showcase-title': 'Animation Showcase',
-                'showcase-subtitle': 'Quick micro-scenes of animation in action',
+                'showcase-subtitle': 'Quick micro-scenes of animation in action (still updating)',
                 'showcase-dash': 'Dash',
                 'showcase-slide': 'Slide',
                 'showcase-parry': 'Parry',
@@ -1924,7 +1920,7 @@
                 'dev-badge': 'У розробці',
                 'dev-tooltip': 'Гра ще у розробці',
                 'showcase-title': 'Вітрина анімацій',
-                'showcase-subtitle': 'Швидкі мікросцени анімацій у дії',
+                'showcase-subtitle': 'Швидкі мікросцени анімацій у дії (ще оновлюються)',
                 'showcase-dash': 'Ривок',
                 'showcase-slide': 'Ковзання',
                 'showcase-parry': 'Парирування',
