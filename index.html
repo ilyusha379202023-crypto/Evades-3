@@ -1417,20 +1417,20 @@
 
     .preview .impact-ring{
       position: absolute;
-      left: 42px;
+      left: 50%;
       top: 50%;
       width: 60px;
       height: 60px;
       border-radius: 50%;
       border: 2px solid rgba(255, 220, 130, 0.9);
       opacity: 0;
-      transform: translateY(-50%) scale(0.6);
+      transform: translate(-50%, -50%) scale(0.6);
       will-change: transform, opacity;
     }
 
     .preview .impact-particle{
       position: absolute;
-      left: 60px;
+      left: 50%;
       top: 50%;
       width: 6px;
       height: 6px;
@@ -1438,6 +1438,7 @@
       background: #ffd66b;
       box-shadow: 0 0 10px rgba(255, 220, 130, 0.8);
       opacity: 0;
+      transform: translate(-50%, -50%);
       will-change: transform, opacity;
     }
 
@@ -1689,16 +1690,16 @@
     }
 
     @keyframes hitRing{
-      0%, 45% { opacity: 0; transform: translateY(-50%) scale(0.6); }
-      55% { opacity: 1; transform: translateY(-50%) scale(1); }
-      75% { opacity: 0; transform: translateY(-50%) scale(1.4); }
+      0%, 45% { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
+      55% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      75% { opacity: 0; transform: translate(-50%, -50%) scale(1.4); }
       100% { opacity: 0; }
     }
 
     @keyframes hitParticle{
-      0%, 45% { opacity: 0; transform: translate(0, 0); }
-      55% { opacity: 1; transform: translate(18px, -10px); }
-      70% { opacity: 0; transform: translate(30px, -16px); }
+      0%, 45% { opacity: 0; transform: translate(-50%, -50%); }
+      55% { opacity: 1; transform: translate(-50%, -50%) translate(18px, -10px); }
+      70% { opacity: 0; transform: translate(-50%, -50%) translate(30px, -16px); }
       100% { opacity: 0; }
     }
 
@@ -2204,10 +2205,12 @@
         <div class="showcase-card" data-anim="hit">
           <div class="showcase-title-mini" data-i18n="showcase-hit">Hit FX</div>
           <div class="preview">
-            <div class="ball"><span class="orb-crown">👑</span></div>
+            <div class="ball">
+              <span class="orb-crown">👑</span>
+              <div class="impact-ring"></div>
+              <div class="impact-particle"></div>
+            </div>
             <div class="enemy"></div>
-            <div class="impact-ring"></div>
-            <div class="impact-particle"></div>
           </div>
           <button class="scene-toggle" type="button" data-i18n="pause">Пауза</button>
         </div>
