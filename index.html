@@ -217,14 +217,16 @@
 
     /* Логотип */
     .logo-image {
-      position: fixed !important;
-      top: 15px !important;
-      left: 15px !important;
+      position: fixed;
+      top: 15px;
+      left: 15px;
       width: 130px;
       height: 130px;
       object-fit: contain;
       z-index: 1000;
       filter: drop-shadow(0 8px 20px rgba(0,0,0,0.35));
+      transform: translateZ(0);
+      will-change: transform;
     }
 
     /* ===== По-словная анимация subtitle ===== */
@@ -569,7 +571,30 @@
       filter: blur(2px);
     }
 
-    /* супер-вспышка сверху (удалена по запросу) */
+    /* Мягкое переливание по надписи */
+    .main-title::after{
+      content: attr(data-title);
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 1;
+      color: transparent;
+      -webkit-text-stroke: 0;
+      text-stroke: 0;
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.8) 45%, transparent 70%);
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: titleShimmer 3.5s ease-in-out infinite;
+      mix-blend-mode: screen;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+
+    @keyframes titleShimmer {
+      0% { background-position: 200% 50%; }
+      100% { background-position: -100% 50%; }
+    }
 
     /* 3D кнопка */
     .button-container {
