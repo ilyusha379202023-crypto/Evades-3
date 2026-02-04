@@ -1196,7 +1196,7 @@
       letter-spacing: 1px;
     }
 
-    .mini-scene{
+    .preview{
       position: relative;
       height: 140px;
       border-radius: 18px;
@@ -1207,37 +1207,238 @@
       box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
     }
 
-    .hero-orb--scene{
-      width: 32px;
-      height: 32px;
+    .preview .ball{
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #ff8b8b, #d62828 60%, #8b0d0d 100%);
       position: absolute;
       left: 20px;
       top: 50%;
       transform: translateY(-50%);
-      animation: none;
+      box-shadow:
+        0 8px 14px rgba(0,0,0,0.35),
+        0 0 16px rgba(255, 80, 80, 0.6),
+        inset 0 2px 4px rgba(255,255,255,0.6);
+      will-change: transform, opacity, filter;
     }
 
-    .scene-obstacle{
+    .preview .ball--spawn{
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .preview .ball::after{
+      content: "";
       position: absolute;
-      right: 20px;
+      inset: 6px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), transparent 60%);
+      opacity: 0.85;
+    }
+
+    .preview .ball .orb-crown{
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 16px;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+    }
+
+    .preview .trail{
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      width: 120px;
+      height: 6px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(255, 190, 110, 0.9), transparent);
+      opacity: 0;
+      transform: translateY(-50%);
+      filter: blur(1px);
+      will-change: transform, opacity;
+    }
+
+    .preview .afterimage{
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, rgba(255, 140, 140, 0.6), rgba(255, 80, 80, 0.2));
+      transform: translateY(-50%);
+      opacity: 0;
+      filter: blur(2px);
+      will-change: transform, opacity;
+    }
+
+    .preview .dust{
+      position: absolute;
+      left: 110px;
+      top: 62%;
+      width: 18px;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(255, 230, 160, 0.8), transparent 70%);
+      opacity: 0;
+      filter: blur(1px);
+      will-change: transform, opacity;
+    }
+
+    .preview .laser{
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      top: 50%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #ffe38a, transparent);
+      box-shadow: 0 0 12px rgba(255, 215, 120, 0.9);
+      opacity: 0.9;
+      transform: translateY(-50%);
+      will-change: opacity;
+    }
+
+    .preview .slide-trail{
+      position: absolute;
+      left: 20px;
+      top: 62%;
+      width: 110px;
+      height: 5px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(255, 180, 120, 0.7), transparent);
+      opacity: 0;
+      filter: blur(1px);
+      will-change: transform, opacity;
+    }
+
+    .preview .projectile{
+      position: absolute;
+      right: 10px;
+      top: 45%;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffd66b, #ff7b1c);
+      box-shadow: 0 0 12px rgba(255, 160, 80, 0.9);
+      will-change: transform, opacity;
+    }
+
+    .preview .shield{
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid rgba(120, 220, 255, 0.8);
+      box-shadow: 0 0 16px rgba(120, 220, 255, 0.8);
+      opacity: 0;
+      transform: translateY(-50%) scale(0.8);
+      will-change: transform, opacity;
+    }
+
+    .preview .shockwave-ring{
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 230, 160, 0.9);
+      opacity: 0;
+      transform: translateY(-50%) scale(0.6);
+      will-change: transform, opacity;
+    }
+
+    .preview .spark{
+      position: absolute;
+      left: 40px;
+      top: 50%;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #ffe7a3;
+      box-shadow: 0 0 10px rgba(255, 235, 160, 0.9);
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+
+    .preview .enemy{
+      position: absolute;
+      right: 18px;
       top: 50%;
       width: 26px;
       height: 26px;
-      transform: translateY(-50%);
+      transform: translateY(-50%) rotate(45deg);
+      background: linear-gradient(135deg, #2b2b2b, #0c0c0c);
+      box-shadow: 0 0 12px rgba(0,0,0,0.6);
       border-radius: 6px;
-      background: linear-gradient(135deg, #7dd3fc, #2563eb);
-      box-shadow: 0 0 12px rgba(80, 140, 255, 0.6);
+      will-change: transform, opacity;
     }
 
-    .scene-trail{
+    .preview .enemy::after{
+      content: "";
       position: absolute;
-      left: 20px;
+      inset: 7px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ff6b6b, #7c0f0f);
+      transform: rotate(-45deg);
+    }
+
+    .preview .impact-ring{
+      position: absolute;
+      left: 42px;
       top: 50%;
-      width: 90px;
-      height: 4px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, rgba(255, 180, 100, 0.8), transparent);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 220, 130, 0.9);
       opacity: 0;
+      transform: translateY(-50%) scale(0.6);
+      will-change: transform, opacity;
+    }
+
+    .preview .impact-particle{
+      position: absolute;
+      left: 60px;
+      top: 50%;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #ffd66b;
+      box-shadow: 0 0 10px rgba(255, 220, 130, 0.8);
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+
+    .preview .portal{
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      border: 2px solid rgba(120, 220, 255, 0.8);
+      box-shadow: 0 0 20px rgba(120, 220, 255, 0.8);
+      transform: translate(-50%, -50%) scale(0.7);
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+
+    .preview .spawn-aura{
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 220, 150, 0.8);
+      transform: translate(-50%, -50%) scale(0.6);
+      opacity: 0;
+      will-change: transform, opacity;
     }
 
     .showcase-card .scene-toggle{
@@ -1258,85 +1459,213 @@
       background: rgba(255,255,255,0.15);
     }
 
-    .showcase-card.is-paused .hero-orb--scene,
-    .showcase-card.is-paused .scene-obstacle,
-    .showcase-card.is-paused .scene-trail,
-    .showcase-card.is-paused .mini-scene *{
+    .showcase-card.is-paused .preview,
+    .showcase-card.is-paused .preview *{
       animation-play-state: paused !important;
     }
 
-    .showcase-card[data-anim="dash"] .hero-orb--scene{
-      animation: sceneDash 1.6s ease-in-out infinite;
+    .showcase-card[data-anim="dash"] .ball{
+      animation: dashMove 1.4s ease-in-out infinite;
     }
 
-    .showcase-card[data-anim="dash"] .scene-trail{
-      animation: trailFlash 1.6s ease-in-out infinite;
+    .showcase-card[data-anim="dash"] .trail{
+      animation: dashTrail 1.4s ease-in-out infinite;
     }
 
-    .showcase-card[data-anim="slide"] .hero-orb--scene{
-      animation: sceneSlide 1.8s ease-in-out infinite;
+    .showcase-card[data-anim="dash"] .afterimage{
+      animation: dashAfter 1.4s ease-in-out infinite;
     }
 
-    .showcase-card[data-anim="parry"] .hero-orb--scene{
-      animation: sceneParry 1.6s ease-in-out infinite;
+    .showcase-card[data-anim="dash"] .dust{
+      animation: dashDust 1.4s ease-in-out infinite;
     }
 
-    .showcase-card[data-anim="parry"] .scene-obstacle{
-      animation: obstaclePulse 1.6s ease-in-out infinite;
+    .showcase-card[data-anim="slide"] .ball{
+      animation: slideMove 1.9s ease-in-out infinite;
     }
 
-    .showcase-card[data-anim="hit"] .hero-orb--scene{
-      animation: sceneHit 1.4s ease-in-out infinite;
+    .showcase-card[data-anim="slide"] .slide-trail{
+      animation: slideTrail 1.9s ease-in-out infinite;
     }
 
-    .showcase-card[data-anim="spawn"] .hero-orb--scene{
-      animation: sceneSpawn 1.8s ease-in-out infinite;
+    .showcase-card[data-anim="parry"] .projectile{
+      animation: parryShot 2s ease-in-out infinite;
     }
 
-    @keyframes sceneDash{
-      0% { transform: translate(0, -50%); }
-      40% { transform: translate(80px, -50%); }
-      60% { transform: translate(100px, -50%); }
+    .showcase-card[data-anim="parry"] .shield{
+      animation: parryShield 2s ease-in-out infinite;
+    }
+
+    .showcase-card[data-anim="parry"] .shockwave-ring{
+      animation: parryRing 2s ease-in-out infinite;
+    }
+
+    .showcase-card[data-anim="parry"] .spark{
+      animation: parrySpark 2s ease-in-out infinite;
+    }
+
+    .showcase-card[data-anim="hit"] .ball{
+      animation: hitStrike 1.8s ease-in-out infinite;
+    }
+
+    .showcase-card[data-anim="hit"] .enemy{
+      animation: hitEnemy 1.8s ease-in-out infinite;
+    }
+
+    .showcase-card[data-anim="hit"] .impact-ring{
+      animation: hitRing 1.8s ease-in-out infinite;
+    }
+
+    .showcase-card[data-anim="hit"] .impact-particle{
+      animation: hitParticle 1.8s ease-in-out infinite;
+    }
+
+    .showcase-card[data-anim="hit"] .preview{
+      animation: hitShake 1.8s ease-in-out infinite;
+    }
+
+    .showcase-card[data-anim="spawn"] .portal{
+      animation: spawnPortal 2.2s ease-in-out infinite;
+    }
+
+    .showcase-card[data-anim="spawn"] .ball{
+      animation: spawnBall 2.2s ease-in-out infinite;
+    }
+
+    .showcase-card[data-anim="spawn"] .spawn-aura{
+      animation: spawnAura 2.2s ease-in-out infinite;
+    }
+
+    @keyframes dashMove{
+      0%, 18% { transform: translate(0, -50%); }
+      35% { transform: translate(95px, -50%); }
+      45% { transform: translate(95px, -50%) scale(0.96); }
+      70% { transform: translate(95px, -50%); }
       100% { transform: translate(0, -50%); }
     }
 
-    @keyframes trailFlash{
-      0%, 30% { opacity: 0; transform: translateY(-50%) scaleX(0.4); }
-      50% { opacity: 0.8; transform: translateY(-50%) scaleX(1); }
-      80%, 100% { opacity: 0; transform: translateY(-50%) scaleX(0.4); }
+    @keyframes dashTrail{
+      0%, 18% { opacity: 0; transform: translateY(-50%) scaleX(0.4); }
+      30% { opacity: 0.9; transform: translateY(-50%) scaleX(1); }
+      50% { opacity: 0; transform: translateY(-50%) scaleX(0.4); }
+      100% { opacity: 0; }
     }
 
-    @keyframes sceneSlide{
-      0%, 100% { transform: translate(0, -50%); }
-      50% { transform: translate(60px, -30%); }
+    @keyframes dashAfter{
+      0%, 15% { opacity: 0; transform: translate(0, -50%); }
+      30% { opacity: 0.6; transform: translate(60px, -50%); }
+      45% { opacity: 0; transform: translate(80px, -50%); }
+      100% { opacity: 0; }
     }
 
-    @keyframes sceneParry{
-      0% { transform: translate(0, -50%); }
-      40% { transform: translate(50px, -50%) scale(1); }
-      50% { transform: translate(50px, -50%) scale(1.2); }
-      60% { transform: translate(40px, -50%) scale(1); }
-      100% { transform: translate(0, -50%); }
+    @keyframes dashDust{
+      0%, 38% { opacity: 0; transform: translate(0, 0); }
+      48% { opacity: 1; transform: translate(8px, 2px) scale(1.1); }
+      70% { opacity: 0; transform: translate(16px, 4px) scale(1.4); }
+      100% { opacity: 0; }
     }
 
-    @keyframes obstaclePulse{
-      0%, 100% { transform: translateY(-50%) scale(1); }
-      50% { transform: translateY(-50%) scale(1.2); }
-    }
-
-    @keyframes sceneHit{
-      0% { transform: translate(0, -50%); }
-      45% { transform: translate(70px, -50%); }
-      50% { transform: translate(60px, -50%) scale(0.9); }
-      60% { transform: translate(20px, -50%); }
-      100% { transform: translate(0, -50%); }
-    }
-
-    @keyframes sceneSpawn{
-      0% { transform: translate(0, -50%) scale(0); opacity: 0; }
-      30% { transform: translate(0, -50%) scale(1); opacity: 1; }
-      70% { transform: translate(60px, -50%) scale(1); }
+    @keyframes slideMove{
+      0%, 20% { transform: translate(0, -50%) scale(1); }
+      35% { transform: translate(30px, -45%) scale(1.1, 0.75); }
+      55% { transform: translate(90px, -45%) scale(1.2, 0.7); }
+      70% { transform: translate(90px, -50%) scale(1, 1); }
       100% { transform: translate(0, -50%) scale(1); }
+    }
+
+    @keyframes slideTrail{
+      0%, 25% { opacity: 0; transform: translateY(-50%) scaleX(0.4); }
+      45% { opacity: 0.8; transform: translateY(-50%) scaleX(1); }
+      70% { opacity: 0; transform: translateY(-50%) scaleX(0.4); }
+      100% { opacity: 0; }
+    }
+
+    @keyframes parryShot{
+      0% { transform: translate(0, 0); opacity: 0; }
+      10% { opacity: 1; }
+      45% { transform: translate(-90px, 0); opacity: 1; }
+      55% { transform: translate(-70px, -8px); opacity: 1; }
+      85% { transform: translate(80px, -16px); opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    @keyframes parryShield{
+      0%, 38% { opacity: 0; transform: translateY(-50%) scale(0.7); }
+      45% { opacity: 1; transform: translateY(-50%) scale(1); }
+      60% { opacity: 0; transform: translateY(-50%) scale(1.2); }
+      100% { opacity: 0; }
+    }
+
+    @keyframes parryRing{
+      0%, 40% { opacity: 0; transform: translateY(-50%) scale(0.6); }
+      55% { opacity: 0.9; transform: translateY(-50%) scale(1.2); }
+      75% { opacity: 0; transform: translateY(-50%) scale(1.5); }
+      100% { opacity: 0; }
+    }
+
+    @keyframes parrySpark{
+      0%, 42% { opacity: 0; transform: translate(0, 0); }
+      55% { opacity: 1; transform: translate(12px, -8px); }
+      70% { opacity: 0; transform: translate(20px, -14px); }
+      100% { opacity: 0; }
+    }
+
+    @keyframes hitStrike{
+      0%, 25% { transform: translate(0, -50%); }
+      40% { transform: translate(60px, -50%) scale(1.05); }
+      48% { transform: translate(70px, -50%) scale(0.95); }
+      70% { transform: translate(20px, -50%); }
+      100% { transform: translate(0, -50%); }
+    }
+
+    @keyframes hitEnemy{
+      0%, 40% { transform: translateY(-50%) rotate(45deg); opacity: 1; }
+      55% { transform: translate(-20px, -60%) rotate(20deg); opacity: 1; }
+      75% { transform: translate(-40px, -80%) rotate(-10deg); opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    @keyframes hitRing{
+      0%, 45% { opacity: 0; transform: translateY(-50%) scale(0.6); }
+      55% { opacity: 1; transform: translateY(-50%) scale(1); }
+      75% { opacity: 0; transform: translateY(-50%) scale(1.4); }
+      100% { opacity: 0; }
+    }
+
+    @keyframes hitParticle{
+      0%, 45% { opacity: 0; transform: translate(0, 0); }
+      55% { opacity: 1; transform: translate(18px, -10px); }
+      70% { opacity: 0; transform: translate(30px, -16px); }
+      100% { opacity: 0; }
+    }
+
+    @keyframes hitShake{
+      0%, 40%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-2px, 1px); }
+      55% { transform: translate(2px, -1px); }
+      60% { transform: translate(-1px, 2px); }
+    }
+
+    @keyframes spawnPortal{
+      0%, 25% { opacity: 0; transform: translate(-50%, -50%) scale(0.6) rotate(0deg); }
+      40% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(90deg); }
+      70% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1) rotate(180deg); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(0.6) rotate(240deg); }
+    }
+
+    @keyframes spawnBall{
+      0%, 35% { opacity: 0; transform: translate(-50%, -50%) scale(0.2); filter: blur(6px); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); }
+      65% { transform: translate(-50%, -58%) scale(1.05); }
+      80% { transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    @keyframes spawnAura{
+      0%, 45% { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
+      60% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.1); }
+      85% { opacity: 0; transform: translate(-50%, -50%) scale(1.4); }
+      100% { opacity: 0; }
     }
 
     .demo-reel{
@@ -1775,48 +2104,56 @@
       <div class="showcase-grid">
         <div class="showcase-card" data-anim="dash">
           <div class="showcase-title-mini" data-i18n="showcase-dash">Dash</div>
-          <div class="mini-scene">
-            <div class="hero-orb hero-orb--scene"><span class="orb-crown">👑</span></div>
-            <div class="scene-trail"></div>
-            <div class="scene-obstacle"></div>
+          <div class="preview">
+            <div class="ball"><span class="orb-crown">👑</span></div>
+            <div class="trail"></div>
+            <div class="afterimage"></div>
+            <div class="dust"></div>
           </div>
-          <button class="scene-toggle" type="button" data-i18n="play">Play</button>
+          <button class="scene-toggle" type="button" data-i18n="pause">Пауза</button>
         </div>
 
         <div class="showcase-card" data-anim="slide">
           <div class="showcase-title-mini" data-i18n="showcase-slide">Slide</div>
-          <div class="mini-scene">
-            <div class="hero-orb hero-orb--scene"><span class="orb-crown">👑</span></div>
-            <div class="scene-obstacle"></div>
+          <div class="preview">
+            <div class="laser"></div>
+            <div class="ball"><span class="orb-crown">👑</span></div>
+            <div class="slide-trail"></div>
           </div>
-          <button class="scene-toggle" type="button" data-i18n="play">Play</button>
+          <button class="scene-toggle" type="button" data-i18n="pause">Пауза</button>
         </div>
 
         <div class="showcase-card" data-anim="parry">
           <div class="showcase-title-mini" data-i18n="showcase-parry">Parry</div>
-          <div class="mini-scene">
-            <div class="hero-orb hero-orb--scene"><span class="orb-crown">👑</span></div>
-            <div class="scene-obstacle"></div>
+          <div class="preview">
+            <div class="ball"><span class="orb-crown">👑</span></div>
+            <div class="projectile"></div>
+            <div class="shield"></div>
+            <div class="shockwave-ring"></div>
+            <div class="spark"></div>
           </div>
-          <button class="scene-toggle" type="button" data-i18n="play">Play</button>
+          <button class="scene-toggle" type="button" data-i18n="pause">Пауза</button>
         </div>
 
         <div class="showcase-card" data-anim="hit">
           <div class="showcase-title-mini" data-i18n="showcase-hit">Hit FX</div>
-          <div class="mini-scene">
-            <div class="hero-orb hero-orb--scene"><span class="orb-crown">👑</span></div>
-            <div class="scene-obstacle"></div>
+          <div class="preview">
+            <div class="ball"><span class="orb-crown">👑</span></div>
+            <div class="enemy"></div>
+            <div class="impact-ring"></div>
+            <div class="impact-particle"></div>
           </div>
-          <button class="scene-toggle" type="button" data-i18n="play">Play</button>
+          <button class="scene-toggle" type="button" data-i18n="pause">Пауза</button>
         </div>
 
         <div class="showcase-card" data-anim="spawn">
           <div class="showcase-title-mini" data-i18n="showcase-spawn">Spawn</div>
-          <div class="mini-scene">
-            <div class="hero-orb hero-orb--scene"><span class="orb-crown">👑</span></div>
-            <div class="scene-obstacle"></div>
+          <div class="preview">
+            <div class="portal"></div>
+            <div class="ball ball--spawn"><span class="orb-crown">👑</span></div>
+            <div class="spawn-aura"></div>
           </div>
-          <button class="scene-toggle" type="button" data-i18n="play">Play</button>
+          <button class="scene-toggle" type="button" data-i18n="pause">Пауза</button>
         </div>
       </div>
 
@@ -1841,8 +2178,8 @@
                 'showcase-hit': 'Удар FX',
                 'showcase-spawn': 'Появление',
                 'demo-reel': 'Ролик анимаций геймплея (скоро)',
-                'play': 'Воспроизвести',
                 'pause': 'Пауза',
+                'continue': 'Продолжить',
                 'sfx-label': 'SFX:',
                 'sfx-on': 'ON',
                 'sfx-off': 'OFF',
@@ -1884,8 +2221,8 @@
                 'showcase-hit': 'Hit FX',
                 'showcase-spawn': 'Spawn',
                 'demo-reel': 'Gameplay Animation Reel (coming soon)',
-                'play': 'Play',
                 'pause': 'Pause',
+                'continue': 'Continue',
                 'sfx-label': 'SFX:',
                 'sfx-on': 'ON',
                 'sfx-off': 'OFF',
@@ -1927,8 +2264,8 @@
                 'showcase-hit': 'Удар FX',
                 'showcase-spawn': 'Поява',
                 'demo-reel': 'Ролик анімацій геймплею (незабаром)',
-                'play': 'Відтворити',
                 'pause': 'Пауза',
+                'continue': 'Продовжити',
                 'sfx-label': 'SFX:',
                 'sfx-on': 'ON',
                 'sfx-off': 'OFF',
@@ -2741,7 +3078,7 @@
         const button = card.querySelector('.scene-toggle');
         if (!button) return;
         const isPaused = card.classList.contains('is-paused');
-        const key = isPaused ? 'play' : 'pause';
+        const key = isPaused ? 'continue' : 'pause';
         const label = (translations[lang] && translations[lang][key]) ||
           (translations.en && translations.en[key]) || button.textContent;
         button.textContent = label;
