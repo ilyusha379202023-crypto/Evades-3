@@ -1380,32 +1380,6 @@
       will-change: transform, opacity;
     }
 
-    .preview .laser{
-      position: absolute;
-      left: 12px;
-      right: 12px;
-      top: 50%;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, #ffe38a, transparent);
-      box-shadow: 0 0 12px rgba(255, 215, 120, 0.9);
-      opacity: 0.9;
-      transform: translateY(-50%);
-      will-change: opacity;
-    }
-
-    .preview .slide-trail{
-      position: absolute;
-      left: 20px;
-      top: 62%;
-      width: 110px;
-      height: 5px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, rgba(255, 180, 120, 0.7), transparent);
-      opacity: 0;
-      filter: blur(1px);
-      will-change: transform, opacity;
-    }
-
     .preview .projectile{
       position: absolute;
       right: 10px;
@@ -1590,14 +1564,6 @@
       animation: dashFlash 1.5s ease-in-out infinite;
     }
 
-    .showcase-card[data-anim="slide"] .ball{
-      animation: slideMove 2s ease-in-out infinite;
-    }
-
-    .showcase-card[data-anim="slide"] .slide-trail{
-      animation: slideTrail 2s ease-in-out infinite;
-    }
-
     .showcase-card[data-anim="parry"] .projectile{
       animation: parryShot 2.4s ease-in-out infinite;
     }
@@ -1689,21 +1655,6 @@
       0%, 20% { opacity: 0; transform: translateY(-50%) scale(0.6); }
       26% { opacity: 1; transform: translateY(-50%) scale(1.2); }
       40% { opacity: 0; transform: translateY(-50%) scale(1.6); }
-      100% { opacity: 0; }
-    }
-
-    @keyframes slideMove{
-      0%, 20% { transform: translate(0, -50%) scale(1); }
-      36% { transform: translate(30px, -46%) scale(1.1, 0.72); }
-      60% { transform: translate(110px, -46%) scale(1.2, 0.7); }
-      78% { transform: translate(110px, -50%) scale(1.05, 1); }
-      100% { transform: translate(0, -50%) scale(1); }
-    }
-
-    @keyframes slideTrail{
-      0%, 30% { opacity: 0; transform: translateY(-50%) scaleX(0.3); }
-      52% { opacity: 0.85; transform: translateY(-50%) scaleX(1); }
-      78% { opacity: 0; transform: translateY(-50%) scaleX(0.4); }
       100% { opacity: 0; }
     }
 
@@ -2264,16 +2215,6 @@
           <button class="scene-toggle" type="button" data-i18n="pause">Пауза</button>
         </div>
 
-        <div class="showcase-card" data-anim="slide">
-          <div class="showcase-title-mini" data-i18n="showcase-slide">Slide</div>
-          <div class="preview">
-            <div class="laser"></div>
-            <div class="ball"><span class="orb-crown">👑</span></div>
-            <div class="slide-trail"></div>
-          </div>
-          <button class="scene-toggle" type="button" data-i18n="pause">Пауза</button>
-        </div>
-
         <div class="showcase-card" data-anim="parry">
           <div class="showcase-title-mini" data-i18n="showcase-parry">Parry</div>
           <div class="preview">
@@ -2329,7 +2270,6 @@
                 'showcase-subtitle': 'Быстрые микросцены анимаций в действии (ещё обновляются)',
                 'micro-previews-tip': 'Эти анимации — лишь превью. В реальной игре они будут намного круче.',
                 'showcase-dash': 'Рывок',
-                'showcase-slide': 'Скольжение',
                 'showcase-parry': 'Парирование',
                 'showcase-hit': 'Удар FX',
                 'showcase-spawn': 'Появление',
@@ -2373,7 +2313,6 @@
                 'showcase-subtitle': 'Quick micro-scenes of animation in action (still updating)',
                 'micro-previews-tip': 'These animations are just previews. In the actual game, they will be much cooler.',
                 'showcase-dash': 'Dash',
-                'showcase-slide': 'Slide',
                 'showcase-parry': 'Parry',
                 'showcase-hit': 'Hit FX',
                 'showcase-spawn': 'Spawn',
@@ -2417,7 +2356,6 @@
                 'showcase-subtitle': 'Швидкі мікросцени анімацій у дії (ще оновлюються)',
                 'micro-previews-tip': 'Ці анімації — лише превʼю. У реальній грі вони будуть набагато крутіші.',
                 'showcase-dash': 'Ривок',
-                'showcase-slide': 'Ковзання',
                 'showcase-parry': 'Парирування',
                 'showcase-hit': 'Удар FX',
                 'showcase-spawn': 'Поява',
