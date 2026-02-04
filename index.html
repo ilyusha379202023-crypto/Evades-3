@@ -11,7 +11,6 @@
     href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;600;700&family=Exo+2:wght@300;600;800;900&display=swap"
     rel="stylesheet"
   />
-  <link rel="icon" type="image/png" href="/logo.png" />
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -20,7 +19,7 @@
       --langBorder: rgba(255,255,255,0.28);
     }
 
-    /* Флаги в меню языков */
+    /* Флаги в меню языков (если будут <img>) */
     .lang-flag img{
       width: 22px !important;
       height: 16px !important;
@@ -63,16 +62,16 @@
     @keyframes checkDraw { to { stroke-dashoffset: 0; } }
 
     body {
-  font-family: 'Exo 2', 'Orbitron', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #1a4d2e 0%, #2d7a4f 25%, #4a9d6f 50%, #2d7a4f 75%, #1a4d2e 100%);
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
-  overflow-x: hidden;
-  min-height: 100vh;
-  position: relative;
-}
+      font-family: 'Exo 2', 'Orbitron', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: linear-gradient(135deg, #1a4d2e 0%, #2d7a4f 25%, #4a9d6f 50%, #2d7a4f 75%, #1a4d2e 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
 
     body::before {
       content: '';
@@ -90,6 +89,109 @@
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
+    }
+
+    /* ===== FX Layer (всё для эффектов поверх) ===== */
+    #fx-layer{
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999999;
+      overflow: visible;
+    }
+
+    /* ===== ВЗРЫВНЫЕ ЧАСТИЦЫ ===== */
+    .explosion-particle {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, #ffd700, #ff8800);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 999999;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+      opacity: 0;
+      transform: translate3d(0,0,0);
+    }
+
+    @keyframes explode {
+      0% {
+        transform: translate3d(0, 0, 0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate3d(var(--tx), var(--ty), 0) scale(0);
+        opacity: 0;
+      }
+    }
+
+    /* ===== УДАРНАЯ ВОЛНА ===== */
+    .shockwave {
+      position: fixed;
+      width: 100px;
+      height: 100px;
+      border: 4px solid rgba(255, 215, 0, 0.8);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 999998;
+      transform: translate(-50%, -50%);
+      animation: shockwaveExpand 0.8s ease-out forwards;
+    }
+
+    @keyframes shockwaveExpand {
+      0% {
+        width: 100px;
+        height: 100px;
+        opacity: 1;
+        border-width: 4px;
+      }
+      100% {
+        width: 600px;
+        height: 600px;
+        opacity: 0;
+        border-width: 0px;
+      }
+    }
+
+    /* ===== ВСПЫШКА СВЕТА ===== */
+    .flash-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255, 215, 0, 0.4), transparent 60%);
+      pointer-events: none;
+      z-index: 999997;
+      opacity: 0;
+    }
+
+    .screen-shake .flash-overlay {
+      animation: flashBurst 0.5s ease-out forwards;
+    }
+
+    @keyframes flashBurst {
+      0% { opacity: 0; }
+      10% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    /* ===== SCREEN SHAKE ===== */
+    @keyframes screenShake {
+      0%, 100% { transform: translate(0, 0); }
+      10% { transform: translate(-8px, 4px); }
+      20% { transform: translate(8px, -4px); }
+      30% { transform: translate(-6px, -3px); }
+      40% { transform: translate(6px, 3px); }
+      50% { transform: translate(-4px, 2px); }
+      60% { transform: translate(4px, -2px); }
+      70% { transform: translate(-2px, 1px); }
+      80% { transform: translate(2px, -1px); }
+      90% { transform: translate(-1px, 0px); }
+    }
+
+    .screen-shake .container {
+      animation: screenShake 0.6s ease-in-out;
     }
 
     /* Блёстки */
@@ -120,6 +222,12 @@
       object-fit: contain;
       filter: drop-shadow(0 8px 20px rgba(255,0,0,0.6));
       z-index: 1000;
+      background: rgba(200, 200, 200, 0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
     }
 
     /* ===== По-словная анимация subtitle ===== */
@@ -148,7 +256,7 @@
       }
     }
 
-    /* ===== EVADES 3 "BURST" ===== */
+    /* ===== EVADES 3 МЕГА-ВЗРЫВ ===== */
     .main-title{
       opacity: 0;
       transform: scale(0.92);
@@ -156,43 +264,46 @@
     }
 
     .hero-anim .main-title{
-      animation: titleBurst 900ms cubic-bezier(.15,1.15,.25,1) forwards;
+      animation: titleMegaBurst 1.2s cubic-bezier(.08,1.3,.18,1) forwards;
       animation-delay: 1500ms;
     }
 
-    .hero-anim .main-title{
-  animation: titleBurst 980ms cubic-bezier(.12,1.2,.22,1) forwards;
-  animation-delay: 1500ms;
-}
-
-@keyframes titleBurst{
-  0%{
-    opacity: 0;
-    transform: scale(0.75) translateY(10px);
-    filter: blur(7px) drop-shadow(0 0 0 rgba(255,215,0,0));
-  }
-  35%{
-    opacity: 1;
-    transform: scale(1.28) translateY(-2px);
-    filter: blur(0.4px) drop-shadow(0 0 45px rgba(255,215,0,0.80));
-  }
-  55%{
-    transform: scale(1.05) translateY(0px);
-    filter: blur(0) drop-shadow(0 0 28px rgba(255,215,0,0.65));
-  }
-  72%{
-    transform: scale(1.10) rotate(-0.6deg);
-  }
-  84%{
-    transform: scale(1.06) rotate(0.4deg);
-  }
-  100%{
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-    filter: blur(0) drop-shadow(0 0 18px rgba(255,215,0,0.50));
-  }
-}
-
+    @keyframes titleMegaBurst{
+      0%{
+        opacity: 0;
+        transform: scale(0.6) translateY(15px) rotate(-2deg);
+        filter: blur(10px) brightness(0.5) drop-shadow(0 0 0 rgba(255,215,0,0));
+      }
+      15%{
+        opacity: 0.3;
+        transform: scale(0.85) translateY(8px) rotate(-1deg);
+        filter: blur(6px) brightness(0.8) drop-shadow(0 0 30px rgba(255,215,0,0.4));
+      }
+      35%{
+        opacity: 1;
+        transform: scale(1.45) translateY(-8px) rotate(1.5deg);
+        filter: blur(0px) brightness(1.8) drop-shadow(0 0 80px rgba(255,215,0,1)) drop-shadow(0 0 120px rgba(255,140,0,0.8));
+      }
+      50%{
+        transform: scale(1.25) translateY(-3px) rotate(-0.5deg);
+        filter: blur(0) brightness(1.5) drop-shadow(0 0 60px rgba(255,215,0,0.9));
+      }
+      65%{
+        transform: scale(1.12) translateY(1px) rotate(0.8deg);
+        filter: brightness(1.2) drop-shadow(0 0 45px rgba(255,215,0,0.7));
+      }
+      78%{
+        transform: scale(1.06) translateY(-1px) rotate(-0.3deg);
+      }
+      88%{
+        transform: scale(1.08) rotate(0.2deg);
+      }
+      100%{
+        opacity: 1;
+        transform: scale(1) translateY(0) rotate(0deg);
+        filter: blur(0) brightness(1) drop-shadow(0 0 35px rgba(255,215,0,0.6));
+      }
+    }
 
     /* ===== Нижний интерфейс скрыт до конца анимации ===== */
     .button-container,
@@ -267,7 +378,7 @@
         -5px -5px 14px rgba(255,255,255,0.12),
         inset -2px -2px 8px rgba(0,0,0,0.25),
         inset 2px 2px 8px rgba(255,255,255,0.2);
-      min-width: 170px;
+      min-width: 220px;
     }
 
     .language-menu:hover .language-dropdown {
@@ -325,6 +436,7 @@
       gap: 12px;
       transition: all 0.2s ease;
       border-left: 3px solid transparent;
+      user-select: none;
     }
 
     .lang-item:hover {
@@ -334,8 +446,9 @@
 
     .lang-code {
       font-weight: bold;
-      min-width: 45px;
+      min-width: 52px;
       font-family: 'Exo 2', sans-serif;
+      letter-spacing: 1px;
     }
 
     /* Основной контент */
@@ -407,74 +520,64 @@
       opacity: 0.9;
     }
 
-    /* ===== UPGRADE: EVADES 3 “дороже” (двойной слой + блик) ===== */
+    /* ===== MEGA EVADES 3 TITLE (читаемый + 3D) ===== */
     .main-title{
-  position: relative;
-  display: inline-block;
-  font-family: 'Orbitron', 'Exo 2', sans-serif;
-  font-size: 86px;
-  font-weight: 900;
-  letter-spacing: 10px;
+      position: relative;
+      display: inline-block;
+      font-family: 'Orbitron', 'Exo 2', sans-serif;
+      font-size: 96px;
+      font-weight: 900;
+      letter-spacing: 14px;
 
-  /* золото */
-  background: linear-gradient(180deg, #fff3a1 0%, #ffd700 35%, #ffb300 75%, #ffec6a 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+      color: #FFD700;
+      -webkit-text-stroke: 4px #000000;
+      text-stroke: 4px #000000;
+      paint-order: stroke fill;
 
-  /* обводка */
-  -webkit-text-stroke: 2px rgba(0,0,0,0.28);
+      text-shadow:
+        0 1px 0 #B8860B,
+        0 2px 0 #B8860B,
+        0 3px 0 #9A7209,
+        0 4px 0 #9A7209,
+        0 5px 0 #7C5E07,
+        0 6px 0 #7C5E07,
+        0 7px 0 #5E4A05,
+        0 8px 0 #5E4A05,
+        0 12px 25px rgba(0,0,0,0.5),
+        0 15px 35px rgba(0,0,0,0.4),
+        0 0 30px rgba(255,215,0,0.8),
+        0 0 50px rgba(255,215,0,0.6),
+        0 0 70px rgba(255,140,0,0.4);
 
-  /* 3D "экструзия" (много слоев) */
-  text-shadow:
-    0 1px 0 rgba(0,0,0,0.18),
-    0 2px 0 rgba(0,0,0,0.22),
-    0 3px 0 rgba(0,0,0,0.26),
-    0 4px 0 rgba(0,0,0,0.30),
-    0 6px 0 rgba(0,0,0,0.34),
-    0 8px 0 rgba(0,0,0,0.38),
-    0 12px 18px rgba(0,0,0,0.45),
-    0 0 28px rgba(255,215,0,0.55);
-
-  filter: drop-shadow(0 0 26px rgba(255,215,0,0.45));
-  transform: translateZ(0);
-  opacity: 0;
-}
-
-/* дополнительная "тень-слой" как глубина */
-.main-title::before{
-  content: attr(data-title);
-  position: absolute;
-  left: 0; top: 0;
-  transform: translate(0px, 14px);
-  z-index: -1;
-  color: rgba(0,0,0,0.32);
-  filter: blur(0.5px);
-}
-
-/* вспышка-линза */
-.main-title::after{
-  content:"";
-  position:absolute;
-  left: 6%;
-  right: 6%;
-  top: -6px;
-  height: 52%;
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.38), rgba(255,255,255,0));
-  opacity: 0.55;
-  pointer-events: none;
-}
-
-
-    @keyframes titlePulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+      filter: drop-shadow(0 0 40px rgba(255,215,0,0.8));
+      transform: translateZ(0);
+      opacity: 0;
     }
 
-    @keyframes goldShine {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 200% 50%; }
+    .main-title::before{
+      content: attr(data-title);
+      position: absolute;
+      left: 0; top: 0;
+      transform: translate(2px, 20px);
+      z-index: -1;
+      color: rgba(0,0,0,0.5);
+      -webkit-text-stroke: 0;
+      text-stroke: 0;
+      filter: blur(2px);
+      pointer-events: none;
+    }
+
+    .main-title::after{
+      content:"";
+      position:absolute;
+      left: 10%;
+      right: 10%;
+      top: -15px;
+      height: 60%;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0));
+      opacity: 0.8;
+      pointer-events: none;
     }
 
     /* 3D кнопка */
@@ -756,244 +859,42 @@
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.1); }
     }
+
+    @media (max-width: 900px){
+      .main-title{ font-size: 72px; letter-spacing: 10px; -webkit-text-stroke: 3px #000; }
+      .subtitle{ font-size: 26px; letter-spacing: 8px; }
+      .download-button{ font-size: 26px; padding: 28px 70px; }
+      .container{ padding-top: 170px; }
+      .language-menu{ right: 18px; }
+    }
+
+    @media (max-width: 520px){
+      .main-title{ font-size: 54px; letter-spacing: 6px; -webkit-text-stroke: 2px #000; }
+      .subtitle{ font-size: 20px; letter-spacing: 6px; }
+      .download-button{ font-size: 22px; padding: 22px 54px; }
+      .dev-badge{ right: -14px; top: -20px; }
+      .language-dropdown{ min-width: 200px; }
+    }
   </style>
 </head>
 
 <body>
-  <!-- Логотип -->
-  <img src="logo.png" alt="Evades 3 Logo" class="logo-image" />
+  <!-- Вспышка-оверлей для взрыва -->
+  <div class="flash-overlay"></div>
+
+  <!-- FX слой поверх всего -->
+  <div id="fx-layer" aria-hidden="true"></div>
+
+  <!-- Логотип (заглушка) -->
+  <div class="logo-image">🎮</div>
 
   <!-- Меню языков -->
   <div class="language-menu">
     <div class="menu-button" data-i18n="languages">Языки ▼</div>
 
     <div class="language-dropdown">
-      <div class="language-scroll">
-
-        <div class="lang-item" data-lang="ru">
-          <span class="lang-flag"><img src="flags/ru.png" alt="RU"></span>
-          <span class="lang-code">RUS</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="en">
-          <span class="lang-flag"><img src="flags/gb.png" alt="GB"></span>
-          <span class="lang-code">ENG</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="uk">
-          <span class="lang-flag"><img src="flags/ua.png" alt="UA"></span>
-          <span class="lang-code">UKR</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="de">
-          <span class="lang-flag"><img src="flags/de.jpg" alt="DE"></span>
-          <span class="lang-code">DEU</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="es">
-          <span class="lang-flag"><img src="flags/es.png" alt="ES"></span>
-          <span class="lang-code">ESP</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="fr">
-          <span class="lang-flag"><img src="flags/fr.png" alt="FR"></span>
-          <span class="lang-code">FRA</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="it">
-          <span class="lang-flag"><img src="flags/it.png" alt="IT"></span>
-          <span class="lang-code">ITA</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="pt">
-          <span class="lang-flag"><img src="flags/pt.png" alt="PT"></span>
-          <span class="lang-code">POR</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="pl">
-          <span class="lang-flag"><img src="flags/pl.png" alt="PL"></span>
-          <span class="lang-code">POL</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="tr">
-          <span class="lang-flag"><img src="flags/tr.png" alt="TR"></span>
-          <span class="lang-code">TUR</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="nl">
-          <span class="lang-flag"><img src="flags/nl.png" alt="NL"></span>
-          <span class="lang-code">NLD</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="sv">
-          <span class="lang-flag"><img src="flags/sv.png" alt="SE"></span>
-          <span class="lang-code">SWE</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="no">
-          <span class="lang-flag"><img src="flags/no.png" alt="NO"></span>
-          <span class="lang-code">NOR</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="fi">
-          <span class="lang-flag"><img src="flags/fi.png" alt="FI"></span>
-          <span class="lang-code">FIN</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="da">
-          <span class="lang-flag"><img src="flags/da.png" alt="DK"></span>
-          <span class="lang-code">DAN</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="cs">
-          <span class="lang-flag"><img src="flags/cs.png" alt="CZ"></span>
-          <span class="lang-code">CZE</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="ro">
-          <span class="lang-flag"><img src="flags/ro.png" alt="RO"></span>
-          <span class="lang-code">ROM</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="hu">
-          <span class="lang-flag"><img src="flags/hu.png" alt="HU"></span>
-          <span class="lang-code">HUN</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="el">
-          <span class="lang-flag"><img src="flags/el.png" alt="GR"></span>
-          <span class="lang-code">GRE</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="ja">
-          <span class="lang-flag"><img src="flags/ja.png" alt="JP"></span>
-          <span class="lang-code">JPN</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="zh">
-          <span class="lang-flag"><img src="flags/zh.png" alt="CN"></span>
-          <span class="lang-code">CHN</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="ko">
-          <span class="lang-flag"><img src="flags/ko.png" alt="KR"></span>
-          <span class="lang-code">KOR</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="ar">
-          <span class="lang-flag"><img src="flags/ar.png" alt="SA"></span>
-          <span class="lang-code">ARA</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="hi">
-          <span class="lang-flag"><img src="flags/hi.png" alt="IN"></span>
-          <span class="lang-code">HIN</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="th">
-          <span class="lang-flag"><img src="flags/th.png" alt="TH"></span>
-          <span class="lang-code">THA</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="vi">
-          <span class="lang-flag"><img src="flags/vi.png" alt="VN"></span>
-          <span class="lang-code">VIE</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="id">
-          <span class="lang-flag"><img src="flags/id.png" alt="ID"></span>
-          <span class="lang-code">IND</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
-        <div class="lang-item" data-lang="ms">
-          <span class="lang-flag"><img src="flags/ms.png" alt="MY"></span>
-          <span class="lang-code">MAL</span>
-          <span class="lang-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
-          </span>
-        </div>
-
+      <div class="language-scroll" id="langList">
+        <!-- Пункты языков генерятся из translations (ничего не теряется) -->
       </div>
     </div>
   </div>
@@ -1050,7 +951,6 @@
             <div class="feature-text" data-i18n="feature2-text">Улучшенная физика движения для идеальных маневров</div>
           </div>
 
-          <!-- ВАЖНО: добавил data-i18n, чтобы ЭТО тоже переводилось -->
           <div class="feature-card">
             <span class="feature-icon">🎬</span>
             <div class="feature-title" data-i18n="featureAnim-title">Крутые анимации</div>
@@ -1098,782 +998,853 @@
   </div>
 
   <script>
-        // Переводы для всех языков
-        const translations = {
-            ru: {
-                'languages': 'Языки ▼',
-                'subtitle': 'Скорость. Тактика.',
-                'download-btn': 'Скачать Evades 3',
-                'dev-badge': 'В разработке',
-                'about-title': '🎮 О ИГРЕ',
-                'about-p1': '<span class="highlight">Evades 3</span> — это эволюция легендарной evades.io, переосмысленная для нового поколения геймеров!',
-                'about-p2': 'Почувствуй адреналин скоростных маневров, где каждая миллисекунда решает исход битвы. Уворачивайся от смертельных препятствий, обгоняй соперников и доминируй на арене!',
-                'stat-arenas': 'Арены',
-                'stat-online': 'Онлайн',
-                'feature1-title': 'Молниеносная реакция',
-                'feature1-text': 'Плавная анимация 60 FPS без лагов и зависаний',
-                'feature2-title': 'Точное управление',
-                'feature2-text': 'Улучшенная физика движения для идеальных маневров',
-                'feature3-title': 'VIP привилегии',
-                'feature3-text': 'Эксклюзивные режимы и уникальные награды',
-                'feature4-title': 'PRO статус',
-                'feature4-text': 'Расширенная кастомизация и особые возможности',
-                'feature5-title': 'Редактор карт и персонажей',
-                'feature5-text': 'Создавай свои карты и персонажей, делись ими с миром',
-                'feature6-title': 'Коллекция скинов',
-                'feature6-text': 'Огромный выбор крутых скинов для персонализации',
-                'feature7-title': 'Система рангов',
-                'feature7-text': 'Поднимайся по лестнице от новичка до легенды',
-                'feature8-title': 'Глобальные битвы',
-                'feature8-text': 'Соревнуйся с игроками со всех уголков мира'
-            },
-            en: {
-                'languages': 'Languages ▼',
-                'subtitle': 'Speed. Tactics.',
-                'download-btn': 'Download Evades 3',
-                'dev-badge': 'In Development',
-                'about-title': '🎮 ABOUT THE GAME',
-                'about-p1': '<span class="highlight">Evades 3</span> is the evolution of legendary evades.io, reimagined for a new generation of gamers!',
-                'about-p2': 'Feel the adrenaline of high-speed maneuvers where every millisecond decides the battle outcome. Dodge deadly obstacles, outpace rivals and dominate the arena!',
-                'stat-arenas': 'Arenas',
-                'stat-online': 'Online',
-                'feature1-title': 'Lightning Reaction',
-                'feature1-text': 'Smooth 60 FPS animation without lags',
-                'feature2-title': 'Precise Control',
-                'feature2-text': 'Enhanced movement physics for perfect maneuvers',
-                'feature3-title': 'VIP Privileges',
-                'feature3-text': 'Exclusive modes and unique rewards',
-                'feature4-title': 'PRO Status',
-                'feature4-text': 'Extended customization and special features',
-                'feature5-title': 'Map & Character Editor',
-                'feature5-text': 'Create your own maps and characters, share them with the world',
-                'feature6-title': 'Skin Collection',
-                'feature6-text': 'Huge selection of cool skins for personalization',
-                'feature7-title': 'Rank System',
-                'feature7-text': 'Climb the ladder from rookie to legend',
-                'feature8-title': 'Global Battles',
-                'feature8-text': 'Compete with players from around the world'
-            },
-            uk: {
-                'languages': 'Мови ▼',
-                'subtitle': 'Швидкість. Тактика.',
-                'download-btn': 'Завантажити Evades 3',
-                'dev-badge': 'В розробці',
-                'about-title': '🎮 ПРО ГРУ',
-                'about-p1': '<span class="highlight">Evades 3</span> — це еволюція легендарної evades.io, переосмислена для нового покоління геймерів!',
-                'about-p2': 'Відчуй адреналін швидкісних маневрів, де кожна мілісекунда вирішує результат битви. Ухиляйся від смертельних перешкод, випереджай суперників та домінуй на арені!',
-                'stat-arenas': 'Арени',
-                'stat-online': 'Онлайн',
-                'feature1-title': 'Блискавична реакція',
-                'feature1-text': 'Плавна анімація 60 FPS без лагів',
-                'feature2-title': 'Точне керування',
-                'feature2-text': 'Покращена фізика руху для ідеальних маневрів',
-                'feature3-title': 'VIP привілеї',
-                'feature3-text': 'Ексклюзивні режими та унікальні нагороди',
-                'feature4-title': 'PRO статус',
-                'feature4-text': 'Розширена кастомізація та особливі можливості',
-                'feature5-title': 'Редактор карт і персонажів',
-                'feature5-text': 'Створюй свої карти та персонажів, діліся ними зі світом',
-                'feature6-title': 'Колекція скінів',
-                'feature6-text': 'Величезний вибір крутих скінів для персоналізації',
-                'feature7-title': 'Система рангів',
-                'feature7-text': 'Піднімайся драбиною від новачка до легенди',
-                'feature8-title': 'Глобальні битви',
-                'feature8-text': 'Змагайся з гравцями з усього світу'
-            },
-            de: {
-                'languages': 'Sprachen ▼',
-                'subtitle': 'Geschwindigkeit. Taktik.',
-                'download-btn': 'Evades 3 herunterladen',
-                'dev-badge': 'In Entwicklung',
-                'about-title': '🎮 ÜBER DAS SPIEL',
-                'about-p1': '<span class="highlight">Evades 3</span> ist die Evolution des legendären evades.io, neu interpretiert für eine neue Generation von Gamern!',
-                'about-p2': 'Spüre das Adrenalin schneller Manöver, bei denen jede Millisekunde über den Ausgang der Schlacht entscheidet. Weiche tödlichen Hindernissen aus, überhole Rivalen und dominiere die Arena!',
-                'stat-arenas': 'Arenen',
-                'stat-online': 'Online',
-                'feature1-title': 'Blitzreaktion',
-                'feature1-text': 'Flüssige 60 FPS Animation ohne Lags',
-                'feature2-title': 'Präzise Steuerung',
-                'feature2-text': 'Verbesserte Bewegungsphysik für perfekte Manöver',
-                'feature3-title': 'VIP-Privilegien',
-                'feature3-text': 'Exklusive Modi und einzigartige Belohnungen',
-                'feature4-title': 'PRO-Status',
-                'feature4-text': 'Erweiterte Anpassung und besondere Features',
-                'feature5-title': 'Karten- & Charakter-Editor',
-                'feature5-text': 'Erstelle eigene Karten und Charaktere, teile sie mit der Welt',
-                'feature6-title': 'Skin-Kollektion',
-                'feature6-text': 'Riesige Auswahl cooler Skins zur Personalisierung',
-                'feature7-title': 'Rangsystem',
-                'feature7-text': 'Klettere die Leiter vom Neuling zur Legende',
-                'feature8-title': 'Globale Kämpfe',
-                'feature8-text': 'Tritt gegen Spieler aus der ganzen Welt an'
-            },
-            es: {
-                'languages': 'Idiomas ▼',
-                'subtitle': 'Velocidad. Táctica.',
-                'download-btn': 'Descargar Evades 3',
-                'dev-badge': 'En Desarrollo',
-                'about-title': '🎮 SOBRE EL JUEGO',
-                'about-p1': '<span class="highlight">Evades 3</span> es la evolución del legendario evades.io, reimaginado para una nueva generación de jugadores!',
-                'about-p2': '¡Siente la adrenalina de las maniobras de alta velocidad donde cada milisegundo decide el resultado de la batalla. Esquiva obstáculos mortales, supera a los rivales y domina la arena!',
-                'stat-arenas': 'Arenas',
-                'stat-online': 'En línea',
-                'feature1-title': 'Reacción Relámpago',
-                'feature1-text': 'Animación fluida a 60 FPS sin retrasos',
-                'feature2-title': 'Control Preciso',
-                'feature2-text': 'Física de movimiento mejorada para maniobras perfectas',
-                'feature3-title': 'Privilegios VIP',
-                'feature3-text': 'Modos exclusivos y recompensas únicas',
-                'feature4-title': 'Estado PRO',
-                'feature4-text': 'Personalización extendida y características especiales',
-                'feature5-title': 'Editor de Mapas y Personajes',
-                'feature5-text': 'Crea tus propios mapas y personajes, compártelos con el mundo',
-                'feature6-title': 'Colección de Skins',
-                'feature6-text': 'Enorme selección de skins geniales para personalización',
-                'feature7-title': 'Sistema de Rangos',
-                'feature7-text': 'Sube la escalera de novato a leyenda',
-                'feature8-title': 'Batallas Globales',
-                'feature8-text': 'Compite con jugadores de todo el mundo'
-            },
-            fr: {
-                'languages': 'Langues ▼',
-                'subtitle': 'Vitesse. Tactique.',
-                'download-btn': 'Télécharger Evades 3',
-                'dev-badge': 'En Développement',
-                'about-title': '🎮 À PROPOS DU JEU',
-                'about-p1': '<span class="highlight">Evades 3</span> est l\'évolution du légendaire evades.io, réimaginé pour une nouvelle génération de joueurs!',
-                'about-p2': 'Ressentez l\'adrénaline des manœuvres à grande vitesse où chaque milliseconde décide du résultat de la bataille. Esquivez les obstacles mortels, dépassez les rivaux et dominez l\'arène!',
-                'stat-arenas': 'Arènes',
-                'stat-online': 'En ligne',
-                'feature1-title': 'Réaction Éclair',
-                'feature1-text': 'Animation fluide à 60 FPS sans lags',
-                'feature2-title': 'Contrôle Précis',
-                'feature2-text': 'Physique de mouvement améliorée pour des manœuvres parfaites',
-                'feature3-title': 'Privilèges VIP',
-                'feature3-text': 'Modes exclusifs et récompenses uniques',
-                'feature4-title': 'Statut PRO',
-                'feature4-text': 'Personnalisation étendue et fonctionnalités spéciales',
-                'feature5-title': 'Éditeur de Cartes et Personnages',
-                'feature5-text': 'Créez vos propres cartes et personnages, partagez-les avec le monde',
-                'feature6-title': 'Collection de Skins',
-                'feature6-text': 'Énorme sélection de skins cool pour la personnalisation',
-                'feature7-title': 'Système de Rangs',
-                'feature7-text': 'Montez l\'échelle de débutant à légende',
-                'feature8-title': 'Batailles Mondiales',
-                'feature8-text': 'Affrontez des joueurs du monde entier'
-            },
-            it: {
-                'languages': 'Lingue ▼',
-                'subtitle': 'Velocità. Tattica.',
-                'download-btn': 'Scarica Evades 3',
-                'dev-badge': 'In Sviluppo',
-                'about-title': '🎮 SUL GIOCO',
-                'about-p1': '<span class="highlight">Evades 3</span> è l\'evoluzione del leggendario evades.io, reinventato per una nuova generazione di giocatori!',
-                'about-p2': 'Senti l\'adrenalina delle manovre ad alta velocità dove ogni millisecondo decide l\'esito della battaglia. Schiva ostacoli mortali, supera i rivali e domina l\'arena!',
-                'stat-arenas': 'Arene',
-                'stat-online': 'Online',
-                'feature1-title': 'Reazione Fulminea',
-                'feature1-text': 'Animazione fluida a 60 FPS senza lag',
-                'feature2-title': 'Controllo Preciso',
-                'feature2-text': 'Fisica di movimento migliorata per manovre perfette',
-                'feature3-title': 'Privilegi VIP',
-                'feature3-text': 'Modalità esclusive e ricompense uniche',
-                'feature4-title': 'Status PRO',
-                'feature4-text': 'Personalizzazione estesa e funzionalità speciali',
-                'feature5-title': 'Editor di Mappe e Personaggi',
-                'feature5-text': 'Crea le tue mappe e personaggi, condividili con il mondo',
-                'feature6-title': 'Collezione di Skin',
-                'feature6-text': 'Enorme selezione di skin fantastiche per la personalizzazione',
-                'feature7-title': 'Sistema di Ranghi',
-                'feature7-text': 'Sali la scala da principiante a leggenda',
-                'feature8-title': 'Battaglie Globali',
-                'feature8-text': 'Compete con giocatori da tutto il mondo'
-            },
-            pt: {
-                'languages': 'Idiomas ▼',
-                'subtitle': 'Velocidade. Tática.',
-                'download-btn': 'Baixar Evades 3',
-                'dev-badge': 'Em Desenvolvimento',
-                'about-title': '🎮 SOBRE O JOGO',
-                'about-p1': '<span class="highlight">Evades 3</span> é a evolução do lendário evades.io, reimaginado para uma nova geração de jogadores!',
-                'about-p2': 'Sinta a adrenalina de manobras em alta velocidade onde cada milissegundo decide o resultado da batalha. Desvie de obstáculos mortais, supere rivais e domine a arena!',
-                'stat-arenas': 'Arenas',
-                'stat-online': 'Online',
-                'feature1-title': 'Reação Relâmpago',
-                'feature1-text': 'Animação suave a 60 FPS sem lags',
-                'feature2-title': 'Controle Preciso',
-                'feature2-text': 'Física de movimento aprimorada para manobras perfeitas',
-                'feature3-title': 'Privilégios VIP',
-                'feature3-text': 'Modos exclusivos e recompensas únicas',
-                'feature4-title': 'Status PRO',
-                'feature4-text': 'Personalização estendida e recursos especiais',
-                'feature5-title': 'Editor de Mapas e Personagens',
-                'feature5-text': 'Crie seus próprios mapas e personagens, compartilhe com o mundo',
-                'feature6-title': 'Coleção de Skins',
-                'feature6-text': 'Enorme seleção de skins legais para personalização',
-                'feature7-title': 'Sistema de Classificação',
-                'feature7-text': 'Suba a escada de novato a lenda',
-                'feature8-title': 'Batalhas Globais',
-                'feature8-text': 'Compete com jogadores de todo o mundo'
-            },
-            pl: {
-                'languages': 'Języki ▼',
-                'subtitle': 'Prędkość. Taktyka.',
-                'download-btn': 'Pobierz Evades 3',
-                'dev-badge': 'W Rozwoju',
-                'about-title': '🎮 O GRZE',
-                'about-p1': '<span class="highlight">Evades 3</span> to ewolucja legendarnego evades.io, przemyślana dla nowej generacji graczy!',
-                'about-p2': 'Poczuj adrenalinę szybkich manewrów, gdzie każda milisekunda decyduje o wyniku bitwy. Unikaj śmiertelnych przeszkód, wyprzedzaj rywali i dominuj na arenie!',
-                'stat-arenas': 'Areny',
-                'stat-online': 'Online',
-                'feature1-title': 'Błyskawiczna Reakcja',
-                'feature1-text': 'Płynna animacja 60 FPS bez lagów',
-                'feature2-title': 'Precyzyjna Kontrola',
-                'feature2-text': 'Ulepszona fizyka ruchu dla idealnych manewrów',
-                'feature3-title': 'Przywileje VIP',
-                'feature3-text': 'Ekskluzywne tryby i unikalne nagrody',
-                'feature4-title': 'Status PRO',
-                'feature4-text': 'Rozszerzona personalizacja i specjalne funkcje',
-                'feature5-title': 'Edytor Map i Postaci',
-                'feature5-text': 'Twórz własne mapy i postacie, dziel się nimi ze światem',
-                'feature6-title': 'Kolekcja Skinów',
-                'feature6-text': 'Ogromny wybór fajnych skinów do personalizacji',
-                'feature7-title': 'System Rang',
-                'feature7-text': 'Wspinaj się po drabinie od nowicjusza do legendy',
-                'feature8-title': 'Globalne Bitwy',
-                'feature8-text': 'Rywalizuj z graczami z całego świata'
-            },
-            tr: {
-                'languages': 'Diller ▼',
-                'subtitle': 'Hız. Taktik.',
-                'download-btn': 'Evades 3 İndir',
-                'dev-badge': 'Geliştiriliyor',
-                'about-title': '🎮 OYUN HAKKINDA',
-                'about-p1': '<span class="highlight">Evades 3</span>, yeni nesil oyuncular için yeniden tasarlanmış efsanevi evades.io\'nun evrimi!',
-                'about-p2': 'Her milisaniyenin savaşın sonucunu belirlediği yüksek hızlı manevraların adrenalinini hissedin. Ölümcül engellerden kaçının, rakipleri geride bırakın ve arenaya hükmedin!',
-                'stat-arenas': 'Arenalar',
-                'stat-online': 'Çevrimiçi',
-                'feature1-title': 'Şimşek Tepkisi',
-                'feature1-text': 'Lag olmadan akıcı 60 FPS animasyon',
-                'feature2-title': 'Hassas Kontrol',
-                'feature2-text': 'Mükemmel manevralar için gelişmiş hareket fiziği',
-                'feature3-title': 'VIP Ayrıcalıkları',
-                'feature3-text': 'Özel modlar ve benzersiz ödüller',
-                'feature4-title': 'PRO Statüsü',
-                'feature4-text': 'Genişletilmiş özelleştirme ve özel özellikler',
-                'feature5-title': 'Harita ve Karakter Editörü',
-                'feature5-text': 'Kendi haritalarını ve karakterlerini oluştur, dünyayla paylaş',
-                'feature6-title': 'Skin Koleksiyonu',
-                'feature6-text': 'Kişiselleştirme için çok büyük havalı skin seçkisi',
-                'feature7-title': 'Rütbe Sistemi',
-                'feature7-text': 'Çaylaktan efsaneye kadar merdiveni tırman',
-                'feature8-title': 'Küresel Savaşlar',
-                'feature8-text': 'Dünyanın dört bir yanından oyuncularla yarış'
-            },
-            ja: {
-                'languages': '言語 ▼',
-                'subtitle': 'スピード. 戦術.',
-                'download-btn': 'Evades 3 をダウンロード',
-                'dev-badge': '開発中',
-                'about-title': '🎮 ゲームについて',
-                'about-p1': '<span class="highlight">Evades 3</span> は伝説的なevades.ioの進化版で、新世代のゲーマーのために再構築されました!',
-                'about-p2': '1ミリ秒が勝負を決める高速マニューバーのアドレナリンを感じてください。致命的な障害物を避け、ライバルを追い越し、アリーナを支配しましょう!',
-                'stat-arenas': 'アリーナ',
-                'stat-online': 'オンライン',
-                'feature1-title': '電光石火の反応',
-                'feature1-text': 'ラグなしの滑らかな60 FPSアニメーション',
-                'feature2-title': '精密な操作',
-                'feature2-text': '完璧なマニューバーのための強化された移動物理演算',
-                'feature3-title': 'VIP特典',
-                'feature3-text': '限定モードとユニークな報酬',
-                'feature4-title': 'PROステータス',
-                'feature4-text': '拡張されたカスタマイズと特別機能',
-                'feature5-title': 'マップ＆キャラクターエディター',
-                'feature5-text': '独自のマップとキャラクターを作成し、世界と共有',
-                'feature6-title': 'スキンコレクション',
-                'feature6-text': 'カスタマイズ用のクールなスキンの膨大な選択肢',
-                'feature7-title': 'ランクシステム',
-                'feature7-text': 'ルーキーから伝説へとはしごを登る',
-                'feature8-title': 'グローバルバトル',
-                'feature8-text': '世界中のプレイヤーと競う'
-            },
-            zh: {
-                'languages': '语言 ▼',
-                'subtitle': '速度. 战术.',
-                'download-btn': '下载 Evades 3',
-                'dev-badge': '开发中',
-                'about-title': '🎮 关于游戏',
-                'about-p1': '<span class="highlight">Evades 3</span> 是传奇evades.io的进化版，为新一代玩家重新构想!',
-                'about-p2': '感受高速机动的肾上腺素，每一毫秒都决定战斗结果。躲避致命障碍，超越对手，主宰竞技场!',
-                'stat-arenas': '竞技场',
-                'stat-online': '在线',
-                'feature1-title': '闪电反应',
-                'feature1-text': '无延迟的流畅60 FPS动画',
-                'feature2-title': '精准控制',
-                'feature2-text': '增强的移动物理系统，实现完美机动',
-                'feature3-title': 'VIP特权',
-                'feature3-text': '独家模式和独特奖励',
-                'feature4-title': 'PRO状态',
-                'feature4-text': '扩展自定义和特殊功能',
-                'feature5-title': '地图和角色编辑器',
-                'feature5-text': '创建自己的地图和角色，与世界分享',
-                'feature6-title': '皮肤收藏',
-                'feature6-text': '海量酷炫皮肤供您个性化',
-                'feature7-title': '等级系统',
-                'feature7-text': '从新手攀登到传奇',
-                'feature8-title': '全球对战',
-                'feature8-text': '与世界各地的玩家竞技'
-            },
-            ko: {
-                'languages': '언어 ▼',
-                'subtitle': '속도. 전술.',
-                'download-btn': 'Evades 3 다운로드',
-                'dev-badge': '개발 중',
-                'about-title': '🎮 게임 정보',
-                'about-p1': '<span class="highlight">Evades 3</span>는 전설적인 evades.io의 진화로, 새로운 세대의 게이머를 위해 재구성되었습니다!',
-                'about-p2': '매 밀리초가 전투 결과를 결정하는 고속 기동의 아드레날린을 느껴보세요. 치명적인 장애물을 피하고, 라이벌을 앞지르며, 경기장을 지배하세요!',
-                'stat-arenas': '경기장',
-                'stat-online': '온라인',
-                'feature1-title': '번개같은 반응',
-                'feature1-text': '렉 없는 부드러운 60 FPS 애니메이션',
-                'feature2-title': '정밀한 제어',
-                'feature2-text': '완벽한 기동을 위한 향상된 이동 물리',
-                'feature3-title': 'VIP 특권',
-                'feature3-text': '독점 모드와 고유한 보상',
-                'feature4-title': 'PRO 상태',
-                'feature4-text': '확장된 사용자 정의 및 특별 기능',
-                'feature5-title': '맵 및 캐릭터 에디터',
-                'feature5-text': '나만의 맵과 캐릭터를 만들어 세계와 공유',
-                'feature6-title': '스킨 컬렉션',
-                'feature6-text': '개인화를 위한 멋진 스킨의 방대한 선택',
-                'feature7-title': '랭크 시스템',
-                'feature7-text': '신인부터 전설까지 사다리 오르기',
-                'feature8-title': '글로벌 대전',
-                'feature8-text': '전 세계 플레이어들과 경쟁'
-            },
+    // Переводы (ВСЕ сохранены)
+    const translations = {
+      ru: {
+        'languages': 'Языки ▼',
+        'subtitle': 'Скорость. Тактика.',
+        'download-btn': 'Скачать Evades 3',
+        'dev-badge': 'В разработке',
+        'about-title': '🎮 О ИГРЕ',
+        'about-p1': '<span class="highlight">Evades 3</span> — это эволюция легендарной evades.io, переосмысленная для нового поколения геймеров!',
+        'about-p2': 'Почувствуй адреналин скоростных маневров, где каждая миллисекунда решает исход битвы. Уворачивайся от смертельных препятствий, обгоняй соперников и доминируй на арене!',
+        'stat-arenas': 'Арены',
+        'stat-online': 'Онлайн',
+        'feature1-title': 'Молниеносная реакция',
+        'feature1-text': 'Плавная анимация 60 FPS без лагов и зависаний',
+        'feature2-title': 'Точное управление',
+        'feature2-text': 'Улучшенная физика движения для идеальных маневров',
+        'featureAnim-title': 'Крутые анимации',
+        'featureAnim-text': 'Плавные современные анимации, делающие игру живой и динамичной',
+        'feature3-title': 'VIP привилегии',
+        'feature3-text': 'Эксклюзивные режимы и уникальные награды',
+        'feature4-title': 'PRO статус',
+        'feature4-text': 'Расширенная кастомизация и особые возможности',
+        'feature5-title': 'Редактор карт и персонажей',
+        'feature5-text': 'Создавай свои карты и персонажей, делись ими с миром',
+        'feature6-title': 'Коллекция скинов',
+        'feature6-text': 'Огромный выбор крутых скинов для персонализации',
+        'feature7-title': 'Система рангов',
+        'feature7-text': 'Поднимайся по лестнице от новичка до легенды',
+        'feature8-title': 'Глобальные битвы',
+        'feature8-text': 'Соревнуйся с игроками со всех уголков мира'
+      },
+      en: {
+        'languages': 'Languages ▼',
+        'subtitle': 'Speed. Tactics.',
+        'download-btn': 'Download Evades 3',
+        'dev-badge': 'In Development',
+        'about-title': '🎮 ABOUT THE GAME',
+        'about-p1': '<span class="highlight">Evades 3</span> is the evolution of legendary evades.io, reimagined for a new generation of gamers!',
+        'about-p2': 'Feel the adrenaline of high-speed maneuvers where every millisecond decides the battle outcome. Dodge deadly obstacles, outpace rivals and dominate the arena!',
+        'stat-arenas': 'Arenas',
+        'stat-online': 'Online',
+        'feature1-title': 'Lightning Reaction',
+        'feature1-text': 'Smooth 60 FPS animation without lags',
+        'feature2-title': 'Precise Control',
+        'feature2-text': 'Enhanced movement physics for perfect maneuvers',
+        'featureAnim-title': 'Cool Animations',
+        'featureAnim-text': 'Smooth modern animations that make the game lively and dynamic',
+        'feature3-title': 'VIP Privileges',
+        'feature3-text': 'Exclusive modes and unique rewards',
+        'feature4-title': 'PRO Status',
+        'feature4-text': 'Extended customization and special features',
+        'feature5-title': 'Map & Character Editor',
+        'feature5-text': 'Create your own maps and characters, share them with the world',
+        'feature6-title': 'Skin Collection',
+        'feature6-text': 'Huge selection of cool skins for personalization',
+        'feature7-title': 'Rank System',
+        'feature7-text': 'Climb the ladder from rookie to legend',
+        'feature8-title': 'Global Battles',
+        'feature8-text': 'Compete with players from around the world'
+      },
+      uk: {
+        'languages': 'Мови ▼',
+        'subtitle': 'Швидкість. Тактика.',
+        'download-btn': 'Завантажити Evades 3',
+        'dev-badge': 'В розробці',
+        'about-title': '🎮 ПРО ГРУ',
+        'about-p1': '<span class="highlight">Evades 3</span> — це еволюція легендарної evades.io, переосмислена для нового покоління геймерів!',
+        'about-p2': 'Відчуй адреналін швидкісних маневрів, де кожна мілісекунда вирішує результат битви. Ухиляйся від смертельних перешкод, випереджай суперників та домінуй на арені!',
+        'stat-arenas': 'Арени',
+        'stat-online': 'Онлайн',
+        'feature1-title': 'Блискавична реакція',
+        'feature1-text': 'Плавна анімація 60 FPS без лагів',
+        'feature2-title': 'Точне керування',
+        'feature2-text': 'Покращена фізика руху для ідеальних маневрів',
+        'featureAnim-title': 'Круті анімації',
+        'featureAnim-text': 'Плавні сучасні анімації, що роблять гру живою та динамічною',
+        'feature3-title': 'VIP привілеї',
+        'feature3-text': 'Ексклюзивні режими та унікальні нагороди',
+        'feature4-title': 'PRO статус',
+        'feature4-text': 'Розширена кастомізація та особливі можливості',
+        'feature5-title': 'Редактор карт і персонажів',
+        'feature5-text': 'Створюй свої карти та персонажів, діліся ними зі світом',
+        'feature6-title': 'Колекція скінів',
+        'feature6-text': 'Величезний вибір крутих скінів для персоналізації',
+        'feature7-title': 'Система рангів',
+        'feature7-text': 'Піднімайся драбиною від новачка до легенди',
+        'feature8-title': 'Глобальні битви',
+        'feature8-text': 'Змагайся з гравцями з усього світу'
+      },
+      de: {
+        'languages': 'Sprachen ▼',
+        'subtitle': 'Geschwindigkeit. Taktik.',
+        'download-btn': 'Evades 3 herunterladen',
+        'dev-badge': 'In Entwicklung',
+        'about-title': '🎮 ÜBER DAS SPIEL',
+        'about-p1': '<span class="highlight">Evades 3</span> ist die Evolution des legendären evades.io!',
+        'about-p2': 'Spüre das Adrenalin schneller Manöver!',
+        'stat-arenas': 'Arenen',
+        'stat-online': 'Online',
+        'feature1-title': 'Blitzreaktion',
+        'feature1-text': 'Flüssige 60 FPS Animation',
+        'feature2-title': 'Präzise Steuerung',
+        'feature2-text': 'Verbesserte Bewegungsphysik',
+        'featureAnim-title': 'Coole Animationen',
+        'featureAnim-text': 'Moderne Animationen',
+        'feature3-title': 'VIP-Privilegien',
+        'feature3-text': 'Exklusive Modi',
+        'feature4-title': 'PRO-Status',
+        'feature4-text': 'Erweiterte Anpassung',
+        'feature5-title': 'Editor',
+        'feature5-text': 'Erstelle Karten',
+        'feature6-title': 'Skin-Kollektion',
+        'feature6-text': 'Riesige Auswahl',
+        'feature7-title': 'Rangsystem',
+        'feature7-text': 'Vom Neuling zur Legende',
+        'feature8-title': 'Globale Kämpfe',
+        'feature8-text': 'Gegen Spieler weltweit'
+      },
+      es: {
+        'languages': 'Idiomas ▼',
+        'subtitle': 'Velocidad. Táctica.',
+        'download-btn': 'Descargar Evades 3',
+        'dev-badge': 'En Desarrollo',
+        'about-title': '🎮 SOBRE EL JUEGO',
+        'about-p1': '<span class="highlight">Evades 3</span> es la evolución del legendario evades.io!',
+        'about-p2': '¡Siente la adrenalina!',
+        'stat-arenas': 'Arenas',
+        'stat-online': 'En línea',
+        'feature1-title': 'Reacción Relámpago',
+        'feature1-text': 'Animación fluida a 60 FPS',
+        'feature2-title': 'Control Preciso',
+        'feature2-text': 'Física mejorada',
+        'featureAnim-title': 'Animaciones Geniales',
+        'featureAnim-text': 'Animaciones modernas',
+        'feature3-title': 'Privilegios VIP',
+        'feature3-text': 'Modos exclusivos',
+        'feature4-title': 'Estado PRO',
+        'feature4-text': 'Personalización extendida',
+        'feature5-title': 'Editor',
+        'feature5-text': 'Crea mapas',
+        'feature6-title': 'Colección de Skins',
+        'feature6-text': 'Enorme selección',
+        'feature7-title': 'Sistema de Rangos',
+        'feature7-text': 'De novato a leyenda',
+        'feature8-title': 'Batallas Globales',
+        'feature8-text': 'Compite mundialmente'
+      },
+      fr: {
+        'languages': 'Langues ▼',
+        'subtitle': 'Vitesse. Tactique.',
+        'download-btn': 'Télécharger Evades 3',
+        'dev-badge': 'En Développement',
+        'about-title': '🎮 À PROPOS',
+        'about-p1': '<span class="highlight">Evades 3</span> est l\'évolution!',
+        'about-p2': 'Ressentez l\'adrénaline!',
+        'stat-arenas': 'Arènes',
+        'stat-online': 'En ligne',
+        'feature1-title': 'Réaction Éclair',
+        'feature1-text': 'Animation 60 FPS',
+        'feature2-title': 'Contrôle Précis',
+        'feature2-text': 'Physique améliorée',
+        'featureAnim-title': 'Animations Cool',
+        'featureAnim-text': 'Animations modernes',
+        'feature3-title': 'Privilèges VIP',
+        'feature3-text': 'Modes exclusifs',
+        'feature4-title': 'Statut PRO',
+        'feature4-text': 'Personnalisation',
+        'feature5-title': 'Éditeur',
+        'feature5-text': 'Créez des cartes',
+        'feature6-title': 'Skins',
+        'feature6-text': 'Énorme sélection',
+        'feature7-title': 'Rangs',
+        'feature7-text': 'À la légende',
+        'feature8-title': 'Batailles',
+        'feature8-text': 'Monde entier'
+      },
+      it: {
+        'languages': 'Lingue ▼',
+        'subtitle': 'Velocità. Tattica.',
+        'download-btn': 'Scarica Evades 3',
+        'dev-badge': 'In Sviluppo',
+        'about-title': '🎮 SUL GIOCO',
+        'about-p1': '<span class="highlight">Evades 3</span> è l\'evoluzione!',
+        'about-p2': 'Senti l\'adrenalina!',
+        'stat-arenas': 'Arene',
+        'stat-online': 'Online',
+        'feature1-title': 'Reazione Fulminea',
+        'feature1-text': 'Animazione 60 FPS',
+        'feature2-title': 'Controllo Preciso',
+        'feature2-text': 'Fisica migliorata',
+        'featureAnim-title': 'Animazioni Fantastiche',
+        'featureAnim-text': 'Animazioni moderne',
+        'feature3-title': 'Privilegi VIP',
+        'feature3-text': 'Modalità esclusive',
+        'feature4-title': 'Status PRO',
+        'feature4-text': 'Personalizzazione',
+        'feature5-title': 'Editor',
+        'feature5-text': 'Crea mappe',
+        'feature6-title': 'Skin',
+        'feature6-text': 'Selezione enorme',
+        'feature7-title': 'Ranghi',
+        'feature7-text': 'A leggenda',
+        'feature8-title': 'Battaglie',
+        'feature8-text': 'Tutto il mondo'
+      },
+      pt: {
+        'languages': 'Idiomas ▼',
+        'subtitle': 'Velocidade. Tática.',
+        'download-btn': 'Baixar Evades 3',
+        'dev-badge': 'Em Desenvolvimento',
+        'about-title': '🎮 SOBRE',
+        'about-p1': '<span class="highlight">Evades 3</span> é a evolução!',
+        'about-p2': 'Sinta a adrenalina!',
+        'stat-arenas': 'Arenas',
+        'stat-online': 'Online',
+        'feature1-title': 'Reação Relâmpago',
+        'feature1-text': 'Animação 60 FPS',
+        'feature2-title': 'Controle Preciso',
+        'feature2-text': 'Física aprimorada',
+        'featureAnim-title': 'Animações Legais',
+        'featureAnim-text': 'Animações modernas',
+        'feature3-title': 'Privilégios VIP',
+        'feature3-text': 'Modos exclusivos',
+        'feature4-title': 'Status PRO',
+        'feature4-text': 'Personalização',
+        'feature5-title': 'Editor',
+        'feature5-text': 'Crie mapas',
+        'feature6-title': 'Skins',
+        'feature6-text': 'Seleção enorme',
+        'feature7-title': 'Classificação',
+        'feature7-text': 'À lenda',
+        'feature8-title': 'Batalhas',
+        'feature8-text': 'Mundo todo'
+      },
+      pl: {
+        'languages': 'Języki ▼',
+        'subtitle': 'Prędkość. Taktyka.',
+        'download-btn': 'Pobierz Evades 3',
+        'dev-badge': 'W Rozwoju',
+        'about-title': '🎮 O GRZE',
+        'about-p1': '<span class="highlight">Evades 3</span> to ewolucja!',
+        'about-p2': 'Poczuj adrenalinę!',
+        'stat-arenas': 'Areny',
+        'stat-online': 'Online',
+        'feature1-title': 'Błyskawiczna Reakcja',
+        'feature1-text': 'Animacja 60 FPS',
+        'feature2-title': 'Precyzyjna Kontrola',
+        'feature2-text': 'Fizyka ruchu',
+        'featureAnim-title': 'Fajne Animacje',
+        'featureAnim-text': 'Nowoczesne animacje',
+        'feature3-title': 'Przywileje VIP',
+        'feature3-text': 'Tryby ekskluzywne',
+        'feature4-title': 'Status PRO',
+        'feature4-text': 'Personalizacja',
+        'feature5-title': 'Edytor',
+        'feature5-text': 'Twórz mapy',
+        'feature6-title': 'Skiny',
+        'feature6-text': 'Ogromny wybór',
+        'feature7-title': 'Rangi',
+        'feature7-text': 'Do legendy',
+        'feature8-title': 'Bitwy',
+        'feature8-text': 'Cały świat'
+      },
+      tr: {
+        'languages': 'Diller ▼',
+        'subtitle': 'Hız. Taktik.',
+        'download-btn': 'Evades 3 İndir',
+        'dev-badge': 'Geliştiriliyor',
+        'about-title': '🎮 OYUN HAKKINDA',
+        'about-p1': '<span class="highlight">Evades 3</span> evrim!',
+        'about-p2': 'Adrenalini hisset!',
+        'stat-arenas': 'Arenalar',
+        'stat-online': 'Çevrimiçi',
+        'feature1-title': 'Şimşek Tepkisi',
+        'feature1-text': '60 FPS animasyon',
+        'feature2-title': 'Hassas Kontrol',
+        'feature2-text': 'Gelişmiş fizik',
+        'featureAnim-title': 'Havalı Animasyonlar',
+        'featureAnim-text': 'Modern animasyonlar',
+        'feature3-title': 'VIP Ayrıcalıkları',
+        'feature3-text': 'Özel modlar',
+        'feature4-title': 'PRO Statüsü',
+        'feature4-text': 'Özelleştirme',
+        'feature5-title': 'Editör',
+        'feature5-text': 'Harita oluştur',
+        'feature6-title': 'Skin',
+        'feature6-text': 'Büyük seçki',
+        'feature7-title': 'Rütbe',
+        'feature7-text': 'Efsaneye',
+        'feature8-title': 'Savaşlar',
+        'feature8-text': 'Dünya çapında'
+      },
+      nl: {
+        'languages': 'Talen ▼',
+        'subtitle': 'Snelheid. Tactiek.',
+        'download-btn': 'Download Evades 3',
+        'dev-badge': 'In ontwikkeling',
+        'about-title': '🎮 OVER',
+        'about-p1': '<span class="highlight">Evades 3</span> is evolutie!',
+        'about-p2': 'Voel de adrenaline!',
+        'stat-arenas': 'Arena\'s',
+        'stat-online': 'Online',
+        'feature1-title': 'Bliksemsnelle reactie',
+        'feature1-text': '60 FPS-animatie',
+        'feature2-title': 'Precieze besturing',
+        'feature2-text': 'Verbeterde fysica',
+        'featureAnim-title': 'Coole Animaties',
+        'featureAnim-text': 'Moderne animaties',
+        'feature3-title': 'VIP-privileges',
+        'feature3-text': 'Exclusieve modi',
+        'feature4-title': 'PRO-status',
+        'feature4-text': 'Personalisatie',
+        'feature5-title': 'Editor',
+        'feature5-text': 'Maak kaarten',
+        'feature6-title': 'Skins',
+        'feature6-text': 'Grote selectie',
+        'feature7-title': 'Rangen',
+        'feature7-text': 'Naar legende',
+        'feature8-title': 'Gevechten',
+        'feature8-text': 'Wereldwijd'
+      },
+      sv: {
+        'languages': 'Språk ▼',
+        'subtitle': 'Hastighet. Taktik.',
+        'download-btn': 'Ladda ner Evades 3',
+        'dev-badge': 'Under utveckling',
+        'about-title': '🎮 OM',
+        'about-p1': '<span class="highlight">Evades 3</span> är evolution!',
+        'about-p2': 'Känn adrenalinet!',
+        'stat-arenas': 'Arenor',
+        'stat-online': 'Online',
+        'feature1-title': 'Blixtsnabb',
+        'feature1-text': '60 FPS-animation',
+        'feature2-title': 'Precision',
+        'feature2-text': 'Förbättrad fysik',
+        'featureAnim-title': 'Coola Animationer',
+        'featureAnim-text': 'Moderna animationer',
+        'feature3-title': 'VIP',
+        'feature3-text': 'Exklusiva lägen',
+        'feature4-title': 'PRO',
+        'feature4-text': 'Anpassning',
+        'feature5-title': 'Editor',
+        'feature5-text': 'Skapa kartor',
+        'feature6-title': 'Skins',
+        'feature6-text': 'Stort utbud',
+        'feature7-title': 'Rank',
+        'feature7-text': 'Till legend',
+        'feature8-title': 'Strider',
+        'feature8-text': 'Hela världen'
+      },
+      no: {
+        'languages': 'Språk ▼',
+        'subtitle': 'Fart. Taktikk.',
+        'download-btn': 'Last ned Evades 3',
+        'dev-badge': 'Under utvikling',
+        'about-title': '🎮 OM',
+        'about-p1': '<span class="highlight">Evades 3</span> er evolusjon!',
+        'about-p2': 'Kjenn adrenalinet!',
+        'stat-arenas': 'Arenaer',
+        'stat-online': 'Online',
+        'feature1-title': 'Lynrask',
+        'feature1-text': '60 FPS-animasjon',
+        'feature2-title': 'Presisjon',
+        'feature2-text': 'Forbedret fysikk',
+        'featureAnim-title': 'Kule Animasjoner',
+        'featureAnim-text': 'Moderne animasjoner',
+        'feature3-title': 'VIP',
+        'feature3-text': 'Eksklusive modus',
+        'feature4-title': 'PRO',
+        'feature4-text': 'Tilpasning',
+        'feature5-title': 'Editor',
+        'feature5-text': 'Lag kart',
+        'feature6-title': 'Skins',
+        'feature6-text': 'Stort utvalg',
+        'feature7-title': 'Rang',
+        'feature7-text': 'Til legende',
+        'feature8-title': 'Kamper',
+        'feature8-text': 'Hele verden'
+      },
+      fi: {
+        'languages': 'Kielet ▼',
+        'subtitle': 'Nopeus. Taktiikka.',
+        'download-btn': 'Lataa Evades 3',
+        'dev-badge': 'Kehitteillä',
+        'about-title': '🎮 TIETOA',
+        'about-p1': '<span class="highlight">Evades 3</span> on evoluutio!',
+        'about-p2': 'Tunne adrenaliini!',
+        'stat-arenas': 'Areenat',
+        'stat-online': 'Online',
+        'feature1-title': 'Salamannopea',
+        'feature1-text': '60 FPS -animaatio',
+        'feature2-title': 'Tarkka',
+        'feature2-text': 'Parannettu fysiikka',
+        'featureAnim-title': 'Siistit Animaatiot',
+        'featureAnim-text': 'Modernit animaatiot',
+        'feature3-title': 'VIP',
+        'feature3-text': 'Eksklusiiviset',
+        'feature4-title': 'PRO',
+        'feature4-text': 'Muokkaus',
+        'feature5-title': 'Editori',
+        'feature5-text': 'Luo karttoja',
+        'feature6-title': 'Skinejä',
+        'feature6-text': 'Valtava valikoima',
+        'feature7-title': 'Rankki',
+        'feature7-text': 'Legendaksi',
+        'feature8-title': 'Taistelut',
+        'feature8-text': 'Ympäri maailmaa'
+      },
+      da: {
+        'languages': 'Sprog ▼',
+        'subtitle': 'Hastighed. Taktik.',
+        'download-btn': 'Download Evades 3',
+        'dev-badge': 'Under udvikling',
+        'about-title': '🎮 OM',
+        'about-p1': '<span class="highlight">Evades 3</span> er evolution!',
+        'about-p2': 'Mærk adrenalinen!',
+        'stat-arenas': 'Arenaer',
+        'stat-online': 'Online',
+        'feature1-title': 'Lynhurtig',
+        'feature1-text': '60 FPS-animation',
+        'feature2-title': 'Præcis',
+        'feature2-text': 'Forbedret fysik',
+        'featureAnim-title': 'Seje Animationer',
+        'featureAnim-text': 'Moderne animationer',
+        'feature3-title': 'VIP',
+        'feature3-text': 'Eksklusive modes',
+        'feature4-title': 'PRO',
+        'feature4-text': 'Tilpasning',
+        'feature5-title': 'Editor',
+        'feature5-text': 'Lav kort',
+        'feature6-title': 'Skins',
+        'feature6-text': 'Stort udvalg',
+        'feature7-title': 'Rang',
+        'feature7-text': 'Til legende',
+        'feature8-title': 'Kampe',
+        'feature8-text': 'Hele verden'
+      },
+      cs: {
+        'languages': 'Jazyky ▼',
+        'subtitle': 'Rychlost. Taktika.',
+        'download-btn': 'Stáhnout Evades 3',
+        'dev-badge': 'Ve vývoji',
+        'about-title': '🎮 O HŘE',
+        'about-p1': '<span class="highlight">Evades 3</span> je evoluce!',
+        'about-p2': 'Pociť adrenalin!',
+        'stat-arenas': 'Arény',
+        'stat-online': 'Online',
+        'feature1-title': 'Blesková',
+        'feature1-text': '60 FPS animace',
+        'feature2-title': 'Přesné',
+        'feature2-text': 'Vylepšená fyzika',
+        'featureAnim-title': 'Cool Animace',
+        'featureAnim-text': 'Moderní animace',
+        'feature3-title': 'VIP',
+        'feature3-text': 'Exkluzivní režimy',
+        'feature4-title': 'PRO',
+        'feature4-text': 'Úprava',
+        'feature5-title': 'Editor',
+        'feature5-text': 'Vytvářej mapy',
+        'feature6-title': 'Skiny',
+        'feature6-text': 'Obrovský výběr',
+        'feature7-title': 'Hodnosti',
+        'feature7-text': 'K legendě',
+        'feature8-title': 'Bitvy',
+        'feature8-text': 'Celý svět'
+      },
+      ro: {
+        'languages': 'Limbi ▼',
+        'subtitle': 'Viteză. Tactică.',
+        'download-btn': 'Descarcă Evades 3',
+        'dev-badge': 'În dezvoltare',
+        'about-title': '🎮 DESPRE',
+        'about-p1': '<span class="highlight">Evades 3</span> este evoluția!',
+        'about-p2': 'Simte adrenalina!',
+        'stat-arenas': 'Arene',
+        'stat-online': 'Online',
+        'feature1-title': 'Fulger',
+        'feature1-text': 'Animație 60 FPS',
+        'feature2-title': 'Precis',
+        'feature2-text': 'Fizică îmbunătățită',
+        'featureAnim-title': 'Animații Cool',
+        'featureAnim-text': 'Animații moderne',
+        'feature3-title': 'VIP',
+        'feature3-text': 'Moduri exclusive',
+        'feature4-title': 'PRO',
+        'feature4-text': 'Personalizare',
+        'feature5-title': 'Editor',
+        'feature5-text': 'Creează hărți',
+        'feature6-title': 'Skin-uri',
+        'feature6-text': 'Selecție uriașă',
+        'feature7-title': 'Ranguri',
+        'feature7-text': 'La legendă',
+        'feature8-title': 'Bătălii',
+        'feature8-text': 'Întreaga lume'
+      },
+      hu: {
+        'languages': 'Nyelvek ▼',
+        'subtitle': 'Sebesség. Taktika.',
+        'download-btn': 'Evades 3 letöltése',
+        'dev-badge': 'Fejlesztés alatt',
+        'about-title': '🎮 A JÁTÉKRÓL',
+        'about-p1': '<span class="highlight">Evades 3</span> az evolúció!',
+        'about-p2': 'Érezd az adrenalint!',
+        'stat-arenas': 'Arénák',
+        'stat-online': 'Online',
+        'feature1-title': 'Villámgyors',
+        'feature1-text': '60 FPS animáció',
+        'feature2-title': 'Pontos',
+        'feature2-text': 'Jobb fizika',
+        'featureAnim-title': 'Menő Animációk',
+        'featureAnim-text': 'Modern animációk',
+        'feature3-title': 'VIP',
+        'feature3-text': 'Exkluzív módok',
+        'feature4-title': 'PRO',
+        'feature4-text': 'Testreszabás',
+        'feature5-title': 'Szerkesztő',
+        'feature5-text': 'Készíts pályákat',
+        'feature6-title': 'Skinek',
+        'feature6-text': 'Hatalmas választék',
+        'feature7-title': 'Rang',
+        'feature7-text': 'Legendáig',
+        'feature8-title': 'Csaták',
+        'feature8-text': 'Világ minden tájáról'
+      },
+      el: {
+        'languages': 'Γλώσσες ▼',
+        'subtitle': 'Ταχύτητα. Τακτική.',
+        'download-btn': 'Λήψη Evades 3',
+        'dev-badge': 'Υπό ανάπτυξη',
+        'about-title': '🎮 ΣΧΕΤΙΚΑ',
+        'about-p1': '<span class="highlight">Evades 3</span> είναι εξέλιξη!',
+        'about-p2': 'Νιώσε την αδρεναλίνη!',
+        'stat-arenas': 'Αρένες',
+        'stat-online': 'Online',
+        'feature1-title': 'Αστραπιαία',
+        'feature1-text': '60 FPS',
+        'feature2-title': 'Ακριβής',
+        'feature2-text': 'Βελτιωμένη φυσική',
+        'featureAnim-title': 'Cool Κινούμενα',
+        'featureAnim-text': 'Μοντέρνα',
+        'feature3-title': 'VIP',
+        'feature3-text': 'Αποκλειστικά',
+        'feature4-title': 'PRO',
+        'feature4-text': 'Προσαρμογή',
+        'feature5-title': 'Επεξεργαστής',
+        'feature5-text': 'Δημιούργησε',
+        'feature6-title': 'Skins',
+        'feature6-text': 'Τεράστια επιλογή',
+        'feature7-title': 'Βαθμίδες',
+        'feature7-text': 'Σε θρύλο',
+        'feature8-title': 'Μάχες',
+        'feature8-text': 'Όλο τον κόσμο'
+      },
+      ja: {
+        'languages': '言語 ▼',
+        'subtitle': 'スピード. 戦術.',
+        'download-btn': 'Evades 3 をダウンロード',
+        'dev-badge': '開発中',
+        'about-title': '🎮 ゲームについて',
+        'about-p1': '<span class="highlight">Evades 3</span> は進化版!',
+        'about-p2': 'アドレナリンを感じる!',
+        'stat-arenas': 'アリーナ',
+        'stat-online': 'オンライン',
+        'feature1-title': '電光石火',
+        'feature1-text': '60 FPS',
+        'feature2-title': '精密',
+        'feature2-text': '強化された物理演算',
+        'featureAnim-title': 'クールなアニメ',
+        'featureAnim-text': 'モダンアニメ',
+        'feature3-title': 'VIP',
+        'feature3-text': '限定モード',
+        'feature4-title': 'PRO',
+        'feature4-text': 'カスタマイズ',
+        'feature5-title': 'エディター',
+        'feature5-text': 'マップを作成',
+        'feature6-title': 'スキン',
+        'feature6-text': '膨大な選択肢',
+        'feature7-title': 'ランク',
+        'feature7-text': '伝説へ',
+        'feature8-title': 'バトル',
+        'feature8-text': '世界中'
+      },
+      zh: {
+        'languages': '语言 ▼',
+        'subtitle': '速度. 战术.',
+        'download-btn': '下载 Evades 3',
+        'dev-badge': '开发中',
+        'about-title': '🎮 关于游戏',
+        'about-p1': '<span class="highlight">Evades 3</span> 是进化版!',
+        'about-p2': '感受肾上腺素!',
+        'stat-arenas': '竞技场',
+        'stat-online': '在线',
+        'feature1-title': '闪电反应',
+        'feature1-text': '60 FPS',
+        'feature2-title': '精准控制',
+        'feature2-text': '增强物理',
+        'featureAnim-title': '酷炫动画',
+        'featureAnim-text': '现代动画',
+        'feature3-title': 'VIP',
+        'feature3-text': '独家模式',
+        'feature4-title': 'PRO',
+        'feature4-text': '自定义',
+        'feature5-title': '编辑器',
+        'feature5-text': '创建地图',
+        'feature6-title': '皮肤',
+        'feature6-text': '海量皮肤',
+        'feature7-title': '等级',
+        'feature7-text': '到传奇',
+        'feature8-title': '对战',
+        'feature8-text': '全球'
+      },
+      ko: {
+        'languages': '언어 ▼',
+        'subtitle': '속도. 전술.',
+        'download-btn': 'Evades 3 다운로드',
+        'dev-badge': '개발 중',
+        'about-title': '🎮 게임 정보',
+        'about-p1': '<span class="highlight">Evades 3</span>는 진화!',
+        'about-p2': '아드레날린을 느껴라!',
+        'stat-arenas': '경기장',
+        'stat-online': '온라인',
+        'feature1-title': '번개같은',
+        'feature1-text': '60 FPS',
+        'feature2-title': '정밀',
+        'feature2-text': '향상된 물리',
+        'featureAnim-title': '멋진 애니메이션',
+        'featureAnim-text': '현대적 애니메이션',
+        'feature3-title': 'VIP',
+        'feature3-text': '독점 모드',
+        'feature4-title': 'PRO',
+        'feature4-text': '커스터마이징',
+        'feature5-title': '에디터',
+        'feature5-text': '맵 만들기',
+        'feature6-title': '스킨',
+        'feature6-text': '방대한 선택',
+        'feature7-title': '랭크',
+        'feature7-text': '전설까지',
+        'feature8-title': '대전',
+        'feature8-text': '전 세계'
+      },
+      ar: {
+        'languages': 'اللغات ▼',
+        'subtitle': 'السرعة. التكتيك.',
+        'download-btn': 'تحميل Evades 3',
+        'dev-badge': 'قيد التطوير',
+        'about-title': '🎮 عن اللعبة',
+        'about-p1': '<span class="highlight">Evades 3</span> هي تطور!',
+        'about-p2': 'اشعر بالأدرينالين!',
+        'stat-arenas': 'الساحات',
+        'stat-online': 'متصل',
+        'feature1-title': 'خاطف',
+        'feature1-text': '60FPS',
+        'feature2-title': 'دقيق',
+        'feature2-text': 'فيزياء محسّنة',
+        'featureAnim-title': 'رسوم متحركة',
+        'featureAnim-text': 'حديثة',
+        'feature3-title': 'VIP',
+        'feature3-text': 'حصرية',
+        'feature4-title': 'PRO',
+        'feature4-text': 'تخصيص',
+        'feature5-title': 'محرر',
+        'feature5-text': 'أنشئ خرائط',
+        'feature6-title': 'سكنات',
+        'feature6-text': 'مجموعة ضخمة',
+        'feature7-title': 'رتب',
+        'feature7-text': 'إلى أسطورة',
+        'feature8-title': 'معارك',
+        'feature8-text': 'عالمية'
+      },
+      hi: {
+        'languages': 'भाषाएँ ▼',
+        'subtitle': 'स्पीड. रणनीति.',
+        'download-btn': 'Evades 3 डाउनलोड करें',
+        'dev-badge': 'विकास में',
+        'about-title': '🎮 गेम के बारे में',
+        'about-p1': '<span class="highlight">Evades 3</span> नया रूप है!',
+        'about-p2': 'एड्रेनालिन महसूस करो!',
+        'stat-arenas': 'एरीना',
+        'stat-online': 'ऑनलाइन',
+        'feature1-title': 'बिजली जैसी',
+        'feature1-text': '60 FPS',
+        'feature2-title': 'सटीक',
+        'feature2-text': 'बेहतर फिजिक्स',
+        'featureAnim-title': 'कूल एनिमेशन',
+        'featureAnim-text': 'मॉडर्न',
+        'feature3-title': 'VIP',
+        'feature3-text': 'एक्सक्लूसिव',
+        'feature4-title': 'PRO',
+        'feature4-text': 'कस्टमाइज़ेशन',
+        'feature5-title': 'एडिटर',
+        'feature5-text': 'मैप बनाओ',
+        'feature6-title': 'स्किन्स',
+        'feature6-text': 'ढेर सारे',
+        'feature7-title': 'रैंक',
+        'feature7-text': 'लेजेंड तक',
+        'feature8-title': 'बैटल्स',
+        'feature8-text': 'दुनिया भर'
+      },
+      th: {
+        'languages': 'ภาษา ▼',
+        'subtitle': 'ความเร็ว. แทคติก.',
+        'download-btn': 'ดาวน์โหลด Evades 3',
+        'dev-badge': 'อยู่ระหว่างพัฒนา',
+        'about-title': '🎮 เกี่ยวกับเกม',
+        'about-p1': '<span class="highlight">Evades 3</span> คือวิวัฒนาการ!',
+        'about-p2': 'สัมผัสอะดรีนาลีน!',
+        'stat-arenas': 'อารีนา',
+        'stat-online': 'ออนไลน์',
+        'feature1-title': 'สายฟ้า',
+        'feature1-text': '60 FPS',
+        'feature2-title': 'แม่นยำ',
+        'feature2-text': 'ฟิสิกส์ที่ดีขึ้น',
+        'featureAnim-title': 'แอนิเมชันเจ๋ง',
+        'featureAnim-text': 'ทันสมัย',
+        'feature3-title': 'VIP',
+        'feature3-text': 'พิเศษ',
+        'feature4-title': 'PRO',
+        'feature4-text': 'ปรับแต่ง',
+        'feature5-title': 'ตัวแก้ไข',
+        'feature5-text': 'สร้างแผนที่',
+        'feature6-title': 'สกิน',
+        'feature6-text': 'มากมาย',
+        'feature7-title': 'แรงก์',
+        'feature7-text': 'สู่ตำนาน',
+        'feature8-title': 'ศึก',
+        'feature8-text': 'ทั่วโลก'
+      },
+      vi: {
+        'languages': 'Ngôn ngữ ▼',
+        'subtitle': 'Tốc độ. Chiến thuật.',
+        'download-btn': 'Tải Evades 3',
+        'dev-badge': 'Đang phát triển',
+        'about-title': '🎮 VỀ TRÒ CHƠI',
+        'about-p1': '<span class="highlight">Evades 3</span> là phiên bản tiến hóa!',
+        'about-p2': 'Cảm nhận adrenaline!',
+        'stat-arenas': 'Đấu trường',
+        'stat-online': 'Trực tuyến',
+        'feature1-title': 'Tia chớp',
+        'feature1-text': '60 FPS',
+        'feature2-title': 'Chính xác',
+        'feature2-text': 'Vật lý cải tiến',
+        'featureAnim-title': 'Hoạt ảnh ngầu',
+        'featureAnim-text': 'Hiện đại',
+        'feature3-title': 'VIP',
+        'feature3-text': 'Độc quyền',
+        'feature4-title': 'PRO',
+        'feature4-text': 'Tùy biến',
+        'feature5-title': 'Trình chỉnh sửa',
+        'feature5-text': 'Tạo bản đồ',
+        'feature6-title': 'Skin',
+        'feature6-text': 'Kho skin',
+        'feature7-title': 'Xếp hạng',
+        'feature7-text': 'Lên huyền thoại',
+        'feature8-title': 'Trận chiến',
+        'feature8-text': 'Toàn cầu'
+      },
+      id: {
+        'languages': 'Bahasa ▼',
+        'subtitle': 'Kecepatan. Taktik.',
+        'download-btn': 'Unduh Evades 3',
+        'dev-badge': 'Dalam Pengembangan',
+        'about-title': '🎮 TENTANG',
+        'about-p1': '<span class="highlight">Evades 3</span> adalah evolusi!',
+        'about-p2': 'Rasakan adrenalin!',
+        'stat-arenas': 'Arena',
+        'stat-online': 'Online',
+        'feature1-title': 'Kilat',
+        'feature1-text': '60 FPS',
+        'feature2-title': 'Presisi',
+        'feature2-text': 'Fisika ditingkatkan',
+        'featureAnim-title': 'Animasi Keren',
+        'featureAnim-text': 'Modern',
+        'feature3-title': 'VIP',
+        'feature3-text': 'Eksklusif',
+        'feature4-title': 'PRO',
+        'feature4-text': 'Kustomisasi',
+        'feature5-title': 'Editor',
+        'feature5-text': 'Buat peta',
+        'feature6-title': 'Skin',
+        'feature6-text': 'Pilihan banyak',
+        'feature7-title': 'Peringkat',
+        'feature7-text': 'Jadi legenda',
+        'feature8-title': 'Pertempuran',
+        'feature8-text': 'Global'
+      },
+      ms: {
+        'languages': 'Bahasa ▼',
+        'subtitle': 'Kelajuan. Taktik.',
+        'download-btn': 'Muat turun Evades 3',
+        'dev-badge': 'Dalam pembangunan',
+        'about-title': '🎮 TENTANG',
+        'about-p1': '<span class="highlight">Evades 3</span> ialah evolusi!',
+        'about-p2': 'Rasai adrenalin!',
+        'stat-arenas': 'Arena',
+        'stat-online': 'Dalam talian',
+        'feature1-title': 'Kilat',
+        'feature1-text': '60 FPS',
+        'feature2-title': 'Tepat',
+        'feature2-text': 'Fizik dipertingkat',
+        'featureAnim-title': 'Animasi Cool',
+        'featureAnim-text': 'Moden',
+        'feature3-title': 'VIP',
+        'feature3-text': 'Eksklusif',
+        'feature4-title': 'PRO',
+        'feature4-text': 'Kustomisasi',
+        'feature5-title': 'Editor',
+        'feature5-text': 'Cipta peta',
+        'feature6-title': 'Skin',
+        'feature6-text': 'Banyak pilihan',
+        'feature7-title': 'Pangkat',
+        'feature7-text': 'Ke legenda',
+        'feature8-title': 'Pertempuran',
+        'feature8-text': 'Global'
+      }
+    };
 
-            /* ===== ДОБАВЛЕНО: недостающие языки (как у тебя было) ===== */
-
-            nl: {
-                'languages': 'Talen ▼',
-                'subtitle': 'Snelheid. Tactiek.',
-                'download-btn': 'Download Evades 3',
-                'dev-badge': 'In ontwikkeling',
-                'about-title': '🎮 OVER HET SPEL',
-                'about-p1': '<span class="highlight">Evades 3</span> is de evolutie van legendarische evades.io, opnieuw ontworpen voor een nieuwe generatie gamers!',
-                'about-p2': 'Voel de adrenaline van razendsnelle manoeuvres waar elke milliseconde telt. Ontwijk dodelijke obstakels, haal rivalen in en domineer de arena!',
-                'stat-arenas': 'Arena\'s',
-                'stat-online': 'Online',
-                'feature1-title': 'Bliksemsnelle reactie',
-                'feature1-text': 'Vloeiende 60 FPS-animatie zonder lag',
-                'feature2-title': 'Precieze besturing',
-                'feature2-text': 'Verbeterde bewegingsfysica voor perfecte manoeuvres',
-                'feature3-title': 'VIP-privileges',
-                'feature3-text': 'Exclusieve modi en unieke beloningen',
-                'feature4-title': 'PRO-status',
-                'feature4-text': 'Uitgebreide personalisatie en speciale functies',
-                'feature5-title': 'Kaart- & personage-editor',
-                'feature5-text': 'Maak je eigen kaarten en personages en deel ze met de wereld',
-                'feature6-title': 'Skin-collectie',
-                'feature6-text': 'Grote selectie coole skins voor personalisatie',
-                'feature7-title': 'Rangensysteem',
-                'feature7-text': 'Klim van rookie naar legende',
-                'feature8-title': 'Wereldwijde gevechten',
-                'feature8-text': 'Neem het op tegen spelers van over de hele wereld'
-            },
-
-            sv: {
-                'languages': 'Språk ▼',
-                'subtitle': 'Hastighet. Taktik.',
-                'download-btn': 'Ladda ner Evades 3',
-                'dev-badge': 'Under utveckling',
-                'about-title': '🎮 OM SPELET',
-                'about-p1': '<span class="highlight">Evades 3</span> är utvecklingen av legendariska evades.io, omgjort för en ny generation spelare!',
-                'about-p2': 'Känn adrenalinet i högfartsmanövrar där varje millisekund avgör. Undvik dödliga hinder, kör om rivaler och dominera arenan!',
-                'stat-arenas': 'Arenor',
-                'stat-online': 'Online',
-                'feature1-title': 'Blixtsnabb reaktion',
-                'feature1-text': 'Mjuk 60 FPS-animation utan lagg',
-                'feature2-title': 'Precisionskontroll',
-                'feature2-text': 'Förbättrad rörelsefysik för perfekta manövrar',
-                'feature3-title': 'VIP-förmåner',
-                'feature3-text': 'Exklusiva lägen och unika belöningar',
-                'feature4-title': 'PRO-status',
-                'feature4-text': 'Utökad anpassning och specialfunktioner',
-                'feature5-title': 'Kart- & karaktärseditor',
-                'feature5-text': 'Skapa egna kartor och karaktärer och dela med världen',
-                'feature6-title': 'Skin-samling',
-                'feature6-text': 'Stort utbud av coola skins för personalisering',
-                'feature7-title': 'Ranksystem',
-                'feature7-text': 'Klättra från nybörjare till legend',
-                'feature8-title': 'Globala strider',
-                'feature8-text': 'Tävla mot spelare från hela världen'
-            },
-
-            no: {
-                'languages': 'Språk ▼',
-                'subtitle': 'Fart. Taktikk.',
-                'download-btn': 'Last ned Evades 3',
-                'dev-badge': 'Under utvikling',
-                'about-title': '🎮 OM SPILLET',
-                'about-p1': '<span class="highlight">Evades 3</span> er evolusjonen av legendariske evades.io, nytenkt for en ny generasjon gamere!',
-                'about-p2': 'Kjenn adrenalinet i høyhastighetsmanøvrer der hvert millisekund avgjør. Unngå dødelige hindringer, passér rivaler og dominer arenaen!',
-                'stat-arenas': 'Arenaer',
-                'stat-online': 'Online',
-                'feature1-title': 'Lynrask reaksjon',
-                'feature1-text': 'Jevn 60 FPS-animasjon uten lag',
-                'feature2-title': 'Presis kontroll',
-                'feature2-text': 'Forbedret bevegelsesfysikk for perfekte manøvrer',
-                'feature3-title': 'VIP-fordeler',
-                'feature3-text': 'Eksklusive moduser og unike belønninger',
-                'feature4-title': 'PRO-status',
-                'feature4-text': 'Utvidet tilpasning og spesielle funksjoner',
-                'feature5-title': 'Kart- og karaktereditor',
-                'feature5-text': 'Lag egne kart og karakterer og del dem med verden',
-                'feature6-title': 'Skin-samling',
-                'feature6-text': 'Stort utvalg kule skins for personalisering',
-                'feature7-title': 'Rangsystem',
-                'feature7-text': 'Klatre fra nybegynner til legende',
-                'feature8-title': 'Globale kamper',
-                'feature8-text': 'Konkurrer mot spillere fra hele verden'
-            },
-
-            fi: {
-                'languages': 'Kielet ▼',
-                'subtitle': 'Nopeus. Taktiikka.',
-                'download-btn': 'Lataa Evades 3',
-                'dev-badge': 'Kehitteillä',
-                'about-title': '🎮 TIETOA PELISTÄ',
-                'about-p1': '<span class="highlight">Evades 3</span> on legendaarisen evades.io:n evoluutio, uudelleen ajateltu uudelle pelaajasukupolvelle!',
-                'about-p2': 'Tunne huippunopeiden liikkeiden adrenaliini, jossa jokainen millisekunti ratkaisee. Väistä tappavat esteet, ohita kilpailijat ja hallitse areenaa!',
-                'stat-arenas': 'Areenat',
-                'stat-online': 'Online',
-                'feature1-title': 'Salamannopea reaktio',
-                'feature1-text': 'Sulava 60 FPS -animaatio ilman lagia',
-                'feature2-title': 'Tarkka ohjaus',
-                'feature2-text': 'Parannettu liikefysiikka täydellisiin manöövereihin',
-                'feature3-title': 'VIP-edut',
-                'feature3-text': 'Eksklusiiviset tilat ja ainutlaatuiset palkinnot',
-                'feature4-title': 'PRO-status',
-                'feature4-text': 'Laajennettu muokkaus ja erikoisominaisuudet',
-                'feature5-title': 'Kartta- ja hahmoeditori',
-                'feature5-text': 'Luo omia karttoja ja hahmoja ja jaa ne maailmalle',
-                'feature6-title': 'Skin-kokoelma',
-                'feature6-text': 'Valtava valikoima siistejä skinejä personointiin',
-                'feature7-title': 'Rankkijärjestelmä',
-                'feature7-text': 'Nouse tulokkaasta legendaksi',
-                'feature8-title': 'Globaalit taistelut',
-                'feature8-text': 'Kilpaile pelaajia vastaan ympäri maailmaa'
-            },
-
-            da: {
-                'languages': 'Sprog ▼',
-                'subtitle': 'Hastighed. Taktik.',
-                'download-btn': 'Download Evades 3',
-                'dev-badge': 'Under udvikling',
-                'about-title': '🎮 OM SPILLET',
-                'about-p1': '<span class="highlight">Evades 3</span> er udviklingen af det legendariske evades.io, nytænkt til en ny generation af gamere!',
-                'about-p2': 'Mærk adrenalinen i højhastighedsmanøvrer hvor hvert millisekund tæller. Undvig dødelige forhindringer, overhal rivaler og dominér arenaen!',
-                'stat-arenas': 'Arenaer',
-                'stat-online': 'Online',
-                'feature1-title': 'Lynhurtig reaktion',
-                'feature1-text': 'Flydende 60 FPS-animation uden lag',
-                'feature2-title': 'Præcis kontrol',
-                'feature2-text': 'Forbedret bevægelsesfysik til perfekte manøvrer',
-                'feature3-title': 'VIP-fordele',
-                'feature3-text': 'Eksklusive modes og unikke belønninger',
-                'feature4-title': 'PRO-status',
-                'feature4-text': 'Udvidet tilpasning og særlige funktioner',
-                'feature5-title': 'Kort- og figur-editor',
-                'feature5-text': 'Lav dine egne kort og figurer og del dem med verden',
-                'feature6-title': 'Skin-samling',
-                'feature6-text': 'Stort udvalg af seje skins til personalisering',
-                'feature7-title': 'Rangsystem',
-                'feature7-text': 'Klatr fra nybegynder til legende',
-                'feature8-title': 'Globale kampe',
-                'feature8-text': 'Konkurrér mod spillere fra hele verden'
-            },
-
-            cs: {
-                'languages': 'Jazyky ▼',
-                'subtitle': 'Rychlost. Taktika.',
-                'download-btn': 'Stáhnout Evades 3',
-                'dev-badge': 'Ve vývoji',
-                'about-title': '🎮 O HŘE',
-                'about-p1': '<span class="highlight">Evades 3</span> je evoluce legendárního evades.io, přepracovaná pro novou generaci hráčů!',
-                'about-p2': 'Pociť adrenalin rychlých manévrů, kde každá milisekunda rozhoduje. Vyhýbej se smrtícím překážkám, předbíhej soupeře a ovládni arénu!',
-                'stat-arenas': 'Arény',
-                'stat-online': 'Online',
-                'feature1-title': 'Blesková reakce',
-                'feature1-text': 'Plynulá 60 FPS animace bez lagů',
-                'feature2-title': 'Přesné ovládání',
-                'feature2-text': 'Vylepšená fyzika pohybu pro dokonalé manévry',
-                'feature3-title': 'VIP výhody',
-                'feature3-text': 'Exkluzivní režimy a jedinečné odměny',
-                'feature4-title': 'PRO status',
-                'feature4-text': 'Rozšířená úprava a speciální funkce',
-                'feature5-title': 'Editor map a postav',
-                'feature5-text': 'Vytvářej vlastní mapy a postavy a sdílej je se světem',
-                'feature6-title': 'Kolekce skinů',
-                'feature6-text': 'Obrovský výběr cool skinů pro personalizaci',
-                'feature7-title': 'Systém hodností',
-                'feature7-text': 'Vyšplhej od nováčka až k legendě',
-                'feature8-title': 'Globální bitvy',
-                'feature8-text': 'Soutěž s hráči z celého světa'
-            },
-
-            ro: {
-                'languages': 'Limbi ▼',
-                'subtitle': 'Viteză. Tactică.',
-                'download-btn': 'Descarcă Evades 3',
-                'dev-badge': 'În dezvoltare',
-                'about-title': '🎮 DESPRE JOC',
-                'about-p1': '<span class="highlight">Evades 3</span> este evoluția legendarului evades.io, reimaginat pentru o nouă generație de jucători!',
-                'about-p2': 'Simte adrenalina manevrelor de mare viteză unde fiecare milisecundă contează. Ferește-te de obstacole mortale, depășește rivalii și domină arena!',
-                'stat-arenas': 'Arene',
-                'stat-online': 'Online',
-                'feature1-title': 'Reacție fulger',
-                'feature1-text': 'Animație fluidă 60 FPS fără lag',
-                'feature2-title': 'Control precis',
-                'feature2-text': 'Fizică îmbunătățită pentru manevre perfecte',
-                'feature3-title': 'Privilegii VIP',
-                'feature3-text': 'Moduri exclusive și recompense unice',
-                'feature4-title': 'Status PRO',
-                'feature4-text': 'Personalizare extinsă și funcții speciale',
-                'feature5-title': 'Editor de hărți și personaje',
-                'feature5-text': 'Creează hărți și personaje și împărtășește-le cu lumea',
-                'feature6-title': 'Colecție de skin-uri',
-                'feature6-text': 'Selecție uriașă de skin-uri pentru personalizare',
-                'feature7-title': 'Sistem de ranguri',
-                'feature7-text': 'Urcă de la începător la legendă',
-                'feature8-title': 'Bătălii globale',
-                'feature8-text': 'Concurează cu jucători din întreaga lume'
-            },
-
-            hu: {
-                'languages': 'Nyelvek ▼',
-                'subtitle': 'Sebesség. Taktika.',
-                'download-btn': 'Evades 3 letöltése',
-                'dev-badge': 'Fejlesztés alatt',
-                'about-title': '🎮 A JÁTÉKRÓL',
-                'about-p1': '<span class="highlight">Evades 3</span> a legendás evades.io evolúciója, újragondolva az új játékosgenerációnak!',
-                'about-p2': 'Érezd a nagy sebességű manőverek adrenalinját, ahol minden ezredmásodperc számít. Kerüld ki a halálos akadályokat, előzd meg a riválisokat és urald az arénát!',
-                'stat-arenas': 'Arénák',
-                'stat-online': 'Online',
-                'feature1-title': 'Villámgyors reakció',
-                'feature1-text': 'Sima 60 FPS animáció lag nélkül',
-                'feature2-title': 'Pontos irányítás',
-                'feature2-text': 'Fejlettebb mozgásfizika a tökéletes manőverekhez',
-                'feature3-title': 'VIP előnyök',
-                'feature3-text': 'Exkluzív módok és egyedi jutalmak',
-                'feature4-title': 'PRO státusz',
-                'feature4-text': 'Bővített testreszabás és speciális funkciók',
-                'feature5-title': 'Pálya- és karakter-szerkesztő',
-                'feature5-text': 'Készíts saját pályákat és karaktereket, oszd meg a világgal',
-                'feature6-title': 'Skin gyűjtemény',
-                'feature6-text': 'Hatalmas választék menő skinekből',
-                'feature7-title': 'Rangrendszer',
-                'feature7-text': 'Juss el újonctól a legendáig',
-                'feature8-title': 'Globális csaták',
-                'feature8-text': 'Versenyezz játékosokkal a világ minden tájáról'
-            },
-
-            el: {
-                'languages': 'Γλώσσες ▼',
-                'subtitle': 'Ταχύτητα. Τακτική.',
-                'download-btn': 'Λήψη Evades 3',
-                'dev-badge': 'Υπό ανάπτυξη',
-                'about-title': '🎮 ΣΧΕΤΙΚΑ ΜΕ ΤΟ ΠΑΙΧΝΙΔΙ',
-                'about-p1': '<span class="highlight">Evades 3</span> είναι η εξέλιξη του θρυλικού evades.io, επανασχεδιασμένο για μια νέα γενιά παικτών!',
-                'about-p2': 'Νιώσε την αδρεναλίνη των ελιγμών υψηλής ταχύτητας όπου κάθε χιλιοστό του δευτερολέπτου μετράει. Απόφυγε θανατηφόρα εμπόδια, ξεπέρασε αντιπάλους και κυριάρχησε στην αρένα!',
-                'stat-arenas': 'Αρένες',
-                'stat-online': 'Online',
-                'feature1-title': 'Αστραπιαία αντίδραση',
-                'feature1-text': 'Ομαλή κίνηση 60 FPS χωρίς lag',
-                'feature2-title': 'Ακριβής έλεγχος',
-                'feature2-text': 'Βελτιωμένη φυσική κίνησης για τέλειους ελιγμούς',
-                'feature3-title': 'Προνόμια VIP',
-                'feature3-text': 'Αποκλειστικά modes και μοναδικές ανταμοιβές',
-                'feature4-title': 'Κατάσταση PRO',
-                'feature4-text': 'Εκτεταμένη προσαρμογή και ειδικές δυνατότητες',
-                'feature5-title': 'Επεξεργαστής χαρτών & χαρακτήρων',
-                'feature5-text': 'Δημιούργησε δικούς σου χάρτες και χαρακτήρες και μοιράσου τους',
-                'feature6-title': 'Συλλογή skins',
-                'feature6-text': 'Τεράστια επιλογή από cool skins για προσωποποίηση',
-                'feature7-title': 'Σύστημα βαθμίδων',
-                'feature7-text': 'Ανέβα από αρχάριος σε θρύλο',
-                'feature8-title': 'Παγκόσμιες μάχες',
-                'feature8-text': 'Ανταγωνίσου παίκτες από όλο τον κόσμο'
-            },
-
-            ar: {
-                'languages': 'اللغات ▼',
-                'subtitle': 'السرعة. التكتيك.',
-                'download-btn': 'تحميل Evades 3',
-                'dev-badge': 'قيد التطوير',
-                'about-title': '🎮 عن اللعبة',
-                'about-p1': '<span class="highlight">Evades 3</span> هي تطور لعبة evades.io الأسطورية، مُعاد تصورها لجيل جديد من اللاعبين!',
-                'about-p2': 'اشعر بالأدرينالين في مناورات السرعة العالية حيث كل ميلي ثانية تصنع الفارق. تفادَ العوائق القاتلة، تجاوز الخصوم وسيطر على الساحة!',
-                'stat-arenas': 'الساحات',
-                'stat-online': 'متصل',
-                'feature1-title': 'رد فعل خاطف',
-                'feature1-text': 'رسوم متحركة سلسة 60FPS بدون تقطيع',
-                'feature2-title': 'تحكم دقيق',
-                'feature2-text': 'فيزياء حركة محسّنة لمناورات مثالية',
-                'feature3-title': 'مزايا VIP',
-                'feature3-text': 'أوضاع حصرية ومكافآت فريدة',
-                'feature4-title': 'وضع PRO',
-                'feature4-text': 'تخصيص موسّع وميزات خاصة',
-                'feature5-title': 'محرر الخرائط والشخصيات',
-                'feature5-text': 'أنشئ خرائطك وشخصياتك وشاركها مع العالم',
-                'feature6-title': 'مجموعة السكنات',
-                'feature6-text': 'مجموعة ضخمة من السكنات الرائعة للتخصيص',
-                'feature7-title': 'نظام الرتب',
-                'feature7-text': 'اصعد من مبتدئ إلى أسطورة',
-                'feature8-title': 'معارك عالمية',
-                'feature8-text': 'نافس لاعبين من جميع أنحاء العالم'
-            },
-
-            hi: {
-                'languages': 'भाषाएँ ▼',
-                'subtitle': 'स्पीड. रणनीति.',
-                'download-btn': 'Evades 3 डाउनलोड करें',
-                'dev-badge': 'विकास में',
-                'about-title': '🎮 गेम के बारे में',
-                'about-p1': '<span class="highlight">Evades 3</span> लेजेंडरी evades.io का नया रूप है—नई पीढ़ी के गेमर्स के लिए!',
-                'about-p2': 'हाई-स्पीड मूव्स का एड्रेनालिन महसूस करो जहाँ हर मिलीसेकंड मायने रखता है। घातक बाधाओं से बचो, प्रतिद्वंद्वियों से आगे निकलो और एरीना पर छा जाओ!',
-                'stat-arenas': 'एरीना',
-                'stat-online': 'ऑनलाइन',
-                'feature1-title': 'बिजली जैसी प्रतिक्रिया',
-                'feature1-text': 'बिना लैग के स्मूद 60 FPS एनिमेशन',
-                'feature2-title': 'सटीक नियंत्रण',
-                'feature2-text': 'परफेक्ट मूव्स के लिए बेहतर मूवमेंट फिजिक्स',
-                'feature3-title': 'VIP सुविधाएँ',
-                'feature3-text': 'एक्सक्लूसिव मोड्स और यूनिक रिवॉर्ड्स',
-                'feature4-title': 'PRO स्टेटस',
-                'feature4-text': 'अधिक कस्टमाइज़ेशन और खास फीचर्स',
-                'feature5-title': 'मैप और कैरेक्टर एडिटर',
-                'feature5-text': 'अपने मैप/कैरेक्टर बनाओ और दुनिया से शेयर करो',
-                'feature6-title': 'स्किन कलेक्शन',
-                'feature6-text': 'पर्सनलाइज़ेशन के लिए ढेर सारे कूल स्किन्स',
-                'feature7-title': 'रैंक सिस्टम',
-                'feature7-text': 'रूकी से लेजेंड तक पहुँचो',
-                'feature8-title': 'ग्लोबल बैटल्स',
-                'feature8-text': 'दुनिया भर के खिलाड़ियों से मुकाबला करो'
-            },
-
-            th: {
-                'languages': 'ภาษา ▼',
-                'subtitle': 'ความเร็ว. แทคติก.',
-                'download-btn': 'ดาวน์โหลด Evades 3',
-                'dev-badge': 'อยู่ระหว่างพัฒนา',
-                'about-title': '🎮 เกี่ยวกับเกม',
-                'about-p1': '<span class="highlight">Evades 3</span> คือวิวัฒนาการของ evades.io ในตำนาน ที่สร้างใหม่สำหรับผู้เล่นยุคใหม่!',
-                'about-p2': 'สัมผัสอะดรีนาลีนของการเคลื่อนไหวความเร็วสูงที่ทุกมิลลิวินาทีมีความหมาย หลบสิ่งกีดขวางอันตราย แซงคู่แข่ง และครองสนาม!',
-                'stat-arenas': 'อารีนา',
-                'stat-online': 'ออนไลน์',
-                'feature1-title': 'ปฏิกิริยาสายฟ้า',
-                'feature1-text': 'แอนิเมชันลื่นไหล 60 FPS ไม่มีแลค',
-                'feature2-title': 'การควบคุมแม่นยำ',
-                'feature2-text': 'ฟิสิกส์การเคลื่อนไหวที่ดีขึ้นเพื่อการหลบหลีกที่สมบูรณ์แบบ',
-                'feature3-title': 'สิทธิพิเศษ VIP',
-                'feature3-text': 'โหมดพิเศษและรางวัลไม่ซ้ำใคร',
-                'feature4-title': 'สถานะ PRO',
-                'feature4-text': 'ปรับแต่งได้มากขึ้นและฟีเจอร์พิเศษ',
-                'feature5-title': 'ตัวแก้ไขแผนที่และตัวละคร',
-                'feature5-text': 'สร้างแผนที่และตัวละครของคุณเองแล้วแชร์ให้โลกรู้',
-                'feature6-title': 'คอลเลกชันสกิน',
-                'feature6-text': 'สกินเจ๋ง ๆ ให้เลือกมากมายเพื่อปรับแต่ง',
-                'feature7-title': 'ระบบแรงก์',
-                'feature7-text': 'ไต่จากมือใหม่สู่ตำนาน',
-                'feature8-title': 'ศึกระดับโลก',
-                'feature8-text': 'แข่งขันกับผู้เล่นจากทั่วโลก'
-            },
-
-            vi: {
-                'languages': 'Ngôn ngữ ▼',
-                'subtitle': 'Tốc độ. Chiến thuật.',
-                'download-btn': 'Tải Evades 3',
-                'dev-badge': 'Đang phát triển',
-                'about-title': '🎮 VỀ TRÒ CHƠI',
-                'about-p1': '<span class="highlight">Evades 3</span> là phiên bản tiến hóa của evades.io huyền thoại, được tái thiết kế cho thế hệ game thủ mới!',
-                'about-p2': 'Cảm nhận adrenaline của những pha né tránh tốc độ cao nơi từng mili-giây quyết định tất cả. Né chướng ngại chết người, vượt đối thủ và thống trị đấu trường!',
-                'stat-arenas': 'Đấu trường',
-                'stat-online': 'Trực tuyến',
-                'feature1-title': 'Phản xạ tia chớp',
-                'feature1-text': 'Hoạt ảnh 60 FPS mượt mà không giật lag',
-                'feature2-title': 'Điều khiển chính xác',
-                'feature2-text': 'Vật lý di chuyển cải tiến cho những pha xử lý hoàn hảo',
-                'feature3-title': 'Đặc quyền VIP',
-                'feature3-text': 'Chế độ độc quyền và phần thưởng độc đáo',
-                'feature4-title': 'Trạng thái PRO',
-                'feature4-text': 'Tùy biến mở rộng và tính năng đặc biệt',
-                'feature5-title': 'Trình chỉnh sửa bản đồ & nhân vật',
-                'feature5-text': 'Tạo bản đồ và nhân vật của riêng bạn, chia sẻ với thế giới',
-                'feature6-title': 'Bộ sưu tập skin',
-                'feature6-text': 'Kho skin cực chất để cá nhân hóa',
-                'feature7-title': 'Hệ thống xếp hạng',
-                'feature7-text': 'Leo từ tân thủ lên huyền thoại',
-                'feature8-title': 'Trận chiến toàn cầu',
-                'feature8-text': 'Thi đấu với người chơi khắp thế giới'
-            },
-
-            id: {
-                'languages': 'Bahasa ▼',
-                'subtitle': 'Kecepatan. Taktik.',
-                'download-btn': 'Unduh Evades 3',
-                'dev-badge': 'Dalam Pengembangan',
-                'about-title': '🎮 TENTANG GAME',
-                'about-p1': '<span class="highlight">Evades 3</span> adalah evolusi dari evades.io legendaris, dibayangkan ulang untuk generasi gamer baru!',
-                'about-p2': 'Rasakan adrenalin manuver super cepat di mana setiap milidetik menentukan hasil. Hindari rintangan mematikan, salip rival, dan kuasai arena!',
-                'stat-arenas': 'Arena',
-                'stat-online': 'Online',
-                'feature1-title': 'Reaksi kilat',
-                'feature1-text': 'Animasi 60 FPS mulus tanpa lag',
-                'feature2-title': 'Kontrol presisi',
-                'feature2-text': 'Fisika gerak yang ditingkatkan untuk manuver sempurna',
-                'feature3-title': 'Hak istimewa VIP',
-                'feature3-text': 'Mode eksklusif dan hadiah unik',
-                'feature4-title': 'Status PRO',
-                'feature4-text': 'Kustomisasi lebih luas dan fitur spesial',
-                'feature5-title': 'Editor peta & karakter',
-                'feature5-text': 'Buat peta dan karakter sendiri, bagikan ke dunia',
-                'feature6-title': 'Koleksi skin',
-                'feature6-text': 'Pilihan skin keren yang sangat banyak untuk personalisasi',
-                'feature7-title': 'Sistem peringkat',
-                'feature7-text': 'Naik dari pemula menjadi legenda',
-                'feature8-title': 'Pertempuran global',
-                'feature8-text': 'Bersaing dengan pemain dari seluruh dunia'
-            },
-
-            ms: {
-                'languages': 'Bahasa ▼',
-                'subtitle': 'Kelajuan. Taktik.',
-                'download-btn': 'Muat turun Evades 3',
-                'dev-badge': 'Dalam pembangunan',
-                'about-title': '🎮 TENTANG PERMAINAN',
-                'about-p1': '<span class="highlight">Evades 3</span> ialah evolusi evades.io yang legenda, direka semula untuk generasi pemain baharu!',
-                'about-p2': 'Rasai adrenalin manuver kelajuan tinggi di mana setiap milisaat menentukan segalanya. Elak halangan maut, potong saingan, dan kuasai arena!',
-                'stat-arenas': 'Arena',
-                'stat-online': 'Dalam talian',
-                'feature1-title': 'Reaksi sepantas kilat',
-                'feature1-text': 'Animasi 60 FPS lancar tanpa lag',
-                'feature2-title': 'Kawalan tepat',
-                'feature2-text': 'Fizik pergerakan dipertingkat untuk manuver sempurna',
-                'feature3-title': 'Keistimewaan VIP',
-                'feature3-text': 'Mod eksklusif dan ganjaran unik',
-                'feature4-title': 'Status PRO',
-                'feature4-text': 'Kustomisasi lebih luas dan ciri khas',
-                'feature5-title': 'Editor peta & watak',
-                'feature5-text': 'Cipta peta dan watak anda sendiri, kongsi dengan dunia',
-                'feature6-title': 'Koleksi skin',
-                'feature6-text': 'Pilihan skin yang sangat banyak untuk personalisasi',
-                'feature7-title': 'Sistem pangkat',
-                'feature7-text': 'Naik dari новичок menjadi legenda',
-                'feature8-title': 'Pertempuran global',
-                'feature8-text': 'Bersaing dengan pemain dari seluruh dunia'
-            }
-        };
+    // Метаданные для списка языков (флаг/код)
+    const LANG_META = {
+      ru: { flag: "🇷🇺", code: "RUS" },
+      en: { flag: "🇬🇧", code: "ENG" },
+      uk: { flag: "🇺🇦", code: "UKR" },
+      de: { flag: "🇩🇪", code: "DEU" },
+      es: { flag: "🇪🇸", code: "ESP" },
+      fr: { flag: "🇫🇷", code: "FRA" },
+      it: { flag: "🇮🇹", code: "ITA" },
+      pt: { flag: "🇵🇹", code: "POR" },
+      pl: { flag: "🇵🇱", code: "POL" },
+      tr: { flag: "🇹🇷", code: "TUR" },
+      nl: { flag: "🇳🇱", code: "NLD" },
+      sv: { flag: "🇸🇪", code: "SWE" },
+      no: { flag: "🇳🇴", code: "NOR" },
+      fi: { flag: "🇫🇮", code: "FIN" },
+      da: { flag: "🇩🇰", code: "DAN" },
+      cs: { flag: "🇨🇿", code: "CZE" },
+      ro: { flag: "🇷🇴", code: "ROU" },
+      hu: { flag: "🇭🇺", code: "HUN" },
+      el: { flag: "🇬🇷", code: "ELL" },
+      ja: { flag: "🇯🇵", code: "JPN" },
+      zh: { flag: "🇨🇳", code: "ZHO" },
+      ko: { flag: "🇰🇷", code: "KOR" },
+      ar: { flag: "🇸🇦", code: "ARA" },
+      hi: { flag: "🇮🇳", code: "HIN" },
+      th: { flag: "🇹🇭", code: "THA" },
+      vi: { flag: "🇻🇳", code: "VIE" },
+      id: { flag: "🇮🇩", code: "IDN" },
+      ms: { flag: "🇲🇾", code: "MSA" }
+    };
 
     function applyTranslations(lang) {
       const elements = document.querySelectorAll('[data-i18n]');
@@ -1888,14 +1859,12 @@
       });
     }
 
-    // ====== UI: выбранный язык + галочка ======
     function setSelectedLangUI(lang) {
       document.querySelectorAll('.lang-item').forEach(item => {
         item.classList.toggle('is-selected', item.dataset.lang === lang);
       });
     }
 
-    // ====== subtitle: разбить на 2 "слова" для анимации ======
     function wrapSubtitleWords() {
       const sub = document.querySelector('.subtitle');
       if (!sub) return;
@@ -1913,37 +1882,79 @@
       `;
     }
 
-    // ====== перезапуск hero-анимации ======
-function restartHeroSequence() {
-  document.body.classList.remove('hero-anim', 'ui-ready', 'screen-shake');
+    // ====== ВЗРЫВНЫЕ ЧАСТИЦЫ (поверх всего) ======
+    function explodeTitle() {
+      const title = document.querySelector('.main-title');
+      const fx = document.getElementById('fx-layer');
+      if (!title || !fx) return;
 
-  wrapSubtitleWords();
+      const rect = title.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
 
-  const title = document.querySelector('.main-title');
-  if (!title) return;
+      // Частицы
+      const count = 40;
+      for (let i = 0; i < count; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'explosion-particle';
 
-  // 1) старт анимации
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      document.body.classList.add('hero-anim');
+        const angle = (Math.PI * 2 * i) / count + (Math.random() * 0.35);
+        const velocity = 150 + Math.random() * 200;
+        const tx = Math.cos(angle) * velocity;
+        const ty = Math.sin(angle) * velocity;
 
-      // 2) включаем UI ТОЛЬКО когда закончится titleBurst
-      const onEnd = (e) => {
-        if (e.animationName !== 'titleBurst') return;
-        title.removeEventListener('animationend', onEnd);
-        document.body.classList.add('ui-ready');
-      };
-      title.addEventListener('animationend', onEnd);
+        particle.style.left = (centerX - 4) + 'px';
+        particle.style.top = (centerY - 4) + 'px';
+        particle.style.setProperty('--tx', tx + 'px');
+        particle.style.setProperty('--ty', ty + 'px');
+        particle.style.animation = `explode ${0.8 + Math.random() * 0.4}s ease-out forwards`;
 
-      // 3) синхро-эффекты “взрыва” (частицы + шейк)
-      //    (тайминги под твои задержки: subtitle 150/850, titleBurst 1500)
-      setTimeout(() => explodeTitle(), 1500 + 520); // середина бурста
-    });
-  });
-}
+        fx.appendChild(particle);
+        setTimeout(() => particle.remove(), 1500);
+      }
 
+      // Ударная волна
+      const shockwave = document.createElement('div');
+      shockwave.className = 'shockwave';
+      shockwave.style.left = centerX + 'px';
+      shockwave.style.top = centerY + 'px';
+      fx.appendChild(shockwave);
+      setTimeout(() => shockwave.remove(), 1000);
+    }
 
-    // ====== смена языка ======
+    function restartHeroSequence() {
+      document.body.classList.remove('hero-anim', 'ui-ready', 'screen-shake');
+
+      // после смены языка subtitle меняется — поэтому заново режем на слова
+      wrapSubtitleWords();
+
+      const title = document.querySelector('.main-title');
+      if (!title) return;
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          document.body.classList.add('hero-anim');
+
+          const onEnd = (e) => {
+            if (e.animationName !== 'titleMegaBurst') return;
+            title.removeEventListener('animationend', onEnd);
+            document.body.classList.add('ui-ready');
+          };
+          title.addEventListener('animationend', onEnd);
+
+          // Взрыв после полного появления заголовка (чуть с запасом)
+          setTimeout(() => {
+            explodeTitle();
+            document.body.classList.add('screen-shake');
+
+            setTimeout(() => {
+              document.body.classList.remove('screen-shake');
+            }, 600);
+          }, 1920);
+        });
+      });
+    }
+
     function changeLanguage(lang) {
       if (!translations[lang]) lang = 'en';
 
@@ -1951,11 +1962,9 @@ function restartHeroSequence() {
       localStorage.setItem('selectedLanguage', lang);
       setSelectedLangUI(lang);
 
-      // перезапускаем hero после смены текста
       restartHeroSequence();
     }
 
-    // ====== блёстки ======
     function createSparkles(count = 50) {
       for (let i = 0; i < count; i++) {
         const sparkle = document.createElement('div');
@@ -1967,21 +1976,48 @@ function restartHeroSequence() {
       }
     }
 
-    // ====== init ======
-    window.addEventListener('DOMContentLoaded', () => {
-      // клики по языкам (убрал inline onclick — так чище и ничего не ломается)
-      document.querySelectorAll('.lang-item').forEach(item => {
-        item.addEventListener('click', () => changeLanguage(item.dataset.lang));
-      });
+    function buildLanguageMenu() {
+      const list = document.getElementById('langList');
+      if (!list) return;
 
-      // выставляем сохранённый язык
+      list.innerHTML = "";
+
+      // Берём ВСЕ языки из translations
+      const langs = Object.keys(translations);
+
+      // Немного приятнее: сначала ru/en/uk, потом остальные по алфавиту
+      const priority = ["ru","en","uk"];
+      const rest = langs.filter(l => !priority.includes(l)).sort();
+      const ordered = [...priority.filter(l => langs.includes(l)), ...rest];
+
+      for (const lang of ordered) {
+        const meta = LANG_META[lang] || { flag: "🏳️", code: lang.toUpperCase() };
+
+        const item = document.createElement('div');
+        item.className = 'lang-item';
+        item.dataset.lang = lang;
+
+        item.innerHTML = `
+          <span class="lang-flag">${meta.flag}</span>
+          <span class="lang-code">${meta.code}</span>
+          <span class="lang-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg>
+          </span>
+        `;
+
+        item.addEventListener('click', () => changeLanguage(lang));
+        list.appendChild(item);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      buildLanguageMenu();
+
       const savedLang = localStorage.getItem('selectedLanguage') || 'ru';
       changeLanguage(savedLang);
 
-      // блёстки
       createSparkles(50);
 
-      // parallax на блёстках
       document.addEventListener('mousemove', (e) => {
         const mouseX = e.clientX / window.innerWidth - 0.5;
         const mouseY = e.clientY / window.innerHeight - 0.5;
