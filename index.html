@@ -581,19 +581,27 @@
       color: transparent;
       -webkit-text-stroke: 0;
       text-stroke: 0;
-      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.8) 45%, transparent 70%);
-      background-size: 220% 100%;
+      background: linear-gradient(
+        120deg,
+        transparent 0%,
+        rgba(255, 215, 0, 0) 18%,
+        rgba(255, 240, 180, 0.95) 40%,
+        rgba(255, 200, 40, 0.95) 52%,
+        rgba(255, 240, 180, 0.95) 64%,
+        rgba(255, 215, 0, 0) 82%,
+        transparent 100%
+      );
+      background-size: 260% 100%;
       -webkit-background-clip: text;
       background-clip: text;
-      animation: titleShimmer 3.5s ease-in-out infinite;
-      mix-blend-mode: screen;
+      animation: titleGoldWave 3.2s linear infinite;
       pointer-events: none;
-      opacity: 0.85;
+      opacity: 0.95;
     }
 
-    @keyframes titleShimmer {
-      0% { background-position: 200% 50%; }
-      100% { background-position: -100% 50%; }
+    @keyframes titleGoldWave {
+      0% { background-position: 180% 50%; }
+      100% { background-position: -120% 50%; }
     }
 
     /* 3D кнопка */
