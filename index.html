@@ -528,9 +528,14 @@
     }
 
     /* ===== UPGRADE: фирменный subtitle ===== */
+/* ===== UPGRADE: фирменный subtitle ===== */
     .subtitle{
       position: relative;
-      display: inline-block;
+      display: flex !important;
+      flex-wrap: wrap;
+      gap: 18px;
+      justify-content: center;
+      align-items: center;
       padding: 12px 26px;
       border-radius: 999px;
       background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04));
@@ -564,7 +569,8 @@
     /* ===== MEGA EVADES 3 TITLE ===== */
     .main-title{
       position: relative;
-      display: inline-block;
+      display: inline-flex;
+      gap: 18px;
       font-family: 'Exo 2', 'Rajdhani', sans-serif;
       font-size: 108px;
       font-weight: 900;
