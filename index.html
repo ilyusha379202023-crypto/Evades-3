@@ -1164,7 +1164,6 @@
       flex-wrap: wrap;
       position: relative;
       overflow: visible;
-      z-index: 99999;   
     }
 
     .info-badge{
@@ -1186,7 +1185,7 @@
       backdrop-filter: blur(12px);
       cursor: pointer;
       transition: box-shadow 0.2s ease, filter 0.2s ease;
-      z-index: 3000;
+      z-index: 50;
     }
 
     .info-badge:hover{
@@ -1198,93 +1197,40 @@
     }
 
     .info-tooltip{
-  position: absolute;
-  bottom: calc(100% + 10px);
-  left: 50%;
-  transform: translateX(-50%) translateY(6px);
-  opacity: 0;
-  pointer-events: none;
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      opacity: 0;
+      pointer-events: none;
+      padding: 8px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.4);
+      box-shadow:
+        0 10px 22px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.35);
+      backdrop-filter: blur(16px);
+      color: #fff;
+      font-size: 12px;
+      white-space: nowrap;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 10000;
+    }
 
-  /* ключевое: отдельный слой и перекрытие */
-  z-index: 999999;
-  isolation: isolate;
-
-  /* ОДНА СТРОЧКА */
-  white-space: nowrap;
-
-  padding: 12px 20px;
-  border-radius: 999px;
-
-  /* плотный glass фон (чтобы точно перекрывал текст) */
-  background: rgba(18, 35, 45, 0.92);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-
-  border: 1px solid rgba(255,255,255,0.22);
-
-  box-shadow:
-    0 14px 30px rgba(0,0,0,0.45),
-    inset 0 1px 0 rgba(255,255,255,0.12);
-
-  color: #fff;
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 1.2;
-
-  transition: opacity 0.18s ease, transform 0.18s ease;
-}
-
-  .info-tooltip::after{
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 8px solid rgba(18, 35, 45, 0.92); /* под фон tooltip */
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.25));
-}
-
-
-    .info-tooltip{
-  position: absolute;
-  bottom: calc(100% + 10px);
-  left: 50%;
-  transform: translateX(-50%) translateY(6px);
-  opacity: 0;
-  pointer-events: none;
-
-  /* === В ОДНУ СТРОЧКУ === */
-  white-space: nowrap;
-  max-width: none;
-
-  /* === стиль как у кнопки языков (glass pill) === */
-  padding: 12px 20px;
-  border-radius: 999px;
-  background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.12));
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 2px solid rgba(255,255,255,0.28);
-
-  box-shadow:
-    10px 10px 30px rgba(0,0,0,0.35),
-    -5px -5px 14px rgba(255,255,255,0.12),
-    inset -2px -2px 8px rgba(0,0,0,0.25),
-    inset 2px 2px 8px rgba(255,255,255,0.2);
-
-  color: #fff;
-  font-size: 16px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  line-height: 1.2;
-
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  z-index: 10000;
-}
-
+    .info-tooltip::after{
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid rgba(255,255,255,0.3);
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.25));
+    }
 
     .info-badge:hover .info-tooltip{
       opacity: 1;
@@ -1923,58 +1869,10 @@
         transform: none;
         filter: none;
       }
-      /* Глобальный tooltip (всегда поверх всего) */
-#globalTooltip{
-  position: fixed;
-  z-index: 2147483647; /* максимальный */
-  pointer-events: none;
-
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 120ms ease, transform 120ms ease;
-
-  /* стиль как у меню языков (glass) */
-  padding: 12px 18px;
-  border-radius: 999px;
-  white-space: nowrap;
-
-  background: rgba(255,255,255,0.18);
-  border: 1px solid rgba(255,255,255,0.4);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-
-  color: #fff;
-  font-weight: 800;
-  font-size: 14px;
-  box-shadow:
-    10px 10px 30px rgba(0,0,0,0.35),
-    -5px -5px 14px rgba(255,255,255,0.12),
-    inset -2px -2px 8px rgba(0,0,0,0.25),
-    inset 2px 2px 8px rgba(255,255,255,0.2);
-}
-
-#globalTooltip.show{
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* стрелочка снизу (цвет = фон tooltip) */
-#globalTooltip::after{
-  content:"";
-  position:absolute;
-  top:100%;
-  left:50%;
-  transform: translateX(-50%);
-  width: 0; height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 8px solid rgba(255,255,255,0.18); /* = background */
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.25));
-}
     }
   </style>
 </head>
-    
+
 <body>
   <!-- Вспышка-оверлей для взрыва -->
   <div class="flash-overlay"></div>
@@ -3605,364 +3503,306 @@
             }
         };
 
-<script>
-  function applyTranslations(lang) {
-    const elements = document.querySelectorAll('[data-i18n]');
-    elements.forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      const t =
-        (translations[lang] && translations[lang][key]) ||
-        (translations.en && translations.en[key]) ||
-        el.innerHTML;
+    function applyTranslations(lang) {
+      const elements = document.querySelectorAll('[data-i18n]');
+      elements.forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const t =
+          (translations[lang] && translations[lang][key]) ||
+          (translations.en && translations.en[key]) ||
+          el.innerHTML;
 
-      el.innerHTML = t;
-    });
-  }
-
-  function updateDynamicLabels(lang) {
-    const sfxToggle = document.querySelector('.sfx-toggle');
-    if (sfxToggle) {
-      const state = sfxToggle.classList.contains('is-off') ? 'sfx-off' : 'sfx-on';
-      const stateText = (translations[lang] && translations[lang][state]) ||
-        (translations.en && translations.en[state]) || sfxToggle.querySelector('.sfx-state')?.textContent;
-      const labelText = (translations[lang] && translations[lang]['sfx-label']) ||
-        (translations.en && translations.en['sfx-label']);
-      if (labelText) {
-        const labelNode = sfxToggle.querySelector('[data-i18n="sfx-label"]');
-        if (labelNode) labelNode.textContent = labelText;
-      }
-      const stateNode = sfxToggle.querySelector('.sfx-state');
-      if (stateNode && stateText) stateNode.textContent = stateText;
+        el.innerHTML = t;
+      });
     }
 
-    document.querySelectorAll('.showcase-card').forEach(card => {
-      const button = card.querySelector('.scene-toggle');
-      if (!button) return;
-      const isPaused = card.classList.contains('is-paused');
-      const key = isPaused ? 'continue' : 'pause';
-      const label = (translations[lang] && translations[lang][key]) ||
-        (translations.en && translations.en[key]) || button.textContent;
-      button.textContent = label;
-    });
-  }
-
-  function setSelectedLangUI(lang) {
-    document.querySelectorAll('.lang-item').forEach(item => {
-      item.classList.toggle('is-selected', item.dataset.lang === lang);
-    });
-  }
-
-  function wrapSubtitleWords() {
-    const sub = document.querySelector('.subtitle');
-    if (!sub) return;
-
-    const text = sub.textContent.trim();
-    if (!text) return;
-
-    const parts = text.split(/\s+/);
-    const first = parts.shift() || '';
-    const rest = parts.join(' ') || '';
-
-    sub.innerHTML = `
-      <span class="word word1">${first}</span>
-      <span class="word word2">${rest}</span>
-    `;
-  }
-
-  // ====== ВЗРЫВНЫЕ ЧАСТИЦЫ ======
-  let lastExplodeTime = 0;
-  let lowEffects = false;
-  const frameTimes = [];
-  function monitorFPS() {
-    let last = performance.now();
-    const tick = (now) => {
-      const delta = now - last;
-      last = now;
-      frameTimes.push(delta);
-      if (frameTimes.length > 30) frameTimes.shift();
-      if (frameTimes.length === 30) {
-        const avg = frameTimes.reduce((a, b) => a + b, 0) / frameTimes.length;
-        lowEffects = avg > 24;
+    function updateDynamicLabels(lang) {
+      const sfxToggle = document.querySelector('.sfx-toggle');
+      if (sfxToggle) {
+        const state = sfxToggle.classList.contains('is-off') ? 'sfx-off' : 'sfx-on';
+        const stateText = (translations[lang] && translations[lang][state]) ||
+          (translations.en && translations.en[state]) || sfxToggle.querySelector('.sfx-state')?.textContent;
+        const labelText = (translations[lang] && translations[lang]['sfx-label']) ||
+          (translations.en && translations.en['sfx-label']);
+        if (labelText) {
+          const labelNode = sfxToggle.querySelector('[data-i18n="sfx-label"]');
+          if (labelNode) labelNode.textContent = labelText;
+        }
+        const stateNode = sfxToggle.querySelector('.sfx-state');
+        if (stateNode && stateText) stateNode.textContent = stateText;
       }
+
+      document.querySelectorAll('.showcase-card').forEach(card => {
+        const button = card.querySelector('.scene-toggle');
+        if (!button) return;
+        const isPaused = card.classList.contains('is-paused');
+        const key = isPaused ? 'continue' : 'pause';
+        const label = (translations[lang] && translations[lang][key]) ||
+          (translations.en && translations.en[key]) || button.textContent;
+        button.textContent = label;
+      });
+    }
+
+    function setSelectedLangUI(lang) {
+      document.querySelectorAll('.lang-item').forEach(item => {
+        item.classList.toggle('is-selected', item.dataset.lang === lang);
+      });
+    }
+
+    function wrapSubtitleWords() {
+      const sub = document.querySelector('.subtitle');
+      if (!sub) return;
+
+      const text = sub.textContent.trim();
+      if (!text) return;
+
+      const parts = text.split(/\s+/);
+      const first = parts.shift() || '';
+      const rest = parts.join(' ') || '';
+
+      sub.innerHTML = `
+        <span class="word word1">${first}</span>
+        <span class="word word2">${rest}</span>
+      `;
+    }
+
+    // ====== ВЗРЫВНЫЕ ЧАСТИЦЫ ======
+    let lastExplodeTime = 0;
+    let lowEffects = false;
+    const frameTimes = [];
+    function monitorFPS() {
+      let last = performance.now();
+      const tick = (now) => {
+        const delta = now - last;
+        last = now;
+        frameTimes.push(delta);
+        if (frameTimes.length > 30) frameTimes.shift();
+        if (frameTimes.length === 30) {
+          const avg = frameTimes.reduce((a, b) => a + b, 0) / frameTimes.length;
+          lowEffects = avg > 24;
+        }
+        requestAnimationFrame(tick);
+      };
       requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  }
-
-  function explodeTitle() {
-    const now = performance.now();
-    if (now - lastExplodeTime < 1200) return;
-    lastExplodeTime = now;
-    const title = document.querySelector('.main-title');
-    if (!title) return;
-
-    const rect = title.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const overlay = document.querySelector('.explosion-layer') || document.body;
-
-    const particleCount = lowEffects ? 18 : 40;
-    for (let i = 0; i < particleCount; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'explosion-particle';
-
-      const angle = (Math.PI * 2 * i) / particleCount;
-      const velocity = 150 + Math.random() * 200;
-      const tx = Math.cos(angle) * velocity;
-      const ty = Math.sin(angle) * velocity;
-
-      particle.style.left = centerX + 'px';
-      particle.style.top = centerY + 'px';
-      particle.style.setProperty('--tx', tx + 'px');
-      particle.style.setProperty('--ty', ty + 'px');
-      particle.style.animation = `explode ${0.8 + Math.random() * 0.4}s ease-out forwards`;
-
-      overlay.appendChild(particle);
-
-      setTimeout(() => particle.remove(), 1500);
     }
 
-    // Ударная волна
-    const shockwave = document.createElement('div');
-    shockwave.className = 'shockwave';
-    shockwave.style.left = centerX + 'px';
-    shockwave.style.top = centerY + 'px';
-    overlay.appendChild(shockwave);
-    setTimeout(() => shockwave.remove(), 1000);
-  }
+    function explodeTitle() {
+      const now = performance.now();
+      if (now - lastExplodeTime < 1200) return;
+      lastExplodeTime = now;
+      const title = document.querySelector('.main-title');
+      if (!title) return;
 
-  function restartHeroSequence() {
-    document.body.classList.remove('hero-anim', 'ui-ready', 'screen-shake');
+      const rect = title.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const overlay = document.querySelector('.explosion-layer') || document.body;
 
-    wrapSubtitleWords();
+      const particleCount = lowEffects ? 18 : 40;
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'explosion-particle';
+        
+        const angle = (Math.PI * 2 * i) / particleCount;
+        const velocity = 150 + Math.random() * 200;
+        const tx = Math.cos(angle) * velocity;
+        const ty = Math.sin(angle) * velocity;
+        
+        particle.style.left = centerX + 'px';
+        particle.style.top = centerY + 'px';
+        particle.style.setProperty('--tx', tx + 'px');
+        particle.style.setProperty('--ty', ty + 'px');
+        particle.style.animation = `explode ${0.8 + Math.random() * 0.4}s ease-out forwards`;
+        
+        overlay.appendChild(particle);
+        
+        setTimeout(() => particle.remove(), 1500);
+      }
 
-    const title = document.querySelector('.main-title');
-    if (!title) return;
+      // Ударная волна
+      const shockwave = document.createElement('div');
+      shockwave.className = 'shockwave';
+      shockwave.style.left = centerX + 'px';
+      shockwave.style.top = centerY + 'px';
+      overlay.appendChild(shockwave);
+      setTimeout(() => shockwave.remove(), 1000);
+    }
 
-    requestAnimationFrame(() => {
+    function restartHeroSequence() {
+      document.body.classList.remove('hero-anim', 'ui-ready', 'screen-shake');
+
+      wrapSubtitleWords();
+
+      const title = document.querySelector('.main-title');
+      if (!title) return;
+
       requestAnimationFrame(() => {
-        document.body.classList.add('hero-anim');
+        requestAnimationFrame(() => {
+          document.body.classList.add('hero-anim');
 
-        const onEnd = (e) => {
-          if (e.animationName !== 'titleMegaBurst') return;
-          title.removeEventListener('animationend', onEnd);
-          document.body.classList.add('ui-ready');
-        };
-        title.addEventListener('animationend', onEnd);
-
-        setTimeout(() => {
-          explodeTitle();
-          document.body.classList.add('screen-shake');
+          const onEnd = (e) => {
+            if (e.animationName !== 'titleMegaBurst') return;
+            title.removeEventListener('animationend', onEnd);
+            document.body.classList.add('ui-ready');
+          };
+          title.addEventListener('animationend', onEnd);
 
           setTimeout(() => {
-            document.body.classList.remove('screen-shake');
-          }, 600);
-        }, 1920);
-      });
-    });
-  }
-
-  let currentLang = 'ru';
-  function changeLanguage(lang) {
-    if (!translations[lang]) lang = 'en';
-    currentLang = lang;
-
-    document.documentElement.lang = lang;
-    applyTranslations(lang);
-    updateDynamicLabels(lang);
-    localStorage.setItem('selectedLanguage', lang);
-    setSelectedLangUI(lang);
-
-    restartHeroSequence();
-  }
-
-  function createSparkles(count = 50) {
-    for (let i = 0; i < count; i++) {
-      const sparkle = document.createElement('div');
-      sparkle.className = 'sparkle';
-      sparkle.style.left = Math.random() * 100 + '%';
-      sparkle.style.top = Math.random() * 100 + '%';
-      sparkle.style.animationDelay = Math.random() * 3 + 's';
-      document.body.appendChild(sparkle);
-    }
-  }
-
-  window.addEventListener('DOMContentLoaded', () => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const prefersReducedTransparency = window.matchMedia('(prefers-reduced-transparency: reduce)').matches;
-    let sfxEnabled = !prefersReducedMotion && !prefersReducedTransparency;
-    let audioContext = null;
-
-    const playBeep = (freq = 680, duration = 0.08) => {
-      if (!sfxEnabled || prefersReducedMotion || prefersReducedTransparency) return;
-      if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioContext.state === 'suspended') {
-        audioContext.resume();
-      }
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-      oscillator.type = 'sine';
-      oscillator.frequency.value = freq;
-      gainNode.gain.value = 0.06;
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + duration);
-    };
-
-    monitorFPS();
-
-    document.querySelectorAll('.lang-item').forEach(item => {
-      item.addEventListener('click', () => {
-        playBeep(720, 0.06);
-        changeLanguage(item.dataset.lang);
-      });
-    });
-
-    const savedLang = localStorage.getItem('selectedLanguage') || 'ru';
-    changeLanguage(savedLang);
-
-    if (!prefersReducedMotion) createSparkles(50);
-
-    document.querySelectorAll('.lang-item').forEach((item, index) => {
-      item.style.setProperty('--item-delay', `${index * 20}ms`);
-    });
-
-    const revealTargets = [];
-    const description = document.querySelector('.description');
-    const stats = document.querySelector('.stats-container');
-    if (description) revealTargets.push(description);
-    if (stats) revealTargets.push(stats);
-
-    document.querySelectorAll('.feature-card').forEach((card, idx) => {
-      card.style.transitionDelay = `${idx * 70}ms`;
-      revealTargets.push(card);
-    });
-
-    if (!prefersReducedMotion && 'IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('reveal-in');
-
-            // Сбрасываем задержку, чтобы hover не тормозил
-            entry.target.style.transitionDelay = '0ms';
-
-            observer.unobserve(entry.target);
-          }
+            explodeTitle();
+            document.body.classList.add('screen-shake');
+            
+            setTimeout(() => {
+              document.body.classList.remove('screen-shake');
+            }, 600);
+          }, 1920);
         });
-      }, { threshold: 0.2 });
-
-      revealTargets.forEach(el => {
-        el.classList.add('reveal-target');
-        observer.observe(el);
-      });
-    } else {
-      revealTargets.forEach(el => {
-        el.classList.add('reveal-target', 'reveal-in');
       });
     }
 
-    document.querySelectorAll('.showcase-card').forEach(card => {
-      const button = card.querySelector('.scene-toggle');
-      if (!button) return;
-      card.classList.remove('is-paused');
-      button.addEventListener('click', () => {
-        playBeep(520, 0.05);
-        const shouldPause = !card.classList.contains('is-paused');
-        card.classList.toggle('is-paused', shouldPause);
-        updateDynamicLabels(currentLang);
-      });
-    });
+    let currentLang = 'ru';
+    function changeLanguage(lang) {
+      if (!translations[lang]) lang = 'en';
+      currentLang = lang;
 
-    const sfxToggle = document.querySelector('.sfx-toggle');
-    if (sfxToggle) {
-      sfxToggle.classList.toggle('is-off', !sfxEnabled);
-      sfxToggle.setAttribute('aria-pressed', String(sfxEnabled));
-      sfxToggle.addEventListener('click', () => {
-        sfxEnabled = !sfxEnabled;
+      document.documentElement.lang = lang;
+      applyTranslations(lang);
+      updateDynamicLabels(lang);
+      localStorage.setItem('selectedLanguage', lang);
+      setSelectedLangUI(lang);
+
+      restartHeroSequence();
+    }
+
+    function createSparkles(count = 50) {
+      for (let i = 0; i < count; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = Math.random() * 100 + '%';
+        sparkle.style.top = Math.random() * 100 + '%';
+        sparkle.style.animationDelay = Math.random() * 3 + 's';
+        document.body.appendChild(sparkle);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const prefersReducedTransparency = window.matchMedia('(prefers-reduced-transparency: reduce)').matches;
+      let sfxEnabled = !prefersReducedMotion && !prefersReducedTransparency;
+      let audioContext = null;
+
+      const playBeep = (freq = 680, duration = 0.08) => {
+        if (!sfxEnabled || prefersReducedMotion || prefersReducedTransparency) return;
+        if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        oscillator.type = 'sine';
+        oscillator.frequency.value = freq;
+        gainNode.gain.value = 0.06;
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + duration);
+      };
+
+      monitorFPS();
+
+      document.querySelectorAll('.lang-item').forEach(item => {
+        item.addEventListener('click', () => {
+          playBeep(720, 0.06);
+          changeLanguage(item.dataset.lang);
+        });
+      });
+
+      const savedLang = localStorage.getItem('selectedLanguage') || 'ru';
+      changeLanguage(savedLang);
+
+      if (!prefersReducedMotion) createSparkles(50);
+
+      document.querySelectorAll('.lang-item').forEach((item, index) => {
+        item.style.setProperty('--item-delay', `${index * 20}ms`);
+      });
+
+      const revealTargets = [];
+      const description = document.querySelector('.description');
+      const stats = document.querySelector('.stats-container');
+      if (description) revealTargets.push(description);
+      if (stats) revealTargets.push(stats);
+      document.querySelectorAll('.feature-card').forEach((card, idx) => {
+        card.style.transitionDelay = `${idx * 70}ms`;
+        revealTargets.push(card);
+      });
+      if (!prefersReducedMotion && 'IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+        entry.target.classList.add('reveal-in');
+
+      // Сбрасываем задержку, чтобы hover не тормозил
+        entry.target.style.transitionDelay = '0ms';
+
+        observer.unobserve(entry.target);
+         }
+
+          });
+        }, { threshold: 0.2 });
+        revealTargets.forEach(el => {
+          el.classList.add('reveal-target');
+          observer.observe(el);
+        });
+      } else {
+        revealTargets.forEach(el => {
+          el.classList.add('reveal-target', 'reveal-in');
+        });
+      }
+
+      document.querySelectorAll('.showcase-card').forEach(card => {
+        const button = card.querySelector('.scene-toggle');
+        if (!button) return;
+        card.classList.remove('is-paused');
+        button.addEventListener('click', () => {
+          playBeep(520, 0.05);
+          const shouldPause = !card.classList.contains('is-paused');
+          card.classList.toggle('is-paused', shouldPause);
+          updateDynamicLabels(currentLang);
+        });
+      });
+
+      const sfxToggle = document.querySelector('.sfx-toggle');
+      if (sfxToggle) {
         sfxToggle.classList.toggle('is-off', !sfxEnabled);
         sfxToggle.setAttribute('aria-pressed', String(sfxEnabled));
-        updateDynamicLabels(currentLang);
-        playBeep(840, 0.05);
-      });
-    }
+        sfxToggle.addEventListener('click', () => {
+          sfxEnabled = !sfxEnabled;
+          sfxToggle.classList.toggle('is-off', !sfxEnabled);
+          sfxToggle.setAttribute('aria-pressed', String(sfxEnabled));
+          updateDynamicLabels(currentLang);
+          playBeep(840, 0.05);
+        });
+      }
 
-    document.addEventListener('mousemove', (e) => {
-      const mouseX = e.clientX / window.innerWidth - 0.5;
-      const mouseY = e.clientY / window.innerHeight - 0.5;
+      document.addEventListener('mousemove', (e) => {
+        const mouseX = e.clientX / window.innerWidth - 0.5;
+        const mouseY = e.clientY / window.innerHeight - 0.5;
 
-      document.querySelectorAll('.sparkle').forEach(el => {
-        const x = mouseX * 20;
-        const y = mouseY * 20;
-        el.style.transform = `translate(${x}px, ${y}px)`;
+        document.querySelectorAll('.sparkle').forEach(el => {
+          const x = mouseX * 20;
+          const y = mouseY * 20;
+          el.style.transform = `translate(${x}px, ${y}px)`;
+        });
       });
+
+      const menuButton = document.querySelector('.menu-button');
+      if (menuButton) {
+        menuButton.addEventListener('click', () => playBeep(640, 0.05));
+      }
+      const downloadButton = document.querySelector('.download-button');
+      if (downloadButton) {
+        downloadButton.addEventListener('click', () => playBeep(400, 0.08));
+      }
     });
-
-    const menuButton = document.querySelector('.menu-button');
-    if (menuButton) {
-      menuButton.addEventListener('click', () => playBeep(640, 0.05));
-    }
-    const downloadButton = document.querySelector('.download-button');
-    if (downloadButton) {
-      downloadButton.addEventListener('click', () => playBeep(400, 0.08));
-    }
-
-    /* ===== Глобальный tooltip (всегда поверх всего) ===== */
-    (function setupGlobalTooltips(){
-      // создаём tooltip один раз
-      let tip = document.getElementById('globalTooltip');
-      if (!tip) {
-        tip = document.createElement('div');
-        tip.id = 'globalTooltip';
-        document.body.appendChild(tip);
-      }
-
-      const OFFSET_Y = 12;
-
-      function showTip(target){
-        const text = target.getAttribute('data-tooltip');
-        if (!text) return;
-
-        tip.textContent = text; // без HTML
-        tip.classList.add('show');
-
-        const r = target.getBoundingClientRect();
-
-        // сначала ставим, чтобы получить размеры tooltip
-        tip.style.left = '0px';
-        tip.style.top = '0px';
-        tip.getBoundingClientRect();
-
-        const tr = tip.getBoundingClientRect();
-
-        // центр по badge, tooltip сверху
-        let left = r.left + r.width / 2 - tr.width / 2;
-        let top  = r.top - tr.height - OFFSET_Y;
-
-        // clamp, чтобы не вылезал за экран
-        left = Math.max(8, Math.min(left, window.innerWidth - tr.width - 8));
-        top  = Math.max(8, top);
-
-        tip.style.left = `${left}px`;
-        tip.style.top  = `${top}px`;
-      }
-
-      function hideTip(){
-        tip.classList.remove('show');
-      }
-
-      // навешиваем на все .info-badge
-      document.querySelectorAll('.info-badge[data-tooltip]').forEach(badge => {
-        badge.addEventListener('mouseenter', () => showTip(badge));
-        badge.addEventListener('mousemove',  () => showTip(badge));
-        badge.addEventListener('mouseleave', hideTip);
-      });
-
-      window.addEventListener('scroll', hideTip, { passive: true });
-      window.addEventListener('resize', hideTip);
-    })();
-  });
-</script>
+  </script>
 </body>
 </html>
