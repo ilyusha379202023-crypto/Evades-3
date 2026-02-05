@@ -1122,6 +1122,8 @@
       text-shadow: 0 0 25px rgba(255,255,255,0.3);
       letter-spacing: 2px;
       font-weight: 900;
+      position: relative;
+      z-index: 1;
     }
 
     .showcase-subtitle{
@@ -1159,6 +1161,7 @@
       backdrop-filter: blur(12px);
       cursor: pointer;
       transition: box-shadow 0.2s ease, filter 0.2s ease;
+      z-index: 50;
     }
 
     .info-badge:hover{
@@ -1188,7 +1191,7 @@
       font-size: 12px;
       white-space: nowrap;
       transition: opacity 0.2s ease, transform 0.2s ease;
-      z-index: 1000;
+      z-index: 10000;
     }
 
     .info-tooltip::after{
