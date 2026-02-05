@@ -3677,32 +3677,12 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const prefersReducedTransparency = window.matchMedia('(prefers-reduced-transparency: reduce)').matches;
-      let sfxEnabled = !prefersReducedMotion && !prefersReducedTransparency;
-      let audioContext = null;
 
-      const playBeep = (freq = 680, duration = 0.08) => {
-        if (!sfxEnabled || prefersReducedMotion || prefersReducedTransparency) return;
-        if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioContext.state === 'suspended') {
-          audioContext.resume();
-        }
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-        oscillator.type = 'sine';
-        oscillator.frequency.value = freq;
-        gainNode.gain.value = 0.06;
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-        oscillator.start();
-        oscillator.stop(audioContext.currentTime + duration);
-      };
 
       monitorFPS();
 
       document.querySelectorAll('.lang-item').forEach(item => {
         item.addEventListener('click', () => {
-          playBeep(720, 0.06);
           changeLanguage(item.dataset.lang);
         });
       });
@@ -3754,7 +3734,6 @@
         if (!button) return;
         card.classList.remove('is-paused');
         button.addEventListener('click', () => {
-          playBeep(520, 0.05);
           const shouldPause = !card.classList.contains('is-paused');
           card.classList.toggle('is-paused', shouldPause);
           updateDynamicLabels(currentLang);
@@ -3771,15 +3750,7 @@
           el.style.transform = `translate(${x}px, ${y}px)`;
         });
       });
-
-      const menuButton = document.querySelector('.menu-button');
-      if (menuButton) {
-        menuButton.addEventListener('click', () => playBeep(640, 0.05));
-      }
-      const downloadButton = document.querySelector('.download-button');
-      if (downloadButton) {
-        downloadButton.addEventListener('click', () => playBeep(400, 0.08));
-      }
+      
     });
   </script>
 </body>
