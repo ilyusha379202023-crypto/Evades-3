@@ -2137,15 +2137,19 @@
   </div>
 
   <!-- Основной контент -->
+<!-- Основной контент -->
   <div class="container">
     <div class="title-section">
-      <div class="subtitle" data-i18n="subtitle">Скорость. Тактика.</div>
+      <div class="subtitle" data-i18n="subtitle">
+        <span class="word word1">Скорость.</span>
+        <span class="word word2">Тактика.</span>
+      </div>
       <h1 class="main-title" data-title="EVADES 3">EVADES 3</h1>
     </div>
 
     <div class="button-container">
-      <a class="discord-link" href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener noreferrer" data-i18n="discord-link">Следить за разработкой</a>
       <button class="download-button" data-i18n="download-btn">Скачать Evades 3</button>
+      <a class="discord-link" href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener noreferrer" data-i18n="discord-link">Следить за разработкой</a>
       <div class="dev-badge" data-tooltip="Игра ещё в разработке">
         <span class="status-sash" aria-hidden="true"></span>
         <span class="status-icon" aria-hidden="true">⏳</span>
@@ -2242,7 +2246,7 @@
     <section class="animation-showcase">
       <div class="showcase-header">
         <div>
-          <div class="showcase-title" data-i18n="showcase-title">Animation Showcase</div>
+          <div class="showcase-title" data-i18n="showcase-title">Витрина анимаций</div>
           <div class="showcase-subtitle micro-title-row">
             <span data-i18n="showcase-subtitle">Быстрые микросцены анимаций в действии</span>
             <span class="info-badge" aria-label="info">
@@ -2256,7 +2260,7 @@
       </div>
       <div class="showcase-grid">
         <div class="showcase-card" data-anim="dash">
-          <div class="showcase-title-mini" data-i18n="showcase-dash">Dash</div>
+          <div class="showcase-title-mini" data-i18n="showcase-dash">Рывок</div>
           <div class="preview">
             <div class="ball"><span class="orb-crown">👑</span></div>
             <div class="trail"></div>
@@ -2268,7 +2272,7 @@
         </div>
 
         <div class="showcase-card" data-anim="parry">
-          <div class="showcase-title-mini" data-i18n="showcase-parry">Parry</div>
+          <div class="showcase-title-mini" data-i18n="showcase-parry">Парирование</div>
           <div class="preview">
             <div class="ball"><span class="orb-crown">👑</span></div>
             <div class="projectile"></div>
@@ -2282,7 +2286,7 @@
         </div>
 
         <div class="showcase-card" data-anim="hit">
-          <div class="showcase-title-mini" data-i18n="showcase-hit">Hit FX</div>
+          <div class="showcase-title-mini" data-i18n="showcase-hit">Удар FX</div>
           <div class="preview">
             <div class="ball">
               <span class="orb-crown">👑</span>
@@ -2295,7 +2299,7 @@
         </div>
 
         <div class="showcase-card" data-anim="spawn">
-          <div class="showcase-title-mini" data-i18n="showcase-spawn">Spawn</div>
+          <div class="showcase-title-mini" data-i18n="showcase-spawn">Появление</div>
           <div class="preview">
             <div class="portal"></div>
             <div class="ball ball--spawn"><span class="orb-crown">👑</span></div>
@@ -2305,7 +2309,7 @@
         </div>
       </div>
 
-      <div class="demo-reel" data-i18n="demo-reel">Gameplay Animation Reel (coming soon)</div>
+      <div class="demo-reel" data-i18n="demo-reel">Ролик анимаций геймплея (скоро)</div>
     </section>
   </div>
 
@@ -3602,20 +3606,25 @@
       });
     }
 
-    function wrapSubtitleWords() {
+function wrapSubtitleWords() {
       const sub = document.querySelector('.subtitle');
       if (!sub) return;
+
+      // Если уже обёрнуты — выходим
+      if (sub.querySelector('.word')) return;
 
       const text = sub.textContent.trim();
       if (!text) return;
 
-      const parts = text.split(/\s+/);
-      const first = parts.shift() || '';
-      const rest = parts.join(' ') || '';
+      const parts = text.split(/\.\s+/); // Делим по точке с пробелом
+      if (parts.length < 2) return;
+
+      const first = parts[0] + '.';
+      const second = parts[1];
 
       sub.innerHTML = `
         <span class="word word1">${first}</span>
-        <span class="word word2">${rest}</span>
+        <span class="word word2">${second}</span>
       `;
     }
 
