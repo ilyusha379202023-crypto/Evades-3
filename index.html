@@ -1202,22 +1202,23 @@
       bottom: calc(100% + 10px);
       left: 50%;
       transform: translateX(-50%) translateY(6px);
-      opacity: 0;
-      pointer-events: none;
+      /* ВАЖНО: плотный фон, чтобы перекрывал текст */
+      background: rgba(10, 20, 30, 0.92);
+      /* опционально — стеклянность без прозрачности текста снизу */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: #fff;
       padding: 8px 14px;
       border-radius: 12px;
-      background: rgba(255,255,255,0.18);
-      border: 1px solid rgba(255,255,255,0.4);
-      box-shadow:
-        0 10px 22px rgba(0,0,0,0.35),
-        inset 0 1px 0 rgba(255,255,255,0.35);
-      backdrop-filter: blur(16px);
-      color: #fff;
-      font-size: 12px;
-      white-space: nowrap;
+      border: 1px solid rgba(255,255,255,0.18);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.45);
+      text-shadow: 0 1px 0 rgba(0,0,0,0.35);
+      opacity: 0;
+      pointer-events: none;
       transition: opacity 0.2s ease, transform 0.2s ease;
+      /* чтобы точно было сверху */
       z-index: 999999;
-    }
+}
 
     .info-tooltip::after{
       content: "";
