@@ -1218,18 +1218,16 @@
       z-index: 10000;
     }
 
-    .info-tooltip::after{
-      content: "";
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 6px solid transparent;
-      border-right: 6px solid transparent;
-      border-top: 6px solid rgba(255,255,255,0.3);
-      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.25));
+    .info-tooltip-floating{
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 99999;
+    }
+
+    .info-tooltip-floating.is-visible{
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
 
     .info-badge:hover .info-tooltip{
@@ -3783,6 +3781,63 @@
         });
       }
 
+            const infoBadge = document.querySelector('.info-badge');
+      if (infoBadge) {
+        const inlineTooltip = infoBadge.querySelector('.info-tooltip');
+        const tooltipText = inlineTooltip ? inlineTooltip.textContent.trim() : '';
+        if (tooltipText) {
+          const floatingTooltip = document.createElement('span');
+          floatingTooltip.className = 'info-tooltip info-tooltip-floating';
+          floatingTooltip.setAttribute('role', 'tooltip');
+          floatingTooltip.textContent = tooltipText;
+          document.body.appendChild(floatingTooltip);
+
+          if (inlineTooltip) {
+            inlineTooltip.setAttribute('aria-hidden', 'true');
+            inlineTooltip.style.display = 'none';
+          }
+
+          const updateTooltipPosition = () => {
+            const rect = infoBadge.getBoundingClientRect();
+            const tooltipRect = floatingTooltip.getBoundingClientRect();
+            const minPadding = 12;
+            const maxLeft = window.innerWidth - minPadding;
+            let left = rect.left + rect.width / 2;
+            const halfWidth = tooltipRect.width / 2;
+            if (left - halfWidth < minPadding) left = minPadding + halfWidth;
+            if (left + halfWidth > maxLeft) left = maxLeft - halfWidth;
+            let top = rect.top - tooltipRect.height - 12;
+            if (top < minPadding) top = rect.bottom + 12;
+            floatingTooltip.style.left = `${left}px`;
+            floatingTooltip.style.top = `${top}px`;
+          };
+
+          const showTooltip = () => {
+            floatingTooltip.classList.add('is-visible');
+            updateTooltipPosition();
+          };
+
+          const hideTooltip = () => {
+            floatingTooltip.classList.remove('is-visible');
+          };
+
+          infoBadge.addEventListener('mouseenter', showTooltip);
+          infoBadge.addEventListener('focusin', showTooltip);
+          infoBadge.addEventListener('mouseleave', hideTooltip);
+          infoBadge.addEventListener('focusout', hideTooltip);
+          window.addEventListener('scroll', () => {
+            if (floatingTooltip.classList.contains('is-visible')) {
+              updateTooltipPosition();
+            }
+          }, { passive: true });
+          window.addEventListener('resize', () => {
+            if (floatingTooltip.classList.contains('is-visible')) {
+              updateTooltipPosition();
+            }
+          });
+        }
+      }
+      
       document.addEventListener('mousemove', (e) => {
         const mouseX = e.clientX / window.innerWidth - 0.5;
         const mouseY = e.clientY / window.innerHeight - 0.5;
