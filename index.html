@@ -1137,6 +1137,7 @@
     .animation-showcase{
       margin: 80px auto 0;
       max-width: 1100px;
+      width: 100%;
       position: relative;
       overflow: visible;
       z-index: 15;
@@ -1255,10 +1256,18 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 20px;
+      justify-content: center;
+      width: 100%;
       position: relative;
       z-index: 5;
     }
 
+    @media (min-width: 920px){
+      .showcase-grid{
+        grid-template-columns: repeat(4, minmax(230px, 1fr));
+      }
+    }
+    
     .showcase-card{
       position: relative;
       border-radius: 24px;
