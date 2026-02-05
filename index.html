@@ -1237,43 +1237,6 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    .sfx-toggle{
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 18px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(255,255,255,0.1);
-      color: #fff;
-      font-weight: 700;
-      font-size: 14px;
-      letter-spacing: 1px;
-      backdrop-filter: blur(10px);
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .sfx-toggle:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 12px 26px rgba(0,0,0,0.3);
-    }
-
-    .sfx-toggle .sfx-indicator{
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #9fffc1;
-      box-shadow: 0 0 10px rgba(159, 255, 193, 0.9);
-      transition: background 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .sfx-toggle.is-off .sfx-indicator{
-      background: #ff9f9f;
-      box-shadow: 0 0 10px rgba(255, 160, 160, 0.8);
-    }
-
     .showcase-grid{
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -2232,12 +2195,6 @@
             </span>
           </div>
         </div>
-        <button class="sfx-toggle is-off" type="button" aria-pressed="false">
-          <span class="sfx-indicator" aria-hidden="true"></span>
-          <span data-i18n="sfx-label">SFX:</span>
-          <span class="sfx-state" data-i18n="sfx-off">OFF</span>
-        </button>
-      </div>
 
       <div class="showcase-grid">
         <div class="showcase-card" data-anim="dash">
@@ -3517,20 +3474,6 @@
     }
 
     function updateDynamicLabels(lang) {
-      const sfxToggle = document.querySelector('.sfx-toggle');
-      if (sfxToggle) {
-        const state = sfxToggle.classList.contains('is-off') ? 'sfx-off' : 'sfx-on';
-        const stateText = (translations[lang] && translations[lang][state]) ||
-          (translations.en && translations.en[state]) || sfxToggle.querySelector('.sfx-state')?.textContent;
-        const labelText = (translations[lang] && translations[lang]['sfx-label']) ||
-          (translations.en && translations.en['sfx-label']);
-        if (labelText) {
-          const labelNode = sfxToggle.querySelector('[data-i18n="sfx-label"]');
-          if (labelNode) labelNode.textContent = labelText;
-        }
-        const stateNode = sfxToggle.querySelector('.sfx-state');
-        if (stateNode && stateText) stateNode.textContent = stateText;
-      }
 
       document.querySelectorAll('.showcase-card').forEach(card => {
         const button = card.querySelector('.scene-toggle');
@@ -3769,19 +3712,6 @@
           updateDynamicLabels(currentLang);
         });
       });
-
-      const sfxToggle = document.querySelector('.sfx-toggle');
-      if (sfxToggle) {
-        sfxToggle.classList.toggle('is-off', !sfxEnabled);
-        sfxToggle.setAttribute('aria-pressed', String(sfxEnabled));
-        sfxToggle.addEventListener('click', () => {
-          sfxEnabled = !sfxEnabled;
-          sfxToggle.classList.toggle('is-off', !sfxEnabled);
-          sfxToggle.setAttribute('aria-pressed', String(sfxEnabled));
-          updateDynamicLabels(currentLang);
-          playBeep(840, 0.05);
-        });
-      }
 
       document.addEventListener('mousemove', (e) => {
         const mouseX = e.clientX / window.innerWidth - 0.5;
