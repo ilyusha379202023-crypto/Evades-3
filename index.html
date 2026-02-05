@@ -1008,14 +1008,12 @@
       border-radius: 20px;
       padding: 30px;
       border: 1px solid rgba(255,255,255,0.2);
-      transition: transform 140ms ease-out, border-color 150ms ease-out;
+      transition: transform 140ms ease-out, box-shadow 150ms ease-out, border-color 150ms ease-out;
       position: relative;
       overflow: hidden;
       isolation: isolate;
       z-index: 0;
-      transform: translate3d(0, 0, 0);
-      will-change: transform;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      transform: translateY(0);
     }
 
     .feature-card::before {
@@ -1033,15 +1031,7 @@
     }
 
     .feature-card::after{
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background: radial-gradient(circle at 50% 20%, rgba(255,255,255,0.2), transparent 60%);
-      opacity: 0;
-      transition: opacity 150ms ease-out;
       pointer-events: none;
-      z-index: 0;
     }
 
     .feature-card > * {
@@ -1050,10 +1040,10 @@
     }
 
     .feature-card:hover::before { opacity: 1; }
-    .feature-card:hover::after { opacity: 1; }
 
     .feature-card:hover {
-      transform: translate3d(0, -6px, 0);
+      transform: translateY(-6px);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.45);
       border-color: rgba(255,255,255,0.4);
       z-index: 2;
     }
