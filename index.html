@@ -1042,6 +1042,7 @@
     .feature-card:hover::before { opacity: 1; }
 
     .feature-card:hover {
+      transition-delay: 0ms !important;
       transform: translateY(-6px);
       box-shadow: 0 18px 40px rgba(0,0,0,0.45);
       border-color: rgba(255,255,255,0.4);
@@ -3737,9 +3738,14 @@
         const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
-              entry.target.classList.add('reveal-in');
-              observer.unobserve(entry.target);
-            }
+        entry.target.classList.add('reveal-in');
+
+      // Сбрасываем задержку, чтобы hover не тормозил
+        entry.target.style.transitionDelay = '0ms';
+
+        observer.unobserve(entry.target);
+         }
+
           });
         }, { threshold: 0.2 });
         revealTargets.forEach(el => {
