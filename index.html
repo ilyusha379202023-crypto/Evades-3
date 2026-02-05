@@ -944,6 +944,7 @@
         inset 0 1px 0 rgba(255,255,255,0.2);
       position: relative;
       overflow: hidden;
+      isolation: isolate;
       transition: transform 0.3s ease;
     }
 
@@ -958,6 +959,13 @@
       height: 100%;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
       animation: shine 3s infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .glass-card > * {
+      position: relative;
+      z-index: 1;
     }
 
     @keyframes shine {
