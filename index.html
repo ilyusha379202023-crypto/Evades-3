@@ -773,7 +773,9 @@
     }
 
     .discord-link{
-      color: #ffffff;
+      color: ##4aa3ff;
+      display: inline-block;
+      margin-top: 8px;
       font-size: 16px;
       font-weight: 600;
       text-decoration: underline;
@@ -783,7 +785,7 @@
     }
 
     .discord-link:hover{
-      color: #f6f0ff;
+      color: #7bc3ff;
       transform: translateY(-2px);
       text-shadow: 0 6px 16px rgba(255,255,255,0.25);
     }
@@ -1870,6 +1872,15 @@
       *{
         animation: none !important;
         transition: none !important;
+      }
+      .main-title,
+      .subtitle .word,
+      .button-container,
+      .description{
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        pointer-events: auto !important;
       }
       .reveal-target{
         opacity: 1;
@@ -3670,6 +3681,8 @@
       setTimeout(() => shockwave.remove(), 1000);
     }
 
+    let prefersReducedMotion = false;
+
     function restartHeroSequence() {
       document.body.classList.remove('hero-anim', 'ui-ready', 'screen-shake');
 
@@ -3678,13 +3691,23 @@
       const title = document.querySelector('.main-title');
       if (!title) return;
 
+      if (prefersReducedMotion) {
+        document.body.classList.add('hero-anim', 'ui-ready');
+        return;
+      }
+
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           document.body.classList.add('hero-anim');
 
+            const fallbackTimer = setTimeout(() => {
+            document.body.classList.add('ui-ready');
+          }, 2600);
+
           const onEnd = (e) => {
             if (e.animationName !== 'titleMegaBurst') return;
             title.removeEventListener('animationend', onEnd);
+            clearTimeout(fallbackTimer);
             document.body.classList.add('ui-ready');
           };
           title.addEventListener('animationend', onEnd);
@@ -3727,7 +3750,7 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 
       monitorFPS();
