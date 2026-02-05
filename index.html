@@ -1008,7 +1008,7 @@
       border-radius: 20px;
       padding: 30px;
       border: 1px solid rgba(255,255,255,0.2);
-      transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
+      transition: transform 140ms ease-out, box-shadow 150ms ease-out, border-color 150ms ease-out;
       position: relative;
       overflow: hidden;
       isolation: isolate;
@@ -1026,7 +1026,12 @@
       background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
       opacity: 0;
       transition: opacity 0.3s ease;
+      pointer-events: none;
       z-index: 0;
+    }
+
+    .feature-card::after{
+      pointer-events: none;
     }
 
     .feature-card > * {
