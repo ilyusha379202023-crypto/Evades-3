@@ -229,20 +229,6 @@
       will-change: transform;
     }
 
-    .early-access-banner {
-      position: fixed;
-      top: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #ff2d2d;
-      font-weight: 900;
-      font-size: 18px;
-      letter-spacing: 1px;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.35);
-      z-index: 1001;
-      pointer-events: none;
-    }
-    
     /* ===== По-словная анимация subtitle ===== */
     .subtitle .word{
       opacity: 0;
@@ -528,14 +514,9 @@
     }
 
     /* ===== UPGRADE: фирменный subtitle ===== */
-/* ===== UPGRADE: фирменный subtitle ===== */
     .subtitle{
       position: relative;
-      display: flex !important;
-      flex-wrap: wrap;
-      gap: 18px;
-      justify-content: center;
-      align-items: center;
+      display: inline-block;
       padding: 12px 26px;
       border-radius: 999px;
       background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04));
@@ -569,8 +550,7 @@
     /* ===== MEGA EVADES 3 TITLE ===== */
     .main-title{
       position: relative;
-      display: inline-flex;
-      gap: 18px;
+      display: inline-block;
       font-family: 'Exo 2', 'Rajdhani', sans-serif;
       font-size: 108px;
       font-weight: 900;
@@ -706,10 +686,7 @@
     /* 3D кнопка */
     .button-container {
       position: relative;
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 18px;
+      display: inline-block;
       margin: 40px 0;
       animation: fadeInUp 1s ease 0.5s both;
     }
@@ -778,24 +755,6 @@
         inset 0 -12px 22px rgba(0,0,0,0.5);
     }
 
-    .discord-link{
-      color: #4aa3ff;
-      display: inline-block;
-      margin: 0px;
-      font-size: 16px;
-      font-weight: 600;
-      text-decoration: underline;
-      text-underline-offset: 4px;
-      letter-spacing: 0.4px;
-      transition: transform 0.2s ease, text-shadow 0.2s ease, color 0.2s ease;
-    }
-
-    .discord-link:hover{
-      color: #7bc3ff;
-      transform: translateY(-2px);
-      text-shadow: 0 6px 16px rgba(255,255,255,0.25);
-    }
-    
     .dev-badge{
       position: absolute;
       top: -30px;
@@ -1164,7 +1123,6 @@
     .animation-showcase{
       margin: 80px auto 0;
       max-width: 1100px;
-      width: 100%;
       position: relative;
       overflow: visible;
       z-index: 15;
@@ -1279,22 +1237,51 @@
       transform: translateX(-50%) translateY(0);
     }
 
+    .sfx-toggle{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .sfx-toggle:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px rgba(0,0,0,0.3);
+    }
+
+    .sfx-toggle .sfx-indicator{
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #9fffc1;
+      box-shadow: 0 0 10px rgba(159, 255, 193, 0.9);
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .sfx-toggle.is-off .sfx-indicator{
+      background: #ff9f9f;
+      box-shadow: 0 0 10px rgba(255, 160, 160, 0.8);
+    }
+
     .showcase-grid{
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 20px;
-      justify-content: center;
-      width: 100%;
       position: relative;
       z-index: 5;
     }
 
-    @media (min-width: 920px){
-      .showcase-grid{
-        grid-template-columns: repeat(4, minmax(230px, 1fr));
-      }
-    }
-    
     .showcase-card{
       position: relative;
       border-radius: 24px;
@@ -1812,9 +1799,7 @@
     }
 
     .demo-reel{
-      margin: 40px auto 0;
-      width: 100%;
-      max-width: 720px;
+      margin-top: 40px;
       padding: 30px;
       border-radius: 28px;
       background: rgba(255,255,255,0.08);
@@ -1879,15 +1864,6 @@
         animation: none !important;
         transition: none !important;
       }
-      .main-title,
-      .subtitle .word,
-      .button-container,
-      .description{
-        opacity: 1 !important;
-        transform: none !important;
-        filter: none !important;
-        pointer-events: auto !important;
-      }
       .reveal-target{
         opacity: 1;
         transform: none;
@@ -1902,8 +1878,6 @@
   <div class="flash-overlay"></div>
   <div class="explosion-layer" aria-hidden="true"></div>
 
-  <div class="early-access-banner" data-i18n="early-access">*Ранний доступ</div>
-  
   <img class="logo-image" src="logo.png" alt="Evades 3 logo" />
 
   <!-- Меню языков -->
@@ -2143,19 +2117,14 @@
   </div>
 
   <!-- Основной контент -->
-<!-- Основной контент -->
   <div class="container">
     <div class="title-section">
-      <div class="subtitle" data-i18n="subtitle">
-        <span class="word word1">Скорость.</span>
-        <span class="word word2">Тактика.</span>
-      </div>
+      <div class="subtitle" data-i18n="subtitle">Скорость. Тактика.</div>
       <h1 class="main-title" data-title="EVADES 3">EVADES 3</h1>
     </div>
 
     <div class="button-container">
       <button class="download-button" data-i18n="download-btn">Скачать Evades 3</button>
-      <a class="discord-link" href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener noreferrer" data-i18n="discord-link">Следить за разработкой</a>
       <div class="dev-badge" data-tooltip="Игра ещё в разработке">
         <span class="status-sash" aria-hidden="true"></span>
         <span class="status-icon" aria-hidden="true">⏳</span>
@@ -2252,7 +2221,7 @@
     <section class="animation-showcase">
       <div class="showcase-header">
         <div>
-          <div class="showcase-title" data-i18n="showcase-title">Витрина анимаций</div>
+          <div class="showcase-title" data-i18n="showcase-title">Animation Showcase</div>
           <div class="showcase-subtitle micro-title-row">
             <span data-i18n="showcase-subtitle">Быстрые микросцены анимаций в действии</span>
             <span class="info-badge" aria-label="info">
@@ -2261,12 +2230,18 @@
                 Эти анимации — просто превью. В реальной игре они будут намного круче.
               </span>
             </span>
-          </div>     
+          </div>
+        </div>
+        <button class="sfx-toggle is-off" type="button" aria-pressed="false">
+          <span class="sfx-indicator" aria-hidden="true"></span>
+          <span data-i18n="sfx-label">SFX:</span>
+          <span class="sfx-state" data-i18n="sfx-off">OFF</span>
+        </button>
       </div>
-      </div>
+
       <div class="showcase-grid">
         <div class="showcase-card" data-anim="dash">
-          <div class="showcase-title-mini" data-i18n="showcase-dash">Рывок</div>
+          <div class="showcase-title-mini" data-i18n="showcase-dash">Dash</div>
           <div class="preview">
             <div class="ball"><span class="orb-crown">👑</span></div>
             <div class="trail"></div>
@@ -2278,7 +2253,7 @@
         </div>
 
         <div class="showcase-card" data-anim="parry">
-          <div class="showcase-title-mini" data-i18n="showcase-parry">Парирование</div>
+          <div class="showcase-title-mini" data-i18n="showcase-parry">Parry</div>
           <div class="preview">
             <div class="ball"><span class="orb-crown">👑</span></div>
             <div class="projectile"></div>
@@ -2292,7 +2267,7 @@
         </div>
 
         <div class="showcase-card" data-anim="hit">
-          <div class="showcase-title-mini" data-i18n="showcase-hit">Удар FX</div>
+          <div class="showcase-title-mini" data-i18n="showcase-hit">Hit FX</div>
           <div class="preview">
             <div class="ball">
               <span class="orb-crown">👑</span>
@@ -2305,7 +2280,7 @@
         </div>
 
         <div class="showcase-card" data-anim="spawn">
-          <div class="showcase-title-mini" data-i18n="showcase-spawn">Появление</div>
+          <div class="showcase-title-mini" data-i18n="showcase-spawn">Spawn</div>
           <div class="preview">
             <div class="portal"></div>
             <div class="ball ball--spawn"><span class="orb-crown">👑</span></div>
@@ -2315,7 +2290,7 @@
         </div>
       </div>
 
-      <div class="demo-reel" data-i18n="demo-reel">Ролик анимаций геймплея (скоро)</div>
+      <div class="demo-reel" data-i18n="demo-reel">Gameplay Animation Reel (coming soon)</div>
     </section>
   </div>
 
@@ -2324,10 +2299,8 @@
         const translations = {
             ru: {
                 'languages': 'Языки ▼',
-                'early-access': '*Ранний доступ',
                 'subtitle': 'Скорость. Тактика.',
                 'download-btn': 'Скачать Evades 3',
-                'discord-link': 'Следить за разработкой',
                 'dev-badge': 'В разработке',
                 'dev-tooltip': 'Игра ещё в разработке',
                 'showcase-title': 'Витрина анимаций',
@@ -2369,10 +2342,8 @@
             },
             en: {
                 'languages': 'Languages ▼',
-                'early-access': '*Early Access',
                 'subtitle': 'Speed. Tactics.',
                 'download-btn': 'Download Evades 3',
-                'discord-link': 'Follow development',
                 'dev-badge': 'In Development',
                 'dev-tooltip': 'The game is still in development',
                 'showcase-title': 'Animation Showcase',
@@ -2414,10 +2385,8 @@
             },
             uk: {
                 'languages': 'Мови ▼',
-                'early-access': '*Ранній доступ',
                 'subtitle': 'Швидкість. Тактика.',
                 'download-btn': 'Завантажити Evades 3',
-                'discord-link': 'Стежити за розробкою',
                 'dev-badge': 'У розробці',
                 'dev-tooltip': 'Гра ще у розробці',
                 'showcase-title': 'Вітрина анімацій',
@@ -2459,10 +2428,8 @@
             },
             de: {
                 'languages': 'Sprachen ▼',
-                'early-access': '*Früher Zugang',
                 'subtitle': 'Geschwindigkeit. Taktik.',
                 'download-btn': 'Evades 3 herunterladen',
-                'discord-link': 'Entwicklung verfolgen',
                 'dev-badge': 'In Entwicklung',
                 'dev-tooltip': 'Das Spiel ist noch in Entwicklung',
                 'showcase-title': 'Animationsvitrine',
@@ -2504,10 +2471,8 @@
             },
             es: {
                 'languages': 'Idiomas ▼',
-                'early-access': '*Acceso anticipado',
                 'subtitle': 'Velocidad. Táctica.',
                 'download-btn': 'Descargar Evades 3',
-                'discord-link': 'Seguir el desarrollo',
                 'dev-badge': 'En Desarrollo',
                 'dev-tooltip': 'El juego aún está en desarrollo',
                 'showcase-title': 'Vitrina de animaciones',
@@ -2549,10 +2514,8 @@
             },
             fr: {
                 'languages': 'Langues ▼',
-                'early-access': '*Accès anticipé',
                 'subtitle': 'Vitesse. Tactique.',
                 'download-btn': 'Télécharger Evades 3',
-                'discord-link': 'Suivre le développement',
                 'dev-badge': 'En Développement',
                 'dev-tooltip': 'Le jeu est encore en développement',
                 'showcase-title': 'Vitrine d’animations',
@@ -2594,10 +2557,8 @@
             },
             it: {
                 'languages': 'Lingue ▼',
-                'early-access': '*Accesso anticipato',
                 'subtitle': 'Velocità. Tattica.',
                 'download-btn': 'Scarica Evades 3',
-                'discord-link': 'Segui lo sviluppo',
                 'dev-badge': 'In Sviluppo',
                 'dev-tooltip': 'Il gioco è ancora in sviluppo',
                 'showcase-title': 'Vetrina animazioni',
@@ -2639,10 +2600,8 @@
             },
             pt: {
                 'languages': 'Idiomas ▼',
-                'early-access': '*Acesso antecipado',
                 'subtitle': 'Velocidade. Tática.',
                 'download-btn': 'Baixar Evades 3',
-                'discord-link': 'Acompanhar o desenvolvimento',
                 'dev-badge': 'Em Desenvolvimento',
                 'dev-tooltip': 'O jogo ainda está em desenvolvimento',
                 'showcase-title': 'Vitrine de animações',
@@ -2684,10 +2643,8 @@
             },
             pl: {
                 'languages': 'Języki ▼',
-                'early-access': '*Wczesny dostęp',
                 'subtitle': 'Prędkość. Taktyka.',
                 'download-btn': 'Pobierz Evades 3',
-                'discord-link': 'Śledź rozwój',
                 'dev-badge': 'W Rozwoju',
                 'dev-tooltip': 'Gra jest nadal w rozwoju',
                 'showcase-title': 'Galeria animacji',
@@ -2729,10 +2686,8 @@
             },
             tr: {
                 'languages': 'Diller ▼',
-                'early-access': '*Erken erişim',
                 'subtitle': 'Hız. Taktik.',
                 'download-btn': 'Evades 3 İndir',
-                'discord-link': 'Gelişimi takip et',
                 'dev-badge': 'Geliştiriliyor',
                 'dev-tooltip': 'Oyun hâlâ geliştirme aşamasında',
                 'showcase-title': 'Animasyon Vitrini',
@@ -2774,10 +2729,8 @@
             },
             nl: {
                 'languages': 'Talen ▼',
-                'early-access': '*Vroege toegang',
                 'subtitle': 'Snelheid. Tactiek.',
                 'download-btn': 'Download Evades 3',
-                'discord-link': 'Ontwikkeling volgen',
                 'dev-badge': 'In ontwikkeling',
                 'dev-tooltip': 'De game is nog in ontwikkeling',
                 'showcase-title': 'Animatievitrine',
@@ -2819,10 +2772,8 @@
             },
             sv: {
                 'languages': 'Språk ▼',
-                'early-access': '*Tidig åtkomst',
                 'subtitle': 'Hastighet. Taktik.',
                 'download-btn': 'Ladda ner Evades 3',
-                'discord-link': 'Följ utvecklingen',
                 'dev-badge': 'Under utveckling',
                 'dev-tooltip': 'Spelet är fortfarande under utveckling',
                 'showcase-title': 'Animationsvitrin',
@@ -2864,10 +2815,8 @@
             },
             no: {
                 'languages': 'Språk ▼',
-                'early-access': '*Tidlig tilgang',
                 'subtitle': 'Fart. Taktikk.',
                 'download-btn': 'Last ned Evades 3',
-                'discord-link': 'Følg utviklingen',
                 'dev-badge': 'Under utvikling',
                 'dev-tooltip': 'Spillet er fortsatt under utvikling',
                 'showcase-title': 'Animasjonsvitrine',
@@ -2909,10 +2858,8 @@
             },
             fi: {
                 'languages': 'Kielet ▼',
-                'early-access': '*Varhainen pääsy',
                 'subtitle': 'Nopeus. Taktiikka.',
                 'download-btn': 'Lataa Evades 3',
-                'discord-link': 'Seuraa kehitystä',
                 'dev-badge': 'Kehitteillä',
                 'dev-tooltip': 'Peli on yhä kehitteillä',
                 'showcase-title': 'Animaatiovitrini',
@@ -2954,10 +2901,8 @@
             },
             da: {
                 'languages': 'Sprog ▼',
-                'early-access': '*Tidlig adgang',
                 'subtitle': 'Hastighed. Taktik.',
                 'download-btn': 'Download Evades 3',
-                'discord-link': 'Følg udviklingen',
                 'dev-badge': 'Under udvikling',
                 'dev-tooltip': 'Spillet er stadig under udvikling',
                 'showcase-title': 'Animationsvitrine',
@@ -2999,10 +2944,8 @@
             },
             cs: {
                 'languages': 'Jazyky ▼',
-                'early-access': '*Předběžný přístup',
                 'subtitle': 'Rychlost. Taktika.',
                 'download-btn': 'Stáhnout Evades 3',
-                'discord-link': 'Sledovat vývoj',
                 'dev-badge': 'Ve vývoji',
                 'dev-tooltip': 'Hra je stále ve vývoji',
                 'showcase-title': 'Výklad animací',
@@ -3044,10 +2987,8 @@
             },
             ro: {
                 'languages': 'Limbi ▼',
-                'early-access': '*Acces timpuriu',
                 'subtitle': 'Viteză. Tactică.',
                 'download-btn': 'Descarcă Evades 3',
-                'discord-link': 'Urmărește dezvoltarea',
                 'dev-badge': 'În dezvoltare',
                 'dev-tooltip': 'Jocul este încă în dezvoltare',
                 'showcase-title': 'Vitrină de animații',
@@ -3089,10 +3030,8 @@
             },
             hu: {
                 'languages': 'Nyelvek ▼',
-                'early-access': '*Korai hozzáférés',
                 'subtitle': 'Sebesség. Taktika.',
                 'download-btn': 'Evades 3 letöltése',
-                'discord-link': 'Fejlesztés követése',
                 'dev-badge': 'Fejlesztés alatt',
                 'dev-tooltip': 'A játék még fejlesztés alatt áll',
                 'showcase-title': 'Animációs vitrin',
@@ -3134,10 +3073,8 @@
             },
             el: {
                 'languages': 'Γλώσσες ▼',
-                'early-access': '*Πρόωρη πρόσβαση',
                 'subtitle': 'Ταχύτητα. Τακτική.',
                 'download-btn': 'Λήψη Evades 3',
-                'discord-link': 'Παρακολούθηση ανάπτυξης',
                 'dev-badge': 'Υπό ανάπτυξη',
                 'dev-tooltip': 'Το παιχνίδι είναι ακόμη υπό ανάπτυξη',
                 'showcase-title': 'Βιτρίνα κινουμένων',
@@ -3179,10 +3116,8 @@
             },
             ja: {
                 'languages': '言語 ▼',
-                'early-access': '*早期アクセス',
                 'subtitle': 'スピード. 戦術.',
                 'download-btn': 'Evades 3 をダウンロード',
-                'discord-link': '開発を追う',
                 'dev-badge': '開発中',
                 'dev-tooltip': 'ゲームはまだ開発中です',
                 'showcase-title': 'アニメーションショーケース',
@@ -3224,10 +3159,8 @@
             },
             zh: {
                 'languages': '语言 ▼',
-                'early-access': '*抢先体验',
                 'subtitle': '速度. 战术.',
                 'download-btn': '下载 Evades 3',
-                'discord-link': '关注开发进展',
                 'dev-badge': '开发中',
                 'dev-tooltip': '游戏仍在开发中',
                 'showcase-title': '动画展示',
@@ -3269,10 +3202,8 @@
             },
             ko: {
                 'languages': '언어 ▼',
-                'early-access': '*얼리 액세스',
                 'subtitle': '속도. 전술.',
                 'download-btn': 'Evades 3 다운로드',
-                'discord-link': '개발 진행 상황 보기',
                 'dev-badge': '개발 중',
                 'dev-tooltip': '게임은 아직 개발 중입니다',
                 'showcase-title': '애니메이션 쇼케이스',
@@ -3314,10 +3245,8 @@
             },
             ar: {
                 'languages': 'اللغات ▼',
-                'early-access': '*وصول مبكر',
                 'subtitle': 'السرعة. التكتيك.',
                 'download-btn': 'تحميل Evades 3',
-                'discord-link': 'تابع التطوير',
                 'dev-badge': 'قيد التطوير',
                 'dev-tooltip': 'اللعبة ما زالت قيد التطوير',
                 'showcase-title': 'عرض الحركات',
@@ -3359,10 +3288,8 @@
             },
             hi: {
                 'languages': 'भाषाएँ ▼',
-                'early-access': '*प्रारंभिक पहुँच',
                 'subtitle': 'स्पीड. रणनीति.',
                 'download-btn': 'Evades 3 डाउनलोड करें',
-                'discord-link': 'विकास का अनुसरण करें',
                 'dev-badge': 'विकास में',
                 'dev-tooltip': 'गेम अभी भी विकास में है',
                 'showcase-title': 'एनीमेशन शोकेस',
@@ -3404,10 +3331,8 @@
             },
             th: {
                 'languages': 'ภาษา ▼',
-                'early-access': '*การเข้าถึงก่อนใคร',
                 'subtitle': 'ความเร็ว. แทคติก.',
                 'download-btn': 'ดาวน์โหลด Evades 3',
-                'discord-link': 'ติดตามการพัฒนา',
                 'dev-badge': 'อยู่ระหว่างพัฒนา',
                 'dev-tooltip': 'เกมยังอยู่ระหว่างการพัฒนา',
                 'showcase-title': 'โชว์เคสแอนิเมชัน',
@@ -3449,10 +3374,8 @@
             },
             vi: {
                 'languages': 'Ngôn ngữ ▼',
-                'early-access': '*Truy cập sớm',
                 'subtitle': 'Tốc độ. Chiến thuật.',
                 'download-btn': 'Tải Evades 3',
-                'discord-link': 'Theo dõi phát triển',
                 'dev-badge': 'Đang phát triển',
                 'dev-tooltip': 'Trò chơi vẫn đang được phát triển',
                 'showcase-title': 'Trưng bày hoạt ảnh',
@@ -3494,10 +3417,8 @@
             },
             id: {
                 'languages': 'Bahasa ▼',
-                'early-access': '*Akses awal',
                 'subtitle': 'Kecepatan. Taktik.',
                 'download-btn': 'Unduh Evades 3',
-                'discord-link': 'Ikuti pengembangan',
                 'dev-badge': 'Dalam Pengembangan',
                 'dev-tooltip': 'Game masih dalam pengembangan',
                 'showcase-title': 'Etalase Animasi',
@@ -3539,10 +3460,8 @@
             },
             ms: {
                 'languages': 'Bahasa ▼',
-                'early-access': '*Akses awal',
                 'subtitle': 'Kelajuan. Taktik.',
                 'download-btn': 'Muat turun Evades 3',
-                'discord-link': 'Ikuti pembangunan',
                 'dev-badge': 'Dalam pembangunan',
                 'dev-tooltip': 'Permainan ini masih dalam pembangunan',
                 'showcase-title': 'Etalase Animasi',
@@ -3568,7 +3487,11 @@
                 'feature2-title': 'Kawalan Tepat',
                 'feature2-text': 'Fizik pergerakan dipertingkat untuk manuver sempurna',
                 'featureAnim-title': 'Animasi Sinematik',
-@@ -3495,65 +3557,50 @@
+                'featureAnim-text': 'Animasi moden dan licin yang menjadikan permainan lebih hidup',
+                'feature3-title': 'Keistimewaan VIP',
+                'feature3-text': 'Mod eksklusif, ganjaran unik, dan kelebihan premium',
+                'feature4-title': 'Status PRO',
+                'feature4-text': 'Penyesuaian lebih luas dan ciri khas',
                 'feature5-title': 'Editor Peta & Watak',
                 'feature5-text': 'Cipta peta dan watak sendiri lalu kongsi dengan dunia',
                 'feature6-title': 'Koleksi Skin',
@@ -3594,6 +3517,20 @@
     }
 
     function updateDynamicLabels(lang) {
+      const sfxToggle = document.querySelector('.sfx-toggle');
+      if (sfxToggle) {
+        const state = sfxToggle.classList.contains('is-off') ? 'sfx-off' : 'sfx-on';
+        const stateText = (translations[lang] && translations[lang][state]) ||
+          (translations.en && translations.en[state]) || sfxToggle.querySelector('.sfx-state')?.textContent;
+        const labelText = (translations[lang] && translations[lang]['sfx-label']) ||
+          (translations.en && translations.en['sfx-label']);
+        if (labelText) {
+          const labelNode = sfxToggle.querySelector('[data-i18n="sfx-label"]');
+          if (labelNode) labelNode.textContent = labelText;
+        }
+        const stateNode = sfxToggle.querySelector('.sfx-state');
+        if (stateNode && stateText) stateNode.textContent = stateText;
+      }
 
       document.querySelectorAll('.showcase-card').forEach(card => {
         const button = card.querySelector('.scene-toggle');
@@ -3612,25 +3549,20 @@
       });
     }
 
-function wrapSubtitleWords() {
+    function wrapSubtitleWords() {
       const sub = document.querySelector('.subtitle');
       if (!sub) return;
-
-      // Если уже обёрнуты — выходим
-      if (sub.querySelector('.word')) return;
 
       const text = sub.textContent.trim();
       if (!text) return;
 
-      const parts = text.split(/\.\s+/); // Делим по точке с пробелом
-      if (parts.length < 2) return;
-
-      const first = parts[0] + '.';
-      const second = parts[1];
+      const parts = text.split(/\s+/);
+      const first = parts.shift() || '';
+      const rest = parts.join(' ') || '';
 
       sub.innerHTML = `
         <span class="word word1">${first}</span>
-        <span class="word word2">${second}</span>
+        <span class="word word2">${rest}</span>
       `;
     }
 
@@ -3696,8 +3628,6 @@ function wrapSubtitleWords() {
       setTimeout(() => shockwave.remove(), 1000);
     }
 
-    let prefersReducedMotion = false;
-
     function restartHeroSequence() {
       document.body.classList.remove('hero-anim', 'ui-ready', 'screen-shake');
 
@@ -3706,23 +3636,13 @@ function wrapSubtitleWords() {
       const title = document.querySelector('.main-title');
       if (!title) return;
 
-      if (prefersReducedMotion) {
-        document.body.classList.add('hero-anim', 'ui-ready');
-        return;
-      }
-
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           document.body.classList.add('hero-anim');
 
-            const fallbackTimer = setTimeout(() => {
-            document.body.classList.add('ui-ready');
-          }, 2600);
-
           const onEnd = (e) => {
             if (e.animationName !== 'titleMegaBurst') return;
             title.removeEventListener('animationend', onEnd);
-            clearTimeout(fallbackTimer);
             document.body.classList.add('ui-ready');
           };
           title.addEventListener('animationend', onEnd);
@@ -3765,13 +3685,33 @@ function wrapSubtitleWords() {
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const prefersReducedTransparency = window.matchMedia('(prefers-reduced-transparency: reduce)').matches;
+      let sfxEnabled = !prefersReducedMotion && !prefersReducedTransparency;
+      let audioContext = null;
 
+      const playBeep = (freq = 680, duration = 0.08) => {
+        if (!sfxEnabled || prefersReducedMotion || prefersReducedTransparency) return;
+        if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        oscillator.type = 'sine';
+        oscillator.frequency.value = freq;
+        gainNode.gain.value = 0.06;
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + duration);
+      };
 
       monitorFPS();
 
       document.querySelectorAll('.lang-item').forEach(item => {
         item.addEventListener('click', () => {
+          playBeep(720, 0.06);
           changeLanguage(item.dataset.lang);
         });
       });
@@ -3823,11 +3763,25 @@ function wrapSubtitleWords() {
         if (!button) return;
         card.classList.remove('is-paused');
         button.addEventListener('click', () => {
+          playBeep(520, 0.05);
           const shouldPause = !card.classList.contains('is-paused');
           card.classList.toggle('is-paused', shouldPause);
           updateDynamicLabels(currentLang);
         });
       });
+
+      const sfxToggle = document.querySelector('.sfx-toggle');
+      if (sfxToggle) {
+        sfxToggle.classList.toggle('is-off', !sfxEnabled);
+        sfxToggle.setAttribute('aria-pressed', String(sfxEnabled));
+        sfxToggle.addEventListener('click', () => {
+          sfxEnabled = !sfxEnabled;
+          sfxToggle.classList.toggle('is-off', !sfxEnabled);
+          sfxToggle.setAttribute('aria-pressed', String(sfxEnabled));
+          updateDynamicLabels(currentLang);
+          playBeep(840, 0.05);
+        });
+      }
 
       document.addEventListener('mousemove', (e) => {
         const mouseX = e.clientX / window.innerWidth - 0.5;
@@ -3839,7 +3793,15 @@ function wrapSubtitleWords() {
           el.style.transform = `translate(${x}px, ${y}px)`;
         });
       });
-      
+
+      const menuButton = document.querySelector('.menu-button');
+      if (menuButton) {
+        menuButton.addEventListener('click', () => playBeep(640, 0.05));
+      }
+      const downloadButton = document.querySelector('.download-button');
+      if (downloadButton) {
+        downloadButton.addEventListener('click', () => playBeep(400, 0.08));
+      }
     });
   </script>
 </body>
