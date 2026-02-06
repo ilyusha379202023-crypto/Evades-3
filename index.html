@@ -18,6 +18,7 @@
 
     :root{
       --langBorder: rgba(255,255,255,0.28);
+      --earlyBannerHeight: 36px;
     }
 
     /* Флаги в меню языков */
@@ -83,6 +84,7 @@
       overflow-x: hidden;
       min-height: 100vh;
       position: relative;
+      padding-top: var(--earlyBannerHeight);
     }
 
     body::before {
@@ -197,6 +199,24 @@
       animation: screenShake 0.6s ease-in-out;
     }
 
+    .early-access-banner{
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 8px 16px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      color: #ff3b30;
+      background: rgba(0,0,0,0.35);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 2005;
+      pointer-events: none;
+    }
+
     /* Блёстки */
     .sparkle {
       position: absolute;
@@ -218,7 +238,7 @@
     /* Логотип */
     .logo-image {
       position: fixed;
-      top: 15px;
+      top: calc(15px + var(--earlyBannerHeight));;
       left: 15px;
       width: 130px;
       height: 130px;
@@ -689,6 +709,10 @@
       display: inline-block;
       margin: 40px 0;
       animation: fadeInUp 1s ease 0.5s both;
+    }
+
+    body:not(.ui-ready) .button-container{
+      animation: none;
     }
 
     @keyframes fadeInUp {
@@ -1908,6 +1932,7 @@
   <!-- Вспышка-оверлей для взрыва -->
   <div class="flash-overlay"></div>
   <div class="explosion-layer" aria-hidden="true"></div>
+  <div class="early-access-banner" data-i18n="early-access">*Ранний доступ</div>
 
   <img class="logo-image" src="logo.png" alt="Evades 3 logo" />
 
@@ -2334,6 +2359,7 @@
         const translations = {
             ru: {
                 'languages': 'Языки ▼',
+                'early-access': '*Ранний доступ',
                 'subtitle': 'Скорость. Тактика.',
                 'download-btn': 'Скачать Evades 3',
                 'follow-dev': 'Следить за разработкой',
@@ -2378,6 +2404,7 @@
             },
             en: {
                 'languages': 'Languages ▼',
+                'early-access': '*Early Access',
                 'subtitle': 'Speed. Tactics.',
                 'download-btn': 'Download Evades 3',
                 'follow-dev': 'Follow development',
@@ -2422,6 +2449,7 @@
             },
             uk: {
                 'languages': 'Мови ▼',
+                'early-access': '*Ранній доступ',
                 'subtitle': 'Швидкість. Тактика.',
                 'download-btn': 'Завантажити Evades 3',
                 'follow-dev': 'Стежити за розробкою',
@@ -2466,6 +2494,7 @@
             },
             de: {
                 'languages': 'Sprachen ▼',
+                'early-access': '*Früher Zugang',
                 'subtitle': 'Geschwindigkeit. Taktik.',
                 'download-btn': 'Evades 3 herunterladen',
                 'follow-dev': 'Entwicklung verfolgen',
@@ -2510,6 +2539,7 @@
             },
             es: {
                 'languages': 'Idiomas ▼',
+                'early-access': '*Acceso anticipado',
                 'subtitle': 'Velocidad. Táctica.',
                 'download-btn': 'Descargar Evades 3',
                 'follow-dev': 'Seguir el desarrollo',
@@ -2554,6 +2584,7 @@
             },
             fr: {
                 'languages': 'Langues ▼',
+                'early-access': '*Accès anticipé',
                 'subtitle': 'Vitesse. Tactique.',
                 'download-btn': 'Télécharger Evades 3',
                 'follow-dev': 'Suivre le développement',
@@ -2598,6 +2629,7 @@
             },
             it: {
                 'languages': 'Lingue ▼',
+                'early-access': '*Accesso anticipato',
                 'subtitle': 'Velocità. Tattica.',
                 'download-btn': 'Scarica Evades 3',
                 'follow-dev': 'Seguire lo sviluppo',
@@ -2642,6 +2674,7 @@
             },
             pt: {
                 'languages': 'Idiomas ▼',
+                'early-access': '*Acesso antecipado',
                 'subtitle': 'Velocidade. Tática.',
                 'download-btn': 'Baixar Evades 3',
                 'follow-dev': 'Acompanhar o desenvolvimento',
@@ -2686,6 +2719,7 @@
             },
             pl: {
                 'languages': 'Języki ▼',
+                'early-access': '*Wczesny dostęp',
                 'subtitle': 'Prędkość. Taktyka.',
                 'download-btn': 'Pobierz Evades 3',
                 'follow-dev': 'Śledzić rozwój',
@@ -2730,6 +2764,7 @@
             },
             tr: {
                 'languages': 'Diller ▼',
+                'early-access': '*Erken erişim',
                 'subtitle': 'Hız. Taktik.',
                 'download-btn': 'Evades 3 İndir',
                 'follow-dev': 'Gelişimi takip et',
@@ -2774,6 +2809,7 @@
             },
             nl: {
                 'languages': 'Talen ▼',
+                'early-access': '*Vroege toegang',
                 'subtitle': 'Snelheid. Tactiek.',
                 'download-btn': 'Download Evades 3',
                 'follow-dev': 'Volg de ontwikkeling',
@@ -2818,6 +2854,7 @@
             },
             sv: {
                 'languages': 'Språk ▼',
+                'early-access': '*Tidig åtkomst',
                 'subtitle': 'Hastighet. Taktik.',
                 'download-btn': 'Ladda ner Evades 3',
                 'follow-dev': 'Följ utvecklingen',
@@ -2862,6 +2899,7 @@
             },
             no: {
                 'languages': 'Språk ▼',
+                'early-access': '*Tidlig tilgang',
                 'subtitle': 'Fart. Taktikk.',
                 'download-btn': 'Last ned Evades 3',
                 'follow-dev': 'Følg utviklingen',
@@ -2906,6 +2944,7 @@
             },
             fi: {
                 'languages': 'Kielet ▼',
+                'early-access': '*Varhainen pääsy',
                 'subtitle': 'Nopeus. Taktiikka.',
                 'download-btn': 'Lataa Evades 3',
                 'follow-dev': 'Seuraa kehitystä',
@@ -2950,6 +2989,7 @@
             },
             da: {
                 'languages': 'Sprog ▼',
+                'early-access': '*Tidlig adgang',
                 'subtitle': 'Hastighed. Taktik.',
                 'download-btn': 'Download Evades 3',
                 'follow-dev': 'Følg udviklingen',
@@ -2994,6 +3034,7 @@
             },
             cs: {
                 'languages': 'Jazyky ▼',
+                'early-access': '*Předběžný přístup',
                 'subtitle': 'Rychlost. Taktika.',
                 'download-btn': 'Stáhnout Evades 3',
                 'follow-dev': 'Sledovat vývoj',
@@ -3038,6 +3079,7 @@
             },
             ro: {
                 'languages': 'Limbi ▼',
+                'early-access': '*Acces timpuriu',
                 'subtitle': 'Viteză. Tactică.',
                 'download-btn': 'Descarcă Evades 3',
                 'follow-dev': 'Urmărește dezvoltarea',
@@ -3082,6 +3124,7 @@
             },
             hu: {
                 'languages': 'Nyelvek ▼',
+                'early-access': '*Korai hozzáférés',
                 'subtitle': 'Sebesség. Taktika.',
                 'download-btn': 'Evades 3 letöltése',
                 'follow-dev': 'Kövesd a fejlesztést',
@@ -3126,6 +3169,7 @@
             },
             el: {
                 'languages': 'Γλώσσες ▼',
+                'early-access': '*Πρόωρη πρόσβαση',
                 'subtitle': 'Ταχύτητα. Τακτική.',
                 'download-btn': 'Λήψη Evades 3',
                 'follow-dev': 'Παρακολούθησε την ανάπτυξη',
@@ -3170,6 +3214,7 @@
             },
             ja: {
                 'languages': '言語 ▼',
+                'early-access': '*早期アクセス',
                 'subtitle': 'スピード. 戦術.',
                 'download-btn': 'Evades 3 をダウンロード',
                 'follow-dev': '開発を追う',
@@ -3214,6 +3259,7 @@
             },
             zh: {
                 'languages': '语言 ▼',
+                'early-access': '*抢先体验',
                 'subtitle': '速度. 战术.',
                 'download-btn': '下载 Evades 3',
                 'follow-dev': '关注开发进展',
@@ -3258,6 +3304,7 @@
             },
             ko: {
                 'languages': '언어 ▼',
+                'early-access': '*얼리 액세스',
                 'subtitle': '속도. 전술.',
                 'download-btn': 'Evades 3 다운로드',
                 'follow-dev': '개발 진행 상황 보기',
@@ -3302,6 +3349,7 @@
             },
             ar: {
                 'languages': 'اللغات ▼',
+                'early-access': '*وصول مبكر',
                 'subtitle': 'السرعة. التكتيك.',
                 'download-btn': 'تحميل Evades 3',
                 'follow-dev': 'تابع التطوير',
@@ -3346,6 +3394,7 @@
             },
             hi: {
                 'languages': 'भाषाएँ ▼',
+                'early-access': '*प्रारंभिक पहुँच',
                 'subtitle': 'स्पीड. रणनीति.',
                 'download-btn': 'Evades 3 डाउनलोड करें',
                 'follow-dev': 'विकास पर नज़र रखें',
@@ -3390,6 +3439,7 @@
             },
             th: {
                 'languages': 'ภาษา ▼',
+                'early-access': '*เข้าถึงก่อนใคร',
                 'subtitle': 'ความเร็ว. แทคติก.',
                 'download-btn': 'ดาวน์โหลด Evades 3',
                 'follow-dev': 'ติดตามการพัฒนา',
@@ -3434,6 +3484,7 @@
             },
             vi: {
                 'languages': 'Ngôn ngữ ▼',
+                'early-access': '*Truy cập sớm',
                 'subtitle': 'Tốc độ. Chiến thuật.',
                 'download-btn': 'Tải Evades 3',
                 'follow-dev': 'Theo dõi quá trình phát triển',
@@ -3478,6 +3529,7 @@
             },
             id: {
                 'languages': 'Bahasa ▼',
+                'early-access': '*Akses awal',
                 'subtitle': 'Kecepatan. Taktik.',
                 'download-btn': 'Unduh Evades 3',
                 'follow-dev': 'Ikuti pengembangan',
@@ -3503,6 +3555,51 @@
                 'stat-online': 'Online',
                 'feature1-title': 'Reaksi Kilat',
                 'feature1-text': 'Animasi 60 FPS yang mulus tanpa lag atau patah',
+                'feature2-title': 'Kontrol Presisi',
+                'feature2-text': 'Fisika gerak yang ditingkatkan untuk manuver sempurna',
+                'featureAnim-title': 'Animasi Sinematik',
+                'featureAnim-text': 'Animasi modern dan halus yang membuat game terasa hidup',
+                'feature3-title': 'Hak Istimewa VIP',
+                'feature3-text': 'Mode eksklusif, hadiah unik, dan keuntungan premium',
+                'feature4-title': 'Status PRO',
+                'feature4-text': 'Kustomisasi yang lebih luas dan fitur khusus',
+                'feature5-title': 'Editor Peta & Karakter',
+                'feature5-text': 'Buat peta dan karakter sendiri, lalu bagikan ke dunia',
+                'feature6-title': 'Koleksi Skin',
+                'feature6-text': 'Pilihan skin bergaya yang sangat banyak',
+                'feature7-title': 'Sistem Peringkat',
+                'feature7-text': 'Naik dari pemula hingga legenda',
+                'feature8-title': 'Pertempuran Global',
+                'feature8-text': 'Bersaing dengan pemain dari seluruh dunia'
+            },
+            ms: {
+                'languages': 'Bahasa ▼',
+                'early-access': '*Akses awal',
+                'subtitle': 'Kelajuan. Taktik.',
+                'download-btn': 'Muat turun Evades 3',
+                'follow-dev': 'Ikuti pembangunan',
+                'dev-badge': 'Dalam pembangunan',
+                'dev-tooltip': 'Permainan ini masih dalam pembangunan',
+                'showcase-title': 'Etalase Animasi',
+                'showcase-subtitle': 'Mikro adegan animasi pantas (masih dikemas kini)',
+                'micro-previews-tip': 'Animasi ini hanyalah pratonton. Dalam permainan sebenar ia akan jauh lebih hebat.',
+                'showcase-dash': 'Dash',
+                'showcase-parry': 'Parry',
+                'showcase-hit': 'Hit FX',
+                'showcase-spawn': 'Muncul',
+                'demo-reel': 'Reel animasi gameplay (akan datang)',
+                'pause': 'Jeda',
+                'continue': 'Sambung',
+                'sfx-label': 'SFX:',
+                'sfx-on': 'HIDUP',
+                'sfx-off': 'MATI',
+                'about-title': '🎮 TENTANG PERMAINAN',
+                'about-p1': '<span class="highlight">Evades 3</span> ialah evolusi evades.io yang legenda, direka semula untuk generasi gamer baharu.',
+                'about-p2': 'Rasai adrenalin manuver kelajuan tinggi di mana setiap milisaat menentukan hasil. Elak halangan maut, pintas pesaing, dan kuasai arena.',
+                'stat-arenas': 'Arena',
+                'stat-online': 'Dalam talian',
+                'feature1-title': 'Reaksi Kilat',
+                'feature1-text': 'Animasi 60 FPS yang lancar tanpa lag atau tersekat',
                 'feature2-title': 'Kontrol Presisi',
                 'feature2-text': 'Fisika gerak yang ditingkatkan untuk manuver sempurna',
                 'featureAnim-title': 'Animasi Sinematik',
