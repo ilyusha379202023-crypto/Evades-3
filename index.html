@@ -3817,6 +3817,11 @@
 
       if (!prefersReducedMotion) createSparkles(50);
 
+      const followDev = document.querySelector('.follow-dev-container');
+      if (followDev) {
+        followDev.style.transitionDelay = '160ms';
+      }
+
       document.querySelectorAll('.lang-item').forEach((item, index) => {
         item.style.setProperty('--item-delay', `${index * 20}ms`);
       });
