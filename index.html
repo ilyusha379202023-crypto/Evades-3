@@ -755,6 +755,37 @@
         inset 0 -12px 22px rgba(0,0,0,0.5);
     }
 
+        .follow-dev-container {
+      margin: -20px 0 20px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(18px);
+      pointer-events: none;
+    }
+
+    .ui-ready .follow-dev-container {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+      transition: opacity 600ms ease, transform 600ms ease;
+    }
+
+    .follow-dev-link {
+      color: #4aa3ff;
+      text-decoration: underline;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-shadow: 0 0 8px rgba(74, 163, 255, 0.7);
+      transition: color 0.2s ease, text-shadow 0.2s ease;
+    }
+
+    .follow-dev-link:hover,
+    .follow-dev-link:focus-visible {
+      color: #79c0ff;
+      text-shadow: 0 0 12px rgba(121, 192, 255, 0.85);
+    }
+    
     .dev-badge{
       position: absolute;
       top: -30px;
@@ -2133,6 +2164,10 @@
       </div>
     </div>
 
+        <div class="follow-dev-container">
+      <a class="follow-dev-link" href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener" data-i18n="follow-dev">Следить за разработкой</a>
+    </div>
+    
     <div class="description">
       <div class="glass-card">
         <h2 data-i18n="about-title">🎮 О ИГРЕ</h2>
@@ -2301,6 +2336,7 @@
                 'languages': 'Языки ▼',
                 'subtitle': 'Скорость. Тактика.',
                 'download-btn': 'Скачать Evades 3',
+                'follow-dev': 'Следить за разработкой',
                 'dev-badge': 'В разработке',
                 'dev-tooltip': 'Игра ещё в разработке',
                 'showcase-title': 'Витрина анимаций',
@@ -2344,6 +2380,7 @@
                 'languages': 'Languages ▼',
                 'subtitle': 'Speed. Tactics.',
                 'download-btn': 'Download Evades 3',
+                'follow-dev': 'Follow development',
                 'dev-badge': 'In Development',
                 'dev-tooltip': 'The game is still in development',
                 'showcase-title': 'Animation Showcase',
@@ -2387,6 +2424,7 @@
                 'languages': 'Мови ▼',
                 'subtitle': 'Швидкість. Тактика.',
                 'download-btn': 'Завантажити Evades 3',
+                'follow-dev': 'Стежити за розробкою',
                 'dev-badge': 'У розробці',
                 'dev-tooltip': 'Гра ще у розробці',
                 'showcase-title': 'Вітрина анімацій',
@@ -2430,6 +2468,7 @@
                 'languages': 'Sprachen ▼',
                 'subtitle': 'Geschwindigkeit. Taktik.',
                 'download-btn': 'Evades 3 herunterladen',
+                'follow-dev': 'Entwicklung verfolgen',
                 'dev-badge': 'In Entwicklung',
                 'dev-tooltip': 'Das Spiel ist noch in Entwicklung',
                 'showcase-title': 'Animationsvitrine',
@@ -2473,6 +2512,7 @@
                 'languages': 'Idiomas ▼',
                 'subtitle': 'Velocidad. Táctica.',
                 'download-btn': 'Descargar Evades 3',
+                'follow-dev': 'Seguir el desarrollo',
                 'dev-badge': 'En Desarrollo',
                 'dev-tooltip': 'El juego aún está en desarrollo',
                 'showcase-title': 'Vitrina de animaciones',
@@ -2516,6 +2556,7 @@
                 'languages': 'Langues ▼',
                 'subtitle': 'Vitesse. Tactique.',
                 'download-btn': 'Télécharger Evades 3',
+                'follow-dev': 'Suivre le développement',
                 'dev-badge': 'En Développement',
                 'dev-tooltip': 'Le jeu est encore en développement',
                 'showcase-title': 'Vitrine d’animations',
@@ -2559,6 +2600,7 @@
                 'languages': 'Lingue ▼',
                 'subtitle': 'Velocità. Tattica.',
                 'download-btn': 'Scarica Evades 3',
+                'follow-dev': 'Seguire lo sviluppo',
                 'dev-badge': 'In Sviluppo',
                 'dev-tooltip': 'Il gioco è ancora in sviluppo',
                 'showcase-title': 'Vetrina animazioni',
@@ -2602,6 +2644,7 @@
                 'languages': 'Idiomas ▼',
                 'subtitle': 'Velocidade. Tática.',
                 'download-btn': 'Baixar Evades 3',
+                'follow-dev': 'Acompanhar o desenvolvimento',
                 'dev-badge': 'Em Desenvolvimento',
                 'dev-tooltip': 'O jogo ainda está em desenvolvimento',
                 'showcase-title': 'Vitrine de animações',
@@ -2645,6 +2688,7 @@
                 'languages': 'Języki ▼',
                 'subtitle': 'Prędkość. Taktyka.',
                 'download-btn': 'Pobierz Evades 3',
+                'follow-dev': 'Śledzić rozwój',
                 'dev-badge': 'W Rozwoju',
                 'dev-tooltip': 'Gra jest nadal w rozwoju',
                 'showcase-title': 'Galeria animacji',
@@ -2688,6 +2732,7 @@
                 'languages': 'Diller ▼',
                 'subtitle': 'Hız. Taktik.',
                 'download-btn': 'Evades 3 İndir',
+                'follow-dev': 'Gelişimi takip et',
                 'dev-badge': 'Geliştiriliyor',
                 'dev-tooltip': 'Oyun hâlâ geliştirme aşamasında',
                 'showcase-title': 'Animasyon Vitrini',
@@ -2731,6 +2776,7 @@
                 'languages': 'Talen ▼',
                 'subtitle': 'Snelheid. Tactiek.',
                 'download-btn': 'Download Evades 3',
+                'follow-dev': 'Volg de ontwikkeling',
                 'dev-badge': 'In ontwikkeling',
                 'dev-tooltip': 'De game is nog in ontwikkeling',
                 'showcase-title': 'Animatievitrine',
@@ -2774,6 +2820,7 @@
                 'languages': 'Språk ▼',
                 'subtitle': 'Hastighet. Taktik.',
                 'download-btn': 'Ladda ner Evades 3',
+                'follow-dev': 'Följ utvecklingen',
                 'dev-badge': 'Under utveckling',
                 'dev-tooltip': 'Spelet är fortfarande under utveckling',
                 'showcase-title': 'Animationsvitrin',
@@ -2817,6 +2864,7 @@
                 'languages': 'Språk ▼',
                 'subtitle': 'Fart. Taktikk.',
                 'download-btn': 'Last ned Evades 3',
+                'follow-dev': 'Følg utviklingen',
                 'dev-badge': 'Under utvikling',
                 'dev-tooltip': 'Spillet er fortsatt under utvikling',
                 'showcase-title': 'Animasjonsvitrine',
@@ -2860,6 +2908,7 @@
                 'languages': 'Kielet ▼',
                 'subtitle': 'Nopeus. Taktiikka.',
                 'download-btn': 'Lataa Evades 3',
+                'follow-dev': 'Seuraa kehitystä',
                 'dev-badge': 'Kehitteillä',
                 'dev-tooltip': 'Peli on yhä kehitteillä',
                 'showcase-title': 'Animaatiovitrini',
@@ -2903,6 +2952,7 @@
                 'languages': 'Sprog ▼',
                 'subtitle': 'Hastighed. Taktik.',
                 'download-btn': 'Download Evades 3',
+                'follow-dev': 'Følg udviklingen',
                 'dev-badge': 'Under udvikling',
                 'dev-tooltip': 'Spillet er stadig under udvikling',
                 'showcase-title': 'Animationsvitrine',
@@ -2946,6 +2996,7 @@
                 'languages': 'Jazyky ▼',
                 'subtitle': 'Rychlost. Taktika.',
                 'download-btn': 'Stáhnout Evades 3',
+                'follow-dev': 'Sledovat vývoj',
                 'dev-badge': 'Ve vývoji',
                 'dev-tooltip': 'Hra je stále ve vývoji',
                 'showcase-title': 'Výklad animací',
@@ -2989,6 +3040,7 @@
                 'languages': 'Limbi ▼',
                 'subtitle': 'Viteză. Tactică.',
                 'download-btn': 'Descarcă Evades 3',
+                'follow-dev': 'Urmărește dezvoltarea',
                 'dev-badge': 'În dezvoltare',
                 'dev-tooltip': 'Jocul este încă în dezvoltare',
                 'showcase-title': 'Vitrină de animații',
@@ -3032,6 +3084,7 @@
                 'languages': 'Nyelvek ▼',
                 'subtitle': 'Sebesség. Taktika.',
                 'download-btn': 'Evades 3 letöltése',
+                'follow-dev': 'Kövesd a fejlesztést',
                 'dev-badge': 'Fejlesztés alatt',
                 'dev-tooltip': 'A játék még fejlesztés alatt áll',
                 'showcase-title': 'Animációs vitrin',
@@ -3075,6 +3128,7 @@
                 'languages': 'Γλώσσες ▼',
                 'subtitle': 'Ταχύτητα. Τακτική.',
                 'download-btn': 'Λήψη Evades 3',
+                'follow-dev': 'Παρακολούθησε την ανάπτυξη',
                 'dev-badge': 'Υπό ανάπτυξη',
                 'dev-tooltip': 'Το παιχνίδι είναι ακόμη υπό ανάπτυξη',
                 'showcase-title': 'Βιτρίνα κινουμένων',
@@ -3118,6 +3172,7 @@
                 'languages': '言語 ▼',
                 'subtitle': 'スピード. 戦術.',
                 'download-btn': 'Evades 3 をダウンロード',
+                'follow-dev': '開発を追う',
                 'dev-badge': '開発中',
                 'dev-tooltip': 'ゲームはまだ開発中です',
                 'showcase-title': 'アニメーションショーケース',
@@ -3161,6 +3216,7 @@
                 'languages': '语言 ▼',
                 'subtitle': '速度. 战术.',
                 'download-btn': '下载 Evades 3',
+                'follow-dev': '关注开发进展',
                 'dev-badge': '开发中',
                 'dev-tooltip': '游戏仍在开发中',
                 'showcase-title': '动画展示',
@@ -3204,6 +3260,7 @@
                 'languages': '언어 ▼',
                 'subtitle': '속도. 전술.',
                 'download-btn': 'Evades 3 다운로드',
+                'follow-dev': '개발 진행 상황 보기',
                 'dev-badge': '개발 중',
                 'dev-tooltip': '게임은 아직 개발 중입니다',
                 'showcase-title': '애니메이션 쇼케이스',
@@ -3247,6 +3304,7 @@
                 'languages': 'اللغات ▼',
                 'subtitle': 'السرعة. التكتيك.',
                 'download-btn': 'تحميل Evades 3',
+                'follow-dev': 'تابع التطوير',
                 'dev-badge': 'قيد التطوير',
                 'dev-tooltip': 'اللعبة ما زالت قيد التطوير',
                 'showcase-title': 'عرض الحركات',
@@ -3290,6 +3348,7 @@
                 'languages': 'भाषाएँ ▼',
                 'subtitle': 'स्पीड. रणनीति.',
                 'download-btn': 'Evades 3 डाउनलोड करें',
+                'follow-dev': 'विकास पर नज़र रखें',
                 'dev-badge': 'विकास में',
                 'dev-tooltip': 'गेम अभी भी विकास में है',
                 'showcase-title': 'एनीमेशन शोकेस',
@@ -3333,6 +3392,7 @@
                 'languages': 'ภาษา ▼',
                 'subtitle': 'ความเร็ว. แทคติก.',
                 'download-btn': 'ดาวน์โหลด Evades 3',
+                'follow-dev': 'ติดตามการพัฒนา',
                 'dev-badge': 'อยู่ระหว่างพัฒนา',
                 'dev-tooltip': 'เกมยังอยู่ระหว่างการพัฒนา',
                 'showcase-title': 'โชว์เคสแอนิเมชัน',
@@ -3376,6 +3436,7 @@
                 'languages': 'Ngôn ngữ ▼',
                 'subtitle': 'Tốc độ. Chiến thuật.',
                 'download-btn': 'Tải Evades 3',
+                'follow-dev': 'Theo dõi quá trình phát triển',
                 'dev-badge': 'Đang phát triển',
                 'dev-tooltip': 'Trò chơi vẫn đang được phát triển',
                 'showcase-title': 'Trưng bày hoạt ảnh',
@@ -3419,6 +3480,7 @@
                 'languages': 'Bahasa ▼',
                 'subtitle': 'Kecepatan. Taktik.',
                 'download-btn': 'Unduh Evades 3',
+                'follow-dev': 'Ikuti pengembangan',
                 'dev-badge': 'Dalam Pengembangan',
                 'dev-tooltip': 'Game masih dalam pengembangan',
                 'showcase-title': 'Etalase Animasi',
@@ -3462,6 +3524,7 @@
                 'languages': 'Bahasa ▼',
                 'subtitle': 'Kelajuan. Taktik.',
                 'download-btn': 'Muat turun Evades 3',
+                'follow-dev': 'Ikuti pembangunan',
                 'dev-badge': 'Dalam pembangunan',
                 'dev-tooltip': 'Permainan ini masih dalam pembangunan',
                 'showcase-title': 'Etalase Animasi',
