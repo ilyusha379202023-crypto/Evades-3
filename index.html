@@ -1295,7 +1295,7 @@
     }
 
     .sfx-toggle{
-      display: inline-flex;
+      display: none !important;
       align-items: center;
       gap: 10px;
       padding: 10px 18px;
@@ -3803,32 +3803,11 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const prefersReducedTransparency = window.matchMedia('(prefers-reduced-transparency: reduce)').matches;
-      let sfxEnabled = !prefersReducedMotion && !prefersReducedTransparency;
-      let audioContext = null;
-
-      const playBeep = (freq = 680, duration = 0.08) => {
-        if (!sfxEnabled || prefersReducedMotion || prefersReducedTransparency) return;
-        if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioContext.state === 'suspended') {
-          audioContext.resume();
-        }
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-        oscillator.type = 'sine';
-        oscillator.frequency.value = freq;
-        gainNode.gain.value = 0.06;
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-        oscillator.start();
-        oscillator.stop(audioContext.currentTime + duration);
-      };
 
       monitorFPS();
 
       document.querySelectorAll('.lang-item').forEach(item => {
         item.addEventListener('click', () => {
-          playBeep(720, 0.06);
           changeLanguage(item.dataset.lang);
         });
       });
@@ -3880,25 +3859,11 @@
         if (!button) return;
         card.classList.remove('is-paused');
         button.addEventListener('click', () => {
-          playBeep(520, 0.05);
           const shouldPause = !card.classList.contains('is-paused');
           card.classList.toggle('is-paused', shouldPause);
           updateDynamicLabels(currentLang);
         });
       });
-
-      const sfxToggle = document.querySelector('.sfx-toggle');
-      if (sfxToggle) {
-        sfxToggle.classList.toggle('is-off', !sfxEnabled);
-        sfxToggle.setAttribute('aria-pressed', String(sfxEnabled));
-        sfxToggle.addEventListener('click', () => {
-          sfxEnabled = !sfxEnabled;
-          sfxToggle.classList.toggle('is-off', !sfxEnabled);
-          sfxToggle.setAttribute('aria-pressed', String(sfxEnabled));
-          updateDynamicLabels(currentLang);
-          playBeep(840, 0.05);
-        });
-      }
 
       document.addEventListener('mousemove', (e) => {
         const mouseX = e.clientX / window.innerWidth - 0.5;
@@ -3910,15 +3875,6 @@
           el.style.transform = `translate(${x}px, ${y}px)`;
         });
       });
-
-      const menuButton = document.querySelector('.menu-button');
-      if (menuButton) {
-        menuButton.addEventListener('click', () => playBeep(640, 0.05));
-      }
-      const downloadButton = document.querySelector('.download-button');
-      if (downloadButton) {
-        downloadButton.addEventListener('click', () => playBeep(400, 0.08));
-      }
     });
   </script>
 </body>
