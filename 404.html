@@ -205,17 +205,6 @@
       line-height: 1;
     }
 
-    @keyframes ripple {
-      from {
-        transform: scale(0);
-        opacity: 1;
-      }
-      to {
-        transform: scale(4);
-        opacity: 0;
-      }
-    }
-
     .button-container {
       display: flex;
       gap: 15px;
@@ -225,8 +214,13 @@
       animation: fadeIn 1s ease 0.9s both;
     }
 
-    .back-button {
-      display: inline-block;
+    .back-button,
+    .discord-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 62px;
       background: linear-gradient(180deg, #4ade80 0%, #22c55e 45%, #16a34a 100%);
       color: white;
       padding: 14px 35px;
@@ -237,9 +231,10 @@
       cursor: pointer;
       text-decoration: none;
       position: relative;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
+      transform-origin: center;
       will-change: box-shadow, filter, transform;
-      transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
       box-shadow:
         0 10px 0 #15803d,
         0 14px 22px rgba(0,0,0,0.48),
@@ -250,78 +245,11 @@
         0 8px 20px rgba(0,0,0,0.35);
       font-family: 'Exo 2', sans-serif;
       letter-spacing: 1.5px;
+      overflow: hidden;
+      line-height: 1;
     }
 
-    .back-button::before {
-      content: "";
-      position: absolute;
-      left: 10%;
-      right: 10%;
-      top: 10px;
-      height: 40%;
-      border-radius: 999px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0));
-      opacity: 0.9;
-      pointer-events: none;
-    }
-
-    .back-button:hover {
-      filter: brightness(1.08) drop-shadow(0 0 14px rgba(74, 222, 128, 0.45));
-      box-shadow:
-        0 10px 0 #15803d,
-        0 14px 22px rgba(0,0,0,0.48),
-        0 0 24px rgba(74, 222, 128, 0.35),
-        inset 0 2px 0 rgba(255,255,255,0.62),
-        inset 0 -7px 12px rgba(0,0,0,0.4);
-    }
-
-    .back-button:active {
-      transform: translateY(6px);
-      filter: brightness(0.98);
-      box-shadow:
-        0 4px 0 #15803d,
-        0 8px 14px rgba(0,0,0,0.35),
-        inset 0 1px 0 rgba(255,255,255,0.5),
-        inset 0 -5px 10px rgba(0,0,0,0.35);
-    }
-
-    .discord-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background: linear-gradient(180deg, #7289da 0%, #5865f2 45%, #4752c4 100%);
-      color: white;
-      padding: 14px 35px;
-      font-size: 17px;
-      font-weight: 900;
-      border: 0;
-      border-radius: 60px;
-      cursor: pointer;
-      text-decoration: none;
-      position: relative;
-      transform: translateY(0);
-      will-change: box-shadow, filter, transform;
-      transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
-      box-shadow:
-        0 10px 0 #3c45a5,
-        0 14px 22px rgba(0,0,0,0.48),
-        inset 0 2px 0 rgba(255,255,255,0.55),
-        inset 0 -7px 12px rgba(0,0,0,0.4);
-      text-shadow:
-        0 2px 0 rgba(0,0,0,0.6),
-        0 8px 20px rgba(0,0,0,0.35);
-      font-family: 'Exo 2', sans-serif;
-      letter-spacing: 1.5px;
-    }
-
-    .discord-icon {
-      width: 40px;
-      height: 40px;
-      flex: 0 0 auto;
-      object-fit: contain;
-    }
-
+    .back-button::before,
     .discord-button::before {
       content: "";
       position: absolute;
@@ -335,24 +263,85 @@
       pointer-events: none;
     }
 
-    .discord-button:hover {
-      filter: brightness(1.08) drop-shadow(0 0 14px rgba(114, 137, 218, 0.45));
+    .back-button {
+      background: linear-gradient(180deg, #4ade80 0%, #22c55e 45%, #16a34a 100%);
+    }
+
+    .discord-button {
+      background: linear-gradient(180deg, #7289da 0%, #5865f2 45%, #4752c4 100%);
       box-shadow:
         0 10px 0 #3c45a5,
         0 14px 22px rgba(0,0,0,0.48),
+        inset 0 2px 0 rgba(255,255,255,0.55),
+        inset 0 -7px 12px rgba(0,0,0,0.4);
+    }
+
+    .discord-icon {
+      width: 40px;
+      height: 40px;
+      flex: 0 0 auto;
+      object-fit: contain;
+      transform: translateY(0);
+      transition: transform 0.2s ease;
+    }
+
+    .back-button:hover {
+      transform: translateY(-2px) scale(1.01);
+      filter: brightness(1.08) drop-shadow(0 0 14px rgba(74, 222, 128, 0.45));
+      box-shadow:
+        0 12px 0 #15803d,
+        0 18px 26px rgba(0,0,0,0.48),
+        0 0 24px rgba(74, 222, 128, 0.35),
+        inset 0 2px 0 rgba(255,255,255,0.62),
+        inset 0 -7px 12px rgba(0,0,0,0.4);
+    }
+
+    .discord-button:hover {
+      transform: translateY(-2px) scale(1.01);
+      filter: brightness(1.08) drop-shadow(0 0 14px rgba(114, 137, 218, 0.45));
+      box-shadow:
+        0 12px 0 #3c45a5,
+        0 18px 26px rgba(0,0,0,0.48),
         0 0 24px rgba(114, 137, 218, 0.35),
         inset 0 2px 0 rgba(255,255,255,0.62),
         inset 0 -7px 12px rgba(0,0,0,0.4);
     }
 
-    .discord-button:active {
-      transform: translateY(6px);
+    .discord-button:hover .discord-icon {
+      transform: translateY(-1px) scale(1.05);
+    }
+
+    .back-button:active,
+    .discord-button:active,
+    .back-button.is-pressed,
+    .discord-button.is-pressed {
+      animation: buttonPress 220ms cubic-bezier(0.2, 0.9, 0.25, 1.2) forwards;
       filter: brightness(0.98);
+    }
+
+    .back-button:active,
+    .back-button.is-pressed {
       box-shadow:
-        0 4px 0 #3c45a5,
-        0 8px 14px rgba(0,0,0,0.35),
-        inset 0 1px 0 rgba(255,255,255,0.5),
-        inset 0 -5px 10px rgba(0,0,0,0.35);
+        0 2px 0 #15803d,
+        0 6px 12px rgba(0,0,0,0.38),
+        inset 0 1px 0 rgba(255,255,255,0.45),
+        inset 0 -4px 8px rgba(0,0,0,0.35);
+    }
+
+    .discord-button:active,
+    .discord-button.is-pressed {
+      box-shadow:
+        0 2px 0 #3c45a5,
+        0 6px 12px rgba(0,0,0,0.38),
+        inset 0 1px 0 rgba(255,255,255,0.45),
+        inset 0 -4px 8px rgba(0,0,0,0.35);
+    }
+
+    @keyframes buttonPress {
+      0% { transform: translateY(0) scale(1); }
+      45% { transform: translateY(8px) scale(0.985); }
+      70% { transform: translateY(5px) scale(0.99); }
+      100% { transform: translateY(6px) scale(0.988); }
     }
 
     @media (max-width: 768px) {
@@ -454,32 +443,16 @@
 
       const buttons = document.querySelectorAll('.back-button, .discord-button');
       buttons.forEach(button => {
-        button.addEventListener('click', function(e) {
-          const rect = this.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-
-          const ripple = document.createElement('span');
-          ripple.style.cssText = `
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.6);
-            width: 100px;
-            height: 100px;
-            left: ${x - 50}px;
-            top: ${y - 50}px;
-            animation: ripple 0.6s ease-out;
-            pointer-events: none;
-          `;
-
-          this.style.position = 'relative';
-          this.appendChild(ripple);
-
-          setTimeout(() => ripple.remove(), 600);
+        button.addEventListener('pointerdown', () => {
+          button.classList.add('is-pressed');
         });
+
+        const release = () => button.classList.remove('is-pressed');
+        button.addEventListener('pointerup', release);
+        button.addEventListener('pointerleave', release);
+        button.addEventListener('blur', release);
       });
     });
-
   </script>
 </body>
 </html>
