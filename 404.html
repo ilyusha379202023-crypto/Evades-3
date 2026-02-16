@@ -226,10 +226,14 @@
     }
 
     .back-button {
-      display: inline-block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 56px;
+      overflow: hidden;
       background: linear-gradient(180deg, #4ade80 0%, #22c55e 45%, #16a34a 100%);
       color: white;
-      padding: 14px 35px;
+      padding: 0 35px;
       font-size: 17px;
       font-weight: 900;
       border: 0;
@@ -237,9 +241,8 @@
       cursor: pointer;
       text-decoration: none;
       position: relative;
-      transform: translateY(0);
-      will-change: box-shadow, filter, transform;
-      transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+      line-height: 1;
+      transition: box-shadow 0.22s ease, filter 0.22s ease, background 0.22s ease;
       box-shadow:
         0 10px 0 #15803d,
         0 14px 22px rgba(0,0,0,0.48),
@@ -276,11 +279,10 @@
     }
 
     .back-button:active {
-      transform: translateY(6px);
       filter: brightness(0.98);
       box-shadow:
-        0 4px 0 #15803d,
-        0 8px 14px rgba(0,0,0,0.35),
+        0 10px 0 #15803d,
+        0 14px 22px rgba(0,0,0,0.48),
         inset 0 1px 0 rgba(255,255,255,0.5),
         inset 0 -5px 10px rgba(0,0,0,0.35);
     }
@@ -290,9 +292,11 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
+      height: 56px;
+      overflow: hidden;
       background: linear-gradient(180deg, #7289da 0%, #5865f2 45%, #4752c4 100%);
       color: white;
-      padding: 14px 35px;
+      padding: 0 35px;
       font-size: 17px;
       font-weight: 900;
       border: 0;
@@ -300,9 +304,8 @@
       cursor: pointer;
       text-decoration: none;
       position: relative;
-      transform: translateY(0);
-      will-change: box-shadow, filter, transform;
-      transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+      line-height: 1;
+      transition: box-shadow 0.22s ease, filter 0.22s ease, background 0.22s ease;
       box-shadow:
         0 10px 0 #3c45a5,
         0 14px 22px rgba(0,0,0,0.48),
@@ -320,6 +323,9 @@
       height: 40px;
       flex: 0 0 auto;
       object-fit: contain;
+      vertical-align: middle;
+      margin: 0;
+      transform: none;
     }
 
     .discord-button::before {
@@ -346,11 +352,10 @@
     }
 
     .discord-button:active {
-      transform: translateY(6px);
       filter: brightness(0.98);
       box-shadow:
-        0 4px 0 #3c45a5,
-        0 8px 14px rgba(0,0,0,0.35),
+        0 10px 0 #3c45a5,
+        0 14px 22px rgba(0,0,0,0.48),
         inset 0 1px 0 rgba(255,255,255,0.5),
         inset 0 -5px 10px rgba(0,0,0,0.35);
     }
@@ -369,12 +374,14 @@
       }
 
       .back-button {
-        padding: 16px 40px;
+        height: 56px;
+        padding: 0 40px;
         font-size: 18px;
       }
 
       .discord-button {
-        padding: 16px 40px;
+        height: 56px;
+        padding: 0 40px;
         font-size: 18px;
       }
 
