@@ -49,7 +49,6 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* Блёстки */
     .sparkle {
       position: absolute;
       width: 4px;
@@ -66,7 +65,7 @@
       0%, 100% { transform: translateY(0) scale(1); opacity: 0; }
       50% { transform: translateY(-30px) scale(1.5); opacity: 1; }
     }
-    /* Контейнер ошибки */
+
     .error-container {
       position: relative;
       z-index: 10;
@@ -81,7 +80,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Большая 404 */
     .error-code {
       position: relative;
       display: inline-block;
@@ -89,16 +87,10 @@
       font-size: clamp(80px, 15vw, 140px);
       font-weight: 900;
       letter-spacing: 10px;
-      
-      /* ЯРКОЕ ЧИТАЕМОЕ ЗОЛОТО */
       color: #FFD84D;
-      
-      /* Жирная чёрная обводка для контраста */
       -webkit-text-stroke: 4px #000000;
       text-stroke: 4px #000000;
       paint-order: stroke fill;
-
-      /* 3D экструзия */
       text-shadow:
         0 1px 0 #B8860B,
         0 2px 0 #B8860B,
@@ -113,24 +105,22 @@
         0 0 30px rgba(255,215,0,0.8),
         0 0 50px rgba(255,215,0,0.6),
         0 0 70px rgba(255,140,0,0.4);
-
       filter: drop-shadow(0 0 40px rgba(255,215,0,0.8));
       animation: errorPulse 3s ease-in-out infinite;
       margin-bottom: 15px;
     }
 
     @keyframes errorPulse {
-      0%, 100% { 
+      0%, 100% {
         transform: scale(1);
         filter: drop-shadow(0 0 40px rgba(255,215,0,0.8));
       }
-      50% { 
+      50% {
         transform: scale(1.03);
         filter: drop-shadow(0 0 60px rgba(255,215,0,1));
       }
     }
 
-    /* Плавающая анимация цифры 0 */
     .error-code .floating-zero {
       display: inline-block;
       animation: floatingZero 2s ease-in-out infinite;
@@ -142,7 +132,6 @@
       75% { transform: translateY(10px) rotate(2deg); }
     }
 
-    /* Заголовок */
     .error-title {
       font-size: clamp(24px, 4vw, 36px);
       color: white;
@@ -158,7 +147,6 @@
       to { opacity: 1; }
     }
 
-    /* Описание */
     .error-description {
       font-size: clamp(14px, 2vw, 16px);
       color: rgba(255,255,255,0.9);
@@ -167,7 +155,6 @@
       animation: fadeIn 1s ease 0.5s both;
     }
 
-    /* Стеклянная карточка с предложениями */
     .suggestions-card {
       background: rgba(255,255,255,0.08);
       backdrop-filter: blur(20px);
@@ -213,7 +200,6 @@
       font-size: 20px;
     }
 
-    /* Контейнер кнопок */
     .button-container {
       display: flex;
       gap: 15px;
@@ -223,7 +209,6 @@
       animation: fadeIn 1s ease 0.9s both;
     }
 
-    /* Кнопка возврата */
     .back-button {
       display: inline-block;
       background: linear-gradient(180deg, #4ade80 0%, #22c55e 45%, #16a34a 100%);
@@ -238,12 +223,12 @@
       position: relative;
       transform: translateY(0);
       will-change: box-shadow, filter, transform;
-      transition: all 0.3s ease;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
       box-shadow:
-        0 14px 0 #15803d,
-        0 18px 30px rgba(0,0,0,0.55),
+        0 10px 0 #15803d,
+        0 14px 22px rgba(0,0,0,0.48),
         inset 0 2px 0 rgba(255,255,255,0.55),
-        inset 0 -8px 14px rgba(0,0,0,0.45);
+        inset 0 -7px 12px rgba(0,0,0,0.4);
       text-shadow:
         0 2px 0 rgba(0,0,0,0.6),
         0 8px 20px rgba(0,0,0,0.35);
@@ -265,25 +250,25 @@
     }
 
     .back-button:hover {
-      transform: translateY(-3px);
-      filter: brightness(1.1);
+      filter: brightness(1.08) drop-shadow(0 0 14px rgba(74, 222, 128, 0.45));
       box-shadow:
-        0 20px 0 #15803d,
-        0 26px 45px rgba(0,0,0,0.6),
-        inset 0 2px 0 rgba(255,255,255,0.65),
-        inset 0 -12px 22px rgba(0,0,0,0.5);
+        0 10px 0 #15803d,
+        0 14px 22px rgba(0,0,0,0.48),
+        0 0 24px rgba(74, 222, 128, 0.35),
+        inset 0 2px 0 rgba(255,255,255,0.62),
+        inset 0 -7px 12px rgba(0,0,0,0.4);
     }
 
     .back-button:active {
-      transform: translateY(-1px);
+      transform: translateY(6px);
+      filter: brightness(0.98);
       box-shadow:
-        0 16px 0 #15803d,
-        0 20px 30px rgba(0,0,0,0.5),
-        inset 0 2px 0 rgba(255,255,255,0.55),
-        inset 0 -8px 16px rgba(0,0,0,0.4);
+        0 4px 0 #15803d,
+        0 8px 14px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.5),
+        inset 0 -5px 10px rgba(0,0,0,0.35);
     }
 
-    /* Кнопка Discord */
     .discord-button {
       display: inline-block;
       background: linear-gradient(180deg, #7289da 0%, #5865f2 45%, #4752c4 100%);
@@ -298,12 +283,12 @@
       position: relative;
       transform: translateY(0);
       will-change: box-shadow, filter, transform;
-      transition: all 0.3s ease;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
       box-shadow:
-        0 14px 0 #3c45a5,
-        0 18px 30px rgba(0,0,0,0.55),
+        0 10px 0 #3c45a5,
+        0 14px 22px rgba(0,0,0,0.48),
         inset 0 2px 0 rgba(255,255,255,0.55),
-        inset 0 -8px 14px rgba(0,0,0,0.45);
+        inset 0 -7px 12px rgba(0,0,0,0.4);
       text-shadow:
         0 2px 0 rgba(0,0,0,0.6),
         0 8px 20px rgba(0,0,0,0.35);
@@ -325,25 +310,25 @@
     }
 
     .discord-button:hover {
-      transform: translateY(-3px);
-      filter: brightness(1.1);
+      filter: brightness(1.08) drop-shadow(0 0 14px rgba(114, 137, 218, 0.45));
       box-shadow:
-        0 20px 0 #3c45a5,
-        0 26px 45px rgba(0,0,0,0.6),
-        inset 0 2px 0 rgba(255,255,255,0.65),
-        inset 0 -12px 22px rgba(0,0,0,0.5);
+        0 10px 0 #3c45a5,
+        0 14px 22px rgba(0,0,0,0.48),
+        0 0 24px rgba(114, 137, 218, 0.35),
+        inset 0 2px 0 rgba(255,255,255,0.62),
+        inset 0 -7px 12px rgba(0,0,0,0.4);
     }
 
     .discord-button:active {
-      transform: translateY(-1px);
+      transform: translateY(6px);
+      filter: brightness(0.98);
       box-shadow:
-        0 16px 0 #3c45a5,
-        0 20px 30px rgba(0,0,0,0.5),
-        inset 0 2px 0 rgba(255,255,255,0.55),
-        inset 0 -8px 16px rgba(0,0,0,0.4);
+        0 4px 0 #3c45a5,
+        0 8px 14px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.5),
+        inset 0 -5px 10px rgba(0,0,0,0.35);
     }
 
-    /* Адаптивность */
     @media (max-width: 768px) {
       .error-container {
         padding: 20px;
@@ -382,7 +367,6 @@
 </head>
 
 <body>
-  <!-- Основной контент -->
   <div class="error-container">
     <div class="error-code">
       4<span class="floating-zero">0</span>4
@@ -411,7 +395,6 @@
   </div>
 
   <script>
-    // Создание блёсток
     function createSparkles(count = 30) {
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (prefersReducedMotion) return;
@@ -426,7 +409,6 @@
       }
     }
 
-    // Параллакс эффект для блёсток
     document.addEventListener('mousemove', (e) => {
       const mouseX = e.clientX / window.innerWidth - 0.5;
       const mouseY = e.clientY / window.innerHeight - 0.5;
@@ -438,18 +420,16 @@
       });
     });
 
-    // Инициализация
     window.addEventListener('DOMContentLoaded', () => {
       createSparkles(30);
 
-      // Добавляем ripple эффект на кнопки
       const buttons = document.querySelectorAll('.back-button, .discord-button');
       buttons.forEach(button => {
         button.addEventListener('click', function(e) {
           const rect = this.getBoundingClientRect();
           const x = e.clientX - rect.left;
           const y = e.clientY - rect.top;
-          
+
           const ripple = document.createElement('span');
           ripple.style.cssText = `
             position: absolute;
@@ -462,16 +442,15 @@
             animation: ripple 0.6s ease-out;
             pointer-events: none;
           `;
-          
+
           this.style.position = 'relative';
           this.appendChild(ripple);
-          
+
           setTimeout(() => ripple.remove(), 600);
         });
       });
     });
 
-    // Добавляем анимацию ripple в стили
     const style = document.createElement('style');
     style.textContent = `
       @keyframes ripple {
