@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+@DOCTYPE html
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
@@ -206,8 +206,14 @@
     }
 
     @keyframes ripple {
-      from { transform: scale(0); opacity: 1; }
-      to { transform: scale(4); opacity: 0; }
+      from {
+        transform: scale(0);
+        opacity: 1;
+      }
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
     }
 
     .button-container {
@@ -219,82 +225,34 @@
       animation: fadeIn 1s ease 0.9s both;
     }
 
-    /* =========================
-       КНОПКА: база + двигающаяся крышка
-       ========================= */
-
-    .btn {
-      /* база (нижняя часть) стоит на месте */
-      position: relative;
+    .back-button {
       display: inline-block;
-      height: 60px;
-      min-width: 280px;
-      border-radius: 60px;
-      text-decoration: none;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      cursor: pointer;
-
-      /* нижняя часть (подошва) фиксирована */
-      box-shadow:
-        0 14px 22px rgba(0,0,0,0.48);
-
-      /* чтобы вид был одинаковый */
-      font-family: 'Exo 2', sans-serif;
-      font-weight: 900;
-      letter-spacing: 1.5px;
-    }
-
-    /* нижняя часть — отдельный слой (цвет базы) */
-    .btn::after {
-      content: "";
-      position: absolute;
-      left: 0; right: 0;
-      top: 0; bottom: 0;
-      border-radius: inherit;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* двигающаяся верхняя часть */
-    .btn-face {
-      position: absolute;
-      left: 0; right: 0;
-      top: 0; bottom: 0;
-      border-radius: inherit;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-
-      /* вот это и есть "крышка", она двигается */
-      transform: translateY(0);
-      transition: transform 0.14s ease;
-
-      /* текст по центру */
-      line-height: 1;
-      white-space: nowrap;
-
+      background: linear-gradient(180deg, #4ade80 0%, #22c55e 45%, #16a34a 100%);
       color: white;
+      padding: 14px 35px;
       font-size: 17px;
-
-      /* внутренняя объемность крышки */
+      font-weight: 900;
+      border: 0;
+      border-radius: 60px;
+      cursor: pointer;
+      text-decoration: none;
+      position: relative;
+      transform: translateY(0);
+      will-change: box-shadow, filter, transform;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
       box-shadow:
+        0 10px 0 #15803d,
+        0 14px 22px rgba(0,0,0,0.48),
         inset 0 2px 0 rgba(255,255,255,0.55),
         inset 0 -7px 12px rgba(0,0,0,0.4);
-
       text-shadow:
         0 2px 0 rgba(0,0,0,0.6),
         0 8px 20px rgba(0,0,0,0.35);
-
-      overflow: hidden; /* риппл и блик не вылезают */
-      z-index: 2;
-      will-change: transform;
+      font-family: 'Exo 2', sans-serif;
+      letter-spacing: 1.5px;
     }
 
-    /* блик на крышке */
-    .btn-face::before {
+    .back-button::before {
       content: "";
       position: absolute;
       left: 10%;
@@ -305,65 +263,131 @@
       background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0));
       opacity: 0.9;
       pointer-events: none;
-      z-index: 3;
     }
 
-    /* Нажатие: ДВИГАЕТСЯ ТОЛЬКО КРЫШКА */
-    .btn:active .btn-face {
-      transform: translateY(8px);
-    }
-
-    /* ---------- Зеленая ---------- */
-    .back-button::after {
-      background: #15803d; /* цвет базы (нижней части) */
-    }
-
-    .back-button .btn-face {
-      background: linear-gradient(180deg, #4ade80 0%, #22c55e 45%, #16a34a 100%);
-      filter: none;
-      transition: transform 0.14s ease, filter 0.22s ease;
-    }
-
-    .back-button:hover .btn-face {
+    .back-button:hover {
       filter: brightness(1.08) drop-shadow(0 0 14px rgba(74, 222, 128, 0.45));
+      box-shadow:
+        0 10px 0 #15803d,
+        0 14px 22px rgba(0,0,0,0.48),
+        0 0 24px rgba(74, 222, 128, 0.35),
+        inset 0 2px 0 rgba(255,255,255,0.62),
+        inset 0 -7px 12px rgba(0,0,0,0.4);
     }
 
-    /* ---------- Синяя ---------- */
-    .discord-button::after {
-      background: #3c45a5; /* цвет базы (нижней части) */
+    .back-button:active {
+      transform: translateY(6px);
+      filter: brightness(0.98);
+      box-shadow:
+        0 4px 0 #15803d,
+        0 8px 14px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.5),
+        inset 0 -5px 10px rgba(0,0,0,0.35);
     }
 
-    .discord-button .btn-face {
+    .discord-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
       background: linear-gradient(180deg, #7289da 0%, #5865f2 45%, #4752c4 100%);
-      filter: none;
-      transition: transform 0.14s ease, filter 0.22s ease;
+      color: white;
+      padding: 14px 35px;
+      font-size: 17px;
+      font-weight: 900;
+      border: 0;
+      border-radius: 60px;
+      cursor: pointer;
+      text-decoration: none;
+      position: relative;
+      transform: translateY(0);
+      will-change: box-shadow, filter, transform;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+      box-shadow:
+        0 10px 0 #3c45a5,
+        0 14px 22px rgba(0,0,0,0.48),
+        inset 0 2px 0 rgba(255,255,255,0.55),
+        inset 0 -7px 12px rgba(0,0,0,0.4);
+      text-shadow:
+        0 2px 0 rgba(0,0,0,0.6),
+        0 8px 20px rgba(0,0,0,0.35);
+      font-family: 'Exo 2', sans-serif;
+      letter-spacing: 1.5px;
     }
 
-    .discord-button:hover .btn-face {
-      filter: brightness(1.08) drop-shadow(0 0 14px rgba(114, 137, 218, 0.45));
-    }
-
-    /* Иконка Discord — ровно по центру */
     .discord-icon {
       width: 40px;
       height: 40px;
-      object-fit: contain;
-      display: block; /* фикс baseline */
       flex: 0 0 auto;
+      object-fit: contain;
+    }
+
+    .discord-button::before {
+      content: "";
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      top: 10px;
+      height: 40%;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0));
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .discord-button:hover {
+      filter: brightness(1.08) drop-shadow(0 0 14px rgba(114, 137, 218, 0.45));
+      box-shadow:
+        0 10px 0 #3c45a5,
+        0 14px 22px rgba(0,0,0,0.48),
+        0 0 24px rgba(114, 137, 218, 0.35),
+        inset 0 2px 0 rgba(255,255,255,0.62),
+        inset 0 -7px 12px rgba(0,0,0,0.4);
+    }
+
+    .discord-button:active {
+      transform: translateY(6px);
+      filter: brightness(0.98);
+      box-shadow:
+        0 4px 0 #3c45a5,
+        0 8px 14px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.5),
+        inset 0 -5px 10px rgba(0,0,0,0.35);
     }
 
     @media (max-width: 768px) {
-      .btn {
-        height: 62px;
-        min-width: 300px;
+      .error-container {
+        padding: 20px;
       }
-      .btn-face {
+
+      .error-code {
+        margin-bottom: 20px;
+      }
+
+      .suggestions-card {
+        padding: 20px;
+      }
+
+      .back-button {
+        padding: 16px 40px;
         font-size: 18px;
+      }
+
+      .discord-button {
+        padding: 16px 40px;
+        font-size: 18px;
+      }
+
+      .button-container {
+        gap: 15px;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      * { animation: none !important; transition: none !important; }
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
     }
   </style>
 </head>
@@ -391,15 +415,10 @@
     </div>
 
     <div class="button-container">
-      <a href="https://evades3.pp.ua" class="btn back-button">
-        <span class="btn-face">Вернуться на главную</span>
-      </a>
-
-      <a href="https://discord.gg/kSVnmDRqDs" class="btn discord-button" target="_blank" rel="noopener">
-        <span class="btn-face">
-          <img src="./dc.png" alt="Discord" class="discord-icon">
-          <span>Открыть Discord</span>
-        </span>
+      <a href="https://evades3.pp.ua" class="back-button">Вернуться на главную</a>
+      <a href="https://discord.gg/kSVnmDRqDs" class="discord-button" target="_blank" rel="noopener">
+        <img src="./dc.png" alt="Discord" class="discord-icon">
+        <span>Открыть Discord</span>
       </a>
     </div>
   </div>
@@ -433,13 +452,10 @@
     window.addEventListener('DOMContentLoaded', () => {
       createSparkles(30);
 
-      const buttons = document.querySelectorAll('.btn');
+      const buttons = document.querySelectorAll('.back-button, .discord-button');
       buttons.forEach(button => {
         button.addEventListener('click', function(e) {
-          const face = this.querySelector('.btn-face');
-          if (!face) return;
-
-          const rect = face.getBoundingClientRect();
+          const rect = this.getBoundingClientRect();
           const x = e.clientX - rect.left;
           const y = e.clientY - rect.top;
 
@@ -454,14 +470,16 @@
             top: ${y - 50}px;
             animation: ripple 0.6s ease-out;
             pointer-events: none;
-            z-index: 4;
           `;
 
-          face.appendChild(ripple);
+          this.style.position = 'relative';
+          this.appendChild(ripple);
+
           setTimeout(() => ripple.remove(), 600);
         });
       });
     });
+
   </script>
 </body>
 </html>
