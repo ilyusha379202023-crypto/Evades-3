@@ -184,20 +184,36 @@
     }
 
     .suggestions-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       color: rgba(255,255,255,0.85);
       font-size: 14px;
-      margin-bottom: 8px;
-      padding-left: 25px;
-      position: relative;
+      margin: 0 0 8px;
+      padding: 0;
     }
 
     .suggestions-list li::before {
       content: '→';
-      position: absolute;
-      left: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
       color: #4ade80;
       font-weight: bold;
       font-size: 20px;
+      line-height: 1;
+    }
+
+    @keyframes ripple {
+      from {
+        transform: scale(0);
+        opacity: 1;
+      }
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
     }
 
     .button-container {
@@ -270,7 +286,10 @@
     }
 
     .discord-button {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
       background: linear-gradient(180deg, #7289da 0%, #5865f2 45%, #4752c4 100%);
       color: white;
       padding: 14px 35px;
@@ -294,6 +313,13 @@
         0 8px 20px rgba(0,0,0,0.35);
       font-family: 'Exo 2', sans-serif;
       letter-spacing: 1.5px;
+    }
+
+    .discord-icon {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 auto;
+      object-fit: contain;
     }
 
     .discord-button::before {
@@ -390,7 +416,10 @@
 
     <div class="button-container">
       <a href="https://evades3.pp.ua" class="back-button">Вернуться на главную</a>
-      <a href="https://discord.gg/kSVnmDRqDs" class="discord-button" target="_blank" rel="noopener">Открыть Discord</a>
+      <a href="https://discord.gg/kSVnmDRqDs" class="discord-button" target="_blank" rel="noopener">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO7ZxXQAAAAASUVORK5CYII=" data-source="dc.png" alt="Discord" class="discord-icon" />
+        <span>Открыть Discord</span>
+      </a>
     </div>
   </div>
 
@@ -451,20 +480,6 @@
       });
     });
 
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes ripple {
-        from {
-          transform: scale(0);
-          opacity: 1;
-        }
-        to {
-          transform: scale(4);
-          opacity: 0;
-        }
-      }
-    `;
-    document.head.appendChild(style);
   </script>
 </body>
 </html>
