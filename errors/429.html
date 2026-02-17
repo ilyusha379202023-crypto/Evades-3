@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>429 - Слишком много запросов | Evades 3</title>
+  <link rel="icon" href="logo.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;600;700&family=Exo+2:wght@300;600;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Exo 2', 'Orbitron', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: linear-gradient(135deg, #1a3d1a 0%, #2d5e2d 25%, #1a4d2e 50%, #2d5e2d 75%, #1a3d1a 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      overflow-x: hidden;
+      overflow-y: auto;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 40px 0;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.03) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      animation: sparkleFloat 3s ease-in-out infinite;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    @keyframes sparkleFloat {
+      0%, 100% { transform: translateY(0) scale(1); opacity: 0; }
+      50% { transform: translateY(-30px) scale(1.5); opacity: 1; }
+    }
+
+    .error-container {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 20px;
+      max-width: 800px;
+      width: 100%;
+      animation: fadeInUp 1s ease;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .spam-icon {
+      font-size: clamp(70px, 12vw, 100px);
+      margin-bottom: 10px;
+      display: inline-block;
+      animation: spamShake 0.5s ease-in-out infinite;
+      filter: drop-shadow(0 0 25px rgba(74, 222, 128, 0.7));
+    }
+
+    @keyframes spamShake {
+      0%, 100% { transform: translateX(0) rotate(0deg); }
+      20% { transform: translateX(-6px) rotate(-3deg); }
+      40% { transform: translateX(6px) rotate(3deg); }
+      60% { transform: translateX(-4px) rotate(-2deg); }
+      80% { transform: translateX(4px) rotate(2deg); }
+    }
+
+    .error-code {
+      position: relative;
+      display: inline-block;
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(80px, 15vw, 140px);
+      font-weight: 900;
+      letter-spacing: 10px;
+      color: #4ade80;
+      -webkit-text-stroke: 4px #000000;
+      text-stroke: 4px #000000;
+      paint-order: stroke fill;
+      text-shadow:
+        0 1px 0 #15803d,
+        0 2px 0 #15803d,
+        0 3px 0 #166534,
+        0 4px 0 #166534,
+        0 5px 0 #14532d,
+        0 6px 0 #14532d,
+        0 7px 0 #052e16,
+        0 8px 0 #052e16,
+        0 12px 25px rgba(0,0,0,0.5),
+        0 15px 35px rgba(0,0,0,0.4),
+        0 0 30px rgba(74,222,128,0.8),
+        0 0 50px rgba(74,222,128,0.6),
+        0 0 70px rgba(34,197,94,0.4);
+      filter: drop-shadow(0 0 40px rgba(74,222,128,0.8));
+      animation: errorPulse 3s ease-in-out infinite;
+      margin-bottom: 15px;
+    }
+
+    @keyframes errorPulse {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 40px rgba(74,222,128,0.8));
+      }
+      50% {
+        transform: scale(1.03);
+        filter: drop-shadow(0 0 60px rgba(74,222,128,1));
+      }
+    }
+
+    .error-code .floating-number {
+      display: inline-block;
+      animation: floatingNumber 2s ease-in-out infinite;
+    }
+
+    @keyframes floatingNumber {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-10px) rotate(-2deg); }
+      75% { transform: translateY(10px) rotate(2deg); }
+    }
+
+    .error-title {
+      font-size: clamp(24px, 4vw, 36px);
+      color: white;
+      font-weight: 900;
+      margin-bottom: 12px;
+      letter-spacing: 2px;
+      text-shadow: 0 0 30px rgba(255,255,255,0.3);
+      animation: fadeIn 1s ease 0.3s both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .error-description {
+      font-size: clamp(14px, 2vw, 16px);
+      color: rgba(255,255,255,0.9);
+      line-height: 1.7;
+      margin-bottom: 25px;
+      animation: fadeIn 1s ease 0.5s both;
+    }
+
+    /* Cooldown таймер */
+    .cooldown-card {
+      background: rgba(74, 222, 128, 0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 15px;
+      border: 2px solid rgba(74, 222, 128, 0.3);
+      padding: 20px 25px;
+      margin-bottom: 20px;
+      animation: fadeIn 1s ease 0.6s both, cooldownPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes cooldownPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(74, 222, 128, 0.3); }
+      50% { box-shadow: 0 0 40px rgba(74, 222, 128, 0.6); }
+    }
+
+    .cooldown-label {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .cooldown-timer {
+      font-size: clamp(36px, 7vw, 56px);
+      font-weight: 900;
+      color: #4ade80;
+      font-family: 'Orbitron', monospace;
+      text-shadow: 0 0 20px rgba(74, 222, 128, 0.8);
+      letter-spacing: 4px;
+      animation: timerGlow 1s ease-in-out infinite;
+    }
+
+    @keyframes timerGlow {
+      0%, 100% { text-shadow: 0 0 20px rgba(74, 222, 128, 0.8); }
+      50% { text-shadow: 0 0 40px rgba(74, 222, 128, 1), 0 0 60px rgba(74, 222, 128, 0.5); }
+    }
+
+    .cooldown-note {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 8px;
+    }
+
+    .suggestions-card {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 22px;
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+      margin-bottom: 25px;
+      animation: fadeIn 1s ease 0.7s both;
+    }
+
+    .suggestions-title {
+      font-size: 20px;
+      color: #4ade80;
+      font-weight: bold;
+      margin-bottom: 15px;
+      text-shadow: 0 0 10px rgba(74,222,128,0.5);
+    }
+
+    .suggestions-list {
+      list-style: none;
+      text-align: left;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .suggestions-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: rgba(255,255,255,0.85);
+      font-size: 14px;
+      margin: 0 0 8px;
+      padding: 0;
+    }
+
+    .suggestions-list li::before {
+      content: '→';
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      color: #4ade80;
+      font-weight: bold;
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 25px;
+      margin-bottom: 60px;
+      animation: fadeIn 1s ease 0.9s both;
+    }
+
+    .back-button,
+    .discord-button,
+    .reload-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 62px;
+      color: white;
+      padding: 14px 35px;
+      font-size: 17px;
+      font-weight: 900;
+      border: 0;
+      border-radius: 60px;
+      cursor: pointer;
+      text-decoration: none;
+      position: relative;
+      transform: translateY(0) scale(1);
+      transform-origin: center;
+      will-change: box-shadow, filter, transform;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+      text-shadow:
+        0 2px 0 rgba(0,0,0,0.6),
+        0 8px 20px rgba(0,0,0,0.35);
+      font-family: 'Exo 2', sans-serif;
+      letter-spacing: 1.5px;
+      overflow: hidden;
+      line-height: 1;
+    }
+
+    .back-button::before,
+    .discord-button::before,
+    .reload-button::before {
+      content: "";
+      position: absolute;
+      left: 10%; right: 10%; top: 10px;
+      height: 40%;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0));
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .reload-button {
+      background: linear-gradient(180deg, #4ade80 0%, #22c55e 45%, #16a34a 100%);
+      box-shadow:
+        0 10px 0 #15803d,
+        0 14px 22px rgba(0,0,0,0.48),
+        inset 0 2px 0 rgba(255,255,255,0.55),
+        inset 0 -7px 12px rgba(0,0,0,0.4);
+    }
+
+    .back-button {
+      background: linear-gradient(180deg, #94a3b8 0%, #64748b 45%, #475569 100%);
+      box-shadow:
+        0 10px 0 #334155,
+        0 14px 22px rgba(0,0,0,0.48),
+        inset 0 2px 0 rgba(255,255,255,0.55),
+        inset 0 -7px 12px rgba(0,0,0,0.4);
+    }
+
+    .discord-button {
+      background: linear-gradient(180deg, #7289da 0%, #5865f2 45%, #4752c4 100%);
+      box-shadow:
+        0 10px 0 #3c45a5,
+        0 14px 22px rgba(0,0,0,0.48),
+        inset 0 2px 0 rgba(255,255,255,0.55),
+        inset 0 -7px 12px rgba(0,0,0,0.4);
+    }
+
+    .discord-icon {
+      width: 40px;
+      height: 40px;
+      flex: 0 0 auto;
+      object-fit: contain;
+      transition: transform 0.2s ease;
+    }
+
+    .reload-icon {
+      font-size: 24px;
+      transition: transform 0.2s ease;
+    }
+
+    .reload-button:hover {
+      transform: translateY(-2px) scale(1.01);
+      filter: brightness(1.08) drop-shadow(0 0 14px rgba(74,222,128,0.55));
+      box-shadow:
+        0 12px 0 #15803d,
+        0 18px 26px rgba(0,0,0,0.48),
+        0 0 24px rgba(74,222,128,0.4),
+        inset 0 2px 0 rgba(255,255,255,0.62),
+        inset 0 -7px 12px rgba(0,0,0,0.4);
+    }
+
+    .reload-button:hover .reload-icon { transform: rotate(180deg); }
+
+    .back-button:hover {
+      transform: translateY(-2px) scale(1.01);
+      filter: brightness(1.08) drop-shadow(0 0 14px rgba(148,163,184,0.45));
+      box-shadow:
+        0 12px 0 #334155,
+        0 18px 26px rgba(0,0,0,0.48),
+        0 0 24px rgba(148,163,184,0.35),
+        inset 0 2px 0 rgba(255,255,255,0.62),
+        inset 0 -7px 12px rgba(0,0,0,0.4);
+    }
+
+    .discord-button:hover {
+      transform: translateY(-2px) scale(1.01);
+      filter: brightness(1.08) drop-shadow(0 0 14px rgba(114,137,218,0.45));
+      box-shadow:
+        0 12px 0 #3c45a5,
+        0 18px 26px rgba(0,0,0,0.48),
+        0 0 24px rgba(114,137,218,0.35),
+        inset 0 2px 0 rgba(255,255,255,0.62),
+        inset 0 -7px 12px rgba(0,0,0,0.4);
+    }
+
+    .discord-button:hover .discord-icon { transform: translateY(-1px) scale(1.05); }
+
+    .back-button:active, .discord-button:active, .reload-button:active,
+    .back-button.is-pressed, .discord-button.is-pressed, .reload-button.is-pressed {
+      animation: buttonPress 220ms cubic-bezier(0.2, 0.9, 0.25, 1.2) forwards;
+      filter: brightness(0.98);
+    }
+
+    .back-button:active, .back-button.is-pressed {
+      box-shadow: 0 2px 0 #334155, 0 6px 12px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -4px 8px rgba(0,0,0,0.35);
+    }
+
+    .discord-button:active, .discord-button.is-pressed {
+      box-shadow: 0 2px 0 #3c45a5, 0 6px 12px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -4px 8px rgba(0,0,0,0.35);
+    }
+
+    .reload-button:active, .reload-button.is-pressed {
+      box-shadow: 0 2px 0 #15803d, 0 6px 12px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -4px 8px rgba(0,0,0,0.35);
+    }
+
+    @keyframes buttonPress {
+      0% { transform: translateY(0) scale(1); }
+      45% { transform: translateY(8px) scale(0.985); }
+      70% { transform: translateY(5px) scale(0.99); }
+      100% { transform: translateY(6px) scale(0.988); }
+    }
+
+    @media (max-width: 768px) {
+      body { padding: 30px 0; }
+      .error-container { padding: 20px; }
+      .suggestions-card { padding: 20px; }
+      .back-button, .discord-button, .reload-button {
+        padding: 16px 40px;
+        font-size: 18px;
+      }
+      .button-container { gap: 15px; margin-bottom: 80px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="error-container">
+
+    <div class="spam-icon">🚦</div>
+
+    <div class="error-code">
+      4<span class="floating-number">2</span>9
+    </div>
+
+    <h1 class="error-title">Полегче! Слишком много запросов 😅</h1>
+
+    <p class="error-description">
+      Ты отправляешь запросы слишком быстро! Сайт временно ограничил доступ, чтобы не перегружаться. Подожди немного и попробуй снова.
+    </p>
+
+    <div class="cooldown-card">
+      <div class="cooldown-label">⏳ подожди</div>
+      <div class="cooldown-timer" id="timer">00:30</div>
+      <div class="cooldown-note">страница обновится автоматически</div>
+    </div>
+
+    <div class="suggestions-card">
+      <div class="suggestions-title">Почему это произошло?</div>
+      <ul class="suggestions-list">
+        <li>Ты слишком часто обновлял страницу</li>
+        <li>Много запросов за короткое время</li>
+        <li>Сработала защита от перегрузки</li>
+        <li>Это временно — просто подожди таймер</li>
+      </ul>
+    </div>
+
+    <div class="button-container">
+      <button class="reload-button" id="reloadBtn" onclick="location.reload()" disabled
+        style="opacity:0.5; cursor:not-allowed;">
+        <span class="reload-icon">↻</span>
+        <span id="reloadBtnText">Подождите 30 сек...</span>
+      </button>
+      <a href="https://evades3.pp.ua" class="back-button">Вернуться на главную</a>
+      <a href="https://discord.gg/kSVnmDRqDs" class="discord-button" target="_blank" rel="noopener">
+        <img src="./dc.png" alt="Discord" class="discord-icon">
+        <span>Открыть Discord</span>
+      </a>
+    </div>
+
+  </div>
+
+  <script>
+    // Cooldown таймер
+    let seconds = 30;
+    const timerEl = document.getElementById('timer');
+    const reloadBtn = document.getElementById('reloadBtn');
+    const reloadBtnText = document.getElementById('reloadBtnText');
+
+    const countdown = setInterval(() => {
+      seconds--;
+
+      const mm = String(Math.floor(seconds / 60)).padStart(2, '0');
+      const ss = String(seconds % 60).padStart(2, '0');
+      timerEl.textContent = `${mm}:${ss}`;
+
+      if (seconds <= 0) {
+        clearInterval(countdown);
+        timerEl.textContent = '00:00';
+        reloadBtn.disabled = false;
+        reloadBtn.style.opacity = '1';
+        reloadBtn.style.cursor = 'pointer';
+        reloadBtnText.textContent = 'Обновить страницу';
+        // Автообновление
+        location.reload();
+      }
+    }, 1000);
+
+    // Sparkles
+    function createSparkles(count = 30) {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) return;
+
+      for (let i = 0; i < count; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = Math.random() * 100 + '%';
+        sparkle.style.top = Math.random() * 100 + '%';
+        sparkle.style.animationDelay = Math.random() * 3 + 's';
+        document.body.appendChild(sparkle);
+      }
+    }
+
+    document.addEventListener('mousemove', (e) => {
+      const mouseX = e.clientX / window.innerWidth - 0.5;
+      const mouseY = e.clientY / window.innerHeight - 0.5;
+      document.querySelectorAll('.sparkle').forEach(el => {
+        el.style.transform = `translate(${mouseX * 20}px, ${mouseY * 20}px)`;
+      });
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      createSparkles(30);
+
+      const buttons = document.querySelectorAll('.back-button, .discord-button, .reload-button');
+      buttons.forEach(button => {
+        button.addEventListener('pointerdown', () => {
+          if (!button.disabled) button.classList.add('is-pressed');
+        });
+        const release = () => button.classList.remove('is-pressed');
+        button.addEventListener('pointerup', release);
+        button.addEventListener('pointerleave', release);
+        button.addEventListener('blur', release);
+      });
+    });
+  </script>
+</body>
+</html>
