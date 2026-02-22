@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evades 3 — Roadmap</title>
+  <link rel="icon" href="logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;600;700&family=Exo+2:wght@300;600;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --langBorder: rgba(255,255,255,0.28);
+      --earlyBannerHeight: 36px;
+      --gold: #FFD84D;
+      --done-color: #4ade80;
+      --wip-color: #facc15;
+    }
+
+    .lang-flag {
+      width: 22px; height: 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 18px; line-height: 1;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35));
+    }
+    .lang-flag img {
+      width: 22px !important; height: 16px !important;
+      object-fit: cover; border-radius: 3px; display: block;
+      box-shadow: 0 0 4px rgba(0,0,0,0.3);
+    }
+    .lang-check {
+      width: 22px; height: 22px; margin-left: auto;
+      opacity: 0; transform: scale(0.85);
+      transition: opacity .18s ease, transform .18s ease; pointer-events: none;
+    }
+    .lang-item.is-selected .lang-check { opacity: 1; transform: scale(1); }
+    .lang-check svg { width: 22px; height: 22px; display: block; }
+    .lang-check path {
+      fill: none; stroke: rgba(255,255,255,0.95); stroke-width: 3.2;
+      stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 30; stroke-dashoffset: 30;
+    }
+    .lang-item.is-selected .lang-check path {
+      animation: checkDraw 260ms ease-out forwards;
+    }
+    @keyframes checkDraw { to { stroke-dashoffset: 0; } }
+
+    body {
+      font-family: 'Exo 2', 'Orbitron', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background: linear-gradient(135deg, #1a4d2e 0%, #2d7a4f 25%, #4a9d6f 50%, #2d7a4f 75%, #1a4d2e 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+      padding-top: var(--earlyBannerHeight);
+    }
+    body::before {
+      content: '';
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.03) 0%, transparent 50%);
+      pointer-events: none; z-index: 1;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .explosion-particle {
+      position: absolute; width: 8px; height: 8px;
+      background: radial-gradient(circle, #ffd700, #ff8800);
+      border-radius: 50%; pointer-events: none; z-index: 9999;
+      box-shadow: 0 0 20px rgba(255,215,0,0.8);
+    }
+    @keyframes explode {
+      0% { transform: translate(0, 0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+    }
+    .shockwave {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100px; height: 100px;
+      border: 4px solid rgba(255,215,0,0.8);
+      border-radius: 50%; pointer-events: none; z-index: 9998;
+      animation: shockwaveExpand 0.8s ease-out forwards;
+    }
+    @keyframes shockwaveExpand {
+      0% { width: 100px; height: 100px; opacity: 1; border-width: 4px; }
+      100% { width: 600px; height: 600px; opacity: 0; border-width: 0; }
+    }
+    .flash-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle, rgba(255,215,0,0.4), transparent 60%);
+      pointer-events: none; z-index: 9997; opacity: 0;
+    }
+    .screen-shake .flash-overlay { animation: flashBurst 0.5s ease-out forwards; }
+    @keyframes flashBurst { 0% { opacity: 0; } 10% { opacity: 1; } 100% { opacity: 0; } }
+    @keyframes screenShake {
+      0%, 100% { transform: translate(0, 0); }
+      10% { transform: translate(-8px, 4px); }
+      20% { transform: translate(8px, -4px); }
+      30% { transform: translate(-6px, -3px); }
+      40% { transform: translate(6px, 3px); }
+      50% { transform: translate(-4px, 2px); }
+      60% { transform: translate(4px, -2px); }
+      70% { transform: translate(-2px, 1px); }
+      80% { transform: translate(2px, -1px); }
+    }
+    .screen-shake .container { animation: screenShake 0.6s ease-in-out; }
+
+    .early-access-banner {
+      position: fixed; top: 0; left: 50%;
+      padding: 8px 0; text-align: center;
+      font-weight: 700; font-size: 14px; letter-spacing: 1px;
+      color: #ff3b30; background: none;
+      z-index: 2005; pointer-events: none;
+      transform: translateX(-50%);
+    }
+
+    .sparkle {
+      position: absolute; width: 4px; height: 4px;
+      background: white; border-radius: 50%;
+      animation: sparkleFloat 3s ease-in-out infinite;
+      box-shadow: 0 0 10px rgba(255,255,255,0.8);
+      pointer-events: none; z-index: 2;
+    }
+    @keyframes sparkleFloat {
+      0%, 100% { transform: translateY(0) scale(1); opacity: 0; }
+      50% { transform: translateY(-30px) scale(1.5); opacity: 1; }
+    }
+
+    .back-home-btn {
+      position: fixed;
+      top: 20px;
+      left: 320px;
+      z-index: 1001;
+      background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.15));
+      color: white;
+      padding: 15px 35px;
+      cursor: pointer;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: 900;
+      text-decoration: none;
+      backdrop-filter: blur(15px);
+      transition: all 0.3s ease;
+      font-family: 'Exo 2', sans-serif;
+      letter-spacing: 2px;
+      box-shadow: 6px 6px 16px rgba(0,0,0,0.3), -3px -3px 10px rgba(255,255,255,0.1),
+        inset -2px -2px 6px rgba(0,0,0,0.2), inset 2px 2px 6px rgba(255,255,255,0.2);
+    }
+    .back-home-btn:hover {
+      background: linear-gradient(145deg, rgba(255,255,255,0.35), rgba(255,255,255,0.25));
+      transform: translateY(-2px);
+    }
+    .logo-image {
+      position: fixed;
+      top: 15px;
+      left: 170px;
+      width: 130px; height: 130px; object-fit: contain;
+      z-index: 1000;
+      filter: drop-shadow(0 8px 20px rgba(0,0,0,0.35));
+      animation: logoFloat 4s ease-in-out infinite;
+    }
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      50% { transform: translateY(-8px) rotate(1deg); }
+    }
+
+    .language-menu {
+      position: absolute; top: 20px; right: 50px; z-index: 1000;
+    }
+    .menu-button {
+      background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.15));
+      color: white; padding: 15px 35px; cursor: pointer;
+      border: 2px solid rgba(255,255,255,0.4); border-radius: 50px;
+      font-size: 18px; font-weight: 900; backdrop-filter: blur(15px);
+      transition: all 0.3s ease; font-family: 'Exo 2', sans-serif;
+      letter-spacing: 2px;
+      box-shadow: 6px 6px 16px rgba(0,0,0,0.3), -3px -3px 10px rgba(255,255,255,0.1),
+        inset -2px -2px 6px rgba(0,0,0,0.2), inset 2px 2px 6px rgba(255,255,255,0.2);
+    }
+    .menu-button:hover {
+      background: linear-gradient(145deg, rgba(255,255,255,0.35), rgba(255,255,255,0.25));
+      transform: translateY(-2px);
+    }
+    .language-dropdown { position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%) scale(0.96); background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.12)); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-radius: 28px; overflow: hidden; max-height: 0; opacity: 0; transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.25s ease; border: 2px solid var(--langBorder); box-shadow: 10px 10px 30px rgba(0,0,0,0.35), -5px -5px 14px rgba(255,255,255,0.12), inset -2px -2px 8px rgba(0,0,0,0.25), inset 2px 2px 8px rgba(255,255,255,0.2); min-width: 170px; }
+    .language-menu:hover .language-dropdown { max-height: 400px; opacity: 1; transform: translateX(-50%) scale(1); }
+    .language-scroll { max-height: 400px; overflow-y: auto; overflow-x: hidden; padding: 10px 12px 10px 0; }
+    .language-scroll::-webkit-scrollbar { width: 5px; }
+    .language-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.08); border-radius: 999px; }
+    .language-scroll::-webkit-scrollbar-thumb { background: var(--langBorder); border-radius: 999px; min-height: 160px; }
+    .language-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.45); }
+    .lang-item { position: relative; }
+    .lang-item::before { content: ""; position: absolute; left: 8px; top: 8px; bottom: 8px; width: 6px; border-radius: 999px; background: transparent; opacity: 0; transition: opacity 0.18s ease, background 0.18s ease; }
+    .lang-item:hover::before { background: var(--langBorder); opacity: 1; }
+    .lang-item { padding: 12px 20px; color: white; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all 0.25s ease; border-left: 3px solid transparent; opacity: 0; transform: translateY(-8px); }
+    .language-menu:hover .lang-item { opacity: 1; transform: translateY(0); transition-delay: var(--item-delay, 0ms); }
+    .lang-item:hover { background: linear-gradient(90deg, rgba(74,222,128,0.2), transparent); transform: translateX(5px); }
+    .lang-code { font-weight: bold; min-width: 45px; font-family: 'Exo 2', sans-serif; }
+    .lang-item.is-selected::before { background: rgba(255,220,120,0.8); opacity: 1; box-shadow: 0 0 12px rgba(255,220,120,0.9); }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 160px 20px 80px; text-align: center; position: relative; z-index: 10; }
+    .title-section { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; margin-bottom: 50px; }
+    .subtitle { display: inline-block; padding: 12px 26px; border-radius: 999px; background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04)); border: 1px solid rgba(255,255,255,0.18); backdrop-filter: blur(18px); font-size: 24px; letter-spacing: 10px; text-transform: uppercase; color: rgba(255,255,255,0.95); text-shadow: 0 1px 0 rgba(0,0,0,0.25), 0 0 20px rgba(255,255,255,0.25); box-shadow: 0 18px 40px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.18); position: relative; }
+    .subtitle::after { content: ""; position: absolute; left: 14%; right: 14%; bottom: -8px; height: 3px; border-radius: 999px; background: linear-gradient(90deg, transparent, rgba(255,215,0,0.75), transparent); opacity: 0.9; }
+    .main-title { position: relative; display: inline-block; font-family: 'Exo 2', 'Rajdhani', sans-serif; font-size: clamp(56px, 12vw, 108px); font-weight: 900; letter-spacing: 14px; color: var(--gold); -webkit-text-stroke: 4px #000000; paint-order: stroke fill; text-shadow: 0 1px 0 #B8860B, 0 2px 0 #B8860B, 0 3px 0 #9A7209, 0 4px 0 #9A7209, 0 5px 0 #7C5E07, 0 6px 0 #7C5E07, 0 7px 0 #5E4A05, 0 8px 0 #5E4A05, 0 12px 25px rgba(0,0,0,0.5), 0 15px 35px rgba(0,0,0,0.4), 0 0 30px rgba(255,215,0,0.8), 0 0 50px rgba(255,215,0,0.6), 0 0 70px rgba(255,140,0,0.4); filter: drop-shadow(0 0 40px rgba(255,215,0,0.8)); opacity: 0; }
+    .hero-anim .main-title { animation: titleMegaBurst 1.2s cubic-bezier(.08,1.3,.18,1) forwards; animation-delay: 600ms; }
+    @keyframes titleMegaBurst {0%{opacity:0;transform:scale(0.6) translateY(15px) rotate(-2deg);filter:blur(10px) brightness(0.5) drop-shadow(0 0 0 rgba(255,215,0,0));}15%{opacity:0.3;transform:scale(0.85) translateY(8px) rotate(-1deg);filter:blur(6px) brightness(0.8) drop-shadow(0 0 30px rgba(255,215,0,0.4));}35%{opacity:1;transform:scale(1.45) translateY(-8px) rotate(1.5deg);filter:blur(0) brightness(1.8) drop-shadow(0 0 80px rgba(255,215,0,1)) drop-shadow(0 0 120px rgba(255,140,0,0.8));}50%{transform:scale(1.25) translateY(-3px) rotate(-0.5deg);filter:blur(0) brightness(1.5) drop-shadow(0 0 60px rgba(255,215,0,0.9));}65%{transform:scale(1.12) translateY(1px) rotate(0.8deg);filter:brightness(1.2) drop-shadow(0 0 45px rgba(255,215,0,0.7));}78%{transform:scale(1.06) translateY(-1px) rotate(-0.3deg);}88%{transform:scale(1.08) rotate(0.2deg);}100%{opacity:1;transform:scale(1) translateY(0) rotate(0);filter:blur(0) brightness(1) drop-shadow(0 0 35px rgba(255,215,0,0.6));}}
+    .main-title::before { content: attr(data-title); position: absolute; left: 0; top: 0; transform: translate(2px, 20px); z-index: -1; color: rgba(0,0,0,0.5); -webkit-text-stroke: 0; filter: blur(2px); }
+    .main-title::after { content: attr(data-title); position: absolute; left: 0; top: 0; z-index: 1; color: transparent; -webkit-text-stroke: 0; background: linear-gradient(120deg, transparent 0%, rgba(255,215,0,0) 35%, rgba(255,244,200,0.95) 46%, rgba(255,235,120,0.95) 50%, rgba(255,244,200,0.95) 54%, rgba(255,215,0,0) 65%, transparent 100%); background-size: 240% 100%; -webkit-background-clip: text; background-clip: text; animation: titleGoldWave 4.5s ease-in-out infinite; pointer-events: none; opacity: 0.8; }
+    @keyframes titleGoldWave {0%{background-position:200% 50%;opacity:0;}40%{background-position:200% 50%;opacity:0;}70%{background-position:-120% 50%;opacity:0.8;}100%{background-position:-120% 50%;opacity:0;}}
+
+    .progress-section, .timeline, .bottom-section { opacity: 0; transform: translateY(18px); pointer-events: none; }
+    .ui-ready .progress-section, .ui-ready .timeline, .ui-ready .bottom-section { opacity: 1; transform: translateY(0); pointer-events: auto; transition: opacity 600ms ease, transform 600ms ease; }
+    .ui-ready .progress-section { transition-delay: 80ms; }
+    .ui-ready .timeline { transition-delay: 200ms; }
+    .ui-ready .bottom-section { transition-delay: 320ms; }
+
+    .progress-section { max-width: 680px; margin: 0 auto 60px; text-align: left; }
+    .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; color: rgba(255,255,255,0.85); font-size: 13px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+    .progress-header .count { color: var(--gold); font-size: 16px; text-shadow: 0 0 12px rgba(255,215,0,0.6); }
+    .progress-track { height: 18px; border-radius: 999px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.12); overflow: hidden; box-shadow: inset 0 3px 8px rgba(0,0,0,0.5); position: relative; }
+    .progress-fill { height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, #22c55e, #86efac, #4ade80, #22c55e); background-size: 300% 100%; animation: fillGrow 1.6s cubic-bezier(.4,0,.2,1) 0.4s forwards, fillShimmer 2.5s linear 2.5s infinite; box-shadow: 0 0 20px rgba(74,222,128,0.9), 0 0 40px rgba(74,222,128,0.4); position: relative; }
+    .progress-fill::after { content: ""; position: absolute; right: -1px; top: -2px; bottom: -2px; width: 8px; border-radius: 999px; background: white; box-shadow: 0 0 12px rgba(255,255,255,0.9), 0 0 24px rgba(74,222,128,1); }
+    @keyframes fillGrow { from { width: 0; } to { width: 11.76%; } }
+    @keyframes fillShimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .progress-legend { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 18px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.8); font-size: 12px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; }
+    .leg-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .leg-dot.done { background: var(--done-color); box-shadow: 0 0 10px rgba(74,222,128,0.8); }
+    .leg-dot.wip { background: var(--wip-color); box-shadow: 0 0 10px rgba(250,204,21,0.8); animation: legPulse 1.4s ease-in-out infinite; }
+    .leg-dot.todo { background: rgba(255,255,255,0.3); }
+    @keyframes legPulse {0%,100%{box-shadow:0 0 6px rgba(250,204,21,0.4);}50%{box-shadow:0 0 18px rgba(250,204,21,1);}}
+
+    .timeline { position: relative; max-width: 800px; margin: 0 auto; text-align: left; }
+    .timeline-spine { position: absolute; left: 39px; top: 26px; bottom: 26px; width: 3px; background: linear-gradient(180deg, rgba(255,215,0,0.9) 0%, rgba(74,222,128,0.8) 8%, rgba(250,204,21,0.4) 18%, rgba(255,255,255,0.08) 30%, transparent 100%); border-radius: 999px; overflow: hidden; }
+    .timeline-spine::after { content: ""; position: absolute; left: 0; right: 0; height: 120px; background: linear-gradient(180deg, transparent, rgba(255,215,0,0.9), white, rgba(255,215,0,0.9), transparent); border-radius: 999px; animation: spineTravel 3.5s ease-in-out infinite 1.5s; }
+    @keyframes spineTravel {0%{top:-130px;opacity:0;}8%{opacity:1;}92%{opacity:1;}100%{top:100%;opacity:0;}}
+
+    .roadmap-item { display: flex; align-items: center; gap: 20px; padding: 8px 0; position: relative; opacity: 0; transform: translateX(-35px); }
+    .roadmap-item.slide-in { animation: itemSlide 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+    @keyframes itemSlide { to { opacity: 1; transform: translateX(0); } }
+    .item-num { flex-shrink: 0; width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 15px; position: relative; z-index: 2; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); cursor: default; }
+    .roadmap-item:hover .item-num { transform: scale(1.25) rotate(10deg); }
+    .item-num.is-done { background: radial-gradient(circle at 35% 35%, #a7f3d0, #22c55e 55%, #15803d); box-shadow: 0 6px 20px rgba(34,197,94,0.55), 0 0 0 3px rgba(74,222,128,0.25), inset 0 2px 4px rgba(255,255,255,0.55); color: #14532d; }
+    .item-num.is-wip { background: radial-gradient(circle at 35% 35%, #fef08a, #eab308 55%, #a16207); box-shadow: 0 6px 20px rgba(234,179,8,0.6), 0 0 0 3px rgba(250,204,21,0.25), inset 0 2px 4px rgba(255,255,255,0.5); color: #3b1a00; animation: wipBubble 2s ease-in-out infinite; }
+    @keyframes wipBubble {0%,100%{box-shadow:0 6px 20px rgba(234,179,8,0.5), 0 0 0 3px rgba(250,204,21,0.2), inset 0 2px 4px rgba(255,255,255,0.5);}50%{box-shadow:0 8px 32px rgba(234,179,8,0.9),0 0 0 9px rgba(250,204,21,0.1),0 0 40px rgba(234,179,8,0.35), inset 0 2px 4px rgba(255,255,255,0.5);}}
+    .item-num.is-todo { background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.14), rgba(255,255,255,0.03)); box-shadow: 0 4px 14px rgba(0,0,0,0.3), 0 0 0 2px rgba(255,255,255,0.1), inset 0 1px 0 rgba(255,255,255,0.15); color: rgba(255,255,255,0.35); }
+    .wip-spinner { font-size: 22px; display: inline-block; animation: spinHourglass 2s ease-in-out infinite; }
+    @keyframes spinHourglass {0%,40%{transform:rotate(0);}50%,90%{transform:rotate(180deg);}100%{transform:rotate(180deg);}}
+    .check-emoji { font-size: 22px; }
+    .item-card { flex: 1; padding: 16px 24px; border-radius: 22px; background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.04)); border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 8px 24px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.12); transition: transform 140ms ease-out, box-shadow 150ms ease-out, border-color 150ms ease-out; position: relative; overflow: hidden; isolation: isolate; }
+    .item-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%); opacity: 0; transition: opacity 0.3s ease; pointer-events: none; z-index: 0; }
+    .item-card:hover::before { opacity: 1; }
+    .roadmap-item:hover .item-card { transform: translateX(6px) translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,0.35); }
+    .roadmap-item.status-done .item-card { border-color: rgba(74,222,128,0.22); }
+    .roadmap-item.status-done:hover .item-card { border-color: rgba(74,222,128,0.55); box-shadow: 0 16px 40px rgba(0,0,0,0.3), 0 0 24px rgba(74,222,128,0.15); }
+    .roadmap-item.status-wip .item-card { border-color: rgba(250,204,21,0.28); }
+    .roadmap-item.status-wip:hover .item-card { border-color: rgba(250,204,21,0.65); box-shadow: 0 16px 40px rgba(0,0,0,0.3), 0 0 24px rgba(250,204,21,0.18); }
+    .item-card > * { position: relative; z-index: 1; }
+    .item-text { font-size: 16px; font-weight: 700; color: rgba(255,255,255,0.92); letter-spacing: 0.3px; line-height: 1.4; }
+    .roadmap-item.status-todo .item-text { color: rgba(255,255,255,0.50); }
+    .item-chip { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; padding: 4px 14px; border-radius: 999px; font-size: 10px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; }
+    .item-chip.chip-done { background: rgba(74,222,128,0.12); color: #86efac; border: 1px solid rgba(74,222,128,0.28); }
+    .item-chip.chip-wip { background: rgba(250,204,21,0.12); color: #fde68a; border: 1px solid rgba(250,204,21,0.28); }
+    .chip-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; box-shadow: 0 0 6px currentColor; }
+    .item-chip.chip-wip .chip-dot { animation: chipBlink 1s ease-in-out infinite; }
+    @keyframes chipBlink { 0%,100% { opacity: 1; } 50% { opacity: 0.15; } }
+    .roadmap-item { cursor: default; }
+    .roadmap-item.status-done:hover, .roadmap-item.status-wip:hover { cursor: pointer; }
+
+    .bottom-section { margin-top: 60px; }
+    .glass-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(20px); border-radius: 30px; border: 1px solid rgba(255,255,255,0.15); padding: 50px; box-shadow: 0 20px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2); position: relative; overflow: hidden; isolation: isolate; text-align: center; color: rgba(255,255,255,0.92); font-size: 18px; line-height: 1.9; }
+    .glass-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent); animation: shine 4s infinite; z-index: 0; pointer-events: none; }
+    .glass-card > * { position: relative; z-index: 1; }
+    @keyframes shine { 0% { left: -100%; } 50%, 100% { left: 100%; } }
+    .glass-card h2 { color: white; font-size: 32px; margin-bottom: 16px; text-shadow: 0 0 30px rgba(255,255,255,0.3); font-weight: 900; letter-spacing: 2px; }
+    .highlight { color: #ffd700; font-weight: bold; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
+    .discord-btn { display: inline-flex; align-items: center; gap: 10px; margin-top: 22px; padding: 16px 40px; border-radius: 50px; background: linear-gradient(145deg, rgba(88,101,242,0.45), rgba(88,101,242,0.22)); border: 2px solid rgba(88,101,242,0.55); color: #c7d0ff; font-weight: 900; font-size: 15px; letter-spacing: 2px; text-decoration: none; text-transform: uppercase; backdrop-filter: blur(12px); font-family: 'Exo 2', sans-serif; transition: all 0.22s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 8px 24px rgba(88,101,242,0.35), inset 0 1px 0 rgba(255,255,255,0.18); will-change: transform; user-select: none; }
+    .discord-btn:hover { transform: translateY(-5px) scale(1.04); box-shadow: 0 16px 40px rgba(88,101,242,0.55), 0 0 30px rgba(88,101,242,0.3); border-color: rgba(88,101,242,0.8); }
+    .discord-btn:active, .discord-btn.is-pressed { transform: translateY(-1px) scale(0.98); box-shadow: 0 10px 28px rgba(88,101,242,0.45), inset 0 1px 0 rgba(255,255,255,0.18); border-color: rgba(88,101,242,0.9); }
+
+    .explosion-layer { position: fixed; inset: 0; pointer-events: none; z-index: 9996; overflow: hidden; }
+
+    @media (max-width: 640px) {
+      .container { padding: 130px 14px 60px; }
+      .item-num { width: 40px; height: 40px; font-size: 12px; }
+      .timeline-spine { left: 26px; }
+      .main-title { letter-spacing: 5px; }
+      .glass-card { padding: 30px 20px; }
+      .logo-image { left: 12px; width: 96px; height: 96px; }
+      .back-home-btn { top: 20px; left: 118px; padding: 10px 20px; font-size: 13px; }
+      .language-menu { right: 10px; }
+      .menu-button { padding: 10px 20px; font-size: 13px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="flash-overlay"></div>
+  <div class="explosion-layer" id="explosion-layer"></div>
+  <div class="early-access-banner" data-i18n="early-access">*Ранний доступ</div>
+
+  <a class="back-home-btn" href="https://evades3.pp.ua/" data-i18n-back>
+    ← <span data-i18n="back-btn">ГЛАВНАЯ</span>
+  </a>
+
+  <img class="logo-image" src="logo.png" alt="Evades 3 logo" />
+
+  <div class="language-menu">
+    <div class="menu-button" data-i18n="languages">Языки ▼</div>
+    <div class="language-dropdown">
+      <div class="language-scroll">
+
+        <div class="lang-item" data-lang="ru"><span class="lang-flag"><img src="flags/ru.png" alt="Русский" /></span><span class="lang-code">RUS</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="en"><span class="lang-flag"><img src="flags/gb.png" alt="English" /></span><span class="lang-code">ENG</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="uk"><span class="lang-flag"><img src="flags/ua.png" alt="Українська" /></span><span class="lang-code">UKR</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="de"><span class="lang-flag"><img src="flags/de.jpg" alt="Deutsch" /></span><span class="lang-code">DEU</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="es"><span class="lang-flag"><img src="flags/es.png" alt="Español" /></span><span class="lang-code">ESP</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="fr"><span class="lang-flag"><img src="flags/fr.png" alt="Français" /></span><span class="lang-code">FRA</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="it"><span class="lang-flag"><img src="flags/it.png" alt="Italiano" /></span><span class="lang-code">ITA</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="pt"><span class="lang-flag"><img src="flags/pt.png" alt="Português" /></span><span class="lang-code">POR</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="pl"><span class="lang-flag"><img src="flags/pl.png" alt="Polski" /></span><span class="lang-code">POL</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="tr"><span class="lang-flag"><img src="flags/tr.png" alt="Türkçe" /></span><span class="lang-code">TUR</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+
+        <div class="lang-item" data-lang="nl"><span class="lang-flag"><img src="flags/nl.png" alt="Nederlands" /></span><span class="lang-code">NLD</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="sv"><span class="lang-flag"><img src="flags/sv.png" alt="Svenska" /></span><span class="lang-code">SWE</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="no"><span class="lang-flag"><img src="flags/no.png" alt="Norsk" /></span><span class="lang-code">NOR</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="fi"><span class="lang-flag"><img src="flags/fi.png" alt="Suomi" /></span><span class="lang-code">FIN</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="da"><span class="lang-flag"><img src="flags/da.png" alt="Dansk" /></span><span class="lang-code">DAN</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="cs"><span class="lang-flag"><img src="flags/cs.png" alt="Čeština" /></span><span class="lang-code">CES</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="ro"><span class="lang-flag"><img src="flags/ro.png" alt="Română" /></span><span class="lang-code">RON</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="hu"><span class="lang-flag"><img src="flags/hu.png" alt="Magyar" /></span><span class="lang-code">HUN</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="el"><span class="lang-flag"><img src="flags/el.png" alt="Ελληνικά" /></span><span class="lang-code">ELL</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+
+        <div class="lang-item" data-lang="ja"><span class="lang-flag"><img src="flags/ja.png" alt="日本語" /></span><span class="lang-code">JPN</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="zh"><span class="lang-flag"><img src="flags/zh.png" alt="中文" /></span><span class="lang-code">ZHO</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="ko"><span class="lang-flag"><img src="flags/ko.png" alt="한국어" /></span><span class="lang-code">KOR</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="ar"><span class="lang-flag"><img src="flags/ar.png" alt="العربية" /></span><span class="lang-code">ARA</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+
+        <div class="lang-item" data-lang="hi"><span class="lang-flag"><img src="flags/hi.png" alt="हिन्दी" /></span><span class="lang-code">HIN</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="th"><span class="lang-flag"><img src="flags/th.png" alt="ไทย" /></span><span class="lang-code">THA</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="vi"><span class="lang-flag"><img src="flags/vi.png" alt="Tiếng Việt" /></span><span class="lang-code">VIE</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="id"><span class="lang-flag"><img src="flags/id.png" alt="Bahasa Indonesia" /></span><span class="lang-code">IND</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="ms"><span class="lang-flag"><img src="flags/ms.png" alt="Bahasa Melayu" /></span><span class="lang-code">MSA</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="title-section">
+      <div class="subtitle" data-i18n="subtitle">EVADES 3</div>
+      <h1 class="main-title" data-title="ROADMAP">ROADMAP</h1>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-header">
+        <span data-i18n="progress-label">ПРОГРЕСС РАЗРАБОТКИ</span>
+        <span class="count"><span data-i18n="progress-count">2 / 17</span></span>
+      </div>
+      <div class="progress-track"><div class="progress-fill"></div></div>
+      <div class="progress-legend">
+        <div class="legend-item"><div class="leg-dot done"></div><span data-i18n="status-done">Выполнено</span></div>
+        <div class="legend-item"><div class="leg-dot wip"></div><span data-i18n="status-wip">В процессе</span></div>
+        <div class="legend-item"><div class="leg-dot todo"></div><span data-i18n="status-todo">Не начато</span></div>
+      </div>
+    </div>
+
+    <div class="timeline" id="timeline">
+      <div class="timeline-spine"></div>
+      <div class="roadmap-item status-done" data-idx="0"><div class="item-num is-done"><span class="check-emoji">✅</span></div><div class="item-card"><div class="item-text" data-i18n="task-1">Создание системы движения персонажа</div><div class="item-chip chip-done"><div class="chip-dot"></div><span data-i18n="status-done">Выполнено</span></div></div></div>
+      <div class="roadmap-item status-done" data-idx="1"><div class="item-num is-done"><span class="check-emoji">✅</span></div><div class="item-card"><div class="item-text" data-i18n="task-2">Создание системы движения врагов</div><div class="item-chip chip-done"><div class="chip-dot"></div><span data-i18n="status-done">Выполнено</span></div></div></div>
+      <div class="roadmap-item status-wip" data-idx="2"><div class="item-num is-wip"><span class="wip-spinner">⏳</span></div><div class="item-card"><div class="item-text" data-i18n="task-3">Создание других врагов</div><div class="item-chip chip-wip"><div class="chip-dot"></div><span data-i18n="status-wip">В процессе</span></div></div></div>
+      <div class="roadmap-item status-todo" data-idx="3"><div class="item-num is-todo">4</div><div class="item-card"><div class="item-text" data-i18n="task-4">Реализация механики «таймер» при касании врага</div></div></div>
+      <div class="roadmap-item status-todo" data-idx="4"><div class="item-num is-todo">5</div><div class="item-card"><div class="item-text" data-i18n="task-5">Создание экрана поражения</div></div></div>
+      <div class="roadmap-item status-todo" data-idx="5"><div class="item-num is-todo">6</div><div class="item-card"><div class="item-text" data-i18n="task-6">Разработка текстур игровых зон</div></div></div>
+      <div class="roadmap-item status-todo" data-idx="6"><div class="item-num is-todo">7</div><div class="item-card"><div class="item-text" data-i18n="task-7">Реализация переходов между зонами</div></div></div>
+      <div class="roadmap-item status-todo" data-idx="7"><div class="item-num is-todo">8</div><div class="item-card"><div class="item-text" data-i18n="task-8">Создание зоны с 40 аренами</div></div></div>
+      <div class="roadmap-item status-todo" data-idx="8"><div class="item-num is-todo">9</div><div class="item-card"><div class="item-text" data-i18n="task-9">Разработка базового персонажа</div></div></div>
+      <div class="roadmap-item status-todo" data-idx="9"><div class="item-num is-todo">10</div><div class="item-card"><div class="item-text" data-i18n="task-10">Создание главного меню</div></div></div>
+      <div class="roadmap-item status-todo" data-idx="10"><div class="item-num is-todo">11</div><div class="item-card"><div class="item-text" data-i18n="task-11">Реализация базовых анимаций</div></div></div>
+      <div class="roadmap-item status-todo" data-idx="11"><div class="item-num is-todo">12</div><div class="item-card"><div class="item-text" data-i18n="task-12">Добавление аксессуаров</div></div></div>
+      <div class="roadmap-item status-todo" data-idx="12"><div class="item-num is-todo">13</div><div class="item-card"><div class="item-text" data-i18n="task-13">Разработка нескольких игровых зон</div></div></div>
+      <div class="roadmap-item status-todo" data-idx="13"><div class="item-num is-todo">14</div><div class="item-card"><div class="item-text" data-i18n="task-14">Добавление нескольких персонажей</div></div></div>
+      <div class="roadmap-item status-todo" data-idx="14"><div class="item-num is-todo">15</div><div class="item-card"><div class="item-text" data-i18n="task-15">Добавление остальных функций</div></div></div>
+      <div class="roadmap-item status-todo" data-idx="15"><div class="item-num is-todo">16</div><div class="item-card"><div class="item-text" data-i18n="task-16">Исправление багов и подготовка альфа-версии</div></div></div>
+      <div class="roadmap-item status-todo" data-idx="16"><div class="item-num is-todo">17</div><div class="item-card"><div class="item-text" data-i18n="task-17">Добавление загрузки альфа-версии на сайт</div></div></div>
+    </div>
+
+    <div class="bottom-section">
+      <div class="glass-card">
+        <h2 data-i18n="bottom-title">📋 О РАЗРАБОТКЕ</h2>
+        <p data-i18n="bottom-p"><span class="highlight">Evades 3</span> активно разрабатывается! Следи за обновлениями в Discord-сервере — там ты первым узнаешь о каждом выполненном пункте.</p>
+        <a class="discord-btn" id="follow-dev-btn" href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener" data-i18n="follow-dev">💬 Следить за разработкой</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+  const baseTasksRU = {'task-1':'Создание системы движения персонажа','task-2':'Создание системы движения врагов','task-3':'Создание других врагов','task-4':'Реализация механики «таймер» при касании врага','task-5':'Создание экрана поражения','task-6':'Разработка текстур игровых зон','task-7':'Реализация переходов между зонами','task-8':'Создание зоны с 40 аренами','task-9':'Разработка базового персонажа','task-10':'Создание главного меню','task-11':'Реализация базовых анимаций','task-12':'Добавление аксессуаров','task-13':'Разработка нескольких игровых зон','task-14':'Добавление нескольких персонажей','task-15':'Добавление остальных функций','task-16':'Исправление багов и подготовка альфа-версии','task-17':'Добавление загрузки альфа-версии на сайт'};
+  const baseTasksEN = {'task-1':'Create character movement system','task-2':'Create enemy movement system','task-3':'Create additional enemies','task-4':'Implement "timer" mechanic on enemy touch','task-5':'Create defeat screen','task-6':'Design game zone textures','task-7':'Implement transitions between zones','task-8':'Create zone with 40 arenas','task-9':'Develop base character','task-10':'Create main menu','task-11':'Implement base animations','task-12':'Add accessories','task-13':'Develop multiple game zones','task-14':'Add multiple characters','task-15':'Add remaining features','task-16':'Fix bugs & prepare alpha version','task-17':'Upload alpha version to website'};
+  const translations = {ru:{'languages':'Языки ▼','early-access':'*Ранний доступ','subtitle':'EVADES 3','back-btn':'ГЛАВНАЯ','progress-label':'ПРОГРЕСС РАЗРАБОТКИ','progress-count':'2 / 17','status-done':'Выполнено','status-wip':'В процессе','status-todo':'Не начато','bottom-title':'📋 О РАЗРАБОТКЕ','follow-dev':'💬 Следить за разработкой','bottom-p':'<span class="highlight">Evades 3</span> активно разрабатывается! Следи за обновлениями в Discord — там первым узнаешь о каждом выполненном пункте.',...baseTasksRU},en:{'languages':'Languages ▼','early-access':'*Early Access','subtitle':'EVADES 3','back-btn':'HOME','progress-label':'DEVELOPMENT PROGRESS','progress-count':'2 / 17','status-done':'Done','status-wip':'In Progress','status-todo':'Not Started','bottom-title':'📋 DEVELOPMENT','follow-dev':'💬 Follow Development','bottom-p':'<span class="highlight">Evades 3</span> is in active development! Follow us on Discord to be the first to know about every completed task.',...baseTasksEN},uk:{'languages':'Мови ▼','early-access':'*Ранній доступ','subtitle':'EVADES 3','back-btn':'ГОЛОВНА','progress-label':'ПРОГРЕС РОЗРОБКИ','progress-count':'2 / 17','status-done':'Виконано','status-wip':'В процесі','status-todo':'Не розпочато','bottom-title':'📋 ПРО РОЗРОБКУ','follow-dev':'💬 Стежити за розробкою','bottom-p':'<span class="highlight">Evades 3</span> активно розробляється! Стеж за оновленнями в Discord.',...baseTasksEN},de:{'languages':'Sprachen ▼','early-access':'*Früher Zugang','subtitle':'EVADES 3','back-btn':'STARTSEITE','progress-label':'ENTWICKLUNGSFORTSCHRITT','progress-count':'2 / 17','status-done':'Erledigt','status-wip':'In Arbeit','status-todo':'Noch nicht begonnen','bottom-title':'📋 ENTWICKLUNG','follow-dev':'💬 Entwicklung verfolgen','bottom-p':'<span class="highlight">Evades 3</span> wird aktiv entwickelt! Folge uns auf Discord.',...baseTasksEN},es:{'languages':'Idiomas ▼','early-access':'*Acceso anticipado','subtitle':'EVADES 3','back-btn':'INICIO','progress-label':'PROGRESO DE DESARROLLO','progress-count':'2 / 17','status-done':'Completado','status-wip':'En progreso','status-todo':'Sin comenzar','bottom-title':'📋 DESARROLLO','follow-dev':'💬 Seguir desarrollo','bottom-p':'<span class="highlight">Evades 3</span> está en desarrollo activo. ¡Síguenos en Discord!',...baseTasksEN},fr:{'languages':'Langues ▼','early-access':'*Accès anticipé','subtitle':'EVADES 3','back-btn':'ACCUEIL','progress-label':'PROGRESSION','progress-count':'2 / 17','status-done':'Terminé','status-wip':'En cours','status-todo':'Non commencé','bottom-title':'📋 DÉVELOPPEMENT','follow-dev':'💬 Suivre le développement','bottom-p':'<span class="highlight">Evades 3</span> est en développement actif. Rejoins notre Discord !',...baseTasksEN},it:{'languages':'Lingue ▼','early-access':'*Accesso anticipato','subtitle':'EVADES 3','back-btn':'HOME','progress-label':'PROGRESSO','progress-count':'2 / 17','status-done':'Completato','status-wip':'In corso','status-todo':'Non iniziato','bottom-title':'📋 SVILUPPO','follow-dev':'💬 Segui lo sviluppo','bottom-p':'<span class="highlight">Evades 3</span> è in sviluppo attivo. Unisciti al nostro Discord!',...baseTasksEN},pt:{'languages':'Idiomas ▼','early-access':'*Acesso antecipado','subtitle':'EVADES 3','back-btn':'INÍCIO','progress-label':'PROGRESSO','progress-count':'2 / 17','status-done':'Concluído','status-wip':'Em andamento','status-todo':'Não iniciado','bottom-title':'📋 DESENVOLVIMENTO','follow-dev':'💬 Acompanhar desenvolvimento','bottom-p':'<span class="highlight">Evades 3</span> está em desenvolvimento ativo. Junte-se ao nosso Discord!',...baseTasksEN},pl:{'languages':'Języki ▼','early-access':'*Wczesny dostęp','subtitle':'EVADES 3','back-btn':'STRONA GŁÓWNA','progress-label':'POSTĘP','progress-count':'2 / 17','status-done':'Gotowe','status-wip':'W toku','status-todo':'Nie rozpoczęto','bottom-title':'📋 ROZWÓJ','follow-dev':'💬 Śledzić rozwój','bottom-p':'<span class="highlight">Evades 3</span> jest w aktywnym rozwoju. Dołącz do naszego Discorda!',...baseTasksEN},tr:{'languages':'Diller ▼','early-access':'*Erken erişim','subtitle':'EVADES 3','back-btn':'ANA SAYFA','progress-label':'GELİŞME','progress-count':'2 / 17','status-done':'Tamamlandı','status-wip':'Devam ediyor','status-todo':'Başlamadı','bottom-title':'📋 GELİŞTİRME','follow-dev':'💬 Geliştirmeyi takip et','bottom-p':'<span class="highlight">Evades 3</span> aktif olarak geliştiriliyor. Discord\'a katıl!',...baseTasksEN},nl:{'languages':'Talen ▼','early-access':'*Vroege toegang','subtitle':'EVADES 3','back-btn':'HOME','progress-label':'ONTWIKKELING','progress-count':'2 / 17','status-done':'Klaar','status-wip':'Bezig','status-todo':'Niet gestart','bottom-title':'📋 ONTWIKKELING','follow-dev':'💬 Volg ontwikkeling','bottom-p':'<span class="highlight">Evades 3</span> is in actieve ontwikkeling! Volg ons op Discord.',...baseTasksEN},sv:{'languages':'Språk ▼','early-access':'*Tidiga åtkomst','subtitle':'EVADES 3','back-btn':'HEM','progress-label':'UTVECKLING','progress-count':'2 / 17','status-done':'Klar','status-wip':'Pågår','status-todo':'Inte startad','bottom-title':'📋 UTVECKLING','follow-dev':'💬 Följ utvecklingen','bottom-p':'<span class="highlight">Evades 3</span> utvecklas aktivt! Följ oss på Discord.',...baseTasksEN},no:{'languages':'Språk ▼','early-access':'*Tidlig tilgang','subtitle':'EVADES 3','back-btn':'HJEM','progress-label':'UTVIKLING','progress-count':'2 / 17','status-done':'Ferdig','status-wip':'Pågår','status-todo':'Ikke startet','bottom-title':'📋 UTVIKLING','follow-dev':'💬 Følg utviklingen','bottom-p':'<span class="highlight">Evades 3</span> er i aktiv utvikling! Følg oss på Discord.',...baseTasksEN},fi:{'languages':'Kielet ▼','early-access':'*Varhainen pääsy','subtitle':'EVADES 3','back-btn':'KOTI','progress-label':'KEHITYS','progress-count':'2 / 17','status-done':'Valmis','status-wip':'Työn alla','status-todo':'Ei aloitettu','bottom-title':'📋 KEHITYS','follow-dev':'💬 Seuraa kehitystä','bottom-p':'<span class="highlight">Evades 3</span> on aktiivisessa kehityksessä! Seuraa Discordissa.',...baseTasksEN},da:{'languages':'Sprog ▼','early-access':'*Tidlig adgang','subtitle':'EVADES 3','back-btn':'HJEM','progress-label':'UDVIKLING','progress-count':'2 / 17','status-done':'Færdig','status-wip':'I gang','status-todo':'Ikke startet','bottom-title':'📋 UDVIKLING','follow-dev':'💬 Følg udviklingen','bottom-p':'<span class="highlight">Evades 3</span> udvikles aktivt! Følg os på Discord.',...baseTasksEN},cs:{'languages':'Jazyky ▼','early-access':'*Předběžný přístup','subtitle':'EVADES 3','back-btn':'DOMŮ','progress-label':'PROGRES','progress-count':'2 / 17','status-done':'Hotovo','status-wip':'Probíhá','status-todo':'Nezahájeno','bottom-title':'📋 VÝVOJ','follow-dev':'💬 Sledovat vývoj','bottom-p':'<span class="highlight">Evades 3</span> je ve vývoji! Sleduj Discord.',...baseTasksEN},ro:{'languages':'Limbi ▼','early-access':'*Acces timpuriu','subtitle':'EVADES 3','back-btn':'ACASĂ','progress-label':'PROGRES','progress-count':'2 / 17','status-done':'Gata','status-wip':'În lucru','status-todo':'Neînceput','bottom-title':'📋 DEZVOLTARE','follow-dev':'💬 Urmărește dezvoltarea','bottom-p':'<span class="highlight">Evades 3</span> este în dezvoltare activă! Urmărește Discord.',...baseTasksEN},hu:{'languages':'Nyelvek ▼','early-access':'*Korai hozzáférés','subtitle':'EVADES 3','back-btn':'FŐOLDAL','progress-label':'FEJLESZTÉS','progress-count':'2 / 17','status-done':'Kész','status-wip':'Folyamatban','status-todo':'Nincs elkezdve','bottom-title':'📋 FEJLESZTÉS','follow-dev':'💬 Fejlesztés követése','bottom-p':'<span class="highlight">Evades 3</span> aktív fejlesztés alatt! Kövess Discordon.',...baseTasksEN},el:{'languages':'Γλώσσες ▼','early-access':'*Πρώιμη πρόσβαση','subtitle':'EVADES 3','back-btn':'ΑΡΧΙΚΗ','progress-label':'ΠΡΟΟΔΟΣ','progress-count':'2 / 17','status-done':'Ολοκληρώθηκε','status-wip':'Σε εξέλιξη','status-todo':'Δεν ξεκίνησε','bottom-title':'📋 ΑΝΑΠΤΥΞΗ','follow-dev':'💬 Παρακολούθηση ανάπτυξης','bottom-p':'<span class="highlight">Evades 3</span> αναπτύσσεται ενεργά! Ακολούθησε στο Discord.',...baseTasksEN},ja:{'languages':'言語 ▼','early-access':'*早期アクセス','subtitle':'EVADES 3','back-btn':'ホーム','progress-label':'開発進捗','progress-count':'2 / 17','status-done':'完了','status-wip':'進行中','status-todo':'未着手','bottom-title':'📋 開発について','follow-dev':'💬 開発を追う','bottom-p':'<span class="highlight">Evades 3</span> は活発に開発中！Discordで最新情報をチェック。',...baseTasksEN},zh:{'languages':'语言 ▼','early-access':'*抢先体验','subtitle':'EVADES 3','back-btn':'主页','progress-label':'开发进度','progress-count':'2 / 17','status-done':'已完成','status-wip':'进行中','status-todo':'未开始','bottom-title':'📋 关于开发','follow-dev':'💬 关注开发进展','bottom-p':'<span class="highlight">Evades 3</span> 正在积极开发中！加入我们的 Discord 获取最新消息。',...baseTasksEN},ko:{'languages':'언어 ▼','early-access':'*얼리 액세스','subtitle':'EVADES 3','back-btn':'홈','progress-label':'개발 진행률','progress-count':'2 / 17','status-done':'완료','status-wip':'진행 중','status-todo':'미착수','bottom-title':'📋 개발 정보','follow-dev':'💬 개발 팔로우','bottom-p':'<span class="highlight">Evades 3</span>는 활발히 개발 중입니다! Discord에서 최신 소식을 확인하세요.',...baseTasksEN},ar:{'languages':'اللغات ▼','early-access':'*وصول مبكر','subtitle':'EVADES 3','back-btn':'الرئيسية','progress-label':'تقدم التطوير','progress-count':'2 / 17','status-done':'مكتمل','status-wip':'قيد التنفيذ','status-todo':'لم يبدأ','bottom-title':'📋 التطوير','follow-dev':'💬 تابع التطوير','bottom-p':'<span class="highlight">Evades 3</span> قيد التطوير النشط. انضم إلى ديسكورد!',...baseTasksEN},hi:{'languages':'भाषाएँ ▼','early-access':'*प्रारंभिक एक्सेस','subtitle':'EVADES 3','back-btn':'होम','progress-label':'विकास प्रगति','progress-count':'2 / 17','status-done':'पूरा','status-wip':'चल रहा','status-todo':'शुरू नहीं','bottom-title':'📋 विकास','follow-dev':'💬 विकास देखें','bottom-p':'<span class="highlight">Evades 3</span> सक्रिय विकास में है! Discord पर फॉलो करें।',...baseTasksEN},th:{'languages':'ภาษา ▼','early-access':'*เข้าถึงก่อน','subtitle':'EVADES 3','back-btn':'หน้าแรก','progress-label':'ความคืบหน้า','progress-count':'2 / 17','status-done':'เสร็จแล้ว','status-wip':'กำลังทำ','status-todo':'ยังไม่เริ่ม','bottom-title':'📋 การพัฒนา','follow-dev':'💬 ติดตามการพัฒนา','bottom-p':'<span class="highlight">Evades 3</span> กำลังพัฒนาอย่างต่อเนื่อง! ติดตามใน Discord',...baseTasksEN},vi:{'languages':'Ngôn ngữ ▼','early-access':'*Truy cập sớm','subtitle':'EVADES 3','back-btn':'TRANG CHỦ','progress-label':'TIẾN ĐỘ','progress-count':'2 / 17','status-done':'Hoàn thành','status-wip':'Đang làm','status-todo':'Chưa bắt đầu','bottom-title':'📋 PHÁT TRIỂN','follow-dev':'💬 Theo dõi phát triển','bottom-p':'<span class="highlight">Evades 3</span> đang được phát triển! Theo dõi Discord.',...baseTasksEN},id:{'languages':'Bahasa ▼','early-access':'*Akses awal','subtitle':'EVADES 3','back-btn':'BERANDA','progress-label':'PROGRES','progress-count':'2 / 17','status-done':'Selesai','status-wip':'Dalam proses','status-todo':'Belum mulai','bottom-title':'📋 PENGEMBANGAN','follow-dev':'💬 Ikuti pengembangan','bottom-p':'<span class="highlight">Evades 3</span> sedang dikembangkan! Ikuti Discord.',...baseTasksEN},ms:{'languages':'Bahasa ▼','early-access':'*Akses awal','subtitle':'EVADES 3','back-btn':'LAMAN UTAMA','progress-label':'KEMAJUAN','progress-count':'2 / 17','status-done':'Selesai','status-wip':'Sedang berjalan','status-todo':'Belum mula','bottom-title':'📋 PEMBANGUNAN','follow-dev':'💬 Ikuti pembangunan','bottom-p':'<span class="highlight">Evades 3</span> sedang dibangunkan! Ikuti Discord.',...baseTasksEN}};
+
+  function applyTranslations(lang){const t=translations[lang]||translations.en;document.querySelectorAll('[data-i18n]').forEach(el=>{const key=el.getAttribute('data-i18n');const val=t[key]??(translations.en&&translations.en[key]);if(val!==undefined)el.innerHTML=val;});}
+  function setSelectedLangUI(lang){document.querySelectorAll('.lang-item').forEach(item=>{item.classList.toggle('is-selected',item.dataset.lang===lang);});}
+  const explosionLayer=document.getElementById('explosion-layer');let lastExplodeTime=0;
+  function explodeAt(cx,cy,count){for(let i=0;i<count;i++){const p=document.createElement('div');p.className='explosion-particle';const angle=(Math.PI*2*i)/count+(Math.random()-0.5)*0.5;const v=130+Math.random()*210;p.style.left=cx+'px';p.style.top=cy+'px';p.style.setProperty('--tx',Math.cos(angle)*v+'px');p.style.setProperty('--ty',Math.sin(angle)*v+'px');p.style.animation=`explode ${0.7+Math.random()*0.5}s ease-out forwards`;explosionLayer.appendChild(p);setTimeout(()=>p.remove(),1500);}const sw=document.createElement('div');sw.className='shockwave';sw.style.left=cx+'px';sw.style.top=cy+'px';explosionLayer.appendChild(sw);setTimeout(()=>sw.remove(),1000);}
+  function explodeTitle(){const now=performance.now();if(now-lastExplodeTime<1200)return;lastExplodeTime=now;const title=document.querySelector('.main-title');if(!title)return;const r=title.getBoundingClientRect();explodeAt(r.left+r.width/2,r.top+r.height/2,38);}
+  document.querySelectorAll('.roadmap-item.status-done, .roadmap-item.status-wip').forEach(item=>{item.addEventListener('click',()=>{const r=item.getBoundingClientRect();const cx=r.left+r.width/2,cy=r.top+r.height/2;const isDone=item.classList.contains('status-done');for(let i=0;i<20;i++){const p=document.createElement('div');p.className='explosion-particle';const angle=(Math.PI*2*i)/20;const v=50+Math.random()*80;p.style.left=cx+'px';p.style.top=cy+'px';p.style.setProperty('--tx',Math.cos(angle)*v+'px');p.style.setProperty('--ty',Math.sin(angle)*v+'px');p.style.background=isDone?'radial-gradient(circle, #86efac, #22c55e)':'radial-gradient(circle, #fde68a, #eab308)';p.style.animation='explode 0.5s ease-out forwards';explosionLayer.appendChild(p);setTimeout(()=>p.remove(),700);}});});
+  function startHeroSequence(){document.body.classList.remove('hero-anim','ui-ready','screen-shake');const title=document.querySelector('.main-title');if(!title)return;requestAnimationFrame(()=>requestAnimationFrame(()=>{document.body.classList.add('hero-anim');const onEnd=(e)=>{if(e.animationName!=='titleMegaBurst')return;title.removeEventListener('animationend',onEnd);document.body.classList.add('ui-ready');};title.addEventListener('animationend',onEnd);setTimeout(()=>{explodeTitle();document.body.classList.add('screen-shake');setTimeout(()=>document.body.classList.remove('screen-shake'),600);},1700);}));}
+  const items=document.querySelectorAll('.roadmap-item');if('IntersectionObserver'in window){const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(!e.isIntersecting)return;const el=e.target;const idx=parseInt(el.dataset.idx||0);el.style.animationDelay=(idx*65)+'ms';el.classList.add('slide-in');obs.unobserve(el);});},{threshold:0.15});items.forEach(it=>obs.observe(it));}else{items.forEach(it=>it.classList.add('slide-in'));}
+  function createSparkles(){for(let i=0;i<50;i++){const s=document.createElement('div');s.className='sparkle';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.animationDelay=Math.random()*3+'s';document.body.appendChild(s);}}
+  document.addEventListener('mousemove',(e)=>{const mx=e.clientX/window.innerWidth-0.5;const my=e.clientY/window.innerHeight-0.5;document.querySelectorAll('.sparkle').forEach(s=>{s.style.transform=`translate(${mx*22}px, ${my*22}px)`;});});
+  let currentLang='ru';
+  function changeLanguage(lang){if(!translations[lang])lang='en';currentLang=lang;document.documentElement.lang=lang;applyTranslations(lang);setSelectedLangUI(lang);localStorage.setItem('selectedLanguage',lang);startHeroSequence();}
+  function wirePressAnim(btn){if(!btn)return;const down=()=>btn.classList.add('is-pressed');const up=()=>btn.classList.remove('is-pressed');btn.addEventListener('pointerdown',down);btn.addEventListener('pointerup',up);btn.addEventListener('pointercancel',up);btn.addEventListener('pointerleave',up);}
+  window.addEventListener('DOMContentLoaded',()=>{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)createSparkles();document.querySelectorAll('.lang-item').forEach((item,i)=>{item.style.setProperty('--item-delay',`${i*20}ms`);item.addEventListener('click',()=>changeLanguage(item.dataset.lang));});wirePressAnim(document.getElementById('follow-dev-btn'));const saved=localStorage.getItem('selectedLanguage')||'ru';changeLanguage(saved);});
+  </script>
+</body>
+</html>
