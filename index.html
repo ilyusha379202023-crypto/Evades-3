@@ -4157,7 +4157,12 @@
           node = node.parentElement;
         }
 
-        return true;
+        const textRange = document.createRange();
+        textRange.selectNodeContents(textNode);
+        const textRects = Array.from(textRange.getClientRects());
+        const onGlyph = textRects.some((rect) => x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom);
+
+        return onGlyph;
       }
 
       // Возвращаем тип курсора для данного элемента
