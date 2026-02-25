@@ -1916,6 +1916,67 @@
       overflow: hidden;
     }
 
+    /* ===== ФУТУРИСТИЧНЫЙ КУРСОР ===== */
+    .cursor-core,
+    .cursor-ring{
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 10050;
+      opacity: 0;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.2s ease;
+      mix-blend-mode: screen;
+    }
+
+    .cursor-core{
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #f6ffd8 0%, #bfff69 45%, rgba(112, 255, 53, 0.7) 100%);
+      box-shadow:
+        0 0 12px rgba(191, 255, 105, 0.95),
+        0 0 24px rgba(112, 255, 53, 0.65);
+    }
+
+    .cursor-ring{
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(211, 255, 160, 0.75);
+      box-shadow:
+        0 0 0 1px rgba(120, 255, 61, 0.2) inset,
+        0 0 16px rgba(163, 255, 97, 0.45);
+      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    body.cursor-active .cursor-core,
+    body.cursor-active .cursor-ring{
+      opacity: 1;
+    }
+
+    body.cursor-hover .cursor-ring{
+      transform: translate(-50%, -50%) scale(1.35);
+      border-color: rgba(255, 236, 133, 0.9);
+      box-shadow:
+        0 0 0 1px rgba(255, 214, 89, 0.3) inset,
+        0 0 22px rgba(255, 217, 106, 0.65);
+    }
+
+    @media (hover: hover) and (pointer: fine){
+      body,
+      body a,
+      body button,
+      body [role="button"],
+      body .lang-item,
+      body .menu-button,
+      body .showcase-card,
+      body .scene-toggle{
+        cursor: none !important;
+      }
+    }
+    
     @media (prefers-reduced-motion: reduce){
       *{
         animation: none !important;
@@ -1931,6 +1992,9 @@
 </head>
 
 <body>
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <div class="cursor-core" aria-hidden="true"></div>
+
   <!-- Вспышка-оверлей для взрыва -->
   <div class="flash-overlay"></div>
   <div class="explosion-layer" aria-hidden="true"></div>
@@ -2357,6 +2421,50 @@
   </div>
 
   <script>
+            (() => {
+            const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
+            const cursorCore = document.querySelector('.cursor-core');
+            const cursorRing = document.querySelector('.cursor-ring');
+
+            if (!cursorCore || !cursorRing || !mediaQuery.matches) {
+                return;
+            }
+
+            let ringX = window.innerWidth / 2;
+            let ringY = window.innerHeight / 2;
+            let targetX = ringX;
+            let targetY = ringY;
+
+            const interactiveSelector = 'a, button, .menu-button, .lang-item, .scene-toggle, [role="button"], input, textarea, select';
+
+            const animateRing = () => {
+                ringX += (targetX - ringX) * 0.18;
+                ringY += (targetY - ringY) * 0.18;
+                cursorRing.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
+                requestAnimationFrame(animateRing);
+            };
+
+            document.addEventListener('mousemove', (event) => {
+                targetX = event.clientX;
+                targetY = event.clientY;
+                cursorCore.style.transform = `translate(${event.clientX}px, ${event.clientY}px) translate(-50%, -50%)`;
+
+                if (!document.body.classList.contains('cursor-active')) {
+                    document.body.classList.add('cursor-active');
+                }
+            });
+
+            document.addEventListener('mouseover', (event) => {
+                document.body.classList.toggle('cursor-hover', !!event.target.closest(interactiveSelector));
+            });
+
+            document.addEventListener('mouseleave', () => {
+                document.body.classList.remove('cursor-active', 'cursor-hover');
+            });
+
+            animateRing();
+        })();
+
         // Переводы (НЕ УДАЛЯТЬ — все языки сохранены)
         const translations = {
             ru: {
