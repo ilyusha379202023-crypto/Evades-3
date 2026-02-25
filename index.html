@@ -4130,10 +4130,38 @@
         else if (type === 'no')  { noEl.classList.add('cur-active');    document.body.classList.add('cursor-no-mode'); }
         else if (type === 'ibeam') { ibeamEl.classList.add('cur-active'); document.body.classList.add('cursor-text-mode'); }
       }
+      
+            function hasSelectableTextAtPoint(x, y) {
+        let textNode = null;
 
-      // Правила определения — чисто по семантике элементов (getComputedStyle не работает из-за cursor:none)
+        if (document.caretPositionFromPoint) {
+          const pos = document.caretPositionFromPoint(x, y);
+          if (pos && pos.offsetNode && pos.offsetNode.nodeType === Node.TEXT_NODE) textNode = pos.offsetNode;
+        } else if (document.caretRangeFromPoint) {
+          const range = document.caretRangeFromPoint(x, y);
+          if (range && range.startContainer && range.startContainer.nodeType === Node.TEXT_NODE) textNode = range.startContainer;
+        }
+
+        if (!textNode) return false;
+        if (!textNode.textContent || !textNode.textContent.trim()) return false;
+
+        const parent = textNode.parentElement;
+        if (!parent) return false;
+
+        if (parent.closest('a, button, input, textarea, [role="button"], [role="link"], [contenteditable="true"], .download-button')) return false;
+
+        let node = parent;
+        while (node && node !== document.body) {
+          const style = window.getComputedStyle(node);
+          if (style.userSelect === 'none') return false;
+          node = node.parentElement;
+        }
+
+        return true;
+      }
+
       // Возвращаем тип курсора для данного элемента
-      function getCursorTypeFor(el) {
+      function getCursorTypeFor(el, x, y) {
         if (!el || el === document.body || el === document.documentElement) return 'arrow';
 
         let node = el;
@@ -4156,9 +4184,8 @@
           if (tag === 'textarea') return 'ibeam';
           if (node.getAttribute && node.getAttribute('contenteditable') === 'true') return 'ibeam';
 
-          // Параграфы с обычным текстом — ibeam (но не заголовки секций)
-          if (tag === 'p') return 'ibeam';
-          if (tag === 'span' && node.closest && node.closest('p, .description, .about-text, .feature-text, .stat-value, .stat-label')) return 'ibeam';
+          // На реальном выделяемом тексте показываем ibeam (только при наведении именно на символы)
+          if (typeof x === 'number' && typeof y === 'number' && hasSelectableTextAtPoint(x, y)) return 'ibeam';
 
           // Крупные заголовки, кнопки-контейнеры — стрелка
           if (tag==='h1'||tag==='h2'||tag==='h3'||tag==='h4'||tag==='h5'||tag==='h6') return 'arrow';
@@ -4285,7 +4312,7 @@
           trail.push({x:mouseX,y:mouseY,life:1,size:4+Math.random()*3,hue:(hue+Math.random()*30-15+360)%360});
           if(trail.length>MAX_TRAIL)trail.shift();
         }
-        setCursorType(getCursorTypeFor(e.target));
+        setCursorType(getCursorTypeFor(e.target, e.clientX, e.clientY));
       });
 
       document.addEventListener('mousedown',()=>{document.body.classList.add('cursor-click');spawnBurst(mouseX,mouseY);spawnRipple(mouseX,mouseY);});
