@@ -471,13 +471,16 @@
       top: 20px;
       right: 50px;
       z-index: 1000;
+      user-select: none;
+      -webkit-user-select: none;
+      cursor: default;
     }
 
     .menu-button {
       background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.15));
       color: white;
       padding: 15px 35px;
-      cursor: pointer;
+      cursor: default;
       border: 2px solid rgba(255,255,255,0.4);
       border-radius: 50px;
       font-size: 18px;
@@ -523,6 +526,9 @@
         inset -2px -2px 8px rgba(0,0,0,0.25),
         inset 2px 2px 8px rgba(255,255,255,0.2);
       min-width: 170px;
+      user-select: none;
+      -webkit-user-select: none;
+      cursor: default;
     }
 
     .language-menu:hover .language-dropdown {
@@ -575,7 +581,7 @@
     .lang-item {
       padding: 12px 20px;
       color: white;
-      cursor: pointer;
+      cursor: default;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -1363,7 +1369,9 @@
         0 6px 16px rgba(0,0,0,0.25),
         inset 0 1px 0 rgba(255,255,255,0.4);
       backdrop-filter: blur(12px);
-      cursor: pointer;
+      cursor: default;
+      user-select: none;
+      -webkit-user-select: none;
       transition: box-shadow 0.2s ease, filter 0.2s ease;
       z-index: 200;
     }
