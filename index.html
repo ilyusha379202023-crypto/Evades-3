@@ -2007,6 +2007,36 @@
       color: rgba(255,255,255,0.9);
       font-size: 20px;
       letter-spacing: 1px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .demo-reel-title{
+      position: relative;
+      z-index: 2;
+      font-weight: 700;
+    }
+
+    .demo-reel-video{
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+      aspect-ratio: 16 / 9;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.25);
+      box-shadow: 0 14px 35px rgba(0,0,0,0.45);
+      background: #000;
+    }
+
+    .demo-reel-video iframe{
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
     }
 
     .demo-reel::before{
@@ -2592,7 +2622,12 @@
         </div>
       </div>
 
-      <div class="demo-reel" data-i18n="demo-reel">Gameplay Animation Reel (coming soon)</div>
+      <div class="demo-reel">
+        <div class="demo-reel-title" data-i18n="demo-reel">Gameplay Animation Reel</div>
+        <div class="demo-reel-video">
+          <iframe src="https://www.youtube.com/embed/4usfGhbLo_c?si=p8-m5NjeEPYMxMiX" title="Gameplay Animation Reel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </div>
     </section>
   </div>
 
@@ -2614,7 +2649,7 @@
                 'showcase-parry': 'Парирование',
                 'showcase-hit': 'Удар FX',
                 'showcase-spawn': 'Появление',
-                'demo-reel': 'Ролик анимаций геймплея (скоро)',
+                'demo-reel': 'Ролик анимаций геймплея',
                 'pause': 'Пауза',
                 'continue': 'Продолжить',
                 'sfx-label': 'SFX:',
@@ -2659,7 +2694,7 @@
                 'showcase-parry': 'Parry',
                 'showcase-hit': 'Hit FX',
                 'showcase-spawn': 'Spawn',
-                'demo-reel': 'Gameplay Animation Reel (coming soon)',
+                'demo-reel': 'Gameplay Animation Reel',
                 'pause': 'Pause',
                 'continue': 'Continue',
                 'sfx-label': 'SFX:',
@@ -2704,7 +2739,7 @@
                 'showcase-parry': 'Парирування',
                 'showcase-hit': 'Удар FX',
                 'showcase-spawn': 'Поява',
-                'demo-reel': 'Ролик анімацій геймплею (незабаром)',
+                'demo-reel': 'Ролик анімацій геймплею',
                 'pause': 'Пауза',
                 'continue': 'Продовжити',
                 'sfx-label': 'SFX:',
@@ -2749,7 +2784,7 @@
                 'showcase-parry': 'Parieren',
                 'showcase-hit': 'Treffer FX',
                 'showcase-spawn': 'Erscheinen',
-                'demo-reel': 'Gameplay-Animationsvideo (kommt bald)',
+                'demo-reel': 'Gameplay-Animationsvideo',
                 'pause': 'Pause',
                 'continue': 'Weiter',
                 'sfx-label': 'SFX:',
@@ -2794,7 +2829,7 @@
                 'showcase-parry': 'Desvío',
                 'showcase-hit': 'Impacto FX',
                 'showcase-spawn': 'Aparición',
-                'demo-reel': 'Reel de animación del juego (próximamente)',
+                'demo-reel': 'Reel de animación del juego',
                 'pause': 'Pausa',
                 'continue': 'Continuar',
                 'sfx-label': 'SFX:',
@@ -2839,7 +2874,7 @@
                 'showcase-parry': 'Parade',
                 'showcase-hit': 'Impact FX',
                 'showcase-spawn': 'Apparition',
-                'demo-reel': 'Bande d’animation gameplay (bientôt)',
+                'demo-reel': 'Bande d’animation gameplay',
                 'pause': 'Pause',
                 'continue': 'Continuer',
                 'sfx-label': 'SFX:',
@@ -2884,7 +2919,7 @@
                 'showcase-parry': 'Parata',
                 'showcase-hit': 'Impatto FX',
                 'showcase-spawn': 'Apparizione',
-                'demo-reel': 'Reel animazioni gameplay (in arrivo)',
+                'demo-reel': 'Reel animazioni gameplay',
                 'pause': 'Pausa',
                 'continue': 'Continua',
                 'sfx-label': 'SFX:',
@@ -2929,7 +2964,7 @@
                 'showcase-parry': 'Aparar',
                 'showcase-hit': 'Impacto FX',
                 'showcase-spawn': 'Aparição',
-                'demo-reel': 'Reel de animações do gameplay (em breve)',
+                'demo-reel': 'Reel de animações do gameplay',
                 'pause': 'Pausa',
                 'continue': 'Continuar',
                 'sfx-label': 'SFX:',
@@ -2974,7 +3009,7 @@
                 'showcase-parry': 'Parowanie',
                 'showcase-hit': 'Uderzenie FX',
                 'showcase-spawn': 'Pojawienie',
-                'demo-reel': 'Reel animacji rozgrywki (wkrótce)',
+                'demo-reel': 'Reel animacji rozgrywki',
                 'pause': 'Pauza',
                 'continue': 'Wznów',
                 'sfx-label': 'SFX:',
@@ -3019,7 +3054,7 @@
                 'showcase-parry': 'Parry',
                 'showcase-hit': 'Vuruş FX',
                 'showcase-spawn': 'Ortaya çıkma',
-                'demo-reel': 'Oynanış animasyonları (yakında)',
+                'demo-reel': 'Oynanış animasyonları',
                 'pause': 'Duraklat',
                 'continue': 'Devam',
                 'sfx-label': 'SFX:',
@@ -3064,7 +3099,7 @@
                 'showcase-parry': 'Pareren',
                 'showcase-hit': 'Impact FX',
                 'showcase-spawn': 'Verschijning',
-                'demo-reel': 'Gameplay-animatiereel (binnenkort)',
+                'demo-reel': 'Gameplay-animatiereel',
                 'pause': 'Pauze',
                 'continue': 'Doorgaan',
                 'sfx-label': 'SFX:',
@@ -3109,7 +3144,7 @@
                 'showcase-parry': 'Parering',
                 'showcase-hit': 'Träff FX',
                 'showcase-spawn': 'Spawn',
-                'demo-reel': 'Gameplay-animationsreel (kommer snart)',
+                'demo-reel': 'Gameplay-animationsreel',
                 'pause': 'Paus',
                 'continue': 'Fortsätt',
                 'sfx-label': 'SFX:',
@@ -3154,7 +3189,7 @@
                 'showcase-parry': 'Parering',
                 'showcase-hit': 'Treff FX',
                 'showcase-spawn': 'Spawning',
-                'demo-reel': 'Gameplay-animasjonsreel (kommer snart)',
+                'demo-reel': 'Gameplay-animasjonsreel',
                 'pause': 'Pause',
                 'continue': 'Fortsett',
                 'sfx-label': 'SFX:',
@@ -3199,7 +3234,7 @@
                 'showcase-parry': 'Torjunta',
                 'showcase-hit': 'Osum FX',
                 'showcase-spawn': 'Ilmestyminen',
-                'demo-reel': 'Pelianimaatiokela (tulossa pian)',
+                'demo-reel': 'Pelianimaatiokela',
                 'pause': 'Tauko',
                 'continue': 'Jatka',
                 'sfx-label': 'SFX:',
@@ -3244,7 +3279,7 @@
                 'showcase-parry': 'Parering',
                 'showcase-hit': 'Træf FX',
                 'showcase-spawn': 'Spawning',
-                'demo-reel': 'Gameplay-animationsreel (kommer snart)',
+                'demo-reel': 'Gameplay-animationsreel',
                 'pause': 'Pause',
                 'continue': 'Fortsæt',
                 'sfx-label': 'SFX:',
@@ -3289,7 +3324,7 @@
                 'showcase-parry': 'Parírování',
                 'showcase-hit': 'Úder FX',
                 'showcase-spawn': 'Zjevení',
-                'demo-reel': 'Reel animací gameplaye (brzy)',
+                'demo-reel': 'Reel animací gameplaye',
                 'pause': 'Pauza',
                 'continue': 'Pokračovat',
                 'sfx-label': 'SFX:',
@@ -3334,7 +3369,7 @@
                 'showcase-parry': 'Parare',
                 'showcase-hit': 'Impact FX',
                 'showcase-spawn': 'Apariție',
-                'demo-reel': 'Reel de animații gameplay (în curând)',
+                'demo-reel': 'Reel de animații gameplay',
                 'pause': 'Pauză',
                 'continue': 'Continuă',
                 'sfx-label': 'SFX:',
@@ -3379,7 +3414,7 @@
                 'showcase-parry': 'Parry',
                 'showcase-hit': 'Találat FX',
                 'showcase-spawn': 'Megjelenés',
-                'demo-reel': 'Gameplay animációs reel (hamarosan)',
+                'demo-reel': 'Gameplay animációs reel',
                 'pause': 'Szünet',
                 'continue': 'Folytatás',
                 'sfx-label': 'SFX:',
@@ -3424,7 +3459,7 @@
                 'showcase-parry': 'Απόκρουση',
                 'showcase-hit': 'Χτύπημα FX',
                 'showcase-spawn': 'Εμφάνιση',
-                'demo-reel': 'Reel κινουμένων gameplay (σύντομα)',
+                'demo-reel': 'Reel κινουμένων gameplay',
                 'pause': 'Παύση',
                 'continue': 'Συνέχεια',
                 'sfx-label': 'SFX:',
@@ -3469,7 +3504,7 @@
                 'showcase-parry': 'パリィ',
                 'showcase-hit': 'ヒットFX',
                 'showcase-spawn': '出現',
-                'demo-reel': 'ゲームプレイアニメーションリール（近日公開）',
+                'demo-reel': 'ゲームプレイアニメーションリール',
                 'pause': '一時停止',
                 'continue': '再開',
                 'sfx-label': 'SFX:',
@@ -3514,7 +3549,7 @@
                 'showcase-parry': '招架',
                 'showcase-hit': '打击FX',
                 'showcase-spawn': '出现',
-                'demo-reel': '玩法动画集锦（即将推出）',
+                'demo-reel': '玩法动画集锦',
                 'pause': '暂停',
                 'continue': '继续',
                 'sfx-label': 'SFX:',
@@ -3559,7 +3594,7 @@
                 'showcase-parry': '패링',
                 'showcase-hit': '타격 FX',
                 'showcase-spawn': '등장',
-                'demo-reel': '게임플레이 애니메이션 릴 (곧 공개)',
+                'demo-reel': '게임플레이 애니메이션 릴',
                 'pause': '일시정지',
                 'continue': '계속',
                 'sfx-label': 'SFX:',
@@ -3604,7 +3639,7 @@
                 'showcase-parry': 'صد',
                 'showcase-hit': 'ضربة FX',
                 'showcase-spawn': 'ظهور',
-                'demo-reel': 'مقطع حركات اللعب (قريبًا)',
+                'demo-reel': 'مقطع حركات اللعب ',
                 'pause': 'إيقاف مؤقت',
                 'continue': 'متابعة',
                 'sfx-label': 'SFX:',
@@ -3649,7 +3684,7 @@
                 'showcase-parry': 'पैरी',
                 'showcase-hit': 'हिट FX',
                 'showcase-spawn': 'प्रकट होना',
-                'demo-reel': 'गेमप्ले एनीमेशन रील (जल्द आ रहा है)',
+                'demo-reel': 'गेमप्ले एनीमेशन रील',
                 'pause': 'रोकें',
                 'continue': 'जारी रखें',
                 'sfx-label': 'SFX:',
@@ -3694,7 +3729,7 @@
                 'showcase-parry': 'ปัดป้อง',
                 'showcase-hit': 'โจมตี FX',
                 'showcase-spawn': 'ปรากฏ',
-                'demo-reel': 'รีลแอนิเมชันเกมเพลย์ (เร็ว ๆ นี้)',
+                'demo-reel': 'รีลแอนิเมชันเกมเพลย์',
                 'pause': 'หยุดชั่วคราว',
                 'continue': 'ดำเนินต่อ',
                 'sfx-label': 'SFX:',
@@ -3739,7 +3774,7 @@
                 'showcase-parry': 'Đỡ đòn',
                 'showcase-hit': 'Đòn FX',
                 'showcase-spawn': 'Xuất hiện',
-                'demo-reel': 'Reel hoạt ảnh gameplay (sắp ra mắt)',
+                'demo-reel': 'Reel hoạt ảnh gameplay',
                 'pause': 'Tạm dừng',
                 'continue': 'Tiếp tục',
                 'sfx-label': 'SFX:',
@@ -3784,7 +3819,7 @@
                 'showcase-parry': 'Parry',
                 'showcase-hit': 'Hit FX',
                 'showcase-spawn': 'Muncul',
-                'demo-reel': 'Reel animasi gameplay (segera hadir)',
+                'demo-reel': 'Reel animasi gameplay',
                 'pause': 'Jeda',
                 'continue': 'Lanjut',
                 'sfx-label': 'SFX:',
@@ -3828,7 +3863,7 @@
                 'showcase-parry': 'Parry',
                 'showcase-hit': 'Hit FX',
                 'showcase-spawn': 'Muncul',
-                'demo-reel': 'Reel animasi gameplay (akan datang)',
+                'demo-reel': 'Reel animasi gameplay',
                 'pause': 'Jeda',
                 'continue': 'Sambung',
                 'sfx-label': 'SFX:',
