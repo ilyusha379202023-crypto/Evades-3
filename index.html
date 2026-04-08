@@ -4045,6 +4045,11 @@
     function monitorFPS() {
       let last = performance.now();
       const tick = (now) => {
+        if (document.hidden) {
+          last = now;
+          requestAnimationFrame(tick);
+          return;
+        }
         const delta = now - last;
         last = now;
         frameTimes.push(delta);
@@ -4225,16 +4230,32 @@
         });
       });
 
-      document.addEventListener('mousemove', (e) => {
-        const mouseX = e.clientX / window.innerWidth - 0.5;
-        const mouseY = e.clientY / window.innerHeight - 0.5;
+      const sparkles = Array.from(document.querySelectorAll('.sparkle'));
+      let sparkleMouseX = 0;
+      let sparkleMouseY = 0;
+      let sparkleQueued = false;
+      let lastSparkleX = Number.NaN;
+      let lastSparkleY = Number.NaN;
 
-        document.querySelectorAll('.sparkle').forEach(el => {
-          const x = mouseX * 20;
-          const y = mouseY * 20;
+      const renderSparkles = () => {
+        sparkleQueued = false;
+        const x = (sparkleMouseX / window.innerWidth - 0.5) * 20;
+        const y = (sparkleMouseY / window.innerHeight - 0.5) * 20;
+        if (x === lastSparkleX && y === lastSparkleY) return;
+        lastSparkleX = x;
+        lastSparkleY = y;
+        sparkles.forEach(el => {
           el.style.transform = `translate(${x}px, ${y}px)`;
         });
-      });
+      };
+
+      document.addEventListener('mousemove', (e) => {
+        sparkleMouseX = e.clientX;
+        sparkleMouseY = e.clientY;
+        if (sparkleQueued || sparkles.length === 0) return;
+        sparkleQueued = true;
+        requestAnimationFrame(renderSparkles);
+      }, { passive: true });
     });
     // ====== КАСТОМНЫЙ КУРСОР ======
     (function() {
@@ -4249,7 +4270,18 @@
 
       const ALL = [arrowEl, noEl, ibeamEl];
       let curType = 'arrow';
-
+      const arrowSvg = document.getElementById('cursor-arrow');
+      const ibeamSvg = ibeamEl ? ibeamEl.querySelector('svg') : null;
+      const attrCache = {
+        arrowStop1: document.getElementById('arrowStop1'),
+        arrowStop2: document.getElementById('arrowStop2'),
+        arrowStop3: document.getElementById('arrowStop3'),
+        ibeamStop1: document.getElementById('ibeamStop1'),
+        ibeamStop2: document.getElementById('ibeamStop2'),
+        ibeamStop3: document.getElementById('ibeamStop3'),
+        arrowSide: document.getElementById('arrowSide')
+      };
+      
       function setCursorType(type) {
         if (curType === type) return;
         curType = type;
@@ -4337,14 +4369,26 @@
       let radarX = -300, radarY = -300;
       let innerX = -300, innerY = -300;
       let hue = 140;
+      let frameCount = 0;
+      let cursorTarget = document.body;
+      let cursorEvalQueued = false;
+      let cursorEventX = -300;
+      let cursorEventY = -300;
 
       const orbiters = Array.from({length:3},(_,i)=>({angle:(Math.PI*2/3)*i,speed:0.032+i*0.008,size:3.5-i*0.4,hueOffset:i*60}));
       const MAX_TRAIL=22, trail=[], clickParticles=[];
 
       function tick() {
+        if (document.hidden) {
+          requestAnimationFrame(tick);
+          return;
+        }
         ctx.clearRect(0,0,canvas.width,canvas.height);
-        hue=(hue+0.5)%360;
-        updateRainbow();
+        frameCount++;
+        if ((frameCount & 1) === 0) {
+          hue=(hue+0.5)%360;
+          updateRainbow();
+        }
 
         radarX+=(mouseX-radarX)*0.10; radarY+=(mouseY-radarY)*0.10;
         innerX+=(mouseX-innerX)*0.22; innerY+=(mouseY-innerY)*0.22;
@@ -4384,14 +4428,13 @@
 
         const gA=`hsl(${hue},100%,65%)`, gB=`hsla(${(hue+60)%360},100%,55%,0.5)`;
         if (curType==='arrow') {
-          const arrowSvg = document.getElementById('cursor-arrow');
           if(arrowSvg) arrowSvg.style.filter=`drop-shadow(2px 3px 3px rgba(0,0,0,0.4)) drop-shadow(0 0 14px ${gA}) drop-shadow(0 0 28px ${gB})`;
         } else if (curType==='ibeam') {
-          const s=ibeamEl.querySelector('svg'); if(s) s.style.filter=`drop-shadow(0 0 4px rgba(255,255,255,0.9)) drop-shadow(0 0 10px ${gA})`;
+          if(ibeamSvg) ibeamSvg.style.filter=`drop-shadow(0 0 4px rgba(255,255,255,0.9)) drop-shadow(0 0 10px ${gA})`;
         }
       }
 
-      function safeAttr(id,a,v){const e=document.getElementById(id);if(e)e.setAttribute(a,v);}
+      function safeAttr(id,a,v){const e=attrCache[id];if(e)e.setAttribute(a,v);}
       function safeStyle(id,p,v){const e=document.getElementById(id);if(e)e.style[p]=v;}
 
       function drawTrail() {
@@ -4438,16 +4481,27 @@
       }
 
       let lastTX=-999,lastTY=-999;
+      const evaluateCursorType = () => {
+        cursorEvalQueued = false;
+        setCursorType(getCursorTypeFor(cursorTarget, cursorEventX, cursorEventY));
+      };
+
       document.addEventListener('mousemove',(e)=>{
         mouseX=e.clientX; mouseY=e.clientY;
+        cursorEventX = e.clientX;
+        cursorEventY = e.clientY;
+        cursorTarget = e.target;
         const dx=mouseX-lastTX,dy=mouseY-lastTY;
         if(dx*dx+dy*dy>225){
           lastTX=mouseX;lastTY=mouseY;
           trail.push({x:mouseX,y:mouseY,life:1,size:4+Math.random()*3,hue:(hue+Math.random()*30-15+360)%360});
           if(trail.length>MAX_TRAIL)trail.shift();
         }
-        setCursorType(getCursorTypeFor(e.target, e.clientX, e.clientY));
-      });
+        if (!cursorEvalQueued) {
+          cursorEvalQueued = true;
+          requestAnimationFrame(evaluateCursorType);
+        }
+      }, { passive: true });
 
       document.addEventListener('mousedown',()=>{document.body.classList.add('cursor-click');spawnBurst(mouseX,mouseY);spawnRipple(mouseX,mouseY);});
       document.addEventListener('mouseup',()=>document.body.classList.remove('cursor-click'));
