@@ -12,6 +12,7 @@
     href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;600;700&family=Exo+2:wght@300;600;800;900&display=swap"
     rel="stylesheet"
   />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -2181,6 +2182,176 @@
       text-decoration: underline;
     }
 
+
+        /* ===== AUTH + PLAYER SYSTEM ===== */
+    .top-auth-bar {
+      position: fixed;
+      top: calc(var(--earlyBannerHeight) + 14px);
+      left: 14px;
+      z-index: 80;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      max-width: min(560px, calc(100vw - 28px));
+    }
+
+    .auth-chip,
+    .top-auth-btn {
+      border: 1px solid rgba(255,255,255,0.28);
+      background: linear-gradient(145deg, rgba(255,255,255,0.24), rgba(255,255,255,0.08));
+      color: #effff2;
+      border-radius: 12px;
+      padding: 10px 14px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      font: 700 .95rem 'Rajdhani', sans-serif;
+      letter-spacing: .05em;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+
+    .top-auth-btn:hover,
+    .auth-chip:hover {
+      transform: translateY(-1px);
+      border-color: rgba(130,255,186,0.9);
+      box-shadow: 0 12px 32px rgba(17,86,57,0.42), 0 0 16px rgba(124,255,183,0.35);
+    }
+
+    .auth-chip { display: none; align-items: center; gap: 8px; }
+    .auth-chip.is-visible { display: inline-flex; }
+    .notifications-button { display: none; }
+    .notifications-button.is-visible { display: inline-flex; }
+
+    .auth-overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 120;
+      padding: 24px;
+      background: rgba(2, 11, 8, 0.62);
+      backdrop-filter: blur(9px) saturate(1.08);
+      animation: authFadeIn .28s ease;
+    }
+
+    .auth-overlay.is-visible { display: flex; }
+
+    .auth-modal {
+      width: min(780px, 100%);
+      border-radius: 20px;
+      background: linear-gradient(145deg, rgba(27, 84, 58, 0.92), rgba(10, 36, 26, 0.94));
+      border: 1px solid rgba(255,255,255,0.26);
+      box-shadow: 0 22px 50px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.18);
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 14px;
+      padding: 18px;
+      animation: authPopup .35s cubic-bezier(.2,.9,.3,1);
+    }
+
+    .auth-panel,
+    .auth-benefits {
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(8, 26, 19, 0.46);
+      padding: 14px;
+    }
+
+    .auth-modal-title {
+      font: 800 1.2rem 'Orbitron', sans-serif;
+      color: #ecfff1;
+      text-shadow: 0 0 16px rgba(124,255,183,0.45);
+      margin-bottom: 10px;
+    }
+
+    .auth-close {
+      margin-left: auto;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      font-size: 1.05rem;
+    }
+
+    .auth-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .auth-tabs { display: inline-flex; gap: 6px; margin-bottom: 10px; }
+
+    .auth-tab {
+      border: 1px solid rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.1);
+      color: #f6fff8;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font: 700 .9rem 'Rajdhani', sans-serif;
+    }
+    .auth-tab.active { background: linear-gradient(145deg, rgba(130,255,186,0.35), rgba(33,119,82,0.82)); }
+
+    .auth-fields { display: grid; gap: 10px; }
+    .auth-input {
+      border: 1px solid rgba(255,255,255,0.24);
+      border-radius: 10px;
+      padding: 12px;
+      background: rgba(6,20,17,0.62);
+      color: #f1fff6;
+      font: 600 .95rem 'Exo 2', sans-serif;
+    }
+    .auth-submit {
+      margin-top: 12px;
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: linear-gradient(135deg, rgba(124,255,183,0.4), rgba(18,95,63,0.82));
+      color: #fff;
+      font: 800 .94rem 'Orbitron', sans-serif;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .auth-benefits-title { font: 800 1rem 'Orbitron', sans-serif; margin-bottom: 10px; }
+    .benefits-list { list-style: none; display: grid; gap: 8px; }
+    .benefits-list li {
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.06);
+      padding: 10px;
+      font: 700 .92rem 'Rajdhani', sans-serif;
+    }
+
+    .player-profile { display: none; margin-top: 10px; }
+    .player-profile.is-visible { display: block; }
+    .profile-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin-top: 8px; }
+    .profile-stat { background: rgba(8,30,22,0.6); border: 1px solid rgba(255,255,255,.16); border-radius: 10px; padding: 8px; text-align: center; }
+    .profile-stat .label { font-size: .74rem; opacity: .85; }
+    .profile-stat .value { font: 800 .98rem 'Orbitron', sans-serif; margin-top: 3px; }
+
+    .notifications-panel {
+      display: none;
+      position: fixed;
+      top: calc(var(--earlyBannerHeight) + 68px);
+      left: 14px;
+      z-index: 90;
+      max-width: 320px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(7, 26, 19, 0.92);
+      padding: 12px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.42);
+    }
+    .notifications-panel.is-visible { display: block; }
+    .auth-status { margin-top: 10px; min-height: 20px; font: 700 .86rem 'Rajdhani', sans-serif; color: #e3ffe8; }
+
+    @keyframes authFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes authPopup { from { opacity: 0; transform: translateY(14px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+    @media (max-width: 840px) {
+      .auth-modal { grid-template-columns: 1fr; }
+      .top-auth-bar { top: calc(var(--earlyBannerHeight) + 10px); left: 10px; }
+      .notifications-panel { left: 10px; right: 10px; max-width: none; }
+    }
+
     
   </style>
 </head>
@@ -2549,7 +2720,66 @@
       </div>
     </div>
 
+    
 
+    <div class="top-auth-bar" id="top-auth-bar">
+      <button class="top-auth-btn" id="open-login" type="button" data-i18n="login_tab"></button>
+      <button class="top-auth-btn" id="open-register" type="button" data-i18n="register_tab"></button>
+      <div class="auth-chip" id="auth-chip">👤 <span id="auth-chip-name">-</span></div>
+      <button class="top-auth-btn notifications-button" id="notifications-button" type="button" data-i18n="notifications_button"></button>
+      <button class="top-auth-btn" id="logout-button" type="button" data-i18n="logout_button" style="display:none"></button>
+    </div>
+
+    <div class="auth-overlay" id="auth-overlay" aria-hidden="true">
+      <div class="auth-modal" id="auth-modal" role="dialog" aria-modal="true">
+        <div class="auth-panel" id="auth-panel">
+          <div class="auth-header">
+            <h3 class="auth-modal-title" data-i18n="auth_title"></h3>
+            <button class="auth-close" id="auth-close" type="button">✕</button>
+          </div>
+
+          <div class="auth-tabs">
+            <button class="auth-tab active" id="tab-login" type="button" data-i18n="login_tab"></button>
+            <button class="auth-tab" id="tab-register" type="button" data-i18n="register_tab"></button>
+          </div>
+
+          <div class="auth-fields">
+            <input class="auth-input" id="auth-email" type="email" data-i18n-placeholder="email_placeholder" autocomplete="email" />
+            <input class="auth-input" id="auth-password" type="password" data-i18n-placeholder="password_placeholder" autocomplete="current-password" />
+            <input class="auth-input" id="auth-nickname" type="text" data-i18n-placeholder="nickname_placeholder" autocomplete="nickname" />
+          </div>
+
+          <button class="auth-submit" id="auth-submit" type="button" data-i18n="login_action"></button>
+          <p class="auth-status" id="auth-status"></p>
+
+          <div class="player-profile" id="player-profile">
+            <h4 class="auth-benefits-title" data-i18n="profile_title"></h4>
+            <p><strong data-i18n="profile_email"></strong>: <span id="profile-email">-</span></p>
+            <p><strong data-i18n="profile_nickname"></strong>: <span id="profile-nickname">-</span></p>
+            <div class="profile-grid">
+              <div class="profile-stat"><div class="label" data-i18n="profile_score"></div><div class="value" id="profile-score">0</div></div>
+              <div class="profile-stat"><div class="label" data-i18n="profile_level"></div><div class="value" id="profile-level">1</div></div>
+              <div class="profile-stat"><div class="label" data-i18n="profile_status"></div><div class="value" data-i18n="status_online"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="auth-benefits">
+          <h4 class="auth-benefits-title" data-i18n="auth_benefits_title"></h4>
+          <ul class="benefits-list">
+            <li data-i18n="benefit_1"></li>
+            <li data-i18n="benefit_2"></li>
+            <li data-i18n="benefit_3"></li>
+            <li data-i18n="benefit_4"></li>
+            <li data-i18n="benefit_5"></li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+
+    <div class="notifications-panel" id="notifications-panel">
+      <p data-i18n="notifications_text"></p>
+    </div>
 
     <div class="follow-dev-container">
       <a class="follow-dev-link" href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener" data-i18n="follow-dev">Следить за разработкой</a>
@@ -2749,6 +2979,7 @@
     <p data-i18n="footer-contact">Есть вопросы? пишите нам: <a href="mailto:support@evades3.com">support@evades3.com</a></p>
   </footer>
   
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
         // Переводы (НЕ УДАЛЯТЬ — все языки сохранены)
         const translations = {
@@ -4236,6 +4467,39 @@
             }
         };
 
+    
+
+    const authBase = {
+      auth_title: 'Player Access', login_tab: 'Login', register_tab: 'Register',
+      email_placeholder: 'Email', password_placeholder: 'Password', nickname_placeholder: 'Nickname',
+      login_action: 'Sign In', register_action: 'Create Account',
+      profile_title: 'Player Profile', profile_email: 'Email', profile_nickname: 'Nickname',
+      profile_score: 'Score', profile_level: 'Level', profile_status: 'Status', status_online: 'ONLINE',
+      notifications_button: 'Notifications', notifications_text: 'No new notifications yet.', logout_button: 'Logout',
+      auth_missing_config: 'Set SUPABASE_URL and SUPABASE_KEY in the script.',
+      auth_need_nickname: 'Enter a nickname to register.',
+      auth_register_ok: 'Registration successful. Logging in...', auth_login_ok: 'Login successful.',
+      auth_logout_ok: 'Logged out.', auth_error: 'Auth error: ',
+      auth_benefits_title: 'Why players join',
+      benefit_1: 'Personal profile with live score and level.',
+      benefit_2: 'Fast sign-in and secure cloud account.',
+      benefit_3: 'Notifications and event updates.',
+      benefit_4: 'Cross-device progress sync in browser.',
+      benefit_5: 'Early access to upcoming game features.'
+    };
+
+    const authTranslations = {
+      ru: { auth_title:'Доступ игрока', login_tab:'Вход', register_tab:'Регистрация', login_action:'Войти', register_action:'Создать аккаунт', nickname_placeholder:'Никнейм', profile_title:'Профиль игрока', profile_nickname:'Никнейм', profile_score:'Счёт', profile_level:'Уровень', profile_status:'Статус', notifications_button:'Уведомления', notifications_text:'Новых уведомлений пока нет.', logout_button:'Выйти', auth_missing_config:'Заполните SUPABASE_URL и SUPABASE_KEY в коде.', auth_need_nickname:'Введите никнейм для регистрации.', auth_register_ok:'Регистрация успешна. Выполняем вход...', auth_login_ok:'Вход выполнен.', auth_logout_ok:'Вы вышли из аккаунта.', auth_error:'Ошибка авторизации: ', auth_benefits_title:'Почему игроки выбирают Evades 3', benefit_1:'Личный профиль с живым счётом и уровнем.', benefit_2:'Быстрый вход и защищённый аккаунт.', benefit_3:'Уведомления о событиях и апдейтах.', benefit_4:'Синхронизация прогресса между устройствами.', benefit_5:'Ранний доступ к новым игровым функциям.' },
+      uk: { auth_title:'Доступ гравця', login_tab:'Вхід', register_tab:'Реєстрація', login_action:'Увійти', register_action:'Створити акаунт', nickname_placeholder:'Нікнейм', profile_title:'Профіль гравця', profile_nickname:'Нікнейм', profile_score:'Рахунок', profile_level:'Рівень', profile_status:'Статус', notifications_button:'Сповіщення', notifications_text:'Нових сповіщень поки немає.', logout_button:'Вийти', auth_missing_config:'Вкажіть SUPABASE_URL і SUPABASE_KEY у скрипті.', auth_need_nickname:'Вкажіть нікнейм для реєстрації.', auth_register_ok:'Реєстрація успішна. Виконуємо вхід...', auth_login_ok:'Вхід успішний.', auth_logout_ok:'Ви вийшли з акаунта.', auth_error:'Помилка авторизації: ', auth_benefits_title:'Чому гравці обирають Evades 3' },
+      en: {}, de:{login_tab:'Anmelden',register_tab:'Registrieren',logout_button:'Abmelden',notifications_button:'Benachrichtigungen'}, es:{login_tab:'Iniciar sesión',register_tab:'Registro',logout_button:'Salir',notifications_button:'Notificaciones'}, fr:{login_tab:'Connexion',register_tab:'Inscription',logout_button:'Déconnexion',notifications_button:'Notifications'}, it:{login_tab:'Accesso',register_tab:'Registrati',logout_button:'Esci',notifications_button:'Notifiche'}, pt:{login_tab:'Entrar',register_tab:'Registrar',logout_button:'Sair',notifications_button:'Notificações'}, pl:{login_tab:'Zaloguj',register_tab:'Rejestracja',logout_button:'Wyloguj',notifications_button:'Powiadomienia'}, tr:{login_tab:'Giriş',register_tab:'Kayıt',logout_button:'Çıkış',notifications_button:'Bildirimler'}, nl:{login_tab:'Inloggen',register_tab:'Registreren',logout_button:'Uitloggen',notifications_button:'Meldingen'}, sv:{login_tab:'Logga in',register_tab:'Registrera',logout_button:'Logga ut',notifications_button:'Aviseringar'}, no:{login_tab:'Logg inn',register_tab:'Registrer',logout_button:'Logg ut',notifications_button:'Varsler'}, fi:{login_tab:'Kirjaudu',register_tab:'Rekisteröidy',logout_button:'Kirjaudu ulos',notifications_button:'Ilmoitukset'}, da:{login_tab:'Log ind',register_tab:'Registrer',logout_button:'Log ud',notifications_button:'Notifikationer'}, cs:{login_tab:'Přihlásit',register_tab:'Registrace',logout_button:'Odhlásit',notifications_button:'Oznámení'}, ro:{login_tab:'Autentificare',register_tab:'Înregistrare',logout_button:'Deconectare',notifications_button:'Notificări'}, hu:{login_tab:'Belépés',register_tab:'Regisztráció',logout_button:'Kilépés',notifications_button:'Értesítések'}, el:{login_tab:'Σύνδεση',register_tab:'Εγγραφή',logout_button:'Αποσύνδεση',notifications_button:'Ειδοποιήσεις'}, ja:{login_tab:'ログイン',register_tab:'登録',logout_button:'ログアウト',notifications_button:'通知'}, zh:{login_tab:'登录',register_tab:'注册',logout_button:'退出',notifications_button:'通知'}, ko:{login_tab:'로그인',register_tab:'회원가입',logout_button:'로그아웃',notifications_button:'알림'}, ar:{login_tab:'تسجيل الدخول',register_tab:'تسجيل',logout_button:'تسجيل الخروج',notifications_button:'الإشعارات'}, hi:{login_tab:'लॉगिन',register_tab:'रजिस्टर',logout_button:'लॉगआउट',notifications_button:'सूचनाएँ'}, th:{login_tab:'เข้าสู่ระบบ',register_tab:'สมัครสมาชิก',logout_button:'ออกจากระบบ',notifications_button:'การแจ้งเตือน'}, vi:{login_tab:'Đăng nhập',register_tab:'Đăng ký',logout_button:'Đăng xuất',notifications_button:'Thông báo'}, id:{login_tab:'Masuk',register_tab:'Daftar',logout_button:'Keluar',notifications_button:'Notifikasi'}, ms:{login_tab:'Log masuk',register_tab:'Daftar',logout_button:'Log keluar',notifications_button:'Notifikasi'}
+    };
+
+    Object.keys(translations).forEach((lang) => {
+      const overlay = authTranslations[lang] || {};
+      translations[lang] = Object.assign({}, translations[lang] || {}, authBase, overlay);
+    });
+
+
     function applyTranslations(lang) {
       const elements = document.querySelectorAll('[data-i18n]');
       elements.forEach(el => {
@@ -4422,11 +4686,237 @@
       }
     }
 
+        function t(key) {
+      return (translations[currentLang] && translations[currentLang][key]) ||
+        (translations.en && translations.en[key]) || key;
+    }
+
+    function setLanguage(lang) {
+      changeLanguage(lang);
+    }
+
+    const SUPABASE_URL = window.SUPABASE_URL || 'https://YOUR_PROJECT.supabase.co';
+    const SUPABASE_KEY = window.SUPABASE_KEY || 'YOUR_PUBLIC_ANON_KEY';
+    const client = window.supabase?.createClient(SUPABASE_URL, SUPABASE_KEY);
+    let currentUser = null;
+    let currentPlayer = null;
+
+
     
     window.addEventListener('DOMContentLoaded', () => {
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       monitorFPS();
+
+            const authPanel = document.getElementById('auth-panel');
+      const profilePanel = document.getElementById('player-profile');
+      const authOverlay = document.getElementById('auth-overlay');
+      const authModal = document.getElementById('auth-modal');
+      const authClose = document.getElementById('auth-close');
+      const openLogin = document.getElementById('open-login');
+      const openRegister = document.getElementById('open-register');
+      const tabLogin = document.getElementById('tab-login');
+      const tabRegister = document.getElementById('tab-register');
+      const submitAuth = document.getElementById('auth-submit');
+      const inputEmail = document.getElementById('auth-email');
+      const inputPassword = document.getElementById('auth-password');
+      const inputNickname = document.getElementById('auth-nickname');
+      const authStatus = document.getElementById('auth-status');
+      const notificationsButton = document.getElementById('notifications-button');
+      const notificationsPanel = document.getElementById('notifications-panel');
+      const logoutButton = document.getElementById('logout-button');
+      const authChip = document.getElementById('auth-chip');
+      const authChipName = document.getElementById('auth-chip-name');
+      const profileEmail = document.getElementById('profile-email');
+      const profileNickname = document.getElementById('profile-nickname');
+      const profileScore = document.getElementById('profile-score');
+      const profileLevel = document.getElementById('profile-level');
+      let authMode = 'login';
+
+      function applyTranslatedPlaceholders() {
+        document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+          const key = el.getAttribute('data-i18n-placeholder');
+          el.setAttribute('placeholder', t(key));
+        });
+      }
+
+      const originalChangeLanguage = changeLanguage;
+      changeLanguage = function(lang) {
+        originalChangeLanguage(lang);
+        applyTranslatedPlaceholders();
+        submitAuth.textContent = authMode === 'login' ? t('login_action') : t('register_action');
+      };
+
+      function setAuthMode(mode) {
+        authMode = mode;
+        tabLogin.classList.toggle('active', mode === 'login');
+        tabRegister.classList.toggle('active', mode === 'register');
+        inputNickname.style.display = mode === 'register' ? 'block' : 'none';
+        inputPassword.autocomplete = mode === 'register' ? 'new-password' : 'current-password';
+        submitAuth.textContent = mode === 'login' ? t('login_action') : t('register_action');
+      }
+
+      function setAuthStatus(message, isError = false) {
+        authStatus.textContent = message || '';
+        authStatus.style.color = isError ? '#ffd2d2' : '#dbffe2';
+      }
+
+      function openAuthModal(mode = 'login') {
+        setAuthMode(mode);
+        authOverlay.classList.add('is-visible');
+        authOverlay.setAttribute('aria-hidden', 'false');
+      }
+
+      function closeAuthModal() {
+        authOverlay.classList.remove('is-visible');
+        authOverlay.setAttribute('aria-hidden', 'true');
+      }
+
+      function setLoggedInUI(isLoggedIn) {
+        openLogin.style.display = isLoggedIn ? 'none' : 'inline-flex';
+        openRegister.style.display = isLoggedIn ? 'none' : 'inline-flex';
+        logoutButton.style.display = isLoggedIn ? 'inline-flex' : 'none';
+        authChip.classList.toggle('is-visible', isLoggedIn);
+      }
+
+      async function getPlayerData(userId) {
+        if (!client) return null;
+        const { data, error } = await client.from('players').select('id,email,nickname,score,level').eq('id', userId).single();
+        if (error) throw error;
+        currentPlayer = data;
+        profileEmail.textContent = data.email || '-';
+        profileNickname.textContent = data.nickname || '-';
+        profileScore.textContent = data.score ?? 0;
+        profileLevel.textContent = data.level ?? 1;
+        return data;
+      }
+
+      async function registerUser(email, password) {
+        if (!client || SUPABASE_URL.includes('YOUR_PROJECT')) {
+          setAuthStatus(t('auth_missing_config'), true);
+          return null;
+        }
+        if (!inputNickname.value.trim()) {
+          setAuthStatus(t('auth_need_nickname'), true);
+          return null;
+        }
+
+        const { data, error } = await client.auth.signUp({ email, password });
+        if (error) throw error;
+
+        const user = data.user;
+        if (user?.id) {
+          await client.from('players').upsert({
+            id: user.id,
+            email: user.email,
+            nickname: inputNickname.value.trim(),
+            score: 0,
+            level: 1
+          });
+        }
+
+        setAuthStatus(t('auth_register_ok'));
+        await loginUser(email, password);
+        return data;
+      }
+
+      async function loginUser(email, password) {
+        if (!client || SUPABASE_URL.includes('YOUR_PROJECT')) {
+          setAuthStatus(t('auth_missing_config'), true);
+          return null;
+        }
+        const { data, error } = await client.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        currentUser = data.user;
+        await getPlayerData(currentUser.id);
+        profilePanel.classList.add('is-visible');
+        notificationsButton.classList.add('is-visible');
+        authChipName.textContent = currentPlayer?.nickname || currentUser?.email || '-';
+        setLoggedInUI(true);
+        closeAuthModal();
+        setAuthStatus(t('auth_login_ok'));
+        return data;
+      }
+
+      async function logoutUser() {
+        if (!client) return;
+        await client.auth.signOut();
+        currentUser = null;
+        currentPlayer = null;
+        profilePanel.classList.remove('is-visible');
+        notificationsButton.classList.remove('is-visible');
+        notificationsPanel.classList.remove('is-visible');
+        setLoggedInUI(false);
+        setAuthStatus(t('auth_logout_ok'));
+      }
+
+      async function updateScore(score) {
+        if (!client || !currentUser) return;
+        await client.from('players').update({ score }).eq('id', currentUser.id);
+        profileScore.textContent = score;
+      }
+
+      async function updateLevel(level) {
+        if (!client || !currentUser) return;
+        await client.from('players').update({ level }).eq('id', currentUser.id);
+        profileLevel.textContent = level;
+      }
+
+      function toggleNotifications() {
+        notificationsPanel.classList.toggle('is-visible');
+      }
+
+      openLogin.addEventListener('click', () => openAuthModal('login'));
+      openRegister.addEventListener('click', () => openAuthModal('register'));
+      authClose.addEventListener('click', closeAuthModal);
+      authOverlay.addEventListener('click', (event) => {
+        if (event.target === authOverlay) closeAuthModal();
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeAuthModal();
+      });
+
+      tabLogin.addEventListener('click', () => setAuthMode('login'));
+      tabRegister.addEventListener('click', () => setAuthMode('register'));
+      notificationsButton.addEventListener('click', toggleNotifications);
+      logoutButton.addEventListener('click', () => logoutUser().catch((e) => setAuthStatus(t('auth_error') + e.message, true)));
+
+      submitAuth.addEventListener('click', async () => {
+        const email = inputEmail.value.trim();
+        const password = inputPassword.value;
+        try {
+          if (authMode === 'register') await registerUser(email, password);
+          else await loginUser(email, password);
+        } catch (error) {
+          setAuthStatus(t('auth_error') + error.message, true);
+        }
+      });
+
+      if (client && !SUPABASE_URL.includes('YOUR_PROJECT')) {
+        client.auth.getSession().then(async ({ data }) => {
+          if (data.session?.user) {
+            currentUser = data.session.user;
+            await getPlayerData(currentUser.id);
+            profilePanel.classList.add('is-visible');
+            notificationsButton.classList.add('is-visible');
+            authChipName.textContent = currentPlayer?.nickname || currentUser?.email || '-';
+            setLoggedInUI(true);
+          }
+        });
+      }
+
+      window.registerUser = registerUser;
+      window.loginUser = loginUser;
+      window.logoutUser = logoutUser;
+      window.getPlayerData = getPlayerData;
+      window.updateScore = updateScore;
+      window.updateLevel = updateLevel;
+      window.toggleNotifications = toggleNotifications;
+      window.setLanguage = setLanguage;
+      window.t = t;
+      setAuthMode('login');
+      setLoggedInUI(false);
+
 
       document.querySelectorAll('.lang-item').forEach(item => {
         item.addEventListener('click', () => {
