@@ -940,6 +940,64 @@
       color: #79c0ff;
       text-shadow: 0 0 12px rgba(121, 192, 255, 0.85);
     }
+
+        .trust-strip{
+      width: min(980px, 94%);
+      margin: 4px auto 30px;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: linear-gradient(135deg, rgba(4,20,18,0.62), rgba(18,47,40,0.42));
+      backdrop-filter: blur(8px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.28);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .trust-item{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: #eafef4;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: .2px;
+      text-shadow: 0 1px 5px rgba(0,0,0,0.3);
+    }
+
+    .trust-icon{
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 35% 30%, #7effbf 0%, #38b17e 80%);
+      color: #052918;
+      font-size: 16px;
+      box-shadow: 0 4px 12px rgba(18,193,122,0.45);
+      flex-shrink: 0;
+    }
+
+    .trust-meta{
+      display: block;
+      margin-top: 2px;
+      color: rgba(234,254,244,0.88);
+      font-size: 12px;
+      font-weight: 500;
+      opacity: .92;
+    }
+
+    .trust-link{
+      color: #bdfedf;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
     
     .dev-badge{
       position: absolute;
@@ -2083,6 +2141,14 @@
       overflow: hidden;
     }
 
+        @media (max-width: 900px){
+      .trust-strip{
+        grid-template-columns: 1fr;
+        margin: 6px auto 22px;
+      }
+    }
+
+
     @media (prefers-reduced-motion: reduce){
       *{
         animation: none !important;
@@ -2482,9 +2548,33 @@
       </div>
     </div>
 
-        <div class="follow-dev-container">
+    <div class="follow-dev-container">
       <a class="follow-dev-link" href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener" data-i18n="follow-dev">Следить за разработкой</a>
     </div>
+
+        <section class="trust-strip" aria-label="Official trust signals">
+      <div class="trust-item">
+        <span class="trust-icon" aria-hidden="true">🛡️</span>
+        <div>
+          <span data-i18n="trust-site">Официальный сайт Evades 3</span>
+          <span class="trust-meta" data-i18n="trust-site-meta">Проверенный домен: evades3.com</span>
+        </div>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon" aria-hidden="true">🔒</span>
+        <div>
+          <span data-i18n="trust-https">Защищённое HTTPS-соединение</span>
+          <span class="trust-meta" data-i18n="trust-https-meta">Ваши данные шифруются при передаче</span>
+        </div>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon" aria-hidden="true">✅</span>
+        <div>
+          <span data-i18n="trust-community">Официальные каналы проекта</span>
+          <span class="trust-meta"><a class="trust-link" href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener" data-i18n="trust-community-meta">Discord сообщества (подтверждён)</a></span>
+        </div>
+      </div>
+    </section>
     
     <div class="description">
       <div class="glass-card">
@@ -2669,6 +2759,12 @@
                 'follow-dev': 'Следить за разработкой',
                 'dev-badge': 'В разработке',
                 'dev-tooltip': 'Игра ещё в разработке',
+                'trust-site': 'Официальный сайт Evades 3',
+                'trust-site-meta': 'Проверенный домен: evades3.com',
+                'trust-https': 'Защищённое HTTPS-соединение',
+                'trust-https-meta': 'Ваши данные шифруются при передаче',
+                'trust-community': 'Официальные каналы проекта',
+                'trust-community-meta': 'Discord сообщества (подтверждён)',
                 'showcase-title': 'Витрина анимаций',
                 'showcase-subtitle': 'Быстрые микросцены анимаций в действии',
                 'micro-previews-tip': 'Эти анимации — просто превью. В реальной игре они будут намного круче.',
@@ -2716,6 +2812,12 @@
                 'follow-dev': 'Follow development',
                 'dev-badge': 'In Development',
                 'dev-tooltip': 'The game is still in development',
+                'trust-site': 'Official Evades 3 website',
+                'trust-site-meta': 'Verified domain: evades3.com',
+                'trust-https': 'Secure HTTPS connection',
+                'trust-https-meta': 'Your data is encrypted in transit',
+                'trust-community': 'Official project channels',
+                'trust-community-meta': 'Community Discord (verified)',
                 'showcase-title': 'Animation Showcase',
                 'showcase-subtitle': 'Quick micro-scenes of animation in action',
                 'micro-previews-tip': 'These animations are just previews. In the actual game, they will be much cooler.',
@@ -2763,6 +2865,12 @@
                 'follow-dev': 'Стежити за розробкою',
                 'dev-badge': 'У розробці',
                 'dev-tooltip': 'Гра ще у розробці',
+                'trust-site': 'Офіційний сайт Evades 3',
+                'trust-site-meta': 'Перевірений домен: evades3.com',
+                'trust-https': 'Захищене HTTPS-з’єднання',
+                'trust-https-meta': 'Ваші дані шифруються під час передавання',
+                'trust-community': 'Офіційні канали проєкту',
+                'trust-community-meta': 'Discord спільноти (підтверджено)',
                 'showcase-title': 'Вітрина анімацій',
                 'showcase-subtitle': 'Швидкі мікросцени анімацій у дії',
                 'micro-previews-tip': 'Ці анімації — просто превʼю. У реальній грі вони будуть набагато крутіші.',
@@ -2810,6 +2918,12 @@
                 'follow-dev': 'Entwicklung verfolgen',
                 'dev-badge': 'In Entwicklung',
                 'dev-tooltip': 'Das Spiel ist noch in Entwicklung',
+                'trust-site': 'Offizielle Evades 3-Website',
+                'trust-site-meta': 'Verifizierte Domain: evades3.com',
+                'trust-https': 'Sichere HTTPS-Verbindung',
+                'trust-https-meta': 'Ihre Daten werden bei der Übertragung verschlüsselt',
+                'trust-community': 'Offizielle Projektkanäle',
+                'trust-community-meta': 'Community-Discord (verifiziert)',
                 'showcase-title': 'Animationsvitrine',
                 'showcase-subtitle': 'Kurze Mikro-Szenen der Animationen',
                 'micro-previews-tip': 'Diese Animationen sind nur Vorschauen. Im echten Spiel werden sie viel cooler.',
@@ -2857,6 +2971,12 @@
                 'follow-dev': 'Seguir el desarrollo',
                 'dev-badge': 'En Desarrollo',
                 'dev-tooltip': 'El juego aún está en desarrollo',
+                'trust-site': 'Sitio oficial de Evades 3',
+                'trust-site-meta': 'Dominio verificado: evades3.com',
+                'trust-https': 'Conexión HTTPS segura',
+                'trust-https-meta': 'Tus datos se cifran durante la transmisión',
+                'trust-community': 'Canales oficiales del proyecto',
+                'trust-community-meta': 'Discord de la comunidad (verificado)',
                 'showcase-title': 'Vitrina de animaciones',
                 'showcase-subtitle': 'Microescenas rápidas de animación',
                 'micro-previews-tip': 'Estas animaciones son solo vistas previas. En el juego real serán mucho más geniales.',
@@ -2904,6 +3024,12 @@
                 'follow-dev': 'Suivre le développement',
                 'dev-badge': 'En Développement',
                 'dev-tooltip': 'Le jeu est encore en développement',
+                'trust-site': 'Site officiel d\'Evades 3',
+                'trust-site-meta': 'Domaine vérifié : evades3.com',
+                'trust-https': 'Connexion HTTPS sécurisée',
+                'trust-https-meta': 'Vos données sont chiffrées pendant le transfert',
+                'trust-community': 'Canaux officiels du projet',
+                'trust-community-meta': 'Discord de la communauté (vérifié)',
                 'showcase-title': 'Vitrine d’animations',
                 'showcase-subtitle': 'Micro-scènes d’animation rapides',
                 'micro-previews-tip': 'Ces animations ne sont que des aperçus. Dans le vrai jeu, elles seront bien plus cool.',
@@ -2951,6 +3077,12 @@
                 'follow-dev': 'Seguire lo sviluppo',
                 'dev-badge': 'In Sviluppo',
                 'dev-tooltip': 'Il gioco è ancora in sviluppo',
+                'trust-site': 'Sito ufficiale di Evades 3',
+                'trust-site-meta': 'Dominio verificato: evades3.com',
+                'trust-https': 'Connessione HTTPS sicura',
+                'trust-https-meta': 'I tuoi dati sono crittografati durante il trasferimento',
+                'trust-community': 'Canali ufficiali del progetto',
+                'trust-community-meta': 'Discord della community (verificato)',
                 'showcase-title': 'Vetrina animazioni',
                 'showcase-subtitle': 'Micro-scene rapide delle animazioni',
                 'micro-previews-tip': 'Queste animazioni sono solo anteprime. Nel gioco vero saranno molto più belle.',
@@ -2998,6 +3130,12 @@
                 'follow-dev': 'Acompanhar o desenvolvimento',
                 'dev-badge': 'Em Desenvolvimento',
                 'dev-tooltip': 'O jogo ainda está em desenvolvimento',
+                'trust-site': 'Site oficial do Evades 3',
+                'trust-site-meta': 'Domínio verificado: evades3.com',
+                'trust-https': 'Conexão HTTPS segura',
+                'trust-https-meta': 'Seus dados são criptografados durante a transmissão',
+                'trust-community': 'Canais oficiais do projeto',
+                'trust-community-meta': 'Discord da comunidade (verificado)',
                 'showcase-title': 'Vitrine de animações',
                 'showcase-subtitle': 'Microscenas rápidas de animação',
                 'micro-previews-tip': 'Estas animações são apenas prévias. No jogo real serão muito mais legais.',
@@ -3045,6 +3183,12 @@
                 'follow-dev': 'Śledzić rozwój',
                 'dev-badge': 'W Rozwoju',
                 'dev-tooltip': 'Gra jest nadal w rozwoju',
+                'trust-site': 'Oficjalna strona Evades 3',
+                'trust-site-meta': 'Zweryfikowana domena: evades3.com',
+                'trust-https': 'Bezpieczne połączenie HTTPS',
+                'trust-https-meta': 'Twoje dane są szyfrowane podczas przesyłania',
+                'trust-community': 'Oficjalne kanały projektu',
+                'trust-community-meta': 'Discord społeczności (zweryfikowany)',
                 'showcase-title': 'Galeria animacji',
                 'showcase-subtitle': 'Szybkie mikro-sceny animacji',
                 'micro-previews-tip': 'Te animacje to tylko podgląd. W prawdziwej grze będą dużo lepsze.',
@@ -3091,6 +3235,12 @@
                 'follow-dev': 'Gelişimi takip et',
                 'dev-badge': 'Geliştiriliyor',
                 'dev-tooltip': 'Oyun hâlâ geliştirme aşamasında',
+                'trust-site': 'Resmi Evades 3 sitesi',
+                'trust-site-meta': 'Doğrulanmış alan adı: evades3.com',
+                'trust-https': 'Güvenli HTTPS bağlantısı',
+                'trust-https-meta': 'Verileriniz aktarım sırasında şifrelenir',
+                'trust-community': 'Resmi proje kanalları',
+                'trust-community-meta': 'Topluluk Discord\'u (doğrulandı)',
                 'showcase-title': 'Animasyon Vitrini',
                 'showcase-subtitle': 'Animasyonların hızlı mikro sahneleri',
                 'micro-previews-tip': 'Bu animasyonlar sadece önizleme. Gerçek oyunda çok daha havalı olacak.',
@@ -3138,6 +3288,12 @@
                 'follow-dev': 'Volg de ontwikkeling',
                 'dev-badge': 'In ontwikkeling',
                 'dev-tooltip': 'De game is nog in ontwikkeling',
+                'trust-site': 'Officiële Evades 3-website',
+                'trust-site-meta': 'Geverifieerd domein: evades3.com',
+                'trust-https': 'Beveiligde HTTPS-verbinding',
+                'trust-https-meta': 'Je gegevens worden tijdens overdracht versleuteld',
+                'trust-community': 'Officiële projectkanalen',
+                'trust-community-meta': 'Community-Discord (geverifieerd)',
                 'showcase-title': 'Animatievitrine',
                 'showcase-subtitle': 'Snelle micro-scènes van animaties',
                 'micro-previews-tip': 'Deze animaties zijn slechts previews. In de echte game worden ze veel cooler.',
@@ -3185,6 +3341,12 @@
                 'follow-dev': 'Följ utvecklingen',
                 'dev-badge': 'Under utveckling',
                 'dev-tooltip': 'Spelet är fortfarande under utveckling',
+                'trust-site': 'Officiell Evades 3-webbplats',
+                'trust-site-meta': 'Verifierad domän: evades3.com',
+                'trust-https': 'Säker HTTPS-anslutning',
+                'trust-https-meta': 'Dina data krypteras under överföring',
+                'trust-community': 'Officiella projektkanaler',
+                'trust-community-meta': 'Community-Discord (verifierad)',
                 'showcase-title': 'Animationsvitrin',
                 'showcase-subtitle': 'Snabba mikro-scener av animationer',
                 'micro-previews-tip': 'Dessa animationer är bara förhandsvisningar. I riktiga spelet blir de mycket coolare.',
@@ -3232,6 +3394,12 @@
                 'follow-dev': 'Følg utviklingen',
                 'dev-badge': 'Under utvikling',
                 'dev-tooltip': 'Spillet er fortsatt under utvikling',
+                'trust-site': 'Offisielt Evades 3-nettsted',
+                'trust-site-meta': 'Verifisert domene: evades3.com',
+                'trust-https': 'Sikker HTTPS-tilkobling',
+                'trust-https-meta': 'Dataene dine krypteres under overføring',
+                'trust-community': 'Offisielle prosjektkanaler',
+                'trust-community-meta': 'Community-Discord (verifisert)',
                 'showcase-title': 'Animasjonsvitrine',
                 'showcase-subtitle': 'Raske mikroscener av animasjoner',
                 'micro-previews-tip': 'Disse animasjonene er bare forhåndsvisninger. I det ekte spillet blir de mye kulere.',
@@ -3279,6 +3447,12 @@
                 'follow-dev': 'Seuraa kehitystä',
                 'dev-badge': 'Kehitteillä',
                 'dev-tooltip': 'Peli on yhä kehitteillä',
+                'trust-site': 'Evades 3:n virallinen sivusto',
+                'trust-site-meta': 'Vahvistettu verkkotunnus: evades3.com',
+                'trust-https': 'Suojattu HTTPS-yhteys',
+                'trust-https-meta': 'Tietosi salataan siirron aikana',
+                'trust-community': 'Projektin viralliset kanavat',
+                'trust-community-meta': 'Yhteisön Discord (vahvistettu)',
                 'showcase-title': 'Animaatiovitrini',
                 'showcase-subtitle': 'Nopeat mikrokohtaukset animaatioista',
                 'micro-previews-tip': 'Nämä animaatiot ovat vain esikatseluita. Oikeassa pelissä ne ovat paljon siistimpiä.',
@@ -3326,6 +3500,12 @@
                 'follow-dev': 'Følg udviklingen',
                 'dev-badge': 'Under udvikling',
                 'dev-tooltip': 'Spillet er stadig under udvikling',
+                'trust-site': 'Officiel Evades 3-hjemmeside',
+                'trust-site-meta': 'Verificeret domæne: evades3.com',
+                'trust-https': 'Sikker HTTPS-forbindelse',
+                'trust-https-meta': 'Dine data krypteres under overførsel',
+                'trust-community': 'Officielle projektkanaler',
+                'trust-community-meta': 'Community Discord (verificeret)',
                 'showcase-title': 'Animationsgalerie',
                 'showcase-subtitle': 'Hurtige mikroscener af animationer',
                 'micro-previews-tip': 'Disse animationer er kun previews. I det rigtige spil bliver de meget federe.',
@@ -3373,6 +3553,12 @@
                 'follow-dev': 'Sledovat vývoj',
                 'dev-badge': 'Ve vývoji',
                 'dev-tooltip': 'Hra je stále ve vývoji',
+                'trust-site': 'Oficiální web Evades 3',
+                'trust-site-meta': 'Ověřená doména: evades3.com',
+                'trust-https': 'Zabezpečené připojení HTTPS',
+                'trust-https-meta': 'Vaše data jsou při přenosu šifrována',
+                'trust-community': 'Oficiální kanály projektu',
+                'trust-community-meta': 'Discord komunity (ověřený)',
                 'showcase-title': 'Výklad animací',
                 'showcase-subtitle': 'Rychlé mikro-scény animací',
                 'micro-previews-tip': 'Tyto animace jsou jen náhledy. Ve skutečné hře budou mnohem lepší.',
@@ -3420,6 +3606,12 @@
                 'follow-dev': 'Urmărește dezvoltarea',
                 'dev-badge': 'În dezvoltare',
                 'dev-tooltip': 'Jocul este încă în dezvoltare',
+                'trust-site': 'Site oficial Evades 3',
+                'trust-site-meta': 'Domeniu verificat: evades3.com',
+                'trust-https': 'Conexiune HTTPS securizată',
+                'trust-https-meta': 'Datele tale sunt criptate în timpul transferului',
+                'trust-community': 'Canale oficiale ale proiectului',
+                'trust-community-meta': 'Discord-ul comunității (verificat)',
                 'showcase-title': 'Vitrină de animații',
                 'showcase-subtitle': 'Micro-scene rapide de animații',
                 'micro-previews-tip': 'Aceste animații sunt doar previzualizări. În jocul real vor fi mult mai tari.',
@@ -3467,6 +3659,12 @@
                 'follow-dev': 'Kövesd a fejlesztést',
                 'dev-badge': 'Fejlesztés alatt',
                 'dev-tooltip': 'A játék még fejlesztés alatt áll',
+                'trust-site': 'Hivatalos Evades 3 weboldal',
+                'trust-site-meta': 'Ellenőrzött domain: evades3.com',
+                'trust-https': 'Biztonságos HTTPS-kapcsolat',
+                'trust-https-meta': 'Az adataid átvitel közben titkosítva vannak',
+                'trust-community': 'Hivatalos projektcsatornák',
+                'trust-community-meta': 'Közösségi Discord (ellenőrzött)',
                 'showcase-title': 'Animációs vitrin',
                 'showcase-subtitle': 'Gyors animációs mikro-jelenetek',
                 'micro-previews-tip': 'Ezek az animációk csak előnézetek. A valódi játékban sokkal menőbbek lesznek.',
@@ -3514,6 +3712,12 @@
                 'follow-dev': 'Παρακολούθησε την ανάπτυξη',
                 'dev-badge': 'Υπό ανάπτυξη',
                 'dev-tooltip': 'Το παιχνίδι είναι ακόμη υπό ανάπτυξη',
+                'trust-site': 'Επίσημος ιστότοπος Evades 3',
+                'trust-site-meta': 'Επαληθευμένο domain: evades3.com',
+                'trust-https': 'Ασφαλής σύνδεση HTTPS',
+                'trust-https-meta': 'Τα δεδομένα σας κρυπτογραφούνται κατά τη μεταφορά',
+                'trust-community': 'Επίσημα κανάλια του έργου',
+                'trust-community-meta': 'Discord κοινότητας (επαληθευμένο)',
                 'showcase-title': 'Βιτρίνα κινουμένων',
                 'showcase-subtitle': 'Γρήγορες μικρο-σκηνές κινουμένων',
                 'micro-previews-tip': 'Αυτές οι κινήσεις είναι μόνο προεπισκοπήσεις. Στο πραγματικό παιχνίδι θα είναι πολύ πιο εντυπωσιακές.',
@@ -3561,6 +3765,12 @@
                 'follow-dev': '開発を追う',
                 'dev-badge': '開発中',
                 'dev-tooltip': 'ゲームはまだ開発中です',
+                'trust-site': 'Evades 3 公式サイト',
+                'trust-site-meta': '確認済みドメイン: evades3.com',
+                'trust-https': '安全なHTTPS接続',
+                'trust-https-meta': 'データは転送中に暗号化されます',
+                'trust-community': '公式プロジェクトチャンネル',
+                'trust-community-meta': 'コミュニティDiscord（認証済み）',
                 'showcase-title': 'アニメーションショーケース',
                 'showcase-subtitle': 'アニメーションの高速ミクロシーン',
                 'micro-previews-tip': 'これらのアニメーションはプレビューです。実際のゲームではもっと凄くなります。',
@@ -3608,6 +3818,12 @@
                 'follow-dev': '关注开发进展',
                 'dev-badge': '开发中',
                 'dev-tooltip': '游戏仍在开发中',
+                'trust-site': 'Evades 3 官方网站',
+                'trust-site-meta': '已验证域名：evades3.com',
+                'trust-https': '安全的 HTTPS 连接',
+                'trust-https-meta': '您的数据在传输过程中会被加密',
+                'trust-community': '项目官方渠道',
+                'trust-community-meta': '社区 Discord（已验证）',
                 'showcase-title': '动画展示',
                 'showcase-subtitle': '动画快速微场景',
                 'micro-previews-tip': '这些动画只是预览。正式游戏中会更酷。',
@@ -3655,6 +3871,12 @@
                 'follow-dev': '개발 진행 상황 보기',
                 'dev-badge': '개발 중',
                 'dev-tooltip': '게임은 아직 개발 중입니다',
+                'trust-site': 'Evades 3 공식 웹사이트',
+                'trust-site-meta': '검증된 도메인: evades3.com',
+                'trust-https': '보안 HTTPS 연결',
+                'trust-https-meta': '전송 중 데이터가 암호화됩니다',
+                'trust-community': '공식 프로젝트 채널',
+                'trust-community-meta': '커뮤니티 디스코드(검증됨)',
                 'showcase-title': '애니메이션 쇼케이스',
                 'showcase-subtitle': '애니메이션 빠른 마이크로 씬',
                 'micro-previews-tip': '이 애니메이션들은 미리보기입니다. 실제 게임에서는 훨씬 더 멋질 거예요.',
@@ -3702,6 +3924,12 @@
                 'follow-dev': 'تابع التطوير',
                 'dev-badge': 'قيد التطوير',
                 'dev-tooltip': 'اللعبة ما زالت قيد التطوير',
+                'trust-site': 'الموقع الرسمي لـ Evades 3',
+                'trust-site-meta': 'نطاق موثّق: evades3.com',
+                'trust-https': 'اتصال HTTPS آمن',
+                'trust-https-meta': 'يتم تشفير بياناتك أثناء النقل',
+                'trust-community': 'القنوات الرسمية للمشروع',
+                'trust-community-meta': 'ديسكورد المجتمع (موثّق)',
                 'showcase-title': 'عرض الحركات',
                 'showcase-subtitle': 'مشاهد مصغّرة سريعة للحركات ',
                 'micro-previews-tip': 'هذه الحركات مجرد معاينة. في اللعبة الحقيقية ستكون أروع بكثير.',
@@ -3749,6 +3977,12 @@
                 'follow-dev': 'विकास पर नज़र रखें',
                 'dev-badge': 'विकास में',
                 'dev-tooltip': 'गेम अभी भी विकास में है',
+                'trust-site': 'Evades 3 की आधिकारिक वेबसाइट',
+                'trust-site-meta': 'सत्यापित डोमेन: evades3.com',
+                'trust-https': 'सुरक्षित HTTPS कनेक्शन',
+                'trust-https-meta': 'ट्रांसफ़र के दौरान आपका डेटा एन्क्रिप्ट होता है',
+                'trust-community': 'प्रोजेक्ट के आधिकारिक चैनल',
+                'trust-community-meta': 'कम्युनिटी Discord (सत्यापित)',
                 'showcase-title': 'एनीमेशन शोकेस',
                 'showcase-subtitle': 'एनीमेशन के तेज़ माइक्रो दृश्य',
                 'micro-previews-tip': 'ये एनीमेशन सिर्फ़ प्रीव्यू हैं। असली गेम में ये बहुत ज़्यादा शानदार होंगे।',
@@ -3796,6 +4030,12 @@
                 'follow-dev': 'ติดตามการพัฒนา',
                 'dev-badge': 'อยู่ระหว่างพัฒนา',
                 'dev-tooltip': 'เกมยังอยู่ระหว่างการพัฒนา',
+                'trust-site': 'เว็บไซต์ทางการของ Evades 3',
+                'trust-site-meta': 'โดเมนที่ยืนยันแล้ว: evades3.com',
+                'trust-https': 'การเชื่อมต่อ HTTPS ที่ปลอดภัย',
+                'trust-https-meta': 'ข้อมูลของคุณถูกเข้ารหัสระหว่างการส่ง',
+                'trust-community': 'ช่องทางทางการของโปรเจกต์',
+                'trust-community-meta': 'Discord ชุมชน (ยืนยันแล้ว)',
                 'showcase-title': 'โชว์เคสแอนิเมชัน',
                 'showcase-subtitle': 'ไมโครซีนแอนิเมชันแบบรวดเร็ว',
                 'micro-previews-tip': 'แอนิเมชันเหล่านี้เป็นเพียงพรีวิว ในเกมจริงจะเจ๋งกว่านี้มาก',
@@ -3843,6 +4083,12 @@
                 'follow-dev': 'Theo dõi quá trình phát triển',
                 'dev-badge': 'Đang phát triển',
                 'dev-tooltip': 'Trò chơi vẫn đang được phát triển',
+                'trust-site': 'Trang web chính thức của Evades 3',
+                'trust-site-meta': 'Tên miền đã xác minh: evades3.com',
+                'trust-https': 'Kết nối HTTPS bảo mật',
+                'trust-https-meta': 'Dữ liệu của bạn được mã hóa khi truyền',
+                'trust-community': 'Kênh chính thức của dự án',
+                'trust-community-meta': 'Discord cộng đồng (đã xác minh)',
                 'showcase-title': 'Trưng bày hoạt ảnh',
                 'showcase-subtitle': 'Các vi cảnh hoạt ảnh nhanh',
                 'micro-previews-tip': 'Những hoạt ảnh này chỉ là bản xem trước. Trong game thật sẽ còn ngầu hơn nhiều.',
@@ -3890,6 +4136,12 @@
                 'follow-dev': 'Ikuti pengembangan',
                 'dev-badge': 'Dalam Pengembangan',
                 'dev-tooltip': 'Game masih dalam pengembangan',
+                'trust-site': 'Situs resmi Evades 3',
+                'trust-site-meta': 'Domain terverifikasi: evades3.com',
+                'trust-https': 'Koneksi HTTPS aman',
+                'trust-https-meta': 'Data Anda dienkripsi saat transmisi',
+                'trust-community': 'Kanal resmi proyek',
+                'trust-community-meta': 'Discord komunitas (terverifikasi)',
                 'showcase-title': 'Etalase Animasi',
                 'showcase-subtitle': 'Mikro-scene animasi cepat',
                 'micro-previews-tip': 'Animasi ini hanya pratinjau. Di game sebenarnya akan jauh lebih keren.',
@@ -3936,6 +4188,12 @@
                 'follow-dev': 'Ikuti pembangunan',
                 'dev-badge': 'Dalam pembangunan',
                 'dev-tooltip': 'Permainan ini masih dalam pembangunan',
+                'trust-site': 'Laman rasmi Evades 3',
+                'trust-site-meta': 'Domain disahkan: evades3.com',
+                'trust-https': 'Sambungan HTTPS selamat',
+                'trust-https-meta': 'Data anda disulitkan semasa penghantaran',
+                'trust-community': 'Saluran rasmi projek',
+                'trust-community-meta': 'Discord komuniti (disahkan)',
                 'showcase-title': 'Etalase Animasi',
                 'showcase-subtitle': 'Mikro adegan animasi pantas',
                 'micro-previews-tip': 'Animasi ini hanyalah pratonton. Dalam permainan sebenar ia akan jauh lebih hebat.',
