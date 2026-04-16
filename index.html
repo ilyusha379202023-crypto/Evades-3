@@ -2181,6 +2181,160 @@
       text-decoration: underline;
     }
 
+    
+
+    /* ===== AUTH + PLAYER SYSTEM ===== */
+    .player-hud {
+      margin: 18px auto 0;
+      max-width: 980px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      position: relative;
+      z-index: 25;
+    }
+
+    .game-panel {
+      background: linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.05));
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+      backdrop-filter: blur(12px);
+      padding: 16px;
+      animation: panelAppear .5s cubic-bezier(.2,.9,.3,1);
+    }
+
+    .auth-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .auth-title {
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 0.06em;
+      font-size: 1.04rem;
+      color: #e8ffe9;
+      text-shadow: 0 0 14px rgba(120,255,176,0.45);
+    }
+
+    .auth-tabs { display: inline-flex; gap: 6px; }
+
+    .auth-tab,
+    .hud-action {
+      border: 1px solid rgba(255,255,255,0.26);
+      background: linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+      color: #f4fff4;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+
+    .auth-tab.active,
+    .hud-action:hover {
+      transform: translateY(-1px);
+      border-color: rgba(136,255,188,0.75);
+      box-shadow: 0 10px 20px rgba(40,150,90,0.3), 0 0 14px rgba(120,255,176,0.3);
+    }
+
+    .auth-fields {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .auth-input {
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      padding: 12px;
+      background: rgba(6,20,18,0.48);
+      color: #f1fff3;
+      font: 600 0.95rem 'Exo 2', sans-serif;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .auth-input:focus {
+      outline: none;
+      border-color: rgba(114,255,175,0.95);
+      box-shadow: 0 0 0 3px rgba(74,222,128,0.25);
+    }
+
+    .auth-submit {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.32);
+      border-radius: 10px;
+      padding: 12px;
+      background: linear-gradient(135deg, rgba(94,255,175,0.38), rgba(16,93,63,0.75));
+      color: #fff;
+      font: 800 0.95rem 'Orbitron', sans-serif;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+      transition: transform .2s ease, filter .2s ease;
+    }
+
+    .auth-submit:hover { transform: translateY(-1px); filter: brightness(1.06); }
+
+    .auth-status {
+      margin-top: 10px;
+      min-height: 20px;
+      font: 700 0.85rem 'Rajdhani', sans-serif;
+      color: #dbffe2;
+    }
+
+    .player-profile { display: none; }
+    .player-profile.is-visible { display: block; }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .profile-stat {
+      background: rgba(6, 24, 16, 0.45);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 10px;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .profile-stat .label { font-size: .74rem; opacity: .85; }
+    .profile-stat .value { font: 800 1.02rem 'Orbitron', sans-serif; margin-top: 4px; }
+
+    .hud-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .notifications-button { display: none; }
+    .notifications-button.is-visible { display: inline-flex; align-items: center; }
+
+    .notifications-panel {
+      display: none;
+      margin-top: 12px;
+      background: rgba(4, 16, 13, 0.7);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 12px;
+      padding: 10px;
+      animation: panelAppear .25s ease;
+    }
+    .notifications-panel.is-visible { display: block; }
+
+    @keyframes panelAppear {
+      from { opacity: 0; transform: translateY(8px) scale(.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    
   </style>
 </head>
 
@@ -2548,6 +2702,50 @@
       </div>
     </div>
 
+  
+    <section class="player-hud">
+      <div class="game-panel auth-panel" id="auth-panel">
+        <div class="auth-header">
+          <h3 class="auth-title" data-i18n="auth_title"></h3>
+          <div class="auth-tabs">
+            <button class="auth-tab active" id="tab-login" type="button" data-i18n="login_tab"></button>
+            <button class="auth-tab" id="tab-register" type="button" data-i18n="register_tab"></button>
+          </div>
+        </div>
+
+        <div class="auth-fields">
+          <input class="auth-input" id="auth-email" type="email" data-i18n-placeholder="email_placeholder" autocomplete="email" />
+          <input class="auth-input" id="auth-password" type="password" data-i18n-placeholder="password_placeholder" autocomplete="current-password" />
+          <input class="auth-input" id="auth-nickname" type="text" data-i18n-placeholder="nickname_placeholder" autocomplete="nickname" />
+        </div>
+
+        <button class="auth-submit" id="auth-submit" type="button" data-i18n="login_action"></button>
+        <p class="auth-status" id="auth-status"></p>
+      </div>
+
+      <div class="game-panel player-profile" id="player-profile">
+        <h3 class="auth-title" data-i18n="profile_title"></h3>
+        <p><strong data-i18n="profile_email"></strong>: <span id="profile-email">-</span></p>
+        <p><strong data-i18n="profile_nickname"></strong>: <span id="profile-nickname">-</span></p>
+
+        <div class="profile-grid">
+          <div class="profile-stat"><div class="label" data-i18n="profile_score"></div><div class="value" id="profile-score">0</div></div>
+          <div class="profile-stat"><div class="label" data-i18n="profile_level"></div><div class="value" id="profile-level">1</div></div>
+          <div class="profile-stat"><div class="label" data-i18n="profile_status"></div><div class="value" data-i18n="status_online"></div></div>
+        </div>
+
+        <div class="hud-actions">
+          <button class="hud-action notifications-button" id="notifications-button" type="button" data-i18n="notifications_button"></button>
+          <button class="hud-action" id="logout-button" type="button" data-i18n="logout_button"></button>
+        </div>
+
+        <div class="notifications-panel" id="notifications-panel">
+          <p data-i18n="notifications_text"></p>
+        </div>
+      </div>
+    </section>
+
+
     <div class="follow-dev-container">
       <a class="follow-dev-link" href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener" data-i18n="follow-dev">Следить за разработкой</a>
     </div>
@@ -2745,7 +2943,8 @@
     <footer class="site-footer">
     <p data-i18n="footer-contact">Есть вопросы? пишите нам: <a href="mailto:support@evades3.com">support@evades3.com</a></p>
   </footer>
-
+  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
         // Переводы (НЕ УДАЛЯТЬ — все языки сохранены)
         const translations = {
@@ -4232,6 +4431,56 @@
                 'feature8-text': 'Bersaing dengan pemain dari seluruh dunia'
             }
         };
+    
+
+    const authTranslations = {
+      ru: {
+        auth_title: 'Доступ игрока', login_tab: 'Вход', register_tab: 'Регистрация',
+        email_placeholder: 'Email', password_placeholder: 'Пароль', nickname_placeholder: 'Никнейм',
+        login_action: 'Войти', register_action: 'Создать аккаунт',
+        profile_title: 'Профиль игрока', profile_email: 'Email', profile_nickname: 'Никнейм',
+        profile_score: 'Счёт', profile_level: 'Уровень', profile_status: 'Статус', status_online: 'ONLINE',
+        notifications_button: 'Уведомления', notifications_text: 'Новых уведомлений пока нет.', logout_button: 'Выйти',
+        auth_missing_config: 'Заполните SUPABASE_URL и SUPABASE_KEY в коде.',
+        auth_need_nickname: 'Введите никнейм для регистрации.',
+        auth_register_ok: 'Регистрация успешна. Выполняем вход...',
+        auth_login_ok: 'Вход выполнен.',
+        auth_logout_ok: 'Вы вышли из аккаунта.',
+        auth_error: 'Ошибка авторизации: '
+      },
+      en: {
+        auth_title: 'Player Access', login_tab: 'Login', register_tab: 'Register',
+        email_placeholder: 'Email', password_placeholder: 'Password', nickname_placeholder: 'Nickname',
+        login_action: 'Sign In', register_action: 'Create Account',
+        profile_title: 'Player Profile', profile_email: 'Email', profile_nickname: 'Nickname',
+        profile_score: 'Score', profile_level: 'Level', profile_status: 'Status', status_online: 'ONLINE',
+        notifications_button: 'Notifications', notifications_text: 'No new notifications yet.', logout_button: 'Logout',
+        auth_missing_config: 'Set SUPABASE_URL and SUPABASE_KEY in the script.',
+        auth_need_nickname: 'Enter a nickname to register.',
+        auth_register_ok: 'Registration successful. Logging in...',
+        auth_login_ok: 'Login successful.',
+        auth_logout_ok: 'Logged out.',
+        auth_error: 'Auth error: '
+      },
+      uk: {
+        auth_title: 'Доступ гравця', login_tab: 'Вхід', register_tab: 'Реєстрація',
+        email_placeholder: 'Email', password_placeholder: 'Пароль', nickname_placeholder: 'Нікнейм',
+        login_action: 'Увійти', register_action: 'Створити акаунт',
+        profile_title: 'Профіль гравця', profile_email: 'Email', profile_nickname: 'Нікнейм',
+        profile_score: 'Рахунок', profile_level: 'Рівень', profile_status: 'Статус', status_online: 'ONLINE',
+        notifications_button: 'Сповіщення', notifications_text: 'Нових сповіщень поки немає.', logout_button: 'Вийти',
+        auth_missing_config: 'Вкажіть SUPABASE_URL і SUPABASE_KEY у скрипті.',
+        auth_need_nickname: 'Вкажіть нікнейм для реєстрації.',
+        auth_register_ok: 'Реєстрація успішна. Виконуємо вхід...',
+        auth_login_ok: 'Вхід успішний.',
+        auth_logout_ok: 'Ви вийшли з акаунта.',
+        auth_error: 'Помилка авторизації: '
+      }
+    };
+
+    Object.keys(authTranslations).forEach((lang) => {
+      translations[lang] = Object.assign({}, translations[lang] || {}, authTranslations[lang]);
+    });
 
     function applyTranslations(lang) {
       const elements = document.querySelectorAll('[data-i18n]');
@@ -4419,10 +4668,196 @@
       }
     }
 
+    function t(key) {
+      return (translations[currentLang] && translations[currentLang][key]) ||
+        (translations.en && translations.en[key]) || key;
+    }
+
+    function setLanguage(lang) {
+      changeLanguage(lang);
+    }
+
+    const SUPABASE_URL = window.SUPABASE_URL || 'https://YOUR_PROJECT.supabase.co';
+    const SUPABASE_KEY = window.SUPABASE_KEY || 'YOUR_PUBLIC_ANON_KEY';
+    const client = window.supabase?.createClient(SUPABASE_URL, SUPABASE_KEY);
+    let currentUser = null;
+    let currentPlayer = null;
+    
     window.addEventListener('DOMContentLoaded', () => {
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       monitorFPS();
+
+      const authPanel = document.getElementById('auth-panel');
+      const profilePanel = document.getElementById('player-profile');
+      const tabLogin = document.getElementById('tab-login');
+      const tabRegister = document.getElementById('tab-register');
+      const submitAuth = document.getElementById('auth-submit');
+      const inputEmail = document.getElementById('auth-email');
+      const inputPassword = document.getElementById('auth-password');
+      const inputNickname = document.getElementById('auth-nickname');
+      const authStatus = document.getElementById('auth-status');
+      const notificationsButton = document.getElementById('notifications-button');
+      const notificationsPanel = document.getElementById('notifications-panel');
+      const logoutButton = document.getElementById('logout-button');
+      const profileEmail = document.getElementById('profile-email');
+      const profileNickname = document.getElementById('profile-nickname');
+      const profileScore = document.getElementById('profile-score');
+      const profileLevel = document.getElementById('profile-level');
+      let authMode = 'login';
+
+      function applyTranslatedPlaceholders() {
+        document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+          const key = el.getAttribute('data-i18n-placeholder');
+          el.setAttribute('placeholder', t(key));
+        });
+      }
+
+      const originalChangeLanguage = changeLanguage;
+      changeLanguage = function(lang) {
+        originalChangeLanguage(lang);
+        applyTranslatedPlaceholders();
+        submitAuth.textContent = authMode === 'login' ? t('login_action') : t('register_action');
+      };
+
+      function setAuthMode(mode) {
+        authMode = mode;
+        tabLogin.classList.toggle('active', mode === 'login');
+        tabRegister.classList.toggle('active', mode === 'register');
+        inputNickname.style.display = mode === 'register' ? 'block' : 'none';
+        inputPassword.autocomplete = mode === 'register' ? 'new-password' : 'current-password';
+        submitAuth.textContent = mode === 'login' ? t('login_action') : t('register_action');
+      }
+
+      function setAuthStatus(message, isError = false) {
+        authStatus.textContent = message || '';
+        authStatus.style.color = isError ? '#ffd2d2' : '#dbffe2';
+      }
+
+      async function getPlayerData(userId) {
+        if (!client) return null;
+        const { data, error } = await client.from('players').select('id,email,nickname,score,level').eq('id', userId).single();
+        if (error) throw error;
+        currentPlayer = data;
+        profileEmail.textContent = data.email || '-';
+        profileNickname.textContent = data.nickname || '-';
+        profileScore.textContent = data.score ?? 0;
+        profileLevel.textContent = data.level ?? 1;
+        return data;
+      }
+
+      async function registerUser(email, password) {
+        if (!client || SUPABASE_URL.includes('YOUR_PROJECT')) {
+          setAuthStatus(t('auth_missing_config'), true);
+          return null;
+        }
+        if (!inputNickname.value.trim()) {
+          setAuthStatus(t('auth_need_nickname'), true);
+          return null;
+        }
+
+        const { data, error } = await client.auth.signUp({ email, password });
+        if (error) throw error;
+
+        const user = data.user;
+        if (user?.id) {
+          await client.from('players').upsert({
+            id: user.id,
+            email: user.email,
+            nickname: inputNickname.value.trim(),
+            score: 0,
+            level: 1
+          });
+        }
+
+        setAuthStatus(t('auth_register_ok'));
+        await loginUser(email, password);
+        return data;
+      }
+
+      async function loginUser(email, password) {
+        if (!client || SUPABASE_URL.includes('YOUR_PROJECT')) {
+          setAuthStatus(t('auth_missing_config'), true);
+          return null;
+        }
+        const { data, error } = await client.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        currentUser = data.user;
+        await getPlayerData(currentUser.id);
+        authPanel.style.display = 'none';
+        profilePanel.classList.add('is-visible');
+        notificationsButton.classList.add('is-visible');
+        setAuthStatus(t('auth_login_ok'));
+        return data;
+      }
+
+      async function logoutUser() {
+        if (!client) return;
+        await client.auth.signOut();
+        currentUser = null;
+        currentPlayer = null;
+        authPanel.style.display = 'block';
+        profilePanel.classList.remove('is-visible');
+        notificationsButton.classList.remove('is-visible');
+        notificationsPanel.classList.remove('is-visible');
+        setAuthStatus(t('auth_logout_ok'));
+      }
+
+      async function updateScore(score) {
+        if (!client || !currentUser) return;
+        await client.from('players').update({ score }).eq('id', currentUser.id);
+        profileScore.textContent = score;
+      }
+
+      async function updateLevel(level) {
+        if (!client || !currentUser) return;
+        await client.from('players').update({ level }).eq('id', currentUser.id);
+        profileLevel.textContent = level;
+      }
+
+      function toggleNotifications() {
+        notificationsPanel.classList.toggle('is-visible');
+      }
+
+      tabLogin.addEventListener('click', () => setAuthMode('login'));
+      tabRegister.addEventListener('click', () => setAuthMode('register'));
+      notificationsButton.addEventListener('click', toggleNotifications);
+      logoutButton.addEventListener('click', () => logoutUser().catch((e) => setAuthStatus(t('auth_error') + e.message, true)));
+
+      submitAuth.addEventListener('click', async () => {
+        const email = inputEmail.value.trim();
+        const password = inputPassword.value;
+        try {
+          if (authMode === 'register') await registerUser(email, password);
+          else await loginUser(email, password);
+        } catch (error) {
+          setAuthStatus(t('auth_error') + error.message, true);
+        }
+      });
+
+      if (client && !SUPABASE_URL.includes('YOUR_PROJECT')) {
+        client.auth.getSession().then(async ({ data }) => {
+          if (data.session?.user) {
+            currentUser = data.session.user;
+            await getPlayerData(currentUser.id);
+            authPanel.style.display = 'none';
+            profilePanel.classList.add('is-visible');
+            notificationsButton.classList.add('is-visible');
+          }
+        });
+      }
+
+      window.registerUser = registerUser;
+      window.loginUser = loginUser;
+      window.logoutUser = logoutUser;
+      window.getPlayerData = getPlayerData;
+      window.updateScore = updateScore;
+      window.updateLevel = updateLevel;
+      window.toggleNotifications = toggleNotifications;
+      window.setLanguage = setLanguage;
+      window.t = t;
+      setAuthMode('login');
+
 
       document.querySelectorAll('.lang-item').forEach(item => {
         item.addEventListener('click', () => {
