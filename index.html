@@ -2182,6 +2182,466 @@
     }
 
     
+
+    /* ===== AUTH BUTTONS (Вход / Регистрация) ===== */
+    .auth-buttons {
+      position: absolute;
+      top: 20px;
+      left: 160px;
+      z-index: 1000;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      user-select: none;
+    }
+
+    .auth-btn {
+      background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.15));
+      color: white;
+      padding: 12px 24px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: 900;
+      font-family: 'Exo 2', sans-serif;
+      letter-spacing: 1.5px;
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow:
+        6px 6px 16px rgba(0,0,0,0.3),
+        -3px -3px 10px rgba(255,255,255,0.1),
+        inset -2px -2px 6px rgba(0,0,0,0.2),
+        inset 2px 2px 6px rgba(255,255,255,0.2);
+    }
+
+    .auth-btn:hover {
+      background: linear-gradient(145deg, rgba(255,255,255,0.38), rgba(255,255,255,0.28));
+      transform: translateY(-2px);
+      box-shadow:
+        8px 8px 20px rgba(0,0,0,0.4),
+        -4px -4px 12px rgba(255,255,255,0.15),
+        inset -2px -2px 6px rgba(0,0,0,0.2),
+        inset 2px 2px 6px rgba(255,255,255,0.2);
+    }
+
+    .auth-btn:active { transform: translateY(0px); }
+
+    /* ===== USER PANEL (после входа) ===== */
+    .user-panel {
+      position: absolute;
+      top: 20px;
+      left: 160px;
+      z-index: 1000;
+      display: none;
+      gap: 10px;
+      align-items: center;
+      user-select: none;
+    }
+
+    .user-panel.is-visible { display: flex; }
+
+    /* Кнопка уведомлений */
+    .notif-btn {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.15));
+      border: 2px solid rgba(255,255,255,0.4);
+      color: white;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      transition: all 0.3s ease;
+      box-shadow:
+        4px 4px 12px rgba(0,0,0,0.3),
+        -2px -2px 8px rgba(255,255,255,0.1),
+        inset -1px -1px 4px rgba(0,0,0,0.2),
+        inset 1px 1px 4px rgba(255,255,255,0.2);
+    }
+
+    .notif-btn:hover {
+      background: linear-gradient(145deg, rgba(255,255,255,0.38), rgba(255,255,255,0.28));
+      transform: translateY(-2px);
+    }
+
+    .notif-btn .notif-tooltip {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background: rgba(10,20,30,0.92);
+      color: #fef6e8;
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-family: 'Exo 2', sans-serif;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      border: 1px solid rgba(255,255,255,0.2);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+    }
+
+    .notif-btn:hover .notif-tooltip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Кнопка профиля (аватар) */
+    .user-menu-wrap {
+      position: relative;
+      user-select: none;
+    }
+
+    .avatar-btn {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, rgba(255,255,255,0.28), rgba(255,255,255,0.15));
+      border: 2px solid rgba(255,255,255,0.45);
+      color: white;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      transition: all 0.3s ease;
+      box-shadow:
+        4px 4px 12px rgba(0,0,0,0.3),
+        -2px -2px 8px rgba(255,255,255,0.1),
+        inset -1px -1px 4px rgba(0,0,0,0.2),
+        inset 1px 1px 4px rgba(255,255,255,0.2);
+    }
+
+    .avatar-btn:hover {
+      background: linear-gradient(145deg, rgba(255,255,255,0.38), rgba(255,255,255,0.28));
+      transform: translateY(-2px);
+    }
+
+    /* Dropdown пользователя */
+    .user-dropdown {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) scale(0.96);
+      background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.12));
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 22px;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.25s ease;
+      border: 2px solid rgba(255,255,255,0.28);
+      box-shadow:
+        10px 10px 30px rgba(0,0,0,0.35),
+        -5px -5px 14px rgba(255,255,255,0.12),
+        inset -2px -2px 8px rgba(0,0,0,0.25),
+        inset 2px 2px 8px rgba(255,255,255,0.2);
+      min-width: 160px;
+      z-index: 200;
+    }
+
+    .user-menu-wrap:hover .user-dropdown {
+      max-height: 200px;
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+
+    .user-dropdown-item {
+      padding: 13px 22px;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Exo 2', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      transition: all 0.22s ease;
+      border-left: 3px solid transparent;
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+
+    .user-menu-wrap:hover .user-dropdown-item {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .user-dropdown-item:nth-child(1) { transition-delay: 40ms; }
+    .user-dropdown-item:nth-child(2) { transition-delay: 80ms; }
+
+    .user-dropdown-item:hover {
+      background: linear-gradient(90deg, rgba(74,222,128,0.2), transparent);
+      transform: translateX(4px);
+      border-left-color: rgba(74,222,128,0.6);
+    }
+
+    .user-dropdown-item .ddi-icon { font-size: 16px; }
+
+    /* ===== МОДАЛЬНЫЕ ОКНА ===== */
+    .e3-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.28s ease;
+    }
+
+    .e3-overlay.is-open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .e3-modal {
+      background: linear-gradient(145deg, rgba(20,55,35,0.97), rgba(10,30,20,0.99));
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 28px;
+      padding: 40px 44px;
+      width: min(460px, 94vw);
+      position: relative;
+      box-shadow:
+        0 30px 80px rgba(0,0,0,0.7),
+        inset 0 1px 0 rgba(255,255,255,0.15);
+      transform: scale(0.94) translateY(12px);
+      transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.28s ease;
+      opacity: 0;
+    }
+
+    .e3-overlay.is-open .e3-modal {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+
+    .e3-modal-close {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.8);
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      line-height: 1;
+    }
+    .e3-modal-close:hover { background: rgba(255,255,255,0.22); color: #fff; }
+
+    .e3-modal-title {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 28px;
+      text-align: center;
+      letter-spacing: 1.5px;
+      text-shadow: 0 0 30px rgba(255,255,255,0.2);
+    }
+
+    .e3-form-group {
+      margin-bottom: 16px;
+    }
+
+    .e3-form-group label {
+      display: block;
+      color: rgba(255,255,255,0.7);
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Exo 2', sans-serif;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .e3-input {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.08);
+      border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 15px;
+      font-family: 'Exo 2', sans-serif;
+      outline: none;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .e3-input:focus {
+      border-color: rgba(74,222,128,0.6);
+      background: rgba(255,255,255,0.12);
+    }
+
+    .e3-input::placeholder { color: rgba(255,255,255,0.35); }
+
+    .e3-submit-btn {
+      width: 100%;
+      margin-top: 22px;
+      background: linear-gradient(180deg, #5ae890 0%, #2ac86a 45%, #1da558 100%);
+      color: #052918;
+      padding: 15px;
+      font-size: 17px;
+      font-weight: 900;
+      font-family: 'Exo 2', sans-serif;
+      letter-spacing: 2px;
+      border: 0;
+      border-radius: 50px;
+      cursor: pointer;
+      position: relative;
+      box-shadow:
+        0 10px 0 #127a3a,
+        0 14px 22px rgba(0,0,0,0.45),
+        inset 0 1px 0 rgba(255,255,255,0.5),
+        inset 0 -6px 12px rgba(0,0,0,0.25);
+      transition: filter 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+    }
+
+    .e3-submit-btn:hover {
+      filter: brightness(1.08);
+      box-shadow:
+        0 10px 0 #127a3a,
+        0 16px 28px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.6),
+        inset 0 -8px 14px rgba(0,0,0,0.3);
+    }
+
+    .e3-submit-btn:active { transform: translateY(2px); }
+
+    .e3-submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      filter: none;
+    }
+
+    .e3-modal-error {
+      color: #ff7070;
+      font-size: 13px;
+      font-family: 'Exo 2', sans-serif;
+      text-align: center;
+      margin-top: 12px;
+      min-height: 18px;
+    }
+
+    .e3-modal-success {
+      color: #7fffb8;
+      font-size: 13px;
+      font-family: 'Exo 2', sans-serif;
+      text-align: center;
+      margin-top: 12px;
+      min-height: 18px;
+    }
+
+    /* Профиль: поля */
+    .e3-profile-field {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 18px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.13);
+      border-radius: 14px;
+      margin-bottom: 10px;
+      font-family: 'Exo 2', sans-serif;
+    }
+
+    .e3-profile-label {
+      color: rgba(255,255,255,0.55);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .e3-profile-value {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* Confirm modal (выход) */
+    .e3-confirm-text {
+      color: rgba(255,255,255,0.88);
+      font-size: 17px;
+      font-family: 'Exo 2', sans-serif;
+      text-align: center;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .e3-confirm-btns {
+      display: flex;
+      gap: 14px;
+    }
+
+    .e3-confirm-btn {
+      flex: 1;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: 900;
+      font-family: 'Exo 2', sans-serif;
+      letter-spacing: 1.5px;
+      border: 0;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: filter 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    }
+
+    .e3-confirm-btn:active { transform: translateY(2px); }
+
+    .e3-confirm-btn--yes {
+      background: linear-gradient(180deg, #5ae890 0%, #2ac86a 45%, #1da558 100%);
+      color: #052918;
+      box-shadow:
+        0 8px 0 #127a3a,
+        0 12px 20px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.5);
+    }
+
+    .e3-confirm-btn--yes:hover {
+      filter: brightness(1.1);
+      box-shadow:
+        0 8px 0 #127a3a,
+        0 14px 26px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.6);
+    }
+
+    .e3-confirm-btn--cancel {
+      background: linear-gradient(145deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+      color: #fff;
+      border: 2px solid rgba(255,255,255,0.3);
+      box-shadow:
+        0 8px 0 rgba(0,0,0,0.25),
+        0 12px 20px rgba(0,0,0,0.3);
+    }
+
+    .e3-confirm-btn--cancel:hover {
+      background: linear-gradient(145deg, rgba(255,255,255,0.3), rgba(255,255,255,0.18));
+    }
   </style>
 </head>
 
@@ -2295,6 +2755,114 @@
   <div class="early-access-banner" data-i18n="early-access">*Ранний доступ</div>
 
   <img class="logo-image" src="logo.png" alt="Evades 3 logo" />
+
+  <!-- ===== AUTH BUTTONS (гостевой режим) ===== -->
+  <div class="auth-buttons" id="authButtons">
+    <button class="auth-btn" id="btnLogin" data-i18n="auth-login">Вход</button>
+    <button class="auth-btn" id="btnRegister" data-i18n="auth-register">Регистрация</button>
+  </div>
+
+  <!-- ===== USER PANEL (после входа) ===== -->
+  <div class="user-panel" id="userPanel">
+    <!-- Уведомления -->
+    <button class="notif-btn" aria-label="Notifications">
+      🔔
+      <span class="notif-tooltip" data-i18n="auth-notif-empty">Пока, пусто</span>
+    </button>
+    <!-- Аватар + дропдаун -->
+    <div class="user-menu-wrap">
+      <button class="avatar-btn" aria-label="User menu">👤</button>
+      <div class="user-dropdown">
+        <div class="user-dropdown-item" id="ddProfile">
+          <span class="ddi-icon">🧑</span>
+          <span data-i18n="auth-profile">Профиль</span>
+        </div>
+        <div class="user-dropdown-item" id="ddLogout">
+          <span class="ddi-icon">🚪</span>
+          <span data-i18n="auth-logout">Выйти</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: ВХОД ===== -->
+  <div class="e3-overlay" id="modalLogin">
+    <div class="e3-modal" role="dialog" aria-modal="true">
+      <button class="e3-modal-close" data-close="modalLogin">✕</button>
+      <div class="e3-modal-title" data-i18n="auth-login">Вход</div>
+      <form id="formLogin" autocomplete="on">
+        <div class="e3-form-group">
+          <label for="loginEmail">Email</label>
+          <input class="e3-input" id="loginEmail" type="email" autocomplete="email" placeholder="you@example.com" required />
+        </div>
+        <div class="e3-form-group">
+          <label for="loginPassword" data-i18n="auth-password">Пароль</label>
+          <input class="e3-input" id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••" required />
+        </div>
+        <button class="e3-submit-btn" type="submit" data-i18n="auth-login">Вход</button>
+        <div class="e3-modal-error" id="loginError"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: РЕГИСТРАЦИЯ ===== -->
+  <div class="e3-overlay" id="modalRegister">
+    <div class="e3-modal" role="dialog" aria-modal="true">
+      <button class="e3-modal-close" data-close="modalRegister">✕</button>
+      <div class="e3-modal-title" data-i18n="auth-register">Регистрация</div>
+      <form id="formRegister" autocomplete="on">
+        <div class="e3-form-group">
+          <label for="regEmail">Email</label>
+          <input class="e3-input" id="regEmail" type="email" autocomplete="email" placeholder="you@example.com" required />
+        </div>
+        <div class="e3-form-group">
+          <label for="regPassword" data-i18n="auth-password">Пароль</label>
+          <input class="e3-input" id="regPassword" type="password" autocomplete="new-password" placeholder="••••••••" required />
+        </div>
+        <button class="e3-submit-btn" type="submit" data-i18n="auth-register">Регистрация</button>
+        <div class="e3-modal-error" id="registerError"></div>
+        <div class="e3-modal-success" id="registerSuccess"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: ПРОФИЛЬ ===== -->
+  <div class="e3-overlay" id="modalProfile">
+    <div class="e3-modal" role="dialog" aria-modal="true">
+      <button class="e3-modal-close" data-close="modalProfile">✕</button>
+      <div class="e3-modal-title" data-i18n="auth-profile">Профиль</div>
+      <div class="e3-profile-field">
+        <span class="e3-profile-label">Email</span>
+        <span class="e3-profile-value" id="profileEmail">—</span>
+      </div>
+      <div class="e3-profile-field">
+        <span class="e3-profile-label" data-i18n="auth-nickname">Никнейм</span>
+        <span class="e3-profile-value" id="profileNickname">—</span>
+      </div>
+      <div class="e3-profile-field">
+        <span class="e3-profile-label" data-i18n="auth-score">Очки</span>
+        <span class="e3-profile-value" id="profileScore">0</span>
+      </div>
+      <div class="e3-profile-field">
+        <span class="e3-profile-label" data-i18n="auth-level">Уровень</span>
+        <span class="e3-profile-value" id="profileLevel">1</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: ПОДТВЕРЖДЕНИЕ ВЫХОДА ===== -->
+  <div class="e3-overlay" id="modalLogout">
+    <div class="e3-modal" role="dialog" aria-modal="true">
+      <button class="e3-modal-close" data-close="modalLogout">✕</button>
+      <div class="e3-modal-title" data-i18n="auth-logout">Выйти</div>
+      <div class="e3-confirm-text" data-i18n="auth-logout-confirm">Вы действительно хотите выйти?</div>
+      <div class="e3-confirm-btns">
+        <button class="e3-confirm-btn e3-confirm-btn--yes" id="confirmLogoutYes" data-i18n="auth-yes">Да</button>
+        <button class="e3-confirm-btn e3-confirm-btn--cancel" data-close="modalLogout" data-i18n="auth-cancel">Отмена</button>
+      </div>
+    </div>
+  </div>
+
 
   <!-- Меню языков -->
   <div class="language-menu">
@@ -2804,6 +3372,19 @@
                 'feature7-text': 'Поднимайся по лестнице от новичка до легенды',
                 'feature8-title': 'Глобальные битвы',
                 'feature8-text': 'Соревнуйся с игроками со всех уголков мира'
+                'auth-login': 'Вход',
+                'auth-register': 'Регистрация',
+                'auth-profile': 'Профиль',
+                'auth-logout': 'Выйти',
+                'auth-notifications': 'Уведомления',
+                'auth-notif-empty': 'Пока, пусто',
+                'auth-logout-confirm': 'Вы действительно хотите выйти?',
+                'auth-yes': 'Да',
+                'auth-cancel': 'Отмена',
+                'auth-password': 'Пароль',
+                'auth-nickname': 'Никнейм',
+                'auth-score': 'Очки',
+                'auth-level': 'Уровень',
             },
             en: {
                 'languages': 'Languages ▼',
@@ -2857,6 +3438,19 @@
                 'feature7-text': 'Climb the ladder from rookie to legend with every victory',
                 'feature8-title': 'Global Battles',
                 'feature8-text': 'Compete with players from every corner of the globe'
+                'auth-login': 'Login',
+                'auth-register': 'Register',
+                'auth-profile': 'Profile',
+                'auth-logout': 'Logout',
+                'auth-notifications': 'Notifications',
+                'auth-notif-empty': 'Nothing yet',
+                'auth-logout-confirm': 'Do you really want to log out?',
+                'auth-yes': 'Yes',
+                'auth-cancel': 'Cancel',
+                'auth-password': 'Password',
+                'auth-nickname': 'Nickname',
+                'auth-score': 'Score',
+                'auth-level': 'Level',
             },
             uk: {
                 'languages': 'Мови ▼',
@@ -2910,6 +3504,19 @@
                 'feature7-text': 'Підіймайся драбиною від новачка до легенди',
                 'feature8-title': 'Глобальні битви',
                 'feature8-text': 'Змагайся з гравцями з усього світу'
+                'auth-login': 'Вхід',
+                'auth-register': 'Реєстрація',
+                'auth-profile': 'Профіль',
+                'auth-logout': 'Вийти',
+                'auth-notifications': 'Сповіщення',
+                'auth-notif-empty': 'Поки порожньо',
+                'auth-logout-confirm': 'Ви справді хочете вийти?',
+                'auth-yes': 'Так',
+                'auth-cancel': 'Скасувати',
+                'auth-password': 'Пароль',
+                'auth-nickname': 'Нікнейм',
+                'auth-score': 'Очки',
+                'auth-level': 'Рівень',
             },
             de: {
                 'languages': 'Sprachen ▼',
@@ -2963,6 +3570,19 @@
                 'feature7-text': 'Steige vom Neuling zur Legende auf',
                 'feature8-title': 'Globale Kämpfe',
                 'feature8-text': 'Miss dich mit Spielern aus aller Welt'
+                'auth-login': 'Anmelden',
+                'auth-register': 'Registrieren',
+                'auth-profile': 'Profil',
+                'auth-logout': 'Abmelden',
+                'auth-notifications': 'Benachrichtigungen',
+                'auth-notif-empty': 'Noch nichts hier',
+                'auth-logout-confirm': 'Möchtest du dich wirklich abmelden?',
+                'auth-yes': 'Ja',
+                'auth-cancel': 'Abbrechen',
+                'auth-password': 'Passwort',
+                'auth-nickname': 'Nickname',
+                'auth-score': 'Punkte',
+                'auth-level': 'Level',
             },
             es: {
                 'languages': 'Idiomas ▼',
@@ -3016,6 +3636,19 @@
                 'feature7-text': 'Asciende de novato a leyenda con cada victoria',
                 'feature8-title': 'Batallas Globales',
                 'feature8-text': 'Compite con jugadores de todo el mundo'
+                'auth-login': 'Iniciar sesión',
+                'auth-register': 'Registrarse',
+                'auth-profile': 'Perfil',
+                'auth-logout': 'Cerrar sesión',
+                'auth-notifications': 'Notificaciones',
+                'auth-notif-empty': 'Nada por ahora',
+                'auth-logout-confirm': '¿Realmente quieres cerrar sesión?',
+                'auth-yes': 'Sí',
+                'auth-cancel': 'Cancelar',
+                'auth-password': 'Contraseña',
+                'auth-nickname': 'Apodo',
+                'auth-score': 'Puntuación',
+                'auth-level': 'Nivel',
             },
             fr: {
                 'languages': 'Langues ▼',
@@ -3069,6 +3702,19 @@
                 'feature7-text': 'Gravissez les échelons du novice à la légende',
                 'feature8-title': 'Batailles Mondiales',
                 'feature8-text': 'Affrontez des joueurs du monde entier'
+                'auth-login': 'Connexion',
+                'auth-register': 'S\'inscrire',
+                'auth-profile': 'Profil',
+                'auth-logout': 'Déconnexion',
+                'auth-notifications': 'Notifications',
+                'auth-notif-empty': 'Rien pour l\'instant',
+                'auth-logout-confirm': 'Voulez-vous vraiment vous déconnecter ?',
+                'auth-yes': 'Oui',
+                'auth-cancel': 'Annuler',
+                'auth-password': 'Mot de passe',
+                'auth-nickname': 'Pseudo',
+                'auth-score': 'Score',
+                'auth-level': 'Niveau',
             },
             it: {
                 'languages': 'Lingue ▼',
@@ -3122,6 +3768,19 @@
                 'feature7-text': 'Scala la classifica da principiante a leggenda',
                 'feature8-title': 'Battaglie Globali',
                 'feature8-text': 'Sfida giocatori da ogni parte del mondo'
+                'auth-login': 'Accedi',
+                'auth-register': 'Registrati',
+                'auth-profile': 'Profilo',
+                'auth-logout': 'Esci',
+                'auth-notifications': 'Notifiche',
+                'auth-notif-empty': 'Niente per ora',
+                'auth-logout-confirm': 'Vuoi davvero uscire?',
+                'auth-yes': 'Sì',
+                'auth-cancel': 'Annulla',
+                'auth-password': 'Password',
+                'auth-nickname': 'Nickname',
+                'auth-score': 'Punteggio',
+                'auth-level': 'Livello',
             },
             pt: {
                 'languages': 'Idiomas ▼',
@@ -3175,6 +3834,19 @@
                 'feature7-text': 'Suba do novato à lenda a cada vitória',
                 'feature8-title': 'Batalhas Globais',
                 'feature8-text': 'Compita com jogadores do mundo todo'
+                'auth-login': 'Entrar',
+                'auth-register': 'Registrar',
+                'auth-profile': 'Perfil',
+                'auth-logout': 'Sair',
+                'auth-notifications': 'Notificações',
+                'auth-notif-empty': 'Nada ainda',
+                'auth-logout-confirm': 'Tem certeza que deseja sair?',
+                'auth-yes': 'Sim',
+                'auth-cancel': 'Cancelar',
+                'auth-password': 'Senha',
+                'auth-nickname': 'Apelido',
+                'auth-score': 'Pontuação',
+                'auth-level': 'Nível',
             },
             pl: {
                 'languages': 'Języki ▼',
@@ -3228,6 +3900,19 @@
                 'feature7-text': 'Wspinaj się od nowicjusza do legendy',
                 'feature8-title': 'Globalne Bitwy',
                 'feature8-text': 'Rywalizuj z graczami z całego świata'
+                'auth-login': 'Zaloguj się',
+                'auth-register': 'Zarejestruj się',
+                'auth-profile': 'Profil',
+                'auth-logout': 'Wyloguj się',
+                'auth-notifications': 'Powiadomienia',
+                'auth-notif-empty': 'Na razie nic',
+                'auth-logout-confirm': 'Czy na pewno chcesz się wylogować?',
+                'auth-yes': 'Tak',
+                'auth-cancel': 'Anuluj',
+                'auth-password': 'Hasło',
+                'auth-nickname': 'Pseudonim',
+                'auth-score': 'Wynik',
+                'auth-level': 'Poziom',
             },
             tr: {
                 'languages': 'Diller ▼',
@@ -3280,6 +3965,19 @@
                 'feature7-text': 'Çaylaktan efsaneye doğru sıralamada yüksel',
                 'feature8-title': 'Küresel Savaşlar',
                 'feature8-text': 'Dünyanın dört bir yanındaki oyuncularla yarış'
+                'auth-login': 'Giriş Yap',
+                'auth-register': 'Kayıt Ol',
+                'auth-profile': 'Profil',
+                'auth-logout': 'Çıkış Yap',
+                'auth-notifications': 'Bildirimler',
+                'auth-notif-empty': 'Henüz bir şey yok',
+                'auth-logout-confirm': 'Gerçekten çıkmak istiyor musunuz?',
+                'auth-yes': 'Evet',
+                'auth-cancel': 'İptal',
+                'auth-password': 'Şifre',
+                'auth-nickname': 'Takma Ad',
+                'auth-score': 'Puan',
+                'auth-level': 'Seviye',
             },
             nl: {
                 'languages': 'Talen ▼',
@@ -3333,6 +4031,19 @@
                 'feature7-text': 'Klim van rookie naar legende met elke overwinning',
                 'feature8-title': 'Wereldwijde Gevechten',
                 'feature8-text': 'Strijd tegen spelers uit alle hoeken van de wereld'
+                'auth-login': 'Inloggen',
+                'auth-register': 'Registreren',
+                'auth-profile': 'Profiel',
+                'auth-logout': 'Uitloggen',
+                'auth-notifications': 'Meldingen',
+                'auth-notif-empty': 'Nog niets hier',
+                'auth-logout-confirm': 'Wil je echt uitloggen?',
+                'auth-yes': 'Ja',
+                'auth-cancel': 'Annuleren',
+                'auth-password': 'Wachtwoord',
+                'auth-nickname': 'Bijnaam',
+                'auth-score': 'Score',
+                'auth-level': 'Niveau',
             },
             sv: {
                 'languages': 'Språk ▼',
@@ -3386,6 +4097,19 @@
                 'feature7-text': 'Klättra från nybörjare till legend',
                 'feature8-title': 'Globala Strider',
                 'feature8-text': 'Tävlingsspela mot spelare från hela världen'
+                'auth-login': 'Logga in',
+                'auth-register': 'Registrera',
+                'auth-profile': 'Profil',
+                'auth-logout': 'Logga ut',
+                'auth-notifications': 'Aviseringar',
+                'auth-notif-empty': 'Inget än',
+                'auth-logout-confirm': 'Vill du verkligen logga ut?',
+                'auth-yes': 'Ja',
+                'auth-cancel': 'Avbryt',
+                'auth-password': 'Lösenord',
+                'auth-nickname': 'Smeknamn',
+                'auth-score': 'Poäng',
+                'auth-level': 'Nivå',
             },
             no: {
                 'languages': 'Språk ▼',
@@ -3439,6 +4163,19 @@
                 'feature7-text': 'Klatre fra nybegynner til legende',
                 'feature8-title': 'Globale Kamper',
                 'feature8-text': 'Konkurrer med spillere fra hele verden'
+                'auth-login': 'Logg inn',
+                'auth-register': 'Registrer deg',
+                'auth-profile': 'Profil',
+                'auth-logout': 'Logg ut',
+                'auth-notifications': 'Varsler',
+                'auth-notif-empty': 'Ingenting ennå',
+                'auth-logout-confirm': 'Vil du virkelig logge ut?',
+                'auth-yes': 'Ja',
+                'auth-cancel': 'Avbryt',
+                'auth-password': 'Passord',
+                'auth-nickname': 'Kallenavn',
+                'auth-score': 'Poeng',
+                'auth-level': 'Nivå',
             },
             fi: {
                 'languages': 'Kielet ▼',
@@ -3492,6 +4229,19 @@
                 'feature7-text': 'Nouse tulokkaasta legendaksi voittojen myötä',
                 'feature8-title': 'Globaalit Taistelut',
                 'feature8-text': 'Kisaa pelaajia vastaan kaikkialta maailmasta'
+                'auth-login': 'Kirjaudu',
+                'auth-register': 'Rekisteröidy',
+                'auth-profile': 'Profiili',
+                'auth-logout': 'Kirjaudu ulos',
+                'auth-notifications': 'Ilmoitukset',
+                'auth-notif-empty': 'Ei vielä mitään',
+                'auth-logout-confirm': 'Haluatko todella kirjautua ulos?',
+                'auth-yes': 'Kyllä',
+                'auth-cancel': 'Peruuta',
+                'auth-password': 'Salasana',
+                'auth-nickname': 'Nimimerkki',
+                'auth-score': 'Pisteet',
+                'auth-level': 'Taso',
             },
             da: {
                 'languages': 'Sprog ▼',
@@ -3545,6 +4295,19 @@
                 'feature7-text': 'Klatr fra nybegynder til legende',
                 'feature8-title': 'Globale Kampe',
                 'feature8-text': 'Konkurrér mod spillere fra hele verden'
+                'auth-login': 'Log ind',
+                'auth-register': 'Tilmeld dig',
+                'auth-profile': 'Profil',
+                'auth-logout': 'Log ud',
+                'auth-notifications': 'Notifikationer',
+                'auth-notif-empty': 'Intet endnu',
+                'auth-logout-confirm': 'Er du sikker på, at du vil logge ud?',
+                'auth-yes': 'Ja',
+                'auth-cancel': 'Annuller',
+                'auth-password': 'Adgangskode',
+                'auth-nickname': 'Kaldenavn',
+                'auth-score': 'Score',
+                'auth-level': 'Niveau',
             },
             cs: {
                 'languages': 'Jazyky ▼',
@@ -3598,6 +4361,19 @@
                 'feature7-text': 'Stoupej od nováčka k legendě',
                 'feature8-title': 'Globální bitvy',
                 'feature8-text': 'Soutěž s hráči z celého světa'
+                'auth-login': 'Přihlásit se',
+                'auth-register': 'Registrovat se',
+                'auth-profile': 'Profil',
+                'auth-logout': 'Odhlásit se',
+                'auth-notifications': 'Oznámení',
+                'auth-notif-empty': 'Zatím nic',
+                'auth-logout-confirm': 'Opravdu se chcete odhlásit?',
+                'auth-yes': 'Ano',
+                'auth-cancel': 'Zrušit',
+                'auth-password': 'Heslo',
+                'auth-nickname': 'Přezdívka',
+                'auth-score': 'Skóre',
+                'auth-level': 'Úroveň',
             },
             ro: {
                 'languages': 'Limbi ▼',
@@ -3651,6 +4427,19 @@
                 'feature7-text': 'Urcă de la începător la legendă',
                 'feature8-title': 'Bătălii Globale',
                 'feature8-text': 'Concurează cu jucători din toată lumea'
+                'auth-login': 'Autentificare',
+                'auth-register': 'Înregistrare',
+                'auth-profile': 'Profil',
+                'auth-logout': 'Deconectare',
+                'auth-notifications': 'Notificări',
+                'auth-notif-empty': 'Nimic deocamdată',
+                'auth-logout-confirm': 'Chiar vrei să te deconectezi?',
+                'auth-yes': 'Da',
+                'auth-cancel': 'Anulare',
+                'auth-password': 'Parolă',
+                'auth-nickname': 'Pseudonim',
+                'auth-score': 'Scor',
+                'auth-level': 'Nivel',
             },
             hu: {
                 'languages': 'Nyelvek ▼',
@@ -3704,6 +4493,19 @@
                 'feature7-text': 'Haladj az újonctól a legendáig',
                 'feature8-title': 'Globális Csaták',
                 'feature8-text': 'Versenyezz a világ minden tájáról érkező játékosokkal'
+                'auth-login': 'Bejelentkezés',
+                'auth-register': 'Regisztráció',
+                'auth-profile': 'Profil',
+                'auth-logout': 'Kijelentkezés',
+                'auth-notifications': 'Értesítések',
+                'auth-notif-empty': 'Még semmi',
+                'auth-logout-confirm': 'Biztosan ki szeretnél jelentkezni?',
+                'auth-yes': 'Igen',
+                'auth-cancel': 'Mégsem',
+                'auth-password': 'Jelszó',
+                'auth-nickname': 'Becenév',
+                'auth-score': 'Pontszám',
+                'auth-level': 'Szint',
             },
             el: {
                 'languages': 'Γλώσσες ▼',
@@ -3757,6 +4559,19 @@
                 'feature7-text': 'Ανέβα από αρχάριος σε θρύλο',
                 'feature8-title': 'Παγκόσμιες Μάχες',
                 'feature8-text': 'Ανταγωνίσου παίκτες από όλο τον κόσμο'
+                'auth-login': 'Σύνδεση',
+                'auth-register': 'Εγγραφή',
+                'auth-profile': 'Προφίλ',
+                'auth-logout': 'Αποσύνδεση',
+                'auth-notifications': 'Ειδοποιήσεις',
+                'auth-notif-empty': 'Τίποτα ακόμα',
+                'auth-logout-confirm': 'Θέλεις σίγουρα να αποσυνδεθείς;',
+                'auth-yes': 'Ναι',
+                'auth-cancel': 'Ακύρωση',
+                'auth-password': 'Κωδικός',
+                'auth-nickname': 'Ψευδώνυμο',
+                'auth-score': 'Βαθμολογία',
+                'auth-level': 'Επίπεδο',
             },
             ja: {
                 'languages': '言語 ▼',
@@ -3810,6 +4625,19 @@
                 'feature7-text': '勝利を重ねてルーキーからレジェンドへ',
                 'feature8-title': 'グローバルバトル',
                 'feature8-text': '世界中のプレイヤーと競い合おう'
+                'auth-login': 'ログイン',
+                'auth-register': '登録',
+                'auth-profile': 'プロフィール',
+                'auth-logout': 'ログアウト',
+                'auth-notifications': '通知',
+                'auth-notif-empty': 'まだ何もありません',
+                'auth-logout-confirm': '本当にログアウトしますか？',
+                'auth-yes': 'はい',
+                'auth-cancel': 'キャンセル',
+                'auth-password': 'パスワード',
+                'auth-nickname': 'ニックネーム',
+                'auth-score': 'スコア',
+                'auth-level': 'レベル',
             },
             zh: {
                 'languages': '语言 ▼',
@@ -3863,6 +4691,19 @@
                 'feature7-text': '从新手一路攀升到传奇',
                 'feature8-title': '全球对战',
                 'feature8-text': '与世界各地的玩家同场竞技'
+                'auth-login': '登录',
+                'auth-register': '注册',
+                'auth-profile': '个人资料',
+                'auth-logout': '退出',
+                'auth-notifications': '通知',
+                'auth-notif-empty': '暂无内容',
+                'auth-logout-confirm': '您确定要退出吗？',
+                'auth-yes': '是',
+                'auth-cancel': '取消',
+                'auth-password': '密码',
+                'auth-nickname': '昵称',
+                'auth-score': '分数',
+                'auth-level': '等级',
             },
             ko: {
                 'languages': '언어 ▼',
@@ -3916,6 +4757,19 @@
                 'feature7-text': '루키에서 레전드까지 승격하세요',
                 'feature8-title': '글로벌 배틀',
                 'feature8-text': '전 세계 플레이어들과 경쟁하세요'
+                'auth-login': '로그인',
+                'auth-register': '회원가입',
+                'auth-profile': '프로필',
+                'auth-logout': '로그아웃',
+                'auth-notifications': '알림',
+                'auth-notif-empty': '아직 아무것도 없습니다',
+                'auth-logout-confirm': '정말 로그아웃하시겠습니까?',
+                'auth-yes': '예',
+                'auth-cancel': '취소',
+                'auth-password': '비밀번호',
+                'auth-nickname': '닉네임',
+                'auth-score': '점수',
+                'auth-level': '레벨',
             },
             ar: {
                 'languages': 'اللغات ▼',
@@ -3969,6 +4823,19 @@
                 'feature7-text': 'تدرّج من مبتدئ إلى أسطورة',
                 'feature8-title': 'معارك عالمية',
                 'feature8-text': 'نافس لاعبين من جميع أنحاء العالم'
+                'auth-login': 'تسجيل الدخول',
+                'auth-register': 'إنشاء حساب',
+                'auth-profile': 'الملف الشخصي',
+                'auth-logout': 'تسجيل الخروج',
+                'auth-notifications': 'الإشعارات',
+                'auth-notif-empty': 'لا شيء حتى الآن',
+                'auth-logout-confirm': 'هل تريد حقاً تسجيل الخروج؟',
+                'auth-yes': 'نعم',
+                'auth-cancel': 'إلغاء',
+                'auth-password': 'كلمة المرور',
+                'auth-nickname': 'اسم المستخدم',
+                'auth-score': 'النقاط',
+                'auth-level': 'المستوى',
             },
             hi: {
                 'languages': 'भाषाएँ ▼',
@@ -4022,6 +4889,19 @@
                 'feature7-text': 'रूकी से लीजेंड तक चढ़ते जाएँ',
                 'feature8-title': 'ग्लोबल बैटल्स',
                 'feature8-text': 'दुनिया भर के खिलाड़ियों से मुकाबला करें'
+                'auth-login': 'लॉग इन',
+                'auth-register': 'रजिस्टर',
+                'auth-profile': 'प्रोफाइल',
+                'auth-logout': 'लॉग आउट',
+                'auth-notifications': 'सूचनाएं',
+                'auth-notif-empty': 'अभी कुछ नहीं',
+                'auth-logout-confirm': 'क्या आप वाकई लॉग आउट करना चाहते हैं?',
+                'auth-yes': 'हाँ',
+                'auth-cancel': 'रद्द करें',
+                'auth-password': 'पासवर्ड',
+                'auth-nickname': 'उपनाम',
+                'auth-score': 'स्कोर',
+                'auth-level': 'स्तर',
             },
             th: {
                 'languages': 'ภาษา ▼',
@@ -4075,6 +4955,19 @@
                 'feature7-text': 'ไต่จากมือใหม่สู่ตำนาน',
                 'feature8-title': 'ศึกระดับโลก',
                 'feature8-text': 'แข่งขันกับผู้เล่นจากทั่วทุกมุมโลก'
+                'auth-login': 'เข้าสู่ระบบ',
+                'auth-register': 'ลงทะเบียน',
+                'auth-profile': 'โปรไฟล์',
+                'auth-logout': 'ออกจากระบบ',
+                'auth-notifications': 'การแจ้งเตือน',
+                'auth-notif-empty': 'ยังไม่มีอะไร',
+                'auth-logout-confirm': 'คุณต้องการออกจากระบบจริงๆ หรือ?',
+                'auth-yes': 'ใช่',
+                'auth-cancel': 'ยกเลิก',
+                'auth-password': 'รหัสผ่าน',
+                'auth-nickname': 'ชื่อเล่น',
+                'auth-score': 'คะแนน',
+                'auth-level': 'ระดับ',
             },
             vi: {
                 'languages': 'Ngôn ngữ ▼',
@@ -4128,6 +5021,19 @@
                 'feature7-text': 'Leo từ tân thủ đến huyền thoại qua từng chiến thắng',
                 'feature8-title': 'Trận chiến toàn cầu',
                 'feature8-text': 'So tài với người chơi từ khắp nơi trên thế giới'
+                'auth-login': 'Đăng nhập',
+                'auth-register': 'Đăng ký',
+                'auth-profile': 'Hồ sơ',
+                'auth-logout': 'Đăng xuất',
+                'auth-notifications': 'Thông báo',
+                'auth-notif-empty': 'Chưa có gì',
+                'auth-logout-confirm': 'Bạn có thực sự muốn đăng xuất không?',
+                'auth-yes': 'Có',
+                'auth-cancel': 'Hủy',
+                'auth-password': 'Mật khẩu',
+                'auth-nickname': 'Biệt danh',
+                'auth-score': 'Điểm số',
+                'auth-level': 'Cấp độ',
             },
             id: {
                 'languages': 'Bahasa ▼',
@@ -4181,6 +5087,19 @@
                 'feature7-text': 'Naik dari pemula hingga legenda',
                 'feature8-title': 'Pertempuran Global',
                 'feature8-text': 'Bersaing dengan pemain dari seluruh dunia'
+                'auth-login': 'Masuk',
+                'auth-register': 'Daftar',
+                'auth-profile': 'Profil',
+                'auth-logout': 'Keluar',
+                'auth-notifications': 'Notifikasi',
+                'auth-notif-empty': 'Belum ada apa-apa',
+                'auth-logout-confirm': 'Apakah Anda yakin ingin keluar?',
+                'auth-yes': 'Ya',
+                'auth-cancel': 'Batal',
+                'auth-password': 'Kata sandi',
+                'auth-nickname': 'Nama panggilan',
+                'auth-score': 'Skor',
+                'auth-level': 'Level',
             },
             ms: {
                 'languages': 'Bahasa ▼',
@@ -4233,6 +5152,19 @@
                 'feature7-text': 'Naik dari pemula ke legenda',
                 'feature8-title': 'Pertempuran Global',
                 'feature8-text': 'Bersaing dengan pemain dari seluruh dunia'
+                'auth-login': 'Log Masuk',
+                'auth-register': 'Daftar',
+                'auth-profile': 'Profil',
+                'auth-logout': 'Log Keluar',
+                'auth-notifications': 'Pemberitahuan',
+                'auth-notif-empty': 'Tiada apa lagi',
+                'auth-logout-confirm': 'Adakah anda benar-benar mahu log keluar?',
+                'auth-yes': 'Ya',
+                'auth-cancel': 'Batal',
+                'auth-password': 'Kata laluan',
+                'auth-nickname': 'Nama samaran',
+                'auth-score': 'Skor',
+                'auth-level': 'Tahap',
             }
         };
 
@@ -4780,6 +5712,264 @@
       setCursorType('arrow');
     })();
     // ====== КОНЕЦ КАСТОМНОГО КУРСОРА ======
+
+    /* ===== SUPABASE AUTH SYSTEM ===== */
+    (function() {
+      const SUPABASE_URL = "https://twgrguukftwtbnmnqgsd.supabase.co";
+      const SUPABASE_KEY = "sb_publishable_SPk07tDzNQTAFPDCsYwSoA_0UNzL8Zz";
+
+      let sbSession = null;
+
+      async function sbFetch(path, opts = {}) {
+        const url = SUPABASE_URL + path;
+        const token = sbSession ? sbSession.access_token : SUPABASE_KEY;
+        const headers = {
+          'apikey': SUPABASE_KEY,
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json',
+          ...(opts.headers || {})
+        };
+        const res = await fetch(url, { ...opts, headers });
+        const text = await res.text();
+        let data;
+        try { data = JSON.parse(text); } catch { data = text; }
+        if (!res.ok) throw data;
+        return data;
+      }
+
+      async function signUp(email, password) {
+        return await sbFetch('/auth/v1/signup', {
+          method: 'POST',
+          body: JSON.stringify({ email, password })
+        });
+      }
+
+      async function signIn(email, password) {
+        return await sbFetch('/auth/v1/token?grant_type=password', {
+          method: 'POST',
+          body: JSON.stringify({ email, password })
+        });
+      }
+
+      async function signOut() {
+        try { await sbFetch('/auth/v1/logout', { method: 'POST' }); } catch(e) {}
+        sbSession = null;
+        localStorage.removeItem('sb_session');
+      }
+
+      async function getPlayer(userId) {
+        try {
+          const data = await sbFetch('/rest/v1/players?id=eq.' + userId + '&limit=1', {
+            headers: { 'Accept': 'application/json' }
+          });
+          return Array.isArray(data) ? data[0] : null;
+        } catch(e) { return null; }
+      }
+
+      async function createPlayer(userId, email) {
+        const nickname = email.split('@')[0];
+        try {
+          await sbFetch('/rest/v1/players', {
+            method: 'POST',
+            headers: { 'Prefer': 'return=minimal' },
+            body: JSON.stringify({ id: userId, email, nickname, score: 0, level: 1 })
+          });
+        } catch(e) {}
+      }
+
+      async function ensurePlayer(userId, email) {
+        const existing = await getPlayer(userId);
+        if (!existing) await createPlayer(userId, email);
+        return await getPlayer(userId);
+      }
+
+      let currentUser = null;
+      let currentPlayer = null;
+
+      function t(key) {
+        if (typeof translations !== 'undefined' && typeof currentLang !== 'undefined') {
+          return (translations[currentLang] && translations[currentLang][key]) ||
+                 (translations['en'] && translations['en'][key]) || key;
+        }
+        return key;
+      }
+
+      function setUILoggedIn(player, email) {
+        const authBtns = document.getElementById('authButtons');
+        const panel = document.getElementById('userPanel');
+        if (authBtns) authBtns.style.display = 'none';
+        if (panel) panel.classList.add('is-visible');
+        document.getElementById('profileEmail').textContent = email || '—';
+        document.getElementById('profileNickname').textContent = (player && player.nickname) ? player.nickname : (email ? email.split('@')[0] : '—');
+        document.getElementById('profileScore').textContent = (player && player.score != null) ? player.score : 0;
+        document.getElementById('profileLevel').textContent = (player && player.level != null) ? player.level : 1;
+      }
+
+      function setUILoggedOut() {
+        const authBtns = document.getElementById('authButtons');
+        const panel = document.getElementById('userPanel');
+        if (authBtns) authBtns.style.display = 'flex';
+        if (panel) panel.classList.remove('is-visible');
+        currentUser = null;
+        currentPlayer = null;
+      }
+
+      function openModal(id) {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('is-open');
+      }
+
+      function closeModal(id) {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('is-open');
+      }
+
+      function clearForms() {
+        ['loginError','registerError','registerSuccess'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = '';
+        });
+      }
+
+      // Close overlay on backdrop click
+      document.querySelectorAll('.e3-overlay').forEach(overlay => {
+        overlay.addEventListener('click', e => {
+          if (e.target === overlay) closeModal(overlay.id);
+        });
+      });
+
+      // Close buttons
+      document.querySelectorAll('[data-close]').forEach(btn => {
+        btn.addEventListener('click', () => closeModal(btn.dataset.close));
+      });
+
+      // ESC
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          document.querySelectorAll('.e3-overlay.is-open').forEach(m => closeModal(m.id));
+        }
+      });
+
+      // Open login
+      document.getElementById('btnLogin').addEventListener('click', () => {
+        clearForms();
+        openModal('modalLogin');
+      });
+
+      // Open register
+      document.getElementById('btnRegister').addEventListener('click', () => {
+        clearForms();
+        openModal('modalRegister');
+      });
+
+      // Profile dropdown
+      document.getElementById('ddProfile').addEventListener('click', () => {
+        openModal('modalProfile');
+      });
+
+      // Logout dropdown
+      document.getElementById('ddLogout').addEventListener('click', () => {
+        openModal('modalLogout');
+      });
+
+      // Confirm logout
+      document.getElementById('confirmLogoutYes').addEventListener('click', async () => {
+        await signOut();
+        setUILoggedOut();
+        closeModal('modalLogout');
+      });
+
+      // LOGIN FORM
+      document.getElementById('formLogin').addEventListener('submit', async e => {
+        e.preventDefault();
+        const errEl = document.getElementById('loginError');
+        const btn = e.target.querySelector('button[type=submit]');
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        errEl.textContent = '';
+        btn.disabled = true;
+        btn.textContent = '...';
+        try {
+          const data = await signIn(email, password);
+          if (!data.access_token) throw { message: data.msg || data.error_description || 'Error' };
+          sbSession = data;
+          localStorage.setItem('sb_session', JSON.stringify(data));
+          currentUser = data.user;
+          currentPlayer = await ensurePlayer(currentUser.id, currentUser.email);
+          setUILoggedIn(currentPlayer, currentUser.email);
+          closeModal('modalLogin');
+          e.target.reset();
+        } catch(err) {
+          const msg = err.error_description || err.msg || err.message || (typeof err === 'string' ? err : 'Error');
+          errEl.textContent = msg;
+        } finally {
+          btn.disabled = false;
+          btn.setAttribute('data-i18n', 'auth-login');
+          btn.textContent = t('auth-login');
+        }
+      });
+
+      // REGISTER FORM
+      document.getElementById('formRegister').addEventListener('submit', async e => {
+        e.preventDefault();
+        const errEl = document.getElementById('registerError');
+        const sucEl = document.getElementById('registerSuccess');
+        const btn = e.target.querySelector('button[type=submit]');
+        const email = document.getElementById('regEmail').value.trim();
+        const password = document.getElementById('regPassword').value;
+        errEl.textContent = '';
+        sucEl.textContent = '';
+        btn.disabled = true;
+        btn.textContent = '...';
+        try {
+          const data = await signUp(email, password);
+          if (data.error) throw { message: data.error };
+          if (data.access_token) {
+            sbSession = data;
+            localStorage.setItem('sb_session', JSON.stringify(data));
+            currentUser = data.user;
+            currentPlayer = await ensurePlayer(currentUser.id, currentUser.email);
+            setUILoggedIn(currentPlayer, currentUser.email);
+            closeModal('modalRegister');
+          } else {
+            sucEl.textContent = 'Check your email to confirm registration.';
+          }
+          e.target.reset();
+        } catch(err) {
+          const msg = err.error_description || err.msg || err.message || (typeof err === 'string' ? err : 'Error');
+          errEl.textContent = msg;
+        } finally {
+          btn.disabled = false;
+          btn.setAttribute('data-i18n', 'auth-register');
+          btn.textContent = t('auth-register');
+        }
+      });
+
+      // Restore session
+      (function restoreSession() {
+        try {
+          const raw = localStorage.getItem('sb_session');
+          if (!raw) return;
+          const sess = JSON.parse(raw);
+          if (!sess.access_token || !sess.user) return;
+          if (sess.expires_at && typeof sess.expires_at === 'number' && sess.expires_at < Math.floor(Date.now()/1000)) {
+            localStorage.removeItem('sb_session');
+            return;
+          }
+          sbSession = sess;
+          currentUser = sess.user;
+          ensurePlayer(currentUser.id, currentUser.email).then(player => {
+            currentPlayer = player;
+            setUILoggedIn(player, currentUser.email);
+          });
+        } catch(e) {
+          localStorage.removeItem('sb_session');
+        }
+      })();
+
+    })();
+    /* ===== END SUPABASE AUTH SYSTEM ===== */
+
   </script>
 </body>
 </html>
