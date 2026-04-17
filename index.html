@@ -373,6 +373,14 @@
       transform: translateZ(0);
       will-change: transform;
     }
+    .logo-image:hover {
+      animation: logoHoverPulse 0.9s ease;
+    }
+    @keyframes logoHoverPulse {
+      0% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 8px 20px rgba(0,0,0,0.35)); }
+      50% { transform: scale(1.08) rotate(-1deg); filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.75)); }
+      100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 8px 20px rgba(0,0,0,0.35)); }
+    }
 
     /* ===== По-словная анимация subtitle ===== */
     .subtitle .word{
@@ -410,6 +418,15 @@
     .hero-anim .main-title{
       animation: titleMegaBurst 1.2s cubic-bezier(.08,1.3,.18,1) forwards;
       animation-delay: 1500ms;
+    }
+
+    .main-title.is-exploding {
+      animation: titlePop 0.65s cubic-bezier(.2,.95,.2,1);
+    }
+    @keyframes titlePop {
+      0% { transform: scale(1); filter: drop-shadow(0 0 12px rgba(255,215,0,0.55)); }
+      45% { transform: scale(1.16); filter: drop-shadow(0 0 40px rgba(255,215,0,0.95)); }
+      100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(255,215,0,0.65)); }
     }
 
     @keyframes titleMegaBurst{
@@ -738,6 +755,90 @@
       transform: translateX(50%) translateY(0);
     }
 
+        .user-menu-wrap {
+      position: fixed;
+      top: 20px;
+      right: 148px;
+      z-index: 1002;
+      opacity: 0;
+      transform: translateY(-6px);
+      pointer-events: none;
+      transition: opacity 0.28s ease, transform 0.28s ease;
+    }
+
+    .user-menu-wrap.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .profile-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.4);
+      background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.14));
+      color: #fff;
+      font-size: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        6px 6px 16px rgba(0,0,0,0.3),
+        -3px -3px 10px rgba(255,255,255,0.1),
+        inset -2px -2px 6px rgba(0,0,0,0.2),
+        inset 2px 2px 6px rgba(255,255,255,0.2);
+      transition: all 0.25s ease;
+    }
+
+    .profile-btn:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(145deg, rgba(255,255,255,0.35), rgba(255,255,255,0.24));
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 8px);
+      min-width: 168px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.28);
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(12px);
+      padding: 8px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      display: grid;
+      gap: 6px;
+    }
+
+    .user-menu-wrap:hover .profile-dropdown,
+    .user-menu-wrap.is-open .profile-dropdown {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .profile-dropdown button {
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      font-weight: 800;
+      border-radius: 12px;
+      padding: 10px 12px;
+      text-align: left;
+      transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+
+    .profile-dropdown button:hover {
+      transform: translateY(-1px);
+      background: rgba(74, 222, 128, 0.28);
+      box-shadow: 0 0 14px rgba(74, 222, 128, 0.32);
+    }
+
+
     .auth-modal-overlay {
       position: fixed;
       inset: 0;
@@ -774,6 +875,36 @@
 
     .auth-modal-overlay.is-open .auth-modal {
       transform: translateY(0) scale(1);
+    }
+
+    .profile-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .profile-line {
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      background: rgba(0,0,0,0.22);
+      padding: 10px 12px;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .profile-line span {
+      color: rgba(255,255,255,0.78);
+      font-weight: 600;
+    }
+
+    .confirm-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 14px;
     }
 
     .auth-modal-header {
@@ -872,6 +1003,26 @@
       transform: translateY(-1px);
       box-shadow: 0 8px 16px rgba(74, 222, 128, 0.35);
     }
+
+        .evades-action {
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.34);
+      background: linear-gradient(145deg, rgba(74, 222, 128, 0.45), rgba(74, 222, 128, 0.25));
+      color: #fff;
+      font-weight: 900;
+      font-size: 15px;
+      padding: 12px 14px;
+      letter-spacing: 1px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, filter .2s ease;
+      box-shadow: 0 0 0 rgba(74, 222, 128, 0);
+    }
+
+    .evades-action:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(74, 222, 128, 0.35);
+      filter: drop-shadow(0 0 8px rgba(74, 222, 128, 0.7));
+    }
+
 
     .auth-status {
       min-height: 20px;
@@ -2566,6 +2717,14 @@
     <div class="notifications-tooltip" data-i18n="auth-empty">Пока, пусто</div>
   </div>
 
+    <div class="user-menu-wrap" id="userMenuWrap" aria-live="polite">
+    <button class="profile-btn" id="profileBtn" type="button" aria-label="Профиль">👤</button>
+    <div class="profile-dropdown" id="profileDropdown">
+      <button id="profileOpenBtn" type="button">Профиль</button>
+      <button id="logoutOpenBtn" type="button">Выйти</button>
+    </div>
+  </div>
+
   <div class="auth-modal-overlay" id="authModalOverlay" aria-hidden="true">
     <div class="auth-modal" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
       <div class="auth-modal-header">
@@ -2585,6 +2744,34 @@
     </div>
   </div>
 
+    <div class="auth-modal-overlay" id="profileModalOverlay" aria-hidden="true">
+    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="profileModalTitle">
+      <div class="auth-modal-header">
+        <h2 class="auth-title" id="profileModalTitle">Профиль</h2>
+        <button class="auth-close" id="profileClose" type="button" aria-label="Close profile modal">×</button>
+      </div>
+      <div class="profile-grid" id="profileGrid">
+        <div class="profile-line"><span>Email</span><strong id="profileEmail">-</strong></div>
+        <div class="profile-line"><span>Nickname</span><strong id="profileNickname">-</strong></div>
+        <div class="profile-line"><span>Score</span><strong id="profileScore">0</strong></div>
+        <div class="profile-line"><span>Level</span><strong id="profileLevel">1</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-modal-overlay" id="logoutModalOverlay" aria-hidden="true">
+    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="logoutModalTitle">
+      <div class="auth-modal-header">
+        <h2 class="auth-title" id="logoutModalTitle">Выход</h2>
+        <button class="auth-close" id="logoutClose" type="button" aria-label="Close logout modal">×</button>
+      </div>
+      <div id="logoutText">Вы действительно хотите выйти?</div>
+      <div class="confirm-actions">
+        <button class="evades-action" id="logoutConfirmBtn" type="button">Да</button>
+        <button class="evades-action" id="logoutCancelBtn" type="button">Отмена</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Меню языков -->
   <div class="language-menu">
@@ -3052,6 +3239,15 @@
                 'auth-register': 'Регистрация',
                 'auth-notifications': 'Уведомления',
                 'auth-empty': 'Пока, пусто',
+                'auth-profile': 'Профиль',
+                'auth-logout': 'Выйти',
+                'auth-logout-confirm': 'Вы действительно хотите выйти?',
+                'auth-yes': 'Да',
+                'auth-cancel': 'Отмена',
+                'profile-email': 'Email',
+                'profile-nickname': 'Nickname',
+                'profile-score': 'Score',
+                'profile-level': 'Level',
                 'auth-email-placeholder': 'Email',
                 'auth-password-placeholder': 'Пароль',
                 'auth-login-submit': 'Войти',
@@ -3116,6 +3312,15 @@
                 'auth-register': 'Sign up',
                 'auth-notifications': 'Notifications',
                 'auth-empty': 'For now, empty',
+                'auth-profile': 'Profile',
+                'auth-logout': 'Sign out',
+                'auth-logout-confirm': 'Do you really want to sign out?',
+                'auth-yes': 'Yes',
+                'auth-cancel': 'Cancel',
+                'profile-email': 'Email',
+                'profile-nickname': 'Nickname',
+                'profile-score': 'Score',
+                'profile-level': 'Level',
                 'auth-email-placeholder': 'Email',
                 'auth-password-placeholder': 'Password',
                 'auth-login-submit': 'Log in',
@@ -3176,19 +3381,7 @@
                 'languages': 'Мови ▼',
                 'early-access': '*Ранній доступ',
                 'subtitle': 'Швидкість. Тактика.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -3192,51 +3394,50 @@
 
                 'footer-contact': 'Є питання? Пишіть нам: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Завантажити Evades 3',
@@ -3240,19 +3433,7 @@
                 'languages': 'Sprachen ▼',
                 'early-access': '*Früher Zugang',
                 'subtitle': 'Geschwindigkeit. Taktik.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -3256,51 +3457,50 @@
 
                 'footer-contact': 'Fragen? Schreib uns: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 herunterladen',
@@ -3304,19 +3485,7 @@
                 'languages': 'Idiomas ▼',
                 'early-access': '*Acceso anticipado',
                 'subtitle': 'Velocidad. Táctica.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -3320,51 +3520,50 @@
 
                 'footer-contact': '¿Tienes preguntas? Escríbenos: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Descargar Evades 3',
@@ -3368,19 +3537,7 @@
                 'languages': 'Langues ▼',
                 'early-access': '*Accès anticipé',
                 'subtitle': 'Vitesse. Tactique.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -3384,51 +3583,50 @@
 
                 'footer-contact': 'Des questions ? Écrivez-nous : <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Télécharger Evades 3',
@@ -3432,19 +3589,7 @@
                 'languages': 'Lingue ▼',
                 'early-access': '*Accesso anticipato',
                 'subtitle': 'Velocità. Tattica.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -3448,51 +3646,50 @@
 
                 'footer-contact': 'Hai domande? Scrivici: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Scarica Evades 3',
@@ -3496,19 +3641,7 @@
                 'languages': 'Idiomas ▼',
                 'early-access': '*Acesso antecipado',
                 'subtitle': 'Velocidade. Tática.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -3512,51 +3709,50 @@
 
                 'footer-contact': 'Tem dúvidas? Escreva para nós: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Baixar Evades 3',
@@ -3560,19 +3693,7 @@
                 'languages': 'Języki ▼',
                 'early-access': '*Wczesny dostęp',
                 'subtitle': 'Prędkość. Taktyka.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -3576,51 +3772,50 @@
 
                 'footer-contact': 'Masz pytania? Napisz do nas: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Pobierz Evades 3',
@@ -3624,19 +3745,7 @@
                 'languages': 'Diller ▼',
                 'early-access': '*Erken erişim',
                 'subtitle': 'Hız. Taktik.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -3640,51 +3835,50 @@
                 'footer-contact': 'Sorunuz mu var? Bize yazın: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 İndir',
                 'follow-dev': 'Gelişimi takip et',
@@ -3688,19 +3797,7 @@
                 'languages': 'Talen ▼',
                 'early-access': '*Vroege toegang',
                 'subtitle': 'Snelheid. Tactiek.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -3704,51 +3898,50 @@
 
                 'footer-contact': 'Vragen? Schrijf ons: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Download Evades 3',
@@ -3752,19 +3849,7 @@
                 'languages': 'Språk ▼',
                 'early-access': '*Tidig åtkomst',
                 'subtitle': 'Hastighet. Taktik.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -3768,51 +3961,50 @@
 
                 'footer-contact': 'Har du frågor? Skriv till oss: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Ladda ner Evades 3',
@@ -3816,19 +3901,7 @@
                 'languages': 'Språk ▼',
                 'early-access': '*Tidlig tilgang',
                 'subtitle': 'Fart. Taktikk.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -3832,51 +4024,50 @@
 
                 'footer-contact': 'Har du spørsmål? Skriv til oss: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Last ned Evades 3',
@@ -3880,19 +3953,7 @@
                 'languages': 'Kielet ▼',
                 'early-access': '*Varhainen pääsy',
                 'subtitle': 'Nopeus. Taktiikka.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -3896,51 +4087,50 @@
 
                 'footer-contact': 'Onko kysyttävää? Kirjoita meille: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Lataa Evades 3',
@@ -3944,19 +4005,7 @@
                 'languages': 'Sprog ▼',
                 'early-access': '*Tidlig adgang',
                 'subtitle': 'Hastighed. Taktik.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -3960,51 +4150,50 @@
 
                 'footer-contact': 'Har du spørgsmål? Skriv til os: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Download Evades 3',
@@ -4008,19 +4057,7 @@
                 'languages': 'Jazyky ▼',
                 'early-access': '*Předběžný přístup',
                 'subtitle': 'Rychlost. Taktika.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -4024,51 +4213,50 @@
 
                 'footer-contact': 'Máte dotazy? Napište nám: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Stáhnout Evades 3',
@@ -4072,19 +4109,7 @@
                 'languages': 'Limbi ▼',
                 'early-access': '*Acces timpuriu',
                 'subtitle': 'Viteză. Tactică.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -4088,51 +4276,50 @@
 
                 'footer-contact': 'Ai întrebări? Scrie-ne: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Descarcă Evades 3',
@@ -4136,19 +4161,7 @@
                 'languages': 'Nyelvek ▼',
                 'early-access': '*Korai hozzáférés',
                 'subtitle': 'Sebesség. Taktika.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -4152,51 +4339,50 @@
 
                 'footer-contact': 'Kérdésed van? Írj nekünk: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 letöltése',
@@ -4200,19 +4213,7 @@
                 'languages': 'Γλώσσες ▼',
                 'early-access': '*Πρόωρη πρόσβαση',
                 'subtitle': 'Ταχύτητα. Τακτική.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -4216,51 +4402,50 @@
 
                 'footer-contact': 'Έχεις ερωτήσεις; Γράψε μας: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Λήψη Evades 3',
@@ -4264,19 +4265,7 @@
                 'languages': '言語 ▼',
                 'early-access': '*早期アクセス',
                 'subtitle': 'スピード. 戦術.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -4280,51 +4465,50 @@
 
                 'footer-contact': 'ご質問はありますか？ こちらへ: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 をダウンロード',
@@ -4328,19 +4317,7 @@
                 'languages': '语言 ▼',
                 'early-access': '*抢先体验',
                 'subtitle': '速度. 战术.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -4344,51 +4528,50 @@
 
                 'footer-contact': '有问题吗？请写信给我们：<a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': '下载 Evades 3',
@@ -4392,19 +4369,7 @@
                 'languages': '언어 ▼',
                 'early-access': '*얼리 액세스',
                 'subtitle': '속도. 전술.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -4408,51 +4591,50 @@
 
                 'footer-contact': '문의가 있으신가요? 메일 주세요: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 다운로드',
@@ -4456,19 +4421,7 @@
                 'languages': 'اللغات ▼',
                 'early-access': '*وصول مبكر',
                 'subtitle': 'السرعة. التكتيك.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -4472,51 +4654,50 @@
 
                 'footer-contact': 'هل لديك أسئلة؟ اكتب لنا: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'تحميل Evades 3',
@@ -4520,19 +4473,7 @@
                 'languages': 'भाषाएँ ▼',
                 'early-access': '*प्रारंभिक पहुँच',
                 'subtitle': 'स्पीड. रणनीति.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -4536,51 +4717,50 @@
 
                 'footer-contact': 'कोई सवाल है? हमें लिखें: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 डाउनलोड करें',
@@ -4584,19 +4525,7 @@
                 'languages': 'ภาษา ▼',
                 'early-access': '*เข้าถึงก่อนใคร',
                 'subtitle': 'ความเร็ว. แทคติก.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -4600,51 +4780,50 @@
 
                 'footer-contact': 'มีคำถามไหม? เขียนหาเราได้ที่: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'ดาวน์โหลด Evades 3',
@@ -4648,19 +4577,7 @@
                 'languages': 'Ngôn ngữ ▼',
                 'early-access': '*Truy cập sớm',
                 'subtitle': 'Tốc độ. Chiến thuật.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -4664,51 +4843,50 @@
 
                 'footer-contact': 'Có câu hỏi? Hãy viết cho chúng tôi: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Tải Evades 3',
@@ -4712,19 +4629,7 @@
                 'languages': 'Bahasa ▼',
                 'early-access': '*Akses awal',
                 'subtitle': 'Kecepatan. Taktik.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -4728,51 +4906,50 @@
 
                 'footer-contact': 'Punya pertanyaan? Tulis ke kami: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Unduh Evades 3',
@@ -4776,19 +4681,7 @@
             ms: {
                 'languages': 'Bahasa ▼',
                 'subtitle': 'Kelajuan. Taktik.',
-                'auth-login': 'Login',
-                'auth-register': 'Sign up',
-                'auth-notifications': 'Notifications',
-                'auth-empty': 'For now, empty',
-                'auth-email-placeholder': 'Email',
-                'auth-password-placeholder': 'Password',
-                'auth-login-submit': 'Log in',
-                'auth-register-submit': 'Create account',
-                'auth-success-login': 'Successfully signed in.',
-                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
-                'auth-error-generic': 'Authorization failed. Try again.',
-                'auth-error-invalid-credentials': 'Invalid email or password.',
-                'auth-error-user-exists': 'User already registered.',
+@@ -4792,242 +4969,440 @@
 
                 'footer-contact': 'Ada soalan? Tulis kepada kami: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Muat turun Evades 3',
@@ -4846,6 +4739,7 @@
 
     let authMode = 'login';
     let authStateUnsubscribe = null;
+    let currentPlayer = null;
 
     function t(lang, key, fallback = '') {
       return (translations[lang] && translations[lang][key]) || (translations.en && translations.en[key]) || fallback;
@@ -4864,6 +4758,26 @@
           el.setAttribute('aria-label', text);
         }
       });
+      const profileOpenBtn = document.getElementById('profileOpenBtn');
+      const logoutOpenBtn = document.getElementById('logoutOpenBtn');
+      const logoutText = document.getElementById('logoutText');
+      const logoutConfirmBtn = document.getElementById('logoutConfirmBtn');
+      const logoutCancelBtn = document.getElementById('logoutCancelBtn');
+      const profileTitle = document.getElementById('profileModalTitle');
+      const labelEmail = document.querySelector('#profileGrid .profile-line:nth-child(1) span');
+      const labelNickname = document.querySelector('#profileGrid .profile-line:nth-child(2) span');
+      const labelScore = document.querySelector('#profileGrid .profile-line:nth-child(3) span');
+      const labelLevel = document.querySelector('#profileGrid .profile-line:nth-child(4) span');
+      if (profileOpenBtn) profileOpenBtn.textContent = t(lang, 'auth-profile', profileOpenBtn.textContent);
+      if (logoutOpenBtn) logoutOpenBtn.textContent = t(lang, 'auth-logout', logoutOpenBtn.textContent);
+      if (logoutText) logoutText.textContent = t(lang, 'auth-logout-confirm', logoutText.textContent);
+      if (logoutConfirmBtn) logoutConfirmBtn.textContent = t(lang, 'auth-yes', logoutConfirmBtn.textContent);
+      if (logoutCancelBtn) logoutCancelBtn.textContent = t(lang, 'auth-cancel', logoutCancelBtn.textContent);
+      if (profileTitle) profileTitle.textContent = t(lang, 'auth-profile', profileTitle.textContent);
+      if (labelEmail) labelEmail.textContent = t(lang, 'profile-email', labelEmail.textContent);
+      if (labelNickname) labelNickname.textContent = t(lang, 'profile-nickname', labelNickname.textContent);
+      if (labelScore) labelScore.textContent = t(lang, 'profile-score', labelScore.textContent);
+      if (labelLevel) labelLevel.textContent = t(lang, 'profile-level', labelLevel.textContent);
     }
 
     function setAuthMode(mode) {
@@ -4908,8 +4822,112 @@
     function setAuthUIState(isAuthenticated) {
       const controls = document.getElementById('authControls');
       const notifications = document.getElementById('notificationsWrap');
+      const userMenu = document.getElementById('userMenuWrap');
       if (controls) controls.classList.toggle('is-hidden', isAuthenticated);
       if (notifications) notifications.classList.toggle('is-visible', isAuthenticated);
+      if (userMenu) userMenu.classList.toggle('is-visible', isAuthenticated);
+    }
+
+    function openSimpleModal(id) {
+      const overlay = document.getElementById(id);
+      if (!overlay) return;
+      overlay.classList.add('is-open');
+      overlay.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeSimpleModal(id) {
+      const overlay = document.getElementById(id);
+      if (!overlay) return;
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+
+    function normalizeNickname(email) {
+      const fallback = 'player_' + Math.random().toString(36).slice(2, 8);
+      if (!email || !email.includes('@')) return fallback;
+      return email.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '_').slice(0, 24) || fallback;
+    }
+
+    async function ensurePlayerRecord(user) {
+      if (!user || !user.id) return null;
+      const { data, error } = await supabaseClient
+        .from('players')
+        .select('id,email,nickname,score,level')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if (error) throw error;
+      if (data) {
+        const needsPatch = !data.nickname || data.score == null || data.level == null || !data.email;
+        if (needsPatch) {
+          const patch = {
+            email: data.email || user.email || '',
+            nickname: data.nickname || normalizeNickname(user.email || ''),
+            score: Number.isInteger(data.score) ? data.score : 0,
+            level: Number.isInteger(data.level) ? data.level : 1
+          };
+          const { data: updated, error: updateError } = await supabaseClient
+            .from('players')
+            .update(patch)
+            .eq('id', user.id)
+            .select('id,email,nickname,score,level')
+            .single();
+          if (updateError) throw updateError;
+          return updated;
+        }
+        return data;
+      }
+
+      const payload = {
+        id: user.id,
+        email: user.email || '',
+        nickname: normalizeNickname(user.email || ''),
+        score: 0,
+        level: 1
+      };
+      const { data: inserted, error: insertError } = await supabaseClient
+        .from('players')
+        .insert(payload)
+        .select('id,email,nickname,score,level')
+        .single();
+      if (insertError) throw insertError;
+      return inserted;
+    }
+
+    function renderProfile(player) {
+      const fallback = player || {};
+      const emailEl = document.getElementById('profileEmail');
+      const nickEl = document.getElementById('profileNickname');
+      const scoreEl = document.getElementById('profileScore');
+      const levelEl = document.getElementById('profileLevel');
+      if (emailEl) emailEl.textContent = fallback.email || '-';
+      if (nickEl) nickEl.textContent = fallback.nickname || '-';
+      if (scoreEl) scoreEl.textContent = String(Number.isFinite(Number(fallback.score)) ? Number(fallback.score) : 0);
+      if (levelEl) levelEl.textContent = String(Number.isFinite(Number(fallback.level)) ? Number(fallback.level) : 1);
+    }
+
+    async function syncPlayerStateFromSession(session) {
+      if (!session || !session.user) {
+        currentPlayer = null;
+        renderProfile(null);
+        setAuthUIState(false);
+        return;
+      }
+      try {
+        currentPlayer = await ensurePlayerRecord(session.user);
+        renderProfile(currentPlayer);
+      } catch (error) {
+        console.error('Failed to sync player:', error);
+        currentPlayer = {
+          id: session.user.id,
+          email: session.user.email || '',
+          nickname: normalizeNickname(session.user.email || ''),
+          score: 0,
+          level: 1
+        };
+        renderProfile(currentPlayer);
+      }
+      setAuthUIState(true);
     }
 
     function openAuthModal(mode = 'login') {
@@ -4942,6 +4960,16 @@
       const closeBtn = document.getElementById('authClose');
       const overlay = document.getElementById('authModalOverlay');
       const form = document.getElementById('authForm');
+      const profileBtn = document.getElementById('profileBtn');
+      const profileOpenBtn = document.getElementById('profileOpenBtn');
+      const profileClose = document.getElementById('profileClose');
+      const logoutOpenBtn = document.getElementById('logoutOpenBtn');
+      const logoutClose = document.getElementById('logoutClose');
+      const logoutConfirmBtn = document.getElementById('logoutConfirmBtn');
+      const logoutCancelBtn = document.getElementById('logoutCancelBtn');
+      const userMenuWrap = document.getElementById('userMenuWrap');
+      const profileOverlay = document.getElementById('profileModalOverlay');
+      const logoutOverlay = document.getElementById('logoutModalOverlay');
 
       if (loginBtn) loginBtn.addEventListener('click', () => openAuthModal('login'));
       if (registerBtn) registerBtn.addEventListener('click', () => openAuthModal('register'));
@@ -4953,7 +4981,71 @@
       }
 
       document.querySelectorAll('[data-auth-mode]').forEach(btn => {
-        btn.addEventListener('click', () => setAuthMode(btn.getAttribute('data-auth-mode')));
+        btn.addEventListener('click', () => {
+          const mode = btn.getAttribute('data-auth-mode');
+          if (!mode) return;
+          setAuthMode(mode);
+        });
+      });
+
+      if (profileOverlay) {
+        profileOverlay.addEventListener('click', (event) => {
+          if (event.target === profileOverlay) closeSimpleModal('profileModalOverlay');
+        });
+      }
+      if (logoutOverlay) {
+        logoutOverlay.addEventListener('click', (event) => {
+          if (event.target === logoutOverlay) closeSimpleModal('logoutModalOverlay');
+        });
+      }
+
+      if (profileBtn) {
+        profileBtn.addEventListener('click', () => {
+          if (userMenuWrap) userMenuWrap.classList.toggle('is-open');
+        });
+      }
+      if (profileOpenBtn) {
+        profileOpenBtn.addEventListener('click', () => {
+          if (userMenuWrap) userMenuWrap.classList.remove('is-open');
+          openSimpleModal('profileModalOverlay');
+        });
+      }
+      if (profileClose) {
+        profileClose.addEventListener('click', () => closeSimpleModal('profileModalOverlay'));
+      }
+      if (logoutOpenBtn) {
+        logoutOpenBtn.addEventListener('click', () => {
+          if (userMenuWrap) userMenuWrap.classList.remove('is-open');
+          openSimpleModal('logoutModalOverlay');
+        });
+      }
+      if (logoutClose) {
+        logoutClose.addEventListener('click', () => closeSimpleModal('logoutModalOverlay'));
+      }
+      if (logoutCancelBtn) {
+        logoutCancelBtn.addEventListener('click', () => closeSimpleModal('logoutModalOverlay'));
+      }
+      if (logoutConfirmBtn) {
+        logoutConfirmBtn.addEventListener('click', async () => {
+          try {
+            await supabaseClient.auth.signOut();
+            currentPlayer = null;
+            renderProfile(null);
+          } catch (error) {
+            console.error('Sign out failed:', error);
+          } finally {
+            closeSimpleModal('logoutModalOverlay');
+            closeSimpleModal('profileModalOverlay');
+            setAuthUIState(false);
+          }
+        });
+      }
+
+      document.addEventListener('click', (event) => {
+        if (!userMenuWrap || !userMenuWrap.classList.contains('is-open')) return;
+        if (!userMenuWrap.contains(event.target)) {
+          userMenuWrap.classList.remove('is-open');
+        }
       });
 
       if (form) {
@@ -5002,10 +5094,10 @@
       }
 
       const { data } = await supabaseClient.auth.getSession();
-      setAuthUIState(Boolean(data && data.session));
+      await syncPlayerStateFromSession(data && data.session ? data.session : null);
 
-      const { data: listenerData } = supabaseClient.auth.onAuthStateChange((_event, session) => {
-        setAuthUIState(Boolean(session));
+      const { data: listenerData } = supabaseClient.auth.onAuthStateChange(async (_event, session) => {
+        await syncPlayerStateFromSession(session || null);
       });
       authStateUnsubscribe = listenerData?.subscription;
     }
@@ -5198,12 +5290,29 @@
       }
     }
 
+    function initLogoInteractions() {
+      const logo = document.querySelector('.logo-image');
+      const title = document.querySelector('.main-title');
+      if (!logo || !title) return;
+
+      const triggerExplosion = () => {
+        explodeTitle();
+        title.classList.remove('is-exploding');
+        requestAnimationFrame(() => title.classList.add('is-exploding'));
+        setTimeout(() => title.classList.remove('is-exploding'), 700);
+      };
+
+      logo.addEventListener('mouseenter', triggerExplosion);
+      logo.addEventListener('click', triggerExplosion);
+    }
+
     
     window.addEventListener('DOMContentLoaded', () => {
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       monitorFPS();
       initAuth();
+      initLogoInteractions();
 
       document.querySelectorAll('.lang-item').forEach(item => {
         item.addEventListener('click', () => {
