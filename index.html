@@ -17,7 +17,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     /* ===== КАСТОМНЫЙ КУРСОР ===== */
-    *, *::before, *::after { cursor: none !important; }
+   body.cursor-enhanced, body.cursor-enhanced * , body.cursor-enhanced *::before, body.cursor-enhanced *::after { cursor: none !important; }
 
     #cursor-canvas {
       position: fixed; top: 0; left: 0;
@@ -1004,7 +1004,7 @@
       box-shadow: 0 8px 16px rgba(74, 222, 128, 0.35);
     }
 
-        .evades-action {
+    .evades-action {
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.34);
       background: linear-gradient(145deg, rgba(74, 222, 128, 0.45), rgba(74, 222, 128, 0.25));
@@ -2564,6 +2564,14 @@
       *{
         animation: none !important;
         transition: none !important;
+      }
+      .main-title,
+      .button-container,
+      .description{
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        pointer-events: auto !important;
       }
       .reveal-target{
         opacity: 1;
@@ -4950,10 +4958,7 @@
     }
 
     async function initAuth() {
-      if (!supabaseClient) {
-        setAuthStatus('auth-error-generic', 'error');
-        return;
-      }
+
 
       const loginBtn = document.getElementById('openLogin');
       const registerBtn = document.getElementById('openRegister');
@@ -5051,7 +5056,10 @@
       if (form) {
         form.addEventListener('submit', async (event) => {
           event.preventDefault();
-          if (!supabaseClient) return;
+          if (!supabaseClient) {
+            setAuthStatus('auth-error-generic', 'error');
+            return;
+          }
 
           const email = String(document.getElementById('authEmail')?.value || '').trim();
           const password = String(document.getElementById('authPassword')?.value || '');
@@ -5091,6 +5099,11 @@
             if (submitBtn) submitBtn.disabled = false;
           }
         });
+      }
+
+      if (!supabaseClient) {
+        setAuthUIState(false);
+        return;
       }
 
       const { data } = await supabaseClient.auth.getSession();
@@ -5196,6 +5209,11 @@
       lastExplodeTime = now;
       const title = document.querySelector('.main-title');
       if (!title) return;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) {
+        document.body.classList.add('ui-ready');
+        return;
+      }
 
       const rect = title.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
@@ -5250,6 +5268,7 @@
             document.body.classList.add('ui-ready');
           };
           title.addEventListener('animationend', onEnd);
+          setTimeout(() => document.body.classList.add('ui-ready'), 2400);
 
           setTimeout(() => {
             explodeTitle();
@@ -5311,7 +5330,9 @@
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       monitorFPS();
-      initAuth();
+      initAuth().catch((error) => {
+        console.error('Auth init failed:', error);
+      });
       initLogoInteractions();
 
       document.querySelectorAll('.lang-item').forEach(item => {
@@ -5407,6 +5428,7 @@
     });
     // ====== КАСТОМНЫЙ КУРСОР ======
     (function() {
+      try {
       const arrowEl = document.getElementById('custom-cursor');
       const noEl    = document.getElementById('cursor-no');
       const ibeamEl = document.getElementById('cursor-ibeam');
@@ -5414,7 +5436,10 @@
       const innerEl = document.getElementById('cursor-inner');
       const coreEl  = document.getElementById('cursor-core');
       const canvas  = document.getElementById('cursor-canvas');
+      if (!arrowEl || !noEl || !ibeamEl || !radarEl || !innerEl || !coreEl || !canvas) return;
       const ctx     = canvas.getContext('2d');
+      if (!ctx) return;
+      document.body.classList.add('cursor-enhanced');
 
       const ALL = [arrowEl, noEl, ibeamEl];
       let curType = 'arrow';
@@ -5664,6 +5689,10 @@
       document.addEventListener('mouseenter',()=>document.body.classList.remove('cursor-hidden'));
 
       setCursorType('arrow');
+      } catch (error) {
+        console.error('Custom cursor failed, fallback to native cursor:', error);
+        document.body.classList.remove('cursor-enhanced');
+      }
     })();
     // ====== КОНЕЦ КАСТОМНОГО КУРСОРА ======
   </script>
