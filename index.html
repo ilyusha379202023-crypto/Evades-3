@@ -629,6 +629,266 @@
       100% { transform: scale(1.6); opacity: 0; }
     }
 
+
+    .auth-controls {
+      position: fixed;
+      top: 24px;
+      left: 165px;
+      z-index: 1000;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      animation: fadeInDown 0.45s ease;
+    }
+
+    .auth-controls.is-hidden {
+      display: none;
+    }
+
+    .auth-button {
+      background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.15));
+      color: white;
+      padding: 11px 22px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: 900;
+      backdrop-filter: blur(15px);
+      transition: all 0.3s ease;
+      font-family: 'Exo 2', sans-serif;
+      letter-spacing: 1px;
+      box-shadow:
+        6px 6px 16px rgba(0,0,0,0.3),
+        -3px -3px 10px rgba(255,255,255,0.1),
+        inset -2px -2px 6px rgba(0,0,0,0.2),
+        inset 2px 2px 6px rgba(255,255,255,0.2);
+    }
+
+    .auth-button:hover {
+      background: linear-gradient(145deg, rgba(255,255,255,0.35), rgba(255,255,255,0.25));
+      transform: translateY(-2px);
+      box-shadow:
+        8px 8px 20px rgba(0,0,0,0.4),
+        -4px -4px 12px rgba(255,255,255,0.15),
+        inset -2px -2px 6px rgba(0,0,0,0.2),
+        inset 2px 2px 6px rgba(255,255,255,0.2);
+    }
+
+    .notifications-wrap {
+      position: fixed;
+      top: 20px;
+      right: 220px;
+      z-index: 1001;
+      opacity: 0;
+      transform: translateY(-6px);
+      pointer-events: none;
+      transition: opacity 0.28s ease, transform 0.28s ease;
+    }
+
+    .notifications-wrap.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .notifications-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.4);
+      background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.14));
+      color: #fff;
+      font-size: 22px;
+      box-shadow:
+        6px 6px 16px rgba(0,0,0,0.3),
+        -3px -3px 10px rgba(255,255,255,0.1),
+        inset -2px -2px 6px rgba(0,0,0,0.2),
+        inset 2px 2px 6px rgba(255,255,255,0.2);
+      transition: all 0.25s ease;
+    }
+
+    .notifications-btn:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(145deg, rgba(255,255,255,0.35), rgba(255,255,255,0.24));
+    }
+
+    .notifications-tooltip {
+      position: absolute;
+      right: 50%;
+      top: calc(100% + 8px);
+      transform: translateX(50%) translateY(6px);
+      min-width: 140px;
+      text-align: center;
+      padding: 9px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.28);
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .notifications-wrap:hover .notifications-tooltip {
+      opacity: 1;
+      transform: translateX(50%) translateY(0);
+    }
+
+    .auth-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(5, 10, 8, 0.5);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+
+    .auth-modal-overlay.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .auth-modal {
+      width: min(440px, 100%);
+      border-radius: 26px;
+      border: 2px solid rgba(255,255,255,0.28);
+      background: linear-gradient(145deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+      backdrop-filter: blur(18px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      color: #fff;
+      padding: 20px 22px 24px;
+      transform: translateY(14px) scale(0.97);
+      transition: transform 0.25s ease;
+    }
+
+    .auth-modal-overlay.is-open .auth-modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .auth-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .auth-title {
+      font-size: 27px;
+      font-weight: 900;
+      letter-spacing: 1.2px;
+      text-shadow: 0 4px 14px rgba(0,0,0,0.35);
+    }
+
+    .auth-close {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(0,0,0,0.26);
+      color: #fff;
+      font-size: 24px;
+      line-height: 1;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .auth-close:hover {
+      transform: scale(1.05);
+      background: rgba(0,0,0,0.42);
+    }
+
+    .auth-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .auth-tab {
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      padding: 9px 12px;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 0.8px;
+      transition: all 0.2s ease;
+    }
+
+    .auth-tab.is-active {
+      background: rgba(74, 222, 128, 0.26);
+      border-color: rgba(139, 255, 185, 0.75);
+      box-shadow: 0 0 12px rgba(74, 222, 128, 0.35);
+    }
+
+    .auth-form {
+      display: grid;
+      gap: 11px;
+    }
+
+    .auth-input {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.26);
+      background: rgba(0,0,0,0.24);
+      color: #fff;
+      padding: 12px 14px;
+      font-size: 15px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .auth-input:focus {
+      outline: none;
+      border-color: rgba(124, 255, 180, 0.95);
+      box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.25);
+    }
+
+    .auth-submit {
+      margin-top: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.34);
+      background: linear-gradient(145deg, rgba(74, 222, 128, 0.45), rgba(74, 222, 128, 0.25));
+      color: #fff;
+      font-weight: 900;
+      font-size: 15px;
+      padding: 12px 14px;
+      letter-spacing: 1px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .auth-submit:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(74, 222, 128, 0.35);
+    }
+
+    .auth-status {
+      min-height: 20px;
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .auth-status.is-error {
+      color: #ffd5d5;
+    }
+
+    .auth-status.is-success {
+      color: #c9ffd8;
+    }
+
     /* Основной контент */
     .container {
       max-width: 1200px;
@@ -2296,6 +2556,36 @@
 
   <img class="logo-image" src="logo.png" alt="Evades 3 logo" />
 
+  <div class="auth-controls" id="authControls">
+    <button class="auth-button" id="openLogin" type="button" data-auth-mode="login" data-i18n="auth-login">Вход</button>
+    <button class="auth-button" id="openRegister" type="button" data-auth-mode="register" data-i18n="auth-register">Регистрация</button>
+  </div>
+
+  <div class="notifications-wrap" id="notificationsWrap" aria-live="polite">
+    <button class="notifications-btn" id="notificationsBtn" type="button" data-i18n-title="auth-notifications" aria-label="Уведомления">🔔</button>
+    <div class="notifications-tooltip" data-i18n="auth-empty">Пока, пусто</div>
+  </div>
+
+  <div class="auth-modal-overlay" id="authModalOverlay" aria-hidden="true">
+    <div class="auth-modal" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+      <div class="auth-modal-header">
+        <h2 class="auth-title" id="authModalTitle" data-i18n="auth-login">Вход</h2>
+        <button class="auth-close" id="authClose" type="button" aria-label="Close auth modal">×</button>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab is-active" id="authTabLogin" data-auth-mode="login" type="button" data-i18n="auth-login">Вход</button>
+        <button class="auth-tab" id="authTabRegister" data-auth-mode="register" type="button" data-i18n="auth-register">Регистрация</button>
+      </div>
+      <form class="auth-form" id="authForm">
+        <input class="auth-input" id="authEmail" name="email" type="email" autocomplete="email" required data-i18n-placeholder="auth-email-placeholder" placeholder="Email" />
+        <input class="auth-input" id="authPassword" name="password" type="password" autocomplete="current-password" minlength="6" required data-i18n-placeholder="auth-password-placeholder" placeholder="Пароль" />
+        <button class="auth-submit" id="authSubmit" type="submit" data-i18n="auth-login-submit">Войти</button>
+      </form>
+      <div class="auth-status" id="authStatus" aria-live="polite"></div>
+    </div>
+  </div>
+
+
   <!-- Меню языков -->
   <div class="language-menu">
     <div class="menu-button" data-i18n="languages">Языки ▼</div>
@@ -2748,6 +3038,8 @@
     <footer class="site-footer">
     <p data-i18n="footer-contact">Есть вопросы? пишите нам: <a href="mailto:support@evades3.com">support@evades3.com</a></p>
   </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
   <script>
         // Переводы (НЕ УДАЛЯТЬ — все языки сохранены)
@@ -2756,6 +3048,19 @@
                 'languages': 'Языки ▼',
                 'early-access': '*Ранний доступ',
                 'subtitle': 'Скорость. Тактика.',
+                'auth-login': 'Вход',
+                'auth-register': 'Регистрация',
+                'auth-notifications': 'Уведомления',
+                'auth-empty': 'Пока, пусто',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Пароль',
+                'auth-login-submit': 'Войти',
+                'auth-register-submit': 'Создать аккаунт',
+                'auth-success-login': 'Вход выполнен успешно.',
+                'auth-success-register': 'Регистрация выполнена. Проверьте email, если требуется подтверждение.',
+                'auth-error-generic': 'Ошибка авторизации. Попробуйте снова.',
+                'auth-error-invalid-credentials': 'Неверный email или пароль.',
+                'auth-error-user-exists': 'Пользователь уже зарегистрирован.',
 
                 'footer-contact': 'Есть вопросы? Пишите нам: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Скачать Evades 3',
@@ -2781,9 +3086,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'ON',
                 'sfx-off': 'OFF',
-                'about-title': '🎮 О ИГРЕ',
-                'about-p1': '<span class="highlight">Evades 3</span> — это эволюция легендарной evades.io, переосмысленная для нового поколения геймеров!',
-                'about-p2': 'Почувствуй адреналин скоростных маневров, где каждая миллисекунда решает исход битвы. Уворачивайся от смертельных препятствий, обгоняй соперников и доминируй на арене!',
+@@ -2787,50 +3091,63 @@
                 'stat-arenas': 'Арены',
                 'stat-online': 'Онлайн',
                 'feature1-title': 'Молниеносная реакция',
@@ -2809,6 +3112,19 @@
                 'languages': 'Languages ▼',
                 'early-access': '*Early Access',
                 'subtitle': 'Speed. Tactics.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'Have questions? Write to us: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Download Evades 3',
@@ -2834,9 +3150,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'ON',
                 'sfx-off': 'OFF',
-                'about-title': '🎮 ABOUT THE GAME',
-                'about-p1': '<span class="highlight">Evades 3</span> is the evolution of legendary evades.io, reimagined for a new generation of gamers!',
-                'about-p2': 'Feel the adrenaline of high-speed maneuvers where every millisecond decides the battle outcome. Dodge deadly obstacles, outpace rivals, and dominate the arena!',
+@@ -2840,50 +3157,63 @@
                 'stat-arenas': 'Arenas',
                 'stat-online': 'Online',
                 'feature1-title': 'Lightning Reaction',
@@ -2862,6 +3176,19 @@
                 'languages': 'Мови ▼',
                 'early-access': '*Ранній доступ',
                 'subtitle': 'Швидкість. Тактика.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'Є питання? Пишіть нам: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Завантажити Evades 3',
@@ -2887,9 +3214,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'ON',
                 'sfx-off': 'OFF',
-                'about-title': '🎮 ПРО ГРУ',
-                'about-p1': '<span class="highlight">Evades 3</span> — це еволюція легендарної evades.io, переосмислена для нового покоління геймерів!',
-                'about-p2': 'Відчуй адреналін швидкісних маневрів, де кожна мілісекунда вирішує результат битви. Ухиляйся від смертельних перешкод, випереджай суперників та домінуй на арені!',
+@@ -2893,50 +3223,63 @@
                 'stat-arenas': 'Арени',
                 'stat-online': 'Онлайн',
                 'feature1-title': 'Блискавична реакція',
@@ -2915,6 +3240,19 @@
                 'languages': 'Sprachen ▼',
                 'early-access': '*Früher Zugang',
                 'subtitle': 'Geschwindigkeit. Taktik.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'Fragen? Schreib uns: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 herunterladen',
@@ -2940,9 +3278,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'AN',
                 'sfx-off': 'AUS',
-                'about-title': '🎮 ÜBER DAS SPIEL',
-                'about-p1': '<span class="highlight">Evades 3</span> ist die Evolution des legendären evades.io, neu gedacht für eine neue Gamer-Generation!',
-                'about-p2': 'Spüre den Adrenalinrausch schneller Manöver, in denen jede Millisekunde den Ausgang entscheidet. Weiche tödlichen Hindernissen aus, überhole Rivalen und dominiere die Arena!',
+@@ -2946,50 +3289,63 @@
                 'stat-arenas': 'Arenen',
                 'stat-online': 'Online',
                 'feature1-title': 'Blitzschnelle Reaktion',
@@ -2968,6 +3304,19 @@
                 'languages': 'Idiomas ▼',
                 'early-access': '*Acceso anticipado',
                 'subtitle': 'Velocidad. Táctica.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': '¿Tienes preguntas? Escríbenos: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Descargar Evades 3',
@@ -2993,9 +3342,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'ON',
                 'sfx-off': 'OFF',
-                'about-title': '🎮 SOBRE EL JUEGO',
-                'about-p1': '<span class="highlight">Evades 3</span> es la evolución del legendario evades.io, reimaginado para una nueva generación de gamers.',
-                'about-p2': 'Siente la adrenalina de las maniobras a alta velocidad, donde cada milisegundo decide la batalla. Esquiva obstáculos mortales, supera a tus rivales y domina la arena.',
+@@ -2999,50 +3355,63 @@
                 'stat-arenas': 'Arenas',
                 'stat-online': 'En línea',
                 'feature1-title': 'Reacción Relámpago',
@@ -3021,6 +3368,19 @@
                 'languages': 'Langues ▼',
                 'early-access': '*Accès anticipé',
                 'subtitle': 'Vitesse. Tactique.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'Des questions ? Écrivez-nous : <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Télécharger Evades 3',
@@ -3046,9 +3406,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'ON',
                 'sfx-off': 'OFF',
-                'about-title': '🎮 À PROPOS DU JEU',
-                'about-p1': '<span class="highlight">Evades 3</span> est l’évolution du légendaire evades.io, repensée pour une nouvelle génération de joueurs.',
-                'about-p2': 'Ressentez l’adrénaline des manœuvres à grande vitesse où chaque milliseconde compte. Évitez les obstacles mortels, dépassez vos rivaux et dominez l’arène.',
+@@ -3052,50 +3421,63 @@
                 'stat-arenas': 'Arènes',
                 'stat-online': 'En ligne',
                 'feature1-title': 'Réaction Éclair',
@@ -3074,6 +3432,19 @@
                 'languages': 'Lingue ▼',
                 'early-access': '*Accesso anticipato',
                 'subtitle': 'Velocità. Tattica.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'Hai domande? Scrivici: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Scarica Evades 3',
@@ -3099,9 +3470,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'ON',
                 'sfx-off': 'OFF',
-                'about-title': '🎮 SUL GIOCO',
-                'about-p1': '<span class="highlight">Evades 3</span> è l’evoluzione del leggendario evades.io, ripensata per una nuova generazione di gamer.',
-                'about-p2': 'Senti l’adrenalina delle manovre ad alta velocità, dove ogni millisecondo decide la battaglia. Schiva ostacoli mortali, supera i rivali e domina l’arena.',
+@@ -3105,50 +3487,63 @@
                 'stat-arenas': 'Arene',
                 'stat-online': 'Online',
                 'feature1-title': 'Reazione Fulminea',
@@ -3127,6 +3496,19 @@
                 'languages': 'Idiomas ▼',
                 'early-access': '*Acesso antecipado',
                 'subtitle': 'Velocidade. Tática.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'Tem dúvidas? Escreva para nós: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Baixar Evades 3',
@@ -3152,9 +3534,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'ON',
                 'sfx-off': 'OFF',
-                'about-title': '🎮 SOBRE O JOGO',
-                'about-p1': '<span class="highlight">Evades 3</span> é a evolução do lendário evades.io, reinventado para uma nova geração de gamers.',
-                'about-p2': 'Sinta a adrenalina de manobras em alta velocidade, onde cada milissegundo decide a batalha. Desvie de obstáculos mortais, ultrapasse rivais e domine a arena.',
+@@ -3158,50 +3553,63 @@
                 'stat-arenas': 'Arenas',
                 'stat-online': 'Online',
                 'feature1-title': 'Reação Relâmpago',
@@ -3180,6 +3560,19 @@
                 'languages': 'Języki ▼',
                 'early-access': '*Wczesny dostęp',
                 'subtitle': 'Prędkość. Taktyka.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'Masz pytania? Napisz do nas: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Pobierz Evades 3',
@@ -3205,9 +3598,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'ON',
                 'sfx-off': 'OFF',
-                'about-title': '🎮 O GRZE',
-                'about-p1': '<span class="highlight">Evades 3</span> to ewolucja legendarnego evades.io, stworzona na nowo dla nowej generacji graczy.',
-                'about-p2': 'Poczuj adrenalinę szybkich manewrów, gdzie każda milisekunda decyduje o wyniku. Unikaj śmiertelnych przeszkód, wyprzedzaj rywali i dominuj na arenie.',
+@@ -3211,50 +3619,63 @@
                 'stat-arenas': 'Areny',
                 'stat-online': 'Online',
                 'feature1-title': 'Błyskawiczna Reakcja',
@@ -3233,6 +3624,19 @@
                 'languages': 'Diller ▼',
                 'early-access': '*Erken erişim',
                 'subtitle': 'Hız. Taktik.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
                 'footer-contact': 'Sorunuz mu var? Bize yazın: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 İndir',
                 'follow-dev': 'Gelişimi takip et',
@@ -3258,8 +3662,7 @@
                 'sfx-on': 'AÇIK',
                 'sfx-off': 'KAPALI',
                 'about-title': '🎮 OYUN HAKKINDA',
-                'about-p1': '<span class="highlight">Evades 3</span>, efsanevi evades.io’nun yeni nesil oyuncular için yeniden tasarlanmış evrimidir.',
-                'about-p2': 'Her milisaniyenin sonucu belirlediği yüksek hızlı manevraların adrenaliniyle tanış. Ölümcül engellerden kaç, rakiplerini geç ve arenayı domine et.',
+@@ -3263,50 +3684,63 @@
                 'stat-arenas': 'Arenalar',
                 'stat-online': 'Çevrimiçi',
                 'feature1-title': 'Şimşek Tepkisi',
@@ -3285,6 +3688,19 @@
                 'languages': 'Talen ▼',
                 'early-access': '*Vroege toegang',
                 'subtitle': 'Snelheid. Tactiek.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'Vragen? Schrijf ons: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Download Evades 3',
@@ -3310,9 +3726,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'AAN',
                 'sfx-off': 'UIT',
-                'about-title': '🎮 OVER HET SPEL',
-                'about-p1': '<span class="highlight">Evades 3</span> is de evolutie van het legendarische evades.io, opnieuw ontworpen voor een nieuwe generatie gamers.',
-                'about-p2': 'Voel de adrenaline van razendsnelle manoeuvres waarin elke milliseconde telt. Ontwijk dodelijke obstakels, haal rivalen in en domineer de arena.',
+@@ -3316,50 +3750,63 @@
                 'stat-arenas': 'Arena’s',
                 'stat-online': 'Online',
                 'feature1-title': 'Bliksemsnelle Reactie',
@@ -3338,6 +3752,19 @@
                 'languages': 'Språk ▼',
                 'early-access': '*Tidig åtkomst',
                 'subtitle': 'Hastighet. Taktik.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'Har du frågor? Skriv till oss: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Ladda ner Evades 3',
@@ -3363,9 +3790,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'PÅ',
                 'sfx-off': 'AV',
-                'about-title': '🎮 OM SPELET',
-                'about-p1': '<span class="highlight">Evades 3</span> är utvecklingen av legendariska evades.io, omgjord för en ny generation spelare.',
-                'about-p2': 'Känn adrenalinet i snabba manövrar där varje millisekund räknas. Undvik dödliga hinder, kör om rivaler och dominera arenan.',
+@@ -3369,50 +3816,63 @@
                 'stat-arenas': 'Arenor',
                 'stat-online': 'Online',
                 'feature1-title': 'Blixtsnabb Reaktion',
@@ -3391,6 +3816,19 @@
                 'languages': 'Språk ▼',
                 'early-access': '*Tidlig tilgang',
                 'subtitle': 'Fart. Taktikk.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'Har du spørsmål? Skriv til oss: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Last ned Evades 3',
@@ -3416,9 +3854,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'PÅ',
                 'sfx-off': 'AV',
-                'about-title': '🎮 OM SPILLET',
-                'about-p1': '<span class="highlight">Evades 3</span> er evolusjonen av legendariske evades.io, laget på nytt for en ny generasjon spillere.',
-                'about-p2': 'Kjenn adrenalinet i lynraske manøvrer der hvert millisekund teller. Unngå dødelige hindringer, slå rivaler og dominer arenaen.',
+@@ -3422,50 +3882,63 @@
                 'stat-arenas': 'Arenaer',
                 'stat-online': 'Online',
                 'feature1-title': 'Lynrask Reaksjon',
@@ -3444,6 +3880,19 @@
                 'languages': 'Kielet ▼',
                 'early-access': '*Varhainen pääsy',
                 'subtitle': 'Nopeus. Taktiikka.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'Onko kysyttävää? Kirjoita meille: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Lataa Evades 3',
@@ -3469,9 +3918,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'PÄÄLLÄ',
                 'sfx-off': 'POIS',
-                'about-title': '🎮 PELISTÄ',
-                'about-p1': '<span class="highlight">Evades 3</span> on legendaarisen evades.io:n evoluutio, uudistettuna uudelle pelaajasukupolvelle.',
-                'about-p2': 'Tunne nopeatempoisten manööverien adrenaliini, jossa jokainen millisekunti ratkaisee. Väistele tappavia esteitä, ohita kilpakumppanit ja hallitse areenaa.',
+@@ -3475,50 +3948,63 @@
                 'stat-arenas': 'Areenat',
                 'stat-online': 'Online',
                 'feature1-title': 'Salamannopea Reaktio',
@@ -3497,6 +3944,19 @@
                 'languages': 'Sprog ▼',
                 'early-access': '*Tidlig adgang',
                 'subtitle': 'Hastighed. Taktik.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'Har du spørgsmål? Skriv til os: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Download Evades 3',
@@ -3522,9 +3982,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'TIL',
                 'sfx-off': 'FRA',
-                'about-title': '🎮 OM SPILLET',
-                'about-p1': '<span class="highlight">Evades 3</span> er evolutionen af det legendariske evades.io, gentænkt til en ny generation af gamere.',
-                'about-p2': 'Mærk adrenalinen i hurtige manøvrer, hvor hvert millisekund afgør kampen. Undvig dødelige forhindringer, overhal rivaler og dominér arenaen.',
+@@ -3528,50 +4014,63 @@
                 'stat-arenas': 'Arenaer',
                 'stat-online': 'Online',
                 'feature1-title': 'Lynhurtig Reaktion',
@@ -3550,6 +4008,19 @@
                 'languages': 'Jazyky ▼',
                 'early-access': '*Předběžný přístup',
                 'subtitle': 'Rychlost. Taktika.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'Máte dotazy? Napište nám: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Stáhnout Evades 3',
@@ -3575,9 +4046,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'ZAP',
                 'sfx-off': 'VYP',
-                'about-title': '🎮 O HŘE',
-                'about-p1': '<span class="highlight">Evades 3</span> je evoluce legendárního evades.io, přepracovaná pro novou generaci hráčů.',
-                'about-p2': 'Pociť adrenalin rychlých manévrů, kde každá milisekunda rozhoduje. Vyhýbej se smrtelným překážkám, předbíhej soupeře a ovládni arénu.',
+@@ -3581,50 +4080,63 @@
                 'stat-arenas': 'Arény',
                 'stat-online': 'Online',
                 'feature1-title': 'Blesková Reakce',
@@ -3603,6 +4072,19 @@
                 'languages': 'Limbi ▼',
                 'early-access': '*Acces timpuriu',
                 'subtitle': 'Viteză. Tactică.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'Ai întrebări? Scrie-ne: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Descarcă Evades 3',
@@ -3628,9 +4110,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'PORNIT',
                 'sfx-off': 'OPRIT',
-                'about-title': '🎮 DESPRE JOC',
-                'about-p1': '<span class="highlight">Evades 3</span> este evoluția legendarului evades.io, regândit pentru o nouă generație de gameri.',
-                'about-p2': 'Simte adrenalina manevrelor rapide, unde fiecare milisecundă contează. Evită obstacolele mortale, depășește rivalii și domină arena.',
+@@ -3634,50 +4146,63 @@
                 'stat-arenas': 'Arene',
                 'stat-online': 'Online',
                 'feature1-title': 'Reacție Fulger',
@@ -3656,6 +4136,19 @@
                 'languages': 'Nyelvek ▼',
                 'early-access': '*Korai hozzáférés',
                 'subtitle': 'Sebesség. Taktika.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'Kérdésed van? Írj nekünk: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 letöltése',
@@ -3681,9 +4174,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'BE',
                 'sfx-off': 'KI',
-                'about-title': '🎮 A JÁTÉKRÓL',
-                'about-p1': '<span class="highlight">Evades 3</span> a legendás evades.io evolúciója, újragondolva egy új játékosgenerációnak.',
-                'about-p2': 'Érezd a nagy sebességű manőverek adrenalinját, ahol minden ezredmásodperc számít. Kerüld el a halálos akadályokat, előzd meg a riválisokat és urald az arénát.',
+@@ -3687,50 +4212,63 @@
                 'stat-arenas': 'Arénák',
                 'stat-online': 'Online',
                 'feature1-title': 'Villámgyors Reakció',
@@ -3709,6 +4200,19 @@
                 'languages': 'Γλώσσες ▼',
                 'early-access': '*Πρόωρη πρόσβαση',
                 'subtitle': 'Ταχύτητα. Τακτική.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'Έχεις ερωτήσεις; Γράψε μας: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Λήψη Evades 3',
@@ -3734,9 +4238,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'ΑΝΟΙΧΤΟ',
                 'sfx-off': 'ΚΛΕΙΣΤΟ',
-                'about-title': '🎮 ΓΙΑ ΤΟ ΠΑΙΧΝΙΔΙ',
-                'about-p1': '<span class="highlight">Evades 3</span> είναι η εξέλιξη του θρυλικού evades.io, επανασχεδιασμένο για μια νέα γενιά παικτών.',
-                'about-p2': 'Νιώσε την αδρεναλίνη των γρήγορων ελιγμών όπου κάθε χιλιοστό του δευτερολέπτου μετράει. Απόφυγε θανατηφόρα εμπόδια, ξεπέρασε αντιπάλους και κυριάρχησε στην αρένα.',
+@@ -3740,50 +4278,63 @@
                 'stat-arenas': 'Αρένες',
                 'stat-online': 'Online',
                 'feature1-title': 'Αστραπιαία Αντίδραση',
@@ -3762,6 +4264,19 @@
                 'languages': '言語 ▼',
                 'early-access': '*早期アクセス',
                 'subtitle': 'スピード. 戦術.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'ご質問はありますか？ こちらへ: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 をダウンロード',
@@ -3787,9 +4302,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'オン',
                 'sfx-off': 'オフ',
-                'about-title': '🎮 ゲームについて',
-                'about-p1': '<span class="highlight">Evades 3</span> は伝説の evades.io を新世代向けに再構築した進化版です。',
-                'about-p2': '一瞬が勝敗を分ける高速マニューバのアドレナリンを体感せよ。致命的な障害物を避け、ライバルを抜き去り、アリーナを支配しよう。',
+@@ -3793,50 +4344,63 @@
                 'stat-arenas': 'アリーナ',
                 'stat-online': 'オンライン',
                 'feature1-title': '電光石火の反応',
@@ -3815,6 +4328,19 @@
                 'languages': '语言 ▼',
                 'early-access': '*抢先体验',
                 'subtitle': '速度. 战术.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': '有问题吗？请写信给我们：<a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': '下载 Evades 3',
@@ -3840,9 +4366,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': '开',
                 'sfx-off': '关',
-                'about-title': '🎮 关于游戏',
-                'about-p1': '<span class="highlight">Evades 3</span> 是传奇 evades.io 的进化版本，为新一代玩家重新打造。',
-                'about-p2': '感受高速机动的肾上腺素，每一毫秒都决定战局。躲避致命障碍，超越对手，统治竞技场。',
+@@ -3846,50 +4410,63 @@
                 'stat-arenas': '竞技场',
                 'stat-online': '在线',
                 'feature1-title': '闪电反应',
@@ -3868,6 +4392,19 @@
                 'languages': '언어 ▼',
                 'early-access': '*얼리 액세스',
                 'subtitle': '속도. 전술.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': '문의가 있으신가요? 메일 주세요: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 다운로드',
@@ -3893,9 +4430,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': '켜짐',
                 'sfx-off': '꺼짐',
-                'about-title': '🎮 게임 소개',
-                'about-p1': '<span class="highlight">Evades 3</span>는 전설적인 evades.io를 새로운 세대에 맞게 재해석한 진화판입니다.',
-                'about-p2': '매 밀리초가 승부를 가르는 고속 기동의 아드레날린을 느껴보세요. 치명적인 장애물을 피하고, 라이벌을 추월해, 아레나를 지배하세요.',
+@@ -3899,50 +4476,63 @@
                 'stat-arenas': '아레나',
                 'stat-online': '온라인',
                 'feature1-title': '번개 같은 반응',
@@ -3921,6 +4456,19 @@
                 'languages': 'اللغات ▼',
                 'early-access': '*وصول مبكر',
                 'subtitle': 'السرعة. التكتيك.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'هل لديك أسئلة؟ اكتب لنا: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'تحميل Evades 3',
@@ -3946,9 +4494,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'تشغيل',
                 'sfx-off': 'إيقاف',
-                'about-title': '🎮 عن اللعبة',
-                'about-p1': '<span class="highlight">Evades 3</span> هي تطور اللعبة الأسطورية evades.io، معاد تصورها لجيل جديد من اللاعبين.',
-                'about-p2': 'اشعر بأدرينالين المناورات السريعة حيث يحدد كل جزء من الثانية نتيجة المعركة. تفادَ العقبات القاتلة، تجاوز خصومك وسيطر على الساحة.',
+@@ -3952,50 +4542,63 @@
                 'stat-arenas': 'الساحات',
                 'stat-online': 'متصل',
                 'feature1-title': 'رد فعل خاطف',
@@ -3974,6 +4520,19 @@
                 'languages': 'भाषाएँ ▼',
                 'early-access': '*प्रारंभिक पहुँच',
                 'subtitle': 'स्पीड. रणनीति.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'कोई सवाल है? हमें लिखें: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 डाउनलोड करें',
@@ -3999,9 +4558,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'चालू',
                 'sfx-off': 'बंद',
-                'about-title': '🎮 गेम के बारे में',
-                'about-p1': '<span class="highlight">Evades 3</span> लेजेंडरी evades.io का नया रूप है, जिसे नई पीढ़ी के खिलाड़ियों के लिए फिर से बनाया गया है।',
-                'about-p2': 'तेज़ रफ्तार मैन्युवरों का एड्रेनालिन महसूस करें, जहाँ हर मिलीसेकंड निर्णायक होता है। घातक बाधाओं से बचें, प्रतिद्वंद्वियों को पीछे छोड़ें और एरीना पर राज करें।',
+@@ -4005,50 +4608,63 @@
                 'stat-arenas': 'एरीना',
                 'stat-online': 'ऑनलाइन',
                 'feature1-title': 'बिजली जैसी प्रतिक्रिया',
@@ -4027,6 +4584,19 @@
                 'languages': 'ภาษา ▼',
                 'early-access': '*เข้าถึงก่อนใคร',
                 'subtitle': 'ความเร็ว. แทคติก.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'มีคำถามไหม? เขียนหาเราได้ที่: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'ดาวน์โหลด Evades 3',
@@ -4052,9 +4622,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'เปิด',
                 'sfx-off': 'ปิด',
-                'about-title': '🎮 เกี่ยวกับเกม',
-                'about-p1': '<span class="highlight">Evades 3</span> คือวิวัฒนาการของ evades.io ในตำนาน ที่ถูกออกแบบใหม่เพื่อเกมเมอร์รุ่นใหม่.',
-                'about-p2': 'สัมผัสอะดรีนาลีนของการหลบหลีกความเร็วสูง ที่ทุกมิลลิวินาทีชี้ชะตา หลีกเลี่ยงอุปสรรคอันตราย แซงคู่แข่ง และครองสนาม.',
+@@ -4058,50 +4674,63 @@
                 'stat-arenas': 'อารีนา',
                 'stat-online': 'ออนไลน์',
                 'feature1-title': 'ปฏิกิริยาสายฟ้า',
@@ -4080,6 +4648,19 @@
                 'languages': 'Ngôn ngữ ▼',
                 'early-access': '*Truy cập sớm',
                 'subtitle': 'Tốc độ. Chiến thuật.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'Có câu hỏi? Hãy viết cho chúng tôi: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Tải Evades 3',
@@ -4105,9 +4686,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'BẬT',
                 'sfx-off': 'TẮT',
-                'about-title': '🎮 VỀ TRÒ CHƠI',
-                'about-p1': '<span class="highlight">Evades 3</span> là phiên bản tiến hóa của evades.io huyền thoại, được tái thiết kế cho thế hệ game thủ mới.',
-                'about-p2': 'Cảm nhận adrenaline của những pha né tránh tốc độ cao, nơi từng mili giây quyết định trận đấu. Tránh chướng ngại chết người, vượt qua đối thủ và thống trị đấu trường.',
+@@ -4111,50 +4740,63 @@
                 'stat-arenas': 'Đấu trường',
                 'stat-online': 'Trực tuyến',
                 'feature1-title': 'Phản ứng tia chớp',
@@ -4133,6 +4712,19 @@
                 'languages': 'Bahasa ▼',
                 'early-access': '*Akses awal',
                 'subtitle': 'Kecepatan. Taktik.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'Punya pertanyaan? Tulis ke kami: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Unduh Evades 3',
@@ -4158,8 +4750,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'NYALA',
                 'sfx-off': 'MATI',
-                'about-title': '🎮 TENTANG GAME',
-                'about-p1': '<span class="highlight">Evades 3</span> adalah evolusi dari evades.io legendaris, dirancang ulang untuk generasi gamer baru.',
+@@ -4163,50 +4805,63 @@
                 'about-p2': 'Rasakan adrenalin manuver kecepatan tinggi, di mana setiap milidetik menentukan hasil. Hindari rintangan mematikan, salip rival, dan kuasai arena.',
                 'stat-arenas': 'Arena',
                 'stat-online': 'Online',
@@ -4185,6 +4776,19 @@
             ms: {
                 'languages': 'Bahasa ▼',
                 'subtitle': 'Kelajuan. Taktik.',
+                'auth-login': 'Login',
+                'auth-register': 'Sign up',
+                'auth-notifications': 'Notifications',
+                'auth-empty': 'For now, empty',
+                'auth-email-placeholder': 'Email',
+                'auth-password-placeholder': 'Password',
+                'auth-login-submit': 'Log in',
+                'auth-register-submit': 'Create account',
+                'auth-success-login': 'Successfully signed in.',
+                'auth-success-register': 'Registration complete. Check your email if confirmation is required.',
+                'auth-error-generic': 'Authorization failed. Try again.',
+                'auth-error-invalid-credentials': 'Invalid email or password.',
+                'auth-error-user-exists': 'User already registered.',
 
                 'footer-contact': 'Ada soalan? Tulis kepada kami: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Muat turun Evades 3',
@@ -4210,7 +4814,7 @@
                 'sfx-label': 'SFX:',
                 'sfx-on': 'HIDUP',
                 'sfx-off': 'MATI',
-                'about-title': '🎮 TENTANG PERMAINAN',
+@@ -4214,50 +4869,220 @@
                 'about-p1': '<span class="highlight">Evades 3</span> ialah evolusi evades.io yang legenda, direka semula untuk generasi gamer baharu.',
                 'about-p2': 'Rasai adrenalin manuver kelajuan tinggi di mana setiap milisaat menentukan hasil. Elak halangan maut, pintas pesaing, dan kuasai arena.',
                 'stat-arenas': 'Arena',
@@ -4235,6 +4839,176 @@
                 'feature8-text': 'Bersaing dengan pemain dari seluruh dunia'
             }
         };
+
+    const SUPABASE_URL = "https://twgrguukftwtbnmnqgsd.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_SPk07tDzNQTAFPDCsYwSoA_0UNzL8Zz";
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    let authMode = 'login';
+    let authStateUnsubscribe = null;
+
+    function t(lang, key, fallback = '') {
+      return (translations[lang] && translations[lang][key]) || (translations.en && translations.en[key]) || fallback;
+    }
+
+    function applyI18nAttributes(lang) {
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        el.setAttribute('placeholder', t(lang, key, el.getAttribute('placeholder') || ''));
+      });
+      document.querySelectorAll('[data-i18n-title]').forEach(el => {
+        const key = el.getAttribute('data-i18n-title');
+        const text = t(lang, key, el.getAttribute('title') || '');
+        el.setAttribute('title', text);
+        if (el.id === 'notificationsBtn') {
+          el.setAttribute('aria-label', text);
+        }
+      });
+    }
+
+    function setAuthMode(mode) {
+      authMode = mode === 'register' ? 'register' : 'login';
+      const lang = currentLang || 'en';
+      const title = document.getElementById('authModalTitle');
+      const submit = document.getElementById('authSubmit');
+      const loginTab = document.getElementById('authTabLogin');
+      const registerTab = document.getElementById('authTabRegister');
+      if (title) title.textContent = t(lang, authMode === 'login' ? 'auth-login' : 'auth-register', title.textContent);
+      if (submit) {
+        const key = authMode === 'login' ? 'auth-login-submit' : 'auth-register-submit';
+        submit.textContent = t(lang, key, submit.textContent);
+      }
+      if (loginTab) loginTab.classList.toggle('is-active', authMode === 'login');
+      if (registerTab) registerTab.classList.toggle('is-active', authMode === 'register');
+      const passwordInput = document.getElementById('authPassword');
+      if (passwordInput) {
+        passwordInput.setAttribute('autocomplete', authMode === 'login' ? 'current-password' : 'new-password');
+      }
+    }
+
+    function setAuthStatus(key, tone = '') {
+      const statusEl = document.getElementById('authStatus');
+      if (!statusEl) return;
+      statusEl.className = 'auth-status';
+      if (tone) statusEl.classList.add(`is-${tone}`);
+      if (!key) {
+        statusEl.textContent = '';
+        return;
+      }
+      statusEl.textContent = t(currentLang || 'en', key, key);
+    }
+
+    function mapSupabaseError(error) {
+      const message = (error && error.message ? error.message : '').toLowerCase();
+      if (message.includes('invalid login credentials')) return 'auth-error-invalid-credentials';
+      if (message.includes('user already registered')) return 'auth-error-user-exists';
+      return 'auth-error-generic';
+    }
+
+    function setAuthUIState(isAuthenticated) {
+      const controls = document.getElementById('authControls');
+      const notifications = document.getElementById('notificationsWrap');
+      if (controls) controls.classList.toggle('is-hidden', isAuthenticated);
+      if (notifications) notifications.classList.toggle('is-visible', isAuthenticated);
+    }
+
+    function openAuthModal(mode = 'login') {
+      const overlay = document.getElementById('authModalOverlay');
+      if (!overlay) return;
+      setAuthMode(mode);
+      setAuthStatus('');
+      overlay.classList.add('is-open');
+      overlay.setAttribute('aria-hidden', 'false');
+      const emailInput = document.getElementById('authEmail');
+      if (emailInput) setTimeout(() => emailInput.focus(), 80);
+    }
+
+    function closeAuthModal() {
+      const overlay = document.getElementById('authModalOverlay');
+      if (!overlay) return;
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('aria-hidden', 'true');
+      setAuthStatus('');
+    }
+
+    async function initAuth() {
+      if (!supabaseClient) {
+        setAuthStatus('auth-error-generic', 'error');
+        return;
+      }
+
+      const loginBtn = document.getElementById('openLogin');
+      const registerBtn = document.getElementById('openRegister');
+      const closeBtn = document.getElementById('authClose');
+      const overlay = document.getElementById('authModalOverlay');
+      const form = document.getElementById('authForm');
+
+      if (loginBtn) loginBtn.addEventListener('click', () => openAuthModal('login'));
+      if (registerBtn) registerBtn.addEventListener('click', () => openAuthModal('register'));
+      if (closeBtn) closeBtn.addEventListener('click', closeAuthModal);
+      if (overlay) {
+        overlay.addEventListener('click', (event) => {
+          if (event.target === overlay) closeAuthModal();
+        });
+      }
+
+      document.querySelectorAll('[data-auth-mode]').forEach(btn => {
+        btn.addEventListener('click', () => setAuthMode(btn.getAttribute('data-auth-mode')));
+      });
+
+      if (form) {
+        form.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          if (!supabaseClient) return;
+
+          const email = String(document.getElementById('authEmail')?.value || '').trim();
+          const password = String(document.getElementById('authPassword')?.value || '');
+          if (!email || !password) {
+            setAuthStatus('auth-error-generic', 'error');
+            return;
+          }
+
+          setAuthStatus('');
+          const submitBtn = document.getElementById('authSubmit');
+          if (submitBtn) submitBtn.disabled = true;
+
+          try {
+            let error = null;
+            if (authMode === 'login') {
+              const response = await supabaseClient.auth.signInWithPassword({ email, password });
+              error = response.error;
+              if (!error) {
+                setAuthStatus('auth-success-login', 'success');
+                setTimeout(closeAuthModal, 450);
+              }
+            } else {
+              const response = await supabaseClient.auth.signUp({ email, password });
+              error = response.error;
+              if (!error) {
+                setAuthStatus('auth-success-register', 'success');
+                setTimeout(closeAuthModal, 650);
+              }
+            }
+
+            if (error) {
+              setAuthStatus(mapSupabaseError(error), 'error');
+            }
+          } catch (err) {
+            setAuthStatus(mapSupabaseError(err), 'error');
+          } finally {
+            if (submitBtn) submitBtn.disabled = false;
+          }
+        });
+      }
+
+      const { data } = await supabaseClient.auth.getSession();
+      setAuthUIState(Boolean(data && data.session));
+
+      const { data: listenerData } = supabaseClient.auth.onAuthStateChange((_event, session) => {
+        setAuthUIState(Boolean(session));
+      });
+      authStateUnsubscribe = listenerData?.subscription;
+    }
 
     function applyTranslations(lang) {
       const elements = document.querySelectorAll('[data-i18n]');
@@ -4405,6 +5179,8 @@
       document.documentElement.lang = lang;
       applyTranslations(lang);
       updateDynamicLabels(lang);
+      applyI18nAttributes(lang);
+      setAuthMode(authMode);
       localStorage.setItem('selectedLanguage', lang);
       setSelectedLangUI(lang);
 
@@ -4427,6 +5203,7 @@
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       monitorFPS();
+      initAuth();
 
       document.querySelectorAll('.lang-item').forEach(item => {
         item.addEventListener('click', () => {
