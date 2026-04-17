@@ -2187,6 +2187,94 @@
 
 <body>
 
+  <body>
+
+<!-- ===== AUTH SCREENS ===== -->
+<div id="screen-login" class="auth-screen">
+  <div class="auth-panel">
+    <button class="auth-back-btn" id="login-back-btn">←</button>
+    <div class="auth-logo-row">
+      <div class="auth-orb"></div>
+      <div class="auth-screen-title" id="login-title-text">LOGIN</div>
+    </div>
+    <div class="auth-subtitle" id="login-subtitle-text">ENTER THE ARENA</div>
+
+    <div class="auth-field">
+      <label class="auth-field-label" id="login-email-label">EMAIL</label>
+      <input class="auth-input" id="login-email" type="email" placeholder="player@evades3.com" />
+    </div>
+    <div class="auth-field">
+      <label class="auth-field-label" id="login-pass-label">PASSWORD</label>
+      <input class="auth-input" id="login-pass" type="password" placeholder="••••••••" />
+    </div>
+
+    <button class="auth-submit-btn" id="login-submit-btn">
+      <span id="login-btn-text">LOGIN</span>
+    </button>
+    <div class="auth-error" id="login-error"></div>
+    <div class="auth-switch">
+      <span id="login-switch-text">No account?</span>
+      <button class="auth-switch-btn" id="go-to-register"> Register</button>
+    </div>
+  </div>
+</div>
+
+<div id="screen-register" class="auth-screen">
+  <div class="auth-panel">
+    <button class="auth-back-btn" id="register-back-btn">←</button>
+    <div class="auth-logo-row">
+      <div class="auth-orb"></div>
+      <div class="auth-screen-title" id="register-title-text">REGISTER</div>
+    </div>
+    <div class="auth-subtitle" id="register-subtitle-text">JOIN THE BATTLE</div>
+
+    <div class="auth-field">
+      <label class="auth-field-label" id="reg-nick-label">NICKNAME</label>
+      <input class="auth-input" id="reg-nick" type="text" placeholder="YourGameTag" />
+    </div>
+    <div class="auth-field">
+      <label class="auth-field-label" id="reg-email-label">EMAIL</label>
+      <input class="auth-input" id="reg-email" type="email" placeholder="player@evades3.com" />
+    </div>
+    <div class="auth-field">
+      <label class="auth-field-label" id="reg-pass-label">PASSWORD</label>
+      <input class="auth-input" id="reg-pass" type="password" placeholder="Min 6 characters" />
+    </div>
+
+    <button class="auth-submit-btn" id="register-submit-btn">
+      <span id="register-btn-text">CREATE ACCOUNT</span>
+    </button>
+    <div class="auth-error" id="register-error"></div>
+    <div class="auth-success" id="register-success"></div>
+    <div class="auth-switch">
+      <span id="register-switch-text">Already have an account?</span>
+      <button class="auth-switch-btn" id="go-to-login"> Login</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== NOTIFICATIONS PANEL ===== -->
+<div class="notif-overlay" id="notif-overlay"></div>
+<div class="notif-panel" id="notif-panel">
+  <button class="notif-close" id="notif-close">✕</button>
+  <div class="notif-header" id="notif-header-text">NOTIFICATIONS</div>
+  <div class="notif-item">
+    <div class="notif-item-title" id="notif1-title">🎮 EARLY ACCESS</div>
+    <div id="notif1-text">Evades 3 is in development. Stay tuned for updates!</div>
+  </div>
+  <div class="notif-item">
+    <div class="notif-item-title" id="notif2-title">🏆 RANKING SYSTEM</div>
+    <div id="notif2-text">Leaderboard feature coming soon. Prepare your skills.</div>
+  </div>
+  <div class="notif-item">
+    <div class="notif-item-title" id="notif3-title">⚡ PATCH NOTES</div>
+    <div id="notif3-text">New animations and game mechanics are being finalized.</div>
+  </div>
+</div>
+<!-- ===== END AUTH ===== -->
+
+<!-- ===== КАСТОМНЫЙ КУРСОР ===== -->
+
   <!-- ===== КАСТОМНЫЙ КУРСОР ===== -->
   <canvas id="cursor-canvas"></canvas>
 
@@ -2295,6 +2383,30 @@
   <div class="early-access-banner" data-i18n="early-access">*Ранний доступ</div>
 
   <img class="logo-image" src="logo.png" alt="Evades 3 logo" />
+
+    <!-- ===== AUTH NAVIGATION ===== -->
+<div class="auth-nav" id="auth-nav">
+  <button class="auth-nav-btn auth-nav-btn--login" id="nav-login-btn"></button>
+  <button class="auth-nav-btn auth-nav-btn--register" id="nav-register-btn"></button>
+</div>
+
+<!-- ===== PLAYER PROFILE ===== -->
+<div class="player-profile" id="player-profile">
+  <div class="player-card">
+    <div class="player-nickname" id="profile-nickname">PLAYER</div>
+    <div class="player-meta">
+      <div class="player-stat" id="profile-level-stat">LVL <span id="profile-level">1</span></div>
+      <div class="player-stat" id="profile-score-stat">⭐ <span id="profile-score">0</span></div>
+    </div>
+  </div>
+  <div class="player-actions">
+    <button class="player-btn player-btn--notif" id="notif-open-btn">
+      <span id="notif-btn-text">🔔 NOTIFICATIONS</span>
+      <span class="notif-dot"></span>
+    </button>
+    <button class="player-btn player-btn--logout" id="logout-btn"></button>
+  </div>
+</div>
 
   <!-- Меню языков -->
   <div class="language-menu">
@@ -4781,6 +4893,329 @@
       setCursorType('arrow');
     })();
     // ====== КОНЕЦ КАСТОМНОГО КУРСОРА ======
+       // ====== SUPABASE + AUTH ======
+     const SUPABASE_URL = "https://twgrguukftwtbnmnqgsd.supabase.co"
+     const SUPABASE_KEY = "sb_publishable_SPk07tDzNQTAFPDCsYwSoA_0UNzL8Zz"
+   const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+   // ---- Translations (auth keys only, 3 langs) ----
+   const authI18n = {
+     en: {
+       'nav-login': 'LOGIN',
+       'nav-register': 'REGISTER',
+       'login-title': 'LOGIN',
+       'login-subtitle': 'ENTER THE ARENA',
+       'login-email-label': 'EMAIL',
+       'login-pass-label': 'PASSWORD',
+       'login-btn': 'LOGIN',
+       'login-switch': 'No account?',
+       'login-switch-link': ' Register',
+       'register-title': 'REGISTER',
+       'register-subtitle': 'JOIN THE BATTLE',
+       'reg-nick-label': 'NICKNAME',
+       'reg-email-label': 'EMAIL',
+       'reg-pass-label': 'PASSWORD (MIN 6)',
+       'register-btn': 'CREATE ACCOUNT',
+       'register-switch': 'Already have an account?',
+       'register-switch-link': ' Login',
+       'logout-btn': 'LOGOUT',
+       'notif-btn': '🔔 NOTIFICATIONS',
+       'notif-header': 'NOTIFICATIONS',
+       'notif1-title': '🎮 EARLY ACCESS',
+       'notif1': 'Evades 3 is in development. Stay tuned!',
+       'notif2-title': '🏆 RANKING SYSTEM',
+       'notif2': 'Leaderboard coming soon. Prepare your skills.',
+       'notif3-title': '⚡ PATCH NOTES',
+       'notif3': 'New animations and mechanics being finalized.',
+       'err-fill': 'Please fill in all fields.',
+       'err-short-pass': 'Password must be at least 6 characters.',
+       'err-generic': 'An error occurred. Try again.',
+       'err-invalid': 'Invalid email or password.',
+       'err-email-taken': 'This email is already registered.',
+       'success-register': '✅ Account created! Check your email to confirm.',
+     },
+     ru: {
+       'nav-login': 'ВОЙТИ',
+       'nav-register': 'РЕГИСТРАЦИЯ',
+       'login-title': 'ВХОД',
+       'login-subtitle': 'НА АРЕНУ',
+       'login-email-label': 'ПОЧТА',
+       'login-pass-label': 'ПАРОЛЬ',
+       'login-btn': 'ВОЙТИ',
+       'login-switch': 'Нет аккаунта?',
+       'login-switch-link': ' Зарегистрироваться',
+       'register-title': 'РЕГИСТРАЦИЯ',
+       'register-subtitle': 'В БОЙ',
+       'reg-nick-label': 'НИКНЕЙМ',
+       'reg-email-label': 'ПОЧТА',
+       'reg-pass-label': 'ПАРОЛЬ (МИН 6)',
+       'register-btn': 'СОЗДАТЬ АККАУНТ',
+       'register-switch': 'Уже есть аккаунт?',
+       'register-switch-link': ' Войти',
+       'logout-btn': 'ВЫЙТИ',
+       'notif-btn': '🔔 УВЕДОМЛЕНИЯ',
+       'notif-header': 'УВЕДОМЛЕНИЯ',
+       'notif1-title': '🎮 РАННИЙ ДОСТУП',
+       'notif1': 'Evades 3 в разработке. Следите за обновлениями!',
+       'notif2-title': '🏆 СИСТЕМА РАНГОВ',
+       'notif2': 'Таблица лидеров скоро. Прокачивай навыки.',
+       'notif3-title': '⚡ ПАТЧ-НОТЫ',
+       'notif3': 'Новые анимации и механики на финальной стадии.',
+       'err-fill': 'Заполни все поля.',
+       'err-short-pass': 'Пароль минимум 6 символов.',
+       'err-generic': 'Произошла ошибка. Попробуй снова.',
+       'err-invalid': 'Неверная почта или пароль.',
+       'err-email-taken': 'Этот email уже зарегистрирован.',
+       'success-register': '✅ Аккаунт создан! Проверь почту для подтверждения.',
+     },
+     uk: {
+       'nav-login': 'УВІЙТИ',
+       'nav-register': 'РЕЄСТРАЦІЯ',
+       'login-title': 'ВХІД',
+       'login-subtitle': 'НА АРЕНУ',
+       'login-email-label': 'ПОШТА',
+       'login-pass-label': 'ПАРОЛЬ',
+       'login-btn': 'УВІЙТИ',
+       'login-switch': 'Немає акаунту?',
+       'login-switch-link': ' Зареєструватись',
+       'register-title': 'РЕЄСТРАЦІЯ',
+       'register-subtitle': 'У БІЙ',
+       'reg-nick-label': 'НІКНЕЙМ',
+       'reg-email-label': 'ПОШТА',
+       'reg-pass-label': 'ПАРОЛЬ (МІН 6)',
+       'register-btn': 'СТВОРИТИ АКАУНТ',
+       'register-switch': 'Вже є акаунт?',
+       'register-switch-link': ' Увійти',
+       'logout-btn': 'ВИЙТИ',
+       'notif-btn': '🔔 СПОВІЩЕННЯ',
+       'notif-header': 'СПОВІЩЕННЯ',
+       'notif1-title': '🎮 РАННІЙ ДОСТУП',
+       'notif1': 'Evades 3 в розробці. Стеж за оновленнями!',
+       'notif2-title': '🏆 СИСТЕМА РАНГІВ',
+       'notif2': 'Таблиця лідерів скоро. Прокачуй навички.',
+       'notif3-title': '⚡ ПАТЧ-НОТИ',
+       'notif3': 'Нові анімації та механіки на фінальній стадії.',
+       'err-fill': 'Заповни всі поля.',
+       'err-short-pass': 'Пароль мінімум 6 символів.',
+       'err-generic': 'Сталася помилка. Спробуй ще раз.',
+       'err-invalid': 'Невірна пошта або пароль.',
+       'err-email-taken': 'Цей email вже зареєстрований.',
+       'success-register': '✅ Акаунт створено! Перевір пошту для підтвердження.',
+     }
+   };
+
+   function at(key) {
+     const lang = (typeof currentLang !== 'undefined' ? currentLang : 'en');
+     const map = authI18n[lang] || authI18n.en;
+     return map[key] || authI18n.en[key] || key;
+   }
+
+   function applyAuthTranslations() {
+     document.getElementById('nav-login-btn').textContent   = at('nav-login');
+     document.getElementById('nav-register-btn').textContent = at('nav-register');
+     document.getElementById('login-title-text').textContent    = at('login-title');
+     document.getElementById('login-subtitle-text').textContent = at('login-subtitle');
+     document.getElementById('login-email-label').textContent   = at('login-email-label');
+     document.getElementById('login-pass-label').textContent    = at('login-pass-label');
+     document.getElementById('login-btn-text').textContent      = at('login-btn');
+     document.getElementById('login-switch-text').textContent   = at('login-switch');
+     document.getElementById('go-to-register').textContent      = at('login-switch-link');
+     document.getElementById('register-title-text').textContent    = at('register-title');
+     document.getElementById('register-subtitle-text').textContent = at('register-subtitle');
+     document.getElementById('reg-nick-label').textContent  = at('reg-nick-label');
+     document.getElementById('reg-email-label').textContent = at('reg-email-label');
+     document.getElementById('reg-pass-label').textContent  = at('reg-pass-label');
+     document.getElementById('register-btn-text').textContent   = at('register-btn');
+     document.getElementById('register-switch-text').textContent = at('register-switch');
+     document.getElementById('go-to-login').textContent         = at('register-switch-link');
+     document.getElementById('logout-btn').textContent          = at('logout-btn');
+     document.getElementById('notif-btn-text').textContent      = at('notif-btn');
+     document.getElementById('notif-header-text').textContent   = at('notif-header');
+     document.getElementById('notif1-title').textContent = at('notif1-title');
+     document.getElementById('notif1-text').textContent  = at('notif1');
+     document.getElementById('notif2-title').textContent = at('notif2-title');
+     document.getElementById('notif2-text').textContent  = at('notif2');
+     document.getElementById('notif3-title').textContent = at('notif3-title');
+     document.getElementById('notif3-text').textContent  = at('notif3');
+   }
+
+   // ---- Screen navigation ----
+   function showScreen(id) {
+     document.querySelectorAll('.auth-screen').forEach(s => s.classList.remove('is-active'));
+     if (id) document.getElementById(id).classList.add('is-active');
+   }
+
+   function hideAllScreens() { showScreen(null); }
+
+   // ---- UI state ----
+   function showAuthNav() {
+     document.getElementById('auth-nav').style.display = 'flex';
+     document.getElementById('player-profile').classList.remove('is-visible');
+   }
+
+   function showPlayerProfile(player) {
+     document.getElementById('auth-nav').style.display = 'none';
+     const prof = document.getElementById('player-profile');
+     prof.classList.add('is-visible');
+     document.getElementById('profile-nickname').textContent = player.nickname || player.email.split('@')[0];
+     document.getElementById('profile-level').textContent  = player.level  || 1;
+     document.getElementById('profile-score').textContent  = player.score  || 0;
+   }
+
+   // ---- Error/success helpers ----
+   function setError(id, msg) {
+     const el = document.getElementById(id);
+     el.textContent = msg;
+     el.classList.toggle('is-visible', !!msg);
+   }
+
+   function setSuccess(id, msg) {
+     const el = document.getElementById(id);
+     el.textContent = msg;
+     el.classList.toggle('is-visible', !!msg);
+   }
+
+   function setLoading(btnId, textId, loading, label) {
+     const btn = document.getElementById(btnId);
+     const txt = document.getElementById(textId);
+     btn.disabled = loading;
+     txt.innerHTML = loading
+       ? `<span class="auth-spinner"></span>`
+       : label;
+   }
+
+   // ---- Supabase functions ----
+   async function registerUser() {
+     const nick  = document.getElementById('reg-nick').value.trim();
+     const email = document.getElementById('reg-email').value.trim();
+     const pass  = document.getElementById('reg-pass').value;
+
+     setError('register-error', '');
+     setSuccess('register-success', '');
+
+     if (!nick || !email || !pass) { setError('register-error', at('err-fill')); return; }
+     if (pass.length < 6)          { setError('register-error', at('err-short-pass')); return; }
+
+     setLoading('register-submit-btn', 'register-btn-text', true);
+
+     try {
+       const { data, error } = await supabase.auth.signUp({ email, password: pass });
+       if (error) {
+         const msg = error.message.includes('already') ? at('err-email-taken') : at('err-generic');
+         setError('register-error', msg);
+         return;
+       }
+
+       const uid = data.user?.id;
+       if (uid) {
+         await supabase.from('players').insert({
+           id: uid, email, nickname: nick, score: 0, level: 1
+         });
+       }
+
+       setSuccess('register-success', at('success-register'));
+       document.getElementById('reg-nick').value  = '';
+       document.getElementById('reg-email').value = '';
+       document.getElementById('reg-pass').value  = '';
+
+       setTimeout(() => { hideAllScreens(); checkSession(); }, 1800);
+     } catch (e) {
+       setError('register-error', at('err-generic'));
+     } finally {
+       setLoading('register-submit-btn', 'register-btn-text', false, at('register-btn'));
+     }
+   }
+
+   async function loginUser() {
+     const email = document.getElementById('login-email').value.trim();
+     const pass  = document.getElementById('login-pass').value;
+
+     setError('login-error', '');
+
+     if (!email || !pass) { setError('login-error', at('err-fill')); return; }
+
+     setLoading('login-submit-btn', 'login-btn-text', true);
+
+     try {
+       const { data, error } = await supabase.auth.signInWithPassword({ email, password: pass });
+       if (error) { setError('login-error', at('err-invalid')); return; }
+
+       hideAllScreens();
+       const player = await getPlayerData(data.user.id);
+       showPlayerProfile(player || { email: data.user.email, level: 1, score: 0 });
+
+       document.getElementById('login-email').value = '';
+       document.getElementById('login-pass').value  = '';
+     } catch (e) {
+       setError('login-error', at('err-generic'));
+     } finally {
+       setLoading('login-submit-btn', 'login-btn-text', false, at('login-btn'));
+     }
+   }
+
+   async function logoutUser() {
+     await supabase.auth.signOut();
+     showAuthNav();
+   }
+
+   async function getPlayerData(uid) {
+     const { data } = await supabase.from('players').select('*').eq('id', uid).single();
+     return data;
+   }
+
+   async function checkSession() {
+     const { data: { session } } = await supabase.auth.getSession();
+     if (session) {
+       const player = await getPlayerData(session.user.id);
+       showPlayerProfile(player || { email: session.user.email, level: 1, score: 0 });
+     } else {
+       showAuthNav();
+     }
+   }
+
+   // ---- Bind buttons ----
+   document.getElementById('nav-login-btn').addEventListener('click', () => showScreen('screen-login'));
+   document.getElementById('nav-register-btn').addEventListener('click', () => showScreen('screen-register'));
+   document.getElementById('login-back-btn').addEventListener('click', hideAllScreens);
+   document.getElementById('register-back-btn').addEventListener('click', hideAllScreens);
+   document.getElementById('go-to-register').addEventListener('click', () => showScreen('screen-register'));
+   document.getElementById('go-to-login').addEventListener('click', () => showScreen('screen-login'));
+   document.getElementById('login-submit-btn').addEventListener('click', loginUser);
+   document.getElementById('register-submit-btn').addEventListener('click', registerUser);
+   document.getElementById('logout-btn').addEventListener('click', logoutUser);
+
+   // Enter key support
+   document.getElementById('login-pass').addEventListener('keydown', e => { if (e.key === 'Enter') loginUser(); });
+   document.getElementById('reg-pass').addEventListener('keydown', e => { if (e.key === 'Enter') registerUser(); });
+
+   // Notifications
+   document.getElementById('notif-open-btn').addEventListener('click', () => {
+     document.getElementById('notif-panel').classList.add('is-open');
+     document.getElementById('notif-overlay').classList.add('is-open');
+   });
+   document.getElementById('notif-close').addEventListener('click', () => {
+     document.getElementById('notif-panel').classList.remove('is-open');
+     document.getElementById('notif-overlay').classList.remove('is-open');
+   });
+   document.getElementById('notif-overlay').addEventListener('click', () => {
+     document.getElementById('notif-panel').classList.remove('is-open');
+     document.getElementById('notif-overlay').classList.remove('is-open');
+   });
+
+   // Init
+   applyAuthTranslations();
+   checkSession();
+
+   // Re-apply auth translations when language changes (hook into changeLanguage)
+   const _origChangeLang = changeLanguage;
+   // Override: после оригинального вызова обновляем auth-переводы
+   window.addEventListener('DOMContentLoaded', () => {
+     // Patch: observe lang changes via MutationObserver on html[lang]
+     new MutationObserver(() => applyAuthTranslations())
+       .observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+   });
+   // ====== END AUTH ======
+
   </script>
 </body>
 </html>
