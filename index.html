@@ -6507,7 +6507,7 @@ async function doLogin() {
   btn.disabled=true; btn.innerHTML='<span class="af-submit-shine"></span><span>⏳ Вход...</span>';
   try {
     const data = await supaPost('/auth/v1/token?grant_type=password', { email, password: pass });
-    if (data.error || data.error_description) {
+if (data.error || data.error_description || data.msg) {
       const msg = data.error_description || data.error || 'Ошибка';
       const friendly = msg.includes('Invalid login') ? 'Неверный email или пароль'
         : msg.includes('Email not confirmed') ? 'Подтверди email перед входом' : msg;
@@ -6546,7 +6546,7 @@ async function doRegister() {
   try {
     const data = await supaPost('/auth/v1/signup', { email, password: pass, data: { username: nick } });
     if (data.error || data.error_description) {
-      const msg = data.error_description || data.error || 'Ошибка';
+      const msg = data.error_description || data.error || data.msg || 'Ошибка';
       const friendly = (msg.includes('already')||msg.includes('exists')) ? 'Этот email уже зарегистрирован' : msg;
       setHint('ri-email-hint', friendly, 'err'); setInpState(document.getElementById('ri-email'),'error');
     } else if (data.session) {
