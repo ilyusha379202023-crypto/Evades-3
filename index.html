@@ -3102,6 +3102,15 @@ html, body {
 body.modal-open {
   overflow: hidden; /* блокируем скролл страницы только когда модалка открыта */
 }
+
+    .profile-modal-fields { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; width: 100%; }
+.profile-modal-field {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 16px; border-radius: 12px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09);
+}
+.pmf-label { font-size: 12px; color: rgba(255,255,255,0.45); font-weight: 600; letter-spacing: 0.5px; }
+.pmf-value { font-size: 13px; color: #fff; font-weight: 700; letter-spacing: 0.3px; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   </style>
 </head>
 
@@ -3400,11 +3409,20 @@ body.modal-open {
     </div>
     <div class="profile-modal-name" id="pmName">Игрок</div>
     <div class="profile-modal-email" id="pmEmail">—</div>
-    <div class="profile-modal-stats">
-      <div class="profile-stat"><div class="profile-stat-num">0</div><div class="profile-stat-label">Побед</div></div>
-      <div class="profile-stat"><div class="profile-stat-num">—</div><div class="profile-stat-label">Ранг</div></div>
-      <div class="profile-stat"><div class="profile-stat-num">0</div><div class="profile-stat-label">Игр</div></div>
-    </div>
+<div class="profile-modal-fields">
+  <div class="profile-modal-field">
+    <span class="pmf-label">📧 Email</span>
+    <span class="pmf-value" id="pmEmail2">—</span>
+  </div>
+  <div class="profile-modal-field">
+    <span class="pmf-label">🌍 Язык</span>
+    <span class="pmf-value" id="pmLang">—</span>
+  </div>
+  <div class="profile-modal-field">
+    <span class="pmf-label">📅 В проекте с</span>
+    <span class="pmf-value" id="pmJoined">—</span>
+  </div>
+</div>
     <div class="profile-modal-badge">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       В системе
@@ -6354,6 +6372,15 @@ function showLoggedIn() {
   document.getElementById('ddEmail').textContent = email;
   document.getElementById('pmName').textContent = nick;
   document.getElementById('pmEmail').textContent = email;
+  const el2 = document.getElementById('pmEmail2');
+if (el2) el2.textContent = email;
+const langEl = document.getElementById('pmLang');
+if (langEl) langEl.textContent = (localStorage.getItem('selectedLanguage') || 'ru').toUpperCase();
+const joinedEl = document.getElementById('pmJoined');
+if (joinedEl) {
+  const created = ev3User?.created_at;
+  joinedEl.textContent = created ? new Date(created).toLocaleDateString('ru-RU', {day:'numeric',month:'long',year:'numeric'}) : '—';
+}
 }
 function showLoggedOut() {
   document.getElementById('btnLogin').style.display = '';
