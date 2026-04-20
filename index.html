@@ -6774,7 +6774,10 @@ async function doRegister() {
 // ===================================================
 function oauthSignIn(provider) {
   ev3Toast(`Перенаправление на ${provider}...`, '🔗');
-  setTimeout(() => { window.location.href = `${SUPA_URL}/auth/v1/authorize?provider=${provider}&redirect_to=${encodeURIComponent(location.href)}`; }, 600);
+  const redirectTo = encodeURIComponent(window.location.href);
+  setTimeout(() => {
+    window.location.href = `${SUPA_URL}/auth/v1/authorize?provider=${provider}&redirect_to=${redirectTo}`;
+  }, 600);
 }
 
 // ===================================================
