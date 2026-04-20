@@ -6579,13 +6579,7 @@ async function supaPost(path, body) {
 let ev3Session = null;
 let ev3User = null;
 
-function saveSession(s) {
-  ev3Session = s;
-  if (s?.access_token) ev3Session.accesstoken = s.access_token; // совместимость
-  try { localStorage.setItem('ev3session', JSON.stringify(s)); } catch(e) {
-    console.warn('localStorage недоступен, сессия только в памяти');
-  }
-}
+function saveSession(s) { if (s?.access_token) { ev3Session = s; try { localStorage.setItem('ev3_session', JSON.stringify(s)); } catch{} } }
 function loadSession() { try { ev3Session = JSON.parse(localStorage.getItem('ev3_session')); } catch { ev3Session = null; } }
 function clearSession() { ev3Session = null; ev3User = null; try { localStorage.removeItem('ev3_session'); } catch {} }
 
@@ -6779,11 +6773,8 @@ async function doRegister() {
 // OAUTH
 // ===================================================
 function oauthSignIn(provider) {
-  ev3Toast(provider + '...', '🔗');
-  const redirectTo = encodeURIComponent(window.location.origin + window.location.pathname);
-  setTimeout(() => {
-    window.location.href = SUPAURL + '/auth/v1/authorize?provider=' + provider + '&redirect_to=' + redirectTo;
-  }, 600);
+  ev3Toast(`Перенаправление на ${provider}...`, '🔗');
+  setTimeout(() => { window.location.href = `${SUPA_URL}/auth/v1/authorize?provider=${provider}&redirect_to=${encodeURIComponent(location.href)}`; }, 600);
 }
 
 // ===================================================
@@ -6835,40 +6826,6 @@ document.addEventListener('keydown', e => {
 // INIT — CHECK SESSION ON LOAD
 // ===================================================
 verifySession();
-    // Обработка OAuth callback — токен в URL после редиректа
-(function handleOAuthCallback() {
-  const hash = window.location.hash;
-  if (hash && hash.includes('access_token')) {
-    const params = new URLSearchParams(hash.replace('#', ''));
-    const access_token = params.get('access_token');
-    const refresh_token = params.get('refresh_token');
-    const expires_at = Math.floor(Date.now() / 1000) + parseInt(params.get('expires_in') || '3600');
-    if (access_token) {
-      const fakeSession = {
-        access_token: access_token,
-        accesstoken: access_token,
-        refresh_token: refresh_token,
-        expires_at: expires_at,
-        user: { id: params.get('provider_token') || 'oauth_user', email: '' }
-      };
-      // Получаем данные пользователя
-      fetch(SUPAURL + '/auth/v1/user', {
-        headers: { apikey: SUPAKEY, Authorization: 'Bearer ' + access_token }
-      }).then(r => r.json()).then(user => {
-        fakeSession.user = user;
-        saveSession(fakeSession);
-        ev3Session = fakeSession;
-        ev3User = user;
-        history.replaceState(null, '', window.location.pathname); // убираем токен из URL
-        showLoggedIn();
-        const nick = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Player';
-        ev3Toast('👋 ' + nick + '!', '✅');
-      }).catch(() => {
-        ev3Toast('Ошибка OAuth входа', '❌');
-      });
-    }
-  }
-})();
 
 
   </script>
