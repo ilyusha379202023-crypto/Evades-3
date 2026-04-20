@@ -6830,6 +6830,32 @@ document.addEventListener('keydown', e => {
 // ===================================================
 verifySession();
 
+    // Обработка OAuth callback (токен в URL хэше)
+(function handleOAuthCallback() {
+  const hash = window.location.hash;
+  if (!hash.includes('access_token')) return;
+  const params = new URLSearchParams(hash.slice(1));
+  const access_token = params.get('access_token');
+  const refresh_token = params.get('refresh_token');
+  const expires_at = params.get('expires_at');
+  if (!access_token) return;
+
+  // Получаем данные пользователя
+  fetch(SUPA_URL + '/auth/v1/user', {
+    headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + access_token }
+  })
+  .then(r => r.json())
+  .then(user => {
+    const session = { access_token, refresh_token, expires_at: Number(expires_at), user };
+    saveSession(session);
+    ev3User = user;
+    showLoggedIn();
+    ev3Toast('Вы вошли через ' + (user.app_metadata?.provider || 'OAuth') + ' 🎉', '🎉');
+    // Убираем токен из URL
+    history.replaceState(null, '', window.location.pathname);
+  })
+  .catch(() => ev3Toast('Ошибка авторизации', '❌'));
+})();
 
   </script>
 </body>
