@@ -6444,95 +6444,6 @@ body.modal-open {
         openModal('modalLogin');
       });
 
-      // Open register
-      document.getElementById('btnRegister').addEventListener('click', () => {
-        clearForms();
-        openModal('modalRegister');
-      });
-
-      // Profile dropdown
-      document.getElementById('ddProfile').addEventListener('click', () => {
-        openModal('modalProfile');
-      });
-
-      // Logout dropdown
-      document.getElementById('ddLogout').addEventListener('click', () => {
-        openModal('modalLogout');
-      });
-
-      // Confirm logout
-      document.getElementById('confirmLogoutYes').addEventListener('click', async () => {
-        await signOut();
-        setUILoggedOut();
-        closeModal('modalLogout');
-      });
-
-      // LOGIN FORM
-      document.getElementById('formLogin').addEventListener('submit', async e => {
-        e.preventDefault();
-        const errEl = document.getElementById('loginError');
-        const btn = e.target.querySelector('button[type=submit]');
-        const email = document.getElementById('loginEmail').value.trim();
-        const password = document.getElementById('loginPassword').value;
-        errEl.textContent = '';
-        btn.disabled = true;
-        btn.textContent = '...';
-        try {
-          const data = await signIn(email, password);
-          if (!data.access_token) throw { message: data.msg || data.error_description || 'Error' };
-          sbSession = data;
-          localStorage.setItem('sb_session', JSON.stringify(data));
-          currentUser = data.user;
-          currentPlayer = await ensurePlayer(currentUser.id, currentUser.email);
-          setUILoggedIn(currentPlayer, currentUser.email);
-          closeModal('modalLogin');
-          e.target.reset();
-        } catch(err) {
-          const msg = err.error_description || err.msg || err.message || (typeof err === 'string' ? err : 'Error');
-          errEl.textContent = msg;
-        } finally {
-          btn.disabled = false;
-          btn.setAttribute('data-i18n', 'auth-login');
-          btn.textContent = t('auth-login');
-        }
-      });
-
-      // REGISTER FORM
-      document.getElementById('formRegister').addEventListener('submit', async e => {
-        e.preventDefault();
-        const errEl = document.getElementById('registerError');
-        const sucEl = document.getElementById('registerSuccess');
-        const btn = e.target.querySelector('button[type=submit]');
-        const email = document.getElementById('regEmail').value.trim();
-        const password = document.getElementById('regPassword').value;
-        errEl.textContent = '';
-        sucEl.textContent = '';
-        btn.disabled = true;
-        btn.textContent = '...';
-        try {
-          const data = await signUp(email, password);
-          if (data.error) throw { message: data.error };
-          if (data.access_token) {
-            sbSession = data;
-            localStorage.setItem('sb_session', JSON.stringify(data));
-            currentUser = data.user;
-            currentPlayer = await ensurePlayer(currentUser.id, currentUser.email);
-            setUILoggedIn(currentPlayer, currentUser.email);
-            closeModal('modalRegister');
-          } else {
-            sucEl.textContent = 'Check your email to confirm registration.';
-          }
-          e.target.reset();
-        } catch(err) {
-          const msg = err.error_description || err.msg || err.message || (typeof err === 'string' ? err : 'Error');
-          errEl.textContent = msg;
-        } finally {
-          btn.disabled = false;
-          btn.setAttribute('data-i18n', 'auth-register');
-          btn.textContent = t('auth-register');
-        }
-      });
-
       // Restore session
       (function restoreSession() {
         try {
@@ -6774,7 +6685,7 @@ async function doRegister() {
 // ===================================================
 function oauthSignIn(provider) {
   ev3Toast(`Перенаправление на ${provider}...`, '🔗');
-  setTimeout(() => { window.location.href = `${SUPABASE_URL}/auth/v1/authorize?provider=${provider}&redirect_to=${encodeURIComponent(location.href)}`; }, 600);
+  window.location.href = 'https://twgrguukftwtbnmnqgsd.supabase.co/auth/v1/authorize?provider=' + provider + '&redirect_to=' + encodeURIComponent(window.location.origin + window.location.pathname);
 }
 
 // ===================================================
