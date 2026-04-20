@@ -2646,8 +2646,8 @@
 .nav-auth-area {
   position: fixed;
   top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 180px;
+  transform: none;
   z-index: 1001;
   display: flex;
   align-items: center;
@@ -2721,13 +2721,21 @@
 /* ── ПРОФИЛЬ ДРОПДАУН ── */
 .profile-wrap { position: relative; }
 .profile-dropdown {
-  position: absolute; top: calc(100% + 8px); right: 0; width: 220px;
+  position: absolute; top: calc(100% + 2px);; right: 0; width: 220px;
   background: linear-gradient(160deg, rgba(8,28,18,0.98), rgba(4,14,9,0.99));
   border: 1px solid rgba(255,255,255,0.12); border-radius: 20px; overflow: hidden;
   box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(74,222,128,0.08), 0 0 30px rgba(74,222,128,0.05);
   backdrop-filter: blur(20px); opacity: 0; pointer-events: none;
   transform: translateY(8px) scale(0.96); transform-origin: top right;
   transition: opacity 0.22s ease, transform 0.22s cubic-bezier(.08,1.2,.18,1); z-index: 5000;
+}
+.profile-wrap::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 10px;
 }
 .profile-wrap:hover .profile-dropdown,
 .profile-wrap.open .profile-dropdown,
@@ -2752,14 +2760,24 @@
 .profile-dd-name { font-size: 15px; font-weight: 900; color: #ffd700; letter-spacing: 0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .profile-dd-email { font-size: 11px; color: rgba(255,255,255,0.38); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .profile-dd-item {
-  display: flex; align-items: center; gap: 12px; padding: 14px 18px;
-  color: rgba(255,255,255,0.8); font-size: 14px; font-weight: 700; letter-spacing: 0.5px;
-  transition: background 0.18s ease, color 0.18s ease, padding-left 0.18s ease;
-  width: 100%; text-align: left;
+  display: flex; align-items: center; gap: 12px; padding: 13px 20px;
+  color: rgba(255,255,255,0.75); font-size: 14px; font-weight: 700;
+  letter-spacing: 0.5px; transition: all 0.2s ease; width: 100%; text-align: left;
+  border-left: 3px solid transparent;
+  background: transparent;
 }
-.profile-dd-item:hover { background: rgba(74,222,128,0.1); color: #fff; padding-left: 22px; }
-.profile-dd-item.danger { color: rgba(255,100,100,0.75); }
-.profile-dd-item.danger:hover { background: rgba(255,60,60,0.12); color: #ff6b6b; padding-left: 22px; }
+.profile-dd-item:hover {
+  background: linear-gradient(90deg, rgba(74,222,128,0.12), transparent);
+  color: #fff;
+  border-left-color: rgba(74,222,128,0.7);
+  padding-left: 24px;
+}
+.profile-dd-item.danger { color: rgba(255,120,120,0.75); }
+.profile-dd-item.danger:hover {
+  background: linear-gradient(90deg, rgba(255,60,60,0.12), transparent);
+  color: #ff6b6b;
+  border-left-color: rgba(255,80,80,0.7);
+}
 .profile-dd-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 2px 0; }
 
 /* ── МОДАЛЬНОЕ ОКНО AUTH ── */
