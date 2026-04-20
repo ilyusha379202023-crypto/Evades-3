@@ -6546,7 +6546,7 @@ async function doRegister() {
   try {
     const data = await supaPost('/auth/v1/signup', { email, password: pass, data: { username: nick } });
     if (data.error || data.error_description) {
-      const msg = data.error_description || data.error || data.msg || 'Ошибка';
+      const msg = data.error_description || data.error || data.msg || 'Неверный email или пароль';
       const friendly = (msg.includes('already')||msg.includes('exists')) ? 'Этот email уже зарегистрирован' : msg;
       setHint('ri-email-hint', friendly, 'err'); setInpState(document.getElementById('ri-email'),'error');
     } else if (data.session) {
