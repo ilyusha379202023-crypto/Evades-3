@@ -2699,17 +2699,36 @@
 
 /* ── КОЛОКОЛЬЧИК ── */
 .bell-dropdown {
-  position: absolute; top: calc(100% + 2px); right: 0; width: 220px;
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px) scale(0.96);
+  transform-origin: top center;
+  width: 220px;
   background: linear-gradient(160deg, rgba(8,28,18,0.98), rgba(4,14,9,0.99));
-  border: 1px solid rgba(255,255,255,0.12); border-radius: 20px; overflow: hidden;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.45), 0 0 0 1px rgba(74,222,128,0.06), 0 0 20px rgba(0,0,0,0.2);
-  backdrop-filter: blur(20px); opacity: 0; pointer-events: none;
-  transform: translateY(8px) scale(0.96); transform-origin: top right;
-  transition: opacity 0.22s ease, transform 0.22s cubic-bezier(.08,1.2,.18,1); z-index: 5000;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  overflow: hidden;
   padding: 16px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.45), 0 0 0 1px rgba(74,222,128,0.06);
+  backdrop-filter: blur(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s cubic-bezier(.08,1.2,.18,1);
+  z-index: 5000;
 }
 .bell-wrap:hover .bell-dropdown, .bell-wrap.open .bell-dropdown {
-  opacity: 1; pointer-events: auto; transform: translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+.bell-wrap::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 10px;
 }
 .bell-empty {
   display: flex; flex-direction: column; align-items: center; gap: 10px;
@@ -2724,26 +2743,22 @@
 .profile-wrap { position: relative; }
 .profile-dropdown {
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 2px);
   left: 50%;
   transform: translateX(-50%) translateY(8px) scale(0.96);
   transform-origin: top center;
   width: 220px;
-  background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.12));
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border-radius: 28px;
+  background: linear-gradient(160deg, rgba(8,28,18,0.98), rgba(4,14,9,0.99));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px;
   overflow: hidden;
   max-height: 0;
   opacity: 0;
   pointer-events: none;
   transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.25s ease;
-  border: 2px solid rgba(255,255,255,0.28);
-  box-shadow:
-    10px 10px 30px rgba(0,0,0,0.35),
-    -5px -5px 14px rgba(255,255,255,0.12),
-    inset -2px -2px 8px rgba(0,0,0,0.25),
-    inset 2px 2px 8px rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.45), 0 0 0 1px rgba(74,222,128,0.06);
   z-index: 5000;
 }
 .profile-wrap::after {
