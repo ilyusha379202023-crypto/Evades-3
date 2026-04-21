@@ -585,7 +585,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      transition: all 0.25s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       border-left: 3px solid transparent;
       opacity: 0;
       transform: translateY(-8px);
@@ -599,7 +599,8 @@
 
     .lang-item:hover {
       background: linear-gradient(90deg, rgba(74,222,128,0.2), transparent);
-      transform: translateX(5px);
+      transform: translateX(8px);
+      box-shadow: 0 4px 12px rgba(74,222,128,0.1);
     }
 
     .lang-code {
@@ -1249,10 +1250,11 @@
 
     .feature-card {
       background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+      backdrop-filter: blur(10px);
       border-radius: 20px;
       padding: 30px;
       border: 1px solid rgba(255,255,255,0.2);
-      transition: transform 140ms ease-out, box-shadow 150ms ease-out, border-color 150ms ease-out;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease;
       position: relative;
       overflow: hidden;
       isolation: isolate;
@@ -1287,9 +1289,9 @@
 
     .feature-card:hover {
       transition-delay: 0ms !important;
-      transform: translateY(-6px);
-      box-shadow: 0 18px 40px rgba(0,0,0,0.45);
-      border-color: rgba(255,255,255,0.4);
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 40px rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.5);
       z-index: 2;
     }
 
@@ -2665,14 +2667,18 @@
   letter-spacing: 1.5px;
   backdrop-filter: blur(14px);
   box-shadow: 4px 4px 12px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.15), 0 0 16px rgba(255,215,0,0.12);
-  transition: all 0.25s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-shadow: 0 0 10px rgba(255,215,0,0.5);
 }
 .btn-login:hover {
   background: linear-gradient(145deg, rgba(255,215,0,0.35), rgba(255,140,0,0.22));
   border-color: rgba(255,215,0,0.75);
-  transform: translateY(-2px);
-  box-shadow: 6px 6px 18px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.2), 0 0 28px rgba(255,215,0,0.25);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 6px 6px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2), 0 0 35px rgba(255,140,0,0.5);
+}
+.btn-login:active {
+  transform: translateY(-1px) scale(1.02);
+  transition: all 0.1s ease;
 }
 
 /* ── КРУГЛЫЕ КНОПКИ ── */
@@ -2683,14 +2689,19 @@
   backdrop-filter: blur(14px);
   box-shadow: 4px 4px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.18);
   display: flex; align-items: center; justify-content: center;
-  position: relative; transition: all 0.22s ease;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   color: rgba(255,255,255,0.85);
 }
 .nav-icon-btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.08);
   border-color: rgba(255,255,255,0.4);
-  box-shadow: 6px 6px 18px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.25), 0 0 18px rgba(255,255,255,0.1);
+  box-shadow: 6px 6px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.25), 0 0 25px rgba(255,255,255,0.2);
   color: #fff;
+}
+.nav-icon-btn:active {
+  transform: translateY(-1px) scale(1.03);
+  transition: all 0.1s ease;
 }
 .nav-icon-btn svg {
   width: 20px; height: 20px; stroke: currentColor; fill: none;
@@ -2814,7 +2825,7 @@
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.5px;
-  transition: all 0.25s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
   text-align: left;
   border-left: 3px solid transparent;
@@ -2824,8 +2835,9 @@
 }
 .profile-dd-item:hover {
   background: linear-gradient(90deg, rgba(74,222,128,0.2), transparent);
-  transform: translateX(5px);
+  transform: translateX(8px);
   border-left-color: rgba(74,222,128,0.6);
+  box-shadow: 0 4px 12px rgba(74,222,128,0.1);
 }
 .profile-wrap:hover .profile-dd-item {
   opacity: 1;
@@ -2838,6 +2850,8 @@
   background: linear-gradient(90deg, rgba(255,60,60,0.12), transparent);
   color: #ff6b6b;
   border-left-color: rgba(255,80,80,0.7);
+  box-shadow: 0 4px 12px rgba(255,60,60,0.15);
+  transform: translateX(8px);
 }
 .profile-dd-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 2px 0; }
 
@@ -2845,8 +2859,8 @@
 .auth-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.72);
-  backdrop-filter: blur(10px);
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(20px);
   z-index: 8000;
   display: flex;
   align-items: flex-start;
@@ -2855,7 +2869,7 @@
   overflow-y: auto;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.35s ease;
+  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .auth-modal-overlay.show {
   opacity: 1;
@@ -2865,13 +2879,14 @@
   width: 100%;
   max-width: 460px;
   margin: auto;
-  background: linear-gradient(145deg, rgba(10,32,22,0.98), rgba(5,18,12,0.99));
-  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(10,32,22,0.85);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255,255,255,0.2);
   border-radius: 32px;
-  box-shadow: 0 32px 80px rgba(0,0,0,0.7);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 60px rgba(255,140,0,0.15);
   overflow: hidden;
   transform: scale(0.92) translateY(20px);
-  transition: transform 0.35s cubic-bezier(.08,1.2,.18,1), opacity 0.35s ease;
+  transition: transform 0.35s cubic-bezier(.08,1.2,.18,1), opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0;
   position: relative;
 }
@@ -2882,12 +2897,18 @@
 .auth-modal-close {
   position: absolute; top: 16px; right: 18px; z-index: 10;
   width: 32px; height: 32px; border-radius: 50%;
-  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.55); font-size: 18px; line-height: 1;
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.6); font-size: 18px; line-height: 1;
   display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
 }
-.auth-modal-close:hover { background: rgba(255,255,255,0.16); color: #fff; transform: rotate(90deg); }
+.auth-modal-close:hover {
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: 0 0 20px rgba(255,140,0,0.4);
+}
 
 /* Шапка модала */
 .auth-modal-header { padding: 28px 32px 0; text-align: center; }
@@ -2926,16 +2947,19 @@
 .af-label { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 6px; display: block; }
 .af-wrap { position: relative; }
 .af-input {
-  width: 100%; background: rgba(0,0,0,0.3); border: 1.5px solid rgba(255,255,255,0.12);
+  width: 100%; background: rgba(0,0,0,0.4); border: 1.5px solid rgba(255,255,255,0.15);
   border-radius: 14px; color: #fff; font-family: 'Exo 2', sans-serif;
   font-size: 14px; font-weight: 500; padding: 13px 16px 13px 44px;
-  transition: border-color .22s ease, box-shadow .22s ease, background .22s ease;
+  transition: border-color .3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow .3s cubic-bezier(0.4, 0, 0.2, 1), background .3s ease, transform .2s ease;
   outline: none; box-sizing: border-box;
+  backdrop-filter: blur(10px);
 }
 .af-input::placeholder { color: rgba(255,255,255,0.25); }
 .af-input:focus {
-  border-color: rgba(255,215,0,0.5); background: rgba(0,0,0,0.4);
-  box-shadow: 0 0 0 3px rgba(255,215,0,0.08), 0 0 14px rgba(255,215,0,0.1);
+  border-color: rgba(255,140,0,0.8);
+  background: rgba(0,0,0,0.5);
+  box-shadow: 0 0 0 4px rgba(255,140,0,0.1), 0 0 20px rgba(255,140,0,0.3);
+  transform: translateY(-1px);
 }
 .af-input.valid { border-color: rgba(74,222,128,0.45); }
 .af-input.error { border-color: rgba(255,80,80,0.55); }
@@ -2985,13 +3009,19 @@
 .af-oauth-row { display: flex; gap: 10px; }
 .af-oauth {
   flex: 1; padding: 11px; border-radius: 12px;
-  background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.15);
   color: rgba(255,255,255,0.75); font-family: 'Exo 2', sans-serif; font-size: 12px;
   font-weight: 700; letter-spacing: 1px; cursor: pointer;
   display: flex; align-items: center; justify-content: center; gap: 7px;
-  transition: background .2s, border-color .2s, transform .15s;
+  transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
 }
-.af-oauth:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); transform: translateY(-2px); }
+.af-oauth:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3), 0 0 20px rgba(255,140,0,0.2);
+}
 .af-oauth svg { width: 16px; height: 16px; flex-shrink: 0; }
 
 /* Submit */
@@ -2999,10 +3029,10 @@
   width: 100%; padding: 16px; border-radius: 16px; border: none; cursor: pointer;
   font-family: 'Exo 2', sans-serif; font-size: 16px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;
   color: #1a0800; position: relative; overflow: hidden;
-  background: linear-gradient(180deg, #ffd700 0%, #e6a800 50%, #cc8800 100%);
-  box-shadow: 0 8px 0 #7a5200, 0 12px 24px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.5);
+  background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+  box-shadow: 0 8px 0 #7a5200, 0 12px 24px rgba(0,0,0,0.4), 0 0 30px rgba(255,140,0,0.3), inset 0 2px 0 rgba(255,255,255,0.5);
   text-shadow: 0 1px 0 rgba(255,255,255,0.3);
-  transition: transform .12s ease, box-shadow .12s ease, filter .15s ease;
+  transition: transform .2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow .2s cubic-bezier(0.4, 0, 0.2, 1), filter .2s ease;
 }
 .af-submit::before {
   content: ''; position: absolute; left: 10%; right: 10%; top: 7px; height: 38%;
@@ -3015,7 +3045,11 @@
   background-size: 200% 100%; animation: afShine 3s ease-in-out infinite;
 }
 @keyframes afShine { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-.af-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 0 #7a5200, 0 16px 32px rgba(0,0,0,0.45); filter: brightness(1.07); }
+.af-submit:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 0 #7a5200, 0 16px 40px rgba(0,0,0,0.5), 0 0 50px rgba(255,140,0,0.6);
+  filter: brightness(1.1);
+}
 .af-submit:active:not(:disabled) { transform: translateY(7px); box-shadow: 0 1px 0 #7a5200, 0 5px 14px rgba(0,0,0,0.35); }
 .af-submit:disabled { opacity: .5; filter: saturate(.4); }
 
@@ -3029,16 +3063,17 @@
 
 /* ── МОДАЛ ПРОФИЛЯ ── */
 .profile-modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.72); backdrop-filter: blur(10px);
+  position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(20px);
   z-index: 8100; display: flex; align-items: center; justify-content: center; padding: 20px;
-  opacity: 0; pointer-events: none; transition: opacity .3s ease;
+  opacity: 0; pointer-events: none; transition: opacity .3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .profile-modal-overlay.show { opacity: 1; pointer-events: auto; }
 .profile-modal-box {
   width: 100%; max-width: 420px;
-  background: linear-gradient(145deg, rgba(10,32,22,0.98), rgba(5,18,12,0.99));
-  border: 1px solid rgba(255,255,255,0.14); border-radius: 28px; padding: 36px 32px;
-  box-shadow: 0 28px 70px rgba(0,0,0,0.65), 0 0 40px rgba(74,222,128,0.06);
+  background: rgba(10,32,22,0.85);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255,255,255,0.2); border-radius: 28px; padding: 36px 32px;
+  box-shadow: 0 28px 70px rgba(0,0,0,0.65), 0 0 60px rgba(74,222,128,0.15);
   transform: scale(0.88) translateY(20px);
   transition: transform .4s cubic-bezier(.08,1.3,.18,1);
   position: relative; text-align: center;
@@ -3046,11 +3081,18 @@
 .profile-modal-overlay.show .profile-modal-box { transform: scale(1) translateY(0); }
 .profile-modal-close {
   position: absolute; top: 14px; right: 16px; width: 30px; height: 30px; border-radius: 50%;
-  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14);
-  color: rgba(255,255,255,0.45); font-size: 16px;
-  display: flex; align-items: center; justify-content: center; transition: all .2s ease; cursor: pointer;
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.5); font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;
+  backdrop-filter: blur(10px);
 }
-.profile-modal-close:hover { background: rgba(255,255,255,0.14); color: #fff; transform: rotate(90deg); }
+.profile-modal-close:hover {
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: 0 0 20px rgba(74,222,128,0.4);
+}
 .profile-modal-avatar {
   width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 18px;
   background: radial-gradient(circle at 35% 35%, #ff8b8b, #d62828 60%, #8b0d0d);
@@ -3061,7 +3103,19 @@
 .profile-modal-name { font-size: 24px; font-weight: 900; color: #ffd700; letter-spacing: 2px; margin-bottom: 4px; }
 .profile-modal-email { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 24px; }
 .profile-modal-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 24px; }
-.profile-stat { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 14px 8px; }
+.profile-stat {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 14px;
+  padding: 14px 8px;
+  transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.profile-stat:hover {
+  background: rgba(255,255,255,0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
 .profile-stat-num { font-size: 22px; font-weight: 900; color: #ffd700; }
 .profile-stat-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
 .profile-modal-badge {
@@ -3072,16 +3126,198 @@
 
 /* ── МОДАЛ ВЫХОДА ── */
 .confirm-modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.78); backdrop-filter: blur(10px);
+  position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);
   z-index: 8200; display: flex; align-items: center; justify-content: center; padding: 20px;
-  opacity: 0; pointer-events: none; transition: opacity .25s ease;
+  opacity: 0; pointer-events: none; transition: opacity .25s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* ── МОДАЛ TERMS/PRIVACY ── */
+.legal-modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.82); backdrop-filter: blur(24px);
+  z-index: 8500; display: flex; align-items: center; justify-content: center; padding: 20px;
+  opacity: 0; pointer-events: none; transition: opacity .3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.legal-modal-overlay.show { opacity: 1; pointer-events: auto; }
+.legal-modal-box {
+  width: 100%; max-width: 720px; max-height: 85vh;
+  background: rgba(8,28,18,0.92);
+  backdrop-filter: blur(35px);
+  border: 1px solid rgba(255,215,0,0.25);
+  border-radius: 28px;
+  box-shadow: 0 32px 90px rgba(0,0,0,0.75), 0 0 70px rgba(255,140,0,0.18);
+  transform: scale(0.9) translateY(30px);
+  transition: transform .4s cubic-bezier(.08,1.25,.18,1), opacity .4s ease;
+  opacity: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.legal-modal-overlay.show .legal-modal-box {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+.legal-modal-header {
+  padding: 32px 36px 24px;
+  border-bottom: 1px solid rgba(255,215,0,0.12);
+  flex-shrink: 0;
+}
+.legal-modal-title {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #ffd700;
+  text-shadow: 0 0 20px rgba(255,215,0,0.4);
+  margin-bottom: 8px;
+}
+.legal-modal-subtitle {
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 1px;
+}
+.legal-modal-close {
+  position: absolute; top: 20px; right: 24px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.5);
+  font-size: 20px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+.legal-modal-close:hover {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  transform: rotate(90deg) scale(1.12);
+  box-shadow: 0 0 24px rgba(255,140,0,0.5);
+  border-color: rgba(255,140,0,0.4);
+}
+.legal-modal-content {
+  padding: 28px 36px 36px;
+  overflow-y: auto;
+  flex: 1;
+}
+.legal-modal-content::-webkit-scrollbar { width: 8px; }
+.legal-modal-content::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px;
+  margin: 8px 0;
+}
+.legal-modal-content::-webkit-scrollbar-thumb {
+  background: rgba(255,215,0,0.25);
+  border-radius: 10px;
+  transition: background .2s;
+}
+.legal-modal-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,215,0,0.4);
+}
+.legal-section {
+  margin-bottom: 32px;
+  opacity: 0;
+  transform: translateY(15px);
+  animation: legalFadeIn 0.5s ease forwards;
+}
+.legal-section:nth-child(1) { animation-delay: 0.05s; }
+.legal-section:nth-child(2) { animation-delay: 0.1s; }
+.legal-section:nth-child(3) { animation-delay: 0.15s; }
+.legal-section:nth-child(4) { animation-delay: 0.2s; }
+.legal-section:nth-child(5) { animation-delay: 0.25s; }
+.legal-section:nth-child(6) { animation-delay: 0.3s; }
+.legal-section:nth-child(7) { animation-delay: 0.35s; }
+@keyframes legalFadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+.legal-section-title {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #ffb347;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.legal-section-title::before {
+  content: '';
+  width: 4px;
+  height: 20px;
+  background: linear-gradient(180deg, #ff8c00, #ffd700);
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(255,140,0,0.5);
+}
+.legal-section-text {
+  color: rgba(255,255,255,0.7);
+  font-size: 14px;
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+.legal-section-text strong {
+  color: rgba(255,215,0,0.9);
+  font-weight: 700;
+}
+.legal-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 12px 0;
+}
+.legal-list li {
+  color: rgba(255,255,255,0.65);
+  font-size: 14px;
+  line-height: 1.7;
+  padding-left: 24px;
+  position: relative;
+  margin-bottom: 8px;
+}
+.legal-list li::before {
+  content: '▸';
+  position: absolute;
+  left: 6px;
+  color: rgba(255,140,0,0.7);
+  font-weight: 900;
+}
+.af-terms-text a {
+  color: rgba(255,215,0,0.85);
+  text-decoration: none;
+  font-weight: 700;
+  transition: all .2s ease;
+  border-bottom: 1px solid transparent;
+}
+.af-terms-text a:hover {
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255,215,0,0.4);
+  border-bottom-color: rgba(255,215,0,0.5);
+}
+.af-terms.error .af-checkbox {
+  border-color: rgba(255,80,80,0.7);
+  animation: shakeError 0.4s ease;
+}
+@keyframes shakeError {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+.af-terms-error {
+  color: rgba(255,100,100,0.9);
+  font-size: 11px;
+  margin-top: 6px;
+  display: none;
+  font-weight: 600;
+}
+.af-terms.error .af-terms-error {
+  display: block;
+}
+
+/* ── МОДАЛ ВЫХОДА (продолжение) ── */
 .confirm-modal-overlay.show { opacity: 1; pointer-events: auto; }
 .confirm-modal-box {
   width: 100%; max-width: 380px;
-  background: linear-gradient(145deg, rgba(10,32,22,0.99), rgba(5,18,12,1));
-  border: 1px solid rgba(255,255,255,0.18); border-radius: 24px; padding: 36px 28px;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.45), 0 0 0 1px rgba(74,222,128,0.06), 0 0 20px rgba(0,0,0,0.2);
+  background: rgba(10,32,22,0.9);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255,255,255,0.2); border-radius: 24px; padding: 36px 28px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 60px rgba(255,60,60,0.15);
   transform: scale(0.88); transition: transform .35s cubic-bezier(.08,1.3,.18,1); text-align: center;
 }
 .confirm-modal-overlay.show .confirm-modal-box { transform: scale(1); }
@@ -3097,18 +3333,31 @@
 .confirm-btn-cancel {
   flex: 1; padding: 14px; border-radius: 14px; font-family: 'Exo 2', sans-serif;
   font-size: 14px; font-weight: 800; letter-spacing: 1px; cursor: pointer;
-  background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.14);
-  color: rgba(255,255,255,0.65); transition: all .2s ease;
+  background: rgba(255,255,255,0.1); border: 1.5px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+  color: rgba(255,255,255,0.7);
+  transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.confirm-btn-cancel:hover { background: rgba(255,255,255,0.13); color: #fff; }
+.confirm-btn-cancel:hover {
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
 .confirm-btn-yes {
   flex: 1; padding: 14px; border-radius: 14px; font-family: 'Exo 2', sans-serif;
   font-size: 14px; font-weight: 800; letter-spacing: 1px; cursor: pointer;
-  background: linear-gradient(135deg, #e53935, #b71c1c); border: 1.5px solid rgba(255,100,100,0.4);
-  color: #fff; box-shadow: 0 6px 16px rgba(183,28,28,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
-  transition: all .2s ease;
+  background: linear-gradient(135deg, #ff6b6b, #e53935);
+  border: 1.5px solid rgba(255,100,100,0.5);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(183,28,28,0.4), 0 0 30px rgba(255,60,60,0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+  transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.confirm-btn-yes:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 10px 22px rgba(183,28,28,0.45); }
+.confirm-btn-yes:hover {
+  filter: brightness(1.15);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(183,28,28,0.5), 0 0 40px rgba(255,60,60,0.4);
+}
 
 /* ── ТОСТ ── */
 .ev3-toast {
@@ -3127,27 +3376,35 @@
 
 /* ── ЗАБЫЛИ ПАРОЛЬ ── */
 .forgot-modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.72); backdrop-filter: blur(10px);
+  position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(20px);
   z-index: 8300; display: flex; align-items: center; justify-content: center; padding: 20px;
-  opacity: 0; pointer-events: none; transition: opacity .25s ease;
+  opacity: 0; pointer-events: none; transition: opacity .25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .forgot-modal-overlay.show { opacity: 1; pointer-events: auto; }
 .forgot-modal-box {
   width: 100%; max-width: 380px;
-  background: linear-gradient(145deg, rgba(10,32,22,0.99), rgba(5,18,12,1));
-  border: 1px solid rgba(255,215,0,0.2); border-radius: 24px; padding: 36px 28px;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.65), 0 0 30px rgba(255,215,0,0.05);
+  background: rgba(10,32,22,0.9);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255,215,0,0.25); border-radius: 24px; padding: 36px 28px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.65), 0 0 50px rgba(255,215,0,0.15);
   transform: scale(0.88); transition: transform .35s cubic-bezier(.08,1.3,.18,1);
   text-align: center; position: relative;
 }
 .forgot-modal-overlay.show .forgot-modal-box { transform: scale(1); }
 .forgot-modal-close {
   position: absolute; top: 14px; right: 16px; width: 30px; height: 30px; border-radius: 50%;
-  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14);
-  color: rgba(255,255,255,0.45); font-size: 16px;
-  display: flex; align-items: center; justify-content: center; transition: all .2s ease; cursor: pointer;
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+  color: rgba(255,255,255,0.5); font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;
 }
-.forgot-modal-close:hover { background: rgba(255,255,255,0.14); color: #fff; transform: rotate(90deg); }
+.forgot-modal-close:hover {
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: 0 0 20px rgba(255,215,0,0.4);
+}
 .forgot-icon-wrap {
   width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 16px;
   background: rgba(255,215,0,0.1); border: 1.5px solid rgba(255,215,0,0.25);
@@ -3186,7 +3443,15 @@ body.modal-open {
 .profile-modal-field {
   display: flex; align-items: center; justify-content: space-between;
   padding: 11px 16px; border-radius: 12px;
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09);
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.12);
+  transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.profile-modal-field:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.2);
+  transform: translateX(4px);
 }
 .pmf-label { font-size: 12px; color: rgba(255,255,255,0.45); font-weight: 600; letter-spacing: 0.5px; }
 .pmf-value { font-size: 13px; color: #fff; font-weight: 700; letter-spacing: 0.3px; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -3307,7 +3572,7 @@ body.modal-open {
   <!-- ─── NAV AUTH AREA ─── -->
 <div class="nav-auth-area" id="navAuthArea">
   <!-- Кнопка "Войти" (скрыта когда залогинен) -->
-  <button class="btn-login" id="btnLogin" onclick="openAuthModal('login')">Войти / Регистрация</button>
+  <button class="btn-login" id="btnLogin" onclick="openAuthModal('login')" data-i18n="btn-login">Войти / Регистрация</button>
 
   <!-- Колокольчик (показывается только залогиненным) -->
   <div class="nav-icon-btn bell-wrap" id="navBell" style="display:none;" title="Уведомления">
@@ -3319,7 +3584,7 @@ body.modal-open {
         <svg class="bell-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
           <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
         </svg>
-        Пока, пусто
+        <span data-i18n="bell-empty">Пока пусто</span>
       </div>
     </div>
   </div>
@@ -3335,16 +3600,16 @@ body.modal-open {
           <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </div>
         <div>
-          <div class="profile-dd-name" id="ddName">Игрок</div>
+          <div class="profile-dd-name" id="ddName" data-i18n="profile-player">Игрок</div>
           <div class="profile-dd-email" id="ddEmail">—</div>
         </div>
       </div>
-      <button class="profile-dd-item" onclick="openProfileModal()">
+      <button class="profile-dd-item" onclick="openProfileModal()" data-i18n="auth-profile">
         <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         Профиль
       </button>
       <div class="profile-dd-divider"></div>
-      <button class="profile-dd-item danger" onclick="openConfirmLogout()">
+      <button class="profile-dd-item danger" onclick="openConfirmLogout()" data-i18n="auth-logout">
         <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         Выйти
       </button>
@@ -3358,11 +3623,11 @@ body.modal-open {
     <button class="auth-modal-close" onclick="closeAuthModal()">✕</button>
     <div class="auth-modal-header">
       <span class="auth-modal-logo">EVADES 3</span>
-      <div class="auth-modal-sub">Войди и сразись с лучшими</div>
+      <div class="auth-modal-sub" data-i18n="auth-modal-subtitle">Войди и сразись с лучшими</div>
     </div>
     <div class="auth-tab-bar">
-      <button class="auth-tab-btn active" id="atab-login" onclick="switchAuthTab('login')">🔑 Вход</button>
-      <button class="auth-tab-btn" id="atab-register" onclick="switchAuthTab('register')">⚡ Регистрация</button>
+      <button class="auth-tab-btn active" id="atab-login" onclick="switchAuthTab('login')" data-i18n="auth-tab-login">🔑 Вход</button>
+      <button class="auth-tab-btn" id="atab-register" onclick="switchAuthTab('register')" data-i18n="auth-tab-register">⚡ Регистрация</button>
     </div>
 
     <!-- LOGIN PANEL -->
@@ -3370,30 +3635,30 @@ body.modal-open {
       <div class="af-oauth-row">
         <button class="af-oauth" onclick="oauthSignIn('google')">
           <svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-          Google
+          <span data-i18n="oauth-google">Google</span>
         </button>
         <button class="af-oauth" onclick="oauthSignIn('discord')">
           <svg viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.032.054a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-          Discord
+          <span data-i18n="oauth-discord">Discord</span>
         </button>
       </div>
-      <div class="af-divider">или</div>
+      <div class="af-divider" data-i18n="auth-divider-or">или</div>
 
       <div>
-        <label class="af-label" for="li-email">Email или ник</label>
+        <label class="af-label" for="li-email" data-i18n="login-email-label">Email или ник</label>
         <div class="af-wrap">
           <svg class="af-icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          <input class="af-input" type="text" id="li-email" placeholder="player@evades3.com" autocomplete="username" />
+          <input class="af-input" type="text" id="li-email" data-i18n-placeholder="login-email-placeholder" placeholder="player@evades3.com" autocomplete="username" />
         </div>
         <div class="af-hint" id="li-email-hint"></div>
       </div>
 
       <div>
-        <label class="af-label" for="li-pass">Пароль</label>
+        <label class="af-label" for="li-pass" data-i18n="login-password-label">Пароль</label>
         <div class="af-wrap">
           <svg class="af-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <input class="af-input has-eye" type="password" id="li-pass" placeholder="••••••••••" autocomplete="current-password" />
-          <button class="af-eye" type="button" onclick="toggleEye('li-pass',this)" aria-label="Показать пароль">
+          <input class="af-input has-eye" type="password" id="li-pass" data-i18n-placeholder="login-password-placeholder" placeholder="••••••••••" autocomplete="current-password" />
+          <button class="af-eye" type="button" onclick="toggleEye('li-pass',this)" data-i18n-aria="show-password-aria" aria-label="Показать пароль">
             <svg id="eye-li-pass" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
         </div>
@@ -3403,15 +3668,15 @@ body.modal-open {
       <div class="af-row">
         <label class="af-check-wrap">
           <span class="af-checkbox"><input type="checkbox" id="li-remember"/><span class="af-tick">✓</span></span>
-          <span class="af-cb-label">Запомнить меня</span>
+          <span class="af-cb-label" data-i18n="login-remember-me">Запомнить меня</span>
         </label>
-        <a href="#" class="af-forgot" onclick="openForgotModal(event)">Забыли пароль?</a>
+        <a href="#" class="af-forgot" onclick="openForgotModal(event)" data-i18n="login-forgot-password">Забыли пароль?</a>
       </div>
 
       <button class="af-submit" id="li-submit" onclick="doLogin()">
-        <span class="af-submit-shine"></span><span>Войти →</span>
+        <span class="af-submit-shine"></span><span data-i18n="login-submit-btn">Войти →</span>
       </button>
-      <p class="af-switch">Нет аккаунта? <a href="#" onclick="switchAuthTab('register');return false;">Зарегистрируйся</a></p>
+      <p class="af-switch"><span data-i18n="login-no-account">Нет аккаунта?</span> <a href="#" onclick="switchAuthTab('register');return false;" data-i18n="login-register-link">Зарегистрируйся</a></p>
     </div>
 
     <!-- REGISTER PANEL -->
@@ -3419,36 +3684,36 @@ body.modal-open {
       <div class="af-oauth-row">
         <button class="af-oauth" onclick="oauthSignIn('google')">
           <svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-          Google
+          <span data-i18n="oauth-google">Google</span>
         </button>
         <button class="af-oauth" onclick="oauthSignIn('discord')">
           <svg viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.032.054a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-          Discord
+          <span data-i18n="oauth-discord">Discord</span>
         </button>
       </div>
-      <div class="af-divider">или заполни форму</div>
+      <div class="af-divider" data-i18n="register-divider">или заполни форму</div>
 
       <div>
-        <label class="af-label" for="ri-nick">Игровой ник</label>
+        <label class="af-label" for="ri-nick" data-i18n="register-nickname-label">Игровой ник</label>
         <div class="af-wrap">
           <svg class="af-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          <input class="af-input" type="text" id="ri-nick" placeholder="CoolPlayer123" maxlength="20" autocomplete="username" oninput="riValidNick(this)" />
+          <input class="af-input" type="text" id="ri-nick" data-i18n-placeholder="register-nickname-placeholder" placeholder="CoolPlayer123" maxlength="20" autocomplete="username" oninput="riValidNick(this)" />
         </div>
-        <div class="af-hint" id="ri-nick-hint">3–20 символов, только буквы, цифры и _</div>
+        <div class="af-hint" id="ri-nick-hint" data-i18n="register-nickname-hint">3–20 символов, только буквы, цифры и _</div>
       </div>
       <div>
-        <label class="af-label" for="ri-email">Email</label>
+        <label class="af-label" for="ri-email" data-i18n="register-email-label">Email</label>
         <div class="af-wrap">
           <svg class="af-icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          <input class="af-input" type="email" id="ri-email" placeholder="player@evades3.com" autocomplete="email" oninput="riValidEmail(this)" />
+          <input class="af-input" type="email" id="ri-email" data-i18n-placeholder="register-email-placeholder" placeholder="player@evades3.com" autocomplete="email" oninput="riValidEmail(this)" />
         </div>
         <div class="af-hint" id="ri-email-hint"></div>
       </div>
       <div>
-        <label class="af-label" for="ri-pass">Пароль</label>
+        <label class="af-label" for="ri-pass" data-i18n="register-password-label">Пароль</label>
         <div class="af-wrap">
           <svg class="af-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <input class="af-input has-eye" type="password" id="ri-pass" placeholder="Минимум 8 символов" autocomplete="new-password" oninput="riUpdateStrength(this)" />
+          <input class="af-input has-eye" type="password" id="ri-pass" data-i18n-placeholder="register-password-placeholder" placeholder="Минимум 8 символов" autocomplete="new-password" oninput="riUpdateStrength(this)" />
           <button class="af-eye" type="button" onclick="toggleEye('ri-pass',this)" aria-label="Показать пароль">
             <svg id="eye-ri-pass" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
@@ -3457,7 +3722,7 @@ body.modal-open {
         <div class="af-hint" id="ri-pass-hint"></div>
       </div>
       <div>
-        <label class="af-label" for="ri-pass2">Повтори пароль</label>
+        <label class="af-label" for="ri-pass2" data-i18n="register-password-confirm-label">Повтори пароль</label>
         <div class="af-wrap">
           <svg class="af-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <input class="af-input has-eye" type="password" id="ri-pass2" placeholder="••••••••••" autocomplete="new-password" oninput="riValidConfirm(this)" />
@@ -3469,12 +3734,13 @@ body.modal-open {
       </div>
       <label class="af-terms">
         <span class="af-checkbox"><input type="checkbox" id="ri-terms"/><span class="af-tick">✓</span></span>
-        <span class="af-terms-text">Принимаю <a href="#">Условия использования</a> и <a href="#">Политику конфиденциальности</a></span>
+        <span class="af-terms-text" data-i18n="register-terms-text">Принимаю <a href="#" onclick="openLegalModal('terms');return false;">Условия использования</a> и <a href="#" onclick="openLegalModal('privacy');return false;">Политику конфиденциальности</a></span>
       </label>
+      <div class="af-terms-error">Необходимо принять условия использования</div>
       <button class="af-submit" id="ri-submit" onclick="doRegister()">
-        <span class="af-submit-shine"></span><span>Создать аккаунт ⚡</span>
+        <span class="af-submit-shine"></span><span data-i18n="register-submit-btn">Создать аккаунт ⚡</span>
       </button>
-      <p class="af-switch">Уже есть аккаунт? <a href="#" onclick="switchAuthTab('login');return false;">Войти</a></p>
+      <p class="af-switch"><span data-i18n="register-have-account">Уже есть аккаунт?</span> <a href="#" onclick="switchAuthTab('login');return false;" data-i18n="register-login-link">Войти</a></p>
     </div>
   </div>
 </div>
@@ -3486,7 +3752,7 @@ body.modal-open {
     <div class="profile-modal-avatar">
       <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
     </div>
-    <div class="profile-modal-name" id="pmName">Игрок</div>
+    <div class="profile-modal-name" id="pmName" data-i18n="profile-player">Игрок</div>
     <div class="profile-modal-email" id="pmEmail">—</div>
 <div class="profile-modal-fields">
   <div class="profile-modal-field">
@@ -3515,11 +3781,30 @@ body.modal-open {
     <div class="confirm-icon-wrap">
       <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
     </div>
-    <div class="confirm-title">Выйти из аккаунта?</div>
-    <div class="confirm-text">Вы уверены, что хотите выйти? Вам придётся войти снова, чтобы продолжить.</div>
+    <div class="confirm-title" data-i18n="confirm-logout-title">Выйти из аккаунта?</div>
+    <div class="confirm-text" data-i18n="confirm-logout-text">Вы уверены, что хотите выйти? Вам придётся войти снова, чтобы продолжить.</div>
     <div class="confirm-btns">
-      <button class="confirm-btn-cancel" onclick="closeConfirmModal()">Отмена</button>
-      <button class="confirm-btn-yes" onclick="doLogout()">Да, выйти</button>
+      <button class="confirm-btn-cancel" onclick="closeConfirmModal()" data-i18n="confirm-cancel">Отмена</button>
+      <button class="confirm-btn-yes" onclick="doLogout()" data-i18n="confirm-logout-yes">Да, выйти</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MODAL: ЗАБЫЛИ ПАРОЛЬ ─── -->
+<div class="forgot-modal-overlay" id="forgotModalOverlay" onclick="closeForgotOnBg(event)">
+  <div class="forgot-modal-box">
+    <button class="forgot-modal-close" onclick="closeForgotModal()">✕</button>
+
+<!-- ─── MODAL: TERMS & PRIVACY ─── -->
+<div class="legal-modal-overlay" id="legalModalOverlay" onclick="closeLegalOnBg(event)">
+  <div class="legal-modal-box">
+    <button class="legal-modal-close" onclick="closeLegalModal()">✕</button>
+    <div class="legal-modal-header">
+      <div class="legal-modal-title" id="legalModalTitle">Условия использования</div>
+      <div class="legal-modal-subtitle" id="legalModalSubtitle">Evades 3 — Правила и условия</div>
+    </div>
+    <div class="legal-modal-content" id="legalModalContent">
+      <!-- Content will be injected by JS -->
     </div>
   </div>
 </div>
@@ -3531,17 +3816,17 @@ body.modal-open {
     <div class="forgot-icon-wrap">
       <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
     </div>
-    <div class="forgot-title">Сброс пароля</div>
-    <div class="forgot-desc">Введи email — мы отправим ссылку для сброса пароля.</div>
+    <div class="forgot-title" data-i18n="forgot-title">Сброс пароля</div>
+    <div class="forgot-desc" data-i18n="forgot-desc">Введи email — мы отправим ссылку для сброса пароля.</div>
     <div>
       <div class="af-wrap">
         <svg class="af-icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        <input class="af-input" type="email" id="forgot-email-input" placeholder="твой@email.com" autocomplete="email" />
+        <input class="af-input" type="email" id="forgot-email-input" data-i18n-placeholder="forgot-email-placeholder" placeholder="твой@email.com" autocomplete="email" />
       </div>
     </div>
     <div class="forgot-btns">
-      <button class="forgot-btn-cancel" onclick="closeForgotModal()">Отмена</button>
-      <button class="forgot-btn-send" id="forgotSendBtn" onclick="doForgotSend()">Отправить →</button>
+      <button class="forgot-btn-cancel" onclick="closeForgotModal()" data-i18n="forgot-cancel">Отмена</button>
+      <button class="forgot-btn-send" id="forgotSendBtn" onclick="doForgotSend()" data-i18n="forgot-send">Отправить →</button>
     </div>
   </div>
 </div>
@@ -4072,6 +4357,51 @@ body.modal-open {
                 'auth-nickname': 'Никнейм',
                 'auth-score': 'Очки',
                 'auth-level': 'Уровень',
+                'profile-player': 'Игрок',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Язык',
+                'profile-joined-label': '📅 В проекте с',
+                'profile-in-system': 'В системе',
+                'confirm-logout-title': 'Выйти из аккаунта?',
+                'confirm-logout-text': 'Вы уверены, что хотите выйти? Вам придётся войти снова, чтобы продолжить.',
+                'confirm-cancel': 'Отмена',
+                'confirm-logout-yes': 'Да, выйти',
+                'forgot-title': 'Сброс пароля',
+                'forgot-desc': 'Введи email — мы отправим ссылку для сброса пароля.',
+                'forgot-email-placeholder': 'твой@email.com',
+                'forgot-cancel': 'Отмена',
+                'forgot-send': 'Отправить →',
+                'btn-login': 'Войти / Регистрация',
+                'bell-empty': 'Пока пусто',
+                'auth-modal-subtitle': 'Войди и сразись с лучшими',
+                'auth-tab-login': '🔑 Вход',
+                'auth-tab-register': '⚡ Регистрация',
+                'auth-divider-or': 'или',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email или ник',
+                'login-email-placeholder': 'player@evades3.com',
+                'login-password-label': 'Пароль',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Показать пароль',
+                'login-remember-me': 'Запомнить меня',
+                'login-forgot-password': 'Забыли пароль?',
+                'login-submit-btn': 'Войти →',
+                'login-no-account': 'Нет аккаунта?',
+                'login-register-link': 'Зарегистрируйся',
+                'register-divider': 'или заполни форму',
+                'register-nickname-label': 'Игровой ник',
+                'register-nickname-placeholder': 'CoolPlayer123',
+                'register-nickname-hint': '3–20 символов, только буквы, цифры и _',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'player@evades3.com',
+                'register-password-label': 'Пароль',
+                'register-password-placeholder': 'Минимум 8 символов',
+                'register-password-confirm-label': 'Повтори пароль',
+                'register-terms-text': 'Принимаю <a href="#">Условия использования</a> и <a href="#">Политику конфиденциальности</a>',
+                'register-submit-btn': 'Создать аккаунт ⚡',
+                'register-have-account': 'Уже есть аккаунт?',
+                'register-login-link': 'Войти',
             },
             en: {
                 'languages': 'Languages ▼',
@@ -4137,6 +4467,51 @@ body.modal-open {
                 'auth-nickname': 'Nickname',
                 'auth-score': 'Score',
                 'auth-level': 'Level',
+                'profile-player': 'Player',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Language',
+                'profile-joined-label': '📅 Member since',
+                'profile-in-system': 'In system',
+                'confirm-logout-title': 'Log out of account?',
+                'confirm-logout-text': 'Are you sure you want to log out? You will need to log in again to continue.',
+                'confirm-cancel': 'Cancel',
+                'confirm-logout-yes': 'Yes, log out',
+                'forgot-title': 'Password reset',
+                'forgot-desc': 'Enter your email — we will send a password reset link.',
+                'forgot-email-placeholder': 'your@email.com',
+                'forgot-cancel': 'Cancel',
+                'forgot-send': 'Send →',
+                'btn-login': 'Login / Register',
+                'bell-empty': 'Nothing yet',
+                'auth-modal-subtitle': 'Login and compete with the best',
+                'auth-tab-login': '🔑 Login',
+                'auth-tab-register': '⚡ Register',
+                'auth-divider-or': 'or',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email or nickname',
+                'login-email-placeholder': 'player@evades3.com',
+                'login-password-label': 'Password',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Show password',
+                'login-remember-me': 'Remember me',
+                'login-forgot-password': 'Forgot password?',
+                'login-submit-btn': 'Login →',
+                'login-no-account': 'No account?',
+                'login-register-link': 'Sign up',
+                'register-divider': 'or fill the form',
+                'register-nickname-label': 'Game nickname',
+                'register-nickname-placeholder': 'CoolPlayer123',
+                'register-nickname-hint': '3–20 characters, letters, numbers and _ only',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'player@evades3.com',
+                'register-password-label': 'Password',
+                'register-password-placeholder': 'Minimum 8 characters',
+                'register-password-confirm-label': 'Confirm password',
+                'register-terms-text': 'I accept the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>',
+                'register-submit-btn': 'Create account ⚡',
+                'register-have-account': 'Already have an account?',
+                'register-login-link': 'Login',
             },
             uk: {
                 'languages': 'Мови ▼',
@@ -4202,6 +4577,51 @@ body.modal-open {
                 'auth-nickname': 'Нікнейм',
                 'auth-score': 'Очки',
                 'auth-level': 'Рівень',
+                'profile-player': 'Гравець',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Мова',
+                'profile-joined-label': '📅 У проєкті з',
+                'profile-in-system': 'У системі',
+                'confirm-logout-title': 'Вийти з акаунта?',
+                'confirm-logout-text': 'Ви впевнені, що хочете вийти? Вам доведеться увійти знову, щоб продовжити.',
+                'confirm-cancel': 'Скасувати',
+                'confirm-logout-yes': 'Так, вийти',
+                'forgot-title': 'Скидання пароля',
+                'forgot-desc': 'Введіть email — ми надішлемо посилання для скидання пароля.',
+                'forgot-email-placeholder': 'твій@email.com',
+                'forgot-cancel': 'Скасувати',
+                'forgot-send': 'Надіслати →',
+                'btn-login': 'Увійти / Реєстрація',
+                'bell-empty': 'Поки порожньо',
+                'auth-modal-subtitle': 'Увійди та змагайся з найкращими',
+                'auth-tab-login': '🔑 Вхід',
+                'auth-tab-register': '⚡ Реєстрація',
+                'auth-divider-or': 'або',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email або нік',
+                'login-email-placeholder': 'player@evades3.com',
+                'login-password-label': 'Пароль',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Показати пароль',
+                'login-remember-me': 'Запам\'ятати мене',
+                'login-forgot-password': 'Забули пароль?',
+                'login-submit-btn': 'Увійти →',
+                'login-no-account': 'Немає акаунта?',
+                'login-register-link': 'Зареєструйся',
+                'register-divider': 'або заповни форму',
+                'register-nickname-label': 'Ігровий нік',
+                'register-nickname-placeholder': 'CoolPlayer123',
+                'register-nickname-hint': '3–20 символів, тільки літери, цифри та _',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'player@evades3.com',
+                'register-password-label': 'Пароль',
+                'register-password-placeholder': 'Мінімум 8 символів',
+                'register-password-confirm-label': 'Повтори пароль',
+                'register-terms-text': 'Приймаю <a href="#">Умови використання</a> та <a href="#">Політику конфіденційності</a>',
+                'register-submit-btn': 'Створити акаунт ⚡',
+                'register-have-account': 'Вже є акаунт?',
+                'register-login-link': 'Увійти',
             },
             de: {
                 'languages': 'Sprachen ▼',
@@ -4267,6 +4687,51 @@ body.modal-open {
                 'auth-nickname': 'Nickname',
                 'auth-score': 'Punkte',
                 'auth-level': 'Level',
+                'profile-player': 'Spieler',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Sprache',
+                'profile-joined-label': '📅 Mitglied seit',
+                'profile-in-system': 'Im System',
+                'confirm-logout-title': 'Vom Konto abmelden?',
+                'confirm-logout-text': 'Bist du sicher, dass du dich abmelden möchtest? Du musst dich erneut anmelden, um fortzufahren.',
+                'confirm-cancel': 'Abbrechen',
+                'confirm-logout-yes': 'Ja, abmelden',
+                'forgot-title': 'Passwort zurücksetzen',
+                'forgot-desc': 'Gib deine E-Mail ein — wir senden dir einen Link zum Zurücksetzen.',
+                'forgot-email-placeholder': 'deine@email.com',
+                'forgot-cancel': 'Abbrechen',
+                'forgot-send': 'Senden →',
+                'btn-login': 'Anmelden / Registrieren',
+                'bell-empty': 'Noch nichts hier',
+                'auth-modal-subtitle': 'Melde dich an und kämpfe mit den Besten',
+                'auth-tab-login': '🔑 Anmelden',
+                'auth-tab-register': '⚡ Registrieren',
+                'auth-divider-or': 'oder',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email oder Nickname',
+                'login-email-placeholder': 'player@evades3.com',
+                'login-password-label': 'Passwort',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Passwort anzeigen',
+                'login-remember-me': 'Angemeldet bleiben',
+                'login-forgot-password': 'Passwort vergessen?',
+                'login-submit-btn': 'Anmelden →',
+                'login-no-account': 'Kein Konto?',
+                'login-register-link': 'Registrieren',
+                'register-divider': 'oder fülle das Formular aus',
+                'register-nickname-label': 'Spielername',
+                'register-nickname-placeholder': 'CoolPlayer123',
+                'register-nickname-hint': '3–20 Zeichen, nur Buchstaben, Zahlen und _',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'player@evades3.com',
+                'register-password-label': 'Passwort',
+                'register-password-placeholder': 'Mindestens 8 Zeichen',
+                'register-password-confirm-label': 'Passwort wiederholen',
+                'register-terms-text': 'Ich akzeptiere die <a href="#">Nutzungsbedingungen</a> und <a href="#">Datenschutzerklärung</a>',
+                'register-submit-btn': 'Konto erstellen ⚡',
+                'register-have-account': 'Bereits ein Konto?',
+                'register-login-link': 'Anmelden',
             },
             es: {
                 'languages': 'Idiomas ▼',
@@ -4332,6 +4797,51 @@ body.modal-open {
                 'auth-nickname': 'Apodo',
                 'auth-score': 'Puntuación',
                 'auth-level': 'Nivel',
+                'profile-player': 'Jugador',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Idioma',
+                'profile-joined-label': '📅 Miembro desde',
+                'profile-in-system': 'En el sistema',
+                'confirm-logout-title': '¿Cerrar sesión?',
+                'confirm-logout-text': '¿Estás seguro de que quieres cerrar sesión? Tendrás que iniciar sesión nuevamente para continuar.',
+                'confirm-cancel': 'Cancelar',
+                'confirm-logout-yes': 'Sí, cerrar sesión',
+                'forgot-title': 'Restablecer contraseña',
+                'forgot-desc': 'Ingresa tu email — te enviaremos un enlace para restablecer la contraseña.',
+                'forgot-email-placeholder': 'tu@email.com',
+                'forgot-cancel': 'Cancelar',
+                'forgot-send': 'Enviar →',
+                'btn-login': 'Iniciar sesión / Registrarse',
+                'bell-empty': 'Nada por ahora',
+                'auth-modal-subtitle': 'Inicia sesión y compite con los mejores',
+                'auth-tab-login': '🔑 Iniciar sesión',
+                'auth-tab-register': '⚡ Registrarse',
+                'auth-divider-or': 'o',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email o apodo',
+                'login-email-placeholder': 'jugador@evades3.com',
+                'login-password-label': 'Contraseña',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Mostrar contraseña',
+                'login-remember-me': 'Recordarme',
+                'login-forgot-password': '¿Olvidaste tu contraseña?',
+                'login-submit-btn': 'Iniciar sesión →',
+                'login-no-account': '¿No tienes cuenta?',
+                'login-register-link': 'Regístrate',
+                'register-divider': 'o completa el formulario',
+                'register-nickname-label': 'Apodo del juego',
+                'register-nickname-placeholder': 'JugadorGenial123',
+                'register-nickname-hint': '3–20 caracteres, solo letras, números y _',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'jugador@evades3.com',
+                'register-password-label': 'Contraseña',
+                'register-password-placeholder': 'Mínimo 8 caracteres',
+                'register-password-confirm-label': 'Confirmar contraseña',
+                'register-terms-text': 'Acepto los <a href="#">Términos de Servicio</a> y la <a href="#">Política de Privacidad</a>',
+                'register-submit-btn': 'Crear cuenta ⚡',
+                'register-have-account': '¿Ya tienes cuenta?',
+                'register-login-link': 'Iniciar sesión',
             },
             fr: {
                 'languages': 'Langues ▼',
@@ -4397,6 +4907,51 @@ body.modal-open {
                 'auth-nickname': 'Pseudo',
                 'auth-score': 'Score',
                 'auth-level': 'Niveau',
+                'profile-player': 'Joueur',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Langue',
+                'profile-joined-label': '📅 Membre depuis',
+                'profile-in-system': 'Dans le système',
+                'confirm-logout-title': 'Se déconnecter du compte ?',
+                'confirm-logout-text': 'Êtes-vous sûr de vouloir vous déconnecter ? Vous devrez vous reconnecter pour continuer.',
+                'confirm-cancel': 'Annuler',
+                'confirm-logout-yes': 'Oui, se déconnecter',
+                'forgot-title': 'Réinitialisation du mot de passe',
+                'forgot-desc': 'Entrez votre email — nous vous enverrons un lien de réinitialisation.',
+                'forgot-email-placeholder': 'votre@email.com',
+                'forgot-cancel': 'Annuler',
+                'forgot-send': 'Envoyer →',
+                'btn-login': 'Se connecter / S\'inscrire',
+                'bell-empty': 'Rien pour le moment',
+                'auth-modal-subtitle': 'Connectez-vous et affrontez les meilleurs',
+                'auth-tab-login': '🔑 Connexion',
+                'auth-tab-register': '⚡ Inscription',
+                'auth-divider-or': 'ou',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email ou pseudo',
+                'login-email-placeholder': 'joueur@evades3.com',
+                'login-password-label': 'Mot de passe',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Afficher le mot de passe',
+                'login-remember-me': 'Se souvenir de moi',
+                'login-forgot-password': 'Mot de passe oublié ?',
+                'login-submit-btn': 'Se connecter →',
+                'login-no-account': 'Pas de compte ?',
+                'login-register-link': 'S\'inscrire',
+                'register-divider': 'ou remplir le formulaire',
+                'register-nickname-label': 'Pseudo de jeu',
+                'register-nickname-placeholder': 'JoueurCool123',
+                'register-nickname-hint': '3–20 caractères, lettres, chiffres et _ uniquement',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'joueur@evades3.com',
+                'register-password-label': 'Mot de passe',
+                'register-password-placeholder': 'Minimum 8 caractères',
+                'register-password-confirm-label': 'Confirmer le mot de passe',
+                'register-terms-text': 'J\'accepte les <a href="#">Conditions d\'utilisation</a> et la <a href="#">Politique de confidentialité</a>',
+                'register-submit-btn': 'Créer un compte ⚡',
+                'register-have-account': 'Vous avez déjà un compte ?',
+                'register-login-link': 'Se connecter',
             },
             it: {
                 'languages': 'Lingue ▼',
@@ -4462,6 +5017,51 @@ body.modal-open {
                 'auth-nickname': 'Nickname',
                 'auth-score': 'Punteggio',
                 'auth-level': 'Livello',
+                'profile-player': 'Giocatore',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Lingua',
+                'profile-joined-label': '📅 Membro dal',
+                'profile-in-system': 'Nel sistema',
+                'confirm-logout-title': 'Uscire dall\'account?',
+                'confirm-logout-text': 'Sei sicuro di voler uscire? Dovrai accedere di nuovo per continuare.',
+                'confirm-cancel': 'Annulla',
+                'confirm-logout-yes': 'Sì, esci',
+                'forgot-title': 'Reimpostazione password',
+                'forgot-desc': 'Inserisci la tua email — ti invieremo un link per reimpostare la password.',
+                'forgot-email-placeholder': 'tua@email.com',
+                'forgot-cancel': 'Annulla',
+                'forgot-send': 'Invia →',
+                'btn-login': 'Accedi / Registrati',
+                'bell-empty': 'Niente per ora',
+                'auth-modal-subtitle': 'Accedi e sfida i migliori',
+                'auth-tab-login': '🔑 Accesso',
+                'auth-tab-register': '⚡ Registrazione',
+                'auth-divider-or': 'o',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email o nickname',
+                'login-email-placeholder': 'giocatore@evades3.com',
+                'login-password-label': 'Password',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Mostra password',
+                'login-remember-me': 'Ricordami',
+                'login-forgot-password': 'Password dimenticata?',
+                'login-submit-btn': 'Accedi →',
+                'login-no-account': 'Non hai un account?',
+                'login-register-link': 'Registrati',
+                'register-divider': 'o compila il modulo',
+                'register-nickname-label': 'Nickname di gioco',
+                'register-nickname-placeholder': 'GiocatoreFigo123',
+                'register-nickname-hint': '3–20 caratteri, solo lettere, numeri e _',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'giocatore@evades3.com',
+                'register-password-label': 'Password',
+                'register-password-placeholder': 'Minimo 8 caratteri',
+                'register-password-confirm-label': 'Conferma password',
+                'register-terms-text': 'Accetto i <a href="#">Termini di servizio</a> e la <a href="#">Politica sulla privacy</a>',
+                'register-submit-btn': 'Crea account ⚡',
+                'register-have-account': 'Hai già un account?',
+                'register-login-link': 'Accedi',
             },
             pt: {
                 'languages': 'Idiomas ▼',
@@ -4527,6 +5127,51 @@ body.modal-open {
                 'auth-nickname': 'Apelido',
                 'auth-score': 'Pontuação',
                 'auth-level': 'Nível',
+                'profile-player': 'Jogador',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Idioma',
+                'profile-joined-label': '📅 Membro desde',
+                'profile-in-system': 'No sistema',
+                'confirm-logout-title': 'Sair da conta?',
+                'confirm-logout-text': 'Tem certeza que deseja sair? Você precisará fazer login novamente para continuar.',
+                'confirm-cancel': 'Cancelar',
+                'confirm-logout-yes': 'Sim, sair',
+                'forgot-title': 'Redefinição de senha',
+                'forgot-desc': 'Digite seu email — enviaremos um link de redefinição.',
+                'forgot-email-placeholder': 'seu@email.com',
+                'forgot-cancel': 'Cancelar',
+                'forgot-send': 'Enviar →',
+                'btn-login': 'Entrar / Registrar',
+                'bell-empty': 'Nada ainda',
+                'auth-modal-subtitle': 'Entre e compita com os melhores',
+                'auth-tab-login': '🔑 Entrar',
+                'auth-tab-register': '⚡ Registrar',
+                'auth-divider-or': 'ou',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email ou apelido',
+                'login-email-placeholder': 'jogador@evades3.com',
+                'login-password-label': 'Senha',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Mostrar senha',
+                'login-remember-me': 'Lembrar de mim',
+                'login-forgot-password': 'Esqueceu a senha?',
+                'login-submit-btn': 'Entrar →',
+                'login-no-account': 'Não tem conta?',
+                'login-register-link': 'Registre-se',
+                'register-divider': 'ou preencha o formulário',
+                'register-nickname-label': 'Apelido do jogo',
+                'register-nickname-placeholder': 'JogadorLegal123',
+                'register-nickname-hint': '3–20 caracteres, apenas letras, números e _',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'jogador@evades3.com',
+                'register-password-label': 'Senha',
+                'register-password-placeholder': 'Mínimo 8 caracteres',
+                'register-password-confirm-label': 'Confirmar senha',
+                'register-terms-text': 'Aceito os <a href="#">Termos de Serviço</a> e a <a href="#">Política de Privacidade</a>',
+                'register-submit-btn': 'Criar conta ⚡',
+                'register-have-account': 'Já tem uma conta?',
+                'register-login-link': 'Entrar',
             },
             pl: {
                 'languages': 'Języki ▼',
@@ -4592,6 +5237,51 @@ body.modal-open {
                 'auth-nickname': 'Pseudonim',
                 'auth-score': 'Wynik',
                 'auth-level': 'Poziom',
+                'profile-player': 'Gracz',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Język',
+                'profile-joined-label': '📅 Członek od',
+                'profile-in-system': 'W systemie',
+                'confirm-logout-title': 'Wylogować się z konta?',
+                'confirm-logout-text': 'Czy na pewno chcesz się wylogować? Będziesz musiał zalogować się ponownie, aby kontynuować.',
+                'confirm-cancel': 'Anuluj',
+                'confirm-logout-yes': 'Tak, wyloguj',
+                'forgot-title': 'Resetowanie hasła',
+                'forgot-desc': 'Wpisz swój email — wyślemy link do resetowania hasła.',
+                'forgot-email-placeholder': 'twoj@email.com',
+                'forgot-cancel': 'Anuluj',
+                'forgot-send': 'Wyślij →',
+                'btn-login': 'Zaloguj się / Zarejestruj',
+                'bell-empty': 'Jeszcze nic',
+                'auth-modal-subtitle': 'Zaloguj się i rywalizuj z najlepszymi',
+                'auth-tab-login': '🔑 Logowanie',
+                'auth-tab-register': '⚡ Rejestracja',
+                'auth-divider-or': 'lub',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email lub nick',
+                'login-email-placeholder': 'gracz@evades3.com',
+                'login-password-label': 'Hasło',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Pokaż hasło',
+                'login-remember-me': 'Zapamiętaj mnie',
+                'login-forgot-password': 'Zapomniałeś hasła?',
+                'login-submit-btn': 'Zaloguj się →',
+                'login-no-account': 'Nie masz konta?',
+                'login-register-link': 'Zarejestruj się',
+                'register-divider': 'lub wypełnij formularz',
+                'register-nickname-label': 'Nick w grze',
+                'register-nickname-placeholder': 'FajnyGracz123',
+                'register-nickname-hint': '3–20 znaków, tylko litery, cyfry i _',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'gracz@evades3.com',
+                'register-password-label': 'Hasło',
+                'register-password-placeholder': 'Minimum 8 znaków',
+                'register-password-confirm-label': 'Potwierdź hasło',
+                'register-terms-text': 'Akceptuję <a href="#">Warunki korzystania</a> i <a href="#">Politykę prywatności</a>',
+                'register-submit-btn': 'Utwórz konto ⚡',
+                'register-have-account': 'Masz już konto?',
+                'register-login-link': 'Zaloguj się',
             },
             tr: {
                 'languages': 'Diller ▼',
@@ -4657,6 +5347,51 @@ body.modal-open {
                 'auth-nickname': 'Takma Ad',
                 'auth-score': 'Puan',
                 'auth-level': 'Seviye',
+                'profile-player': 'Oyuncu',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Dil',
+                'profile-joined-label': '📅 Üye olma tarihi',
+                'profile-in-system': 'Sistemde',
+                'confirm-logout-title': 'Hesaptan çıkış yapılsın mı?',
+                'confirm-logout-text': 'Çıkış yapmak istediğinizden emin misiniz? Devam etmek için tekrar giriş yapmanız gerekecek.',
+                'confirm-cancel': 'İptal',
+                'confirm-logout-yes': 'Evet, çıkış yap',
+                'forgot-title': 'Şifre sıfırlama',
+                'forgot-desc': 'Email adresinizi girin — size sıfırlama bağlantısı göndereceğiz.',
+                'forgot-email-placeholder': 'senin@email.com',
+                'forgot-cancel': 'İptal',
+                'forgot-send': 'Gönder →',
+                'btn-login': 'Giriş Yap / Kayıt Ol',
+                'bell-empty': 'Henüz bir şey yok',
+                'auth-modal-subtitle': 'Giriş yap ve en iyilerle yarış',
+                'auth-tab-login': '🔑 Giriş',
+                'auth-tab-register': '⚡ Kayıt',
+                'auth-divider-or': 'veya',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email veya kullanıcı adı',
+                'login-email-placeholder': 'oyuncu@evades3.com',
+                'login-password-label': 'Şifre',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Şifreyi göster',
+                'login-remember-me': 'Beni hatırla',
+                'login-forgot-password': 'Şifreni mi unuttun?',
+                'login-submit-btn': 'Giriş Yap →',
+                'login-no-account': 'Hesabın yok mu?',
+                'login-register-link': 'Kayıt ol',
+                'register-divider': 'veya formu doldur',
+                'register-nickname-label': 'Oyun kullanıcı adı',
+                'register-nickname-placeholder': 'HavalıOyuncu123',
+                'register-nickname-hint': '3–20 karakter, sadece harf, rakam ve _',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'oyuncu@evades3.com',
+                'register-password-label': 'Şifre',
+                'register-password-placeholder': 'En az 8 karakter',
+                'register-password-confirm-label': 'Şifreyi onayla',
+                'register-terms-text': '<a href="#">Kullanım Koşulları</a>nı ve <a href="#">Gizlilik Politikası</a>nı kabul ediyorum',
+                'register-submit-btn': 'Hesap oluştur ⚡',
+                'register-have-account': 'Zaten hesabın var mı?',
+                'register-login-link': 'Giriş yap',
             },
             nl: {
                 'languages': 'Talen ▼',
@@ -4722,6 +5457,51 @@ body.modal-open {
                 'auth-nickname': 'Bijnaam',
                 'auth-score': 'Score',
                 'auth-level': 'Niveau',
+                'profile-player': 'Speler',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Taal',
+                'profile-joined-label': '📅 Lid sinds',
+                'profile-in-system': 'In het systeem',
+                'confirm-logout-title': 'Uitloggen van account?',
+                'confirm-logout-text': 'Weet je zeker dat je wilt uitloggen? Je moet opnieuw inloggen om door te gaan.',
+                'confirm-cancel': 'Annuleren',
+                'confirm-logout-yes': 'Ja, uitloggen',
+                'forgot-title': 'Wachtwoord resetten',
+                'forgot-desc': 'Voer je email in — we sturen je een resetlink.',
+                'forgot-email-placeholder': 'jouw@email.com',
+                'forgot-cancel': 'Annuleren',
+                'forgot-send': 'Verzenden →',
+                'btn-login': 'Inloggen / Registreren',
+                'bell-empty': 'Nog niets',
+                'auth-modal-subtitle': 'Log in en strijd met de besten',
+                'auth-tab-login': '🔑 Inloggen',
+                'auth-tab-register': '⚡ Registreren',
+                'auth-divider-or': 'of',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email of gebruikersnaam',
+                'login-email-placeholder': 'speler@evades3.com',
+                'login-password-label': 'Wachtwoord',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Wachtwoord tonen',
+                'login-remember-me': 'Onthoud mij',
+                'login-forgot-password': 'Wachtwoord vergeten?',
+                'login-submit-btn': 'Inloggen →',
+                'login-no-account': 'Geen account?',
+                'login-register-link': 'Registreer',
+                'register-divider': 'of vul het formulier in',
+                'register-nickname-label': 'Spelnaam',
+                'register-nickname-placeholder': 'CooleSpeler123',
+                'register-nickname-hint': '3–20 tekens, alleen letters, cijfers en _',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'speler@evades3.com',
+                'register-password-label': 'Wachtwoord',
+                'register-password-placeholder': 'Minimaal 8 tekens',
+                'register-password-confirm-label': 'Bevestig wachtwoord',
+                'register-terms-text': 'Ik accepteer de <a href="#">Servicevoorwaarden</a> en het <a href="#">Privacybeleid</a>',
+                'register-submit-btn': 'Account aanmaken ⚡',
+                'register-have-account': 'Heb je al een account?',
+                'register-login-link': 'Inloggen',
             },
             sv: {
                 'languages': 'Språk ▼',
@@ -4787,6 +5567,51 @@ body.modal-open {
                 'auth-nickname': 'Smeknamn',
                 'auth-score': 'Poäng',
                 'auth-level': 'Nivå',
+                'profile-player': 'Spelare',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Språk',
+                'profile-joined-label': '📅 Medlem sedan',
+                'profile-in-system': 'I systemet',
+                'confirm-logout-title': 'Logga ut från kontot?',
+                'confirm-logout-text': 'Är du säker på att du vill logga ut? Du måste logga in igen för att fortsätta.',
+                'confirm-cancel': 'Avbryt',
+                'confirm-logout-yes': 'Ja, logga ut',
+                'forgot-title': 'Återställ lösenord',
+                'forgot-desc': 'Ange din email — vi skickar en återställningslänk.',
+                'forgot-email-placeholder': 'din@email.com',
+                'forgot-cancel': 'Avbryt',
+                'forgot-send': 'Skicka →',
+                'btn-login': 'Logga in / Registrera',
+                'bell-empty': 'Inget än',
+                'auth-modal-subtitle': 'Logga in och tävla med de bästa',
+                'auth-tab-login': '🔑 Inloggning',
+                'auth-tab-register': '⚡ Registrering',
+                'auth-divider-or': 'eller',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email eller användarnamn',
+                'login-email-placeholder': 'spelare@evades3.com',
+                'login-password-label': 'Lösenord',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Visa lösenord',
+                'login-remember-me': 'Kom ihåg mig',
+                'login-forgot-password': 'Glömt lösenord?',
+                'login-submit-btn': 'Logga in →',
+                'login-no-account': 'Inget konto?',
+                'login-register-link': 'Registrera dig',
+                'register-divider': 'eller fyll i formuläret',
+                'register-nickname-label': 'Spelnamn',
+                'register-nickname-placeholder': 'CoolSpelare123',
+                'register-nickname-hint': '3–20 tecken, endast bokstäver, siffror och _',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'spelare@evades3.com',
+                'register-password-label': 'Lösenord',
+                'register-password-placeholder': 'Minst 8 tecken',
+                'register-password-confirm-label': 'Bekräfta lösenord',
+                'register-terms-text': 'Jag accepterar <a href="#">Användarvillkoren</a> och <a href="#">Integritetspolicyn</a>',
+                'register-submit-btn': 'Skapa konto ⚡',
+                'register-have-account': 'Har du redan ett konto?',
+                'register-login-link': 'Logga in',
             },
             no: {
                 'languages': 'Språk ▼',
@@ -4852,6 +5677,51 @@ body.modal-open {
                 'auth-nickname': 'Kallenavn',
                 'auth-score': 'Poeng',
                 'auth-level': 'Nivå',
+                'profile-player': 'Spiller',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Språk',
+                'profile-joined-label': '📅 Medlem siden',
+                'profile-in-system': 'I systemet',
+                'confirm-logout-title': 'Logge ut av kontoen?',
+                'confirm-logout-text': 'Er du sikker på at du vil logge ut? Du må logge inn igjen for å fortsette.',
+                'confirm-cancel': 'Avbryt',
+                'confirm-logout-yes': 'Ja, logg ut',
+                'forgot-title': 'Tilbakestill passord',
+                'forgot-desc': 'Skriv inn emailen din — vi sender en tilbakestillingslenke.',
+                'forgot-email-placeholder': 'din@email.com',
+                'forgot-cancel': 'Avbryt',
+                'forgot-send': 'Send →',
+                'btn-login': 'Logg inn / Registrer',
+                'bell-empty': 'Ingenting ennå',
+                'auth-modal-subtitle': 'Logg inn og konkurer med de beste',
+                'auth-tab-login': '🔑 Innlogging',
+                'auth-tab-register': '⚡ Registrering',
+                'auth-divider-or': 'eller',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email eller brukernavn',
+                'login-email-placeholder': 'spiller@evades3.com',
+                'login-password-label': 'Passord',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Vis passord',
+                'login-remember-me': 'Husk meg',
+                'login-forgot-password': 'Glemt passord?',
+                'login-submit-btn': 'Logg inn →',
+                'login-no-account': 'Ingen konto?',
+                'login-register-link': 'Registrer deg',
+                'register-divider': 'eller fyll ut skjemaet',
+                'register-nickname-label': 'Spillnavn',
+                'register-nickname-placeholder': 'KulSpiller123',
+                'register-nickname-hint': '3–20 tegn, kun bokstaver, tall og _',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'spiller@evades3.com',
+                'register-password-label': 'Passord',
+                'register-password-placeholder': 'Minimum 8 tegn',
+                'register-password-confirm-label': 'Bekreft passord',
+                'register-terms-text': 'Jeg aksepterer <a href="#">Vilkårene</a> og <a href="#">Personvernreglene</a>',
+                'register-submit-btn': 'Opprett konto ⚡',
+                'register-have-account': 'Har du allerede en konto?',
+                'register-login-link': 'Logg inn',
             },
             fi: {
                 'languages': 'Kielet ▼',
@@ -4917,6 +5787,51 @@ body.modal-open {
                 'auth-nickname': 'Nimimerkki',
                 'auth-score': 'Pisteet',
                 'auth-level': 'Taso',
+                'profile-player': 'Pelaaja',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Kieli',
+                'profile-joined-label': '📅 Jäsen alkaen',
+                'profile-in-system': 'Järjestelmässä',
+                'confirm-logout-title': 'Kirjaudu ulos tilistä?',
+                'confirm-logout-text': 'Oletko varma, että haluat kirjautua ulos? Sinun täytyy kirjautua uudelleen jatkaaksesi.',
+                'confirm-cancel': 'Peruuta',
+                'confirm-logout-yes': 'Kyllä, kirjaudu ulos',
+                'forgot-title': 'Salasanan palautus',
+                'forgot-desc': 'Syötä sähköpostisi — lähetämme palautuslinkin.',
+                'forgot-email-placeholder': 'sinun@email.com',
+                'forgot-cancel': 'Peruuta',
+                'forgot-send': 'Lähetä →',
+                'btn-login': 'Kirjaudu / Rekisteröidy',
+                'bell-empty': 'Ei vielä mitään',
+                'auth-modal-subtitle': 'Kirjaudu ja kilpaile parhaiden kanssa',
+                'auth-tab-login': '🔑 Kirjautuminen',
+                'auth-tab-register': '⚡ Rekisteröityminen',
+                'auth-divider-or': 'tai',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Sähköposti tai nimimerkki',
+                'login-email-placeholder': 'pelaaja@evades3.com',
+                'login-password-label': 'Salasana',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Näytä salasana',
+                'login-remember-me': 'Muista minut',
+                'login-forgot-password': 'Unohditko salasanan?',
+                'login-submit-btn': 'Kirjaudu →',
+                'login-no-account': 'Ei tiliä?',
+                'login-register-link': 'Rekisteröidy',
+                'register-divider': 'tai täytä lomake',
+                'register-nickname-label': 'Pelinimimerkki',
+                'register-nickname-placeholder': 'SiistiPelaaja123',
+                'register-nickname-hint': '3–20 merkkiä, vain kirjaimia, numeroita ja _',
+                'register-email-label': 'Sähköposti',
+                'register-email-placeholder': 'pelaaja@evades3.com',
+                'register-password-label': 'Salasana',
+                'register-password-placeholder': 'Vähintään 8 merkkiä',
+                'register-password-confirm-label': 'Vahvista salasana',
+                'register-terms-text': 'Hyväksyn <a href="#">Käyttöehdot</a> ja <a href="#">Tietosuojakäytännön</a>',
+                'register-submit-btn': 'Luo tili ⚡',
+                'register-have-account': 'Onko sinulla jo tili?',
+                'register-login-link': 'Kirjaudu',
             },
             da: {
                 'languages': 'Sprog ▼',
@@ -4982,6 +5897,51 @@ body.modal-open {
                 'auth-nickname': 'Kaldenavn',
                 'auth-score': 'Score',
                 'auth-level': 'Niveau',
+                'profile-player': 'Spiller',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Sprog',
+                'profile-joined-label': '📅 Medlem siden',
+                'profile-in-system': 'I systemet',
+                'confirm-logout-title': 'Logge ud af kontoen?',
+                'confirm-logout-text': 'Er du sikker på, at du vil logge ud? Du skal logge ind igen for at fortsætte.',
+                'confirm-cancel': 'Annuller',
+                'confirm-logout-yes': 'Ja, log ud',
+                'forgot-title': 'Nulstil adgangskode',
+                'forgot-desc': 'Indtast din email — vi sender et nulstillingslink.',
+                'forgot-email-placeholder': 'din@email.com',
+                'forgot-cancel': 'Annuller',
+                'forgot-send': 'Send →',
+                'btn-login': 'Log ind / Tilmeld',
+                'bell-empty': 'Intet endnu',
+                'auth-modal-subtitle': 'Log ind og konkurrér med de bedste',
+                'auth-tab-login': '🔑 Login',
+                'auth-tab-register': '⚡ Tilmelding',
+                'auth-divider-or': 'eller',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email eller brugernavn',
+                'login-email-placeholder': 'spiller@evades3.com',
+                'login-password-label': 'Adgangskode',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Vis adgangskode',
+                'login-remember-me': 'Husk mig',
+                'login-forgot-password': 'Glemt adgangskode?',
+                'login-submit-btn': 'Log ind →',
+                'login-no-account': 'Ingen konto?',
+                'login-register-link': 'Tilmeld dig',
+                'register-divider': 'eller udfyld formularen',
+                'register-nickname-label': 'Spilnavn',
+                'register-nickname-placeholder': 'SejSpiller123',
+                'register-nickname-hint': '3–20 tegn, kun bogstaver, tal og _',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'spiller@evades3.com',
+                'register-password-label': 'Adgangskode',
+                'register-password-placeholder': 'Minimum 8 tegn',
+                'register-password-confirm-label': 'Bekræft adgangskode',
+                'register-terms-text': 'Jeg accepterer <a href="#">Servicevilkårene</a> og <a href="#">Privatlivspolitikken</a>',
+                'register-submit-btn': 'Opret konto ⚡',
+                'register-have-account': 'Har du allerede en konto?',
+                'register-login-link': 'Log ind',
             },
             cs: {
                 'languages': 'Jazyky ▼',
@@ -5047,6 +6007,51 @@ body.modal-open {
                 'auth-nickname': 'Přezdívka',
                 'auth-score': 'Skóre',
                 'auth-level': 'Úroveň',
+                'profile-player': 'Hráč',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Jazyk',
+                'profile-joined-label': '📅 Člen od',
+                'profile-in-system': 'V systému',
+                'confirm-logout-title': 'Odhlásit se z účtu?',
+                'confirm-logout-text': 'Opravdu se chcete odhlásit? Budete se muset znovu přihlásit, abyste mohli pokračovat.',
+                'confirm-cancel': 'Zrušit',
+                'confirm-logout-yes': 'Ano, odhlásit',
+                'forgot-title': 'Obnovení hesla',
+                'forgot-desc': 'Zadejte svůj email — pošleme vám odkaz pro obnovení.',
+                'forgot-email-placeholder': 'vas@email.com',
+                'forgot-cancel': 'Zrušit',
+                'forgot-send': 'Odeslat →',
+                'btn-login': 'Přihlásit se / Registrovat',
+                'bell-empty': 'Zatím nic',
+                'auth-modal-subtitle': 'Přihlas se a soutěž s nejlepšími',
+                'auth-tab-login': '🔑 Přihlášení',
+                'auth-tab-register': '⚡ Registrace',
+                'auth-divider-or': 'nebo',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email nebo přezdívka',
+                'login-email-placeholder': 'hrac@evades3.com',
+                'login-password-label': 'Heslo',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Zobrazit heslo',
+                'login-remember-me': 'Zapamatovat si mě',
+                'login-forgot-password': 'Zapomněli jste heslo?',
+                'login-submit-btn': 'Přihlásit se →',
+                'login-no-account': 'Nemáte účet?',
+                'login-register-link': 'Zaregistrujte se',
+                'register-divider': 'nebo vyplňte formulář',
+                'register-nickname-label': 'Herní přezdívka',
+                'register-nickname-placeholder': 'SkvělyHráč123',
+                'register-nickname-hint': '3–20 znaků, pouze písmena, čísla a _',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'hrac@evades3.com',
+                'register-password-label': 'Heslo',
+                'register-password-placeholder': 'Minimálně 8 znaků',
+                'register-password-confirm-label': 'Potvrdit heslo',
+                'register-terms-text': 'Souhlasím s <a href="#">Podmínkami služby</a> a <a href="#">Zásadami ochrany osobních údajů</a>',
+                'register-submit-btn': 'Vytvořit účet ⚡',
+                'register-have-account': 'Už máte účet?',
+                'register-login-link': 'Přihlásit se',
             },
             ro: {
                 'languages': 'Limbi ▼',
@@ -5112,6 +6117,51 @@ body.modal-open {
                 'auth-nickname': 'Pseudonim',
                 'auth-score': 'Scor',
                 'auth-level': 'Nivel',
+                'profile-player': 'Jucător',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Limbă',
+                'profile-joined-label': '📅 Membru din',
+                'profile-in-system': 'În sistem',
+                'confirm-logout-title': 'Deconectare din cont?',
+                'confirm-logout-text': 'Ești sigur că vrei să te deconectezi? Va trebui să te autentifici din nou pentru a continua.',
+                'confirm-cancel': 'Anulare',
+                'confirm-logout-yes': 'Da, deconectare',
+                'forgot-title': 'Resetare parolă',
+                'forgot-desc': 'Introdu emailul tău — îți vom trimite un link de resetare.',
+                'forgot-email-placeholder': 'tau@email.com',
+                'forgot-cancel': 'Anulare',
+                'forgot-send': 'Trimite →',
+                'btn-login': 'Autentificare / Înregistrare',
+                'bell-empty': 'Nimic încă',
+                'auth-modal-subtitle': 'Autentifică-te și concurează cu cei mai buni',
+                'auth-tab-login': '🔑 Autentificare',
+                'auth-tab-register': '⚡ Înregistrare',
+                'auth-divider-or': 'sau',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email sau pseudonim',
+                'login-email-placeholder': 'jucator@evades3.com',
+                'login-password-label': 'Parolă',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Arată parola',
+                'login-remember-me': 'Ține-mă minte',
+                'login-forgot-password': 'Ai uitat parola?',
+                'login-submit-btn': 'Autentificare →',
+                'login-no-account': 'Nu ai cont?',
+                'login-register-link': 'Înregistrează-te',
+                'register-divider': 'sau completează formularul',
+                'register-nickname-label': 'Pseudonim de joc',
+                'register-nickname-placeholder': 'JucatorTare123',
+                'register-nickname-hint': '3–20 caractere, doar litere, cifre și _',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'jucator@evades3.com',
+                'register-password-label': 'Parolă',
+                'register-password-placeholder': 'Minim 8 caractere',
+                'register-password-confirm-label': 'Confirmă parola',
+                'register-terms-text': 'Accept <a href="#">Termenii de utilizare</a> și <a href="#">Politica de confidențialitate</a>',
+                'register-submit-btn': 'Creează cont ⚡',
+                'register-have-account': 'Ai deja un cont?',
+                'register-login-link': 'Autentificare',
             },
             hu: {
                 'languages': 'Nyelvek ▼',
@@ -5177,6 +6227,51 @@ body.modal-open {
                 'auth-nickname': 'Becenév',
                 'auth-score': 'Pontszám',
                 'auth-level': 'Szint',
+                'profile-player': 'Játékos',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Nyelv',
+                'profile-joined-label': '📅 Tag lett',
+                'profile-in-system': 'A rendszerben',
+                'confirm-logout-title': 'Kijelentkezés a fiókból?',
+                'confirm-logout-text': 'Biztosan ki szeretnél jelentkezni? Újra be kell jelentkezned a folytatáshoz.',
+                'confirm-cancel': 'Mégsem',
+                'confirm-logout-yes': 'Igen, kijelentkezés',
+                'forgot-title': 'Jelszó visszaállítása',
+                'forgot-desc': 'Add meg az emailedet — küldünk egy visszaállítási linket.',
+                'forgot-email-placeholder': 'te@email.com',
+                'forgot-cancel': 'Mégsem',
+                'forgot-send': 'Küldés →',
+                'btn-login': 'Bejelentkezés / Regisztráció',
+                'bell-empty': 'Még semmi',
+                'auth-modal-subtitle': 'Jelentkezz be és versenyezz a legjobbakkal',
+                'auth-tab-login': '🔑 Bejelentkezés',
+                'auth-tab-register': '⚡ Regisztráció',
+                'auth-divider-or': 'vagy',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email vagy becenév',
+                'login-email-placeholder': 'jatekos@evades3.com',
+                'login-password-label': 'Jelszó',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Jelszó megjelenítése',
+                'login-remember-me': 'Emlékezz rám',
+                'login-forgot-password': 'Elfelejtetted a jelszót?',
+                'login-submit-btn': 'Bejelentkezés →',
+                'login-no-account': 'Nincs fiókod?',
+                'login-register-link': 'Regisztrálj',
+                'register-divider': 'vagy töltsd ki az űrlapot',
+                'register-nickname-label': 'Játék becenév',
+                'register-nickname-placeholder': 'MenőJátékos123',
+                'register-nickname-hint': '3–20 karakter, csak betűk, számok és _',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'jatekos@evades3.com',
+                'register-password-label': 'Jelszó',
+                'register-password-placeholder': 'Minimum 8 karakter',
+                'register-password-confirm-label': 'Jelszó megerősítése',
+                'register-terms-text': 'Elfogadom a <a href="#">Felhasználási feltételeket</a> és az <a href="#">Adatvédelmi szabályzatot</a>',
+                'register-submit-btn': 'Fiók létrehozása ⚡',
+                'register-have-account': 'Már van fiókod?',
+                'register-login-link': 'Bejelentkezés',
             },
             el: {
                 'languages': 'Γλώσσες ▼',
@@ -5242,6 +6337,51 @@ body.modal-open {
                 'auth-nickname': 'Ψευδώνυμο',
                 'auth-score': 'Βαθμολογία',
                 'auth-level': 'Επίπεδο',
+                'profile-player': 'Παίκτης',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Γλώσσα',
+                'profile-joined-label': '📅 Μέλος από',
+                'profile-in-system': 'Στο σύστημα',
+                'confirm-logout-title': 'Αποσύνδεση από τον λογαριασμό;',
+                'confirm-logout-text': 'Είσαι σίγουρος ότι θέλεις να αποσυνδεθείς; Θα πρέπει να συνδεθείς ξανά για να συνεχίσεις.',
+                'confirm-cancel': 'Ακύρωση',
+                'confirm-logout-yes': 'Ναι, αποσύνδεση',
+                'forgot-title': 'Επαναφορά κωδικού',
+                'forgot-desc': 'Εισάγετε το email σας — θα σας στείλουμε έναν σύνδεσμο επαναφοράς.',
+                'forgot-email-placeholder': 'to@email.com',
+                'forgot-cancel': 'Ακύρωση',
+                'forgot-send': 'Αποστολή →',
+                'btn-login': 'Σύνδεση / Εγγραφή',
+                'bell-empty': 'Τίποτα ακόμα',
+                'auth-modal-subtitle': 'Συνδεθείτε και ανταγωνιστείτε με τους καλύτερους',
+                'auth-tab-login': '🔑 Σύνδεση',
+                'auth-tab-register': '⚡ Εγγραφή',
+                'auth-divider-or': 'ή',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email ή ψευδώνυμο',
+                'login-email-placeholder': 'παίκτης@evades3.com',
+                'login-password-label': 'Κωδικός',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Εμφάνιση κωδικού',
+                'login-remember-me': 'Να με θυμάσαι',
+                'login-forgot-password': 'Ξεχάσατε τον κωδικό;',
+                'login-submit-btn': 'Σύνδεση →',
+                'login-no-account': 'Δεν έχετε λογαριασμό;',
+                'login-register-link': 'Εγγραφή',
+                'register-divider': 'ή συμπληρώστε τη φόρμα',
+                'register-nickname-label': 'Ψευδώνυμο παιχνιδιού',
+                'register-nickname-placeholder': 'ΚούλΠαίκτης123',
+                'register-nickname-hint': '3–20 χαρακτήρες, μόνο γράμματα, αριθμοί και _',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'παίκτης@evades3.com',
+                'register-password-label': 'Κωδικός',
+                'register-password-placeholder': 'Τουλάχιστον 8 χαρακτήρες',
+                'register-password-confirm-label': 'Επιβεβαίωση κωδικού',
+                'register-terms-text': 'Αποδέχομαι τους <a href="#">Όρους Χρήσης</a> και την <a href="#">Πολιτική Απορρήτου</a>',
+                'register-submit-btn': 'Δημιουργία λογαριασμού ⚡',
+                'register-have-account': 'Έχετε ήδη λογαριασμό;',
+                'register-login-link': 'Σύνδεση',
             },
             ja: {
                 'languages': '言語 ▼',
@@ -5307,6 +6447,51 @@ body.modal-open {
                 'auth-nickname': 'ニックネーム',
                 'auth-score': 'スコア',
                 'auth-level': 'レベル',
+                'profile-player': 'プレイヤー',
+                'profile-email-label': '📧 メール',
+                'profile-language-label': '🌍 言語',
+                'profile-joined-label': '📅 登録日',
+                'profile-in-system': 'システム内',
+                'confirm-logout-title': 'アカウントからログアウトしますか？',
+                'confirm-logout-text': '本当にログアウトしますか？続行するには再度ログインする必要があります。',
+                'confirm-cancel': 'キャンセル',
+                'confirm-logout-yes': 'はい、ログアウト',
+                'forgot-title': 'パスワードリセット',
+                'forgot-desc': 'メールアドレスを入力してください — リセットリンクを送信します。',
+                'forgot-email-placeholder': 'your@email.com',
+                'forgot-cancel': 'キャンセル',
+                'forgot-send': '送信 →',
+                'btn-login': 'ログイン / 登録',
+                'bell-empty': 'まだありません',
+                'auth-modal-subtitle': 'ログインして最高のプレイヤーと競争',
+                'auth-tab-login': '🔑 ログイン',
+                'auth-tab-register': '⚡ 登録',
+                'auth-divider-or': 'または',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'メールまたはニックネーム',
+                'login-email-placeholder': 'player@evades3.com',
+                'login-password-label': 'パスワード',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'パスワードを表示',
+                'login-remember-me': 'ログイン状態を保持',
+                'login-forgot-password': 'パスワードをお忘れですか？',
+                'login-submit-btn': 'ログイン →',
+                'login-no-account': 'アカウントをお持ちでない方',
+                'login-register-link': '登録',
+                'register-divider': 'またはフォームに記入',
+                'register-nickname-label': 'ゲームニックネーム',
+                'register-nickname-placeholder': 'CoolPlayer123',
+                'register-nickname-hint': '3〜20文字、英数字と_のみ',
+                'register-email-label': 'メール',
+                'register-email-placeholder': 'player@evades3.com',
+                'register-password-label': 'パスワード',
+                'register-password-placeholder': '8文字以上',
+                'register-password-confirm-label': 'パスワード確認',
+                'register-terms-text': '<a href="#">利用規約</a>と<a href="#">プライバシーポリシー</a>に同意します',
+                'register-submit-btn': 'アカウント作成 ⚡',
+                'register-have-account': 'すでにアカウントをお持ちですか？',
+                'register-login-link': 'ログイン',
             },
             zh: {
                 'languages': '语言 ▼',
@@ -5372,6 +6557,51 @@ body.modal-open {
                 'auth-nickname': '昵称',
                 'auth-score': '分数',
                 'auth-level': '等级',
+                'profile-player': '玩家',
+                'profile-email-label': '📧 邮箱',
+                'profile-language-label': '🌍 语言',
+                'profile-joined-label': '📅 加入时间',
+                'profile-in-system': '在系统中',
+                'confirm-logout-title': '退出账户？',
+                'confirm-logout-text': '您确定要退出吗？您需要重新登录才能继续。',
+                'confirm-cancel': '取消',
+                'confirm-logout-yes': '是的，退出',
+                'forgot-title': '重置密码',
+                'forgot-desc': '输入您的邮箱 — 我们将发送重置链接。',
+                'forgot-email-placeholder': 'your@email.com',
+                'forgot-cancel': '取消',
+                'forgot-send': '发送 →',
+                'btn-login': '登录 / 注册',
+                'bell-empty': '暂无内容',
+                'auth-modal-subtitle': '登录并与最强者竞争',
+                'auth-tab-login': '🔑 登录',
+                'auth-tab-register': '⚡ 注册',
+                'auth-divider-or': '或',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': '邮箱或昵称',
+                'login-email-placeholder': 'player@evades3.com',
+                'login-password-label': '密码',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': '显示密码',
+                'login-remember-me': '记住我',
+                'login-forgot-password': '忘记密码？',
+                'login-submit-btn': '登录 →',
+                'login-no-account': '没有账户？',
+                'login-register-link': '注册',
+                'register-divider': '或填写表单',
+                'register-nickname-label': '游戏昵称',
+                'register-nickname-placeholder': 'CoolPlayer123',
+                'register-nickname-hint': '3-20个字符，仅限字母、数字和_',
+                'register-email-label': '邮箱',
+                'register-email-placeholder': 'player@evades3.com',
+                'register-password-label': '密码',
+                'register-password-placeholder': '至少8个字符',
+                'register-password-confirm-label': '确认密码',
+                'register-terms-text': '我接受<a href="#">服务条款</a>和<a href="#">隐私政策</a>',
+                'register-submit-btn': '创建账户 ⚡',
+                'register-have-account': '已有账户？',
+                'register-login-link': '登录',
             },
             ko: {
                 'languages': '언어 ▼',
@@ -5437,6 +6667,51 @@ body.modal-open {
                 'auth-nickname': '닉네임',
                 'auth-score': '점수',
                 'auth-level': '레벨',
+                'profile-player': '플레이어',
+                'profile-email-label': '📧 이메일',
+                'profile-language-label': '🌍 언어',
+                'profile-joined-label': '📅 가입일',
+                'profile-in-system': '시스템 내',
+                'confirm-logout-title': '계정에서 로그아웃하시겠습니까?',
+                'confirm-logout-text': '정말 로그아웃하시겠습니까? 계속하려면 다시 로그인해야 합니다.',
+                'confirm-cancel': '취소',
+                'confirm-logout-yes': '예, 로그아웃',
+                'forgot-title': '비밀번호 재설정',
+                'forgot-desc': '이메일을 입력하세요 — 재설정 링크를 보내드립니다.',
+                'forgot-email-placeholder': 'your@email.com',
+                'forgot-cancel': '취소',
+                'forgot-send': '보내기 →',
+                'btn-login': '로그인 / 회원가입',
+                'bell-empty': '아직 없음',
+                'auth-modal-subtitle': '로그인하고 최고와 경쟁하세요',
+                'auth-tab-login': '🔑 로그인',
+                'auth-tab-register': '⚡ 회원가입',
+                'auth-divider-or': '또는',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': '이메일 또는 닉네임',
+                'login-email-placeholder': 'player@evades3.com',
+                'login-password-label': '비밀번호',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': '비밀번호 표시',
+                'login-remember-me': '로그인 상태 유지',
+                'login-forgot-password': '비밀번호를 잊으셨나요?',
+                'login-submit-btn': '로그인 →',
+                'login-no-account': '계정이 없으신가요?',
+                'login-register-link': '회원가입',
+                'register-divider': '또는 양식 작성',
+                'register-nickname-label': '게임 닉네임',
+                'register-nickname-placeholder': 'CoolPlayer123',
+                'register-nickname-hint': '3-20자, 영문자, 숫자 및 _만 가능',
+                'register-email-label': '이메일',
+                'register-email-placeholder': 'player@evades3.com',
+                'register-password-label': '비밀번호',
+                'register-password-placeholder': '최소 8자',
+                'register-password-confirm-label': '비밀번호 확인',
+                'register-terms-text': '<a href="#">서비스 약관</a> 및 <a href="#">개인정보 보호정책</a>에 동의합니다',
+                'register-submit-btn': '계정 만들기 ⚡',
+                'register-have-account': '이미 계정이 있으신가요?',
+                'register-login-link': '로그인',
             },
             ar: {
                 'languages': 'اللغات ▼',
@@ -5502,6 +6777,51 @@ body.modal-open {
                 'auth-nickname': 'اسم المستخدم',
                 'auth-score': 'النقاط',
                 'auth-level': 'المستوى',
+                'profile-player': 'اللاعب',
+                'profile-email-label': '📧 البريد الإلكتروني',
+                'profile-language-label': '🌍 اللغة',
+                'profile-joined-label': '📅 عضو منذ',
+                'profile-in-system': 'في النظام',
+                'confirm-logout-title': 'تسجيل الخروج من الحساب؟',
+                'confirm-logout-text': 'هل أنت متأكد أنك تريد تسجيل الخروج؟ ستحتاج إلى تسجيل الدخول مرة أخرى للمتابعة.',
+                'confirm-cancel': 'إلغاء',
+                'confirm-logout-yes': 'نعم، تسجيل الخروج',
+                'forgot-title': 'إعادة تعيين كلمة المرور',
+                'forgot-desc': 'أدخل بريدك الإلكتروني — سنرسل لك رابط إعادة التعيين.',
+                'forgot-email-placeholder': 'your@email.com',
+                'forgot-cancel': 'إلغاء',
+                'forgot-send': 'إرسال →',
+                'btn-login': 'تسجيل الدخول / التسجيل',
+                'bell-empty': 'لا شيء حتى الآن',
+                'auth-modal-subtitle': 'سجل الدخول وتنافس مع الأفضل',
+                'auth-tab-login': '🔑 تسجيل الدخول',
+                'auth-tab-register': '⚡ التسجيل',
+                'auth-divider-or': 'أو',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'البريد الإلكتروني أو اسم المستخدم',
+                'login-email-placeholder': 'player@evades3.com',
+                'login-password-label': 'كلمة المرور',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'إظهار كلمة المرور',
+                'login-remember-me': 'تذكرني',
+                'login-forgot-password': 'هل نسيت كلمة المرور؟',
+                'login-submit-btn': 'تسجيل الدخول →',
+                'login-no-account': 'ليس لديك حساب؟',
+                'login-register-link': 'سجل',
+                'register-divider': 'أو املأ النموذج',
+                'register-nickname-label': 'اسم اللاعب',
+                'register-nickname-placeholder': 'CoolPlayer123',
+                'register-nickname-hint': '3-20 حرفًا، أحرف وأرقام و _ فقط',
+                'register-email-label': 'البريد الإلكتروني',
+                'register-email-placeholder': 'player@evades3.com',
+                'register-password-label': 'كلمة المرور',
+                'register-password-placeholder': '8 أحرف على الأقل',
+                'register-password-confirm-label': 'تأكيد كلمة المرور',
+                'register-terms-text': 'أوافق على <a href="#">شروط الخدمة</a> و<a href="#">سياسة الخصوصية</a>',
+                'register-submit-btn': 'إنشاء حساب ⚡',
+                'register-have-account': 'هل لديك حساب بالفعل؟',
+                'register-login-link': 'تسجيل الدخول',
             },
             hi: {
                 'languages': 'भाषाएँ ▼',
@@ -5567,6 +6887,51 @@ body.modal-open {
                 'auth-nickname': 'उपनाम',
                 'auth-score': 'स्कोर',
                 'auth-level': 'स्तर',
+                'profile-player': 'खिलाड़ी',
+                'profile-email-label': '📧 ईमेल',
+                'profile-language-label': '🌍 भाषा',
+                'profile-joined-label': '📅 सदस्य बने',
+                'profile-in-system': 'सिस्टम में',
+                'confirm-logout-title': 'अकाउंट से लॉग आउट करें?',
+                'confirm-logout-text': 'क्या आप वाकई लॉग आउट करना चाहते हैं? जारी रखने के लिए आपको फिर से लॉग इन करना होगा।',
+                'confirm-cancel': 'रद्द करें',
+                'confirm-logout-yes': 'हाँ, लॉग आउट करें',
+                'forgot-title': 'पासवर्ड रीसेट',
+                'forgot-desc': 'अपना ईमेल दर्ज करें — हम आपको रीसेट लिंक भेजेंगे।',
+                'forgot-email-placeholder': 'your@email.com',
+                'forgot-cancel': 'रद्द करें',
+                'forgot-send': 'भेजें →',
+                'btn-login': 'लॉगिन / रजिस्टर',
+                'bell-empty': 'अभी तक कुछ नहीं',
+                'auth-modal-subtitle': 'लॉगिन करें और सर्वश्रेष्ठ के साथ प्रतिस्पर्धा करें',
+                'auth-tab-login': '🔑 लॉगिन',
+                'auth-tab-register': '⚡ रजिस्टर',
+                'auth-divider-or': 'या',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'ईमेल या उपनाम',
+                'login-email-placeholder': 'player@evades3.com',
+                'login-password-label': 'पासवर्ड',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'पासवर्ड दिखाएं',
+                'login-remember-me': 'मुझे याद रखें',
+                'login-forgot-password': 'पासवर्ड भूल गए?',
+                'login-submit-btn': 'लॉगिन →',
+                'login-no-account': 'खाता नहीं है?',
+                'login-register-link': 'रजिस्टर करें',
+                'register-divider': 'या फॉर्म भरें',
+                'register-nickname-label': 'गेम उपनाम',
+                'register-nickname-placeholder': 'CoolPlayer123',
+                'register-nickname-hint': '3-20 वर्ण, केवल अक्षर, संख्या और _',
+                'register-email-label': 'ईमेल',
+                'register-email-placeholder': 'player@evades3.com',
+                'register-password-label': 'पासवर्ड',
+                'register-password-placeholder': 'कम से कम 8 वर्ण',
+                'register-password-confirm-label': 'पासवर्ड की पुष्टि करें',
+                'register-terms-text': 'मैं <a href="#">सेवा की शर्तें</a> और <a href="#">गोपनीयता नीति</a> स्वीकार करता हूं',
+                'register-submit-btn': 'खाता बनाएं ⚡',
+                'register-have-account': 'पहले से खाता है?',
+                'register-login-link': 'लॉगिन',
             },
             th: {
                 'languages': 'ภาษา ▼',
@@ -5632,6 +6997,51 @@ body.modal-open {
                 'auth-nickname': 'ชื่อเล่น',
                 'auth-score': 'คะแนน',
                 'auth-level': 'ระดับ',
+                'profile-player': 'ผู้เล่น',
+                'profile-email-label': '📧 อีเมล',
+                'profile-language-label': '🌍 ภาษา',
+                'profile-joined-label': '📅 สมาชิกตั้งแต่',
+                'profile-in-system': 'ในระบบ',
+                'confirm-logout-title': 'ออกจากระบบบัญชี?',
+                'confirm-logout-text': 'คุณแน่ใจหรือว่าต้องการออกจากระบบ? คุณจะต้องเข้าสู่ระบบอีกครั้งเพื่อดำเนินการต่อ',
+                'confirm-cancel': 'ยกเลิก',
+                'confirm-logout-yes': 'ใช่ ออกจากระบบ',
+                'forgot-title': 'รีเซ็ตรหัสผ่าน',
+                'forgot-desc': 'ใส่อีเมลของคุณ — เราจะส่งลิงก์รีเซ็ตให้',
+                'forgot-email-placeholder': 'your@email.com',
+                'forgot-cancel': 'ยกเลิก',
+                'forgot-send': 'ส่ง →',
+                'btn-login': 'เข้าสู่ระบบ / ลงทะเบียน',
+                'bell-empty': 'ยังไม่มีอะไร',
+                'auth-modal-subtitle': 'เข้าสู่ระบบและแข่งขันกับผู้เล่นที่ดีที่สุด',
+                'auth-tab-login': '🔑 เข้าสู่ระบบ',
+                'auth-tab-register': '⚡ ลงทะเบียน',
+                'auth-divider-or': 'หรือ',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'อีเมลหรือชื่อเล่น',
+                'login-email-placeholder': 'player@evades3.com',
+                'login-password-label': 'รหัสผ่าน',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'แสดงรหัสผ่าน',
+                'login-remember-me': 'จดจำฉัน',
+                'login-forgot-password': 'ลืมรหัสผ่าน?',
+                'login-submit-btn': 'เข้าสู่ระบบ →',
+                'login-no-account': 'ไม่มีบัญชี?',
+                'login-register-link': 'ลงทะเบียน',
+                'register-divider': 'หรือกรอกแบบฟอร์ม',
+                'register-nickname-label': 'ชื่อเล่นในเกม',
+                'register-nickname-placeholder': 'CoolPlayer123',
+                'register-nickname-hint': '3-20 ตัวอักษร ตัวอักษร ตัวเลข และ _ เท่านั้น',
+                'register-email-label': 'อีเมล',
+                'register-email-placeholder': 'player@evades3.com',
+                'register-password-label': 'รหัสผ่าน',
+                'register-password-placeholder': 'อย่างน้อย 8 ตัวอักษร',
+                'register-password-confirm-label': 'ยืนยันรหัสผ่าน',
+                'register-terms-text': 'ฉันยอมรับ<a href="#">เงื่อนไขการให้บริการ</a>และ<a href="#">นโยบายความเป็นส่วนตัว</a>',
+                'register-submit-btn': 'สร้างบัญชี ⚡',
+                'register-have-account': 'มีบัญชีอยู่แล้ว?',
+                'register-login-link': 'เข้าสู่ระบบ',
             },
             vi: {
                 'languages': 'Ngôn ngữ ▼',
@@ -5697,6 +7107,51 @@ body.modal-open {
                 'auth-nickname': 'Biệt danh',
                 'auth-score': 'Điểm số',
                 'auth-level': 'Cấp độ',
+                'profile-player': 'Người chơi',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Ngôn ngữ',
+                'profile-joined-label': '📅 Thành viên từ',
+                'profile-in-system': 'Trong hệ thống',
+                'confirm-logout-title': 'Đăng xuất khỏi tài khoản?',
+                'confirm-logout-text': 'Bạn có chắc chắn muốn đăng xuất không? Bạn sẽ cần đăng nhập lại để tiếp tục.',
+                'confirm-cancel': 'Hủy',
+                'confirm-logout-yes': 'Có, đăng xuất',
+                'forgot-title': 'Đặt lại mật khẩu',
+                'forgot-desc': 'Nhập email của bạn — chúng tôi sẽ gửi liên kết đặt lại.',
+                'forgot-email-placeholder': 'your@email.com',
+                'forgot-cancel': 'Hủy',
+                'forgot-send': 'Gửi →',
+                'btn-login': 'Đăng nhập / Đăng ký',
+                'bell-empty': 'Chưa có gì',
+                'auth-modal-subtitle': 'Đăng nhập và cạnh tranh với những người giỏi nhất',
+                'auth-tab-login': '🔑 Đăng nhập',
+                'auth-tab-register': '⚡ Đăng ký',
+                'auth-divider-or': 'hoặc',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email hoặc biệt danh',
+                'login-email-placeholder': 'player@evades3.com',
+                'login-password-label': 'Mật khẩu',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Hiển thị mật khẩu',
+                'login-remember-me': 'Ghi nhớ tôi',
+                'login-forgot-password': 'Quên mật khẩu?',
+                'login-submit-btn': 'Đăng nhập →',
+                'login-no-account': 'Chưa có tài khoản?',
+                'login-register-link': 'Đăng ký',
+                'register-divider': 'hoặc điền vào biểu mẫu',
+                'register-nickname-label': 'Biệt danh trong game',
+                'register-nickname-placeholder': 'CoolPlayer123',
+                'register-nickname-hint': '3-20 ký tự, chỉ chữ cái, số và _',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'player@evades3.com',
+                'register-password-label': 'Mật khẩu',
+                'register-password-placeholder': 'Tối thiểu 8 ký tự',
+                'register-password-confirm-label': 'Xác nhận mật khẩu',
+                'register-terms-text': 'Tôi chấp nhận <a href="#">Điều khoản dịch vụ</a> và <a href="#">Chính sách bảo mật</a>',
+                'register-submit-btn': 'Tạo tài khoản ⚡',
+                'register-have-account': 'Đã có tài khoản?',
+                'register-login-link': 'Đăng nhập',
             },
             id: {
                 'languages': 'Bahasa ▼',
@@ -5762,6 +7217,51 @@ body.modal-open {
                 'auth-nickname': 'Nama panggilan',
                 'auth-score': 'Skor',
                 'auth-level': 'Level',
+                'profile-player': 'Pemain',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Bahasa',
+                'profile-joined-label': '📅 Anggota sejak',
+                'profile-in-system': 'Dalam sistem',
+                'confirm-logout-title': 'Keluar dari akun?',
+                'confirm-logout-text': 'Apakah Anda yakin ingin keluar? Anda harus masuk lagi untuk melanjutkan.',
+                'confirm-cancel': 'Batal',
+                'confirm-logout-yes': 'Ya, keluar',
+                'forgot-title': 'Reset kata sandi',
+                'forgot-desc': 'Masukkan email Anda — kami akan mengirim tautan reset.',
+                'forgot-email-placeholder': 'your@email.com',
+                'forgot-cancel': 'Batal',
+                'forgot-send': 'Kirim →',
+                'btn-login': 'Masuk / Daftar',
+                'bell-empty': 'Belum ada',
+                'auth-modal-subtitle': 'Masuk dan bersaing dengan yang terbaik',
+                'auth-tab-login': '🔑 Masuk',
+                'auth-tab-register': '⚡ Daftar',
+                'auth-divider-or': 'atau',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email atau nama panggilan',
+                'login-email-placeholder': 'player@evades3.com',
+                'login-password-label': 'Kata sandi',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Tampilkan kata sandi',
+                'login-remember-me': 'Ingat saya',
+                'login-forgot-password': 'Lupa kata sandi?',
+                'login-submit-btn': 'Masuk →',
+                'login-no-account': 'Belum punya akun?',
+                'login-register-link': 'Daftar',
+                'register-divider': 'atau isi formulir',
+                'register-nickname-label': 'Nama panggilan game',
+                'register-nickname-placeholder': 'CoolPlayer123',
+                'register-nickname-hint': '3-20 karakter, hanya huruf, angka dan _',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'player@evades3.com',
+                'register-password-label': 'Kata sandi',
+                'register-password-placeholder': 'Minimal 8 karakter',
+                'register-password-confirm-label': 'Konfirmasi kata sandi',
+                'register-terms-text': 'Saya menerima <a href="#">Ketentuan Layanan</a> dan <a href="#">Kebijakan Privasi</a>',
+                'register-submit-btn': 'Buat akun ⚡',
+                'register-have-account': 'Sudah punya akun?',
+                'register-login-link': 'Masuk',
             },
             ms: {
                 'languages': 'Bahasa ▼',
@@ -5827,6 +7327,51 @@ body.modal-open {
                 'auth-nickname': 'Nama samaran',
                 'auth-score': 'Skor',
                 'auth-level': 'Tahap',
+                'profile-player': 'Pemain',
+                'profile-email-label': '📧 Email',
+                'profile-language-label': '🌍 Bahasa',
+                'profile-joined-label': '📅 Ahli sejak',
+                'profile-in-system': 'Dalam sistem',
+                'confirm-logout-title': 'Log keluar dari akaun?',
+                'confirm-logout-text': 'Adakah anda pasti mahu log keluar? Anda perlu log masuk semula untuk meneruskan.',
+                'confirm-cancel': 'Batal',
+                'confirm-logout-yes': 'Ya, log keluar',
+                'forgot-title': 'Set semula kata laluan',
+                'forgot-desc': 'Masukkan email anda — kami akan hantar pautan set semula.',
+                'forgot-email-placeholder': 'your@email.com',
+                'forgot-cancel': 'Batal',
+                'forgot-send': 'Hantar →',
+                'btn-login': 'Log masuk / Daftar',
+                'bell-empty': 'Tiada apa-apa lagi',
+                'auth-modal-subtitle': 'Log masuk dan bersaing dengan yang terbaik',
+                'auth-tab-login': '🔑 Log masuk',
+                'auth-tab-register': '⚡ Daftar',
+                'auth-divider-or': 'atau',
+                'oauth-google': 'Google',
+                'oauth-discord': 'Discord',
+                'login-email-label': 'Email atau nama samaran',
+                'login-email-placeholder': 'player@evades3.com',
+                'login-password-label': 'Kata laluan',
+                'login-password-placeholder': '••••••••••',
+                'show-password-aria': 'Tunjukkan kata laluan',
+                'login-remember-me': 'Ingat saya',
+                'login-forgot-password': 'Lupa kata laluan?',
+                'login-submit-btn': 'Log masuk →',
+                'login-no-account': 'Tiada akaun?',
+                'login-register-link': 'Daftar',
+                'register-divider': 'atau isi borang',
+                'register-nickname-label': 'Nama samaran permainan',
+                'register-nickname-placeholder': 'CoolPlayer123',
+                'register-nickname-hint': '3-20 aksara, huruf, nombor dan _ sahaja',
+                'register-email-label': 'Email',
+                'register-email-placeholder': 'player@evades3.com',
+                'register-password-label': 'Kata laluan',
+                'register-password-placeholder': 'Minimum 8 aksara',
+                'register-password-confirm-label': 'Sahkan kata laluan',
+                'register-terms-text': 'Saya menerima <a href="#">Terma Perkhidmatan</a> dan <a href="#">Dasar Privasi</a>',
+                'register-submit-btn': 'Cipta akaun ⚡',
+                'register-have-account': 'Sudah ada akaun?',
+                'register-login-link': 'Log masuk',
             }
         };
 
@@ -5839,7 +7384,24 @@ body.modal-open {
           (translations.en && translations.en[key]) ||
           el.innerHTML;
 
-        el.innerHTML = t;
+        // Special handling for terms text with links
+        if (key === 'register-terms-text') {
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = t;
+          const links = tempDiv.querySelectorAll('a');
+          links.forEach((link, idx) => {
+            if (idx === 0) {
+              link.setAttribute('href', '#');
+              link.setAttribute('onclick', "openLegalModal('terms');return false;");
+            } else if (idx === 1) {
+              link.setAttribute('href', '#');
+              link.setAttribute('onclick', "openLegalModal('privacy');return false;");
+            }
+          });
+          el.innerHTML = tempDiv.innerHTML;
+        } else {
+          el.innerHTML = t;
+        }
       });
     }
 
@@ -6569,12 +8131,23 @@ async function doRegister() {
   const pass2 = document.getElementById('ri-pass2').value;
   const terms = document.getElementById('ri-terms').checked;
   const btn = document.getElementById('ri-submit');
+  const termsLabel = document.querySelector('.af-terms');
+
   let ok = true;
+
   if (!nick||!/^[a-zA-Zа-яёА-ЯЁ0-9_]{3,20}$/.test(nick)) { setHint('ri-nick-hint','Введи корректный ник','err'); setInpState(document.getElementById('ri-nick'),'error'); ok=false; }
   if (!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setHint('ri-email-hint','Введи корректный email','err'); setInpState(document.getElementById('ri-email'),'error'); ok=false; }
   if (pass.length<8) { setHint('ri-pass-hint','Минимум 8 символов','err'); ok=false; }
   if (pass!==pass2) { setHint('ri-pass2-hint','Пароли не совпадают','err'); setInpState(document.getElementById('ri-pass2'),'error'); ok=false; }
-  if (!terms) { ev3Toast('Прими условия использования','⚠️'); ok=false; }
+
+  if (!terms) {
+    termsLabel.classList.add('error');
+    ev3Toast('Прими условия использования','⚠️');
+    ok=false;
+  } else {
+    termsLabel.classList.remove('error');
+  }
+
   if (!ok) return;
 
   btn.disabled=true; btn.innerHTML='<span class="af-submit-shine"></span><span>⏳ Создаём аккаунт...</span>';
@@ -6610,6 +8183,242 @@ function oauthSignIn(provider) {
 function openForgotModal(e) { if(e) e.preventDefault(); document.getElementById('forgotModalOverlay').classList.add('show'); setTimeout(()=>document.getElementById('forgot-email-input').focus(),300); }
 function closeForgotModal() { document.getElementById('forgotModalOverlay').classList.remove('show'); }
 function closeForgotOnBg(e) { if(e.target===e.currentTarget) closeForgotModal(); }
+
+// ===================================================
+// LEGAL MODAL (TERMS & PRIVACY)
+// ===================================================
+const legalContent = {
+  terms: {
+    ru: {
+      title: 'Условия использования',
+      subtitle: 'Evades 3 — Правила и условия',
+      sections: [
+        {
+          title: '1. Принятие условий',
+          text: 'Используя сайт Evades 3, вы подтверждаете, что прочитали, поняли и согласны соблюдать данные условия. Если вы не согласны — прекратите использование сервиса.'
+        },
+        {
+          title: '2. Описание сервиса',
+          text: 'Evades 3 — это онлайн-платформа и проект, связанный с разработкой, сообществом и игровым контентом. Сервис может обновляться, изменяться или временно быть недоступным.'
+        },
+        {
+          title: '3. Поведение пользователей',
+          text: 'Пользователь обязуется соблюдать правила сообщества Evades 3, включая:',
+          list: [
+            'уважительное общение без токсичности',
+            'запрет на спам и флуд',
+            'запрет на NSFW/18+ контент',
+            'запрет на политические обсуждения',
+            'запрет на рекламу без разрешения',
+            'соблюдение указаний администрации'
+          ],
+          footer: 'Нарушение может привести к ограничениям доступа.'
+        },
+        {
+          title: '4. Система наказаний',
+          text: 'За нарушения правил может применяться система предупреждений и санкций:',
+          list: [
+            'предупреждения (warns)',
+            'временные блокировки',
+            'полный бан аккаунта'
+          ],
+          footer: 'Администрация оставляет за собой право определять меру наказания.'
+        },
+        {
+          title: '5. Аккаунты и доступ',
+          text: 'Пользователь несёт ответственность за безопасность своего аккаунта. Администрация не отвечает за потерю доступа по вине пользователя.'
+        },
+        {
+          title: '6. Изменения сервиса',
+          text: 'Evades 3 может изменять правила, функционал и структуру сайта без предварительного уведомления.'
+        },
+        {
+          title: '7. Ограничение ответственности',
+          text: 'Сервис предоставляется "как есть". Мы не гарантируем отсутствие ошибок, сбоев или потери данных.'
+        }
+      ]
+    },
+    en: {
+      title: 'Terms of Use',
+      subtitle: 'Evades 3 — Rules and Conditions',
+      sections: [
+        {
+          title: '1. Acceptance of Terms',
+          text: 'By using the Evades 3 website, you confirm that you have read, understood, and agree to comply with these terms. If you do not agree — stop using the service.'
+        },
+        {
+          title: '2. Service Description',
+          text: 'Evades 3 is an online platform and project related to development, community, and gaming content. The service may be updated, changed, or temporarily unavailable.'
+        },
+        {
+          title: '3. User Behavior',
+          text: 'Users are required to follow the Evades 3 community rules, including:',
+          list: [
+            'respectful communication without toxicity',
+            'no spam or flooding',
+            'no NSFW/18+ content',
+            'no political discussions',
+            'no advertising without permission',
+            'compliance with administration instructions'
+          ],
+          footer: 'Violations may result in access restrictions.'
+        },
+        {
+          title: '4. Punishment System',
+          text: 'For rule violations, a system of warnings and sanctions may be applied:',
+          list: [
+            'warnings (warns)',
+            'temporary bans',
+            'permanent account ban'
+          ],
+          footer: 'Administration reserves the right to determine the punishment.'
+        },
+        {
+          title: '5. Accounts and Access',
+          text: 'Users are responsible for the security of their account. Administration is not responsible for loss of access due to user fault.'
+        },
+        {
+          title: '6. Service Changes',
+          text: 'Evades 3 may change rules, functionality, and site structure without prior notice.'
+        },
+        {
+          title: '7. Limitation of Liability',
+          text: 'The service is provided "as is". We do not guarantee the absence of errors, failures, or data loss.'
+        }
+      ]
+    }
+  },
+  privacy: {
+    ru: {
+      title: 'Политика конфиденциальности',
+      subtitle: 'Evades 3 — Защита данных',
+      sections: [
+        {
+          title: '1. Какие данные мы собираем',
+          text: 'Мы можем собирать:',
+          list: [
+            'email (если используется авторизация)',
+            'никнейм',
+            'технические данные (IP, браузер, устройство)',
+            'игровую статистику (например, уровень, очки)'
+          ]
+        },
+        {
+          title: '2. Как мы используем данные',
+          text: 'Данные используются для:',
+          list: [
+            'работы аккаунтов',
+            'улучшения сервиса',
+            'защиты от нарушений',
+            'статистики и прогресса игроков'
+          ]
+        },
+        {
+          title: '3. Хранение данных',
+          text: 'Данные хранятся в защищённой базе (например, Supabase или аналог). Мы стараемся защищать их, но 100% безопасность в интернете не гарантируется.'
+        },
+        {
+          title: '4. Передача третьим лицам',
+          text: 'Мы не продаём и не передаём личные данные третьим лицам, кроме случаев, когда это требуется законом.'
+        },
+        {
+          title: '5. Cookies',
+          text: 'Сайт может использовать cookies для сохранения сессии и улучшения работы интерфейса.'
+        },
+        {
+          title: '6. Согласие',
+          text: 'Используя сайт, вы соглашаетесь с данной политикой конфиденциальности.'
+        }
+      ]
+    },
+    en: {
+      title: 'Privacy Policy',
+      subtitle: 'Evades 3 — Data Protection',
+      sections: [
+        {
+          title: '1. What Data We Collect',
+          text: 'We may collect:',
+          list: [
+            'email (if authentication is used)',
+            'nickname',
+            'technical data (IP, browser, device)',
+            'game statistics (e.g., level, points)'
+          ]
+        },
+        {
+          title: '2. How We Use Data',
+          text: 'Data is used for:',
+          list: [
+            'account functionality',
+            'service improvement',
+            'protection against violations',
+            'player statistics and progress'
+          ]
+        },
+        {
+          title: '3. Data Storage',
+          text: 'Data is stored in a secure database (e.g., Supabase or similar). We strive to protect it, but 100% security on the internet is not guaranteed.'
+        },
+        {
+          title: '4. Third-Party Disclosure',
+          text: 'We do not sell or transfer personal data to third parties, except when required by law.'
+        },
+        {
+          title: '5. Cookies',
+          text: 'The site may use cookies to save sessions and improve interface functionality.'
+        },
+        {
+          title: '6. Consent',
+          text: 'By using the site, you agree to this privacy policy.'
+        }
+      ]
+    }
+  }
+};
+
+function openLegalModal(type) {
+  const lang = localStorage.getItem('selectedLanguage') || 'ru';
+  const content = legalContent[type][lang] || legalContent[type]['en'];
+
+  document.getElementById('legalModalTitle').textContent = content.title;
+  document.getElementById('legalModalSubtitle').textContent = content.subtitle;
+
+  let html = '';
+  content.sections.forEach(section => {
+    html += `<div class="legal-section">`;
+    html += `<div class="legal-section-title">${section.title}</div>`;
+    if (section.text) {
+      html += `<div class="legal-section-text">${section.text}</div>`;
+    }
+    if (section.list) {
+      html += `<ul class="legal-list">`;
+      section.list.forEach(item => {
+        html += `<li>${item}</li>`;
+      });
+      html += `</ul>`;
+    }
+    if (section.footer) {
+      html += `<div class="legal-section-text"><strong>${section.footer}</strong></div>`;
+    }
+    html += `</div>`;
+  });
+
+  document.getElementById('legalModalContent').innerHTML = html;
+  document.getElementById('legalModalOverlay').classList.add('show');
+  document.getElementById('legalModalContent').scrollTop = 0;
+}
+
+function closeLegalModal() {
+  document.getElementById('legalModalOverlay').classList.remove('show');
+}
+
+function closeLegalOnBg(e) {
+  if(e.target === e.currentTarget) closeLegalModal();
+}
+
+// ===================================================
+// FORGOT PASSWORD (продолжение)
+// ===================================================
 async function doForgotSend() {
   const email = document.getElementById('forgot-email-input').value.trim();
   if (!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { ev3Toast('Введи корректный email','⚠️'); return; }
