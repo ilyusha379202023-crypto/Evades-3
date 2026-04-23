@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="page-title">Evades 3 — Условия использования</title>
+  <link rel="icon" href="logo.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;600;700&family=Exo+2:wght@300;600;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root{
+      --langBorder: rgba(255,255,255,0.28);
+    }
+
+    /* ================= Флаги меню языков ================= */
+    .lang-flag{
+      width: 22px; height: 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 18px; line-height: 1;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35));
+    }
+    .lang-flag img{
+      width: 22px !important; height: 16px !important;
+      object-fit: cover; border-radius: 3px; display: block;
+      box-shadow: 0 0 4px rgba(0,0,0,0.3);
+    }
+
+    /* Галочка (SVG с анимацией "рисования") */
+    .lang-check {
+      width: 22px; height: 22px; margin-left: auto;
+      opacity: 0; transform: scale(0.85);
+      transition: opacity .18s ease, transform .18s ease;
+      pointer-events: none;
+    }
+    .lang-item.is-selected .lang-check { opacity: 1; transform: scale(1); }
+    .lang-check svg { width: 22px; height: 22px; display: block; }
+    .lang-check path {
+      fill: none; stroke: rgba(255,255,255,0.95);
+      stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 30; stroke-dashoffset: 30;
+    }
+    .lang-item.is-selected .lang-check path { animation: checkDraw 260ms ease-out forwards; }
+    @keyframes checkDraw { to { stroke-dashoffset: 0; } }
+
+    body {
+      font-family: 'Exo 2', 'Orbitron', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: linear-gradient(135deg, #1a4d2e 0%, #2d7a4f 25%, #4a9d6f 50%, #2d7a4f 75%, #1a4d2e 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+      color: #fff;
+    }
+    body::before {
+      content: '';
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.03) 0%, transparent 50%);
+      pointer-events: none; z-index: 1;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ================= Меню языков (ТОЧ В ТОЧ как на главной) ================= */
+    .language-menu {
+      position: absolute;
+      top: 20px; right: 50px;
+      z-index: 1000;
+      user-select: none; -webkit-user-select: none;
+      cursor: default;
+    }
+    .menu-button {
+      background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.15));
+      color: white;
+      padding: 15px 35px;
+      cursor: pointer;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: 50px;
+      font-size: 18px; font-weight: 900;
+      backdrop-filter: blur(15px);
+      transition: all 0.3s ease;
+      font-family: 'Exo 2', sans-serif;
+      letter-spacing: 2px;
+      box-shadow:
+        6px 6px 16px rgba(0,0,0,0.3),
+        -3px -3px 10px rgba(255,255,255,0.1),
+        inset -2px -2px 6px rgba(0,0,0,0.2),
+        inset 2px 2px 6px rgba(255,255,255,0.2);
+    }
+    .menu-button:hover {
+      background: linear-gradient(145deg, rgba(255,255,255,0.35), rgba(255,255,255,0.25));
+      transform: translateY(-2px);
+      box-shadow:
+        8px 8px 20px rgba(0,0,0,0.4),
+        -4px -4px 12px rgba(255,255,255,0.15),
+        inset -2px -2px 6px rgba(0,0,0,0.2),
+        inset 2px 2px 6px rgba(255,255,255,0.2);
+    }
+    .language-dropdown{
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) scale(0.96);
+      background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.12));
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border-radius: 28px;
+      overflow: hidden;
+      max-height: 0; opacity: 0;
+      transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.25s ease;
+      border: 2px solid var(--langBorder);
+      box-shadow:
+        10px 10px 30px rgba(0,0,0,0.35),
+        -5px -5px 14px rgba(255,255,255,0.12),
+        inset -2px -2px 8px rgba(0,0,0,0.25),
+        inset 2px 2px 8px rgba(255,255,255,0.2);
+      min-width: 170px;
+      user-select: none; -webkit-user-select: none;
+    }
+    .language-menu:hover .language-dropdown {
+      max-height: 400px; opacity: 1; transform: translateX(-50%) scale(1);
+    }
+    .language-scroll {
+      max-height: 400px; overflow-y: auto; overflow-x: hidden;
+      padding: 10px 12px 10px 0;
+    }
+    .language-scroll::-webkit-scrollbar{ width: 5px; }
+    .language-scroll::-webkit-scrollbar-track{ background: rgba(255,255,255,0.08); border-radius: 999px; }
+    .language-scroll::-webkit-scrollbar-thumb{ background: var(--langBorder); border-radius: 999px; min-height: 160px; }
+    .language-scroll::-webkit-scrollbar-thumb:hover{ background: rgba(255,255,255,0.45); }
+
+    .lang-item{
+      position: relative;
+      padding: 12px 20px;
+      color: white;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 12px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-left: 3px solid transparent;
+      opacity: 0; transform: translateY(-8px);
+    }
+    .language-menu:hover .lang-item {
+      opacity: 1; transform: translateY(0);
+      transition-delay: var(--item-delay, 0ms);
+    }
+    .lang-item:hover {
+      background: linear-gradient(90deg, rgba(74,222,128,0.2), transparent);
+      transform: translateX(8px);
+      box-shadow: 0 4px 12px rgba(74,222,128,0.1);
+    }
+    .lang-code {
+      font-weight: bold; min-width: 45px;
+      font-family: 'Exo 2', sans-serif;
+    }
+    .lang-item.is-selected .lang-check::after{
+      content: "";
+      position: absolute; inset: -4px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.65);
+      opacity: 0;
+      animation: checkPing 1.4s ease-out infinite;
+    }
+    @keyframes checkPing{
+      0% { transform: scale(0.6); opacity: 0.8; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+
+    /* ================= Контент ================= */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 80px 24px 40px;
+      position: relative; z-index: 5;
+    }
+
+    .back-home{
+      display: inline-block;
+      margin-bottom: 28px;
+      padding: 0;
+      border: none;
+      background: none;
+      text-decoration: none;
+      transition: transform .25s ease, filter .25s ease;
+      cursor: pointer;
+    }
+    .back-home img{
+      display: block;
+      height: 72px; width: auto;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.45));
+      transition: transform .25s ease, filter .25s ease;
+    }
+    .back-home:hover img{
+      transform: translateX(-4px) scale(1.04);
+      filter: drop-shadow(0 8px 18px rgba(255,216,77,0.55));
+    }
+
+    .page-title{
+      font-family: 'Orbitron', 'Exo 2', sans-serif;
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #FFD84D;
+      -webkit-text-stroke: 2px #000;
+      paint-order: stroke fill;
+      text-shadow:
+        0 2px 0 #B8860B, 0 4px 0 #9A7209, 0 6px 0 #7C5E07,
+        0 10px 20px rgba(0,0,0,0.5),
+        0 0 30px rgba(255,215,0,0.6);
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .page-sub{
+      text-align: center;
+      color: rgba(255,255,255,0.75);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .glass-card {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(20px);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 40px 44px;
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .glass-card::before {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      animation: shine 4s infinite;
+      pointer-events: none; z-index: 0;
+    }
+    .glass-card > * { position: relative; z-index: 1; }
+    @keyframes shine {
+      0% { left: -100%; } 50% { left: 100%; } 100% { left: 100%; }
+    }
+
+    .section-title{
+      font-family: 'Orbitron', 'Exo 2', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: #ffd84d;
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-title::before{
+      content: ""; display: inline-block;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffd84d, #b88915);
+      box-shadow: 0 0 10px rgba(255,216,77,0.8);
+      flex: 0 0 auto;
+    }
+    .section-text{
+      color: rgba(255,255,255,0.88);
+      font-size: 16px;
+      line-height: 1.7;
+      font-weight: 400;
+    }
+    .section-text a{ color: #ffd84d; font-weight: 600; }
+    .intro-text{
+      font-size: 17px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 8px;
+    }
+    .updated{
+      display: inline-block;
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.65);
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.22);
+      border: 1px solid rgba(255,255,255,0.12);
+      margin-bottom: 20px;
+    }
+
+    /* ================= Footer ================= */
+    .site-footer {
+      position: relative; z-index: 5;
+      margin: 40px auto 0;
+      padding: 28px 24px 22px;
+      color: rgba(255,255,255,0.78);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(15,45,27,0.25), rgba(10,30,18,0.55));
+      backdrop-filter: blur(6px);
+    }
+    .site-footer-inner{
+      max-width: 1180px; margin: 0 auto;
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 14px 28px;
+    }
+    .site-footer-brand{
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700; color: #fff; letter-spacing: 1px;
+    }
+    .site-footer-brand .brand-dot{
+      width: 8px; height: 8px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffd84d, #b88915);
+      box-shadow: 0 0 10px rgba(255,216,77,0.6);
+    }
+    .site-footer-copy{ color: rgba(255,255,255,0.55); font-weight: 500; font-size: 0.86rem; letter-spacing: 0.3px; }
+    .site-footer-links{ display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
+    .site-footer-links a{
+      color: rgba(255,255,255,0.78); text-decoration: none;
+      font-weight: 600; padding: 4px 10px; border-radius: 999px;
+      transition: background .2s ease, color .2s ease;
+    }
+    .site-footer-links a:hover{ color: #fff; background: rgba(255,255,255,0.08); }
+    .site-footer-links .dot{ color: rgba(255,255,255,0.25); user-select: none; }
+    .site-footer-contact{
+      width: 100%; text-align: center;
+      margin-top: 12px; padding-top: 14px;
+      border-top: 1px dashed rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.6); font-size: 0.86rem;
+    }
+    .site-footer-contact a{ color: #ffd84d; text-decoration: none; font-weight: 700; }
+    .site-footer-contact a:hover{ text-decoration: underline; }
+    @media (max-width: 640px){
+      .site-footer-inner{ justify-content: center; text-align: center; }
+      .site-footer-links{ justify-content: center; }
+      .language-menu{ right: 20px; top: 16px; }
+      .menu-button{ padding: 12px 22px; font-size: 14px; }
+      .glass-card{ padding: 28px 22px; border-radius: 22px; }
+    }
+
+    html[lang="ar"] body, html[lang="ar"] .container { direction: rtl; }
+    html[lang="ar"] .section-title{ flex-direction: row-reverse; }
+    html[lang="ar"] .back-home:hover img{ transform: translateX(4px) scale(1.04); }
+  </style>
+</head>
+
+<body>
+  <!-- Меню языков (ТОЧ В ТОЧ как на главной) -->
+  <div class="language-menu">
+    <div class="menu-button" data-i18n="languages">Языки ▼</div>
+    <div class="language-dropdown">
+      <div class="language-scroll">
+        <div class="lang-item" data-lang="ru"><span class="lang-flag"><img src="flags/ru.png" alt="Русский" /></span><span class="lang-code">RUS</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="en"><span class="lang-flag"><img src="flags/gb.png" alt="English" /></span><span class="lang-code">ENG</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="uk"><span class="lang-flag"><img src="flags/ua.png" alt="Українська" /></span><span class="lang-code">UKR</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="de"><span class="lang-flag"><img src="flags/de.jpg" alt="Deutsch" /></span><span class="lang-code">DEU</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="es"><span class="lang-flag"><img src="flags/es.png" alt="Español" /></span><span class="lang-code">ESP</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="fr"><span class="lang-flag"><img src="flags/fr.png" alt="Français" /></span><span class="lang-code">FRA</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="it"><span class="lang-flag"><img src="flags/it.png" alt="Italiano" /></span><span class="lang-code">ITA</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="pt"><span class="lang-flag"><img src="flags/pt.png" alt="Português" /></span><span class="lang-code">POR</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="pl"><span class="lang-flag"><img src="flags/pl.png" alt="Polski" /></span><span class="lang-code">POL</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="tr"><span class="lang-flag"><img src="flags/tr.png" alt="Türkçe" /></span><span class="lang-code">TUR</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="nl"><span class="lang-flag"><img src="flags/nl.png" alt="Nederlands" /></span><span class="lang-code">NLD</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="sv"><span class="lang-flag"><img src="flags/sv.png" alt="Svenska" /></span><span class="lang-code">SWE</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="no"><span class="lang-flag"><img src="flags/no.png" alt="Norsk" /></span><span class="lang-code">NOR</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="fi"><span class="lang-flag"><img src="flags/fi.png" alt="Suomi" /></span><span class="lang-code">FIN</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="da"><span class="lang-flag"><img src="flags/da.png" alt="Dansk" /></span><span class="lang-code">DAN</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="cs"><span class="lang-flag"><img src="flags/cs.png" alt="Čeština" /></span><span class="lang-code">CES</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="ro"><span class="lang-flag"><img src="flags/ro.png" alt="Română" /></span><span class="lang-code">RON</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="hu"><span class="lang-flag"><img src="flags/hu.png" alt="Magyar" /></span><span class="lang-code">HUN</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="el"><span class="lang-flag"><img src="flags/el.png" alt="Ελληνικά" /></span><span class="lang-code">ELL</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="ja"><span class="lang-flag"><img src="flags/ja.png" alt="日本語" /></span><span class="lang-code">JPN</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="zh"><span class="lang-flag"><img src="flags/zh.png" alt="中文" /></span><span class="lang-code">ZHO</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="ko"><span class="lang-flag"><img src="flags/ko.png" alt="한국어" /></span><span class="lang-code">KOR</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="ar"><span class="lang-flag"><img src="flags/ar.png" alt="العربية" /></span><span class="lang-code">ARA</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="hi"><span class="lang-flag"><img src="flags/hi.png" alt="हिन्दी" /></span><span class="lang-code">HIN</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="th"><span class="lang-flag"><img src="flags/th.png" alt="ไทย" /></span><span class="lang-code">THA</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="vi"><span class="lang-flag"><img src="flags/vi.png" alt="Tiếng Việt" /></span><span class="lang-code">VIE</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="id"><span class="lang-flag"><img src="flags/id.png" alt="Bahasa Indonesia" /></span><span class="lang-code">IDN</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="ms"><span class="lang-flag"><img src="flags/ms.png" alt="Bahasa Melayu" /></span><span class="lang-code">MSA</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+    <a class="back-home" href="index.html" aria-label="Evades 3"><img src="logo.png" alt="Evades 3" /></a>
+
+    <h1 class="page-title" data-i18n="page-heading">Условия использования</h1>
+    <div class="page-sub" data-i18n="page-sub">Evades 3 — Официальный документ</div>
+
+    <div class="glass-card">
+      <span class="updated" data-i18n="updated">Последнее обновление: 23 апреля 2026</span>
+      <p class="intro-text" data-i18n="intro">Добро пожаловать в Evades 3! Используя наш сайт и игру, вы соглашаетесь с настоящими Условиями использования. Пожалуйста, внимательно прочитайте этот документ перед тем, как начать играть.</p>
+    </div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s1-title">1. Принятие условий</div><div class="section-text" data-i18n="s1-text">Регистрируясь на сайте или запуская игру Evades 3, вы подтверждаете, что прочитали, поняли и согласились соблюдать настоящие Условия в полном объёме. Если вы не согласны с любым из пунктов — пожалуйста, не используйте наш сервис.</div></div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s2-title">2. Описание сервиса</div><div class="section-text" data-i18n="s2-text">Evades 3 — это многопользовательская онлайн-игра и связанный с ней сайт, включающий серверы, клиент игры, сообщество и сопутствующие материалы. Мы предоставляем доступ к сервису «как есть» и можем обновлять его в любой момент.</div></div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s3-title">3. Аккаунт пользователя</div><div class="section-text" data-i18n="s3-text">Для доступа к некоторым функциям необходима учётная запись. Вы отвечаете за сохранность своих данных для входа и за все действия, совершённые с вашего аккаунта. Запрещено передавать аккаунт третьим лицам или продавать его.</div></div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s4-title">4. Правила поведения</div><div class="section-text" data-i18n="s4-text">Запрещены читы, боты, эксплойты, модификация клиента, оскорбления других игроков, спам и распространение незаконного контента. Нарушение правил ведёт к предупреждению, временной или постоянной блокировке аккаунта.</div></div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s5-title">5. Интеллектуальная собственность</div><div class="section-text" data-i18n="s5-text">Весь игровой контент, графика, музыка, код, торговая марка и бренд Evades 3 принадлежат разработчикам и защищены законом. Любое копирование, перепродажа или коммерческое использование без письменного разрешения запрещены.</div></div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s6-title">6. Запрещённые действия</div><div class="section-text" data-i18n="s6-text">Запрещается атаковать инфраструктуру сервиса, сканировать или автоматически собирать данные, обходить системы защиты, а также продавать внутриигровые ценности за реальные деньги вне официальных каналов.</div></div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s7-title">7. Прекращение доступа</div><div class="section-text" data-i18n="s7-text">Мы вправе приостановить или удалить ваш аккаунт в случае нарушения Условий — без предварительного уведомления и без возврата средств. Вы также можете удалить свой аккаунт в любое время через настройки профиля.</div></div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s8-title">8. Отказ от гарантий и ответственность</div><div class="section-text" data-i18n="s8-text">Сервис предоставляется «как есть», без каких-либо гарантий. Мы не несём ответственности за возможные технические сбои, потерю игрового прогресса или косвенные убытки, связанные с использованием игры.</div></div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s9-title">9. Изменения условий</div><div class="section-text" data-i18n="s9-text">Мы можем обновлять настоящие Условия в любое время. Актуальная версия всегда доступна на этой странице. Продолжая использовать сервис после изменений, вы соглашаетесь с их новой редакцией.</div></div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s10-title">10. Контакты</div><div class="section-text" data-i18n="s10-text">По всем вопросам, связанным с Условиями использования, пишите на <a href="mailto:support@evades3.com">support@evades3.com</a>. Мы постараемся ответить как можно быстрее.</div></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <div class="site-footer-brand"><span class="brand-dot"></span><span>EVADES 3</span></div>
+      <div class="site-footer-copy" data-i18n="footer-copy">© 2026 Evades 3. Все права защищены.</div>
+      <nav class="site-footer-links" aria-label="Footer">
+        <a href="terms.html" data-i18n="footer-terms">Условия использования</a><span class="dot">•</span>
+        <a href="privacy.html" data-i18n="footer-privacy">Политика конфиденциальности</a><span class="dot">•</span>
+        <a href="#" data-i18n="footer-cookies">Cookies</a><span class="dot">•</span>
+        <a href="#" data-i18n="footer-support">Поддержка</a>
+      </nav>
+    </div>
+    <p class="site-footer-contact" data-i18n="footer-contact">Есть вопросы? Пишите нам: <a href="mailto:support@evades3.com">support@evades3.com</a></p>
+  </footer>
+
+  <script>
+/* Evades 3 — Terms of Use translations (28 languages) */
+const translations = {
+
+  ru: {
+    'page-title': 'Evades 3 — Условия использования',
+    'languages': 'Языки ▼',
+    'back-home': '← На главную',
+    'page-heading': 'Условия использования',
+    'page-sub': 'Evades 3 — Официальный документ',
+    'updated': 'Последнее обновление: 23 апреля 2026',
+    'intro': 'Добро пожаловать в Evades 3! Используя наш сайт и игру, вы соглашаетесь с настоящими Условиями использования. Пожалуйста, внимательно прочитайте этот документ перед тем, как начать играть.',
+    's1-title': '1. Принятие условий',
+    's1-text': 'Регистрируясь на сайте или запуская игру Evades 3, вы подтверждаете, что прочитали, поняли и согласились соблюдать настоящие Условия в полном объёме. Если вы не согласны с любым из пунктов — пожалуйста, не используйте наш сервис.',
+    's2-title': '2. Описание сервиса',
+    's2-text': 'Evades 3 — это многопользовательская онлайн-игра и связанный с ней сайт, включающий серверы, клиент игры, сообщество и сопутствующие материалы. Мы предоставляем доступ к сервису «как есть» и можем обновлять его в любой момент.',
+    's3-title': '3. Аккаунт пользователя',
+    's3-text': 'Для доступа к некоторым функциям необходима учётная запись. Вы отвечаете за сохранность своих данных для входа и за все действия, совершённые с вашего аккаунта. Запрещено передавать аккаунт третьим лицам или продавать его.',
+    's4-title': '4. Правила поведения',
+    's4-text': 'Запрещены читы, боты, эксплойты, модификация клиента, оскорбления других игроков, спам и распространение незаконного контента. Нарушение правил ведёт к предупреждению, временной или постоянной блокировке аккаунта.',
+    's5-title': '5. Интеллектуальная собственность',
+    's5-text': 'Весь игровой контент, графика, музыка, код, торговая марка и бренд Evades 3 принадлежат разработчикам и защищены законом. Любое копирование, перепродажа или коммерческое использование без письменного разрешения запрещены.',
+    's6-title': '6. Запрещённые действия',
+    's6-text': 'Запрещается атаковать инфраструктуру сервиса, сканировать или автоматически собирать данные, обходить системы защиты, а также продавать внутриигровые ценности за реальные деньги вне официальных каналов.',
+    's7-title': '7. Прекращение доступа',
+    's7-text': 'Мы вправе приостановить или удалить ваш аккаунт в случае нарушения Условий — без предварительного уведомления и без возврата средств. Вы также можете удалить свой аккаунт в любое время через настройки профиля.',
+    's8-title': '8. Отказ от гарантий и ответственность',
+    's8-text': 'Сервис предоставляется «как есть», без каких-либо гарантий. Мы не несём ответственности за возможные технические сбои, потерю игрового прогресса или косвенные убытки, связанные с использованием игры.',
+    's9-title': '9. Изменения условий',
+    's9-text': 'Мы можем обновлять настоящие Условия в любое время. Актуальная версия всегда доступна на этой странице. Продолжая использовать сервис после изменений, вы соглашаетесь с их новой редакцией.',
+    's10-title': '10. Контакты',
+    's10-text': 'По всем вопросам, связанным с Условиями использования, пишите на <a href="mailto:support@evades3.com">support@evades3.com</a>. Мы постараемся ответить как можно быстрее.',
+    'footer-copy': '© 2026 Evades 3. Все права защищены.',
+    'footer-terms': 'Условия использования',
+    'footer-privacy': 'Политика конфиденциальности',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Поддержка',
+    'footer-contact': 'Есть вопросы? Пишите нам: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  en: {
+    'page-title': 'Evades 3 — Terms of Use',
+    'languages': 'Languages ▼',
+    'back-home': '← Back to home',
+    'page-heading': 'Terms of Use',
+    'page-sub': 'Evades 3 — Official document',
+    'updated': 'Last updated: April 23, 2026',
+    'intro': 'Welcome to Evades 3! By using our site and the game, you agree to the following Terms of Use. Please read this document carefully before you start playing.',
+    's1-title': '1. Acceptance of Terms',
+    's1-text': 'By registering on the website or launching the Evades 3 game, you confirm that you have read, understood, and agreed to comply with these Terms in full. If you disagree with any clause, please do not use our service.',
+    's2-title': '2. Description of the Service',
+    's2-text': 'Evades 3 is a multiplayer online game and its associated website, including servers, the game client, the community, and related materials. We provide the service "as is" and may update it at any time.',
+    's3-title': '3. User Account',
+    's3-text': 'Access to some features requires an account. You are responsible for keeping your login credentials safe and for every action taken from your account. Transferring or selling your account to third parties is prohibited.',
+    's4-title': '4. Rules of Conduct',
+    's4-text': 'Cheats, bots, exploits, client modifications, harassment of other players, spam, and the distribution of illegal content are all prohibited. Violations may result in a warning, a temporary ban, or a permanent account block.',
+    's5-title': '5. Intellectual Property',
+    's5-text': 'All game content, graphics, music, code, trademarks, and the Evades 3 brand belong to the developers and are protected by law. Any copying, resale, or commercial use without written permission is prohibited.',
+    's6-title': '6. Prohibited Actions',
+    's6-text': 'You may not attack our infrastructure, scrape or automatically harvest data, bypass security systems, or sell in-game items for real money outside official channels.',
+    's7-title': '7. Termination of Access',
+    's7-text': 'We may suspend or delete your account for any violation of these Terms without prior notice and without a refund. You may also delete your account at any time from your profile settings.',
+    's8-title': '8. Disclaimer and Liability',
+    's8-text': 'The service is provided "as is" without any warranties. We are not liable for any technical failures, loss of game progress, or indirect damages related to using the game.',
+    's9-title': '9. Changes to the Terms',
+    's9-text': 'We may update these Terms at any time. The current version is always available on this page. By continuing to use the service after updates, you agree to the revised Terms.',
+    's10-title': '10. Contact',
+    's10-text': 'For any questions regarding these Terms of Use, please write to <a href="mailto:support@evades3.com">support@evades3.com</a>. We will do our best to reply as soon as possible.',
+    'footer-copy': '© 2026 Evades 3. All rights reserved.',
+    'footer-terms': 'Terms of Use',
+    'footer-privacy': 'Privacy Policy',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Support',
+    'footer-contact': 'Got questions? Write to us: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  uk: {
+    'page-title': 'Evades 3 — Умови використання',
+    'languages': 'Мови ▼',
+    'back-home': '← На головну',
+    'page-heading': 'Умови використання',
+    'page-sub': 'Evades 3 — Офіційний документ',
+    'updated': 'Останнє оновлення: 23 квітня 2026',
+    'intro': 'Ласкаво просимо до Evades 3! Використовуючи наш сайт і гру, ви погоджуєтеся з цими Умовами використання. Будь ласка, уважно прочитайте цей документ перед початком гри.',
+    's1-title': '1. Прийняття умов',
+    's1-text': 'Реєструючись на сайті або запускаючи гру Evades 3, ви підтверджуєте, що прочитали, зрозуміли та погодилися виконувати ці Умови в повному обсязі. Якщо ви не згодні з будь-яким пунктом — будь ласка, не користуйтеся нашим сервісом.',
+    's2-title': '2. Опис сервісу',
+    's2-text': 'Evades 3 — це багатокористувацька онлайн-гра та пов\'язаний із нею сайт, що включає сервери, клієнт, спільноту й супутні матеріали. Ми надаємо доступ до сервісу «як є» і можемо оновлювати його будь-коли.',
+    's3-title': '3. Обліковий запис',
+    's3-text': 'Для доступу до деяких функцій потрібен обліковий запис. Ви відповідаєте за збереження своїх даних для входу та за всі дії, виконані з вашого акаунта. Забороняється передавати акаунт третім особам або продавати його.',
+    's4-title': '4. Правила поведінки',
+    's4-text': 'Заборонено чіти, боти, експлойти, модифікацію клієнта, образи інших гравців, спам і поширення незаконного контенту. Порушення правил призводить до попередження, тимчасового чи постійного блокування акаунта.',
+    's5-title': '5. Інтелектуальна власність',
+    's5-text': 'Весь ігровий контент, графіка, музика, код, торгова марка та бренд Evades 3 належать розробникам і захищені законом. Будь-яке копіювання, перепродаж або комерційне використання без письмового дозволу заборонено.',
+    's6-title': '6. Заборонені дії',
+    's6-text': 'Заборонено атакувати інфраструктуру сервісу, сканувати чи автоматично збирати дані, обходити системи захисту, а також продавати внутрішньоігрові цінності за реальні гроші поза офіційними каналами.',
+    's7-title': '7. Припинення доступу',
+    's7-text': 'Ми маємо право призупинити або видалити ваш акаунт у разі порушення Умов — без попередження та без повернення коштів. Ви також можете видалити свій акаунт у будь-який час через налаштування профілю.',
+    's8-title': '8. Відмова від гарантій і відповідальність',
+    's8-text': 'Сервіс надається «як є», без будь-яких гарантій. Ми не несемо відповідальності за можливі технічні збої, втрату ігрового прогресу або непрямі збитки, пов\'язані з використанням гри.',
+    's9-title': '9. Зміни умов',
+    's9-text': 'Ми можемо оновлювати ці Умови в будь-який час. Актуальна версія завжди доступна на цій сторінці. Продовжуючи користуватися сервісом після змін, ви погоджуєтеся з новою редакцією.',
+    's10-title': '10. Контакти',
+    's10-text': 'З усіх питань, пов\'язаних з Умовами використання, пишіть на <a href="mailto:support@evades3.com">support@evades3.com</a>. Ми постараємось відповісти якомога швидше.',
+    'footer-copy': '© 2026 Evades 3. Усі права захищені.',
+    'footer-terms': 'Умови використання',
+    'footer-privacy': 'Політика конфіденційності',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Підтримка',
+    'footer-contact': 'Маєте питання? Пишіть нам: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  de: {
+    'page-title': 'Evades 3 — Nutzungsbedingungen',
+    'languages': 'Sprachen ▼',
+    'back-home': '← Zur Startseite',
+    'page-heading': 'Nutzungsbedingungen',
+    'page-sub': 'Evades 3 — Offizielles Dokument',
+    'updated': 'Zuletzt aktualisiert: 23. April 2026',
+    'intro': 'Willkommen bei Evades 3! Mit der Nutzung unserer Website und des Spiels stimmst du den folgenden Nutzungsbedingungen zu. Bitte lies dieses Dokument sorgfältig, bevor du zu spielen beginnst.',
+    's1-title': '1. Annahme der Bedingungen',
+    's1-text': 'Mit der Registrierung auf der Website oder dem Start des Spiels Evades 3 bestätigst du, dass du diese Bedingungen vollständig gelesen, verstanden und akzeptiert hast. Wenn du einzelne Punkte ablehnst, nutze den Dienst bitte nicht.',
+    's2-title': '2. Beschreibung des Dienstes',
+    's2-text': 'Evades 3 ist ein Multiplayer-Online-Spiel mit zugehöriger Website, Servern, Game-Client, Community und begleitenden Materialien. Der Dienst wird „wie er ist" bereitgestellt und kann jederzeit aktualisiert werden.',
+    's3-title': '3. Nutzerkonto',
+    's3-text': 'Für bestimmte Funktionen ist ein Konto erforderlich. Du bist für die Sicherheit deiner Zugangsdaten und für alle Aktionen über dein Konto verantwortlich. Die Weitergabe oder der Verkauf des Kontos an Dritte ist untersagt.',
+    's4-title': '4. Verhaltensregeln',
+    's4-text': 'Cheats, Bots, Exploits, Client-Modifikationen, Beleidigungen, Spam und das Verbreiten illegaler Inhalte sind verboten. Verstöße führen zu Verwarnungen sowie zu temporären oder dauerhaften Kontosperren.',
+    's5-title': '5. Geistiges Eigentum',
+    's5-text': 'Sämtliche Inhalte, Grafiken, Musik, Code, Markenzeichen und die Marke Evades 3 gehören den Entwicklern und sind urheberrechtlich geschützt. Kopieren, Weiterverkauf oder kommerzielle Nutzung ohne schriftliche Erlaubnis sind untersagt.',
+    's6-title': '6. Verbotene Handlungen',
+    's6-text': 'Es ist untersagt, unsere Infrastruktur anzugreifen, Daten automatisiert auszulesen, Schutzmechanismen zu umgehen oder Ingame-Werte außerhalb offizieller Kanäle gegen Geld zu verkaufen.',
+    's7-title': '7. Beendigung des Zugangs',
+    's7-text': 'Wir dürfen dein Konto bei Verstößen gegen diese Bedingungen ohne Vorankündigung und ohne Rückerstattung sperren oder löschen. Du kannst dein Konto jederzeit in den Profil-Einstellungen selbst löschen.',
+    's8-title': '8. Haftungsausschluss',
+    's8-text': 'Der Dienst wird „wie er ist" ohne Garantien bereitgestellt. Wir haften nicht für technische Störungen, Verlust des Spielfortschritts oder mittelbare Schäden durch die Nutzung des Spiels.',
+    's9-title': '9. Änderungen der Bedingungen',
+    's9-text': 'Wir können diese Bedingungen jederzeit aktualisieren. Die aktuelle Fassung ist stets auf dieser Seite verfügbar. Durch weitere Nutzung nach Änderungen akzeptierst du die neue Fassung.',
+    's10-title': '10. Kontakt',
+    's10-text': 'Bei Fragen zu diesen Nutzungsbedingungen schreibe an <a href="mailto:support@evades3.com">support@evades3.com</a>. Wir antworten so schnell wie möglich.',
+    'footer-copy': '© 2026 Evades 3. Alle Rechte vorbehalten.',
+    'footer-terms': 'Nutzungsbedingungen',
+    'footer-privacy': 'Datenschutzerklärung',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Support',
+    'footer-contact': 'Fragen? Schreib uns: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  es: {
+    'page-title': 'Evades 3 — Términos de uso',
+    'languages': 'Idiomas ▼',
+    'back-home': '← Volver al inicio',
+    'page-heading': 'Términos de uso',
+    'page-sub': 'Evades 3 — Documento oficial',
+    'updated': 'Última actualización: 23 de abril de 2026',
+    'intro': '¡Bienvenido a Evades 3! Al usar nuestro sitio y el juego, aceptas los siguientes Términos de uso. Por favor, lee este documento con atención antes de empezar a jugar.',
+    's1-title': '1. Aceptación de los términos',
+    's1-text': 'Al registrarte en el sitio o iniciar el juego Evades 3, confirmas que has leído, comprendido y aceptado cumplir íntegramente estos Términos. Si no estás de acuerdo con alguna cláusula, por favor no utilices nuestro servicio.',
+    's2-title': '2. Descripción del servicio',
+    's2-text': 'Evades 3 es un juego multijugador en línea y su sitio web asociado, que incluye servidores, el cliente del juego, la comunidad y materiales relacionados. Ofrecemos el servicio "tal cual" y podemos actualizarlo en cualquier momento.',
+    's3-title': '3. Cuenta de usuario',
+    's3-text': 'Algunas funciones requieren una cuenta. Eres responsable de la seguridad de tus datos de acceso y de todas las acciones realizadas desde tu cuenta. Queda prohibido transferir o vender tu cuenta a terceros.',
+    's4-title': '4. Normas de conducta',
+    's4-text': 'Se prohíben los trucos, bots, exploits, modificaciones del cliente, ofensas a otros jugadores, spam y la difusión de contenido ilegal. Las infracciones pueden dar lugar a advertencias, bloqueos temporales o permanentes.',
+    's5-title': '5. Propiedad intelectual',
+    's5-text': 'Todo el contenido, gráficos, música, código, marcas y la marca Evades 3 pertenecen a los desarrolladores y están protegidos por la ley. Queda prohibida cualquier copia, reventa o uso comercial sin autorización por escrito.',
+    's6-title': '6. Acciones prohibidas',
+    's6-text': 'No se permite atacar nuestra infraestructura, extraer datos de forma automatizada, eludir sistemas de protección ni vender objetos del juego por dinero real fuera de los canales oficiales.',
+    's7-title': '7. Terminación del acceso',
+    's7-text': 'Podemos suspender o eliminar tu cuenta por cualquier infracción de estos Términos sin previo aviso y sin reembolso. Tú también puedes eliminar tu cuenta en cualquier momento desde la configuración del perfil.',
+    's8-title': '8. Renuncia y responsabilidad',
+    's8-text': 'El servicio se ofrece "tal cual" sin garantías. No somos responsables de fallos técnicos, pérdida de progreso del juego ni daños indirectos derivados del uso del juego.',
+    's9-title': '9. Cambios en los términos',
+    's9-text': 'Podemos actualizar estos Términos en cualquier momento. La versión vigente siempre estará disponible en esta página. Al seguir usando el servicio aceptas los cambios.',
+    's10-title': '10. Contacto',
+    's10-text': 'Para cualquier consulta sobre estos Términos de uso, escríbenos a <a href="mailto:support@evades3.com">support@evades3.com</a>. Responderemos lo antes posible.',
+    'footer-copy': '© 2026 Evades 3. Todos los derechos reservados.',
+    'footer-terms': 'Términos de uso',
+    'footer-privacy': 'Política de privacidad',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Soporte',
+    'footer-contact': '¿Tienes preguntas? Escríbenos: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  fr: {
+    'page-title': 'Evades 3 — Conditions d\'utilisation',
+    'languages': 'Langues ▼',
+    'back-home': '← Retour à l\'accueil',
+    'page-heading': 'Conditions d\'utilisation',
+    'page-sub': 'Evades 3 — Document officiel',
+    'updated': 'Dernière mise à jour : 23 avril 2026',
+    'intro': 'Bienvenue sur Evades 3 ! En utilisant notre site et le jeu, vous acceptez les présentes Conditions d\'utilisation. Veuillez lire attentivement ce document avant de commencer à jouer.',
+    's1-title': '1. Acceptation des conditions',
+    's1-text': 'En vous inscrivant sur le site ou en lançant le jeu Evades 3, vous confirmez avoir lu, compris et accepté l\'intégralité des présentes Conditions. Si vous n\'acceptez pas une clause, merci de ne pas utiliser notre service.',
+    's2-title': '2. Description du service',
+    's2-text': 'Evades 3 est un jeu multijoueur en ligne accompagné de son site web, incluant les serveurs, le client de jeu, la communauté et les contenus associés. Le service est fourni "en l\'état" et peut être mis à jour à tout moment.',
+    's3-title': '3. Compte utilisateur',
+    's3-text': 'Certaines fonctionnalités nécessitent un compte. Vous êtes responsable de la confidentialité de vos identifiants et de toutes les actions effectuées depuis votre compte. La cession ou la vente du compte est interdite.',
+    's4-title': '4. Règles de conduite',
+    's4-text': 'Les triches, bots, exploits, modifications du client, insultes envers les autres joueurs, le spam et la diffusion de contenus illégaux sont interdits. Tout manquement peut entraîner un avertissement ou un blocage temporaire ou définitif.',
+    's5-title': '5. Propriété intellectuelle',
+    's5-text': 'Tout le contenu, les graphismes, la musique, le code, les marques et le nom Evades 3 appartiennent aux développeurs et sont protégés par la loi. Toute copie, revente ou usage commercial sans autorisation écrite est interdit.',
+    's6-title': '6. Actions interdites',
+    's6-text': 'Vous n\'avez pas le droit d\'attaquer notre infrastructure, de collecter automatiquement des données, de contourner les systèmes de sécurité ou de revendre des objets en jeu contre de l\'argent réel hors canaux officiels.',
+    's7-title': '7. Résiliation de l\'accès',
+    's7-text': 'Nous pouvons suspendre ou supprimer votre compte en cas de violation des Conditions, sans préavis ni remboursement. Vous pouvez également supprimer votre compte à tout moment depuis les paramètres du profil.',
+    's8-title': '8. Avertissement et responsabilité',
+    's8-text': 'Le service est fourni "en l\'état" sans aucune garantie. Nous ne saurions être tenus responsables des pannes techniques, de la perte de progression ou de dommages indirects liés à l\'utilisation du jeu.',
+    's9-title': '9. Modifications des conditions',
+    's9-text': 'Nous pouvons mettre à jour ces Conditions à tout moment. La version en vigueur est toujours disponible sur cette page. En continuant à utiliser le service, vous acceptez les changements.',
+    's10-title': '10. Contact',
+    's10-text': 'Pour toute question concernant ces Conditions d\'utilisation, écrivez à <a href="mailto:support@evades3.com">support@evades3.com</a>. Nous ferons de notre mieux pour répondre rapidement.',
+    'footer-copy': '© 2026 Evades 3. Tous droits réservés.',
+    'footer-terms': 'Conditions d\'utilisation',
+    'footer-privacy': 'Politique de confidentialité',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Support',
+    'footer-contact': 'Des questions ? Écrivez-nous : <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  it: {
+    'page-title': 'Evades 3 — Termini di utilizzo',
+    'languages': 'Lingue ▼',
+    'back-home': '← Torna alla home',
+    'page-heading': 'Termini di utilizzo',
+    'page-sub': 'Evades 3 — Documento ufficiale',
+    'updated': 'Ultimo aggiornamento: 23 aprile 2026',
+    'intro': 'Benvenuto su Evades 3! Utilizzando il nostro sito e il gioco, accetti i seguenti Termini di utilizzo. Ti preghiamo di leggere attentamente questo documento prima di iniziare a giocare.',
+    's1-title': '1. Accettazione dei termini',
+    's1-text': 'Registrandoti sul sito o avviando il gioco Evades 3, confermi di aver letto, compreso e accettato integralmente i presenti Termini. Se non sei d\'accordo con una qualsiasi clausola, ti preghiamo di non utilizzare il nostro servizio.',
+    's2-title': '2. Descrizione del servizio',
+    's2-text': 'Evades 3 è un gioco multigiocatore online e il relativo sito, che include server, client di gioco, community e materiali correlati. Il servizio è fornito "così com\'è" e può essere aggiornato in qualsiasi momento.',
+    's3-title': '3. Account utente',
+    's3-text': 'Alcune funzionalità richiedono un account. Sei responsabile della sicurezza dei tuoi dati di accesso e di tutte le azioni compiute dal tuo account. È vietato cedere o vendere l\'account a terzi.',
+    's4-title': '4. Regole di condotta',
+    's4-text': 'Sono vietati cheat, bot, exploit, modifiche del client, insulti verso altri giocatori, spam e diffusione di contenuti illegali. Le violazioni possono comportare avvisi, sospensioni temporanee o ban definitivi.',
+    's5-title': '5. Proprietà intellettuale',
+    's5-text': 'Tutti i contenuti, la grafica, la musica, il codice, i marchi e il brand Evades 3 appartengono agli sviluppatori e sono tutelati dalla legge. Qualsiasi copia, rivendita o uso commerciale senza autorizzazione scritta è vietato.',
+    's6-title': '6. Azioni vietate',
+    's6-text': 'È vietato attaccare la nostra infrastruttura, raccogliere dati in modo automatizzato, aggirare i sistemi di protezione o vendere oggetti di gioco in cambio di denaro reale al di fuori dei canali ufficiali.',
+    's7-title': '7. Cessazione dell\'accesso',
+    's7-text': 'Possiamo sospendere o eliminare il tuo account in caso di violazione dei Termini, senza preavviso e senza rimborso. Puoi eliminare il tuo account in qualsiasi momento dalle impostazioni del profilo.',
+    's8-title': '8. Esclusione di garanzie e responsabilità',
+    's8-text': 'Il servizio è fornito "così com\'è" senza garanzie. Non siamo responsabili di malfunzionamenti tecnici, perdita di progressi di gioco o danni indiretti derivanti dall\'uso del gioco.',
+    's9-title': '9. Modifiche ai termini',
+    's9-text': 'Possiamo aggiornare i presenti Termini in qualsiasi momento. La versione vigente è sempre disponibile su questa pagina. Continuando a utilizzare il servizio accetti le nuove condizioni.',
+    's10-title': '10. Contatti',
+    's10-text': 'Per qualsiasi domanda sui presenti Termini di utilizzo, scrivi a <a href="mailto:support@evades3.com">support@evades3.com</a>. Ti risponderemo il prima possibile.',
+    'footer-copy': '© 2026 Evades 3. Tutti i diritti riservati.',
+    'footer-terms': 'Termini di utilizzo',
+    'footer-privacy': 'Informativa sulla privacy',
+    'footer-cookies': 'Cookie',
+    'footer-support': 'Supporto',
+    'footer-contact': 'Hai domande? Scrivici: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  pt: {
+    'page-title': 'Evades 3 — Termos de uso',
+    'languages': 'Idiomas ▼',
+    'back-home': '← Voltar ao início',
+    'page-heading': 'Termos de uso',
+    'page-sub': 'Evades 3 — Documento oficial',
+    'updated': 'Última atualização: 23 de abril de 2026',
+    'intro': 'Bem-vindo ao Evades 3! Ao usar nosso site e o jogo, você concorda com os seguintes Termos de uso. Por favor, leia este documento com atenção antes de começar a jogar.',
+    's1-title': '1. Aceitação dos termos',
+    's1-text': 'Ao registrar-se no site ou iniciar o jogo Evades 3, você confirma que leu, entendeu e concordou em cumprir integralmente estes Termos. Se não concordar com qualquer cláusula, por favor não utilize o nosso serviço.',
+    's2-title': '2. Descrição do serviço',
+    's2-text': 'Evades 3 é um jogo multijogador online e seu site associado, incluindo servidores, cliente de jogo, comunidade e materiais relacionados. Fornecemos o serviço "como está" e podemos atualizá-lo a qualquer momento.',
+    's3-title': '3. Conta de usuário',
+    's3-text': 'Algumas funções exigem conta. Você é responsável pela segurança dos seus dados de acesso e por todas as ações feitas a partir da sua conta. É proibido transferir ou vender a conta a terceiros.',
+    's4-title': '4. Regras de conduta',
+    's4-text': 'É proibido usar cheats, bots, exploits, modificar o cliente, ofender outros jogadores, enviar spam ou distribuir conteúdo ilegal. Violações podem resultar em advertências ou banimento temporário ou permanente.',
+    's5-title': '5. Propriedade intelectual',
+    's5-text': 'Todo o conteúdo, gráficos, música, código, marcas e a marca Evades 3 pertencem aos desenvolvedores e são protegidos por lei. É proibida qualquer cópia, revenda ou uso comercial sem autorização por escrito.',
+    's6-title': '6. Ações proibidas',
+    's6-text': 'Você não pode atacar nossa infraestrutura, coletar dados de forma automatizada, burlar sistemas de proteção nem vender itens do jogo por dinheiro real fora dos canais oficiais.',
+    's7-title': '7. Encerramento do acesso',
+    's7-text': 'Podemos suspender ou excluir sua conta em caso de violação destes Termos, sem aviso prévio e sem reembolso. Você também pode excluir sua conta a qualquer momento nas configurações do perfil.',
+    's8-title': '8. Isenção e responsabilidade',
+    's8-text': 'O serviço é oferecido "como está" sem garantias. Não somos responsáveis por falhas técnicas, perda de progresso ou danos indiretos decorrentes do uso do jogo.',
+    's9-title': '9. Alterações dos termos',
+    's9-text': 'Podemos atualizar estes Termos a qualquer momento. A versão atual está sempre disponível nesta página. Ao continuar usando o serviço após as mudanças, você aceita a nova versão.',
+    's10-title': '10. Contato',
+    's10-text': 'Para dúvidas sobre estes Termos de uso, escreva para <a href="mailto:support@evades3.com">support@evades3.com</a>. Responderemos o mais rápido possível.',
+    'footer-copy': '© 2026 Evades 3. Todos os direitos reservados.',
+    'footer-terms': 'Termos de uso',
+    'footer-privacy': 'Política de privacidade',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Suporte',
+    'footer-contact': 'Tem dúvidas? Escreva para nós: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  pl: {
+    'page-title': 'Evades 3 — Warunki korzystania',
+    'languages': 'Języki ▼',
+    'back-home': '← Powrót do strony głównej',
+    'page-heading': 'Warunki korzystania',
+    'page-sub': 'Evades 3 — Dokument oficjalny',
+    'updated': 'Ostatnia aktualizacja: 23 kwietnia 2026',
+    'intro': 'Witamy w Evades 3! Korzystając z naszej strony i gry, akceptujesz niniejsze Warunki korzystania. Prosimy o uważne zapoznanie się z tym dokumentem przed rozpoczęciem gry.',
+    's1-title': '1. Akceptacja warunków',
+    's1-text': 'Rejestrując się na stronie lub uruchamiając grę Evades 3, potwierdzasz, że zapoznałeś się z niniejszymi Warunkami, rozumiesz je i zobowiązujesz się ich przestrzegać w całości. Jeśli nie zgadzasz się z którymkolwiek punktem, nie korzystaj z naszej usługi.',
+    's2-title': '2. Opis usługi',
+    's2-text': 'Evades 3 to gra wieloosobowa online wraz z powiązaną stroną, obejmująca serwery, klient gry, społeczność i materiały towarzyszące. Udostępniamy usługę „tak jak jest" i możemy ją aktualizować w dowolnym momencie.',
+    's3-title': '3. Konto użytkownika',
+    's3-text': 'Niektóre funkcje wymagają konta. Odpowiadasz za bezpieczeństwo swoich danych logowania oraz za wszystkie działania wykonane z twojego konta. Przekazywanie lub sprzedaż konta osobom trzecim jest zabronione.',
+    's4-title': '4. Zasady zachowania',
+    's4-text': 'Zabronione są cheaty, boty, exploity, modyfikacje klienta, obrażanie innych graczy, spam oraz rozpowszechnianie nielegalnych treści. Naruszenia prowadzą do ostrzeżeń, tymczasowego lub trwałego zablokowania konta.',
+    's5-title': '5. Własność intelektualna',
+    's5-text': 'Cała zawartość, grafika, muzyka, kod, znaki towarowe i marka Evades 3 należą do deweloperów i są chronione prawem. Jakiekolwiek kopiowanie, odsprzedaż lub komercyjne wykorzystanie bez pisemnej zgody są zabronione.',
+    's6-title': '6. Działania zabronione',
+    's6-text': 'Zabroniony jest atak na naszą infrastrukturę, automatyczne zbieranie danych, obchodzenie zabezpieczeń oraz sprzedaż przedmiotów z gry za prawdziwe pieniądze poza oficjalnymi kanałami.',
+    's7-title': '7. Zakończenie dostępu',
+    's7-text': 'Możemy zawiesić lub usunąć twoje konto w przypadku naruszenia Warunków, bez ostrzeżenia i bez zwrotu środków. Możesz także usunąć konto w dowolnym momencie w ustawieniach profilu.',
+    's8-title': '8. Wyłączenie odpowiedzialności',
+    's8-text': 'Usługa jest świadczona „tak jak jest", bez jakichkolwiek gwarancji. Nie odpowiadamy za awarie techniczne, utratę postępu w grze ani za szkody pośrednie wynikające z korzystania z gry.',
+    's9-title': '9. Zmiany warunków',
+    's9-text': 'Możemy aktualizować niniejsze Warunki w dowolnym momencie. Aktualna wersja jest zawsze dostępna na tej stronie. Kontynuując korzystanie z usługi, akceptujesz zmiany.',
+    's10-title': '10. Kontakt',
+    's10-text': 'W sprawach dotyczących Warunków korzystania pisz na <a href="mailto:support@evades3.com">support@evades3.com</a>. Postaramy się odpowiedzieć jak najszybciej.',
+    'footer-copy': '© 2026 Evades 3. Wszelkie prawa zastrzeżone.',
+    'footer-terms': 'Warunki korzystania',
+    'footer-privacy': 'Polityka prywatności',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Wsparcie',
+    'footer-contact': 'Masz pytania? Napisz do nas: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  tr: {
+    'page-title': 'Evades 3 — Kullanım Koşulları',
+    'languages': 'Diller ▼',
+    'back-home': '← Ana sayfaya dön',
+    'page-heading': 'Kullanım Koşulları',
+    'page-sub': 'Evades 3 — Resmi belge',
+    'updated': 'Son güncelleme: 23 Nisan 2026',
+    'intro': 'Evades 3\'e hoş geldin! Sitemizi ve oyunu kullanarak aşağıdaki Kullanım Koşullarını kabul etmiş olursun. Oyuna başlamadan önce lütfen bu belgeyi dikkatlice oku.',
+    's1-title': '1. Koşulların kabulü',
+    's1-text': 'Siteye kayıt olarak veya Evades 3\'ü başlatarak bu Koşulları tamamen okuduğunu, anladığını ve uymayı kabul ettiğini onaylarsın. Herhangi bir maddeyi kabul etmiyorsan lütfen hizmetimizi kullanma.',
+    's2-title': '2. Hizmetin tanımı',
+    's2-text': 'Evades 3, çok oyunculu bir çevrimiçi oyundur ve sunucular, oyun istemcisi, topluluk ile ilgili materyalleri içeren web sitesi eşlik eder. Hizmeti "olduğu gibi" sunar ve dilediğimiz zaman güncelleyebiliriz.',
+    's3-title': '3. Kullanıcı hesabı',
+    's3-text': 'Bazı özellikler için bir hesap gerekir. Giriş bilgilerinin güvenliğinden ve hesabından gerçekleştirilen tüm işlemlerden sen sorumlusun. Hesabı üçüncü kişilere devretmek veya satmak yasaktır.',
+    's4-title': '4. Davranış kuralları',
+    's4-text': 'Hile, bot, açık istismarı, istemci modifikasyonu, diğer oyunculara hakaret, spam ve yasa dışı içerik paylaşımı yasaktır. İhlaller uyarı, geçici veya kalıcı hesap engeline yol açabilir.',
+    's5-title': '5. Fikri mülkiyet',
+    's5-text': 'Tüm içerik, grafik, müzik, kod, ticari markalar ve Evades 3 markası geliştiricilere aittir ve yasalarla korunur. Yazılı izin olmadan kopyalama, yeniden satış veya ticari kullanım yasaktır.',
+    's6-title': '6. Yasak eylemler',
+    's6-text': 'Altyapımıza saldırmak, otomatik veri toplamak, güvenlik sistemlerini aşmak veya resmi kanallar dışında oyun içi varlıkları gerçek parayla satmak yasaktır.',
+    's7-title': '7. Erişimin sonlandırılması',
+    's7-text': 'Koşulları ihlal etmen halinde hesabını ön bildirim veya iade olmaksızın askıya alabilir ya da silebiliriz. İstediğin zaman profil ayarlarından hesabını sen de silebilirsin.',
+    's8-title': '8. Garanti reddi ve sorumluluk',
+    's8-text': 'Hizmet "olduğu gibi" herhangi bir garanti olmaksızın sunulur. Teknik arızalar, oyun ilerlemesinin kaybı veya oyunun kullanımından kaynaklanan dolaylı zararlardan sorumlu değiliz.',
+    's9-title': '9. Koşullardaki değişiklikler',
+    's9-text': 'Bu Koşulları istediğimiz zaman güncelleyebiliriz. Güncel sürüm daima bu sayfada yer alır. Değişiklikten sonra hizmeti kullanmaya devam etmen yeni sürümü kabul ettiğin anlamına gelir.',
+    's10-title': '10. İletişim',
+    's10-text': 'Bu Kullanım Koşullarıyla ilgili her türlü soru için <a href="mailto:support@evades3.com">support@evades3.com</a> adresine yaz. En kısa sürede cevap vermeye çalışırız.',
+    'footer-copy': '© 2026 Evades 3. Tüm hakları saklıdır.',
+    'footer-terms': 'Kullanım Koşulları',
+    'footer-privacy': 'Gizlilik Politikası',
+    'footer-cookies': 'Çerezler',
+    'footer-support': 'Destek',
+    'footer-contact': 'Soruların mı var? Bize yaz: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  nl: {
+    'page-title': 'Evades 3 — Gebruiksvoorwaarden',
+    'languages': 'Talen ▼',
+    'back-home': '← Terug naar home',
+    'page-heading': 'Gebruiksvoorwaarden',
+    'page-sub': 'Evades 3 — Officieel document',
+    'updated': 'Laatst bijgewerkt: 23 april 2026',
+    'intro': 'Welkom bij Evades 3! Door onze site en het spel te gebruiken, ga je akkoord met deze Gebruiksvoorwaarden. Lees dit document zorgvuldig voordat je begint met spelen.',
+    's1-title': '1. Aanvaarding van de voorwaarden',
+    's1-text': 'Door je op de site te registreren of het spel Evades 3 te starten, bevestig je dat je deze Voorwaarden volledig hebt gelezen, begrepen en aanvaardt. Als je het ergens niet mee eens bent, gebruik onze dienst dan niet.',
+    's2-title': '2. Beschrijving van de dienst',
+    's2-text': 'Evades 3 is een online multiplayergame met bijbehorende website, servers, gameclient, community en aanverwante materialen. De dienst wordt "zoals hij is" aangeboden en kan op elk moment worden bijgewerkt.',
+    's3-title': '3. Gebruikersaccount',
+    's3-text': 'Voor sommige functies is een account nodig. Je bent verantwoordelijk voor de veiligheid van je inloggegevens en voor alle acties die vanuit jouw account worden uitgevoerd. Het is verboden je account over te dragen of te verkopen.',
+    's4-title': '4. Gedragsregels',
+    's4-text': 'Cheats, bots, exploits, modificaties van de client, beledigingen, spam en het verspreiden van illegale inhoud zijn verboden. Overtredingen leiden tot waarschuwingen, tijdelijke of permanente blokkades.',
+    's5-title': '5. Intellectueel eigendom',
+    's5-text': 'Alle content, graphics, muziek, code, handelsmerken en de merknaam Evades 3 behoren toe aan de ontwikkelaars en zijn wettelijk beschermd. Kopiëren, doorverkopen of commercieel gebruik zonder schriftelijke toestemming is verboden.',
+    's6-title': '6. Verboden handelingen',
+    's6-text': 'Je mag onze infrastructuur niet aanvallen, geen geautomatiseerde data scrapen, beveiligingssystemen omzeilen of in-game items buiten officiële kanalen voor echt geld verkopen.',
+    's7-title': '7. Beëindiging van toegang',
+    's7-text': 'Wij mogen je account bij schending van de Voorwaarden zonder voorafgaande kennisgeving en zonder restitutie opschorten of verwijderen. Je kunt je account ook zelf op elk moment verwijderen via je profielinstellingen.',
+    's8-title': '8. Uitsluiting en aansprakelijkheid',
+    's8-text': 'De dienst wordt zonder enige garantie "zoals hij is" geleverd. Wij zijn niet aansprakelijk voor technische storingen, verlies van spelvoortgang of indirecte schade door gebruik van de game.',
+    's9-title': '9. Wijzigingen van de voorwaarden',
+    's9-text': 'Wij mogen deze Voorwaarden op elk moment bijwerken. De huidige versie is altijd op deze pagina beschikbaar. Door gebruik te blijven maken van de dienst ga je akkoord met de wijzigingen.',
+    's10-title': '10. Contact',
+    's10-text': 'Voor vragen over deze Gebruiksvoorwaarden stuur je een mail naar <a href="mailto:support@evades3.com">support@evades3.com</a>. We reageren zo snel mogelijk.',
+    'footer-copy': '© 2026 Evades 3. Alle rechten voorbehouden.',
+    'footer-terms': 'Gebruiksvoorwaarden',
+    'footer-privacy': 'Privacybeleid',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Support',
+    'footer-contact': 'Vragen? Mail ons: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  sv: {
+    'page-title': 'Evades 3 — Användarvillkor',
+    'languages': 'Språk ▼',
+    'back-home': '← Tillbaka till startsidan',
+    'page-heading': 'Användarvillkor',
+    'page-sub': 'Evades 3 — Officiellt dokument',
+    'updated': 'Senast uppdaterad: 23 april 2026',
+    'intro': 'Välkommen till Evades 3! Genom att använda vår webbplats och spelet godkänner du följande Användarvillkor. Läs gärna dokumentet noggrant innan du börjar spela.',
+    's1-title': '1. Godkännande av villkoren',
+    's1-text': 'Genom att registrera dig på webbplatsen eller starta spelet Evades 3 bekräftar du att du har läst, förstått och förbinder dig att följa dessa Villkor i sin helhet. Om du inte godkänner någon del, använd inte tjänsten.',
+    's2-title': '2. Beskrivning av tjänsten',
+    's2-text': 'Evades 3 är ett online-multiplayer-spel tillsammans med dess webbplats, inklusive servrar, spelklient, community och tillhörande material. Tjänsten tillhandahålls "i befintligt skick" och kan uppdateras när som helst.',
+    's3-title': '3. Användarkonto',
+    's3-text': 'Vissa funktioner kräver ett konto. Du ansvarar för att dina inloggningsuppgifter är säkra och för alla åtgärder som utförs via kontot. Det är förbjudet att överlåta eller sälja kontot.',
+    's4-title': '4. Uppförandekod',
+    's4-text': 'Fusk, botar, exploits, klientmodifieringar, trakasserier, skräppost och spridning av olaglig innehåll är förbjudet. Överträdelser leder till varningar eller tillfällig/permanent avstängning.',
+    's5-title': '5. Immateriell äganderätt',
+    's5-text': 'Allt innehåll, grafik, musik, kod, varumärken och varumärket Evades 3 tillhör utvecklarna och skyddas av lag. Kopiering, återförsäljning eller kommersiellt bruk utan skriftligt tillstånd är förbjudet.',
+    's6-title': '6. Förbjudna åtgärder',
+    's6-text': 'Du får inte attackera vår infrastruktur, samla in data automatiserat, kringgå skyddsmekanismer eller sälja spelobjekt för riktiga pengar utanför officiella kanaler.',
+    's7-title': '7. Avslutande av åtkomst',
+    's7-text': 'Vi kan stänga av eller radera ditt konto vid brott mot Villkoren utan förhandsmeddelande och utan återbetalning. Du kan även själv radera kontot när som helst i profilinställningarna.',
+    's8-title': '8. Friskrivning och ansvar',
+    's8-text': 'Tjänsten tillhandahålls "i befintligt skick" utan några garantier. Vi ansvarar inte för tekniska fel, förlust av spelframsteg eller indirekta skador till följd av att spelet används.',
+    's9-title': '9. Ändringar av villkoren',
+    's9-text': 'Vi kan uppdatera dessa Villkor när som helst. Den aktuella versionen finns alltid på denna sida. Genom att fortsätta använda tjänsten efter ändringar godkänner du den nya versionen.',
+    's10-title': '10. Kontakt',
+    's10-text': 'Vid frågor om dessa Användarvillkor, mejla <a href="mailto:support@evades3.com">support@evades3.com</a>. Vi svarar så snart vi kan.',
+    'footer-copy': '© 2026 Evades 3. Alla rättigheter förbehållna.',
+    'footer-terms': 'Användarvillkor',
+    'footer-privacy': 'Integritetspolicy',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Support',
+    'footer-contact': 'Frågor? Mejla oss: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  no: {
+    'page-title': 'Evades 3 — Brukervilkår',
+    'languages': 'Språk ▼',
+    'back-home': '← Tilbake til forsiden',
+    'page-heading': 'Brukervilkår',
+    'page-sub': 'Evades 3 — Offisielt dokument',
+    'updated': 'Sist oppdatert: 23. april 2026',
+    'intro': 'Velkommen til Evades 3! Ved å bruke nettstedet og spillet godtar du disse Brukervilkårene. Vennligst les dokumentet nøye før du begynner å spille.',
+    's1-title': '1. Godtakelse av vilkårene',
+    's1-text': 'Ved å registrere deg på nettstedet eller starte spillet Evades 3 bekrefter du at du har lest, forstått og godtatt disse Vilkårene i sin helhet. Om du er uenig i noe punkt, vennligst ikke bruk tjenesten.',
+    's2-title': '2. Beskrivelse av tjenesten',
+    's2-text': 'Evades 3 er et online flerspillerspill med tilhørende nettsted, inkludert servere, spillklient, fellesskap og relatert materiale. Tjenesten leveres "som den er" og kan oppdateres når som helst.',
+    's3-title': '3. Brukerkonto',
+    's3-text': 'Enkelte funksjoner krever en konto. Du er ansvarlig for sikkerheten til innloggingsinformasjonen og alle handlinger utført fra kontoen din. Det er forbudt å overføre eller selge kontoen.',
+    's4-title': '4. Atferdsregler',
+    's4-text': 'Juks, bots, exploits, klientmodifikasjoner, trakassering av andre, spam og spredning av ulovlig innhold er forbudt. Brudd kan medføre advarsel eller midlertidig/permanent blokkering.',
+    's5-title': '5. Immateriell eiendomsrett',
+    's5-text': 'Alt innhold, grafikk, musikk, kode, varemerker og merket Evades 3 tilhører utviklerne og er lovbeskyttet. Enhver kopiering, videresalg eller kommersiell bruk uten skriftlig tillatelse er forbudt.',
+    's6-title': '6. Forbudte handlinger',
+    's6-text': 'Du kan ikke angripe infrastrukturen vår, samle inn data automatisk, omgå sikkerhetsmekanismer eller selge gjenstander i spillet for ekte penger utenfor offisielle kanaler.',
+    's7-title': '7. Opphør av tilgang',
+    's7-text': 'Vi kan suspendere eller slette kontoen din ved brudd på Vilkårene uten forhåndsvarsel og uten refusjon. Du kan også slette kontoen din når som helst via profilinnstillingene.',
+    's8-title': '8. Ansvarsfraskrivelse',
+    's8-text': 'Tjenesten leveres "som den er" uten noen garantier. Vi er ikke ansvarlige for tekniske feil, tap av spillprogresjon eller indirekte skader knyttet til bruk av spillet.',
+    's9-title': '9. Endringer av vilkårene',
+    's9-text': 'Vi kan oppdatere disse Vilkårene når som helst. Den gjeldende versjonen er alltid tilgjengelig på denne siden. Fortsatt bruk etter endringer betyr at du godtar den nye versjonen.',
+    's10-title': '10. Kontakt',
+    's10-text': 'For spørsmål om disse Brukervilkårene, skriv til <a href="mailto:support@evades3.com">support@evades3.com</a>. Vi svarer så raskt som mulig.',
+    'footer-copy': '© 2026 Evades 3. Alle rettigheter forbeholdt.',
+    'footer-terms': 'Brukervilkår',
+    'footer-privacy': 'Personvernerklæring',
+    'footer-cookies': 'Informasjonskapsler',
+    'footer-support': 'Kundestøtte',
+    'footer-contact': 'Har du spørsmål? Skriv til oss: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  fi: {
+    'page-title': 'Evades 3 — Käyttöehdot',
+    'languages': 'Kielet ▼',
+    'back-home': '← Takaisin etusivulle',
+    'page-heading': 'Käyttöehdot',
+    'page-sub': 'Evades 3 — Virallinen asiakirja',
+    'updated': 'Viimeksi päivitetty: 23. huhtikuuta 2026',
+    'intro': 'Tervetuloa Evades 3:een! Käyttämällä sivustoamme ja peliä hyväksyt nämä Käyttöehdot. Lue tämä asiakirja huolellisesti ennen pelaamisen aloittamista.',
+    's1-title': '1. Ehtojen hyväksyminen',
+    's1-text': 'Rekisteröitymällä sivustolle tai käynnistämällä pelin Evades 3 vahvistat, että olet lukenut, ymmärtänyt ja sitoudut noudattamaan näitä Ehtoja kokonaisuudessaan. Jos et hyväksy jotakin kohtaa, älä käytä palveluamme.',
+    's2-title': '2. Palvelun kuvaus',
+    's2-text': 'Evades 3 on moninpeli-verkkopeli ja siihen liittyvä verkkosivusto, johon kuuluvat palvelimet, peliasiakas, yhteisö ja oheismateriaalit. Tarjoamme palvelun "sellaisenaan" ja voimme päivittää sitä milloin tahansa.',
+    's3-title': '3. Käyttäjätili',
+    's3-text': 'Jotkut toiminnot vaativat tilin. Vastaat kirjautumistietojesi turvallisuudesta ja kaikista tililtäsi tehdyistä toimista. Tilin siirtäminen tai myyminen kolmansille osapuolille on kielletty.',
+    's4-title': '4. Käyttäytymissäännöt',
+    's4-text': 'Huijaukset, botit, hyödynnykset, asiakasohjelman muokkaus, muiden pelaajien loukkaaminen, roskaposti ja laittoman sisällön jakaminen on kielletty. Rikkomukset voivat johtaa varoitukseen tai tilapäiseen/pysyvään estoon.',
+    's5-title': '5. Immateriaalioikeudet',
+    's5-text': 'Kaikki sisältö, grafiikka, musiikki, koodi, tavaramerkit ja Evades 3 -tuotemerkki kuuluvat kehittäjille ja ovat lain suojaamia. Kopiointi, jälleenmyynti tai kaupallinen käyttö ilman kirjallista lupaa on kielletty.',
+    's6-title': '6. Kielletyt toimet',
+    's6-text': 'Et saa hyökätä infrastruktuuriamme vastaan, kerätä tietoja automaattisesti, ohittaa suojausjärjestelmiä tai myydä pelin sisäisiä esineitä oikeasta rahasta virallisten kanavien ulkopuolella.',
+    's7-title': '7. Käyttöoikeuden päättyminen',
+    's7-text': 'Voimme keskeyttää tai poistaa tilisi Ehtojen rikkomisen vuoksi ilman ennakkovaroitusta ja ilman palautusta. Voit myös itse poistaa tilisi milloin tahansa profiilin asetuksista.',
+    's8-title': '8. Vastuuvapauslauseke',
+    's8-text': 'Palvelu toimitetaan "sellaisenaan" ilman takuita. Emme ole vastuussa teknisistä häiriöistä, pelin edistyksen menetyksestä tai välillisistä vahingoista, jotka aiheutuvat pelin käytöstä.',
+    's9-title': '9. Ehtojen muutokset',
+    's9-text': 'Voimme päivittää näitä Ehtoja milloin tahansa. Voimassa oleva versio on aina saatavilla tällä sivulla. Jatkamalla palvelun käyttöä hyväksyt muutokset.',
+    's10-title': '10. Yhteystiedot',
+    's10-text': 'Kaikissa näihin Käyttöehtoihin liittyvissä kysymyksissä kirjoita osoitteeseen <a href="mailto:support@evades3.com">support@evades3.com</a>. Vastaamme mahdollisimman pian.',
+    'footer-copy': '© 2026 Evades 3. Kaikki oikeudet pidätetään.',
+    'footer-terms': 'Käyttöehdot',
+    'footer-privacy': 'Tietosuojakäytäntö',
+    'footer-cookies': 'Evästeet',
+    'footer-support': 'Tuki',
+    'footer-contact': 'Kysyttävää? Kirjoita meille: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  da: {
+    'page-title': 'Evades 3 — Brugsbetingelser',
+    'languages': 'Sprog ▼',
+    'back-home': '← Tilbage til forsiden',
+    'page-heading': 'Brugsbetingelser',
+    'page-sub': 'Evades 3 — Officielt dokument',
+    'updated': 'Sidst opdateret: 23. april 2026',
+    'intro': 'Velkommen til Evades 3! Ved at bruge vores hjemmeside og spillet accepterer du disse Brugsbetingelser. Læs venligst dokumentet grundigt, før du begynder at spille.',
+    's1-title': '1. Accept af betingelserne',
+    's1-text': 'Ved at registrere dig på hjemmesiden eller starte spillet Evades 3 bekræfter du, at du har læst, forstået og accepterer at overholde disse Betingelser i deres helhed. Hvis du ikke er enig i et punkt, så brug venligst ikke tjenesten.',
+    's2-title': '2. Beskrivelse af tjenesten',
+    's2-text': 'Evades 3 er et online multiplayer-spil og det tilhørende websted, inklusive servere, spilklient, fællesskab og tilhørende materiale. Tjenesten leveres "som den er" og kan opdateres til enhver tid.',
+    's3-title': '3. Brugerkonto',
+    's3-text': 'Nogle funktioner kræver en konto. Du er ansvarlig for sikkerheden af dine loginoplysninger og for alle handlinger, der udføres fra din konto. Det er forbudt at overdrage eller sælge kontoen.',
+    's4-title': '4. Adfærdsregler',
+    's4-text': 'Snyd, bots, exploits, klientmodifikationer, chikane, spam og distribution af ulovligt indhold er forbudt. Overtrædelser kan medføre advarsler eller midlertidige/permanente blokeringer.',
+    's5-title': '5. Immaterielle rettigheder',
+    's5-text': 'Alt indhold, grafik, musik, kode, varemærker og Evades 3-brandet tilhører udviklerne og er beskyttet af loven. Kopiering, videresalg eller kommerciel brug uden skriftlig tilladelse er forbudt.',
+    's6-title': '6. Forbudte handlinger',
+    's6-text': 'Du må ikke angribe vores infrastruktur, automatisk indsamle data, omgå sikkerhedssystemer eller sælge in-game-genstande for rigtige penge uden for officielle kanaler.',
+    's7-title': '7. Ophør af adgang',
+    's7-text': 'Vi kan suspendere eller slette din konto ved overtrædelse af betingelserne uden forudgående varsel og uden refundering. Du kan selv slette din konto når som helst via profilindstillingerne.',
+    's8-title': '8. Ansvarsfraskrivelse',
+    's8-text': 'Tjenesten leveres "som den er" uden nogen garantier. Vi er ikke ansvarlige for tekniske fejl, tab af spilfremgang eller indirekte skader som følge af brug af spillet.',
+    's9-title': '9. Ændringer af betingelserne',
+    's9-text': 'Vi kan opdatere disse Betingelser til enhver tid. Den aktuelle version er altid tilgængelig på denne side. Ved at fortsætte med at bruge tjenesten accepterer du ændringerne.',
+    's10-title': '10. Kontakt',
+    's10-text': 'Har du spørgsmål om disse Brugsbetingelser, så skriv til <a href="mailto:support@evades3.com">support@evades3.com</a>. Vi svarer hurtigst muligt.',
+    'footer-copy': '© 2026 Evades 3. Alle rettigheder forbeholdes.',
+    'footer-terms': 'Brugsbetingelser',
+    'footer-privacy': 'Privatlivspolitik',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Support',
+    'footer-contact': 'Spørgsmål? Skriv til os: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  cs: {
+    'page-title': 'Evades 3 — Podmínky použití',
+    'languages': 'Jazyky ▼',
+    'back-home': '← Zpět na hlavní stránku',
+    'page-heading': 'Podmínky použití',
+    'page-sub': 'Evades 3 — Oficiální dokument',
+    'updated': 'Poslední aktualizace: 23. dubna 2026',
+    'intro': 'Vítejte v Evades 3! Používáním našich stránek a hry souhlasíte s těmito Podmínkami použití. Prosíme, před začátkem hraní si dokument pečlivě pročtěte.',
+    's1-title': '1. Přijetí podmínek',
+    's1-text': 'Registrací na webu nebo spuštěním hry Evades 3 potvrzujete, že jste si tyto Podmínky přečetli, porozuměli jim a zavazujete se je v plném rozsahu dodržovat. Pokud s jakýmkoli bodem nesouhlasíte, službu prosím nevyužívejte.',
+    's2-title': '2. Popis služby',
+    's2-text': 'Evades 3 je online hra pro více hráčů spolu s přidruženým webem, servery, herním klientem, komunitou a souvisejícími materiály. Službu poskytujeme „tak, jak je" a můžeme ji kdykoli aktualizovat.',
+    's3-title': '3. Uživatelský účet',
+    's3-text': 'Některé funkce vyžadují účet. Zodpovídáte za bezpečnost svých přihlašovacích údajů a za veškeré akce provedené z vašeho účtu. Převod či prodej účtu třetím stranám je zakázán.',
+    's4-title': '4. Pravidla chování',
+    's4-text': 'Cheaty, boti, exploity, úpravy klienta, urážky hráčů, spam a šíření nelegálního obsahu jsou zakázány. Porušení pravidel vede k upozornění, dočasnému nebo trvalému zablokování účtu.',
+    's5-title': '5. Duševní vlastnictví',
+    's5-text': 'Veškerý obsah, grafika, hudba, kód, ochranné známky a značka Evades 3 náleží vývojářům a jsou chráněny zákonem. Kopírování, přeprodej či komerční využití bez písemného povolení je zakázáno.',
+    's6-title': '6. Zakázané činnosti',
+    's6-text': 'Je zakázáno útočit na naši infrastrukturu, automatizovaně sbírat data, obcházet bezpečnostní systémy nebo prodávat herní předměty za reálné peníze mimo oficiální kanály.',
+    's7-title': '7. Ukončení přístupu',
+    's7-text': 'Můžeme pozastavit nebo smazat váš účet při porušení Podmínek bez předchozího upozornění a bez vrácení peněz. Účet můžete kdykoli smazat také sami v nastavení profilu.',
+    's8-title': '8. Vyloučení záruk a odpovědnosti',
+    's8-text': 'Služba je poskytována „tak, jak je" bez jakýchkoli záruk. Neodpovídáme za technické výpadky, ztrátu herního pokroku ani nepřímé škody související s použitím hry.',
+    's9-title': '9. Změny podmínek',
+    's9-text': 'Tyto Podmínky můžeme kdykoli aktualizovat. Aktuální verze je vždy dostupná na této stránce. Pokračováním v používání služby po změnách souhlasíte s novou verzí.',
+    's10-title': '10. Kontakt',
+    's10-text': 'Dotazy k těmto Podmínkám použití pište na <a href="mailto:support@evades3.com">support@evades3.com</a>. Odpovíme co nejdříve.',
+    'footer-copy': '© 2026 Evades 3. Všechna práva vyhrazena.',
+    'footer-terms': 'Podmínky použití',
+    'footer-privacy': 'Zásady ochrany osobních údajů',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Podpora',
+    'footer-contact': 'Máte dotazy? Napište nám: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  ro: {
+    'page-title': 'Evades 3 — Termeni de utilizare',
+    'languages': 'Limbi ▼',
+    'back-home': '← Înapoi la pagina principală',
+    'page-heading': 'Termeni de utilizare',
+    'page-sub': 'Evades 3 — Document oficial',
+    'updated': 'Ultima actualizare: 23 aprilie 2026',
+    'intro': 'Bine ai venit pe Evades 3! Utilizând site-ul și jocul, ești de acord cu acești Termeni de utilizare. Te rugăm să citești cu atenție acest document înainte de a începe să joci.',
+    's1-title': '1. Acceptarea termenilor',
+    's1-text': 'Înregistrându-te pe site sau lansând jocul Evades 3, confirmi că ai citit, înțeles și accepți în întregime acești Termeni. Dacă nu ești de acord cu vreun punct, te rugăm să nu utilizezi serviciul nostru.',
+    's2-title': '2. Descrierea serviciului',
+    's2-text': 'Evades 3 este un joc multiplayer online și site-ul asociat, incluzând servere, client de joc, comunitate și materiale aferente. Oferim serviciul „ca atare" și îl putem actualiza oricând.',
+    's3-title': '3. Contul de utilizator',
+    's3-text': 'Unele funcții necesită un cont. Ești responsabil pentru siguranța datelor de autentificare și pentru toate acțiunile efectuate din contul tău. Este interzis să transferi sau să vinzi contul către terți.',
+    's4-title': '4. Reguli de conduită',
+    's4-text': 'Sunt interzise cheat-urile, boții, exploit-urile, modificarea clientului, jignirile către alți jucători, spam-ul și distribuirea de conținut ilegal. Încălcările duc la avertismente sau blocare temporară/permanentă.',
+    's5-title': '5. Proprietate intelectuală',
+    's5-text': 'Tot conținutul, graficile, muzica, codul, mărcile comerciale și brandul Evades 3 aparțin dezvoltatorilor și sunt protejate de lege. Copierea, revânzarea sau utilizarea comercială fără permisiune scrisă sunt interzise.',
+    's6-title': '6. Acțiuni interzise',
+    's6-text': 'Nu ai voie să ataci infrastructura noastră, să colectezi date automat, să ocolești sistemele de protecție sau să vinzi obiecte din joc pe bani reali în afara canalelor oficiale.',
+    's7-title': '7. Încetarea accesului',
+    's7-text': 'Putem suspenda sau șterge contul tău în caz de încălcare a Termenilor, fără notificare prealabilă și fără rambursare. Îți poți șterge contul oricând din setările profilului.',
+    's8-title': '8. Declinarea răspunderii',
+    's8-text': 'Serviciul este oferit „ca atare", fără nicio garanție. Nu suntem responsabili pentru defecțiuni tehnice, pierderi de progres în joc sau pagube indirecte legate de utilizarea jocului.',
+    's9-title': '9. Modificări ale termenilor',
+    's9-text': 'Putem actualiza acești Termeni oricând. Versiunea curentă este mereu disponibilă pe această pagină. Continuând să folosești serviciul, accepți modificările.',
+    's10-title': '10. Contact',
+    's10-text': 'Pentru orice întrebare despre acești Termeni de utilizare, scrie la <a href="mailto:support@evades3.com">support@evades3.com</a>. Vom răspunde cât mai repede.',
+    'footer-copy': '© 2026 Evades 3. Toate drepturile rezervate.',
+    'footer-terms': 'Termeni de utilizare',
+    'footer-privacy': 'Politica de confidențialitate',
+    'footer-cookies': 'Cookie-uri',
+    'footer-support': 'Suport',
+    'footer-contact': 'Ai întrebări? Scrie-ne: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  hu: {
+    'page-title': 'Evades 3 — Felhasználási feltételek',
+    'languages': 'Nyelvek ▼',
+    'back-home': '← Vissza a főoldalra',
+    'page-heading': 'Felhasználási feltételek',
+    'page-sub': 'Evades 3 — Hivatalos dokumentum',
+    'updated': 'Utolsó frissítés: 2026. április 23.',
+    'intro': 'Üdvözlünk az Evades 3 világában! Az oldal és a játék használatával elfogadod az alábbi Felhasználási feltételeket. Kérjük, figyelmesen olvasd el ezt a dokumentumot, mielőtt játszani kezdenél.',
+    's1-title': '1. A feltételek elfogadása',
+    's1-text': 'Az oldalon való regisztrációval vagy az Evades 3 elindításával megerősíted, hogy elolvastad, megértetted és teljes mértékben elfogadod a jelen Feltételeket. Ha valamelyik ponttal nem értesz egyet, kérjük, ne használd a szolgáltatást.',
+    's2-title': '2. A szolgáltatás leírása',
+    's2-text': 'Az Evades 3 egy többjátékos online játék és a hozzá tartozó weboldal, amely magában foglalja a szervereket, a kliensprogramot, a közösséget és a kapcsolódó anyagokat. A szolgáltatást „ahogy van" alapon nyújtjuk, és bármikor frissíthetjük.',
+    's3-title': '3. Felhasználói fiók',
+    's3-text': 'Bizonyos funkciók használatához fiók szükséges. Te vagy felelős a belépési adataid biztonságáért és a fiókodból végzett összes műveletért. Tilos a fiók átadása vagy értékesítése harmadik félnek.',
+    's4-title': '4. Viselkedési szabályok',
+    's4-text': 'Tilos a csalás, botok, kihasználások, a kliens módosítása, más játékosok sértegetése, spam és illegális tartalom terjesztése. A szabályszegések figyelmeztetést, ideiglenes vagy végleges letiltást vonhatnak maguk után.',
+    's5-title': '5. Szellemi tulajdon',
+    's5-text': 'Minden tartalom, grafika, zene, kód, védjegy és az Evades 3 márkanév a fejlesztők tulajdona és törvényileg védett. A másolás, továbbértékesítés vagy kereskedelmi felhasználás írásos engedély nélkül tilos.',
+    's6-title': '6. Tiltott tevékenységek',
+    's6-text': 'Tilos az infrastruktúránk támadása, adatok automatikus gyűjtése, a biztonsági rendszerek megkerülése vagy a játékbeli tárgyak valódi pénzért történő értékesítése hivatalos csatornákon kívül.',
+    's7-title': '7. A hozzáférés megszüntetése',
+    's7-text': 'Felfüggeszthetjük vagy törölhetjük fiókodat a Feltételek megszegése esetén, előzetes értesítés és visszatérítés nélkül. A fiókot bármikor magad is törölheted a profilbeállításokban.',
+    's8-title': '8. Felelősségkizárás',
+    's8-text': 'A szolgáltatást „ahogy van" alapon, bármilyen garancia nélkül nyújtjuk. Nem vállalunk felelősséget technikai hibákért, játékmenet-veszteségért vagy a játék használatából eredő közvetett károkért.',
+    's9-title': '9. A feltételek módosítása',
+    's9-text': 'A jelen Feltételeket bármikor frissíthetjük. Az aktuális verzió mindig elérhető ezen az oldalon. A szolgáltatás további használatával elfogadod a változtatásokat.',
+    's10-title': '10. Kapcsolat',
+    's10-text': 'A Felhasználási feltételekkel kapcsolatos kérdéseket a <a href="mailto:support@evades3.com">support@evades3.com</a> címre küldheted. A lehető leghamarabb válaszolunk.',
+    'footer-copy': '© 2026 Evades 3. Minden jog fenntartva.',
+    'footer-terms': 'Felhasználási feltételek',
+    'footer-privacy': 'Adatvédelmi irányelvek',
+    'footer-cookies': 'Sütik',
+    'footer-support': 'Támogatás',
+    'footer-contact': 'Kérdésed van? Írj nekünk: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  el: {
+    'page-title': 'Evades 3 — Όροι χρήσης',
+    'languages': 'Γλώσσες ▼',
+    'back-home': '← Πίσω στην αρχική',
+    'page-heading': 'Όροι χρήσης',
+    'page-sub': 'Evades 3 — Επίσημο έγγραφο',
+    'updated': 'Τελευταία ενημέρωση: 23 Απριλίου 2026',
+    'intro': 'Καλώς ήρθες στο Evades 3! Χρησιμοποιώντας τον ιστότοπο και το παιχνίδι μας, συμφωνείς με τους παρακάτω Όρους χρήσης. Διάβασε προσεκτικά αυτό το έγγραφο πριν αρχίσεις να παίζεις.',
+    's1-title': '1. Αποδοχή των όρων',
+    's1-text': 'Εγγραφόμενος/η στον ιστότοπο ή εκκινώντας το παιχνίδι Evades 3, επιβεβαιώνεις ότι έχεις διαβάσει, κατανοήσει και αποδεχθεί πλήρως τους παρόντες Όρους. Αν διαφωνείς με οποιοδήποτε σημείο, παρακαλούμε μην χρησιμοποιείς την υπηρεσία.',
+    's2-title': '2. Περιγραφή της υπηρεσίας',
+    's2-text': 'Το Evades 3 είναι ένα online παιχνίδι πολλών παικτών με τον σχετικό ιστότοπο, που περιλαμβάνει διακομιστές, πελάτη παιχνιδιού, κοινότητα και συναφές υλικό. Η υπηρεσία παρέχεται «ως έχει» και μπορεί να ενημερώνεται ανά πάσα στιγμή.',
+    's3-title': '3. Λογαριασμός χρήστη',
+    's3-text': 'Ορισμένες λειτουργίες απαιτούν λογαριασμό. Είσαι υπεύθυνος/η για την ασφάλεια των στοιχείων σύνδεσής σου και για κάθε ενέργεια που γίνεται από τον λογαριασμό σου. Απαγορεύεται η μεταβίβαση ή πώληση του λογαριασμού.',
+    's4-title': '4. Κανόνες συμπεριφοράς',
+    's4-text': 'Απαγορεύονται cheats, bots, exploits, τροποποιήσεις του πελάτη, προσβολές, spam και διάδοση παράνομου περιεχομένου. Οι παραβάσεις οδηγούν σε προειδοποίηση, προσωρινό ή μόνιμο αποκλεισμό.',
+    's5-title': '5. Πνευματική ιδιοκτησία',
+    's5-text': 'Όλο το περιεχόμενο, τα γραφικά, η μουσική, ο κώδικας, τα εμπορικά σήματα και το σήμα Evades 3 ανήκουν στους προγραμματιστές και προστατεύονται από το νόμο. Η αντιγραφή, μεταπώληση ή εμπορική χρήση χωρίς γραπτή άδεια απαγορεύονται.',
+    's6-title': '6. Απαγορευμένες ενέργειες',
+    's6-text': 'Δεν επιτρέπεται να επιτεθείς στην υποδομή μας, να συλλέγεις δεδομένα αυτόματα, να παρακάμπτεις συστήματα ασφαλείας ή να πουλάς αντικείμενα του παιχνιδιού για πραγματικά χρήματα εκτός των επίσημων καναλιών.',
+    's7-title': '7. Διακοπή πρόσβασης',
+    's7-text': 'Μπορούμε να αναστείλουμε ή να διαγράψουμε τον λογαριασμό σου σε περίπτωση παραβίασης των Όρων, χωρίς προειδοποίηση και χωρίς επιστροφή χρημάτων. Μπορείς να διαγράψεις τον λογαριασμό σου ανά πάσα στιγμή από τις ρυθμίσεις προφίλ.',
+    's8-title': '8. Αποποίηση ευθύνης',
+    's8-text': 'Η υπηρεσία παρέχεται «ως έχει», χωρίς εγγυήσεις. Δεν ευθυνόμαστε για τεχνικά προβλήματα, απώλεια προόδου παιχνιδιού ή έμμεσες ζημίες που σχετίζονται με τη χρήση του παιχνιδιού.',
+    's9-title': '9. Αλλαγές στους όρους',
+    's9-text': 'Μπορούμε να ενημερώνουμε τους παρόντες Όρους ανά πάσα στιγμή. Η τρέχουσα έκδοση είναι πάντα διαθέσιμη σε αυτή τη σελίδα. Η συνέχιση χρήσης συνεπάγεται αποδοχή των αλλαγών.',
+    's10-title': '10. Επικοινωνία',
+    's10-text': 'Για ερωτήσεις σχετικά με τους Όρους χρήσης, γράψε στο <a href="mailto:support@evades3.com">support@evades3.com</a>. Θα απαντήσουμε το συντομότερο δυνατό.',
+    'footer-copy': '© 2026 Evades 3. Με την επιφύλαξη παντός δικαιώματος.',
+    'footer-terms': 'Όροι χρήσης',
+    'footer-privacy': 'Πολιτική απορρήτου',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Υποστήριξη',
+    'footer-contact': 'Έχεις ερωτήσεις; Γράψε μας: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  ja: {
+    'page-title': 'Evades 3 — 利用規約',
+    'languages': '言語 ▼',
+    'back-home': '← トップへ戻る',
+    'page-heading': '利用規約',
+    'page-sub': 'Evades 3 — 公式ドキュメント',
+    'updated': '最終更新: 2026年4月23日',
+    'intro': 'Evades 3 へようこそ！当サイトおよびゲームをご利用いただくことで、以下の利用規約に同意したものとみなされます。プレイを開始する前に、この文書を注意深くお読みください。',
+    's1-title': '1. 規約への同意',
+    's1-text': 'サイトへ登録する、または Evades 3 を起動することで、本規約の全内容を読み、理解し、遵守することに同意したものとみなされます。いずれかの条項に同意できない場合は、本サービスをご利用にならないでください。',
+    's2-title': '2. サービスの概要',
+    's2-text': 'Evades 3 はオンラインマルチプレイヤーゲームであり、サーバー、ゲームクライアント、コミュニティ、関連コンテンツを含む関連サイトと共に提供されます。サービスは「現状のまま」提供され、いつでも更新される可能性があります。',
+    's3-title': '3. ユーザーアカウント',
+    's3-text': '一部の機能を利用するにはアカウントが必要です。ログイン情報の管理、およびアカウントから行われたすべての行為についての責任はお客様にあります。アカウントの譲渡・販売は禁止されています。',
+    's4-title': '4. 行動ルール',
+    's4-text': 'チート、ボット、エクスプロイト、クライアント改造、他プレイヤーへの暴言、スパム、違法コンテンツの配布は禁止です。違反があった場合、警告、一時的または永久のアカウント停止措置が取られます。',
+    's5-title': '5. 知的財産',
+    's5-text': 'ゲーム内のすべてのコンテンツ、グラフィック、音楽、コード、商標および Evades 3 のブランドは開発者に帰属し、法律で保護されています。書面による許可のない複製、転売、商用利用は禁止されています。',
+    's6-title': '6. 禁止行為',
+    's6-text': '当社のインフラへの攻撃、データの自動収集、保護システムの回避、公式以外のチャネルでのゲーム内アイテムの現金販売は禁止です。',
+    's7-title': '7. アクセスの停止',
+    's7-text': '本規約違反があった場合、事前の通知や返金なしでアカウントを停止または削除することがあります。プロフィール設定からいつでもご自身でアカウントを削除することもできます。',
+    's8-title': '8. 免責事項',
+    's8-text': '本サービスは「現状のまま」無保証で提供されます。技術的な障害、ゲーム進行の消失、またはゲーム利用に起因する間接的損害について、当社は責任を負いません。',
+    's9-title': '9. 規約の変更',
+    's9-text': '当社は本規約をいつでも更新できます。最新版は常にこのページに掲載されます。変更後も引き続きサービスを利用した場合は、新しい規約に同意したものとみなされます。',
+    's10-title': '10. お問い合わせ',
+    's10-text': '本利用規約についてのご質問は <a href="mailto:support@evades3.com">support@evades3.com</a> までお送りください。できるだけ早くご返信いたします。',
+    'footer-copy': '© 2026 Evades 3. 全著作権所有。',
+    'footer-terms': '利用規約',
+    'footer-privacy': 'プライバシーポリシー',
+    'footer-cookies': 'Cookie',
+    'footer-support': 'サポート',
+    'footer-contact': 'ご質問はこちら: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  zh: {
+    'page-title': 'Evades 3 — 使用条款',
+    'languages': '语言 ▼',
+    'back-home': '← 返回首页',
+    'page-heading': '使用条款',
+    'page-sub': 'Evades 3 — 正式文件',
+    'updated': '最后更新：2026年4月23日',
+    'intro': '欢迎来到 Evades 3！使用我们的网站与游戏即表示您同意以下使用条款。请在开始游戏前仔细阅读本文件。',
+    's1-title': '1. 接受条款',
+    's1-text': '通过在网站上注册或启动 Evades 3 游戏，您确认已阅读、理解并完全同意遵守本条款。如您不同意其中任何一项，请勿使用我们的服务。',
+    's2-title': '2. 服务说明',
+    's2-text': 'Evades 3 是一款多人在线游戏及其相关网站，包括服务器、游戏客户端、社区和相关资料。我们按「现状」提供服务，并可能随时进行更新。',
+    's3-title': '3. 用户账户',
+    's3-text': '部分功能需要账户。您需对登录凭据的安全以及账户下的所有操作负责。禁止向第三方转让或出售账户。',
+    's4-title': '4. 行为规范',
+    's4-text': '禁止作弊、机器人、漏洞利用、修改客户端、侮辱他人、发送垃圾信息以及传播违法内容。违规将导致警告、临时封禁或永久封禁。',
+    's5-title': '5. 知识产权',
+    's5-text': '所有游戏内容、图像、音乐、代码、商标以及 Evades 3 品牌均属开发者所有，受法律保护。未经书面许可，禁止复制、转售或商业使用。',
+    's6-title': '6. 禁止行为',
+    's6-text': '禁止攻击我们的基础设施、自动抓取数据、绕过安全系统，或在官方渠道之外以现金出售游戏内物品。',
+    's7-title': '7. 访问的终止',
+    's7-text': '若您违反本条款，我们可在不另行通知且不退款的情况下暂停或删除您的账户。您也可以随时在个人资料设置中删除自己的账户。',
+    's8-title': '8. 免责与责任',
+    's8-text': '服务按「现状」提供，不附带任何担保。我们不对技术故障、游戏进度丢失或因使用游戏而产生的间接损失负责。',
+    's9-title': '9. 条款变更',
+    's9-text': '我们可以随时更新本条款。最新版本始终可在此页面上获取。继续使用服务即视为接受新版条款。',
+    's10-title': '10. 联系方式',
+    's10-text': '如您对本使用条款有任何疑问，请发送邮件至 <a href="mailto:support@evades3.com">support@evades3.com</a>，我们会尽快回复。',
+    'footer-copy': '© 2026 Evades 3。保留所有权利。',
+    'footer-terms': '使用条款',
+    'footer-privacy': '隐私政策',
+    'footer-cookies': 'Cookie',
+    'footer-support': '支持',
+    'footer-contact': '有问题？请联系我们：<a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  ko: {
+    'page-title': 'Evades 3 — 이용약관',
+    'languages': '언어 ▼',
+    'back-home': '← 메인으로 돌아가기',
+    'page-heading': '이용약관',
+    'page-sub': 'Evades 3 — 공식 문서',
+    'updated': '최종 업데이트: 2026년 4월 23일',
+    'intro': 'Evades 3에 오신 것을 환영합니다! 사이트와 게임을 이용함으로써 귀하는 아래 이용약관에 동의하게 됩니다. 게임을 시작하기 전에 본 문서를 주의 깊게 읽어주시기 바랍니다.',
+    's1-title': '1. 약관 동의',
+    's1-text': '사이트에 가입하거나 Evades 3 게임을 실행함으로써, 귀하는 본 약관 전체를 읽고 이해하였으며 준수하기로 동의했음을 확인합니다. 어떠한 조항에도 동의하지 않는 경우 서비스를 이용하지 마십시오.',
+    's2-title': '2. 서비스 설명',
+    's2-text': 'Evades 3는 온라인 멀티플레이 게임이며, 서버, 게임 클라이언트, 커뮤니티 및 관련 자료를 포함하는 웹사이트와 함께 제공됩니다. 서비스는 "있는 그대로" 제공되며 언제든지 업데이트될 수 있습니다.',
+    's3-title': '3. 사용자 계정',
+    's3-text': '일부 기능은 계정이 필요합니다. 로그인 정보의 보안과 계정에서 수행된 모든 행위에 대한 책임은 귀하에게 있습니다. 계정을 타인에게 양도하거나 판매하는 행위는 금지됩니다.',
+    's4-title': '4. 행동 규칙',
+    's4-text': '치트, 봇, 익스플로잇, 클라이언트 변조, 타 플레이어 모욕, 스팸, 불법 콘텐츠 배포는 금지됩니다. 위반 시 경고, 일시적 또는 영구적 계정 제한이 적용됩니다.',
+    's5-title': '5. 지적 재산권',
+    's5-text': '모든 게임 콘텐츠, 그래픽, 음악, 코드, 상표 및 Evades 3 브랜드는 개발자의 소유이며 법적으로 보호됩니다. 서면 허가 없이 복제, 재판매 또는 상업적 사용은 금지됩니다.',
+    's6-title': '6. 금지 행위',
+    's6-text': '당사 인프라에 대한 공격, 자동화된 데이터 수집, 보안 시스템 우회, 공식 채널이 아닌 경로를 통한 게임 내 아이템의 현금 판매는 금지됩니다.',
+    's7-title': '7. 접근 종료',
+    's7-text': '본 약관 위반 시 사전 통보나 환불 없이 계정을 정지하거나 삭제할 수 있습니다. 프로필 설정에서 언제든지 직접 계정을 삭제할 수도 있습니다.',
+    's8-title': '8. 면책 및 책임',
+    's8-text': '본 서비스는 어떠한 보증 없이 "있는 그대로" 제공됩니다. 당사는 기술적 장애, 게임 진행 손실 또는 게임 사용으로 인한 간접 손해에 대해 책임지지 않습니다.',
+    's9-title': '9. 약관 변경',
+    's9-text': '당사는 본 약관을 언제든지 업데이트할 수 있습니다. 현재 버전은 항상 이 페이지에서 확인할 수 있습니다. 변경 후에도 서비스를 계속 이용하면 새 약관에 동의한 것으로 간주됩니다.',
+    's10-title': '10. 문의',
+    's10-text': '본 이용약관에 관한 문의는 <a href="mailto:support@evades3.com">support@evades3.com</a>로 보내주시기 바랍니다. 가능한 한 빨리 답변드리겠습니다.',
+    'footer-copy': '© 2026 Evades 3. 모든 권리 보유.',
+    'footer-terms': '이용약관',
+    'footer-privacy': '개인정보 처리방침',
+    'footer-cookies': '쿠키',
+    'footer-support': '지원',
+    'footer-contact': '문의사항이 있으신가요? 이메일 주세요: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  ar: {
+    'page-title': 'Evades 3 — شروط الاستخدام',
+    'languages': 'اللغات ▼',
+    'back-home': '→ العودة إلى الرئيسية',
+    'page-heading': 'شروط الاستخدام',
+    'page-sub': 'Evades 3 — وثيقة رسمية',
+    'updated': 'آخر تحديث: 23 أبريل 2026',
+    'intro': 'مرحبًا بك في Evades 3! باستخدامك موقعنا واللعبة فإنك توافق على شروط الاستخدام التالية. يُرجى قراءة هذه الوثيقة بعناية قبل البدء في اللعب.',
+    's1-title': '1. قبول الشروط',
+    's1-text': 'بالتسجيل في الموقع أو تشغيل لعبة Evades 3، تؤكد أنك قرأت هذه الشروط وفهمتها ووافقت على الالتزام بها بالكامل. إذا لم توافق على أي بند، يُرجى عدم استخدام خدمتنا.',
+    's2-title': '2. وصف الخدمة',
+    's2-text': 'Evades 3 هي لعبة متعددة اللاعبين عبر الإنترنت مع الموقع المرتبط بها، بما في ذلك الخوادم والعميل والمجتمع والمواد ذات الصلة. نقدم الخدمة «كما هي» ويمكن تحديثها في أي وقت.',
+    's3-title': '3. حساب المستخدم',
+    's3-text': 'تتطلب بعض الميزات وجود حساب. أنت مسؤول عن أمان بيانات تسجيل الدخول وعن جميع الإجراءات التي تُنفذ من حسابك. يُمنع نقل الحساب أو بيعه لأطراف ثالثة.',
+    's4-title': '4. قواعد السلوك',
+    's4-text': 'يُمنع استخدام الغش والبوتات والثغرات وتعديل العميل وإهانة اللاعبين والرسائل المزعجة ونشر المحتوى غير القانوني. تؤدي المخالفات إلى التحذير أو الحظر المؤقت أو الدائم.',
+    's5-title': '5. الملكية الفكرية',
+    's5-text': 'جميع المحتوى والرسومات والموسيقى والشفرة والعلامات التجارية وعلامة Evades 3 ملك للمطورين ومحمية بالقانون. يُمنع النسخ أو إعادة البيع أو الاستخدام التجاري دون إذن خطي.',
+    's6-title': '6. الأفعال المحظورة',
+    's6-text': 'يُحظر مهاجمة بنيتنا التحتية أو جمع البيانات تلقائيًا أو تجاوز أنظمة الحماية أو بيع عناصر اللعبة مقابل أموال حقيقية خارج القنوات الرسمية.',
+    's7-title': '7. إنهاء الوصول',
+    's7-text': 'يحق لنا تعليق حسابك أو حذفه في حالة انتهاك الشروط دون إشعار مسبق ودون استرداد. يمكنك أيضًا حذف حسابك في أي وقت من إعدادات الملف الشخصي.',
+    's8-title': '8. إخلاء المسؤولية',
+    's8-text': 'تُقدَّم الخدمة «كما هي» دون أي ضمانات. نحن لسنا مسؤولين عن الأعطال التقنية أو فقدان تقدم اللعبة أو الأضرار غير المباشرة الناتجة عن استخدام اللعبة.',
+    's9-title': '9. تعديلات الشروط',
+    's9-text': 'يجوز لنا تحديث هذه الشروط في أي وقت. النسخة الحالية متاحة دائمًا على هذه الصفحة. يعني استمرار استخدام الخدمة بعد التحديث موافقتك على النسخة الجديدة.',
+    's10-title': '10. التواصل',
+    's10-text': 'لأي استفسار عن شروط الاستخدام، راسلنا على <a href="mailto:support@evades3.com">support@evades3.com</a>. سنرد في أقرب وقت ممكن.',
+    'footer-copy': '© 2026 Evades 3. جميع الحقوق محفوظة.',
+    'footer-terms': 'شروط الاستخدام',
+    'footer-privacy': 'سياسة الخصوصية',
+    'footer-cookies': 'ملفات تعريف الارتباط',
+    'footer-support': 'الدعم',
+    'footer-contact': 'هل لديك أسئلة؟ راسلنا: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  hi: {
+    'page-title': 'Evades 3 — उपयोग की शर्तें',
+    'languages': 'भाषाएं ▼',
+    'back-home': '← मुखपृष्ठ पर वापस',
+    'page-heading': 'उपयोग की शर्तें',
+    'page-sub': 'Evades 3 — आधिकारिक दस्तावेज़',
+    'updated': 'अंतिम अद्यतन: 23 अप्रैल 2026',
+    'intro': 'Evades 3 में आपका स्वागत है! हमारी साइट और गेम का उपयोग करके आप इन उपयोग की शर्तों से सहमत होते हैं। कृपया खेलना शुरू करने से पहले इस दस्तावेज़ को ध्यान से पढ़ें।',
+    's1-title': '1. शर्तों की स्वीकृति',
+    's1-text': 'साइट पर पंजीकरण करके या Evades 3 शुरू करके, आप पुष्टि करते हैं कि आपने इन शर्तों को पूरा पढ़ा, समझा और उनका पालन करने के लिए सहमत हैं। यदि आप किसी भी खंड से सहमत नहीं हैं, तो कृपया हमारी सेवा का उपयोग न करें।',
+    's2-title': '2. सेवा का विवरण',
+    's2-text': 'Evades 3 एक ऑनलाइन मल्टीप्लेयर गेम है और इसका संबंधित वेबसाइट, सर्वर, गेम क्लाइंट, समुदाय और संबंधित सामग्री शामिल हैं। हम सेवा को "जैसी है" आधार पर प्रदान करते हैं और किसी भी समय उसे अद्यतन कर सकते हैं।',
+    's3-title': '3. उपयोगकर्ता खाता',
+    's3-text': 'कुछ सुविधाओं के लिए खाते की आवश्यकता होती है। आप अपने लॉगिन विवरण की सुरक्षा और अपने खाते से की गई सभी गतिविधियों के लिए उत्तरदायी हैं। खाते को तीसरे पक्ष को स्थानांतरित या बेचना निषिद्ध है।',
+    's4-title': '4. आचरण के नियम',
+    's4-text': 'चीट, बॉट्स, एक्सप्लॉइट्स, क्लाइंट संशोधन, अन्य खिलाड़ियों के साथ दुर्व्यवहार, स्पैम और अवैध सामग्री फैलाना प्रतिबंधित है। उल्लंघन पर चेतावनी, अस्थायी या स्थायी प्रतिबंध लग सकता है।',
+    's5-title': '5. बौद्धिक संपदा',
+    's5-text': 'सभी गेम सामग्री, ग्राफ़िक्स, संगीत, कोड, ट्रेडमार्क और Evades 3 ब्रांड डेवलपर्स के हैं और कानून द्वारा संरक्षित हैं। लिखित अनुमति के बिना नकल, पुनर्विक्रय या व्यावसायिक उपयोग निषिद्ध है।',
+    's6-title': '6. निषिद्ध कार्य',
+    's6-text': 'हमारे बुनियादी ढांचे पर हमला करना, डेटा स्वचालित रूप से एकत्र करना, सुरक्षा प्रणालियों को बायपास करना या आधिकारिक चैनलों के बाहर असली पैसे के लिए इन-गेम वस्तुएं बेचना निषिद्ध है।',
+    's7-title': '7. पहुंच की समाप्ति',
+    's7-text': 'इन शर्तों के उल्लंघन की स्थिति में हम बिना पूर्व सूचना और बिना वापसी के आपके खाते को निलंबित या हटा सकते हैं। आप प्रोफ़ाइल सेटिंग्स से किसी भी समय अपना खाता स्वयं भी हटा सकते हैं।',
+    's8-title': '8. उत्तरदायित्व का अस्वीकरण',
+    's8-text': 'सेवा किसी भी गारंटी के बिना "जैसी है" प्रदान की जाती है। हम तकनीकी विफलताओं, गेम प्रगति की हानि या गेम के उपयोग से संबंधित अप्रत्यक्ष क्षति के लिए उत्तरदायी नहीं हैं।',
+    's9-title': '9. शर्तों में परिवर्तन',
+    's9-text': 'हम इन शर्तों को किसी भी समय अद्यतन कर सकते हैं। वर्तमान संस्करण हमेशा इस पृष्ठ पर उपलब्ध रहता है। परिवर्तनों के बाद सेवा का उपयोग जारी रखने का अर्थ है कि आप नए संस्करण से सहमत हैं।',
+    's10-title': '10. संपर्क',
+    's10-text': 'इन उपयोग की शर्तों से संबंधित किसी भी प्रश्न के लिए <a href="mailto:support@evades3.com">support@evades3.com</a> पर लिखें। हम जल्द से जल्द उत्तर देने का प्रयास करेंगे।',
+    'footer-copy': '© 2026 Evades 3. सर्वाधिकार सुरक्षित।',
+    'footer-terms': 'उपयोग की शर्तें',
+    'footer-privacy': 'गोपनीयता नीति',
+    'footer-cookies': 'कुकीज़',
+    'footer-support': 'सहायता',
+    'footer-contact': 'कोई सवाल? हमें लिखें: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  th: {
+    'page-title': 'Evades 3 — ข้อกำหนดการใช้งาน',
+    'languages': 'ภาษา ▼',
+    'back-home': '← กลับสู่หน้าหลัก',
+    'page-heading': 'ข้อกำหนดการใช้งาน',
+    'page-sub': 'Evades 3 — เอกสารทางการ',
+    'updated': 'อัปเดตล่าสุด: 23 เมษายน 2569',
+    'intro': 'ยินดีต้อนรับสู่ Evades 3! การใช้เว็บไซต์และเกมของเราถือว่าคุณยอมรับข้อกำหนดการใช้งานต่อไปนี้ โปรดอ่านเอกสารนี้อย่างละเอียดก่อนเริ่มเล่น',
+    's1-title': '1. การยอมรับข้อกำหนด',
+    's1-text': 'โดยการลงทะเบียนบนเว็บไซต์หรือเปิดเล่นเกม Evades 3 คุณยืนยันว่าได้อ่าน เข้าใจ และตกลงที่จะปฏิบัติตามข้อกำหนดเหล่านี้อย่างครบถ้วน หากคุณไม่เห็นด้วยกับข้อใดข้อหนึ่ง กรุณาอย่าใช้บริการของเรา',
+    's2-title': '2. คำอธิบายบริการ',
+    's2-text': 'Evades 3 เป็นเกมออนไลน์หลายผู้เล่นและเว็บไซต์ที่เกี่ยวข้อง รวมถึงเซิร์ฟเวอร์ ไคลเอนต์ ชุมชนและเนื้อหาที่เกี่ยวข้อง เราจัดให้บริการแบบ "ตามสภาพ" และอาจอัปเดตได้ตลอดเวลา',
+    's3-title': '3. บัญชีผู้ใช้',
+    's3-text': 'คุณสมบัติบางอย่างต้องใช้บัญชี คุณรับผิดชอบด้านความปลอดภัยของข้อมูลเข้าสู่ระบบและการกระทำทุกอย่างที่เกิดขึ้นจากบัญชีของคุณ ห้ามโอนหรือขายบัญชีให้ผู้อื่น',
+    's4-title': '4. กฎการประพฤติ',
+    's4-text': 'ห้ามใช้โปรแกรมโกง บอท การใช้ช่องโหว่ การดัดแปลงไคลเอนต์ การดูหมิ่นผู้เล่น สแปม และการเผยแพร่เนื้อหาผิดกฎหมาย การละเมิดอาจส่งผลให้ถูกเตือน ระงับชั่วคราวหรือถาวร',
+    's5-title': '5. ทรัพย์สินทางปัญญา',
+    's5-text': 'เนื้อหา กราฟิก เพลง โค้ด เครื่องหมายการค้า และแบรนด์ Evades 3 ทั้งหมดเป็นของผู้พัฒนาและได้รับการคุ้มครองตามกฎหมาย ห้ามคัดลอก ขายต่อ หรือใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร',
+    's6-title': '6. การกระทำที่ต้องห้าม',
+    's6-text': 'ห้ามโจมตีโครงสร้างพื้นฐานของเรา เก็บข้อมูลโดยอัตโนมัติ หลีกเลี่ยงระบบรักษาความปลอดภัย หรือขายไอเทมในเกมเพื่อเงินจริงนอกช่องทางทางการ',
+    's7-title': '7. การยุติการเข้าถึง',
+    's7-text': 'เราอาจระงับหรือลบบัญชีของคุณเมื่อคุณละเมิดข้อกำหนดโดยไม่ต้องแจ้งล่วงหน้าและไม่มีการคืนเงิน คุณสามารถลบบัญชีของตนเองได้ทุกเมื่อจากการตั้งค่าโปรไฟล์',
+    's8-title': '8. การปฏิเสธความรับผิด',
+    's8-text': 'บริการให้บริการ "ตามสภาพ" โดยไม่มีการรับประกันใด ๆ เราไม่รับผิดชอบต่อความล้มเหลวทางเทคนิค การสูญเสียความก้าวหน้าของเกม หรือความเสียหายทางอ้อมที่เกิดจากการใช้เกม',
+    's9-title': '9. การเปลี่ยนแปลงข้อกำหนด',
+    's9-text': 'เราสามารถอัปเดตข้อกำหนดเหล่านี้ได้ทุกเมื่อ เวอร์ชันปัจจุบันจะอยู่บนหน้านี้เสมอ การใช้บริการต่อหลังการเปลี่ยนแปลงถือว่าคุณยอมรับข้อกำหนดฉบับใหม่',
+    's10-title': '10. ติดต่อเรา',
+    's10-text': 'หากมีคำถามเกี่ยวกับข้อกำหนดการใช้งาน โปรดส่งอีเมลมาที่ <a href="mailto:support@evades3.com">support@evades3.com</a> เราจะตอบกลับให้เร็วที่สุด',
+    'footer-copy': '© 2026 Evades 3. สงวนลิขสิทธิ์ทั้งหมด',
+    'footer-terms': 'ข้อกำหนดการใช้งาน',
+    'footer-privacy': 'นโยบายความเป็นส่วนตัว',
+    'footer-cookies': 'คุกกี้',
+    'footer-support': 'ฝ่ายสนับสนุน',
+    'footer-contact': 'มีคำถามไหม? เขียนหาเรา: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  vi: {
+    'page-title': 'Evades 3 — Điều khoản sử dụng',
+    'languages': 'Ngôn ngữ ▼',
+    'back-home': '← Về trang chủ',
+    'page-heading': 'Điều khoản sử dụng',
+    'page-sub': 'Evades 3 — Tài liệu chính thức',
+    'updated': 'Cập nhật lần cuối: 23 tháng 4 năm 2026',
+    'intro': 'Chào mừng bạn đến với Evades 3! Khi sử dụng trang web và trò chơi, bạn đồng ý với Điều khoản sử dụng sau đây. Vui lòng đọc kỹ tài liệu này trước khi bắt đầu chơi.',
+    's1-title': '1. Chấp nhận điều khoản',
+    's1-text': 'Bằng việc đăng ký trên trang web hoặc khởi chạy trò chơi Evades 3, bạn xác nhận rằng đã đọc, hiểu và đồng ý tuân thủ toàn bộ các Điều khoản này. Nếu bạn không đồng ý với bất kỳ điều khoản nào, vui lòng không sử dụng dịch vụ của chúng tôi.',
+    's2-title': '2. Mô tả dịch vụ',
+    's2-text': 'Evades 3 là một trò chơi trực tuyến nhiều người chơi cùng trang web liên quan, bao gồm máy chủ, client trò chơi, cộng đồng và các tài liệu liên quan. Chúng tôi cung cấp dịch vụ "như hiện có" và có thể cập nhật bất cứ lúc nào.',
+    's3-title': '3. Tài khoản người dùng',
+    's3-text': 'Một số tính năng yêu cầu tài khoản. Bạn chịu trách nhiệm bảo mật thông tin đăng nhập và toàn bộ hành động được thực hiện từ tài khoản của mình. Cấm chuyển nhượng hoặc bán tài khoản cho bên thứ ba.',
+    's4-title': '4. Quy tắc ứng xử',
+    's4-text': 'Cấm gian lận, bot, khai thác lỗi, chỉnh sửa client, xúc phạm người chơi khác, thư rác và phát tán nội dung bất hợp pháp. Vi phạm có thể bị cảnh cáo, khóa tạm thời hoặc vĩnh viễn.',
+    's5-title': '5. Sở hữu trí tuệ',
+    's5-text': 'Toàn bộ nội dung, đồ họa, âm nhạc, mã nguồn, thương hiệu và nhãn hiệu Evades 3 thuộc về nhà phát triển và được pháp luật bảo vệ. Cấm sao chép, bán lại hoặc sử dụng thương mại khi chưa có sự cho phép bằng văn bản.',
+    's6-title': '6. Hành vi bị cấm',
+    's6-text': 'Bạn không được tấn công hạ tầng của chúng tôi, tự động thu thập dữ liệu, vượt qua hệ thống bảo mật hoặc bán vật phẩm trong game lấy tiền thật ngoài các kênh chính thức.',
+    's7-title': '7. Chấm dứt quyền truy cập',
+    's7-text': 'Chúng tôi có quyền tạm ngưng hoặc xóa tài khoản của bạn nếu vi phạm Điều khoản mà không cần báo trước và không hoàn tiền. Bạn cũng có thể tự xóa tài khoản bất cứ lúc nào trong phần cài đặt hồ sơ.',
+    's8-title': '8. Miễn trừ trách nhiệm',
+    's8-text': 'Dịch vụ được cung cấp "như hiện có", không có bất kỳ bảo đảm nào. Chúng tôi không chịu trách nhiệm về lỗi kỹ thuật, mất tiến trình trò chơi hoặc thiệt hại gián tiếp liên quan đến việc sử dụng trò chơi.',
+    's9-title': '9. Thay đổi điều khoản',
+    's9-text': 'Chúng tôi có thể cập nhật Điều khoản này bất cứ lúc nào. Phiên bản hiện hành luôn có sẵn trên trang này. Việc tiếp tục sử dụng dịch vụ sau khi có thay đổi đồng nghĩa với việc bạn chấp nhận phiên bản mới.',
+    's10-title': '10. Liên hệ',
+    's10-text': 'Mọi thắc mắc về Điều khoản sử dụng xin gửi về <a href="mailto:support@evades3.com">support@evades3.com</a>. Chúng tôi sẽ phản hồi sớm nhất có thể.',
+    'footer-copy': '© 2026 Evades 3. Bảo lưu mọi quyền.',
+    'footer-terms': 'Điều khoản sử dụng',
+    'footer-privacy': 'Chính sách bảo mật',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Hỗ trợ',
+    'footer-contact': 'Có thắc mắc? Viết cho chúng tôi: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  id: {
+    'page-title': 'Evades 3 — Ketentuan Penggunaan',
+    'languages': 'Bahasa ▼',
+    'back-home': '← Kembali ke beranda',
+    'page-heading': 'Ketentuan Penggunaan',
+    'page-sub': 'Evades 3 — Dokumen resmi',
+    'updated': 'Terakhir diperbarui: 23 April 2026',
+    'intro': 'Selamat datang di Evades 3! Dengan menggunakan situs dan permainan kami, Anda menyetujui Ketentuan Penggunaan berikut. Mohon baca dokumen ini dengan saksama sebelum mulai bermain.',
+    's1-title': '1. Penerimaan ketentuan',
+    's1-text': 'Dengan mendaftar di situs atau menjalankan permainan Evades 3, Anda mengonfirmasi telah membaca, memahami, dan setuju mematuhi Ketentuan ini sepenuhnya. Jika Anda tidak setuju dengan pasal mana pun, mohon jangan menggunakan layanan kami.',
+    's2-title': '2. Deskripsi layanan',
+    's2-text': 'Evades 3 adalah permainan daring multipemain beserta situs terkait, termasuk server, klien permainan, komunitas, dan materi terkait. Layanan disediakan "sebagaimana adanya" dan dapat diperbarui kapan saja.',
+    's3-title': '3. Akun pengguna',
+    's3-text': 'Beberapa fitur memerlukan akun. Anda bertanggung jawab atas keamanan data login serta seluruh tindakan yang dilakukan dari akun Anda. Dilarang mengalihkan atau menjual akun kepada pihak ketiga.',
+    's4-title': '4. Aturan perilaku',
+    's4-text': 'Cheat, bot, eksploitasi, modifikasi klien, penghinaan pemain lain, spam, dan penyebaran konten ilegal dilarang. Pelanggaran dapat berujung pada peringatan, pemblokiran sementara atau permanen.',
+    's5-title': '5. Hak kekayaan intelektual',
+    's5-text': 'Semua konten, grafis, musik, kode, merek dagang, dan merek Evades 3 adalah milik para pengembang dan dilindungi oleh hukum. Menyalin, menjual kembali, atau penggunaan komersial tanpa izin tertulis dilarang.',
+    's6-title': '6. Tindakan terlarang',
+    's6-text': 'Anda tidak boleh menyerang infrastruktur kami, mengumpulkan data secara otomatis, melewati sistem keamanan, atau menjual item dalam permainan dengan uang nyata di luar kanal resmi.',
+    's7-title': '7. Penghentian akses',
+    's7-text': 'Kami dapat menangguhkan atau menghapus akun Anda karena pelanggaran Ketentuan tanpa pemberitahuan dan tanpa pengembalian dana. Anda juga dapat menghapus akun kapan saja melalui pengaturan profil.',
+    's8-title': '8. Penafian dan tanggung jawab',
+    's8-text': 'Layanan disediakan "sebagaimana adanya" tanpa jaminan apa pun. Kami tidak bertanggung jawab atas gangguan teknis, kehilangan progres permainan, atau kerugian tidak langsung akibat penggunaan permainan.',
+    's9-title': '9. Perubahan ketentuan',
+    's9-text': 'Kami dapat memperbarui Ketentuan ini kapan saja. Versi terkini selalu tersedia di halaman ini. Dengan terus menggunakan layanan setelah perubahan, Anda menerima versi baru.',
+    's10-title': '10. Kontak',
+    's10-text': 'Untuk pertanyaan terkait Ketentuan Penggunaan ini, silakan kirim email ke <a href="mailto:support@evades3.com">support@evades3.com</a>. Kami akan membalas secepat mungkin.',
+    'footer-copy': '© 2026 Evades 3. Semua hak dilindungi.',
+    'footer-terms': 'Ketentuan Penggunaan',
+    'footer-privacy': 'Kebijakan Privasi',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Dukungan',
+    'footer-contact': 'Ada pertanyaan? Hubungi kami: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  },
+
+  ms: {
+    'page-title': 'Evades 3 — Terma Penggunaan',
+    'languages': 'Bahasa ▼',
+    'back-home': '← Kembali ke halaman utama',
+    'page-heading': 'Terma Penggunaan',
+    'page-sub': 'Evades 3 — Dokumen rasmi',
+    'updated': 'Kemas kini terakhir: 23 April 2026',
+    'intro': 'Selamat datang ke Evades 3! Dengan menggunakan laman dan permainan kami, anda bersetuju dengan Terma Penggunaan berikut. Sila baca dokumen ini dengan teliti sebelum mula bermain.',
+    's1-title': '1. Penerimaan terma',
+    's1-text': 'Dengan mendaftar di laman atau melancarkan permainan Evades 3, anda mengesahkan telah membaca, memahami dan bersetuju mematuhi Terma ini sepenuhnya. Jika anda tidak bersetuju dengan mana-mana fasal, sila jangan gunakan perkhidmatan kami.',
+    's2-title': '2. Penerangan perkhidmatan',
+    's2-text': 'Evades 3 ialah permainan dalam talian berbilang pemain serta laman berkaitannya, termasuk pelayan, klien permainan, komuniti dan bahan berkaitan. Kami menyediakan perkhidmatan "sebagaimana adanya" dan boleh mengemas kininya pada bila-bila masa.',
+    's3-title': '3. Akaun pengguna',
+    's3-text': 'Sesetengah ciri memerlukan akaun. Anda bertanggungjawab atas keselamatan butiran log masuk dan semua tindakan dari akaun anda. Dilarang memindahkan atau menjual akaun kepada pihak ketiga.',
+    's4-title': '4. Peraturan tingkah laku',
+    's4-text': 'Tipu muslihat, bot, eksploitasi, pengubahsuaian klien, menghina pemain lain, spam dan penyebaran kandungan haram adalah dilarang. Pelanggaran boleh menyebabkan amaran atau penyekatan sementara/kekal.',
+    's5-title': '5. Harta intelek',
+    's5-text': 'Semua kandungan, grafik, muzik, kod, tanda dagangan dan jenama Evades 3 adalah milik pembangun dan dilindungi oleh undang-undang. Penyalinan, jualan semula atau penggunaan komersial tanpa kebenaran bertulis adalah dilarang.',
+    's6-title': '6. Tindakan yang dilarang',
+    's6-text': 'Anda tidak boleh menyerang infrastruktur kami, mengumpul data secara automatik, memintas sistem keselamatan atau menjual item dalam permainan untuk wang sebenar di luar saluran rasmi.',
+    's7-title': '7. Penamatan akses',
+    's7-text': 'Kami boleh menggantung atau memadam akaun anda atas pelanggaran Terma tanpa notis dan tanpa bayaran balik. Anda juga boleh memadam akaun anda pada bila-bila masa dalam tetapan profil.',
+    's8-title': '8. Penafian dan liabiliti',
+    's8-text': 'Perkhidmatan disediakan "sebagaimana adanya" tanpa sebarang jaminan. Kami tidak bertanggungjawab atas kegagalan teknikal, kehilangan kemajuan permainan atau kerosakan tidak langsung berkaitan penggunaan permainan.',
+    's9-title': '9. Perubahan terma',
+    's9-text': 'Kami boleh mengemas kini Terma ini pada bila-bila masa. Versi terkini sentiasa tersedia pada halaman ini. Dengan terus menggunakan perkhidmatan selepas perubahan, anda menerima versi baharu.',
+    's10-title': '10. Hubungi kami',
+    's10-text': 'Untuk sebarang soalan tentang Terma Penggunaan ini, sila e-melkan ke <a href="mailto:support@evades3.com">support@evades3.com</a>. Kami akan membalas secepat mungkin.',
+    'footer-copy': '© 2026 Evades 3. Hak cipta terpelihara.',
+    'footer-terms': 'Terma Penggunaan',
+    'footer-privacy': 'Dasar Privasi',
+    'footer-cookies': 'Kuki',
+    'footer-support': 'Sokongan',
+    'footer-contact': 'Ada soalan? Hubungi kami: <a href="mailto:support@evades3.com">support@evades3.com</a>'
+  }
+
+};
+
+</script>
+  <script>
+    function applyTranslations(lang) {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const t =
+          (translations[lang] && translations[lang][key]) ||
+          (translations.en && translations.en[key]) ||
+          el.innerHTML;
+        if (el.tagName === 'TITLE') el.textContent = t.replace(/<[^>]+>/g, '');
+        else el.innerHTML = t;
+      });
+    }
+    function setSelectedLangUI(lang) {
+      document.querySelectorAll('.lang-item').forEach(item => {
+        item.classList.toggle('is-selected', item.dataset.lang === lang);
+      });
+    }
+    let currentLang = 'ru';
+    function changeLanguage(lang) {
+      if (!translations[lang]) lang = 'en';
+      currentLang = lang;
+      document.documentElement.lang = lang;
+      document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+      applyTranslations(lang);
+      localStorage.setItem('selectedLanguage', lang);
+      setSelectedLangUI(lang);
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.lang-item').forEach((item, index) => {
+        item.style.setProperty('--item-delay', `${index * 20}ms`);
+        item.addEventListener('click', () => changeLanguage(item.dataset.lang));
+      });
+      const saved = localStorage.getItem('selectedLanguage') || 'ru';
+      changeLanguage(saved);
+    });
+  </script>
+</body>
+</html>
