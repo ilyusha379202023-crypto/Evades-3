@@ -560,23 +560,8 @@
 
     .lang-item{ position: relative; }
 
-    .lang-item::before{
-      content: "";
-      position: absolute;
-      left: 8px;
-      top: 8px;
-      bottom: 8px;
-      width: 6px;
-      border-radius: 999px;
-      background: transparent;
-      opacity: 0;
-      transition: opacity 0.18s ease, background 0.18s ease;
-    }
-
-    .lang-item:hover::before{
-      background: var(--langBorder);
-      opacity: 1;
-    }
+    .lang-item::before{ display: none; }
+    .lang-item:hover::before{ display: none; }
 
     .lang-item {
       padding: 12px 20px;
@@ -610,9 +595,7 @@
     }
 
     .lang-item.is-selected::before{
-      background: rgba(255, 220, 120, 0.8);
-      opacity: 1;
-      box-shadow: 0 0 12px rgba(255, 220, 120, 0.9);
+      display: none;
     }
 
     .lang-item.is-selected .lang-check::after{
@@ -2164,23 +2147,83 @@
     }
 
     .site-footer {
-      text-align: center;
-      margin: 42px auto 28px;
-      padding: 0 18px;
+      position: relative;
+      margin: 56px auto 0;
+      padding: 28px 24px 22px;
       font-family: 'Exo 2', 'Orbitron', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
-      color: rgba(255, 255, 255, 0.9);
-      font-size: 1rem;
-      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(180deg, rgba(15,45,27,0.25), rgba(10,30,18,0.55));
+      backdrop-filter: blur(6px);
     }
-
-    .site-footer a {
+    .site-footer-inner{
+      max-width: 1180px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px 28px;
+    }
+    .site-footer-brand{
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
       color: #ffffff;
+      letter-spacing: 1px;
+    }
+    .site-footer-brand .brand-dot{
+      width: 8px; height: 8px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffd84d, #b88915);
+      box-shadow: 0 0 10px rgba(255,216,77,0.6);
+    }
+    .site-footer-copy{
+      color: rgba(255,255,255,0.55);
+      font-weight: 500;
+      font-size: 0.86rem;
+      letter-spacing: 0.3px;
+    }
+    .site-footer-links{
+      display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px;
+    }
+    .site-footer-links a{
+      color: rgba(255,255,255,0.78);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .site-footer-links a:hover{
+      color: #ffffff;
+      background: rgba(255,255,255,0.08);
+    }
+    .site-footer-links .dot{
+      color: rgba(255,255,255,0.25);
+      user-select: none;
+    }
+    .site-footer-contact{
+      width: 100%;
+      text-align: center;
+      margin-top: 12px;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.6);
+      font-size: 0.86rem;
+    }
+    .site-footer-contact a{
+      color: #ffd84d;
       text-decoration: none;
       font-weight: 700;
     }
-
-    .site-footer a:hover {
+    .site-footer-contact a:hover{
       text-decoration: underline;
+    }
+    @media (max-width: 640px){
+      .site-footer-inner{ justify-content: center; text-align: center; }
+      .site-footer-links{ justify-content: center; }
     }
 
     
@@ -3274,10 +3317,686 @@ body.modal-open {
 }
 .pmf-label { font-size: 12px; color: rgba(255,255,255,0.45); font-weight: 600; letter-spacing: 0.5px; }
 .pmf-value { font-size: 13px; color: #fff; font-weight: 700; letter-spacing: 0.3px; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ========================================================================
+   ===============  E3 ULTRA UPGRADE — 2026 animated layers   ==============
+   ======================================================================== */
+
+/* Design tokens extension */
+:root{
+  --e3-gold:       #ffd84d;
+  --e3-gold-deep:  #b8860b;
+  --e3-emerald:    #4ade80;
+  --e3-teal:       #2dd4bf;
+  --e3-mint:       #86efac;
+  --e3-crimson:    #ff4d6d;
+  --e3-violet:     #a78bfa;
+  --e3-ink:        #0b1d13;
+  --e3-glass:      rgba(255,255,255,0.07);
+  --e3-glass-str:  rgba(255,255,255,0.12);
+  --e3-border:     rgba(255,255,255,0.14);
+  --e3-border-lit: rgba(255,255,255,0.28);
+  --e3-shadow-lg:  0 20px 50px rgba(0,0,0,0.35);
+  --e3-shadow-xl:  0 30px 80px rgba(0,0,0,0.45);
+  --e3-ease:       cubic-bezier(.2,.8,.2,1);
+  --e3-ease-soft:  cubic-bezier(.4,0,.2,1);
+}
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,*::before,*::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
+
+#e3-bg-canvas{
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.65;
+  mix-blend-mode: screen;
+}
+
+.e3-aurora{
+  position: absolute; inset: auto 0 auto 0;
+  top: -10%;
+  height: 120vh;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+  filter: blur(60px) saturate(140%);
+  opacity: 0.85;
+}
+.e3-aurora::before,
+.e3-aurora::after{
+  content:""; position:absolute;
+  width: 60vmax; height: 60vmax; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(74,222,128,0.55), transparent 60%);
+  animation: auroraFloat 24s ease-in-out infinite;
+  left: -10vmax; top: -20vmax;
+}
+.e3-aurora::after{
+  background: radial-gradient(circle at 50% 50%, rgba(255,215,0,0.35), transparent 60%);
+  width: 70vmax; height: 70vmax;
+  left: auto; right: -15vmax; top: 20vmax;
+  animation-duration: 32s; animation-delay: -8s;
+}
+@keyframes auroraFloat{
+  0%,100% { transform: translate3d(0,0,0) scale(1); }
+  25%     { transform: translate3d(4vmax,-3vmax,0) scale(1.06); }
+  50%     { transform: translate3d(-3vmax,2vmax,0) scale(0.94); }
+  75%     { transform: translate3d(2vmax,4vmax,0) scale(1.08); }
+}
+
+.e3-grain{
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 2;
+  background-image:
+    repeating-radial-gradient(circle at 23% 41%, rgba(255,255,255,0.035) 0 1px, transparent 1px 3px),
+    repeating-radial-gradient(circle at 77% 67%, rgba(255,255,255,0.025) 0 1px, transparent 1px 3px);
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+}
+
+#e3-scroll-progress{
+  position: fixed; top: 0; left: 0;
+  width: 0%; height: 3px;
+  background: linear-gradient(90deg, var(--e3-emerald), var(--e3-gold), #ff8c00);
+  box-shadow: 0 0 14px rgba(74,222,128,0.55), 0 0 28px rgba(255,216,77,0.45);
+  z-index: 2100; pointer-events: none;
+  transition: width .12s linear;
+}
+
+/* ===== Custom scrollbar (matches "Languages" button glass style) ===== */
+html{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent; }
+body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent; }
+
+*::-webkit-scrollbar{ width: 10px; height: 10px; background: transparent; }
+*::-webkit-scrollbar-track{ background: transparent; border: none; box-shadow: none; }
+*::-webkit-scrollbar-track-piece{ background: transparent; }
+*::-webkit-scrollbar-thumb{
+  background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.15));
+  border-radius: 50px;
+  border: 2px solid rgba(255,255,255,0.4);
+  box-shadow:
+    inset -1px -1px 3px rgba(0,0,0,0.2),
+    inset 1px 1px 3px rgba(255,255,255,0.2),
+    2px 2px 8px rgba(0,0,0,0.3);
+  min-height: 48px;
+  transition: background .3s ease, box-shadow .3s ease;
+}
+*::-webkit-scrollbar-thumb:hover{
+  background: linear-gradient(145deg, rgba(255,255,255,0.35), rgba(255,255,255,0.25));
+  box-shadow:
+    inset -1px -1px 3px rgba(0,0,0,0.2),
+    inset 1px 1px 3px rgba(255,255,255,0.25),
+    2px 2px 10px rgba(0,0,0,0.35);
+}
+*::-webkit-scrollbar-thumb:active{
+  background: linear-gradient(145deg, rgba(255,255,255,0.45), rgba(255,255,255,0.3));
+}
+*::-webkit-scrollbar-corner{ background: transparent; }
+
+.e3-scroll-hint{
+  margin: 24px auto 0;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  color: rgba(255,255,255,0.75);
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  font-weight: 700;
+  animation: hintFloat 2.6s ease-in-out infinite;
+}
+.e3-scroll-hint .wheel{
+  width: 22px; height: 36px;
+  border: 2px solid rgba(255,255,255,0.55);
+  border-radius: 999px;
+  position: relative;
+}
+.e3-scroll-hint .wheel::before{
+  content:""; position:absolute; left:50%; top:6px;
+  width: 4px; height: 8px; border-radius: 2px;
+  background: #fff; transform: translateX(-50%);
+  animation: wheelDrop 1.8s ease-in-out infinite;
+}
+@keyframes wheelDrop{
+  0%   { transform: translate(-50%,0); opacity:1; }
+  60%  { transform: translate(-50%,14px); opacity:0; }
+  100% { transform: translate(-50%,0); opacity:0; }
+}
+@keyframes hintFloat{
+  0%,100% { transform: translateY(0); opacity: .85; }
+  50%     { transform: translateY(6px); opacity: 1; }
+}
+
+.e3-section{
+  position: relative; z-index: 10;
+  margin: 120px auto;
+  padding: 0 8px;
+}
+.e3-section-head{
+  text-align: center;
+  margin-bottom: 48px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.e3-eyebrow{
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(74,222,128,0.18), rgba(255,216,77,0.12));
+  border: 1px solid rgba(74,222,128,0.35);
+  color: #d9f7e3;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  font-weight: 700;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 6px 18px rgba(0,0,0,0.25);
+}
+.e3-eyebrow .dot{
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--e3-emerald);
+  box-shadow: 0 0 8px var(--e3-emerald);
+  animation: dotPulse 1.6s ease-in-out infinite;
+}
+@keyframes dotPulse { 0%,100%{transform:scale(1);opacity:.9} 50%{transform:scale(1.4);opacity:1} }
+
+.e3-title{
+  font-family: 'Exo 2','Orbitron',sans-serif;
+  font-weight: 900;
+  font-size: clamp(28px, 4.4vw, 52px);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #fff 0%, #ffd84d 50%, #4ade80 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 4px 18px rgba(0,0,0,0.35));
+}
+.e3-title .accent{
+  background: linear-gradient(135deg, #ffd84d, #ff8c00);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.e3-lead{
+  max-width: 640px;
+  color: rgba(255,255,255,0.78);
+  font-size: 16px; line-height: 1.6;
+}
+
+.reveal{
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity .9s var(--e3-ease), transform .9s var(--e3-ease);
+  will-change: opacity, transform;
+}
+.reveal.in{ opacity: 1; transform: none; }
+.reveal[data-delay="1"]{ transition-delay: .08s; }
+.reveal[data-delay="2"]{ transition-delay: .16s; }
+.reveal[data-delay="3"]{ transition-delay: .24s; }
+.reveal[data-delay="4"]{ transition-delay: .32s; }
+.reveal[data-delay="5"]{ transition-delay: .4s; }
+.reveal-zoom{ transform: translateY(24px) scale(.96); }
+.reveal-zoom.in{ transform: none; }
+
+.tilt-3d{
+  transform-style: preserve-3d;
+  transition: transform .25s var(--e3-ease);
+  will-change: transform;
+}
+.tilt-3d::after{
+  content:"";
+  position: absolute; inset: 0; border-radius: inherit;
+  background: radial-gradient(circle at var(--tx,50%) var(--ty,50%), rgba(255,255,255,0.18), transparent 55%);
+  opacity: 0;
+  transition: opacity .3s ease;
+  pointer-events: none; z-index: 3;
+}
+.tilt-3d.is-hover::after{ opacity: 1; }
+
+.e3-live-stats{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 36px;
+}
+.live-stat{
+  position: relative; overflow: hidden;
+  padding: 22px 22px;
+  border-radius: 18px;
+  background: linear-gradient(160deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03));
+  border: 1px solid var(--e3-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--e3-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.09);
+  transition: transform .35s var(--e3-ease), border-color .35s ease, box-shadow .35s ease;
+}
+.live-stat::before{
+  content:""; position:absolute; inset: -1px;
+  border-radius: inherit; padding: 1px;
+  background: linear-gradient(135deg, rgba(74,222,128,0.6), transparent 45%, rgba(255,216,77,0.5));
+  -webkit-mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+          mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0.55; pointer-events: none;
+  transition: opacity .3s ease;
+}
+.live-stat:hover{
+  transform: translateY(-4px);
+  border-color: var(--e3-border-lit);
+  box-shadow: var(--e3-shadow-xl);
+}
+.live-stat:hover::before{ opacity: 1; }
+.live-stat .ls-head{
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px;
+}
+.live-stat .ls-label{
+  font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.6); font-weight: 700;
+}
+.live-stat .ls-badge{
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 800;
+  padding: 3px 8px; border-radius: 999px;
+  background: rgba(74,222,128,0.16);
+  border: 1px solid rgba(74,222,128,0.45);
+  color: #bdf3cf; letter-spacing: 1px;
+}
+.live-stat .ls-badge .pulse{
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--e3-emerald);
+  box-shadow: 0 0 8px var(--e3-emerald);
+  animation: dotPulse 1.2s ease-in-out infinite;
+}
+.live-stat .ls-value{
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 0 12px rgba(74,222,128,0.4);
+  line-height: 1.05;
+}
+.live-stat .ls-delta{
+  font-size: 12px; color: #b0e4c3; font-weight: 700; margin-top: 4px;
+}
+
+/* Roadmap progress bar + current task */
+.rm-progress-wrap{
+  max-width: 900px; margin: 0 auto 22px;
+  padding: 0 12px;
+}
+.rm-progress-label{
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,255,255,0.7); margin-bottom: 8px;
+}
+.rm-progress-label strong{ color: #4ade80; font-size: 18px; }
+.rm-progress-bar{
+  height: 12px; border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+}
+.rm-progress-bar > i{
+  display: block; height: 100%;
+  width: var(--p, 0%);
+  background: linear-gradient(90deg, #4ade80, #ffd84d, #ff8c00);
+  box-shadow: 0 0 14px rgba(74,222,128,0.5);
+  border-radius: inherit;
+  transition: width 1.2s var(--e3-ease);
+}
+.rm-current{
+  max-width: 900px; margin: 0 auto 28px;
+  padding: 14px 20px;
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(255,216,77,0.12), rgba(255,140,0,0.06));
+  border: 1px solid rgba(255,216,77,0.35);
+  display: flex; align-items: center; gap: 14px;
+  box-shadow: 0 0 20px rgba(255,216,77,0.15);
+}
+.rm-current-icon{ font-size: 28px; }
+.rm-current-label{
+  font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: #ffe995; font-weight: 800;
+}
+.rm-current-task{
+  font-family: 'Orbitron', sans-serif;
+  font-size: 16px; font-weight: 900; color: #fff; letter-spacing: 0.5px;
+}
+
+.e3-timeline{
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 12px 0 12px 12px;
+}
+.e3-timeline::before{
+  content:""; position:absolute; left: 22px; top: 0; bottom: 0;
+  width: 2px; border-radius: 1px;
+  background: linear-gradient(180deg, transparent, rgba(74,222,128,0.6), rgba(255,216,77,0.7), rgba(255,140,0,0.5), transparent);
+}
+.tl-item{
+  position: relative;
+  padding: 14px 14px 14px 62px;
+  margin-bottom: 18px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+  border: 1px solid var(--e3-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.07);
+  transition: transform .35s var(--e3-ease), border-color .35s ease, box-shadow .35s ease;
+}
+.tl-item:hover{
+  transform: translateX(6px);
+  border-color: rgba(74,222,128,0.45);
+  box-shadow: 0 18px 44px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.tl-item .tl-dot{
+  position: absolute; left: 15px; top: 18px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #fff 0%, var(--e3-emerald) 60%, #128b3c 100%);
+  box-shadow: 0 0 0 4px rgba(74,222,128,0.15), 0 0 18px rgba(74,222,128,0.8);
+}
+.tl-item.is-done  .tl-dot{ background: radial-gradient(circle at 30% 30%, #fff, #2dd4bf 65%, #0e5d57 100%); box-shadow: 0 0 0 4px rgba(45,212,191,0.18), 0 0 16px rgba(45,212,191,0.7); }
+.tl-item.is-now   .tl-dot{ animation: tlNowPulse 1.5s ease-in-out infinite; }
+.tl-item.is-future .tl-dot{ background: radial-gradient(circle at 30% 30%, #fff, #c7c9cc 65%, #555); box-shadow: 0 0 0 4px rgba(255,255,255,0.08), 0 0 10px rgba(255,255,255,0.25); }
+@keyframes tlNowPulse{
+  0%,100% { box-shadow: 0 0 0 4px rgba(255,216,77,0.18), 0 0 18px rgba(255,216,77,0.7); }
+  50%     { box-shadow: 0 0 0 10px rgba(255,216,77,0), 0 0 26px rgba(255,216,77,1); }
+}
+.tl-meta{
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+.tl-chip{
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 10px; letter-spacing: 1.5px; font-weight: 800; text-transform: uppercase;
+  border: 1px solid var(--e3-border);
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.75);
+}
+.tl-item.is-done  .tl-chip{ background: rgba(45,212,191,0.15); border-color: rgba(45,212,191,0.5); color: #bff1ea; }
+.tl-item.is-now   .tl-chip{ background: rgba(255,216,77,0.16); border-color: rgba(255,216,77,0.5); color: #ffe995; }
+.tl-item.is-future .tl-chip{ background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); color: #e5e7eb; }
+.tl-date{
+  font-family: 'Orbitron', sans-serif; font-size: 11px;
+  color: rgba(255,255,255,0.55); letter-spacing: 2px;
+}
+.tl-title{
+  font-weight: 900; color: #fff; font-size: 17px; letter-spacing: 0.5px;
+  margin: 2px 0 6px;
+}
+.tl-text{ color: rgba(255,255,255,0.72); font-size: 14px; line-height: 1.55; }
+.tl-progress{
+  margin-top: 10px; height: 5px; border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+.tl-progress > i{
+  display: block; height: 100%;
+  width: var(--p, 0%);
+  background: linear-gradient(90deg, var(--e3-emerald), var(--e3-gold));
+  box-shadow: 0 0 10px rgba(74,222,128,0.6);
+  border-radius: inherit;
+  transition: width 1s var(--e3-ease);
+}
+
+.hero-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 22px;
+}
+.faq-list{
+  max-width: 820px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.faq-item{
+  background: linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+  border: 1px solid var(--e3-border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color .3s ease, box-shadow .3s ease;
+  backdrop-filter: blur(10px);
+}
+.faq-item:hover{ border-color: rgba(74,222,128,0.35); box-shadow: 0 10px 28px rgba(0,0,0,0.25); }
+.faq-q{
+  width: 100%;
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 18px;
+  background: transparent; border: none;
+  color: #fff; font-weight: 800; font-size: 15px;
+  text-align: left;
+  font-family: 'Exo 2', sans-serif;
+  cursor: pointer;
+}
+.faq-q .faq-ico{
+  width: 28px; height: 28px; border-radius: 8px;
+  display: grid; place-items: center;
+  background: rgba(74,222,128,0.18);
+  border: 1px solid rgba(74,222,128,0.4);
+  color: var(--e3-emerald);
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900; font-size: 14px;
+  transition: transform .4s var(--e3-ease), background .3s ease;
+  flex: 0 0 auto;
+}
+.faq-q .faq-caret{
+  margin-left: auto;
+  width: 24px; height: 24px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--e3-border);
+  color: #fff; font-weight: 900;
+  transition: transform .35s var(--e3-ease), background .3s ease, border-color .3s ease;
+}
+.faq-item.is-open .faq-q .faq-caret{
+  transform: rotate(45deg);
+  background: rgba(255,216,77,0.2);
+  border-color: rgba(255,216,77,0.55);
+  color: var(--e3-gold);
+}
+.faq-item.is-open .faq-q .faq-ico{
+  transform: rotate(12deg) scale(1.06);
+  background: rgba(255,216,77,0.18);
+  border-color: rgba(255,216,77,0.5);
+  color: var(--e3-gold);
+}
+.faq-a{
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .45s var(--e3-ease);
+}
+.faq-item.is-open .faq-a{ max-height: 400px; }
+.faq-a-inner{
+  padding: 0 18px 18px 60px;
+  color: rgba(255,255,255,0.82);
+  font-size: 14px; line-height: 1.7;
+}
+
+.news-box{
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 34px 28px;
+  border-radius: 22px;
+  position: relative; overflow: hidden;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(74,222,128,0.18), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(255,216,77,0.18), transparent 55%),
+    linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  border: 1px solid var(--e3-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--e3-shadow-xl), inset 0 1px 0 rgba(255,255,255,0.1);
+  text-align: center;
+}
+.news-box::before{
+  content:""; position: absolute; inset: -50%;
+  background: conic-gradient(from 90deg, rgba(74,222,128,0.25), transparent 25%, rgba(255,216,77,0.35) 50%, transparent 75%, rgba(74,222,128,0.25));
+  animation: mpSpin 20s linear infinite;
+  opacity: 0.35; filter: blur(40px);
+  pointer-events: none;
+}
+.news-content{ position: relative; z-index: 1; }
+.news-title{
+  font-family: 'Exo 2','Orbitron',sans-serif;
+  font-size: 26px; font-weight: 900; letter-spacing: 1px;
+  color: #fff; margin-bottom: 8px; text-transform: uppercase;
+}
+.news-sub{
+  color: rgba(255,255,255,0.78); font-size: 14px;
+  max-width: 520px; margin: 0 auto 22px;
+  line-height: 1.6;
+}
+.news-form{
+  display: flex; gap: 10px;
+  max-width: 520px; margin: 0 auto;
+  flex-wrap: wrap;
+}
+.news-input{
+  flex: 1 1 240px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--e3-border);
+  color: #fff; font-size: 14px;
+  outline: none;
+  transition: border-color .25s ease, box-shadow .25s ease;
+  font-family: inherit;
+  min-width: 0;
+}
+.news-input::placeholder{ color: rgba(255,255,255,0.4); }
+.news-input:focus{
+  border-color: rgba(74,222,128,0.7);
+  box-shadow: 0 0 0 4px rgba(74,222,128,0.15), 0 8px 22px rgba(0,0,0,0.25);
+}
+.news-input.is-ok   { border-color: rgba(74,222,128,0.8); }
+.news-input.is-bad  { border-color: rgba(255,77,109,0.8); animation: inputShake .4s var(--e3-ease); }
+@keyframes inputShake{ 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+.news-btn{
+  position: relative; overflow: hidden;
+  padding: 14px 22px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--e3-gold), #ff8c00);
+  color: #1a1f14; font-weight: 900; letter-spacing: 2px; font-size: 12px;
+  font-family: 'Orbitron', sans-serif;
+  text-transform: uppercase;
+  border: none; cursor: pointer;
+  box-shadow: 0 12px 28px rgba(255,140,0,0.35), inset 0 1px 0 rgba(255,255,255,0.5);
+  transition: transform .2s var(--e3-ease), box-shadow .2s var(--e3-ease);
+}
+.news-btn:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(255,140,0,0.5), inset 0 1px 0 rgba(255,255,255,0.5);
+}
+.news-btn:active{ transform: translateY(0); }
+.news-btn::after{
+  content:""; position:absolute; inset:0;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
+  transform: translateX(-100%);
+  transition: transform .55s ease;
+}
+.news-btn:hover::after{ transform: translateX(120%); }
+.news-perks{
+  display: flex; justify-content: center; gap: 22px; flex-wrap: wrap;
+  margin-top: 18px;
+  color: rgba(255,255,255,0.55); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;
+}
+.news-perk{ display: inline-flex; align-items: center; gap: 6px; }
+.news-perk b{ color: var(--e3-emerald); }
+
+.e3-social{
+  display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
+  margin-top: 22px;
+}
+.social-btn{
+  position: relative;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  border: 1px solid var(--e3-border);
+  color: #fff; font-weight: 800; font-size: 13px; letter-spacing: 1.5px;
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.07);
+  transition: transform .25s var(--e3-ease), border-color .25s ease, box-shadow .25s ease, color .25s ease;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  text-transform: uppercase;
+}
+.social-btn svg{ width: 20px; height: 20px; transition: transform .35s var(--e3-ease); }
+.social-btn:hover{ transform: translateY(-3px) scale(1.04); border-color: var(--sb-color, rgba(74,222,128,0.6)); box-shadow: 0 16px 36px rgba(0,0,0,0.4), 0 0 24px var(--sb-glow, rgba(74,222,128,0.35)); color: var(--sb-color, #4ade80); }
+.social-btn:hover svg{ transform: rotate(-8deg) scale(1.1); }
+
+#e3-back-top{
+  position: fixed; right: 32px; bottom: 32px;
+  width: 48px; height: 48px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: linear-gradient(145deg, rgba(74,222,128,0.35), rgba(255,216,77,0.22));
+  border: 1px solid rgba(255,255,255,0.4);
+  color: #fff; font-size: 20px; font-weight: 900;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.4), 0 0 18px rgba(74,222,128,0.35), inset 0 1px 0 rgba(255,255,255,0.35);
+  cursor: pointer;
+  opacity: 0; transform: translateY(20px) scale(0.8);
+  pointer-events: none;
+  transition: opacity .35s var(--e3-ease), transform .35s var(--e3-ease);
+  z-index: 99000;
+  backdrop-filter: blur(8px);
+}
+#e3-back-top.is-visible{ opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+#e3-back-top:hover{ transform: translateY(-4px) scale(1.05); box-shadow: 0 18px 40px rgba(0,0,0,0.5), 0 0 28px rgba(74,222,128,0.6); }
+
+.magnetic{ display: inline-block; will-change: transform; transition: transform .18s var(--e3-ease); }
+
+.feature-card{ position: relative; overflow: hidden; }
+.feature-card::after{
+  content:""; position:absolute; inset: -1px;
+  border-radius: inherit; padding: 1px;
+  background: linear-gradient(135deg, rgba(74,222,128,0) 0%, rgba(74,222,128,0.55) 40%, rgba(255,216,77,0.5) 60%, rgba(74,222,128,0) 100%);
+  -webkit-mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+          mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0; transition: opacity .3s ease;
+  pointer-events: none;
+}
+.feature-card:hover::after{ opacity: 1; }
+
+.download-button{ position: relative; z-index: 1; }
+.download-button::before{
+  content:"";
+  position: absolute; inset: -6px;
+  border-radius: inherit;
+  background: radial-gradient(circle, rgba(255,216,77,0.35), transparent 60%);
+  opacity: 0; transition: opacity .4s ease;
+  pointer-events: none; z-index: -1;
+  filter: blur(14px);
+}
+.download-button:hover::before{ opacity: 1; }
+
+@media (max-width: 760px){
+  .e3-section{ margin: 80px auto; }
+  .e3-title{ font-size: clamp(24px, 8vw, 36px); letter-spacing: 1px; }
+  #e3-back-top{ right: 20px; bottom: 24px; width: 42px; height: 42px; }
+}
+
+/* ========================================================================
+   ===============   END   E3 ULTRA UPGRADE BLOCK              ==============
+   ======================================================================== */
   </style>
 </head>
 
 <body>
+
+  <!-- ===== E3 ULTRA UPGRADE: фоновые слои ===== -->
+  <canvas id="e3-bg-canvas" aria-hidden="true"></canvas>
+  <div class="e3-aurora" aria-hidden="true"></div>
+  <div class="e3-grain" aria-hidden="true"></div>
+  <div id="e3-scroll-progress" aria-hidden="true"></div>
+  <button id="e3-back-top" type="button" aria-label="Наверх" title="Наверх">↑</button>
+  <!-- ===== END E3 ULTRA UPGRADE layers ===== -->
 
   <!-- ===== КАСТОМНЫЙ КУРСОР ===== -->
   <canvas id="cursor-canvas"></canvas>
@@ -3880,7 +4599,7 @@ body.modal-open {
     </div>
 
     <div class="button-container">
-      <button class="download-button" data-i18n="download-btn">Скачать Evades 3</button>
+      <span class="magnetic" data-magnetic><button class="download-button" data-i18n="download-btn">Скачать Evades 3</button></span>
       <div class="dev-badge" data-tooltip="Игра ещё в разработке">
         <span class="status-sash" aria-hidden="true"></span>
         <span class="status-icon" aria-hidden="true">⏳</span>
@@ -3895,29 +4614,11 @@ body.modal-open {
       <a class="follow-dev-link" href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener" data-i18n="follow-dev">Следить за разработкой</a>
     </div>
 
-        <section class="trust-strip" aria-label="Official trust signals">
-      <div class="trust-item">
-        <span class="trust-icon" aria-hidden="true">🛡️</span>
-        <div>
-          <span data-i18n="trust-site">Официальный сайт Evades 3</span>
-          <span class="trust-meta" data-i18n="trust-site-meta">Проверенный домен: evades3.com</span>
-        </div>
-      </div>
-      <div class="trust-item">
-        <span class="trust-icon" aria-hidden="true">🔒</span>
-        <div>
-          <span data-i18n="trust-https">Защищённое HTTPS-соединение</span>
-          <span class="trust-meta" data-i18n="trust-https-meta">Ваши данные шифруются при передаче</span>
-        </div>
-      </div>
-      <div class="trust-item">
-        <span class="trust-icon" aria-hidden="true">✅</span>
-        <div>
-          <span data-i18n="trust-community">Официальные каналы проекта</span>
-          <span class="trust-meta"><a class="trust-link" href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener" data-i18n="trust-community-meta">Discord сообщества (подтверждён)</a></span>
-        </div>
-      </div>
-    </section>
+    <div class="e3-scroll-hint" aria-hidden="true">
+      <span data-i18n="ultra-scroll-hint">Прокрути вниз</span>
+      <span class="wheel"></span>
+    </div>
+
     
     <div class="description">
       <div class="glass-card">
@@ -4083,10 +4784,277 @@ body.modal-open {
         </div>
       </div>
     </section>
+
+    <!-- ============ E3 ULTRA UPGRADE: LIVE STATS ============ -->
+    <section class="e3-section reveal" id="live-stats" aria-labelledby="ls-title">
+      <div class="e3-section-head">
+        <div class="e3-eyebrow"><span class="dot"></span><span data-i18n="ultra-live-eyebrow">Проект растёт</span></div>
+        <h2 id="ls-title" class="e3-title"><span data-i18n="ultra-live-title-a">Пульс</span> <span class="accent" data-i18n="ultra-live-title-b">разработки</span></h2>
+        <p class="e3-lead" data-i18n="ultra-live-lead">Игра в активной разработке. Присоединяйся к сообществу — будь в числе первых.</p>
+      </div>
+      <div class="e3-live-stats">
+        <div class="live-stat reveal" data-delay="1">
+          <div class="ls-head">
+            <div class="ls-label" data-i18n="ultra-live-discord">Discord-комьюнити</div>
+            <span class="ls-badge"><span class="pulse"></span><span data-i18n="ultra-live-growing">GROWING</span></span>
+          </div>
+          <div class="ls-value" style="font-size:1.4em;" data-i18n="ultra-live-discord-cta">Присоединяйся</div>
+          <div class="ls-delta" data-i18n="ultra-live-discord-d">будь в числе первых</div>
+        </div>
+        <div class="live-stat reveal" data-delay="2">
+          <div class="ls-head">
+            <div class="ls-label" data-i18n="ultra-live-status">Статус</div>
+            <span class="ls-badge"><span class="pulse"></span><span data-i18n="ultra-live-dev">DEV</span></span>
+          </div>
+          <div class="ls-value" style="font-size:1.6em;">🔧 <span data-i18n="dev-badge">В разработке</span></div>
+          <div class="ls-delta" data-i18n="ultra-live-status-d">закрытая альфа</div>
+        </div>
+        <div class="live-stat reveal" data-delay="3">
+          <div class="ls-head">
+            <div class="ls-label" data-i18n="ultra-live-release">Релиз</div>
+            <span class="ls-badge"><span class="pulse"></span><span data-i18n="ultra-live-soon">SOON</span></span>
+          </div>
+          <div class="ls-value" style="font-size:1.4em;">2026–2027</div>
+          <div class="ls-delta" data-i18n="ultra-live-release-d">открытая альфа</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Heroes & Modes removed — game is in development, content TBD -->
+
+    <!-- ============ E3 ULTRA UPGRADE: ROADMAP ============ -->
+    <section class="e3-section reveal" id="roadmap" aria-labelledby="rm-title">
+      <div class="e3-section-head">
+        <div class="e3-eyebrow"><span class="dot"></span><span data-i18n="ultra-roadmap-eyebrow">Дорожная карта</span></div>
+        <h2 id="rm-title" class="e3-title"><span data-i18n="ultra-roadmap-title-a">Путь</span> <span class="accent" data-i18n="ultra-roadmap-title-b">к релизу</span></h2>
+        <p class="e3-lead" data-i18n="ultra-roadmap-lead">Игра в активной разработке. Вот основные вехи — даты и состав могут меняться.</p>
+      </div>
+      <!-- Progress bar -->
+      <div class="rm-progress-wrap reveal" data-delay="1">
+        <div class="rm-progress-label"><span data-i18n="ultra-roadmap-progress">Прогресс</span> <strong>46%</strong></div>
+        <div class="rm-progress-bar"><i style="--p:46%"></i></div>
+      </div>
+
+      <!-- Current task -->
+      <div class="rm-current reveal" data-delay="1">
+        <span class="rm-current-icon">⏳</span>
+        <div>
+          <div class="rm-current-label" data-i18n="ultra-roadmap-now">Сейчас</div>
+          <div class="rm-current-task" data-i18n="ultra-rm-8">Разработка базового персонажа</div>
+        </div>
+      </div>
+
+      <div class="e3-timeline">
+        <!-- ✅ Done tasks -->
+        <div class="tl-item is-done reveal" data-delay="1">
+          <div class="tl-dot"></div>
+          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-done">Готово</span></div>
+          <div class="tl-title" data-i18n="ultra-rm-1">Создание системы движения персонажа</div>
+          <div class="tl-progress"><i style="--p:100%"></i></div>
+        </div>
+        <div class="tl-item is-done reveal" data-delay="1">
+          <div class="tl-dot"></div>
+          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-done">Готово</span></div>
+          <div class="tl-title" data-i18n="ultra-rm-2">Создание системы движения врагов</div>
+          <div class="tl-progress"><i style="--p:100%"></i></div>
+        </div>
+        <div class="tl-item is-done reveal" data-delay="1">
+          <div class="tl-dot"></div>
+          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-done">Готово</span></div>
+          <div class="tl-title" data-i18n="ultra-rm-3">Реализация механики «таймер» при касании врага</div>
+          <div class="tl-progress"><i style="--p:100%"></i></div>
+        </div>
+        <div class="tl-item is-done reveal" data-delay="2">
+          <div class="tl-dot"></div>
+          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-done">Готово</span></div>
+          <div class="tl-title" data-i18n="ultra-rm-4">Создание экрана поражения</div>
+          <div class="tl-progress"><i style="--p:100%"></i></div>
+        </div>
+        <div class="tl-item is-done reveal" data-delay="2">
+          <div class="tl-dot"></div>
+          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-done">Готово</span></div>
+          <div class="tl-title" data-i18n="ultra-rm-5">Разработка текстур игровой зоны</div>
+          <div class="tl-progress"><i style="--p:100%"></i></div>
+        </div>
+        <div class="tl-item is-done reveal" data-delay="2">
+          <div class="tl-dot"></div>
+          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-done">Готово</span></div>
+          <div class="tl-title" data-i18n="ultra-rm-6">Создание зоны с 10 аренами</div>
+          <div class="tl-progress"><i style="--p:100%"></i></div>
+        </div>
+        <div class="tl-item is-done reveal" data-delay="3">
+          <div class="tl-dot"></div>
+          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-done">Готово</span></div>
+          <div class="tl-title" data-i18n="ultra-rm-7">Создание главного меню</div>
+          <div class="tl-progress"><i style="--p:100%"></i></div>
+        </div>
+
+        <!-- ⏳ In progress -->
+        <div class="tl-item is-now reveal" data-delay="3">
+          <div class="tl-dot"></div>
+          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-now">Сейчас</span></div>
+          <div class="tl-title" data-i18n="ultra-rm-8">Разработка базового персонажа</div>
+          <div class="tl-progress"><i style="--p:50%"></i></div>
+        </div>
+
+        <!-- ☐ Pending tasks -->
+        <div class="tl-item is-future reveal" data-delay="3">
+          <div class="tl-dot"></div>
+          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-planned">Запланировано</span></div>
+          <div class="tl-title" data-i18n="ultra-rm-9">Разработка нескольких игровых зон с другими врагами</div>
+          <div class="tl-progress"><i style="--p:0%"></i></div>
+        </div>
+        <div class="tl-item is-future reveal" data-delay="4">
+          <div class="tl-dot"></div>
+          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-planned">Запланировано</span></div>
+          <div class="tl-title" data-i18n="ultra-rm-10">Реализация переходов между зонами</div>
+          <div class="tl-progress"><i style="--p:0%"></i></div>
+        </div>
+        <div class="tl-item is-future reveal" data-delay="4">
+          <div class="tl-dot"></div>
+          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-planned">Запланировано</span></div>
+          <div class="tl-title" data-i18n="ultra-rm-11">Добавление нескольких персонажей</div>
+          <div class="tl-progress"><i style="--p:0%"></i></div>
+        </div>
+        <div class="tl-item is-future reveal" data-delay="4">
+          <div class="tl-dot"></div>
+          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-planned">Запланировано</span></div>
+          <div class="tl-title" data-i18n="ultra-rm-12">Добавление аксессуаров</div>
+          <div class="tl-progress"><i style="--p:0%"></i></div>
+        </div>
+        <div class="tl-item is-future reveal" data-delay="5">
+          <div class="tl-dot"></div>
+          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-planned">Запланировано</span></div>
+          <div class="tl-title" data-i18n="ultra-rm-13">Добавление остальных функций</div>
+          <div class="tl-progress"><i style="--p:0%"></i></div>
+        </div>
+        <div class="tl-item is-future reveal" data-delay="5">
+          <div class="tl-dot"></div>
+          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-planned">Запланировано</span></div>
+          <div class="tl-title" data-i18n="ultra-rm-14">Исправление багов и подготовка альфа-версии</div>
+          <div class="tl-progress"><i style="--p:0%"></i></div>
+        </div>
+        <div class="tl-item is-future reveal" data-delay="5">
+          <div class="tl-dot"></div>
+          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-planned">Запланировано</span></div>
+          <div class="tl-title" data-i18n="ultra-rm-15">Добавление загрузки альфа-версии на сайт</div>
+          <div class="tl-progress"><i style="--p:0%"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community testimonials removed — no real player reviews yet -->
+
+    <!-- ============ E3 ULTRA UPGRADE: FAQ ============ -->
+    <section class="e3-section reveal" id="faq" aria-labelledby="faq-title">
+      <div class="e3-section-head">
+        <div class="e3-eyebrow"><span class="dot"></span><span data-i18n="ultra-faq-eyebrow">Часто спрашивают</span></div>
+        <h2 id="faq-title" class="e3-title"><span data-i18n="ultra-faq-title-a">Коротко</span> <span class="accent" data-i18n="ultra-faq-title-b">о главном</span></h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item reveal" data-delay="1">
+          <button class="faq-q" type="button" aria-expanded="false">
+            <span class="faq-ico">1</span>
+            <span data-i18n="ultra-faq-1-q">Когда релиз и где можно поиграть?</span>
+            <span class="faq-caret">+</span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner" data-i18n="ultra-faq-1-a">Сейчас идёт закрытая разработка. Сначала выйдет альфа-версия, затем релиз. Планы — 2026–2027. Следи за Discord и подпишись на апдейты ниже.</div></div>
+        </div>
+        <div class="faq-item reveal" data-delay="2">
+          <button class="faq-q" type="button" aria-expanded="false">
+            <span class="faq-ico">2</span>
+            <span data-i18n="ultra-faq-2-q">На каких платформах будет игра?</span>
+            <span class="faq-caret">+</span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner" data-i18n="ultra-faq-2-a">Сначала — Web и Windows. После релиза планируем порт на macOS и Linux, а затем мобильная версия.</div></div>
+        </div>
+        <div class="faq-item reveal" data-delay="3">
+          <button class="faq-q" type="button" aria-expanded="false">
+            <span class="faq-ico">3</span>
+            <span data-i18n="ultra-faq-3-q">Игра будет платной?</span>
+            <span class="faq-caret">+</span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner" data-i18n="ultra-faq-3-a">Базовая игра бесплатна. Пропуски, скины и VIP-статус — опциональная поддержка проекта без pay-to-win механик.</div></div>
+        </div>
+        <div class="faq-item reveal" data-delay="4">
+          <button class="faq-q" type="button" aria-expanded="false">
+            <span class="faq-ico">4</span>
+            <span data-i18n="ultra-faq-4-q">Какие системные требования?</span>
+            <span class="faq-caret">+</span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner" data-i18n="ultra-faq-4-a">Цель — 60 FPS на большинстве устройств последних 5 лет. Веб-версия работает в любом современном браузере.</div></div>
+        </div>
+        <div class="faq-item reveal" data-delay="5">
+          <button class="faq-q" type="button" aria-expanded="false">
+            <span class="faq-ico">5</span>
+            <span data-i18n="ultra-faq-5-q">Как попасть в закрытый тест?</span>
+            <span class="faq-caret">+</span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner" data-i18n="ultra-faq-5-a">Зайди в наш Discord и подпишись на рассылку ниже — как только откроется набор на альфа-тест, подписчики узнают первыми.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ E3 ULTRA UPGRADE: NEWSLETTER ============ -->
+    <section class="e3-section reveal reveal-zoom" id="news" aria-labelledby="nw-title">
+      <div class="news-box">
+        <div class="news-content">
+          <div class="e3-eyebrow" style="margin-bottom:14px;"><span class="dot"></span><span data-i18n="ultra-news-eyebrow">Ранний доступ</span></div>
+          <h2 id="nw-title" class="news-title" data-i18n="ultra-news-title">Получи приглашение первым</h2>
+          <p class="news-sub" data-i18n="ultra-news-sub">Подпишись — пришлём приглашение в альфа-тест, пресс-кит и эксклюзивный скин для раннего сообщества.</p>
+          <form class="news-form" id="newsForm" autocomplete="off" novalidate>
+            <input class="news-input" id="newsEmail" type="email" placeholder="you@evades3.com" aria-label="email" data-i18n-placeholder="ultra-news-placeholder" />
+            <button class="news-btn" type="submit" data-i18n="ultra-news-btn">Подписаться</button>
+          </form>
+          <div class="news-perks">
+            <span class="news-perk"><b>✓</b><span data-i18n="ultra-news-perk-1">Без спама</span></span>
+            <span class="news-perk"><b>✓</b><span data-i18n="ultra-news-perk-2">Приоритет в альфу</span></span>
+            <span class="news-perk"><b>✓</b><span data-i18n="ultra-news-perk-3">Эксклюзив-скин</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ E3 ULTRA UPGRADE: SOCIAL BAR ============ -->
+    <section class="e3-section reveal" id="social" aria-labelledby="sc-title">
+      <div class="e3-section-head">
+        <div class="e3-eyebrow"><span class="dot"></span><span data-i18n="ultra-social-eyebrow">Везде, где ты есть</span></div>
+        <h2 id="sc-title" class="e3-title"><span data-i18n="ultra-social-title-a">Присоединяйся к</span> <span class="accent" data-i18n="ultra-social-title-b">арене</span></h2>
+        <p class="e3-lead" data-i18n="ultra-social-lead">Discord и YouTube. Будь в курсе каждой новой фичи.</p>
+      </div>
+      <div class="e3-social">
+        <a class="social-btn" style="--sb-color:#5865F2; --sb-glow:rgba(88,101,242,0.45);" href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.369A19.791 19.791 0 0 0 16.558 3a14.3 14.3 0 0 0-.7 1.44 18.27 18.27 0 0 0-5.72 0A13.2 13.2 0 0 0 9.444 3 19.72 19.72 0 0 0 5.68 4.37C2.78 8.88 2 13.27 2.39 17.58a19.96 19.96 0 0 0 6.07 3.08c.49-.67.92-1.39 1.29-2.14-.71-.27-1.39-.6-2.03-1 .17-.12.34-.25.5-.39 3.94 1.82 8.19 1.82 12.08 0 .17.14.33.27.5.39-.64.4-1.32.73-2.03 1 .37.75.8 1.47 1.29 2.14a19.96 19.96 0 0 0 6.07-3.08c.46-5.02-.77-9.36-3.32-13.21ZM9.68 15.33c-1.18 0-2.15-1.09-2.15-2.43 0-1.34.95-2.43 2.15-2.43s2.17 1.09 2.15 2.43c0 1.34-.95 2.43-2.15 2.43Zm4.64 0c-1.18 0-2.15-1.09-2.15-2.43 0-1.34.95-2.43 2.15-2.43s2.17 1.09 2.15 2.43c0 1.34-.95 2.43-2.15 2.43Z"/></svg>
+          Discord
+        </a>
+        <a class="social-btn" style="--sb-color:#ff0033; --sb-glow:rgba(255,0,51,0.4);" href="https://www.youtube.com/@crownbit-u5o" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3.01 3.01 0 0 0-2.12-2.13C19.52 3.5 12 3.5 12 3.5s-7.52 0-9.38.57A3.01 3.01 0 0 0 .5 6.2C0 8.08 0 12 0 12s0 3.92.5 5.8a3.01 3.01 0 0 0 2.12 2.13c1.86.57 9.38.57 9.38.57s7.52 0 9.38-.57a3.01 3.01 0 0 0 2.12-2.13C24 15.92 24 12 24 12s0-3.92-.5-5.8ZM9.6 15.6V8.4l6.24 3.6-6.24 3.6Z"/></svg>
+          YouTube
+        </a>
+      </div>
+    </section>
   </div>
 
     <footer class="site-footer">
-    <p data-i18n="footer-contact">Есть вопросы? пишите нам: <a href="mailto:support@evades3.com">support@evades3.com</a></p>
+    <div class="site-footer-inner">
+      <div class="site-footer-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span>EVADES&nbsp;3</span>
+      </div>
+      <div class="site-footer-copy">
+        <span data-i18n="footer-copy">© 2026 Evades 3. Все права защищены.</span>
+      </div>
+      <nav class="site-footer-links" aria-label="Footer">
+        <a href="terms.html" data-i18n="footer-terms">Условия использования</a>
+        <span class="dot" aria-hidden="true">·</span>
+        <a href="privacy.html" data-i18n="footer-privacy">Политика конфиденциальности</a>
+        <span class="dot" aria-hidden="true">·</span>
+        <a href="#" data-i18n="footer-cookies">Cookies</a>
+        <span class="dot" aria-hidden="true">·</span>
+        <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener" data-i18n="footer-support">Поддержка</a>
+      </nav>
+    </div>
+    <p class="site-footer-contact" data-i18n="footer-contact">Есть вопросы? пишите нам: <a href="mailto:support@evades3.com">support@evades3.com</a></p>
   </footer>
   
 <script>
@@ -4096,6 +5064,11 @@ body.modal-open {
                 'languages': 'Языки ▼',
                 'early-access': '*Ранний доступ',
                 'subtitle': 'Скорость. Тактика.',
+                'footer-copy': '© 2026 Evades 3. Все права защищены.',
+                'footer-terms': 'Условия использования',
+                'footer-privacy': 'Политика конфиденциальности',
+                'footer-cookies': 'Cookies',
+                'footer-support': 'Поддержка',
                 'footer-contact': 'Есть вопросы? Пишите нам: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Скачать Evades 3',
                 'follow-dev': 'Следить за разработкой',
@@ -4206,6 +5179,11 @@ body.modal-open {
                 'languages': 'Languages ▼',
                 'early-access': '*Early Access',
                 'subtitle': 'Speed. Tactics.',
+                'footer-copy': '© 2026 Evades 3. All rights reserved.',
+                'footer-terms': 'Terms of Service',
+                'footer-privacy': 'Privacy Policy',
+                'footer-cookies': 'Cookies',
+                'footer-support': 'Support',
                 'footer-contact': 'Have questions? Write to us: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Download Evades 3',
                 'follow-dev': 'Follow development',
@@ -4316,6 +5294,11 @@ body.modal-open {
                 'languages': 'Мови ▼',
                 'early-access': '*Ранній доступ',
                 'subtitle': 'Швидкість. Тактика.',
+                'footer-copy': '© 2026 Evades 3. Усі права захищені.',
+                'footer-terms': 'Умови використання',
+                'footer-privacy': 'Політика конфіденційності',
+                'footer-cookies': 'Cookies',
+                'footer-support': 'Підтримка',
                 'footer-contact': 'Є питання? Пишіть нам: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Завантажити Evades 3',
                 'follow-dev': 'Стежити за розробкою',
@@ -4426,6 +5409,11 @@ body.modal-open {
                 'languages': 'Sprachen ▼',
                 'early-access': '*Früher Zugang',
                 'subtitle': 'Geschwindigkeit. Taktik.',
+                'footer-copy': '© 2026 Evades 3. Alle Rechte vorbehalten.',
+                'footer-terms': 'Nutzungsbedingungen',
+                'footer-privacy': 'Datenschutzerklärung',
+                'footer-cookies': 'Cookies',
+                'footer-support': 'Support',
                 'footer-contact': 'Fragen? Schreib uns: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 herunterladen',
                 'follow-dev': 'Entwicklung verfolgen',
@@ -4536,6 +5524,11 @@ body.modal-open {
                 'languages': 'Idiomas ▼',
                 'early-access': '*Acceso anticipado',
                 'subtitle': 'Velocidad. Táctica.',
+                'footer-copy': '© 2026 Evades 3. Todos los derechos reservados.',
+                'footer-terms': 'Términos de servicio',
+                'footer-privacy': 'Política de privacidad',
+                'footer-cookies': 'Cookies',
+                'footer-support': 'Soporte',
                 'footer-contact': '¿Tienes preguntas? Escríbenos: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Descargar Evades 3',
                 'follow-dev': 'Seguir el desarrollo',
@@ -4646,6 +5639,11 @@ body.modal-open {
                 'languages': 'Langues ▼',
                 'early-access': '*Accès anticipé',
                 'subtitle': 'Vitesse. Tactique.',
+                'footer-copy': '© 2026 Evades 3. Tous droits réservés.',
+                'footer-terms': 'Conditions d\'utilisation',
+                'footer-privacy': 'Politique de confidentialité',
+                'footer-cookies': 'Cookies',
+                'footer-support': 'Support',
                 'footer-contact': 'Des questions ? Écrivez-nous : <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Télécharger Evades 3',
                 'follow-dev': 'Suivre le développement',
@@ -4756,6 +5754,11 @@ body.modal-open {
                 'languages': 'Lingue ▼',
                 'early-access': '*Accesso anticipato',
                 'subtitle': 'Velocità. Tattica.',
+                'footer-copy': '© 2026 Evades 3. Tutti i diritti riservati.',
+                'footer-terms': 'Termini di servizio',
+                'footer-privacy': 'Informativa sulla privacy',
+                'footer-cookies': 'Cookie',
+                'footer-support': 'Assistenza',
                 'footer-contact': 'Hai domande? Scrivici: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Scarica Evades 3',
                 'follow-dev': 'Seguire lo sviluppo',
@@ -4866,6 +5869,11 @@ body.modal-open {
                 'languages': 'Idiomas ▼',
                 'early-access': '*Acesso antecipado',
                 'subtitle': 'Velocidade. Tática.',
+                'footer-copy': '© 2026 Evades 3. Todos os direitos reservados.',
+                'footer-terms': 'Termos de serviço',
+                'footer-privacy': 'Política de privacidade',
+                'footer-cookies': 'Cookies',
+                'footer-support': 'Suporte',
                 'footer-contact': 'Tem dúvidas? Escreva para nós: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Baixar Evades 3',
                 'follow-dev': 'Acompanhar o desenvolvimento',
@@ -4976,6 +5984,11 @@ body.modal-open {
                 'languages': 'Języki ▼',
                 'early-access': '*Wczesny dostęp',
                 'subtitle': 'Prędkość. Taktyka.',
+                'footer-copy': '© 2026 Evades 3. Wszelkie prawa zastrzeżone.',
+                'footer-terms': 'Warunki korzystania',
+                'footer-privacy': 'Polityka prywatności',
+                'footer-cookies': 'Pliki cookie',
+                'footer-support': 'Pomoc',
                 'footer-contact': 'Masz pytania? Napisz do nas: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Pobierz Evades 3',
                 'follow-dev': 'Śledzić rozwój',
@@ -5086,6 +6099,11 @@ body.modal-open {
                 'languages': 'Diller ▼',
                 'early-access': '*Erken erişim',
                 'subtitle': 'Hız. Taktik.',
+                'footer-copy': '© 2026 Evades 3. Tüm hakları saklıdır.',
+                'footer-terms': 'Kullanım Koşulları',
+                'footer-privacy': 'Gizlilik Politikası',
+                'footer-cookies': 'Çerezler',
+                'footer-support': 'Destek',
                 'footer-contact': 'Sorunuz mu var? Bize yazın: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 İndir',
                 'follow-dev': 'Gelişimi takip et',
@@ -5196,6 +6214,11 @@ body.modal-open {
                 'languages': 'Talen ▼',
                 'early-access': '*Vroege toegang',
                 'subtitle': 'Snelheid. Tactiek.',
+                'footer-copy': '© 2026 Evades 3. Alle rechten voorbehouden.',
+                'footer-terms': 'Servicevoorwaarden',
+                'footer-privacy': 'Privacybeleid',
+                'footer-cookies': 'Cookies',
+                'footer-support': 'Ondersteuning',
                 'footer-contact': 'Vragen? Schrijf ons: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Download Evades 3',
                 'follow-dev': 'Volg de ontwikkeling',
@@ -5306,6 +6329,11 @@ body.modal-open {
                 'languages': 'Språk ▼',
                 'early-access': '*Tidig åtkomst',
                 'subtitle': 'Hastighet. Taktik.',
+                'footer-copy': '© 2026 Evades 3. Alla rättigheter förbehållna.',
+                'footer-terms': 'Användarvillkor',
+                'footer-privacy': 'Integritetspolicy',
+                'footer-cookies': 'Cookies',
+                'footer-support': 'Support',
                 'footer-contact': 'Har du frågor? Skriv till oss: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Ladda ner Evades 3',
                 'follow-dev': 'Följ utvecklingen',
@@ -5416,6 +6444,11 @@ body.modal-open {
                 'languages': 'Språk ▼',
                 'early-access': '*Tidlig tilgang',
                 'subtitle': 'Fart. Taktikk.',
+                'footer-copy': '© 2026 Evades 3. Alle rettigheter reservert.',
+                'footer-terms': 'Vilkår for bruk',
+                'footer-privacy': 'Personvernerklæring',
+                'footer-cookies': 'Informasjonskapsler',
+                'footer-support': 'Støtte',
                 'footer-contact': 'Har du spørsmål? Skriv til oss: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Last ned Evades 3',
                 'follow-dev': 'Følg utviklingen',
@@ -5526,6 +6559,11 @@ body.modal-open {
                 'languages': 'Kielet ▼',
                 'early-access': '*Varhainen pääsy',
                 'subtitle': 'Nopeus. Taktiikka.',
+                'footer-copy': '© 2026 Evades 3. Kaikki oikeudet pidätetään.',
+                'footer-terms': 'Käyttöehdot',
+                'footer-privacy': 'Tietosuojakäytäntö',
+                'footer-cookies': 'Evästeet',
+                'footer-support': 'Tuki',
                 'footer-contact': 'Onko kysyttävää? Kirjoita meille: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Lataa Evades 3',
                 'follow-dev': 'Seuraa kehitystä',
@@ -5636,6 +6674,11 @@ body.modal-open {
                 'languages': 'Sprog ▼',
                 'early-access': '*Tidlig adgang',
                 'subtitle': 'Hastighed. Taktik.',
+                'footer-copy': '© 2026 Evades 3. Alle rettigheder forbeholdes.',
+                'footer-terms': 'Servicevilkår',
+                'footer-privacy': 'Privatlivspolitik',
+                'footer-cookies': 'Cookies',
+                'footer-support': 'Support',
                 'footer-contact': 'Har du spørgsmål? Skriv til os: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Download Evades 3',
                 'follow-dev': 'Følg udviklingen',
@@ -5746,6 +6789,11 @@ body.modal-open {
                 'languages': 'Jazyky ▼',
                 'early-access': '*Předběžný přístup',
                 'subtitle': 'Rychlost. Taktika.',
+                'footer-copy': '© 2026 Evades 3. Všechna práva vyhrazena.',
+                'footer-terms': 'Podmínky služby',
+                'footer-privacy': 'Zásady ochrany osobních údajů',
+                'footer-cookies': 'Cookies',
+                'footer-support': 'Podpora',
                 'footer-contact': 'Máte dotazy? Napište nám: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Stáhnout Evades 3',
                 'follow-dev': 'Sledovat vývoj',
@@ -5856,6 +6904,11 @@ body.modal-open {
                 'languages': 'Limbi ▼',
                 'early-access': '*Acces timpuriu',
                 'subtitle': 'Viteză. Tactică.',
+                'footer-copy': '© 2026 Evades 3. Toate drepturile rezervate.',
+                'footer-terms': 'Termeni de utilizare',
+                'footer-privacy': 'Politica de confidențialitate',
+                'footer-cookies': 'Cookie-uri',
+                'footer-support': 'Asistență',
                 'footer-contact': 'Ai întrebări? Scrie-ne: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Descarcă Evades 3',
                 'follow-dev': 'Urmărește dezvoltarea',
@@ -5966,6 +7019,11 @@ body.modal-open {
                 'languages': 'Nyelvek ▼',
                 'early-access': '*Korai hozzáférés',
                 'subtitle': 'Sebesség. Taktika.',
+                'footer-copy': '© 2026 Evades 3. Minden jog fenntartva.',
+                'footer-terms': 'Felhasználási feltételek',
+                'footer-privacy': 'Adatvédelmi szabályzat',
+                'footer-cookies': 'Sütik',
+                'footer-support': 'Támogatás',
                 'footer-contact': 'Kérdésed van? Írj nekünk: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 letöltése',
                 'follow-dev': 'Kövesd a fejlesztést',
@@ -6076,6 +7134,11 @@ body.modal-open {
                 'languages': 'Γλώσσες ▼',
                 'early-access': '*Πρόωρη πρόσβαση',
                 'subtitle': 'Ταχύτητα. Τακτική.',
+                'footer-copy': '© 2026 Evades 3. Με την επιφύλαξη παντός δικαιώματος.',
+                'footer-terms': 'Όροι χρήσης',
+                'footer-privacy': 'Πολιτική απορρήτου',
+                'footer-cookies': 'Cookies',
+                'footer-support': 'Υποστήριξη',
                 'footer-contact': 'Έχεις ερωτήσεις; Γράψε μας: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Λήψη Evades 3',
                 'follow-dev': 'Παρακολούθησε την ανάπτυξη',
@@ -6186,6 +7249,11 @@ body.modal-open {
                 'languages': '言語 ▼',
                 'early-access': '*早期アクセス',
                 'subtitle': 'スピード. 戦術.',
+                'footer-copy': '© 2026 Evades 3. All rights reserved.',
+                'footer-terms': '利用規約',
+                'footer-privacy': 'プライバシーポリシー',
+                'footer-cookies': 'Cookie',
+                'footer-support': 'サポート',
                 'footer-contact': 'ご質問はありますか？ こちらへ: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 をダウンロード',
                 'follow-dev': '開発を追う',
@@ -6296,6 +7364,11 @@ body.modal-open {
                 'languages': '语言 ▼',
                 'early-access': '*抢先体验',
                 'subtitle': '速度. 战术.',
+                'footer-copy': '© 2026 Evades 3。保留所有权利。',
+                'footer-terms': '服务条款',
+                'footer-privacy': '隐私政策',
+                'footer-cookies': 'Cookie',
+                'footer-support': '支持',
                 'footer-contact': '有问题吗？请写信给我们：<a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': '下载 Evades 3',
                 'follow-dev': '关注开发进展',
@@ -6406,6 +7479,11 @@ body.modal-open {
                 'languages': '언어 ▼',
                 'early-access': '*얼리 액세스',
                 'subtitle': '속도. 전술.',
+                'footer-copy': '© 2026 Evades 3. 모든 권리 보유.',
+                'footer-terms': '이용약관',
+                'footer-privacy': '개인정보처리방침',
+                'footer-cookies': '쿠키',
+                'footer-support': '지원',
                 'footer-contact': '문의가 있으신가요? 메일 주세요: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 다운로드',
                 'follow-dev': '개발 진행 상황 보기',
@@ -6516,6 +7594,11 @@ body.modal-open {
                 'languages': 'اللغات ▼',
                 'early-access': '*وصول مبكر',
                 'subtitle': 'السرعة. التكتيك.',
+                'footer-copy': '© 2026 Evades 3. جميع الحقوق محفوظة.',
+                'footer-terms': 'شروط الخدمة',
+                'footer-privacy': 'سياسة الخصوصية',
+                'footer-cookies': 'ملفات تعريف الارتباط',
+                'footer-support': 'الدعم',
                 'footer-contact': 'هل لديك أسئلة؟ اكتب لنا: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'تحميل Evades 3',
                 'follow-dev': 'تابع التطوير',
@@ -6626,6 +7709,11 @@ body.modal-open {
                 'languages': 'भाषाएँ ▼',
                 'early-access': '*प्रारंभिक पहुँच',
                 'subtitle': 'स्पीड. रणनीति.',
+                'footer-copy': '© 2026 Evades 3. सर्वाधिकार सुरक्षित।',
+                'footer-terms': 'सेवा की शर्तें',
+                'footer-privacy': 'गोपनीयता नीति',
+                'footer-cookies': 'कुकीज़',
+                'footer-support': 'सहायता',
                 'footer-contact': 'कोई सवाल है? हमें लिखें: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 डाउनलोड करें',
                 'follow-dev': 'विकास पर नज़र रखें',
@@ -6736,6 +7824,11 @@ body.modal-open {
                 'languages': 'ภาษา ▼',
                 'early-access': '*เข้าถึงก่อนใคร',
                 'subtitle': 'ความเร็ว. แทคติก.',
+                'footer-copy': '© 2026 Evades 3. สงวนลิขสิทธิ์',
+                'footer-terms': 'ข้อกำหนดการใช้งาน',
+                'footer-privacy': 'นโยบายความเป็นส่วนตัว',
+                'footer-cookies': 'คุกกี้',
+                'footer-support': 'ฝ่ายสนับสนุน',
                 'footer-contact': 'มีคำถามไหม? เขียนหาเราได้ที่: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'ดาวน์โหลด Evades 3',
                 'follow-dev': 'ติดตามการพัฒนา',
@@ -6846,6 +7939,11 @@ body.modal-open {
                 'languages': 'Ngôn ngữ ▼',
                 'early-access': '*Truy cập sớm',
                 'subtitle': 'Tốc độ. Chiến thuật.',
+                'footer-copy': '© 2026 Evades 3. Đã đăng ký bản quyền.',
+                'footer-terms': 'Điều khoản dịch vụ',
+                'footer-privacy': 'Chính sách bảo mật',
+                'footer-cookies': 'Cookie',
+                'footer-support': 'Hỗ trợ',
                 'footer-contact': 'Có câu hỏi? Hãy viết cho chúng tôi: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Tải Evades 3',
                 'follow-dev': 'Theo dõi quá trình phát triển',
@@ -6956,6 +8054,11 @@ body.modal-open {
                 'languages': 'Bahasa ▼',
                 'early-access': '*Akses awal',
                 'subtitle': 'Kecepatan. Taktik.',
+                'footer-copy': '© 2026 Evades 3. Hak cipta dilindungi.',
+                'footer-terms': 'Ketentuan Layanan',
+                'footer-privacy': 'Kebijakan Privasi',
+                'footer-cookies': 'Cookie',
+                'footer-support': 'Dukungan',
                 'footer-contact': 'Punya pertanyaan? Tulis ke kami: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Unduh Evades 3',
                 'follow-dev': 'Ikuti pengembangan',
@@ -7066,6 +8169,11 @@ body.modal-open {
                 'languages': 'Bahasa ▼',
                 'early-access': '*Akses awal',
                 'subtitle': 'Kelajuan. Taktik.',
+                'footer-copy': '© 2026 Evades 3. Hak cipta terpelihara.',
+                'footer-terms': 'Terma Perkhidmatan',
+                'footer-privacy': 'Dasar Privasi',
+                'footer-cookies': 'Kuki',
+                'footer-support': 'Sokongan',
                 'footer-contact': 'Ada soalan? Tulis kepada kami: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Muat turun Evades 3',
                 'follow-dev': 'Ikuti pembangunan',
@@ -7182,6 +8290,7 @@ body.modal-open {
           (translations[lang] && translations[lang][key]) ||
           (translations.en && translations.en[key]) ||
           el.innerHTML;
+
         el.innerHTML = t;
       });
     }
@@ -7955,6 +9064,10 @@ function oauthSignIn(provider) {
 function openForgotModal(e) { if(e) e.preventDefault(); document.getElementById('forgotModalOverlay').classList.add('show'); setTimeout(()=>document.getElementById('forgot-email-input').focus(),300); }
 function closeForgotModal() { document.getElementById('forgotModalOverlay').classList.remove('show'); }
 function closeForgotOnBg(e) { if(e.target===e.currentTarget) closeForgotModal(); }
+
+// ===================================================
+// FORGOT PASSWORD (продолжение)
+// ===================================================
 async function doForgotSend() {
   const email = document.getElementById('forgot-email-input').value.trim();
   if (!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { ev3Toast('Введи корректный email','⚠️'); return; }
@@ -8049,6 +9162,1987 @@ verifySession();
     history.replaceState(null, '', window.location.pathname);
   })
   .catch(() => ev3Toast('Ошибка авторизации', '❌'));
+})();
+
+// =====================================================================
+// ============= E3 ULTRA UPGRADE — interactive behaviours =============
+// =====================================================================
+(function e3UltraUpgrade(){
+  const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ----- Particle network background canvas -----
+  const bg = document.getElementById('e3-bg-canvas');
+  if (bg) {
+    const ctx = bg.getContext('2d', { alpha: true });
+    let W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
+    const particles = [];
+    const mouse = { x: -9999, y: -9999 };
+    function resize(){
+      W = bg.width = Math.floor(window.innerWidth * DPR);
+      H = bg.height = Math.floor(window.innerHeight * DPR);
+      bg.style.width  = window.innerWidth + 'px';
+      bg.style.height = window.innerHeight + 'px';
+      const target = Math.min(120, Math.floor(window.innerWidth * window.innerHeight / 14000));
+      if (particles.length < target) {
+        while (particles.length < target) {
+          particles.push({
+            x: Math.random()*W, y: Math.random()*H,
+            vx: (Math.random()-0.5) * 0.25 * DPR,
+            vy: (Math.random()-0.5) * 0.25 * DPR,
+            r: (Math.random()*1.5 + 0.4) * DPR
+          });
+        }
+      } else if (particles.length > target) {
+        particles.length = target;
+      }
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    window.addEventListener('mousemove', e => { mouse.x = e.clientX * DPR; mouse.y = e.clientY * DPR; }, { passive: true });
+    window.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+
+    function frame(){
+      ctx.clearRect(0,0,W,H);
+      const linkDist = 140 * DPR;
+      for (let i = 0; i < particles.length; i++){
+        const p = particles[i];
+        const dx = p.x - mouse.x, dy = p.y - mouse.y;
+        const d2 = dx*dx + dy*dy;
+        if (d2 < 140*140*DPR*DPR) {
+          const d = Math.sqrt(d2) || 1;
+          p.vx += (dx / d) * 0.015;
+          p.vy += (dy / d) * 0.015;
+        }
+        p.vx *= 0.985; p.vy *= 0.985;
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x += W; else if (p.x > W) p.x -= W;
+        if (p.y < 0) p.y += H; else if (p.y > H) p.y -= H;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba(170,255,200,0.65)';
+        ctx.fill();
+        for (let j = i+1; j < particles.length; j++){
+          const q = particles[j];
+          const ddx = p.x - q.x, ddy = p.y - q.y;
+          const dd2 = ddx*ddx + ddy*ddy;
+          if (dd2 < linkDist * linkDist){
+            const a = 1 - Math.sqrt(dd2) / linkDist;
+            ctx.strokeStyle = 'rgba(134,239,172,' + (a*0.28) + ')';
+            ctx.lineWidth = 0.6 * DPR;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.stroke();
+          }
+        }
+      }
+      if (!REDUCED) requestAnimationFrame(frame);
+    }
+    if (!REDUCED) requestAnimationFrame(frame);
+    else frame();
+  }
+
+  // ----- Scroll progress bar -----
+  const progress = document.getElementById('e3-scroll-progress');
+  function getScroller(){
+    // Страница использует html,body {height:100%; overflow-x:hidden}, из-за
+    // чего реальным контейнером прокрутки становится <body>, а не <html>
+    // (и document.scrollingElement тут ошибается). Поэтому выбираем тот
+    // элемент, у которого реальный overflow по высоте.
+    const b = document.body, h = document.documentElement;
+    const bDiff = (b && b.scrollHeight - b.clientHeight) || 0;
+    const hDiff = (h && h.scrollHeight - h.clientHeight) || 0;
+    if (bDiff > hDiff) return b;
+    if (hDiff > 0)     return h;
+    return document.scrollingElement || h;
+  }
+  function updateProgress(){
+    const h = getScroller();
+    const max = (h.scrollHeight - h.clientHeight) || 1;
+    const st = h.scrollTop || window.scrollY || 0;
+    const p = Math.max(0, Math.min(1, st / max));
+    if (progress) progress.style.width = (p * 100) + '%';
+    const top = document.getElementById('e3-back-top');
+    if (top) top.classList.toggle('is-visible', st > 500);
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true, capture: true });
+  document.addEventListener('scroll', updateProgress, { passive: true, capture: true });
+  updateProgress();
+
+  // Back-to-top
+  const backTop = document.getElementById('e3-back-top');
+  if (backTop) backTop.addEventListener('click', () => {
+    const h = getScroller();
+    try { h.scrollTo({ top: 0, behavior: 'smooth' }); }
+    catch(_) { h.scrollTop = 0; }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ----- IntersectionObserver scroll-reveal -----
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && revealEls.length) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          en.target.classList.add('in');
+          io.unobserve(en.target);
+          // Trigger counters / progress inside this element
+          const counters = en.target.querySelectorAll('[data-counter]');
+          counters.forEach(countUp);
+          const bars = en.target.querySelectorAll('.tl-progress > i');
+          bars.forEach(b => { const w = b.style.getPropertyValue('--v') || b.style.getPropertyValue('--p'); if (w) { b.style.width = w; } });
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('in'));
+  }
+
+  // ----- Count-up helper -----
+  function countUp(el){
+    if (el.dataset.countDone === '1') return;
+    el.dataset.countDone = '1';
+    const target = parseFloat(el.getAttribute('data-counter')) || 0;
+    const suffix = el.getAttribute('data-suffix') || '';
+    const duration = REDUCED ? 0 : 1400;
+    const start = performance.now();
+    const fmt = (v) => {
+      const n = Math.round(v);
+      return n.toLocaleString('ru-RU');
+    };
+    function step(t){
+      const p = Math.min(1, (t - start) / Math.max(1, duration));
+      const ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(target * ease) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = fmt(target) + suffix;
+    }
+    requestAnimationFrame(step);
+  }
+
+  // Also animate existing stat-numbers in the about glass-card
+  (function animateExistingStats(){
+    const map = [
+      { sel: '.stat-item .stat-number', values: [ {text:'60', n:60, suffix:''}, {text:'100+', n:100, suffix:'+'}, {text:'24/7', n:null, suffix:'24/7'} ] }
+    ];
+    const nodes = document.querySelectorAll('.stats-container .stat-item .stat-number');
+    if (!nodes.length) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        io.unobserve(en.target);
+        const raw = en.target.textContent.trim();
+        const match = raw.match(/^(\d+)(\+?)$/);
+        if (!match) return; // skip 24/7
+        const num = parseInt(match[1], 10);
+        en.target.setAttribute('data-counter', num);
+        en.target.setAttribute('data-suffix', match[2]);
+        en.target.textContent = '';
+        countUp(en.target);
+      });
+    }, { threshold: 0.3 });
+    nodes.forEach(n => io.observe(n));
+  })();
+
+  // ----- 3D tilt on .tilt-3d (heroes + feature cards) -----
+  const tiltTargets = document.querySelectorAll('.tilt-3d, .feature-card, .showcase-card');
+  tiltTargets.forEach(card => {
+    card.classList.add('tilt-3d');
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const cx = e.clientX - r.left, cy = e.clientY - r.top;
+      const px = (cx / r.width) - 0.5, py = (cy / r.height) - 0.5;
+      const rx = (-py * 8).toFixed(2);
+      const ry = (px * 10).toFixed(2);
+      card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
+      card.style.setProperty('--tx', (cx / r.width * 100) + '%');
+      card.style.setProperty('--ty', (cy / r.height * 100) + '%');
+      card.classList.add('is-hover');
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+      card.classList.remove('is-hover');
+    });
+  });
+
+  // ----- Magnetic buttons -----
+  const magnets = document.querySelectorAll('[data-magnetic]');
+  magnets.forEach(wrap => {
+    const btn = wrap.querySelector('button, a') || wrap;
+    wrap.addEventListener('mousemove', e => {
+      const r = wrap.getBoundingClientRect();
+      const x = e.clientX - r.left - r.width/2;
+      const y = e.clientY - r.top - r.height/2;
+      btn.style.transform = `translate(${x*0.18}px, ${y*0.22}px)`;
+    });
+    wrap.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+  });
+
+  // ----- FAQ accordion -----
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const q = item.querySelector('.faq-q');
+    if (!q) return;
+    q.addEventListener('click', () => {
+      const opened = item.classList.toggle('is-open');
+      q.setAttribute('aria-expanded', opened ? 'true' : 'false');
+    });
+  });
+
+  // ----- Newsletter form (Supabase integration) -----
+  const nForm  = document.getElementById('newsForm');
+  const nInput = document.getElementById('newsEmail');
+  if (nForm && nInput) {
+    const SUPABASE_URL = 'https://twgrguukftwtbnmnqgsd.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3Z3JndXVrZnR3dGJubW5xZ3NkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMzQwMDMsImV4cCI6MjA5MTkxMDAwM30.xJZk61nSpfcIZmH_Srmbo8Eeyvj9Hm2SCFqCL0npP6Y';
+    const reEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    const nBtn = nForm.querySelector('.news-btn');
+    const tt = (k, fb) => {
+      try {
+        const lang = (typeof currentLanguage === 'string' && currentLanguage) || 'ru';
+        return (translations && translations[lang] && translations[lang][k]) || fb;
+      } catch { return fb; }
+    };
+    nForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const v = (nInput.value || '').trim();
+      nInput.classList.remove('is-ok','is-bad');
+      if (!reEmail.test(v)) {
+        nInput.classList.add('is-bad');
+        try { ev3Toast && ev3Toast(tt('ultra-news-toast-invalid', 'Введите корректный email'), '❌'); } catch {}
+        nInput.focus();
+        return;
+      }
+      if (nBtn) { nBtn.disabled = true; nBtn.dataset._label = nBtn.textContent; nBtn.textContent = tt('ultra-news-btn-sending', 'Отправляем…'); }
+      try {
+        const lang = (typeof currentLanguage === 'string' && currentLanguage) || 'ru';
+        const res = await fetch(SUPABASE_URL + '/rest/v1/subscribers', {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_ANON,
+            'Authorization': 'Bearer ' + SUPABASE_ANON,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ email: v, lang: lang })
+        });
+        if (res.status === 201 || res.status === 204) {
+          nInput.classList.add('is-ok');
+          nInput.value = '';
+          try { ev3Toast && ev3Toast(tt('ultra-news-toast-ok', 'Готово! Ты в списке, напишем как откроется альфа 🎉'), '🎉'); } catch {}
+        } else if (res.status === 409) {
+          nInput.classList.add('is-ok');
+          try { ev3Toast && ev3Toast(tt('ultra-news-toast-dup', 'Этот email уже подписан ✓'), '✅'); } catch {}
+        } else {
+          let msg = '';
+          try { msg = (await res.json())?.message || ''; } catch {}
+          if (/duplicate key|already exists|unique/i.test(msg)) {
+            nInput.classList.add('is-ok');
+            try { ev3Toast && ev3Toast(tt('ultra-news-toast-dup', 'Этот email уже подписан ✓'), '✅'); } catch {}
+          } else {
+            nInput.classList.add('is-bad');
+            try { ev3Toast && ev3Toast(tt('ultra-news-toast-err', 'Что-то пошло не так, попробуй ещё раз'), '⚠️'); } catch {}
+          }
+        }
+      } catch (err) {
+        nInput.classList.add('is-bad');
+        try { ev3Toast && ev3Toast(tt('ultra-news-toast-net', 'Нет соединения. Проверь интернет и попробуй снова'), '⚠️'); } catch {}
+      } finally {
+        if (nBtn) { nBtn.disabled = false; if (nBtn.dataset._label) { nBtn.textContent = nBtn.dataset._label; delete nBtn.dataset._label; } }
+      }
+    });
+  }
+
+  // ----- Subtle parallax on hero title/subtitle -----
+  const hero = document.querySelector('.title-section');
+  if (hero && !REDUCED) {
+    const title = hero.querySelector('.main-title');
+    const sub   = hero.querySelector('.subtitle');
+    window.addEventListener('mousemove', (e) => {
+      const px = (e.clientX / window.innerWidth  - 0.5);
+      const py = (e.clientY / window.innerHeight - 0.5);
+      if (title) title.style.transform = `translate3d(${px*10}px, ${py*6}px, 0)`;
+      if (sub)   sub.style.transform   = `translate3d(${px*-6}px, ${py*-4}px, 0)`;
+    }, { passive: true });
+  }
+
+  // ----- Translate new keys (extend existing translations) -----
+  if (typeof translations === 'object' && translations) {
+    const extra = {
+      ru: {
+        'ultra-scroll-hint': 'Прокрути вниз',
+        'ultra-live-eyebrow': 'Проект растёт',
+        'ultra-live-title-a': 'Пульс',
+        'ultra-live-title-b': 'разработки',
+        'ultra-live-lead': 'Игра в активной разработке. Присоединяйся к сообществу — будь в числе первых.',
+        'ultra-live-discord': 'Discord-комьюнити',
+        'ultra-live-growing': 'GROWING',
+        'ultra-live-discord-cta': 'Присоединяйся',
+        'ultra-live-discord-d': 'будь в числе первых',
+        'ultra-live-status': 'Статус',
+        'ultra-live-dev': 'DEV',
+        'ultra-live-status-d': 'закрытая альфа',
+        'ultra-live-release': 'Релиз',
+        'ultra-live-soon': 'SOON',
+        'ultra-live-release-d': 'открытая альфа',
+
+        'ultra-roadmap-eyebrow': 'Дорожная карта',
+        'ultra-roadmap-title-a': 'Путь',
+        'ultra-roadmap-title-b': 'к релизу',
+        'ultra-roadmap-lead': 'Игра в активной разработке. Вот задачи и их статус.',
+        'ultra-roadmap-progress': 'Прогресс',
+        'ultra-roadmap-done': 'Готово', 'ultra-roadmap-now': 'Сейчас', 'ultra-roadmap-planned': 'Запланировано',
+        'ultra-rm-1': 'Создание системы движения персонажа',
+        'ultra-rm-2': 'Создание системы движения врагов',
+        'ultra-rm-3': 'Реализация механики «таймер» при касании врага',
+        'ultra-rm-4': 'Создание экрана поражения',
+        'ultra-rm-5': 'Разработка текстур игровой зоны',
+        'ultra-rm-6': 'Создание зоны с 10 аренами',
+        'ultra-rm-7': 'Создание главного меню',
+        'ultra-rm-8': 'Разработка базового персонажа',
+        'ultra-rm-9': 'Разработка нескольких игровых зон с другими врагами',
+        'ultra-rm-10': 'Реализация переходов между зонами',
+        'ultra-rm-11': 'Добавление нескольких персонажей',
+        'ultra-rm-12': 'Добавление аксессуаров',
+        'ultra-rm-13': 'Добавление остальных функций',
+        'ultra-rm-14': 'Исправление багов и подготовка альфа-версии',
+        'ultra-rm-15': 'Добавление загрузки альфа-версии на сайт',
+
+        'ultra-faq-eyebrow': 'Часто спрашивают',
+        'ultra-faq-title-a': 'Коротко',
+        'ultra-faq-title-b': 'о главном',
+        'ultra-faq-1-q': 'Когда релиз и где можно поиграть?',
+        'ultra-faq-1-a': 'Сейчас идёт закрытая разработка. Сначала выйдет альфа-версия, затем релиз. Планы — 2026–2027. Следи за Discord и подпишись на апдейты ниже.',
+        'ultra-faq-2-q': 'На каких платформах будет игра?',
+        'ultra-faq-2-a': 'Сначала — Web и Windows. После релиза планируем порт на macOS и Linux, а затем мобильная версия.',
+        'ultra-faq-3-q': 'Игра будет платной?',
+        'ultra-faq-3-a': 'Базовая игра бесплатна. Пропуски, скины и VIP-статус — опциональная поддержка проекта без pay-to-win механик.',
+        'ultra-faq-4-q': 'Какие системные требования?',
+        'ultra-faq-4-a': 'Цель — 60 FPS на большинстве устройств последних 5 лет. Веб-версия работает в любом современном браузере.',
+        'ultra-faq-5-q': 'Как попасть в закрытый тест?',
+        'ultra-faq-5-a': 'Зайди в наш Discord и подпишись на рассылку ниже — как только откроется набор на альфа-тест, подписчики узнают первыми.',
+
+        'ultra-news-eyebrow': 'Ранний доступ',
+        'ultra-news-title': 'Получи приглашение первым',
+        'ultra-news-sub': 'Подпишись — пришлём приглашение в альфа-тест, пресс-кит и эксклюзивный скин для раннего сообщества.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Подписаться',
+        'ultra-news-btn-sending': 'Отправляем…',
+        'ultra-news-toast-invalid': 'Введите корректный email',
+        'ultra-news-toast-ok': 'Готово! Ты в списке, напишем как откроется альфа 🎉',
+        'ultra-news-toast-dup': 'Этот email уже подписан ✓',
+        'ultra-news-toast-err': 'Что-то пошло не так, попробуй ещё раз',
+        'ultra-news-toast-net': 'Нет соединения. Проверь интернет и попробуй снова',
+        'ultra-news-perk-1': 'Без спама',
+        'ultra-news-perk-2': 'Приоритет в альфу',
+        'ultra-news-perk-3': 'Эксклюзив-скин',
+
+        'ultra-social-eyebrow': 'Везде, где ты есть',
+        'ultra-social-title-a': 'Присоединяйся к',
+        'ultra-social-title-b': 'арене',
+        'ultra-social-lead': 'Discord и YouTube. Будь в курсе каждой новой фичи.'
+      },
+
+      en: {
+        'ultra-scroll-hint': 'Scroll down',
+        'ultra-live-eyebrow': 'Project is growing',
+        'ultra-live-title-a': 'Development',
+        'ultra-live-title-b': 'pulse',
+        'ultra-live-lead': 'The game is in active development. Join the community — be among the first.',
+        'ultra-live-discord': 'Discord community',
+        'ultra-live-growing': 'GROWING',
+        'ultra-live-discord-cta': 'Join now',
+        'ultra-live-discord-d': 'be among the first',
+        'ultra-live-status': 'Status',
+        'ultra-live-dev': 'DEV',
+        'ultra-live-status-d': 'closed alpha',
+        'ultra-live-release': 'Release',
+        'ultra-live-soon': 'SOON',
+        'ultra-live-release-d': 'open alpha',
+
+        'ultra-roadmap-eyebrow': 'Roadmap',
+        'ultra-roadmap-title-a': 'Path',
+        'ultra-roadmap-title-b': 'to release',
+        'ultra-roadmap-lead': 'The game is actively in development. Here are the tasks and their status.',
+        'ultra-roadmap-progress': 'Progress',
+        'ultra-roadmap-done': 'Done', 'ultra-roadmap-now': 'Now', 'ultra-roadmap-planned': 'Planned',
+        'ultra-rm-1': 'Create character movement system',
+        'ultra-rm-2': 'Create enemy movement system',
+        'ultra-rm-3': 'Implement "timer" mechanic on enemy touch',
+        'ultra-rm-4': 'Create defeat screen',
+        'ultra-rm-5': 'Develop game zone textures',
+        'ultra-rm-6': 'Create zone with 10 arenas',
+        'ultra-rm-7': 'Create main menu',
+        'ultra-rm-8': 'Develop base character',
+        'ultra-rm-9': 'Develop multiple game zones with different enemies',
+        'ultra-rm-10': 'Implement transitions between zones',
+        'ultra-rm-11': 'Add multiple characters',
+        'ultra-rm-12': 'Add accessories',
+        'ultra-rm-13': 'Add remaining features',
+        'ultra-rm-14': 'Fix bugs and prepare alpha version',
+        'ultra-rm-15': 'Add alpha version download to site',
+
+        'ultra-faq-eyebrow': 'Frequently asked',
+        'ultra-faq-title-a': 'Key',
+        'ultra-faq-title-b': 'questions',
+        'ultra-faq-1-q': 'When is the release and where can I play?',
+        'ultra-faq-1-a': 'The game is in closed development. Alpha version comes first, then the full release. Timeline — 2026–2027. Follow Discord and subscribe for updates below.',
+        'ultra-faq-2-q': 'Which platforms will the game support?',
+        'ultra-faq-2-a': 'Web and Windows first. macOS/Linux ports planned post-launch, then mobile.',
+        'ultra-faq-3-q': 'Will the game be paid?',
+        'ultra-faq-3-a': 'The base game is free. Season passes, skins and VIP status are optional support with no pay-to-win mechanics.',
+        'ultra-faq-4-q': 'What are the system requirements?',
+        'ultra-faq-4-a': 'Goal is 60 FPS on most devices from the last 5 years. The web version works in any modern browser.',
+        'ultra-faq-5-q': 'How can I join the closed test?',
+        'ultra-faq-5-a': 'Join our Discord and subscribe to the newsletter below — when alpha test signups open, subscribers will know first.',
+
+        'ultra-news-eyebrow': 'Early access',
+        'ultra-news-title': 'Get your invite first',
+        'ultra-news-sub': 'Subscribe — we will send you an alpha-test invitation, press kit and exclusive early-community skin.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Subscribe',
+        'ultra-news-btn-sending': 'Sending…',
+        'ultra-news-toast-invalid': 'Please enter a valid email',
+        'ultra-news-toast-ok': 'Done! You are on the list, we\u2019ll ping you when alpha opens 🎉',
+        'ultra-news-toast-dup': 'This email is already subscribed ✓',
+        'ultra-news-toast-err': 'Something went wrong, please try again',
+        'ultra-news-toast-net': 'No connection. Check your internet and try again',
+        'ultra-news-perk-1': 'No spam',
+        'ultra-news-perk-2': 'Alpha priority',
+        'ultra-news-perk-3': 'Exclusive skin',
+
+        'ultra-social-eyebrow': 'Wherever you are',
+        'ultra-social-title-a': 'Join the',
+        'ultra-social-title-b': 'arena',
+        'ultra-social-lead': 'Discord and YouTube. Stay on top of every new feature.'
+      },
+
+      uk: {
+        'ultra-scroll-hint': 'Прокрути вниз',
+        'ultra-live-eyebrow': 'Проєкт зростає',
+        'ultra-live-title-a': 'Пульс',
+        'ultra-live-title-b': 'розробки',
+        'ultra-live-lead': 'Гра в активній розробці. Приєднуйся до спільноти — будь серед перших.',
+        'ultra-live-discord': 'Discord-спільнота',
+        'ultra-live-growing': 'GROWING',
+        'ultra-live-discord-cta': 'Приєднуйся',
+        'ultra-live-discord-d': 'будь серед перших',
+        'ultra-live-status': 'Статус',
+        'ultra-live-dev': 'DEV',
+        'ultra-live-status-d': 'закрита альфа',
+        'ultra-live-release': 'Реліз',
+        'ultra-live-soon': 'SOON',
+        'ultra-live-release-d': 'відкрита альфа',
+
+        'ultra-roadmap-eyebrow': 'Дорожня карта',
+        'ultra-roadmap-title-a': 'Шлях',
+        'ultra-roadmap-title-b': 'до релізу',
+        'ultra-roadmap-lead': 'Гра в активній розробці. Ось завдання та їхній статус.',
+        'ultra-roadmap-progress': 'Прогрес',
+        'ultra-roadmap-done': 'Готово', 'ultra-roadmap-now': 'Зараз', 'ultra-roadmap-planned': 'Заплановано',
+        'ultra-rm-1': 'Створення системи руху персонажа',
+        'ultra-rm-2': 'Створення системи руху ворогів',
+        'ultra-rm-3': 'Реалізація механіки «таймер» при дотику ворога',
+        'ultra-rm-4': 'Створення екрану поразки',
+        'ultra-rm-5': 'Розробка текстур ігрової зони',
+        'ultra-rm-6': 'Створення зони з 10 аренами',
+        'ultra-rm-7': 'Створення головного меню',
+        'ultra-rm-8': 'Розробка базового персонажа',
+        'ultra-rm-9': 'Розробка кількох ігрових зон з іншими ворогами',
+        'ultra-rm-10': 'Реалізація переходів між зонами',
+        'ultra-rm-11': 'Додавання кількох персонажів',
+        'ultra-rm-12': 'Додавання аксесуарів',
+        'ultra-rm-13': 'Додавання решти функцій',
+        'ultra-rm-14': 'Виправлення багів і підготовка альфа-версії',
+        'ultra-rm-15': 'Додавання завантаження альфа-версії на сайт',
+
+        'ultra-faq-eyebrow': 'Часто питають',
+        'ultra-faq-title-a': 'Коротко',
+        'ultra-faq-title-b': 'про головне',
+        'ultra-faq-1-q': 'Коли реліз і де можна зіграти?',
+        'ultra-faq-1-a': 'Зараз йде закрита розробка. Спочатку вийде альфа-версія, потім реліз. Плани — 2026–2027. Слідкуй за Discord і підписуйся нижче.',
+        'ultra-faq-2-q': 'На яких платформах буде гра?',
+        'ultra-faq-2-a': 'Спочатку Web і Windows. Після релізу — порт на macOS/Linux, потім мобільна версія.',
+        'ultra-faq-3-q': 'Гра буде платною?',
+        'ultra-faq-3-a': 'Базова гра безкоштовна. Абонементи, скіни та VIP — опціональна підтримка без pay-to-win.',
+        'ultra-faq-4-q': 'Які системні вимоги?',
+        'ultra-faq-4-a': 'Ціль — 60 FPS на більшості пристроїв останніх 5 років. Веб-версія працює в будь-якому сучасному браузері.',
+        'ultra-faq-5-q': 'Як потрапити в закритий тест?',
+        'ultra-faq-5-a': 'Зайди в наш Discord і підпишись на розсилку нижче — коли відкриється набір на альфа-тест, підписники дізнаються першими.',
+
+        'ultra-news-eyebrow': 'Ранній доступ',
+        'ultra-news-title': 'Отримай запрошення першим',
+        'ultra-news-sub': 'Підпишись — надішлемо запрошення в альфа-тест, прес-кіт та ексклюзивний скін ранньої спільноти.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Підписатись',
+        'ultra-news-btn-sending': 'Надсилаємо…',
+        'ultra-news-toast-invalid': 'Введіть коректний email',
+        'ultra-news-toast-ok': 'Готово! Ти у списку, напишемо як відкриється альфа 🎉',
+        'ultra-news-toast-dup': 'Цей email вже підписаний ✓',
+        'ultra-news-toast-err': 'Щось пішло не так, спробуй ще раз',
+        'ultra-news-toast-net': 'Немає з’єднання. Перевір інтернет і спробуй знову',
+        'ultra-news-perk-1': 'Без спаму',
+        'ultra-news-perk-2': 'Пріоритет у альфу',
+        'ultra-news-perk-3': 'Ексклюзив-скін',
+
+        'ultra-social-eyebrow': 'Усюди, де ти є',
+        'ultra-social-title-a': 'Приєднуйся до',
+        'ultra-social-title-b': 'арени',
+        'ultra-social-lead': 'Discord і YouTube. Будь у курсі кожної нової фічі.'
+      },
+
+      de: {
+        'ultra-scroll-hint': 'Nach unten scrollen',
+        'ultra-live-eyebrow': 'Projekt wächst',
+        'ultra-live-title-a': 'Puls der', 'ultra-live-title-b': 'Entwicklung',
+        'ultra-live-lead': 'Das Spiel wird aktiv entwickelt. Tritt der Community bei — sei unter den Ersten.',
+        'ultra-live-discord': 'Discord-Community', 'ultra-live-growing': 'WÄCHST',
+        'ultra-live-discord-cta': 'Beitreten', 'ultra-live-discord-d': 'sei unter den Ersten',
+        'ultra-live-status': 'Status', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'geschlossene Alpha',
+        'ultra-live-release': 'Release', 'ultra-live-soon': 'BALD', 'ultra-live-release-d': 'offene Alpha',
+        'ultra-roadmap-eyebrow': 'Roadmap',
+        'ultra-roadmap-title-a': 'Weg', 'ultra-roadmap-title-b': 'zum Release',
+        'ultra-roadmap-lead': 'Das Spiel wird aktiv entwickelt. Hier sind die Aufgaben und ihr Status.',
+        'ultra-roadmap-progress': 'Fortschritt',
+        'ultra-roadmap-done': 'Fertig', 'ultra-roadmap-now': 'Jetzt', 'ultra-roadmap-planned': 'Geplant',
+        'ultra-rm-1': 'Charakterbewegungssystem erstellen',
+        'ultra-rm-2': 'Gegnerbewegungssystem erstellen',
+        'ultra-rm-3': 'Timer-Mechanik bei Gegnerberührung',
+        'ultra-rm-4': 'Niederlage-Bildschirm erstellen',
+        'ultra-rm-5': 'Texturen der Spielzone entwickeln',
+        'ultra-rm-6': 'Zone mit 10 Arenen erstellen',
+        'ultra-rm-7': 'Hauptmenü erstellen',
+        'ultra-rm-8': 'Basis-Charakter entwickeln',
+        'ultra-rm-9': 'Mehrere Spielzonen mit anderen Gegnern',
+        'ultra-rm-10': 'Übergänge zwischen Zonen',
+        'ultra-rm-11': 'Mehrere Charaktere hinzufügen',
+        'ultra-rm-12': 'Accessoires hinzufügen',
+        'ultra-rm-13': 'Restliche Funktionen hinzufügen',
+        'ultra-rm-14': 'Bugs fixen und Alpha vorbereiten',
+        'ultra-rm-15': 'Alpha-Download auf die Website',
+        'ultra-faq-eyebrow': 'Häufige Fragen',
+        'ultra-faq-title-a': 'Das', 'ultra-faq-title-b': 'Wichtigste',
+        'ultra-faq-1-q': 'Wann ist der Release und wo kann man spielen?',
+        'ultra-faq-1-a': 'Das Spiel befindet sich in der geschlossenen Entwicklung. Zuerst kommt die Alpha, dann der vollständige Release. Zeitraum: 2026–2027. Folge dem Discord und abonniere unten.',
+        'ultra-faq-2-q': 'Auf welchen Plattformen erscheint das Spiel?',
+        'ultra-faq-2-a': 'Zuerst Web und Windows. Danach macOS/Linux, später mobile Version.',
+        'ultra-faq-3-q': 'Ist das Spiel kostenpflichtig?',
+        'ultra-faq-3-a': 'Das Grundspiel ist kostenlos. Season-Pässe, Skins und VIP sind optionale Unterstützung — kein Pay-to-Win.',
+        'ultra-faq-4-q': 'Welche Systemanforderungen gibt es?',
+        'ultra-faq-4-a': 'Ziel: 60 FPS auf den meisten Geräten der letzten 5 Jahre. Die Web-Version läuft in jedem modernen Browser.',
+        'ultra-faq-5-q': 'Wie komme ich in den geschlossenen Test?',
+        'ultra-faq-5-a': 'Tritt unserem Discord bei und abonniere den Newsletter unten — sobald die Alpha-Anmeldung öffnet, erfahren Abonnenten es zuerst.',
+        'ultra-news-eyebrow': 'Früher Zugang',
+        'ultra-news-title': 'Erhalte als Erster eine Einladung',
+        'ultra-news-sub': 'Abonniere — wir senden dir eine Alpha-Einladung, das Presskit und einen exklusiven Community-Skin.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Abonnieren', 'ultra-news-btn-sending': 'Senden…',
+        'ultra-news-toast-invalid': 'Bitte gültige E-Mail eingeben',
+        'ultra-news-toast-ok': 'Fertig! Du bist auf der Liste, wir melden uns bei Alpha-Start 🎉',
+        'ultra-news-toast-dup': 'Diese E-Mail ist bereits abonniert ✓',
+        'ultra-news-toast-err': 'Etwas ist schiefgelaufen, bitte erneut versuchen',
+        'ultra-news-toast-net': 'Keine Verbindung. Internet prüfen und erneut versuchen',
+        'ultra-news-perk-1': 'Kein Spam', 'ultra-news-perk-2': 'Alpha-Priorität', 'ultra-news-perk-3': 'Exklusiver Skin',
+        'ultra-social-eyebrow': 'Überall, wo du bist',
+        'ultra-social-title-a': 'Tritt', 'ultra-social-title-b': 'der Arena bei',
+        'ultra-social-lead': 'Discord und YouTube. Bleib bei jedem neuen Feature am Ball.'
+      },
+
+      es: {
+        'ultra-scroll-hint': 'Desplázate hacia abajo',
+        'ultra-live-eyebrow': 'El proyecto crece',
+        'ultra-live-title-a': 'Pulso del', 'ultra-live-title-b': 'desarrollo',
+        'ultra-live-lead': 'El juego está en desarrollo activo. Únete a la comunidad — sé de los primeros.',
+        'ultra-live-discord': 'Comunidad de Discord', 'ultra-live-growing': 'CRECIENDO',
+        'ultra-live-discord-cta': 'Únete', 'ultra-live-discord-d': 'sé de los primeros',
+        'ultra-live-status': 'Estado', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'alfa cerrada',
+        'ultra-live-release': 'Lanzamiento', 'ultra-live-soon': 'PRONTO', 'ultra-live-release-d': 'alfa abierta',
+        'ultra-roadmap-eyebrow': 'Hoja de ruta',
+        'ultra-roadmap-title-a': 'Camino', 'ultra-roadmap-title-b': 'al lanzamiento',
+        'ultra-roadmap-lead': 'El juego está en desarrollo activo. Estas son las tareas y su estado.',
+        'ultra-roadmap-progress': 'Progreso',
+        'ultra-roadmap-done': 'Hecho', 'ultra-roadmap-now': 'Ahora', 'ultra-roadmap-planned': 'Planeado',
+        'ultra-rm-1': 'Crear sistema de movimiento del personaje',
+        'ultra-rm-2': 'Crear sistema de movimiento de enemigos',
+        'ultra-rm-3': 'Implementar mecánica de "temporizador" al tocar enemigo',
+        'ultra-rm-4': 'Crear pantalla de derrota',
+        'ultra-rm-5': 'Desarrollar texturas de la zona',
+        'ultra-rm-6': 'Crear zona con 10 arenas',
+        'ultra-rm-7': 'Crear menú principal',
+        'ultra-rm-8': 'Desarrollar personaje base',
+        'ultra-rm-9': 'Desarrollar varias zonas con diferentes enemigos',
+        'ultra-rm-10': 'Implementar transiciones entre zonas',
+        'ultra-rm-11': 'Añadir varios personajes',
+        'ultra-rm-12': 'Añadir accesorios',
+        'ultra-rm-13': 'Añadir el resto de funciones',
+        'ultra-rm-14': 'Arreglar bugs y preparar versión alfa',
+        'ultra-rm-15': 'Añadir descarga de la alfa al sitio',
+        'ultra-faq-eyebrow': 'Preguntas frecuentes',
+        'ultra-faq-title-a': 'Lo', 'ultra-faq-title-b': 'esencial',
+        'ultra-faq-1-q': '¿Cuándo es el lanzamiento y dónde puedo jugar?',
+        'ultra-faq-1-a': 'El juego está en desarrollo cerrado. Primero sale la alfa, luego el lanzamiento completo. Plazos: 2026–2027. Sigue nuestro Discord y suscríbete abajo.',
+        'ultra-faq-2-q': '¿En qué plataformas estará el juego?',
+        'ultra-faq-2-a': 'Primero Web y Windows. Después del lanzamiento: macOS/Linux y más tarde móvil.',
+        'ultra-faq-3-q': '¿Será de pago?',
+        'ultra-faq-3-a': 'El juego base es gratuito. Pases, skins y VIP son apoyo opcional, sin mecánicas pay-to-win.',
+        'ultra-faq-4-q': '¿Cuáles son los requisitos del sistema?',
+        'ultra-faq-4-a': 'Objetivo: 60 FPS en la mayoría de dispositivos de los últimos 5 años. La versión web funciona en cualquier navegador moderno.',
+        'ultra-faq-5-q': '¿Cómo entrar en la prueba cerrada?',
+        'ultra-faq-5-a': 'Únete a nuestro Discord y suscríbete al boletín abajo — cuando abra la inscripción a la alfa, los suscriptores serán los primeros en saberlo.',
+        'ultra-news-eyebrow': 'Acceso anticipado',
+        'ultra-news-title': 'Consigue la invitación primero',
+        'ultra-news-sub': 'Suscríbete — te enviaremos una invitación a la alfa, el press kit y un skin exclusivo para la comunidad temprana.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Suscribirse', 'ultra-news-btn-sending': 'Enviando…',
+        'ultra-news-toast-invalid': 'Introduce un email válido',
+        'ultra-news-toast-ok': '¡Listo! Estás en la lista, te avisaremos cuando abra la alfa 🎉',
+        'ultra-news-toast-dup': 'Este email ya está suscrito ✓',
+        'ultra-news-toast-err': 'Algo salió mal, inténtalo de nuevo',
+        'ultra-news-toast-net': 'Sin conexión. Revisa tu internet e inténtalo de nuevo',
+        'ultra-news-perk-1': 'Sin spam', 'ultra-news-perk-2': 'Prioridad en la alfa', 'ultra-news-perk-3': 'Skin exclusivo',
+        'ultra-social-eyebrow': 'Dondequiera que estés',
+        'ultra-social-title-a': 'Únete', 'ultra-social-title-b': 'a la arena',
+        'ultra-social-lead': 'Discord y YouTube. Mantente al día con cada nueva función.'
+      },
+
+      fr: {
+        'ultra-scroll-hint': 'Faire défiler',
+        'ultra-live-eyebrow': 'Le projet grandit',
+        'ultra-live-title-a': 'Pouls du', 'ultra-live-title-b': 'développement',
+        'ultra-live-lead': 'Le jeu est en développement actif. Rejoins la communauté — sois parmi les premiers.',
+        'ultra-live-discord': 'Communauté Discord', 'ultra-live-growing': 'EN CROISSANCE',
+        'ultra-live-discord-cta': 'Rejoindre', 'ultra-live-discord-d': 'sois parmi les premiers',
+        'ultra-live-status': 'Statut', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'alpha fermée',
+        'ultra-live-release': 'Sortie', 'ultra-live-soon': 'BIENTÔT', 'ultra-live-release-d': 'alpha ouverte',
+        'ultra-roadmap-eyebrow': 'Feuille de route',
+        'ultra-roadmap-title-a': 'Route', 'ultra-roadmap-title-b': 'vers la sortie',
+        'ultra-roadmap-lead': 'Le jeu est en développement actif. Voici les tâches et leur statut.',
+        'ultra-roadmap-progress': 'Progression',
+        'ultra-roadmap-done': 'Terminé', 'ultra-roadmap-now': 'En cours', 'ultra-roadmap-planned': 'Prévu',
+        'ultra-rm-1': 'Créer le système de mouvement du personnage',
+        'ultra-rm-2': 'Créer le système de mouvement des ennemis',
+        'ultra-rm-3': 'Implémenter la mécanique de "timer" au contact',
+        'ultra-rm-4': 'Créer l\u2019écran de défaite',
+        'ultra-rm-5': 'Développer les textures de la zone',
+        'ultra-rm-6': 'Créer la zone avec 10 arènes',
+        'ultra-rm-7': 'Créer le menu principal',
+        'ultra-rm-8': 'Développer le personnage de base',
+        'ultra-rm-9': 'Développer plusieurs zones avec différents ennemis',
+        'ultra-rm-10': 'Implémenter les transitions entre zones',
+        'ultra-rm-11': 'Ajouter plusieurs personnages',
+        'ultra-rm-12': 'Ajouter des accessoires',
+        'ultra-rm-13': 'Ajouter les fonctionnalités restantes',
+        'ultra-rm-14': 'Corriger les bugs et préparer l\u2019alpha',
+        'ultra-rm-15': 'Ajouter le téléchargement de l\u2019alpha au site',
+        'ultra-faq-eyebrow': 'Questions fréquentes',
+        'ultra-faq-title-a': 'L\u2019', 'ultra-faq-title-b': 'essentiel',
+        'ultra-faq-1-q': 'Quand la sortie et où jouer ?',
+        'ultra-faq-1-a': 'Le jeu est en développement fermé. D\u2019abord l\u2019alpha, puis la sortie complète. Planning : 2026–2027. Suis notre Discord et abonne-toi ci-dessous.',
+        'ultra-faq-2-q': 'Sur quelles plateformes ?',
+        'ultra-faq-2-a': 'Web et Windows d\u2019abord. Ensuite macOS/Linux, puis une version mobile.',
+        'ultra-faq-3-q': 'Le jeu sera-t-il payant ?',
+        'ultra-faq-3-a': 'Le jeu de base est gratuit. Passes, skins et VIP sont du soutien optionnel, sans mécaniques pay-to-win.',
+        'ultra-faq-4-q': 'Configuration requise ?',
+        'ultra-faq-4-a': 'Objectif : 60 FPS sur la plupart des appareils des 5 dernières années. La version web fonctionne sur tout navigateur moderne.',
+        'ultra-faq-5-q': 'Comment rejoindre le test fermé ?',
+        'ultra-faq-5-a': 'Rejoins notre Discord et abonne-toi à la newsletter — dès l\u2019ouverture des inscriptions alpha, les abonnés seront prévenus en premier.',
+        'ultra-news-eyebrow': 'Accès anticipé',
+        'ultra-news-title': 'Reçois l\u2019invitation en premier',
+        'ultra-news-sub': 'Abonne-toi — nous enverrons une invitation à l\u2019alpha, le press kit et un skin exclusif pour la communauté.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'S\u2019abonner', 'ultra-news-btn-sending': 'Envoi…',
+        'ultra-news-toast-invalid': 'Entre un email valide',
+        'ultra-news-toast-ok': 'Parfait ! Tu es sur la liste, on te prévient à l\u2019ouverture de l\u2019alpha 🎉',
+        'ultra-news-toast-dup': 'Cet email est déjà abonné ✓',
+        'ultra-news-toast-err': 'Une erreur est survenue, réessaie',
+        'ultra-news-toast-net': 'Pas de connexion. Vérifie ton internet et réessaie',
+        'ultra-news-perk-1': 'Pas de spam', 'ultra-news-perk-2': 'Priorité alpha', 'ultra-news-perk-3': 'Skin exclusif',
+        'ultra-social-eyebrow': 'Partout où tu es',
+        'ultra-social-title-a': 'Rejoins', 'ultra-social-title-b': 'l\u2019arène',
+        'ultra-social-lead': 'Discord et YouTube. Sois au courant de chaque nouvelle fonctionnalité.'
+      },
+
+      it: {
+        'ultra-scroll-hint': 'Scorri giù',
+        'ultra-live-eyebrow': 'Il progetto cresce',
+        'ultra-live-title-a': 'Battito dello', 'ultra-live-title-b': 'sviluppo',
+        'ultra-live-lead': 'Il gioco è in sviluppo attivo. Unisciti alla community — sii tra i primi.',
+        'ultra-live-discord': 'Community Discord', 'ultra-live-growing': 'IN CRESCITA',
+        'ultra-live-discord-cta': 'Unisciti', 'ultra-live-discord-d': 'sii tra i primi',
+        'ultra-live-status': 'Stato', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'alpha chiusa',
+        'ultra-live-release': 'Uscita', 'ultra-live-soon': 'PRESTO', 'ultra-live-release-d': 'alpha aperta',
+        'ultra-roadmap-eyebrow': 'Roadmap',
+        'ultra-roadmap-title-a': 'Strada', 'ultra-roadmap-title-b': 'verso l\u2019uscita',
+        'ultra-roadmap-lead': 'Il gioco è in sviluppo attivo. Ecco le attività e il loro stato.',
+        'ultra-roadmap-progress': 'Progresso',
+        'ultra-roadmap-done': 'Fatto', 'ultra-roadmap-now': 'Adesso', 'ultra-roadmap-planned': 'Previsto',
+        'ultra-rm-1': 'Creare sistema di movimento del personaggio',
+        'ultra-rm-2': 'Creare sistema di movimento dei nemici',
+        'ultra-rm-3': 'Implementare meccanica "timer" al tocco del nemico',
+        'ultra-rm-4': 'Creare schermata di sconfitta',
+        'ultra-rm-5': 'Sviluppare texture della zona',
+        'ultra-rm-6': 'Creare zona con 10 arene',
+        'ultra-rm-7': 'Creare menu principale',
+        'ultra-rm-8': 'Sviluppare personaggio base',
+        'ultra-rm-9': 'Sviluppare più zone con nemici diversi',
+        'ultra-rm-10': 'Implementare transizioni tra zone',
+        'ultra-rm-11': 'Aggiungere più personaggi',
+        'ultra-rm-12': 'Aggiungere accessori',
+        'ultra-rm-13': 'Aggiungere le funzioni rimanenti',
+        'ultra-rm-14': 'Correggere bug e preparare la versione alpha',
+        'ultra-rm-15': 'Aggiungere il download dell\u2019alpha al sito',
+        'ultra-faq-eyebrow': 'Domande frequenti',
+        'ultra-faq-title-a': 'In', 'ultra-faq-title-b': 'breve',
+        'ultra-faq-1-q': 'Quando esce e dove si gioca?',
+        'ultra-faq-1-a': 'Il gioco è in sviluppo chiuso. Prima la versione alpha, poi il rilascio completo. Tempistiche: 2026–2027. Segui il Discord e iscriviti qui sotto.',
+        'ultra-faq-2-q': 'Su quali piattaforme?',
+        'ultra-faq-2-a': 'Prima Web e Windows. Dopo il rilascio: macOS/Linux, poi mobile.',
+        'ultra-faq-3-q': 'Sarà a pagamento?',
+        'ultra-faq-3-a': 'Il gioco base è gratuito. Pass, skin e VIP sono supporto opzionale, senza meccaniche pay-to-win.',
+        'ultra-faq-4-q': 'Requisiti di sistema?',
+        'ultra-faq-4-a': 'Obiettivo: 60 FPS sulla maggior parte dei dispositivi degli ultimi 5 anni. La versione web funziona su qualsiasi browser moderno.',
+        'ultra-faq-5-q': 'Come entrare nella beta chiusa?',
+        'ultra-faq-5-a': 'Entra nel nostro Discord e iscriviti alla newsletter qui sotto — all\u2019apertura delle iscrizioni alpha, gli iscritti saranno avvisati per primi.',
+        'ultra-news-eyebrow': 'Accesso anticipato',
+        'ultra-news-title': 'Ricevi l\u2019invito per primo',
+        'ultra-news-sub': 'Iscriviti — invieremo un invito alla alpha, il press kit e una skin esclusiva per la community.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Iscriviti', 'ultra-news-btn-sending': 'Invio…',
+        'ultra-news-toast-invalid': 'Inserisci un email valido',
+        'ultra-news-toast-ok': 'Fatto! Sei in lista, ti avvisiamo all\u2019apertura dell\u2019alpha 🎉',
+        'ultra-news-toast-dup': 'Questa email è già iscritta ✓',
+        'ultra-news-toast-err': 'Qualcosa è andato storto, riprova',
+        'ultra-news-toast-net': 'Nessuna connessione. Controlla internet e riprova',
+        'ultra-news-perk-1': 'Niente spam', 'ultra-news-perk-2': 'Priorità alpha', 'ultra-news-perk-3': 'Skin esclusiva',
+        'ultra-social-eyebrow': 'Ovunque tu sia',
+        'ultra-social-title-a': 'Unisciti', 'ultra-social-title-b': 'all\u2019arena',
+        'ultra-social-lead': 'Discord e YouTube. Resta aggiornato su ogni nuova funzionalità.'
+      },
+
+      pt: {
+        'ultra-scroll-hint': 'Role para baixo',
+        'ultra-live-eyebrow': 'O projeto cresce',
+        'ultra-live-title-a': 'Pulso do', 'ultra-live-title-b': 'desenvolvimento',
+        'ultra-live-lead': 'O jogo está em desenvolvimento ativo. Junte-se à comunidade — seja dos primeiros.',
+        'ultra-live-discord': 'Comunidade Discord', 'ultra-live-growing': 'CRESCENDO',
+        'ultra-live-discord-cta': 'Participar', 'ultra-live-discord-d': 'seja dos primeiros',
+        'ultra-live-status': 'Status', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'alfa fechado',
+        'ultra-live-release': 'Lançamento', 'ultra-live-soon': 'EM BREVE', 'ultra-live-release-d': 'alfa aberto',
+        'ultra-roadmap-eyebrow': 'Roteiro',
+        'ultra-roadmap-title-a': 'Caminho', 'ultra-roadmap-title-b': 'para o lançamento',
+        'ultra-roadmap-lead': 'O jogo está em desenvolvimento ativo. Aqui estão as tarefas e seus status.',
+        'ultra-roadmap-progress': 'Progresso',
+        'ultra-roadmap-done': 'Pronto', 'ultra-roadmap-now': 'Agora', 'ultra-roadmap-planned': 'Planejado',
+        'ultra-rm-1': 'Criar sistema de movimento do personagem',
+        'ultra-rm-2': 'Criar sistema de movimento dos inimigos',
+        'ultra-rm-3': 'Implementar mecânica de "temporizador" ao tocar inimigo',
+        'ultra-rm-4': 'Criar tela de derrota',
+        'ultra-rm-5': 'Desenvolver texturas da zona',
+        'ultra-rm-6': 'Criar zona com 10 arenas',
+        'ultra-rm-7': 'Criar menu principal',
+        'ultra-rm-8': 'Desenvolver personagem base',
+        'ultra-rm-9': 'Desenvolver várias zonas com inimigos diferentes',
+        'ultra-rm-10': 'Implementar transições entre zonas',
+        'ultra-rm-11': 'Adicionar vários personagens',
+        'ultra-rm-12': 'Adicionar acessórios',
+        'ultra-rm-13': 'Adicionar as funções restantes',
+        'ultra-rm-14': 'Corrigir bugs e preparar versão alfa',
+        'ultra-rm-15': 'Adicionar download da alfa ao site',
+        'ultra-faq-eyebrow': 'Perguntas frequentes',
+        'ultra-faq-title-a': 'O', 'ultra-faq-title-b': 'essencial',
+        'ultra-faq-1-q': 'Quando é o lançamento e onde posso jogar?',
+        'ultra-faq-1-a': 'O jogo está em desenvolvimento fechado. Primeiro sai o alfa, depois o lançamento completo. Prazo: 2026–2027. Siga o Discord e inscreva-se abaixo.',
+        'ultra-faq-2-q': 'Em quais plataformas?',
+        'ultra-faq-2-a': 'Web e Windows primeiro. Depois macOS/Linux, e então mobile.',
+        'ultra-faq-3-q': 'O jogo será pago?',
+        'ultra-faq-3-a': 'O jogo base é gratuito. Passes, skins e VIP são suporte opcional, sem pay-to-win.',
+        'ultra-faq-4-q': 'Quais os requisitos?',
+        'ultra-faq-4-a': 'Meta: 60 FPS na maioria dos dispositivos dos últimos 5 anos. A versão web roda em qualquer navegador moderno.',
+        'ultra-faq-5-q': 'Como entrar no teste fechado?',
+        'ultra-faq-5-a': 'Entre no nosso Discord e inscreva-se na newsletter abaixo — quando abrir a inscrição para o alfa, os inscritos saberão primeiro.',
+        'ultra-news-eyebrow': 'Acesso antecipado',
+        'ultra-news-title': 'Receba o convite primeiro',
+        'ultra-news-sub': 'Inscreva-se — enviaremos um convite para a alfa, o press kit e uma skin exclusiva para a comunidade inicial.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Inscrever-se', 'ultra-news-btn-sending': 'Enviando…',
+        'ultra-news-toast-invalid': 'Insira um email válido',
+        'ultra-news-toast-ok': 'Pronto! Você está na lista, avisaremos quando o alfa abrir 🎉',
+        'ultra-news-toast-dup': 'Este email já está inscrito ✓',
+        'ultra-news-toast-err': 'Algo deu errado, tente de novo',
+        'ultra-news-toast-net': 'Sem conexão. Verifique a internet e tente novamente',
+        'ultra-news-perk-1': 'Sem spam', 'ultra-news-perk-2': 'Prioridade no alfa', 'ultra-news-perk-3': 'Skin exclusiva',
+        'ultra-social-eyebrow': 'Em qualquer lugar',
+        'ultra-social-title-a': 'Junte-se', 'ultra-social-title-b': 'à arena',
+        'ultra-social-lead': 'Discord e YouTube. Fique por dentro de cada nova funcionalidade.'
+      },
+
+      pl: {
+        'ultra-scroll-hint': 'Przewiń w dół',
+        'ultra-live-eyebrow': 'Projekt się rozwija',
+        'ultra-live-title-a': 'Puls', 'ultra-live-title-b': 'rozwoju',
+        'ultra-live-lead': 'Gra jest w aktywnym rozwoju. Dołącz do społeczności — bądź wśród pierwszych.',
+        'ultra-live-discord': 'Społeczność Discord', 'ultra-live-growing': 'ROŚNIE',
+        'ultra-live-discord-cta': 'Dołącz', 'ultra-live-discord-d': 'bądź wśród pierwszych',
+        'ultra-live-status': 'Status', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'zamknięta alfa',
+        'ultra-live-release': 'Wydanie', 'ultra-live-soon': 'WKRÓTCE', 'ultra-live-release-d': 'otwarta alfa',
+        'ultra-roadmap-eyebrow': 'Mapa drogowa',
+        'ultra-roadmap-title-a': 'Droga', 'ultra-roadmap-title-b': 'do wydania',
+        'ultra-roadmap-lead': 'Gra jest w aktywnym rozwoju. Oto zadania i ich status.',
+        'ultra-roadmap-progress': 'Postęp',
+        'ultra-roadmap-done': 'Gotowe', 'ultra-roadmap-now': 'Teraz', 'ultra-roadmap-planned': 'Planowane',
+        'ultra-rm-1': 'Stworzenie systemu ruchu postaci',
+        'ultra-rm-2': 'Stworzenie systemu ruchu wrogów',
+        'ultra-rm-3': 'Mechanika „licznika" przy dotknięciu wroga',
+        'ultra-rm-4': 'Stworzenie ekranu porażki',
+        'ultra-rm-5': 'Rozwój tekstur strefy',
+        'ultra-rm-6': 'Stworzenie strefy z 10 arenami',
+        'ultra-rm-7': 'Stworzenie menu głównego',
+        'ultra-rm-8': 'Rozwój postaci bazowej',
+        'ultra-rm-9': 'Stworzenie kilku stref z innymi wrogami',
+        'ultra-rm-10': 'Przejścia między strefami',
+        'ultra-rm-11': 'Dodanie kilku postaci',
+        'ultra-rm-12': 'Dodanie akcesoriów',
+        'ultra-rm-13': 'Dodanie pozostałych funkcji',
+        'ultra-rm-14': 'Poprawa błędów i przygotowanie wersji alfa',
+        'ultra-rm-15': 'Dodanie pobierania alfy na stronę',
+        'ultra-faq-eyebrow': 'Częste pytania',
+        'ultra-faq-title-a': 'W', 'ultra-faq-title-b': 'skrócie',
+        'ultra-faq-1-q': 'Kiedy premiera i gdzie zagram?',
+        'ultra-faq-1-a': 'Gra jest w zamkniętym rozwoju. Najpierw alfa, potem pełna premiera. Plany: 2026–2027. Śledź Discord i zapisz się niżej.',
+        'ultra-faq-2-q': 'Na jakich platformach?',
+        'ultra-faq-2-a': 'Najpierw Web i Windows. Potem macOS/Linux, później wersja mobilna.',
+        'ultra-faq-3-q': 'Gra będzie płatna?',
+        'ultra-faq-3-a': 'Podstawowa gra jest darmowa. Karnety, skiny i VIP to opcjonalne wsparcie — bez pay-to-win.',
+        'ultra-faq-4-q': 'Wymagania sprzętowe?',
+        'ultra-faq-4-a': 'Cel: 60 FPS na większości urządzeń z ostatnich 5 lat. Wersja webowa działa w każdej nowoczesnej przeglądarce.',
+        'ultra-faq-5-q': 'Jak wejść do zamkniętego testu?',
+        'ultra-faq-5-a': 'Dołącz do naszego Discorda i zapisz się do newslettera — kiedy otworzymy zapisy na alfę, subskrybenci dowiedzą się pierwsi.',
+        'ultra-news-eyebrow': 'Wczesny dostęp',
+        'ultra-news-title': 'Odbierz zaproszenie jako pierwszy',
+        'ultra-news-sub': 'Zapisz się — wyślemy zaproszenie do alfy, press kit i ekskluzywny skin wczesnej społeczności.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Subskrybuj', 'ultra-news-btn-sending': 'Wysyłanie…',
+        'ultra-news-toast-invalid': 'Wprowadź poprawny email',
+        'ultra-news-toast-ok': 'Gotowe! Jesteś na liście, damy znać gdy ruszy alfa 🎉',
+        'ultra-news-toast-dup': 'Ten email jest już zapisany ✓',
+        'ultra-news-toast-err': 'Coś poszło nie tak, spróbuj jeszcze raz',
+        'ultra-news-toast-net': 'Brak połączenia. Sprawdź internet i spróbuj ponownie',
+        'ultra-news-perk-1': 'Bez spamu', 'ultra-news-perk-2': 'Priorytet w alfie', 'ultra-news-perk-3': 'Ekskluzywny skin',
+        'ultra-social-eyebrow': 'Gdziekolwiek jesteś',
+        'ultra-social-title-a': 'Dołącz', 'ultra-social-title-b': 'do areny',
+        'ultra-social-lead': 'Discord i YouTube. Bądź na bieżąco z każdą nową funkcją.'
+      },
+
+      tr: {
+        'ultra-scroll-hint': 'Aşağı kaydır',
+        'ultra-live-eyebrow': 'Proje büyüyor',
+        'ultra-live-title-a': 'Geliştirmenin', 'ultra-live-title-b': 'nabzı',
+        'ultra-live-lead': 'Oyun aktif geliştirme aşamasında. Topluluğa katıl — ilklerden biri ol.',
+        'ultra-live-discord': 'Discord topluluğu', 'ultra-live-growing': 'BÜYÜYOR',
+        'ultra-live-discord-cta': 'Katıl', 'ultra-live-discord-d': 'ilklerden biri ol',
+        'ultra-live-status': 'Durum', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'kapalı alfa',
+        'ultra-live-release': 'Çıkış', 'ultra-live-soon': 'YAKINDA', 'ultra-live-release-d': 'açık alfa',
+        'ultra-roadmap-eyebrow': 'Yol haritası',
+        'ultra-roadmap-title-a': 'Çıkışa', 'ultra-roadmap-title-b': 'giden yol',
+        'ultra-roadmap-lead': 'Oyun aktif geliştirmede. İşte görevler ve durumları.',
+        'ultra-roadmap-progress': 'İlerleme',
+        'ultra-roadmap-done': 'Bitti', 'ultra-roadmap-now': 'Şimdi', 'ultra-roadmap-planned': 'Planlanan',
+        'ultra-rm-1': 'Karakter hareket sistemi',
+        'ultra-rm-2': 'Düşman hareket sistemi',
+        'ultra-rm-3': 'Düşmana dokununca "zamanlayıcı" mekaniği',
+        'ultra-rm-4': 'Yenilgi ekranı',
+        'ultra-rm-5': 'Bölge dokularının geliştirilmesi',
+        'ultra-rm-6': '10 arenalı bölge',
+        'ultra-rm-7': 'Ana menü',
+        'ultra-rm-8': 'Temel karakterin geliştirilmesi',
+        'ultra-rm-9': 'Farklı düşmanlarla birden çok bölge',
+        'ultra-rm-10': 'Bölgeler arası geçişler',
+        'ultra-rm-11': 'Birden çok karakter ekleme',
+        'ultra-rm-12': 'Aksesuar ekleme',
+        'ultra-rm-13': 'Kalan özellikleri ekleme',
+        'ultra-rm-14': 'Hata düzeltme ve alfa sürümü hazırlığı',
+        'ultra-rm-15': 'Alfa indirmesini siteye ekleme',
+        'ultra-faq-eyebrow': 'Sık sorulanlar',
+        'ultra-faq-title-a': 'Kısaca', 'ultra-faq-title-b': 'önemli',
+        'ultra-faq-1-q': 'Ne zaman çıkacak ve nerede oynayabilirim?',
+        'ultra-faq-1-a': 'Oyun kapalı geliştirmede. Önce alfa, sonra tam sürüm. Takvim: 2026–2027. Discord\u2019u takip et ve aşağıdan abone ol.',
+        'ultra-faq-2-q': 'Hangi platformlarda olacak?',
+        'ultra-faq-2-a': 'İlk olarak Web ve Windows. Ardından macOS/Linux, sonra mobil.',
+        'ultra-faq-3-q': 'Ücretli mi olacak?',
+        'ultra-faq-3-a': 'Temel oyun ücretsiz. Sezon geçişleri, kostümler ve VIP — isteğe bağlı destek, pay-to-win yok.',
+        'ultra-faq-4-q': 'Sistem gereksinimleri?',
+        'ultra-faq-4-a': 'Hedef: son 5 yılın çoğu cihazında 60 FPS. Web sürümü modern herhangi bir tarayıcıda çalışır.',
+        'ultra-faq-5-q': 'Kapalı teste nasıl girerim?',
+        'ultra-faq-5-a': 'Discord\u2019umuza katıl ve aşağıdaki bültene abone ol — alfa kayıtları açıldığında aboneler ilk bilenler olacak.',
+        'ultra-news-eyebrow': 'Erken erişim',
+        'ultra-news-title': 'Daveti ilk sen al',
+        'ultra-news-sub': 'Abone ol — alfa davetini, press kit\u2019i ve erken topluluğa özel kostümü göndereceğiz.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Abone ol', 'ultra-news-btn-sending': 'Gönderiliyor…',
+        'ultra-news-toast-invalid': 'Geçerli bir email gir',
+        'ultra-news-toast-ok': 'Tamamdır! Listedesin, alfa açıldığında haber vereceğiz 🎉',
+        'ultra-news-toast-dup': 'Bu email zaten kayıtlı ✓',
+        'ultra-news-toast-err': 'Bir şeyler ters gitti, tekrar dene',
+        'ultra-news-toast-net': 'Bağlantı yok. İnternetini kontrol et ve tekrar dene',
+        'ultra-news-perk-1': 'Spam yok', 'ultra-news-perk-2': 'Alfa önceliği', 'ultra-news-perk-3': 'Özel kostüm',
+        'ultra-social-eyebrow': 'Her yerde',
+        'ultra-social-title-a': 'Arenaya', 'ultra-social-title-b': 'katıl',
+        'ultra-social-lead': 'Discord ve YouTube. Her yeni özellikten haberdar ol.'
+      },
+
+      nl: {
+        'ultra-scroll-hint': 'Scroll omlaag',
+        'ultra-live-eyebrow': 'Het project groeit',
+        'ultra-live-title-a': 'Pols van de', 'ultra-live-title-b': 'ontwikkeling',
+        'ultra-live-lead': 'Het spel is in actieve ontwikkeling. Word lid van de community — wees bij de eersten.',
+        'ultra-live-discord': 'Discord-community', 'ultra-live-growing': 'GROEIT',
+        'ultra-live-discord-cta': 'Meedoen', 'ultra-live-discord-d': 'wees bij de eersten',
+        'ultra-live-status': 'Status', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'gesloten alpha',
+        'ultra-live-release': 'Release', 'ultra-live-soon': 'BINNENKORT', 'ultra-live-release-d': 'open alpha',
+        'ultra-roadmap-eyebrow': 'Roadmap',
+        'ultra-roadmap-title-a': 'Weg', 'ultra-roadmap-title-b': 'naar release',
+        'ultra-roadmap-lead': 'Het spel is in actieve ontwikkeling. Hier zijn de taken en hun status.',
+        'ultra-roadmap-progress': 'Voortgang',
+        'ultra-roadmap-done': 'Klaar', 'ultra-roadmap-now': 'Nu', 'ultra-roadmap-planned': 'Gepland',
+        'ultra-rm-1': 'Personage bewegingssysteem maken',
+        'ultra-rm-2': 'Vijand bewegingssysteem maken',
+        'ultra-rm-3': 'Timer-mechanica bij aanraking',
+        'ultra-rm-4': 'Nederlaag-scherm maken',
+        'ultra-rm-5': 'Texturen van de zone ontwikkelen',
+        'ultra-rm-6': 'Zone met 10 arena\u2019s maken',
+        'ultra-rm-7': 'Hoofdmenu maken',
+        'ultra-rm-8': 'Basispersonage ontwikkelen',
+        'ultra-rm-9': 'Meerdere zones met andere vijanden',
+        'ultra-rm-10': 'Overgangen tussen zones',
+        'ultra-rm-11': 'Meerdere personages toevoegen',
+        'ultra-rm-12': 'Accessoires toevoegen',
+        'ultra-rm-13': 'Overige functies toevoegen',
+        'ultra-rm-14': 'Bugs fixen en alpha voorbereiden',
+        'ultra-rm-15': 'Alpha-download aan site toevoegen',
+        'ultra-faq-eyebrow': 'Veelgesteld',
+        'ultra-faq-title-a': 'Kort', 'ultra-faq-title-b': 'gezegd',
+        'ultra-faq-1-q': 'Wanneer is de release en waar kan ik spelen?',
+        'ultra-faq-1-a': 'Het spel is in gesloten ontwikkeling. Eerst de alpha, daarna de volledige release. Planning: 2026–2027. Volg Discord en abonneer je hieronder.',
+        'ultra-faq-2-q': 'Op welke platformen?',
+        'ultra-faq-2-a': 'Eerst Web en Windows. Daarna macOS/Linux, later mobiel.',
+        'ultra-faq-3-q': 'Is het spel betaald?',
+        'ultra-faq-3-a': 'Het basisspel is gratis. Passes, skins en VIP zijn optionele steun — geen pay-to-win.',
+        'ultra-faq-4-q': 'Wat zijn de systeemeisen?',
+        'ultra-faq-4-a': 'Doel: 60 FPS op de meeste apparaten van de laatste 5 jaar. De webversie werkt in elke moderne browser.',
+        'ultra-faq-5-q': 'Hoe kom ik in de gesloten test?',
+        'ultra-faq-5-a': 'Doe mee op onze Discord en abonneer je hieronder — zodra de alpha-aanmelding opent, horen abonnees het als eerste.',
+        'ultra-news-eyebrow': 'Vroege toegang',
+        'ultra-news-title': 'Ontvang als eerste een uitnodiging',
+        'ultra-news-sub': 'Abonneer — we sturen je een alpha-uitnodiging, de presskit en een exclusieve community-skin.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Abonneren', 'ultra-news-btn-sending': 'Verzenden…',
+        'ultra-news-toast-invalid': 'Voer een geldig email in',
+        'ultra-news-toast-ok': 'Klaar! Je staat op de lijst, we laten het weten als de alpha opent 🎉',
+        'ultra-news-toast-dup': 'Dit email is al geabonneerd ✓',
+        'ultra-news-toast-err': 'Er ging iets mis, probeer opnieuw',
+        'ultra-news-toast-net': 'Geen verbinding. Controleer je internet en probeer opnieuw',
+        'ultra-news-perk-1': 'Geen spam', 'ultra-news-perk-2': 'Alpha-prioriteit', 'ultra-news-perk-3': 'Exclusieve skin',
+        'ultra-social-eyebrow': 'Overal waar je bent',
+        'ultra-social-title-a': 'Doe mee', 'ultra-social-title-b': 'in de arena',
+        'ultra-social-lead': 'Discord en YouTube. Blijf op de hoogte van elke nieuwe functie.'
+      },
+
+      sv: {
+        'ultra-scroll-hint': 'Scrolla ner',
+        'ultra-live-eyebrow': 'Projektet växer',
+        'ultra-live-title-a': 'Utvecklingens', 'ultra-live-title-b': 'puls',
+        'ultra-live-lead': 'Spelet är under aktiv utveckling. Gå med i gemenskapen — var bland de första.',
+        'ultra-live-discord': 'Discord-community', 'ultra-live-growing': 'VÄXER',
+        'ultra-live-discord-cta': 'Gå med', 'ultra-live-discord-d': 'var bland de första',
+        'ultra-live-status': 'Status', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'stängd alfa',
+        'ultra-live-release': 'Release', 'ultra-live-soon': 'SNART', 'ultra-live-release-d': 'öppen alfa',
+        'ultra-roadmap-eyebrow': 'Färdplan',
+        'ultra-roadmap-title-a': 'Vägen', 'ultra-roadmap-title-b': 'till release',
+        'ultra-roadmap-lead': 'Spelet utvecklas aktivt. Här är uppgifterna och deras status.',
+        'ultra-roadmap-progress': 'Framsteg',
+        'ultra-roadmap-done': 'Klart', 'ultra-roadmap-now': 'Nu', 'ultra-roadmap-planned': 'Planerat',
+        'ultra-rm-1': 'Skapa rörelsesystem för karaktären',
+        'ultra-rm-2': 'Skapa rörelsesystem för fiender',
+        'ultra-rm-3': '"Timer"-mekanik vid fiendekontakt',
+        'ultra-rm-4': 'Skapa nederlagsskärm',
+        'ultra-rm-5': 'Utveckla zontexturer',
+        'ultra-rm-6': 'Skapa zon med 10 arenor',
+        'ultra-rm-7': 'Skapa huvudmeny',
+        'ultra-rm-8': 'Utveckla baskaraktär',
+        'ultra-rm-9': 'Flera zoner med olika fiender',
+        'ultra-rm-10': 'Övergångar mellan zoner',
+        'ultra-rm-11': 'Lägga till flera karaktärer',
+        'ultra-rm-12': 'Lägga till tillbehör',
+        'ultra-rm-13': 'Lägga till resterande funktioner',
+        'ultra-rm-14': 'Fixa buggar och förbereda alfa',
+        'ultra-rm-15': 'Lägga till alfa-nedladdning på sidan',
+        'ultra-faq-eyebrow': 'Vanliga frågor',
+        'ultra-faq-title-a': 'Det', 'ultra-faq-title-b': 'viktigaste',
+        'ultra-faq-1-q': 'När är release och var kan jag spela?',
+        'ultra-faq-1-a': 'Spelet är i sluten utveckling. Först alfa, sedan fullständig release. Tidsplan: 2026–2027. Följ Discord och prenumerera nedan.',
+        'ultra-faq-2-q': 'På vilka plattformar?',
+        'ultra-faq-2-a': 'Först Web och Windows. Sedan macOS/Linux, därefter mobil.',
+        'ultra-faq-3-q': 'Kostar spelet?',
+        'ultra-faq-3-a': 'Basspelet är gratis. Pass, skins och VIP är valfritt stöd — inga pay-to-win-mekaniker.',
+        'ultra-faq-4-q': 'Systemkrav?',
+        'ultra-faq-4-a': 'Mål: 60 FPS på de flesta enheter från de senaste 5 åren. Webbversionen fungerar i alla moderna webbläsare.',
+        'ultra-faq-5-q': 'Hur kommer jag med i det slutna testet?',
+        'ultra-faq-5-a': 'Gå med i vår Discord och prenumerera på nyhetsbrevet — när alfa-registreringen öppnar får prenumeranter veta först.',
+        'ultra-news-eyebrow': 'Tidig åtkomst',
+        'ultra-news-title': 'Få inbjudan först',
+        'ultra-news-sub': 'Prenumerera — vi skickar en alfa-inbjudan, pressmapp och en exklusiv community-skin.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Prenumerera', 'ultra-news-btn-sending': 'Skickar…',
+        'ultra-news-toast-invalid': 'Ange en giltig e-post',
+        'ultra-news-toast-ok': 'Klart! Du är på listan, vi hör av oss när alfan öppnar 🎉',
+        'ultra-news-toast-dup': 'Denna e-post är redan prenumererad ✓',
+        'ultra-news-toast-err': 'Något gick fel, försök igen',
+        'ultra-news-toast-net': 'Ingen anslutning. Kontrollera internet och försök igen',
+        'ultra-news-perk-1': 'Ingen spam', 'ultra-news-perk-2': 'Alfa-prioritet', 'ultra-news-perk-3': 'Exklusiv skin',
+        'ultra-social-eyebrow': 'Var du än är',
+        'ultra-social-title-a': 'Gå med', 'ultra-social-title-b': 'i arenan',
+        'ultra-social-lead': 'Discord och YouTube. Håll dig uppdaterad om varje ny funktion.'
+      },
+
+      no: {
+        'ultra-scroll-hint': 'Rull ned',
+        'ultra-live-eyebrow': 'Prosjektet vokser',
+        'ultra-live-title-a': 'Utviklingens', 'ultra-live-title-b': 'puls',
+        'ultra-live-lead': 'Spillet er under aktiv utvikling. Bli med i fellesskapet — vær blant de første.',
+        'ultra-live-discord': 'Discord-fellesskap', 'ultra-live-growing': 'VOKSER',
+        'ultra-live-discord-cta': 'Bli med', 'ultra-live-discord-d': 'vær blant de første',
+        'ultra-live-status': 'Status', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'lukket alfa',
+        'ultra-live-release': 'Utgivelse', 'ultra-live-soon': 'SNART', 'ultra-live-release-d': 'åpen alfa',
+        'ultra-roadmap-eyebrow': 'Veikart',
+        'ultra-roadmap-title-a': 'Vei', 'ultra-roadmap-title-b': 'til utgivelse',
+        'ultra-roadmap-lead': 'Spillet er under aktiv utvikling. Her er oppgavene og status.',
+        'ultra-roadmap-progress': 'Fremgang',
+        'ultra-roadmap-done': 'Ferdig', 'ultra-roadmap-now': 'Nå', 'ultra-roadmap-planned': 'Planlagt',
+        'ultra-rm-1': 'Lage bevegelsessystem for karakter',
+        'ultra-rm-2': 'Lage bevegelsessystem for fiender',
+        'ultra-rm-3': '"Timer"-mekanikk ved fiendekontakt',
+        'ultra-rm-4': 'Lage nederlagsskjerm',
+        'ultra-rm-5': 'Utvikle soneteksturer',
+        'ultra-rm-6': 'Lage sone med 10 arenaer',
+        'ultra-rm-7': 'Lage hovedmeny',
+        'ultra-rm-8': 'Utvikle basiskarakter',
+        'ultra-rm-9': 'Flere soner med forskjellige fiender',
+        'ultra-rm-10': 'Overganger mellom soner',
+        'ultra-rm-11': 'Legge til flere karakterer',
+        'ultra-rm-12': 'Legge til tilbehør',
+        'ultra-rm-13': 'Legge til gjenværende funksjoner',
+        'ultra-rm-14': 'Fikse feil og klargjøre alfa',
+        'ultra-rm-15': 'Legge til alfa-nedlasting på siden',
+        'ultra-faq-eyebrow': 'Ofte stilt',
+        'ultra-faq-title-a': 'Det', 'ultra-faq-title-b': 'viktigste',
+        'ultra-faq-1-q': 'Når kommer spillet og hvor kan jeg spille?',
+        'ultra-faq-1-a': 'Spillet er i lukket utvikling. Først alfa, så full lansering. Tidsplan: 2026–2027. Følg Discord og abonner nedenfor.',
+        'ultra-faq-2-q': 'Hvilke plattformer?',
+        'ultra-faq-2-a': 'Først Web og Windows. Deretter macOS/Linux, senere mobil.',
+        'ultra-faq-3-q': 'Er spillet betalt?',
+        'ultra-faq-3-a': 'Grunnspillet er gratis. Pass, skins og VIP er valgfri støtte — ingen pay-to-win.',
+        'ultra-faq-4-q': 'Systemkrav?',
+        'ultra-faq-4-a': 'Mål: 60 FPS på de fleste enheter fra de siste 5 årene. Nettversjonen fungerer i alle moderne nettlesere.',
+        'ultra-faq-5-q': 'Hvordan bli med i lukket test?',
+        'ultra-faq-5-a': 'Bli med på vår Discord og abonner på nyhetsbrevet — når alfa-registrering åpner, får abonnenter vite det først.',
+        'ultra-news-eyebrow': 'Tidlig tilgang',
+        'ultra-news-title': 'Få invitasjonen først',
+        'ultra-news-sub': 'Abonner — vi sender en alfa-invitasjon, presskit og en eksklusiv community-skin.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Abonner', 'ultra-news-btn-sending': 'Sender…',
+        'ultra-news-toast-invalid': 'Oppgi en gyldig e-post',
+        'ultra-news-toast-ok': 'Ferdig! Du er på listen, vi gir beskjed når alfa åpner 🎉',
+        'ultra-news-toast-dup': 'Denne e-posten er allerede abonnert ✓',
+        'ultra-news-toast-err': 'Noe gikk galt, prøv igjen',
+        'ultra-news-toast-net': 'Ingen tilkobling. Sjekk internett og prøv igjen',
+        'ultra-news-perk-1': 'Ingen spam', 'ultra-news-perk-2': 'Alfa-prioritet', 'ultra-news-perk-3': 'Eksklusiv skin',
+        'ultra-social-eyebrow': 'Overalt der du er',
+        'ultra-social-title-a': 'Bli med', 'ultra-social-title-b': 'i arenaen',
+        'ultra-social-lead': 'Discord og YouTube. Hold deg oppdatert på hver ny funksjon.'
+      },
+
+      fi: {
+        'ultra-scroll-hint': 'Vieritä alas',
+        'ultra-live-eyebrow': 'Projekti kasvaa',
+        'ultra-live-title-a': 'Kehityksen', 'ultra-live-title-b': 'pulssi',
+        'ultra-live-lead': 'Peli on aktiivisessa kehityksessä. Liity yhteisöön — ole ensimmäisten joukossa.',
+        'ultra-live-discord': 'Discord-yhteisö', 'ultra-live-growing': 'KASVAA',
+        'ultra-live-discord-cta': 'Liity', 'ultra-live-discord-d': 'ole ensimmäisten joukossa',
+        'ultra-live-status': 'Tila', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'suljettu alpha',
+        'ultra-live-release': 'Julkaisu', 'ultra-live-soon': 'PIAN', 'ultra-live-release-d': 'avoin alpha',
+        'ultra-roadmap-eyebrow': 'Tiekartta',
+        'ultra-roadmap-title-a': 'Polku', 'ultra-roadmap-title-b': 'julkaisuun',
+        'ultra-roadmap-lead': 'Peli on aktiivisessa kehityksessä. Tässä tehtävät ja niiden tila.',
+        'ultra-roadmap-progress': 'Edistyminen',
+        'ultra-roadmap-done': 'Valmis', 'ultra-roadmap-now': 'Nyt', 'ultra-roadmap-planned': 'Suunniteltu',
+        'ultra-rm-1': 'Hahmon liikejärjestelmän luominen',
+        'ultra-rm-2': 'Vihollisen liikejärjestelmän luominen',
+        'ultra-rm-3': 'Ajastinmekaniikka viholliseen koskettaessa',
+        'ultra-rm-4': 'Tappionäytön luominen',
+        'ultra-rm-5': 'Alueen tekstuurien kehittäminen',
+        'ultra-rm-6': '10 areenan alueen luominen',
+        'ultra-rm-7': 'Päävalikon luominen',
+        'ultra-rm-8': 'Perushahmon kehittäminen',
+        'ultra-rm-9': 'Useita alueita eri vihollisilla',
+        'ultra-rm-10': 'Siirtymät alueiden välillä',
+        'ultra-rm-11': 'Useiden hahmojen lisääminen',
+        'ultra-rm-12': 'Asusteiden lisääminen',
+        'ultra-rm-13': 'Loppujen toimintojen lisääminen',
+        'ultra-rm-14': 'Bugien korjaus ja alphan valmistelu',
+        'ultra-rm-15': 'Alpha-latauksen lisääminen sivustolle',
+        'ultra-faq-eyebrow': 'Usein kysyttyä',
+        'ultra-faq-title-a': 'Lyhyesti', 'ultra-faq-title-b': 'tärkeimmät',
+        'ultra-faq-1-q': 'Milloin julkaisu ja missä voi pelata?',
+        'ultra-faq-1-a': 'Peli on suljetussa kehityksessä. Ensin alpha, sitten täysi julkaisu. Aikataulu: 2026–2027. Seuraa Discordia ja tilaa alta.',
+        'ultra-faq-2-q': 'Millä alustoilla?',
+        'ultra-faq-2-a': 'Ensin Web ja Windows. Sen jälkeen macOS/Linux, myöhemmin mobiili.',
+        'ultra-faq-3-q': 'Onko peli maksullinen?',
+        'ultra-faq-3-a': 'Perus peli on ilmainen. Passit, skinit ja VIP ovat vapaaehtoista tukea — ei pay-to-winiä.',
+        'ultra-faq-4-q': 'Järjestelmävaatimukset?',
+        'ultra-faq-4-a': 'Tavoite: 60 FPS useimmilla viimeisen 5 vuoden laitteilla. Web-versio toimii kaikilla nykyaikaisilla selaimilla.',
+        'ultra-faq-5-q': 'Miten pääsen suljettuun testiin?',
+        'ultra-faq-5-a': 'Liity Discordiin ja tilaa uutiskirje — kun alpha-ilmoittautuminen aukeaa, tilaajat saavat tiedon ensimmäisinä.',
+        'ultra-news-eyebrow': 'Varhainen pääsy',
+        'ultra-news-title': 'Saat kutsun ensimmäisenä',
+        'ultra-news-sub': 'Tilaa — lähetämme alpha-kutsun, presskitin ja varhaisyhteisön eksklusiivisen skinin.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Tilaa', 'ultra-news-btn-sending': 'Lähetetään…',
+        'ultra-news-toast-invalid': 'Anna kelvollinen sähköposti',
+        'ultra-news-toast-ok': 'Valmista! Olet listalla, ilmoitamme kun alpha avautuu 🎉',
+        'ultra-news-toast-dup': 'Tämä sähköposti on jo tilattu ✓',
+        'ultra-news-toast-err': 'Jotain meni pieleen, yritä uudelleen',
+        'ultra-news-toast-net': 'Ei yhteyttä. Tarkista internet ja yritä uudelleen',
+        'ultra-news-perk-1': 'Ei roskapostia', 'ultra-news-perk-2': 'Alpha-etusija', 'ultra-news-perk-3': 'Eksklusiivinen skin',
+        'ultra-social-eyebrow': 'Missä tahansa oletkin',
+        'ultra-social-title-a': 'Liity', 'ultra-social-title-b': 'areenalle',
+        'ultra-social-lead': 'Discord ja YouTube. Pysy ajan tasalla jokaisesta uudesta ominaisuudesta.'
+      },
+
+      da: {
+        'ultra-scroll-hint': 'Rul ned',
+        'ultra-live-eyebrow': 'Projektet vokser',
+        'ultra-live-title-a': 'Udviklingens', 'ultra-live-title-b': 'puls',
+        'ultra-live-lead': 'Spillet er under aktiv udvikling. Bliv en del af fællesskabet — vær blandt de første.',
+        'ultra-live-discord': 'Discord-fællesskab', 'ultra-live-growing': 'VOKSER',
+        'ultra-live-discord-cta': 'Tilmeld', 'ultra-live-discord-d': 'vær blandt de første',
+        'ultra-live-status': 'Status', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'lukket alfa',
+        'ultra-live-release': 'Udgivelse', 'ultra-live-soon': 'SNART', 'ultra-live-release-d': 'åben alfa',
+        'ultra-roadmap-eyebrow': 'Køreplan',
+        'ultra-roadmap-title-a': 'Vejen', 'ultra-roadmap-title-b': 'til udgivelse',
+        'ultra-roadmap-lead': 'Spillet er under aktiv udvikling. Her er opgaverne og deres status.',
+        'ultra-roadmap-progress': 'Fremgang',
+        'ultra-roadmap-done': 'Færdig', 'ultra-roadmap-now': 'Nu', 'ultra-roadmap-planned': 'Planlagt',
+        'ultra-rm-1': 'Oprette karakterens bevægelsessystem',
+        'ultra-rm-2': 'Oprette fjendens bevægelsessystem',
+        'ultra-rm-3': '"Timer"-mekanik ved fjendeberøring',
+        'ultra-rm-4': 'Oprette nederlagsskærm',
+        'ultra-rm-5': 'Udvikle zonetexturer',
+        'ultra-rm-6': 'Oprette zone med 10 arenaer',
+        'ultra-rm-7': 'Oprette hovedmenu',
+        'ultra-rm-8': 'Udvikle baskarakter',
+        'ultra-rm-9': 'Flere zoner med forskellige fjender',
+        'ultra-rm-10': 'Overgange mellem zoner',
+        'ultra-rm-11': 'Tilføj flere karakterer',
+        'ultra-rm-12': 'Tilføj tilbehør',
+        'ultra-rm-13': 'Tilføj resten af funktionerne',
+        'ultra-rm-14': 'Ret bugs og forbered alfa',
+        'ultra-rm-15': 'Tilføj alfa-download til siden',
+        'ultra-faq-eyebrow': 'Ofte spurgt',
+        'ultra-faq-title-a': 'Det', 'ultra-faq-title-b': 'vigtigste',
+        'ultra-faq-1-q': 'Hvornår er udgivelsen og hvor kan jeg spille?',
+        'ultra-faq-1-a': 'Spillet er i lukket udvikling. Først alfa, så fuld udgivelse. Tidsplan: 2026–2027. Følg Discord og tilmeld dig nedenfor.',
+        'ultra-faq-2-q': 'Hvilke platforme?',
+        'ultra-faq-2-a': 'Først Web og Windows. Derefter macOS/Linux, senere mobil.',
+        'ultra-faq-3-q': 'Koster spillet?',
+        'ultra-faq-3-a': 'Basisspillet er gratis. Pas, skins og VIP er valgfri støtte — ingen pay-to-win.',
+        'ultra-faq-4-q': 'Systemkrav?',
+        'ultra-faq-4-a': 'Mål: 60 FPS på de fleste enheder fra de sidste 5 år. Webversionen kører i enhver moderne browser.',
+        'ultra-faq-5-q': 'Hvordan kommer jeg med i den lukkede test?',
+        'ultra-faq-5-a': 'Kom ind på vores Discord og tilmeld dig nyhedsbrevet — når alfa-tilmelding åbner, får abonnenter besked først.',
+        'ultra-news-eyebrow': 'Tidlig adgang',
+        'ultra-news-title': 'Få invitationen først',
+        'ultra-news-sub': 'Tilmeld dig — vi sender alfa-invitation, presskit og en eksklusiv community-skin.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Tilmeld', 'ultra-news-btn-sending': 'Sender…',
+        'ultra-news-toast-invalid': 'Indtast en gyldig e-mail',
+        'ultra-news-toast-ok': 'Klar! Du er på listen, vi giver besked når alfa åbner 🎉',
+        'ultra-news-toast-dup': 'Denne e-mail er allerede tilmeldt ✓',
+        'ultra-news-toast-err': 'Noget gik galt, prøv igen',
+        'ultra-news-toast-net': 'Ingen forbindelse. Tjek internettet og prøv igen',
+        'ultra-news-perk-1': 'Ingen spam', 'ultra-news-perk-2': 'Alfa-prioritet', 'ultra-news-perk-3': 'Eksklusiv skin',
+        'ultra-social-eyebrow': 'Alle de steder du er',
+        'ultra-social-title-a': 'Deltag', 'ultra-social-title-b': 'i arenaen',
+        'ultra-social-lead': 'Discord og YouTube. Hold dig opdateret om hver ny funktion.'
+      },
+
+      cs: {
+        'ultra-scroll-hint': 'Rolujte dolů',
+        'ultra-live-eyebrow': 'Projekt roste',
+        'ultra-live-title-a': 'Tep', 'ultra-live-title-b': 'vývoje',
+        'ultra-live-lead': 'Hra je v aktivním vývoji. Přidej se ke komunitě — buď mezi prvními.',
+        'ultra-live-discord': 'Discord komunita', 'ultra-live-growing': 'ROSTE',
+        'ultra-live-discord-cta': 'Přidej se', 'ultra-live-discord-d': 'buď mezi prvními',
+        'ultra-live-status': 'Stav', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'uzavřená alfa',
+        'ultra-live-release': 'Vydání', 'ultra-live-soon': 'BRZY', 'ultra-live-release-d': 'otevřená alfa',
+        'ultra-roadmap-eyebrow': 'Plán',
+        'ultra-roadmap-title-a': 'Cesta', 'ultra-roadmap-title-b': 'k vydání',
+        'ultra-roadmap-lead': 'Hra je v aktivním vývoji. Zde jsou úkoly a jejich stav.',
+        'ultra-roadmap-progress': 'Průběh',
+        'ultra-roadmap-done': 'Hotovo', 'ultra-roadmap-now': 'Nyní', 'ultra-roadmap-planned': 'Plánované',
+        'ultra-rm-1': 'Vytvoření systému pohybu postavy',
+        'ultra-rm-2': 'Vytvoření systému pohybu nepřátel',
+        'ultra-rm-3': 'Mechanika „časovače" při doteku nepřítele',
+        'ultra-rm-4': 'Vytvoření obrazovky porážky',
+        'ultra-rm-5': 'Vývoj textur zóny',
+        'ultra-rm-6': 'Vytvoření zóny s 10 arénami',
+        'ultra-rm-7': 'Vytvoření hlavního menu',
+        'ultra-rm-8': 'Vývoj základní postavy',
+        'ultra-rm-9': 'Několik zón s různými nepřáteli',
+        'ultra-rm-10': 'Přechody mezi zónami',
+        'ultra-rm-11': 'Přidání více postav',
+        'ultra-rm-12': 'Přidání doplňků',
+        'ultra-rm-13': 'Přidání zbývajících funkcí',
+        'ultra-rm-14': 'Oprava bugů a příprava alfa verze',
+        'ultra-rm-15': 'Přidání stahování alfa na web',
+        'ultra-faq-eyebrow': 'Časté dotazy',
+        'ultra-faq-title-a': 'Stručně', 'ultra-faq-title-b': 'o hlavním',
+        'ultra-faq-1-q': 'Kdy vyjde a kde si zahraji?',
+        'ultra-faq-1-a': 'Hra je v uzavřeném vývoji. Nejprve alfa, pak plné vydání. Plány: 2026–2027. Sleduj Discord a přihlas se níže.',
+        'ultra-faq-2-q': 'Na jakých platformách?',
+        'ultra-faq-2-a': 'Nejdřív Web a Windows. Pak macOS/Linux, později mobilní verze.',
+        'ultra-faq-3-q': 'Bude hra placená?',
+        'ultra-faq-3-a': 'Základní hra je zdarma. Pasy, skiny a VIP jsou dobrovolná podpora — žádné pay-to-win.',
+        'ultra-faq-4-q': 'Systémové požadavky?',
+        'ultra-faq-4-a': 'Cíl: 60 FPS na většině zařízení z posledních 5 let. Webová verze funguje v každém moderním prohlížeči.',
+        'ultra-faq-5-q': 'Jak se dostat do uzavřeného testu?',
+        'ultra-faq-5-a': 'Přidej se na Discord a odebírej newsletter — jakmile se otevře registrace do alfy, odběratelé se dozví jako první.',
+        'ultra-news-eyebrow': 'Předběžný přístup',
+        'ultra-news-title': 'Získej pozvánku první',
+        'ultra-news-sub': 'Přihlas se — pošleme pozvánku do alfy, press kit a exkluzivní skin rané komunity.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Odebírat', 'ultra-news-btn-sending': 'Odesílání…',
+        'ultra-news-toast-invalid': 'Zadej platný e-mail',
+        'ultra-news-toast-ok': 'Hotovo! Jsi v seznamu, dáme vědět, až se alfa otevře 🎉',
+        'ultra-news-toast-dup': 'Tento e-mail je již zapsán ✓',
+        'ultra-news-toast-err': 'Něco se pokazilo, zkus to znovu',
+        'ultra-news-toast-net': 'Žádné připojení. Zkontroluj internet a zkus to znovu',
+        'ultra-news-perk-1': 'Žádný spam', 'ultra-news-perk-2': 'Priorita v alfě', 'ultra-news-perk-3': 'Exkluzivní skin',
+        'ultra-social-eyebrow': 'Všude, kde jsi',
+        'ultra-social-title-a': 'Přidej se', 'ultra-social-title-b': 'do arény',
+        'ultra-social-lead': 'Discord a YouTube. Buď v obraze u každé nové funkce.'
+      },
+
+      ro: {
+        'ultra-scroll-hint': 'Derulează în jos',
+        'ultra-live-eyebrow': 'Proiectul crește',
+        'ultra-live-title-a': 'Pulsul', 'ultra-live-title-b': 'dezvoltării',
+        'ultra-live-lead': 'Jocul este în dezvoltare activă. Alătură-te comunității — fii printre primii.',
+        'ultra-live-discord': 'Comunitate Discord', 'ultra-live-growing': 'CREȘTE',
+        'ultra-live-discord-cta': 'Alătură-te', 'ultra-live-discord-d': 'fii printre primii',
+        'ultra-live-status': 'Stare', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'alfa închisă',
+        'ultra-live-release': 'Lansare', 'ultra-live-soon': 'ÎN CURÂND', 'ultra-live-release-d': 'alfa deschisă',
+        'ultra-roadmap-eyebrow': 'Plan de dezvoltare',
+        'ultra-roadmap-title-a': 'Drumul', 'ultra-roadmap-title-b': 'spre lansare',
+        'ultra-roadmap-lead': 'Jocul este în dezvoltare activă. Iată sarcinile și starea lor.',
+        'ultra-roadmap-progress': 'Progres',
+        'ultra-roadmap-done': 'Gata', 'ultra-roadmap-now': 'Acum', 'ultra-roadmap-planned': 'Planificat',
+        'ultra-rm-1': 'Crearea sistemului de mișcare al personajului',
+        'ultra-rm-2': 'Crearea sistemului de mișcare al inamicilor',
+        'ultra-rm-3': 'Mecanica „cronometru" la atingerea inamicului',
+        'ultra-rm-4': 'Crearea ecranului de înfrângere',
+        'ultra-rm-5': 'Dezvoltarea texturilor zonei',
+        'ultra-rm-6': 'Crearea zonei cu 10 arene',
+        'ultra-rm-7': 'Crearea meniului principal',
+        'ultra-rm-8': 'Dezvoltarea personajului de bază',
+        'ultra-rm-9': 'Mai multe zone cu inamici diferiți',
+        'ultra-rm-10': 'Tranziții între zone',
+        'ultra-rm-11': 'Adăugarea mai multor personaje',
+        'ultra-rm-12': 'Adăugarea accesoriilor',
+        'ultra-rm-13': 'Adăugarea celorlalte funcții',
+        'ultra-rm-14': 'Corectarea bug-urilor și pregătirea alfa',
+        'ultra-rm-15': 'Adăugarea descărcării alfa pe site',
+        'ultra-faq-eyebrow': 'Întrebări frecvente',
+        'ultra-faq-title-a': 'Pe scurt', 'ultra-faq-title-b': 'esențialul',
+        'ultra-faq-1-q': 'Când lansați și unde pot juca?',
+        'ultra-faq-1-a': 'Jocul este în dezvoltare închisă. Mai întâi alfa, apoi lansarea completă. Termen: 2026–2027. Urmărește Discord și abonează-te mai jos.',
+        'ultra-faq-2-q': 'Pe ce platforme?',
+        'ultra-faq-2-a': 'Mai întâi Web și Windows. Apoi macOS/Linux, mai târziu mobil.',
+        'ultra-faq-3-q': 'Jocul va fi cu plată?',
+        'ultra-faq-3-a': 'Jocul de bază este gratuit. Passuri, skin-uri și VIP sunt suport opțional — fără pay-to-win.',
+        'ultra-faq-4-q': 'Cerințe de sistem?',
+        'ultra-faq-4-a': 'Țintă: 60 FPS pe majoritatea dispozitivelor din ultimii 5 ani. Versiunea web funcționează în orice browser modern.',
+        'ultra-faq-5-q': 'Cum intru în testul închis?',
+        'ultra-faq-5-a': 'Intră pe Discord și abonează-te la newsletter — când se deschid înscrierile la alfa, abonații vor afla primii.',
+        'ultra-news-eyebrow': 'Acces timpuriu',
+        'ultra-news-title': 'Primește invitația primul',
+        'ultra-news-sub': 'Abonează-te — vom trimite o invitație la alfa, press kit și un skin exclusiv pentru comunitatea timpurie.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Abonează-te', 'ultra-news-btn-sending': 'Se trimite…',
+        'ultra-news-toast-invalid': 'Introdu un email valid',
+        'ultra-news-toast-ok': 'Gata! Ești pe listă, te anunțăm când se deschide alfa 🎉',
+        'ultra-news-toast-dup': 'Acest email este deja abonat ✓',
+        'ultra-news-toast-err': 'Ceva nu a mers, încearcă din nou',
+        'ultra-news-toast-net': 'Fără conexiune. Verifică internetul și încearcă din nou',
+        'ultra-news-perk-1': 'Fără spam', 'ultra-news-perk-2': 'Prioritate la alfa', 'ultra-news-perk-3': 'Skin exclusiv',
+        'ultra-social-eyebrow': 'Oriunde ai fi',
+        'ultra-social-title-a': 'Alătură-te', 'ultra-social-title-b': 'arenei',
+        'ultra-social-lead': 'Discord și YouTube. Fii la curent cu fiecare funcție nouă.'
+      },
+
+      hu: {
+        'ultra-scroll-hint': 'Görgess lejjebb',
+        'ultra-live-eyebrow': 'A projekt növekszik',
+        'ultra-live-title-a': 'A fejlesztés', 'ultra-live-title-b': 'pulzusa',
+        'ultra-live-lead': 'A játék aktív fejlesztés alatt. Csatlakozz a közösséghez — légy az elsők között.',
+        'ultra-live-discord': 'Discord-közösség', 'ultra-live-growing': 'NŐ',
+        'ultra-live-discord-cta': 'Csatlakozz', 'ultra-live-discord-d': 'légy az elsők között',
+        'ultra-live-status': 'Állapot', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'zárt alfa',
+        'ultra-live-release': 'Kiadás', 'ultra-live-soon': 'HAMAROSAN', 'ultra-live-release-d': 'nyílt alfa',
+        'ultra-roadmap-eyebrow': 'Útiterv',
+        'ultra-roadmap-title-a': 'Út', 'ultra-roadmap-title-b': 'a kiadásig',
+        'ultra-roadmap-lead': 'A játék aktív fejlesztés alatt áll. Íme a feladatok és állapotuk.',
+        'ultra-roadmap-progress': 'Haladás',
+        'ultra-roadmap-done': 'Kész', 'ultra-roadmap-now': 'Most', 'ultra-roadmap-planned': 'Tervezett',
+        'ultra-rm-1': 'Karaktermozgás rendszer létrehozása',
+        'ultra-rm-2': 'Ellenségmozgás rendszer létrehozása',
+        'ultra-rm-3': '„Időzítő" mechanika ellenség érintésekor',
+        'ultra-rm-4': 'Vereség képernyő létrehozása',
+        'ultra-rm-5': 'Zónatexturák fejlesztése',
+        'ultra-rm-6': '10 arénás zóna létrehozása',
+        'ultra-rm-7': 'Főmenü létrehozása',
+        'ultra-rm-8': 'Alapkarakter fejlesztése',
+        'ultra-rm-9': 'Több zóna különböző ellenfelekkel',
+        'ultra-rm-10': 'Átmenetek zónák között',
+        'ultra-rm-11': 'Több karakter hozzáadása',
+        'ultra-rm-12': 'Kiegészítők hozzáadása',
+        'ultra-rm-13': 'További funkciók hozzáadása',
+        'ultra-rm-14': 'Hibák javítása és alfa előkészítése',
+        'ultra-rm-15': 'Alfa letöltés hozzáadása a weblaphoz',
+        'ultra-faq-eyebrow': 'Gyakori kérdések',
+        'ultra-faq-title-a': 'Röviden', 'ultra-faq-title-b': 'a lényeg',
+        'ultra-faq-1-q': 'Mikor jelenik meg és hol játszhatok?',
+        'ultra-faq-1-a': 'A játék zárt fejlesztésben van. Először alfa, aztán teljes kiadás. Tervek: 2026–2027. Kövesd a Discordot és iratkozz fel lent.',
+        'ultra-faq-2-q': 'Milyen platformokra?',
+        'ultra-faq-2-a': 'Először Web és Windows. Aztán macOS/Linux, később mobil.',
+        'ultra-faq-3-q': 'A játék fizetős lesz?',
+        'ultra-faq-3-a': 'Az alapjáték ingyenes. Bérletek, skinek és VIP — opcionális támogatás, pay-to-win nélkül.',
+        'ultra-faq-4-q': 'Rendszerkövetelmények?',
+        'ultra-faq-4-a': 'Cél: 60 FPS az elmúlt 5 év legtöbb eszközén. A webes verzió bármely modern böngészőben fut.',
+        'ultra-faq-5-q': 'Hogyan juthatok be a zárt tesztbe?',
+        'ultra-faq-5-a': 'Lépj be a Discordunkba és iratkozz fel — amint megnyílik az alfa jelentkezés, a feliratkozók értesülnek elsőként.',
+        'ultra-news-eyebrow': 'Korai hozzáférés',
+        'ultra-news-title': 'Kapd meg elsőként a meghívót',
+        'ultra-news-sub': 'Iratkozz fel — küldünk egy alfa meghívót, a press kitet és egy exkluzív korai közösségi skint.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Feliratkozás', 'ultra-news-btn-sending': 'Küldés…',
+        'ultra-news-toast-invalid': 'Adj meg érvényes e-mailt',
+        'ultra-news-toast-ok': 'Kész! A listán vagy, szólunk ha nyílik az alfa 🎉',
+        'ultra-news-toast-dup': 'Ez az e-mail már fel van iratkozva ✓',
+        'ultra-news-toast-err': 'Valami félrement, próbáld újra',
+        'ultra-news-toast-net': 'Nincs kapcsolat. Ellenőrizd a netet és próbáld újra',
+        'ultra-news-perk-1': 'Spammentes', 'ultra-news-perk-2': 'Alfa prioritás', 'ultra-news-perk-3': 'Exkluzív skin',
+        'ultra-social-eyebrow': 'Bárhol is vagy',
+        'ultra-social-title-a': 'Csatlakozz', 'ultra-social-title-b': 'az arénához',
+        'ultra-social-lead': 'Discord és YouTube. Értesülj minden új funkcióról.'
+      },
+
+      el: {
+        'ultra-scroll-hint': 'Κύλισε κάτω',
+        'ultra-live-eyebrow': 'Το έργο μεγαλώνει',
+        'ultra-live-title-a': 'Παλμός', 'ultra-live-title-b': 'ανάπτυξης',
+        'ultra-live-lead': 'Το παιχνίδι είναι σε ενεργή ανάπτυξη. Γίνε μέλος της κοινότητας — γίνε από τους πρώτους.',
+        'ultra-live-discord': 'Κοινότητα Discord', 'ultra-live-growing': 'ΑΥΞΑΝΕΤΑΙ',
+        'ultra-live-discord-cta': 'Γίνε μέλος', 'ultra-live-discord-d': 'γίνε από τους πρώτους',
+        'ultra-live-status': 'Κατάσταση', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'κλειστή άλφα',
+        'ultra-live-release': 'Κυκλοφορία', 'ultra-live-soon': 'ΣΥΝΤΟΜΑ', 'ultra-live-release-d': 'ανοιχτή άλφα',
+        'ultra-roadmap-eyebrow': 'Οδικός χάρτης',
+        'ultra-roadmap-title-a': 'Διαδρομή', 'ultra-roadmap-title-b': 'προς κυκλοφορία',
+        'ultra-roadmap-lead': 'Το παιχνίδι βρίσκεται σε ενεργή ανάπτυξη. Εδώ οι εργασίες και η κατάστασή τους.',
+        'ultra-roadmap-progress': 'Πρόοδος',
+        'ultra-roadmap-done': 'Έτοιμο', 'ultra-roadmap-now': 'Τώρα', 'ultra-roadmap-planned': 'Σχεδιασμένο',
+        'ultra-rm-1': 'Δημιουργία συστήματος κίνησης χαρακτήρα',
+        'ultra-rm-2': 'Δημιουργία συστήματος κίνησης εχθρών',
+        'ultra-rm-3': 'Μηχανισμός "χρονόμετρου" στην επαφή με εχθρό',
+        'ultra-rm-4': 'Δημιουργία οθόνης ήττας',
+        'ultra-rm-5': 'Ανάπτυξη υφών ζώνης',
+        'ultra-rm-6': 'Δημιουργία ζώνης με 10 αρένες',
+        'ultra-rm-7': 'Δημιουργία κύριου μενού',
+        'ultra-rm-8': 'Ανάπτυξη βασικού χαρακτήρα',
+        'ultra-rm-9': 'Αρκετές ζώνες με διαφορετικούς εχθρούς',
+        'ultra-rm-10': 'Μεταβάσεις μεταξύ ζωνών',
+        'ultra-rm-11': 'Προσθήκη πολλαπλών χαρακτήρων',
+        'ultra-rm-12': 'Προσθήκη αξεσουάρ',
+        'ultra-rm-13': 'Προσθήκη υπόλοιπων λειτουργιών',
+        'ultra-rm-14': 'Διόρθωση bugs και προετοιμασία άλφα',
+        'ultra-rm-15': 'Προσθήκη λήψης άλφα στον ιστότοπο',
+        'ultra-faq-eyebrow': 'Συχνές ερωτήσεις',
+        'ultra-faq-title-a': 'Σύντομα', 'ultra-faq-title-b': 'τα κύρια',
+        'ultra-faq-1-q': 'Πότε κυκλοφορεί και πού μπορώ να παίξω;',
+        'ultra-faq-1-a': 'Το παιχνίδι είναι σε κλειστή ανάπτυξη. Πρώτα άλφα, μετά η πλήρης κυκλοφορία. Χρονοδιάγραμμα: 2026–2027. Ακολούθησε Discord και εγγράψου παρακάτω.',
+        'ultra-faq-2-q': 'Σε ποιες πλατφόρμες;',
+        'ultra-faq-2-a': 'Πρώτα Web και Windows. Μετά macOS/Linux, αργότερα mobile.',
+        'ultra-faq-3-q': 'Θα είναι επί πληρωμή;',
+        'ultra-faq-3-a': 'Το βασικό παιχνίδι είναι δωρεάν. Passes, skins και VIP — προαιρετική υποστήριξη, χωρίς pay-to-win.',
+        'ultra-faq-4-q': 'Απαιτήσεις συστήματος;',
+        'ultra-faq-4-a': 'Στόχος: 60 FPS στις περισσότερες συσκευές των τελευταίων 5 ετών. Η έκδοση web τρέχει σε κάθε σύγχρονο περιηγητή.',
+        'ultra-faq-5-q': 'Πώς μπαίνω στο κλειστό τεστ;',
+        'ultra-faq-5-a': 'Μπες στο Discord μας και εγγράψου στο newsletter — όταν ανοίξει η εγγραφή για την άλφα, οι συνδρομητές θα ενημερωθούν πρώτοι.',
+        'ultra-news-eyebrow': 'Πρόωρη πρόσβαση',
+        'ultra-news-title': 'Πάρε πρώτος την πρόσκληση',
+        'ultra-news-sub': 'Εγγράψου — θα στείλουμε πρόσκληση άλφα, το press kit και ένα αποκλειστικό skin της πρώιμης κοινότητας.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Εγγραφή', 'ultra-news-btn-sending': 'Αποστολή…',
+        'ultra-news-toast-invalid': 'Βάλε έγκυρο email',
+        'ultra-news-toast-ok': 'Έτοιμο! Είσαι στη λίστα, θα σε ειδοποιήσουμε όταν ανοίξει η άλφα 🎉',
+        'ultra-news-toast-dup': 'Αυτό το email είναι ήδη εγγεγραμμένο ✓',
+        'ultra-news-toast-err': 'Κάτι πήγε στραβά, δοκίμασε ξανά',
+        'ultra-news-toast-net': 'Χωρίς σύνδεση. Έλεγξε το internet και δοκίμασε ξανά',
+        'ultra-news-perk-1': 'Χωρίς spam', 'ultra-news-perk-2': 'Προτεραιότητα στην άλφα', 'ultra-news-perk-3': 'Αποκλειστικό skin',
+        'ultra-social-eyebrow': 'Όπου κι αν είσαι',
+        'ultra-social-title-a': 'Μπες', 'ultra-social-title-b': 'στην αρένα',
+        'ultra-social-lead': 'Discord και YouTube. Μείνε ενημερωμένος για κάθε νέο χαρακτηριστικό.'
+      },
+
+      ja: {
+        'ultra-scroll-hint': '下にスクロール',
+        'ultra-live-eyebrow': 'プロジェクトは成長中',
+        'ultra-live-title-a': '開発の', 'ultra-live-title-b': '鼓動',
+        'ultra-live-lead': 'ゲームは活発に開発中です。コミュニティに参加して、最初の仲間になろう。',
+        'ultra-live-discord': 'Discord コミュニティ', 'ultra-live-growing': '成長中',
+        'ultra-live-discord-cta': '参加する', 'ultra-live-discord-d': '最初の仲間に',
+        'ultra-live-status': 'ステータス', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'クローズドアルファ',
+        'ultra-live-release': 'リリース', 'ultra-live-soon': '近日', 'ultra-live-release-d': 'オープンアルファ',
+        'ultra-roadmap-eyebrow': 'ロードマップ',
+        'ultra-roadmap-title-a': 'リリースへの', 'ultra-roadmap-title-b': '道',
+        'ultra-roadmap-lead': 'ゲームは活発に開発中です。タスクとそのステータスをご覧ください。',
+        'ultra-roadmap-progress': '進捗',
+        'ultra-roadmap-done': '完了', 'ultra-roadmap-now': '現在', 'ultra-roadmap-planned': '予定',
+        'ultra-rm-1': 'キャラクター移動システムの作成',
+        'ultra-rm-2': '敵の移動システムの作成',
+        'ultra-rm-3': '敵接触時の「タイマー」メカニクス',
+        'ultra-rm-4': '敗北画面の作成',
+        'ultra-rm-5': 'ゾーンのテクスチャ開発',
+        'ultra-rm-6': '10アリーナのゾーン作成',
+        'ultra-rm-7': 'メインメニュー作成',
+        'ultra-rm-8': '基本キャラクターの開発',
+        'ultra-rm-9': '異なる敵のいる複数ゾーン',
+        'ultra-rm-10': 'ゾーン間の遷移',
+        'ultra-rm-11': '複数キャラクターの追加',
+        'ultra-rm-12': 'アクセサリーの追加',
+        'ultra-rm-13': '残りの機能の追加',
+        'ultra-rm-14': 'バグ修正とアルファ版準備',
+        'ultra-rm-15': 'サイトへのアルファ版ダウンロード追加',
+        'ultra-faq-eyebrow': 'よくある質問',
+        'ultra-faq-title-a': '要点を', 'ultra-faq-title-b': '簡潔に',
+        'ultra-faq-1-q': 'リリースはいつ、どこでプレイできますか？',
+        'ultra-faq-1-a': 'ゲームは非公開開発中です。まずアルファ版、その後に正式リリース。予定：2026–2027。Discordをフォローし、以下で購読してください。',
+        'ultra-faq-2-q': '対応プラットフォームは？',
+        'ultra-faq-2-a': 'まずWebとWindows。次にmacOS/Linux、その後モバイル。',
+        'ultra-faq-3-q': '有料ですか？',
+        'ultra-faq-3-a': '基本ゲームは無料です。パス、スキン、VIPは任意の支援 — pay-to-winなし。',
+        'ultra-faq-4-q': '動作環境は？',
+        'ultra-faq-4-a': '目標：過去5年のほとんどの端末で60 FPS。Web版はどのモダンブラウザでも動作します。',
+        'ultra-faq-5-q': 'クローズドテストに参加するには？',
+        'ultra-faq-5-a': 'Discordに参加し、以下のニュースレターを購読してください — アルファ募集が開始したら、購読者が最初に通知を受け取ります。',
+        'ultra-news-eyebrow': '早期アクセス',
+        'ultra-news-title': '誰より先に招待を受け取ろう',
+        'ultra-news-sub': '購読すると、アルファ招待、プレスキット、初期コミュニティ限定スキンをお届けします。',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': '購読する', 'ultra-news-btn-sending': '送信中…',
+        'ultra-news-toast-invalid': '有効なメールを入力してください',
+        'ultra-news-toast-ok': '完了！リストに登録しました。アルファ開始時にお知らせします 🎉',
+        'ultra-news-toast-dup': 'このメールは既に登録されています ✓',
+        'ultra-news-toast-err': '問題が発生しました。再度お試しください',
+        'ultra-news-toast-net': '接続がありません。インターネットを確認して再試行してください',
+        'ultra-news-perk-1': 'スパムなし', 'ultra-news-perk-2': 'アルファ優先', 'ultra-news-perk-3': '限定スキン',
+        'ultra-social-eyebrow': 'どこにいても',
+        'ultra-social-title-a': 'アリーナに', 'ultra-social-title-b': '参加しよう',
+        'ultra-social-lead': 'DiscordとYouTube。新機能すべてを追いかけよう。'
+      },
+
+      zh: {
+        'ultra-scroll-hint': '向下滚动',
+        'ultra-live-eyebrow': '项目成长中',
+        'ultra-live-title-a': '开发的', 'ultra-live-title-b': '脉搏',
+        'ultra-live-lead': '游戏正在积极开发中。加入社区 — 成为首批玩家。',
+        'ultra-live-discord': 'Discord 社区', 'ultra-live-growing': '成长中',
+        'ultra-live-discord-cta': '加入', 'ultra-live-discord-d': '成为首批',
+        'ultra-live-status': '状态', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': '封闭内测',
+        'ultra-live-release': '发布', 'ultra-live-soon': '即将', 'ultra-live-release-d': '公开内测',
+        'ultra-roadmap-eyebrow': '路线图',
+        'ultra-roadmap-title-a': '通往', 'ultra-roadmap-title-b': '发布之路',
+        'ultra-roadmap-lead': '游戏正在积极开发中。以下是任务及其状态。',
+        'ultra-roadmap-progress': '进度',
+        'ultra-roadmap-done': '完成', 'ultra-roadmap-now': '进行中', 'ultra-roadmap-planned': '计划',
+        'ultra-rm-1': '创建角色移动系统',
+        'ultra-rm-2': '创建敌人移动系统',
+        'ultra-rm-3': '敌人接触"计时器"机制',
+        'ultra-rm-4': '创建失败画面',
+        'ultra-rm-5': '开发区域纹理',
+        'ultra-rm-6': '创建含 10 个竞技场的区域',
+        'ultra-rm-7': '创建主菜单',
+        'ultra-rm-8': '开发基础角色',
+        'ultra-rm-9': '多个区域含不同敌人',
+        'ultra-rm-10': '区域之间的过渡',
+        'ultra-rm-11': '添加多个角色',
+        'ultra-rm-12': '添加配件',
+        'ultra-rm-13': '添加其余功能',
+        'ultra-rm-14': '修复 bug 并准备 Alpha 版',
+        'ultra-rm-15': '将 Alpha 版下载添加到网站',
+        'ultra-faq-eyebrow': '常见问题',
+        'ultra-faq-title-a': '简要', 'ultra-faq-title-b': '说明',
+        'ultra-faq-1-q': '何时发布，在哪能玩？',
+        'ultra-faq-1-a': '游戏正在封闭开发中。首先是 Alpha，然后是完整版。时间表：2026–2027。关注 Discord，并在下方订阅。',
+        'ultra-faq-2-q': '支持哪些平台？',
+        'ultra-faq-2-a': '首发 Web 和 Windows。之后 macOS/Linux，后续推出移动版。',
+        'ultra-faq-3-q': '游戏收费吗？',
+        'ultra-faq-3-a': '基础游戏免费。通行证、皮肤和 VIP 为可选支持 — 无 pay-to-win 机制。',
+        'ultra-faq-4-q': '系统要求是什么？',
+        'ultra-faq-4-a': '目标：近 5 年大多数设备达到 60 FPS。网页版可在任何现代浏览器中运行。',
+        'ultra-faq-5-q': '如何加入封闭测试？',
+        'ultra-faq-5-a': '加入我们的 Discord 并订阅下方简报 — 当 Alpha 招募开启时，订阅者将率先得知。',
+        'ultra-news-eyebrow': '抢先体验',
+        'ultra-news-title': '率先收到邀请',
+        'ultra-news-sub': '订阅 — 我们将发送 Alpha 邀请、新闻包以及早期社区专属皮肤。',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': '订阅', 'ultra-news-btn-sending': '发送中…',
+        'ultra-news-toast-invalid': '请输入有效的邮箱',
+        'ultra-news-toast-ok': '完成！你已在名单上，Alpha 开启时会通知你 🎉',
+        'ultra-news-toast-dup': '此邮箱已订阅 ✓',
+        'ultra-news-toast-err': '出错了，请重试',
+        'ultra-news-toast-net': '无连接。请检查网络后重试',
+        'ultra-news-perk-1': '无垃圾邮件', 'ultra-news-perk-2': 'Alpha 优先', 'ultra-news-perk-3': '专属皮肤',
+        'ultra-social-eyebrow': '随时随地',
+        'ultra-social-title-a': '加入', 'ultra-social-title-b': '竞技场',
+        'ultra-social-lead': 'Discord 和 YouTube。关注每一项新功能。'
+      },
+
+      ko: {
+        'ultra-scroll-hint': '아래로 스크롤',
+        'ultra-live-eyebrow': '프로젝트 성장 중',
+        'ultra-live-title-a': '개발의', 'ultra-live-title-b': '맥박',
+        'ultra-live-lead': '게임이 활발히 개발 중입니다. 커뮤니티에 참여해 먼저 만나보세요.',
+        'ultra-live-discord': 'Discord 커뮤니티', 'ultra-live-growing': '성장 중',
+        'ultra-live-discord-cta': '참여하기', 'ultra-live-discord-d': '먼저 만나보세요',
+        'ultra-live-status': '상태', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': '클로즈드 알파',
+        'ultra-live-release': '출시', 'ultra-live-soon': '곧', 'ultra-live-release-d': '오픈 알파',
+        'ultra-roadmap-eyebrow': '로드맵',
+        'ultra-roadmap-title-a': '출시까지의', 'ultra-roadmap-title-b': '길',
+        'ultra-roadmap-lead': '게임이 활발히 개발 중입니다. 아래는 작업과 상태입니다.',
+        'ultra-roadmap-progress': '진행도',
+        'ultra-roadmap-done': '완료', 'ultra-roadmap-now': '진행 중', 'ultra-roadmap-planned': '예정',
+        'ultra-rm-1': '캐릭터 이동 시스템 구현',
+        'ultra-rm-2': '적 이동 시스템 구현',
+        'ultra-rm-3': '적 접촉 시 "타이머" 메커닉',
+        'ultra-rm-4': '패배 화면 구현',
+        'ultra-rm-5': '존 텍스처 개발',
+        'ultra-rm-6': '10개 아레나로 구성된 존 구현',
+        'ultra-rm-7': '메인 메뉴 구현',
+        'ultra-rm-8': '기본 캐릭터 개발',
+        'ultra-rm-9': '여러 존과 다양한 적',
+        'ultra-rm-10': '존 간 전환 구현',
+        'ultra-rm-11': '여러 캐릭터 추가',
+        'ultra-rm-12': '액세서리 추가',
+        'ultra-rm-13': '나머지 기능 추가',
+        'ultra-rm-14': '버그 수정 및 알파 버전 준비',
+        'ultra-rm-15': '사이트에 알파 다운로드 추가',
+        'ultra-faq-eyebrow': '자주 묻는 질문',
+        'ultra-faq-title-a': '핵심만', 'ultra-faq-title-b': '간단히',
+        'ultra-faq-1-q': '언제 출시되고 어디서 플레이하나요?',
+        'ultra-faq-1-a': '게임은 비공개 개발 중입니다. 먼저 알파, 이후 정식 출시. 일정: 2026–2027. Discord를 팔로우하고 아래에서 구독하세요.',
+        'ultra-faq-2-q': '어떤 플랫폼을 지원하나요?',
+        'ultra-faq-2-a': '먼저 Web과 Windows. 이후 macOS/Linux, 나중에 모바일.',
+        'ultra-faq-3-q': '유료 게임인가요?',
+        'ultra-faq-3-a': '기본 게임은 무료입니다. 패스, 스킨, VIP는 선택적 지원 — pay-to-win 없음.',
+        'ultra-faq-4-q': '시스템 요구 사항?',
+        'ultra-faq-4-a': '목표: 최근 5년 대부분 기기에서 60 FPS. 웹 버전은 모든 최신 브라우저에서 작동.',
+        'ultra-faq-5-q': '클로즈드 테스트 참여 방법?',
+        'ultra-faq-5-a': 'Discord에 참여하고 뉴스레터를 구독하세요 — 알파 신청이 열리면 구독자가 먼저 안내받습니다.',
+        'ultra-news-eyebrow': '얼리 액세스',
+        'ultra-news-title': '초대장을 가장 먼저 받기',
+        'ultra-news-sub': '구독하면 알파 초대, 프레스킷, 초기 커뮤니티 전용 스킨을 보내드립니다.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': '구독하기', 'ultra-news-btn-sending': '전송 중…',
+        'ultra-news-toast-invalid': '유효한 이메일을 입력하세요',
+        'ultra-news-toast-ok': '완료! 목록에 등록되었습니다. 알파가 열리면 알려드립니다 🎉',
+        'ultra-news-toast-dup': '이 이메일은 이미 구독되어 있습니다 ✓',
+        'ultra-news-toast-err': '문제가 발생했습니다. 다시 시도해 주세요',
+        'ultra-news-toast-net': '연결 없음. 인터넷을 확인하고 다시 시도하세요',
+        'ultra-news-perk-1': '스팸 없음', 'ultra-news-perk-2': '알파 우선', 'ultra-news-perk-3': '전용 스킨',
+        'ultra-social-eyebrow': '어디에 있든',
+        'ultra-social-title-a': '아레나에', 'ultra-social-title-b': '참여하기',
+        'ultra-social-lead': 'Discord와 YouTube. 새로운 기능 소식을 놓치지 마세요.'
+      },
+
+      ar: {
+        'ultra-scroll-hint': 'مرر إلى الأسفل',
+        'ultra-live-eyebrow': 'المشروع ينمو',
+        'ultra-live-title-a': 'نبض', 'ultra-live-title-b': 'التطوير',
+        'ultra-live-lead': 'اللعبة في تطوير نشط. انضم إلى المجتمع — كن من الأوائل.',
+        'ultra-live-discord': 'مجتمع Discord', 'ultra-live-growing': 'ينمو',
+        'ultra-live-discord-cta': 'انضم', 'ultra-live-discord-d': 'كن من الأوائل',
+        'ultra-live-status': 'الحالة', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'ألفا مغلقة',
+        'ultra-live-release': 'الإصدار', 'ultra-live-soon': 'قريبًا', 'ultra-live-release-d': 'ألفا مفتوحة',
+        'ultra-roadmap-eyebrow': 'خارطة الطريق',
+        'ultra-roadmap-title-a': 'الطريق', 'ultra-roadmap-title-b': 'إلى الإصدار',
+        'ultra-roadmap-lead': 'اللعبة في تطوير نشط. إليك المهام وحالتها.',
+        'ultra-roadmap-progress': 'التقدم',
+        'ultra-roadmap-done': 'تم', 'ultra-roadmap-now': 'الآن', 'ultra-roadmap-planned': 'مخطط',
+        'ultra-rm-1': 'إنشاء نظام حركة الشخصية',
+        'ultra-rm-2': 'إنشاء نظام حركة الأعداء',
+        'ultra-rm-3': 'آلية "المؤقت" عند لمس العدو',
+        'ultra-rm-4': 'إنشاء شاشة الهزيمة',
+        'ultra-rm-5': 'تطوير نسيج المنطقة',
+        'ultra-rm-6': 'إنشاء منطقة بها 10 ساحات',
+        'ultra-rm-7': 'إنشاء القائمة الرئيسية',
+        'ultra-rm-8': 'تطوير الشخصية الأساسية',
+        'ultra-rm-9': 'عدة مناطق بأعداء مختلفين',
+        'ultra-rm-10': 'الانتقال بين المناطق',
+        'ultra-rm-11': 'إضافة عدة شخصيات',
+        'ultra-rm-12': 'إضافة إكسسوارات',
+        'ultra-rm-13': 'إضافة الميزات المتبقية',
+        'ultra-rm-14': 'إصلاح الأخطاء وإعداد نسخة ألفا',
+        'ultra-rm-15': 'إضافة تحميل نسخة ألفا على الموقع',
+        'ultra-faq-eyebrow': 'الأسئلة الشائعة',
+        'ultra-faq-title-a': 'باختصار', 'ultra-faq-title-b': 'الأساسي',
+        'ultra-faq-1-q': 'متى الإصدار وأين ألعب؟',
+        'ultra-faq-1-a': 'اللعبة في تطوير مغلق. أولاً نسخة ألفا ثم الإصدار الكامل. الخطة: 2026–2027. تابع Discord واشترك في الأسفل.',
+        'ultra-faq-2-q': 'على أي منصات؟',
+        'ultra-faq-2-a': 'أولاً Web وWindows. ثم macOS/Linux، ولاحقًا الهاتف المحمول.',
+        'ultra-faq-3-q': 'هل ستكون اللعبة مدفوعة؟',
+        'ultra-faq-3-a': 'اللعبة الأساسية مجانية. التذاكر والسكنات وVIP — دعم اختياري بدون pay-to-win.',
+        'ultra-faq-4-q': 'ما متطلبات النظام؟',
+        'ultra-faq-4-a': 'الهدف: 60 إطارًا/الثانية على معظم الأجهزة في آخر 5 سنوات. تعمل النسخة الويب على أي متصفح حديث.',
+        'ultra-faq-5-q': 'كيف أدخل الاختبار المغلق؟',
+        'ultra-faq-5-a': 'انضم إلى Discord واشترك في النشرة أدناه — عند فتح التسجيل للألفا، يُبلَّغ المشتركون أولاً.',
+        'ultra-news-eyebrow': 'وصول مبكر',
+        'ultra-news-title': 'احصل على الدعوة أولاً',
+        'ultra-news-sub': 'اشترك — سنرسل دعوة ألفا والبرس كيت وسكن حصري للمجتمع المبكر.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'اشترك', 'ultra-news-btn-sending': 'جاري الإرسال…',
+        'ultra-news-toast-invalid': 'يرجى إدخال بريد إلكتروني صالح',
+        'ultra-news-toast-ok': 'تم! أنت في القائمة، سنخبرك عند فتح الألفا 🎉',
+        'ultra-news-toast-dup': 'هذا البريد مشترك بالفعل ✓',
+        'ultra-news-toast-err': 'حدث خطأ، حاول مرة أخرى',
+        'ultra-news-toast-net': 'لا يوجد اتصال. تحقق من الإنترنت وحاول مجددًا',
+        'ultra-news-perk-1': 'بدون سبام', 'ultra-news-perk-2': 'أولوية ألفا', 'ultra-news-perk-3': 'سكن حصري',
+        'ultra-social-eyebrow': 'أينما كنت',
+        'ultra-social-title-a': 'انضم', 'ultra-social-title-b': 'إلى الساحة',
+        'ultra-social-lead': 'Discord وYouTube. ابقَ على اطلاع بكل ميزة جديدة.'
+      },
+
+      hi: {
+        'ultra-scroll-hint': 'नीचे स्क्रॉल करें',
+        'ultra-live-eyebrow': 'प्रोजेक्ट बढ़ रहा है',
+        'ultra-live-title-a': 'विकास की', 'ultra-live-title-b': 'धड़कन',
+        'ultra-live-lead': 'खेल सक्रिय विकास में है। कम्युनिटी में शामिल हों — पहले लोगों में रहें।',
+        'ultra-live-discord': 'Discord कम्युनिटी', 'ultra-live-growing': 'बढ़ रहा है',
+        'ultra-live-discord-cta': 'शामिल हों', 'ultra-live-discord-d': 'पहले लोगों में रहें',
+        'ultra-live-status': 'स्थिति', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'बंद अल्फ़ा',
+        'ultra-live-release': 'रिलीज़', 'ultra-live-soon': 'जल्द', 'ultra-live-release-d': 'खुला अल्फ़ा',
+        'ultra-roadmap-eyebrow': 'रोडमैप',
+        'ultra-roadmap-title-a': 'रिलीज़ तक', 'ultra-roadmap-title-b': 'का रास्ता',
+        'ultra-roadmap-lead': 'खेल सक्रिय विकास में है। यह रहे कार्य और उनकी स्थिति।',
+        'ultra-roadmap-progress': 'प्रगति',
+        'ultra-roadmap-done': 'हो गया', 'ultra-roadmap-now': 'अभी', 'ultra-roadmap-planned': 'नियोजित',
+        'ultra-rm-1': 'चरित्र गति प्रणाली बनाना',
+        'ultra-rm-2': 'दुश्मन गति प्रणाली बनाना',
+        'ultra-rm-3': 'दुश्मन स्पर्श पर "टाइमर" मैकेनिक',
+        'ultra-rm-4': 'हार की स्क्रीन बनाना',
+        'ultra-rm-5': 'ज़ोन की बनावट विकसित करना',
+        'ultra-rm-6': '10 एरीना वाला ज़ोन बनाना',
+        'ultra-rm-7': 'मुख्य मेनू बनाना',
+        'ultra-rm-8': 'बेस कैरेक्टर विकसित करना',
+        'ultra-rm-9': 'अलग दुश्मनों वाले कई ज़ोन',
+        'ultra-rm-10': 'ज़ोन के बीच संक्रमण',
+        'ultra-rm-11': 'अनेक पात्र जोड़ना',
+        'ultra-rm-12': 'एक्सेसरीज़ जोड़ना',
+        'ultra-rm-13': 'बाकी फीचर्स जोड़ना',
+        'ultra-rm-14': 'बग्स ठीक करना और अल्फ़ा तैयार करना',
+        'ultra-rm-15': 'साइट पर अल्फ़ा डाउनलोड जोड़ना',
+        'ultra-faq-eyebrow': 'अक्सर पूछे जाने वाले',
+        'ultra-faq-title-a': 'संक्षेप में', 'ultra-faq-title-b': 'मुख्य बातें',
+        'ultra-faq-1-q': 'रिलीज़ कब है और कहाँ खेल सकते हैं?',
+        'ultra-faq-1-a': 'खेल बंद विकास में है। पहले अल्फ़ा, फिर पूर्ण रिलीज़। योजना: 2026–2027। Discord को फ़ॉलो करें और नीचे सब्सक्राइब करें।',
+        'ultra-faq-2-q': 'किन प्लेटफ़ॉर्म पर?',
+        'ultra-faq-2-a': 'पहले Web और Windows। फिर macOS/Linux, बाद में मोबाइल।',
+        'ultra-faq-3-q': 'क्या खेल भुगतान वाला होगा?',
+        'ultra-faq-3-a': 'बेसिक गेम मुफ़्त है। पास, स्किन और VIP — वैकल्पिक समर्थन, pay-to-win नहीं।',
+        'ultra-faq-4-q': 'सिस्टम आवश्यकताएँ?',
+        'ultra-faq-4-a': 'लक्ष्य: पिछले 5 वर्षों के अधिकांश डिवाइसों पर 60 FPS। वेब संस्करण किसी भी आधुनिक ब्राउज़र में काम करता है।',
+        'ultra-faq-5-q': 'बंद परीक्षण में कैसे जुड़ें?',
+        'ultra-faq-5-a': 'हमारे Discord में शामिल हों और न्यूज़लेटर सब्सक्राइब करें — जब अल्फ़ा साइनअप खुले, सब्सक्राइबर को सबसे पहले पता चलेगा।',
+        'ultra-news-eyebrow': 'प्रारंभिक पहुँच',
+        'ultra-news-title': 'निमंत्रण पहले पाएँ',
+        'ultra-news-sub': 'सब्सक्राइब करें — हम अल्फ़ा निमंत्रण, प्रेस-किट और शुरुआती समुदाय के लिए एक विशेष स्किन भेजेंगे।',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'सब्सक्राइब', 'ultra-news-btn-sending': 'भेज रहे हैं…',
+        'ultra-news-toast-invalid': 'कृपया मान्य ईमेल डालें',
+        'ultra-news-toast-ok': 'हो गया! आप सूची में हैं, अल्फ़ा खुलते ही बताएँगे 🎉',
+        'ultra-news-toast-dup': 'यह ईमेल पहले से सब्सक्राइब है ✓',
+        'ultra-news-toast-err': 'कुछ गलत हुआ, फिर कोशिश करें',
+        'ultra-news-toast-net': 'कनेक्शन नहीं। इंटरनेट जाँचें और फिर कोशिश करें',
+        'ultra-news-perk-1': 'कोई स्पैम नहीं', 'ultra-news-perk-2': 'अल्फ़ा प्राथमिकता', 'ultra-news-perk-3': 'विशेष स्किन',
+        'ultra-social-eyebrow': 'जहाँ भी आप हों',
+        'ultra-social-title-a': 'अखाड़े में', 'ultra-social-title-b': 'शामिल हों',
+        'ultra-social-lead': 'Discord और YouTube। हर नए फीचर की जानकारी पाएँ।'
+      },
+
+      th: {
+        'ultra-scroll-hint': 'เลื่อนลง',
+        'ultra-live-eyebrow': 'โปรเจกต์กำลังเติบโต',
+        'ultra-live-title-a': 'ชีพจรของ', 'ultra-live-title-b': 'การพัฒนา',
+        'ultra-live-lead': 'เกมกำลังพัฒนาอย่างต่อเนื่อง เข้าร่วมชุมชน — เป็นหนึ่งในกลุ่มแรก',
+        'ultra-live-discord': 'ชุมชน Discord', 'ultra-live-growing': 'กำลังเติบโต',
+        'ultra-live-discord-cta': 'เข้าร่วม', 'ultra-live-discord-d': 'เป็นหนึ่งในกลุ่มแรก',
+        'ultra-live-status': 'สถานะ', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'อัลฟ่าปิด',
+        'ultra-live-release': 'เปิดตัว', 'ultra-live-soon': 'เร็ว ๆ นี้', 'ultra-live-release-d': 'อัลฟ่าเปิด',
+        'ultra-roadmap-eyebrow': 'โรดแมป',
+        'ultra-roadmap-title-a': 'เส้นทาง', 'ultra-roadmap-title-b': 'สู่การเปิดตัว',
+        'ultra-roadmap-lead': 'เกมกำลังพัฒนาอย่างต่อเนื่อง นี่คือภารกิจและสถานะ',
+        'ultra-roadmap-progress': 'ความคืบหน้า',
+        'ultra-roadmap-done': 'เสร็จ', 'ultra-roadmap-now': 'ตอนนี้', 'ultra-roadmap-planned': 'วางแผน',
+        'ultra-rm-1': 'สร้างระบบการเคลื่อนไหวของตัวละคร',
+        'ultra-rm-2': 'สร้างระบบการเคลื่อนไหวของศัตรู',
+        'ultra-rm-3': 'กลไก "ตัวจับเวลา" เมื่อสัมผัสศัตรู',
+        'ultra-rm-4': 'สร้างหน้าจอแพ้',
+        'ultra-rm-5': 'พัฒนาพื้นผิวโซน',
+        'ultra-rm-6': 'สร้างโซน 10 สนาม',
+        'ultra-rm-7': 'สร้างเมนูหลัก',
+        'ultra-rm-8': 'พัฒนาตัวละครพื้นฐาน',
+        'ultra-rm-9': 'หลายโซนที่มีศัตรูต่างกัน',
+        'ultra-rm-10': 'การเปลี่ยนผ่านระหว่างโซน',
+        'ultra-rm-11': 'เพิ่มหลายตัวละคร',
+        'ultra-rm-12': 'เพิ่มเครื่องประดับ',
+        'ultra-rm-13': 'เพิ่มฟีเจอร์ที่เหลือ',
+        'ultra-rm-14': 'แก้บั๊กและเตรียมเวอร์ชันอัลฟ่า',
+        'ultra-rm-15': 'เพิ่มการดาวน์โหลดอัลฟ่าบนเว็บ',
+        'ultra-faq-eyebrow': 'คำถามที่พบบ่อย',
+        'ultra-faq-title-a': 'สั้น ๆ', 'ultra-faq-title-b': 'เรื่องสำคัญ',
+        'ultra-faq-1-q': 'จะเปิดตัวเมื่อไหร่และเล่นได้ที่ไหน?',
+        'ultra-faq-1-a': 'เกมอยู่ในการพัฒนาแบบปิด เริ่มจากอัลฟ่าก่อน แล้วตามด้วยการเปิดตัวเต็ม กำหนดการ: 2026–2027 ติดตาม Discord และสมัครด้านล่าง',
+        'ultra-faq-2-q': 'รองรับแพลตฟอร์มใดบ้าง?',
+        'ultra-faq-2-a': 'เริ่มที่ Web และ Windows ตามด้วย macOS/Linux แล้วค่อยมือถือ',
+        'ultra-faq-3-q': 'เกมนี้จ่ายเงินไหม?',
+        'ultra-faq-3-a': 'เกมหลักเล่นฟรี พาส สกิน และ VIP เป็นการสนับสนุนแบบสมัครใจ — ไม่มี pay-to-win',
+        'ultra-faq-4-q': 'ความต้องการของระบบ?',
+        'ultra-faq-4-a': 'เป้าหมาย: 60 FPS บนอุปกรณ์ส่วนใหญ่ใน 5 ปีที่ผ่านมา เวอร์ชันเว็บเล่นได้บนเบราว์เซอร์สมัยใหม่ทุกตัว',
+        'ultra-faq-5-q': 'เข้าร่วมเทสต์แบบปิดได้อย่างไร?',
+        'ultra-faq-5-a': 'เข้า Discord ของเราและสมัครรับจดหมายข่าว — เมื่อเปิดลงทะเบียนอัลฟ่า สมาชิกจะได้รับข่าวก่อน',
+        'ultra-news-eyebrow': 'เข้าถึงก่อนใคร',
+        'ultra-news-title': 'รับคำเชิญเป็นคนแรก',
+        'ultra-news-sub': 'สมัครเลย — เราจะส่งคำเชิญอัลฟ่า เพรสคิต และสกินพิเศษของชุมชนยุคแรก',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'สมัคร', 'ultra-news-btn-sending': 'กำลังส่ง…',
+        'ultra-news-toast-invalid': 'กรุณาใส่อีเมลที่ถูกต้อง',
+        'ultra-news-toast-ok': 'เรียบร้อย! คุณอยู่ในรายชื่อ เราจะแจ้งเมื่ออัลฟ่าเปิด 🎉',
+        'ultra-news-toast-dup': 'อีเมลนี้สมัครไว้แล้ว ✓',
+        'ultra-news-toast-err': 'เกิดข้อผิดพลาด ลองอีกครั้ง',
+        'ultra-news-toast-net': 'ไม่มีการเชื่อมต่อ ตรวจสอบอินเทอร์เน็ตแล้วลองใหม่',
+        'ultra-news-perk-1': 'ไม่มีสแปม', 'ultra-news-perk-2': 'สิทธิ์อัลฟ่าก่อน', 'ultra-news-perk-3': 'สกินพิเศษ',
+        'ultra-social-eyebrow': 'ทุกที่ที่คุณอยู่',
+        'ultra-social-title-a': 'เข้าร่วม', 'ultra-social-title-b': 'สนามประลอง',
+        'ultra-social-lead': 'Discord และ YouTube รับทราบทุกฟีเจอร์ใหม่'
+      },
+
+      vi: {
+        'ultra-scroll-hint': 'Cuộn xuống',
+        'ultra-live-eyebrow': 'Dự án đang lớn mạnh',
+        'ultra-live-title-a': 'Nhịp đập', 'ultra-live-title-b': 'phát triển',
+        'ultra-live-lead': 'Trò chơi đang phát triển tích cực. Tham gia cộng đồng — hãy là một trong những người đầu tiên.',
+        'ultra-live-discord': 'Cộng đồng Discord', 'ultra-live-growing': 'ĐANG LỚN',
+        'ultra-live-discord-cta': 'Tham gia', 'ultra-live-discord-d': 'là người đầu tiên',
+        'ultra-live-status': 'Trạng thái', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'alpha kín',
+        'ultra-live-release': 'Phát hành', 'ultra-live-soon': 'SẮP RA', 'ultra-live-release-d': 'alpha mở',
+        'ultra-roadmap-eyebrow': 'Lộ trình',
+        'ultra-roadmap-title-a': 'Đường tới', 'ultra-roadmap-title-b': 'phát hành',
+        'ultra-roadmap-lead': 'Trò chơi đang phát triển tích cực. Đây là các nhiệm vụ và trạng thái.',
+        'ultra-roadmap-progress': 'Tiến độ',
+        'ultra-roadmap-done': 'Xong', 'ultra-roadmap-now': 'Bây giờ', 'ultra-roadmap-planned': 'Dự kiến',
+        'ultra-rm-1': 'Tạo hệ thống di chuyển nhân vật',
+        'ultra-rm-2': 'Tạo hệ thống di chuyển kẻ thù',
+        'ultra-rm-3': 'Cơ chế "bộ đếm" khi chạm kẻ thù',
+        'ultra-rm-4': 'Tạo màn hình thua',
+        'ultra-rm-5': 'Phát triển texture khu vực',
+        'ultra-rm-6': 'Tạo khu vực 10 đấu trường',
+        'ultra-rm-7': 'Tạo menu chính',
+        'ultra-rm-8': 'Phát triển nhân vật cơ bản',
+        'ultra-rm-9': 'Nhiều khu vực với kẻ thù khác nhau',
+        'ultra-rm-10': 'Chuyển tiếp giữa các khu vực',
+        'ultra-rm-11': 'Thêm nhiều nhân vật',
+        'ultra-rm-12': 'Thêm phụ kiện',
+        'ultra-rm-13': 'Thêm các tính năng còn lại',
+        'ultra-rm-14': 'Sửa lỗi và chuẩn bị bản alpha',
+        'ultra-rm-15': 'Thêm tải bản alpha lên website',
+        'ultra-faq-eyebrow': 'Câu hỏi thường gặp',
+        'ultra-faq-title-a': 'Ngắn gọn', 'ultra-faq-title-b': 'điểm chính',
+        'ultra-faq-1-q': 'Khi nào ra mắt và chơi ở đâu?',
+        'ultra-faq-1-a': 'Trò chơi đang trong phát triển kín. Trước là bản alpha, rồi bản phát hành đầy đủ. Kế hoạch: 2026–2027. Theo dõi Discord và đăng ký bên dưới.',
+        'ultra-faq-2-q': 'Hỗ trợ nền tảng nào?',
+        'ultra-faq-2-a': 'Đầu tiên là Web và Windows. Sau đó macOS/Linux, cuối cùng là di động.',
+        'ultra-faq-3-q': 'Trò chơi có tính phí không?',
+        'ultra-faq-3-a': 'Phần cơ bản miễn phí. Pass, skin và VIP — hỗ trợ tự nguyện, không pay-to-win.',
+        'ultra-faq-4-q': 'Yêu cầu hệ thống?',
+        'ultra-faq-4-a': 'Mục tiêu: 60 FPS trên hầu hết thiết bị 5 năm trở lại đây. Phiên bản web chạy trên mọi trình duyệt hiện đại.',
+        'ultra-faq-5-q': 'Làm sao tham gia thử nghiệm kín?',
+        'ultra-faq-5-a': 'Vào Discord của chúng tôi và đăng ký newsletter — khi mở đăng ký alpha, người đăng ký sẽ biết đầu tiên.',
+        'ultra-news-eyebrow': 'Truy cập sớm',
+        'ultra-news-title': 'Nhận lời mời đầu tiên',
+        'ultra-news-sub': 'Đăng ký — chúng tôi sẽ gửi lời mời alpha, press kit và skin độc quyền cho cộng đồng sớm.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Đăng ký', 'ultra-news-btn-sending': 'Đang gửi…',
+        'ultra-news-toast-invalid': 'Vui lòng nhập email hợp lệ',
+        'ultra-news-toast-ok': 'Xong! Bạn đã có trong danh sách, chúng tôi sẽ báo khi alpha mở 🎉',
+        'ultra-news-toast-dup': 'Email này đã đăng ký ✓',
+        'ultra-news-toast-err': 'Đã xảy ra lỗi, vui lòng thử lại',
+        'ultra-news-toast-net': 'Không có kết nối. Kiểm tra internet và thử lại',
+        'ultra-news-perk-1': 'Không spam', 'ultra-news-perk-2': 'Ưu tiên alpha', 'ultra-news-perk-3': 'Skin độc quyền',
+        'ultra-social-eyebrow': 'Bất cứ nơi đâu',
+        'ultra-social-title-a': 'Tham gia', 'ultra-social-title-b': 'đấu trường',
+        'ultra-social-lead': 'Discord và YouTube. Luôn cập nhật mọi tính năng mới.'
+      },
+
+      id: {
+        'ultra-scroll-hint': 'Gulir ke bawah',
+        'ultra-live-eyebrow': 'Proyek bertumbuh',
+        'ultra-live-title-a': 'Denyut', 'ultra-live-title-b': 'pengembangan',
+        'ultra-live-lead': 'Game sedang dikembangkan secara aktif. Bergabunglah dengan komunitas — jadilah yang pertama.',
+        'ultra-live-discord': 'Komunitas Discord', 'ultra-live-growing': 'TUMBUH',
+        'ultra-live-discord-cta': 'Gabung', 'ultra-live-discord-d': 'jadi yang pertama',
+        'ultra-live-status': 'Status', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'alpha tertutup',
+        'ultra-live-release': 'Rilis', 'ultra-live-soon': 'SEGERA', 'ultra-live-release-d': 'alpha terbuka',
+        'ultra-roadmap-eyebrow': 'Peta jalan',
+        'ultra-roadmap-title-a': 'Jalan', 'ultra-roadmap-title-b': 'menuju rilis',
+        'ultra-roadmap-lead': 'Game sedang dikembangkan secara aktif. Ini tugas dan statusnya.',
+        'ultra-roadmap-progress': 'Progres',
+        'ultra-roadmap-done': 'Selesai', 'ultra-roadmap-now': 'Sekarang', 'ultra-roadmap-planned': 'Direncanakan',
+        'ultra-rm-1': 'Membuat sistem gerak karakter',
+        'ultra-rm-2': 'Membuat sistem gerak musuh',
+        'ultra-rm-3': 'Mekanik "timer" saat menyentuh musuh',
+        'ultra-rm-4': 'Membuat layar kekalahan',
+        'ultra-rm-5': 'Mengembangkan tekstur zona',
+        'ultra-rm-6': 'Membuat zona dengan 10 arena',
+        'ultra-rm-7': 'Membuat menu utama',
+        'ultra-rm-8': 'Mengembangkan karakter dasar',
+        'ultra-rm-9': 'Beberapa zona dengan musuh berbeda',
+        'ultra-rm-10': 'Transisi antar zona',
+        'ultra-rm-11': 'Menambahkan beberapa karakter',
+        'ultra-rm-12': 'Menambahkan aksesori',
+        'ultra-rm-13': 'Menambahkan fitur yang tersisa',
+        'ultra-rm-14': 'Memperbaiki bug dan menyiapkan alpha',
+        'ultra-rm-15': 'Menambahkan unduhan alpha ke situs',
+        'ultra-faq-eyebrow': 'Pertanyaan umum',
+        'ultra-faq-title-a': 'Singkatnya', 'ultra-faq-title-b': 'hal utama',
+        'ultra-faq-1-q': 'Kapan rilis dan di mana bisa dimainkan?',
+        'ultra-faq-1-a': 'Game dalam pengembangan tertutup. Pertama alpha, lalu rilis penuh. Target: 2026–2027. Ikuti Discord dan berlangganan di bawah.',
+        'ultra-faq-2-q': 'Di platform mana saja?',
+        'ultra-faq-2-a': 'Awalnya Web dan Windows. Kemudian macOS/Linux, dan mobile setelahnya.',
+        'ultra-faq-3-q': 'Apakah game berbayar?',
+        'ultra-faq-3-a': 'Game dasar gratis. Pass, skin, dan VIP — dukungan opsional, tanpa pay-to-win.',
+        'ultra-faq-4-q': 'Kebutuhan sistem?',
+        'ultra-faq-4-a': 'Target: 60 FPS pada kebanyakan perangkat 5 tahun terakhir. Versi web berjalan di browser modern mana pun.',
+        'ultra-faq-5-q': 'Bagaimana cara ikut tes tertutup?',
+        'ultra-faq-5-a': 'Bergabunglah ke Discord kami dan berlangganan newsletter — saat pendaftaran alpha dibuka, pelanggan tahu lebih dulu.',
+        'ultra-news-eyebrow': 'Akses awal',
+        'ultra-news-title': 'Dapatkan undangan lebih dulu',
+        'ultra-news-sub': 'Berlangganan — kami akan mengirim undangan alpha, press kit, dan skin eksklusif komunitas awal.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Berlangganan', 'ultra-news-btn-sending': 'Mengirim…',
+        'ultra-news-toast-invalid': 'Masukkan email yang valid',
+        'ultra-news-toast-ok': 'Selesai! Kamu ada di daftar, kami akan kabari saat alpha dibuka 🎉',
+        'ultra-news-toast-dup': 'Email ini sudah berlangganan ✓',
+        'ultra-news-toast-err': 'Ada yang salah, coba lagi',
+        'ultra-news-toast-net': 'Tidak ada koneksi. Periksa internet dan coba lagi',
+        'ultra-news-perk-1': 'Tanpa spam', 'ultra-news-perk-2': 'Prioritas alpha', 'ultra-news-perk-3': 'Skin eksklusif',
+        'ultra-social-eyebrow': 'Di mana pun kamu',
+        'ultra-social-title-a': 'Gabung', 'ultra-social-title-b': 'ke arena',
+        'ultra-social-lead': 'Discord dan YouTube. Tetap up-to-date dengan setiap fitur baru.'
+      },
+
+      ms: {
+        'ultra-scroll-hint': 'Tatal ke bawah',
+        'ultra-live-eyebrow': 'Projek berkembang',
+        'ultra-live-title-a': 'Nadi', 'ultra-live-title-b': 'pembangunan',
+        'ultra-live-lead': 'Permainan dalam pembangunan aktif. Sertai komuniti — jadilah antara yang terawal.',
+        'ultra-live-discord': 'Komuniti Discord', 'ultra-live-growing': 'BERKEMBANG',
+        'ultra-live-discord-cta': 'Sertai', 'ultra-live-discord-d': 'antara yang terawal',
+        'ultra-live-status': 'Status', 'ultra-live-dev': 'DEV', 'ultra-live-status-d': 'alfa tertutup',
+        'ultra-live-release': 'Pelancaran', 'ultra-live-soon': 'TIDAK LAMA LAGI', 'ultra-live-release-d': 'alfa terbuka',
+        'ultra-roadmap-eyebrow': 'Peta jalan',
+        'ultra-roadmap-title-a': 'Laluan', 'ultra-roadmap-title-b': 'ke pelancaran',
+        'ultra-roadmap-lead': 'Permainan dalam pembangunan aktif. Berikut tugas dan statusnya.',
+        'ultra-roadmap-progress': 'Kemajuan',
+        'ultra-roadmap-done': 'Selesai', 'ultra-roadmap-now': 'Sekarang', 'ultra-roadmap-planned': 'Dirancang',
+        'ultra-rm-1': 'Membina sistem pergerakan watak',
+        'ultra-rm-2': 'Membina sistem pergerakan musuh',
+        'ultra-rm-3': 'Mekanik "pemasa" apabila menyentuh musuh',
+        'ultra-rm-4': 'Mencipta skrin kekalahan',
+        'ultra-rm-5': 'Membangunkan tekstur zon',
+        'ultra-rm-6': 'Mencipta zon dengan 10 arena',
+        'ultra-rm-7': 'Mencipta menu utama',
+        'ultra-rm-8': 'Membangunkan watak asas',
+        'ultra-rm-9': 'Beberapa zon dengan musuh berbeza',
+        'ultra-rm-10': 'Peralihan antara zon',
+        'ultra-rm-11': 'Menambah beberapa watak',
+        'ultra-rm-12': 'Menambah aksesori',
+        'ultra-rm-13': 'Menambah ciri yang selebihnya',
+        'ultra-rm-14': 'Membaiki pepijat dan menyediakan alfa',
+        'ultra-rm-15': 'Menambah muat turun alfa ke laman web',
+        'ultra-faq-eyebrow': 'Soalan lazim',
+        'ultra-faq-title-a': 'Ringkasnya', 'ultra-faq-title-b': 'yang utama',
+        'ultra-faq-1-q': 'Bila pelancaran dan di mana boleh main?',
+        'ultra-faq-1-a': 'Permainan dalam pembangunan tertutup. Pertama alfa, kemudian pelancaran penuh. Jadual: 2026–2027. Ikut Discord dan langgan di bawah.',
+        'ultra-faq-2-q': 'Di platform mana?',
+        'ultra-faq-2-a': 'Web dan Windows dahulu. Kemudian macOS/Linux, dan kemudiannya mudah alih.',
+        'ultra-faq-3-q': 'Adakah permainan berbayar?',
+        'ultra-faq-3-a': 'Permainan asas percuma. Pas, skin dan VIP — sokongan pilihan, tiada pay-to-win.',
+        'ultra-faq-4-q': 'Keperluan sistem?',
+        'ultra-faq-4-a': 'Sasaran: 60 FPS pada kebanyakan peranti 5 tahun kebelakangan. Versi web berfungsi pada mana-mana pelayar moden.',
+        'ultra-faq-5-q': 'Bagaimana menyertai ujian tertutup?',
+        'ultra-faq-5-a': 'Sertai Discord kami dan langgan surat berita — apabila pendaftaran alfa dibuka, pelanggan akan dimaklumkan dahulu.',
+        'ultra-news-eyebrow': 'Akses awal',
+        'ultra-news-title': 'Dapatkan jemputan dahulu',
+        'ultra-news-sub': 'Langgan — kami akan hantar jemputan alfa, press kit dan skin eksklusif komuniti awal.',
+        'ultra-news-placeholder': 'you@evades3.com',
+        'ultra-news-btn': 'Langgan', 'ultra-news-btn-sending': 'Menghantar…',
+        'ultra-news-toast-invalid': 'Masukkan e-mel yang sah',
+        'ultra-news-toast-ok': 'Siap! Anda dalam senarai, kami akan maklumkan apabila alfa dibuka 🎉',
+        'ultra-news-toast-dup': 'E-mel ini sudah dilanggan ✓',
+        'ultra-news-toast-err': 'Sesuatu tidak kena, cuba semula',
+        'ultra-news-toast-net': 'Tiada sambungan. Semak internet dan cuba semula',
+        'ultra-news-perk-1': 'Tiada spam', 'ultra-news-perk-2': 'Keutamaan alfa', 'ultra-news-perk-3': 'Skin eksklusif',
+        'ultra-social-eyebrow': 'Di mana sahaja anda',
+        'ultra-social-title-a': 'Sertai', 'ultra-social-title-b': 'arena',
+        'ultra-social-lead': 'Discord dan YouTube. Kekal terkini dengan setiap ciri baharu.'
+      }
+    };
+
+    // Merge extras into existing translations
+    for (const lang in extra) {
+      if (!translations[lang]) translations[lang] = {};
+      Object.assign(translations[lang], extra[lang]);
+    }
+    // For other languages, fall back to EN for new keys so they aren't blank
+    const fallback = extra.en;
+    for (const lang in translations) {
+      if (lang === 'en') continue;
+      for (const k in fallback) {
+        if (translations[lang][k] == null) translations[lang][k] = fallback[k];
+      }
+    }
+
+    // Translate placeholders + existing data-i18n nodes
+    try {
+      const currentLang = (typeof selectedLang === 'string' && selectedLang) ||
+                          localStorage.getItem('selectedLanguage') || 'ru';
+      if (typeof applyTranslations === 'function') applyTranslations(currentLang);
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        const val = translations[currentLang] && translations[currentLang][key];
+        if (val) el.setAttribute('placeholder', val);
+      });
+    } catch {}
+  }
 })();
 
   </script>
