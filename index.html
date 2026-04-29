@@ -2754,24 +2754,23 @@
 /* ── КОЛОКОЛЬЧИК ── */
 .bell-dropdown {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 10px);
   left: 50%;
   transform: translateX(-50%) translateY(8px) scale(0.96);
   transform-origin: top center;
   width: 240px;
-  background:
-    radial-gradient(120% 80% at 50% -20%, rgba(255,200,58,0.10), transparent 60%),
-    linear-gradient(165deg, #11402a 0%, #0a2516 55%, #061309 100%);
-  border: 1px solid rgba(255,200,58,0.35);
-  border-radius: 18px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.12));
+  border: 2px solid var(--langBorder, rgba(255,255,255,0.28));
+  border-radius: 28px;
   overflow: hidden;
   padding: 18px 16px 16px;
   box-shadow:
-    0 24px 60px rgba(0,0,0,0.55),
-    0 0 0 1px rgba(0,0,0,0.4),
-    inset 0 1px 0 rgba(255,236,170,0.18),
-    inset 0 -20px 30px rgba(0,0,0,0.35);
-  backdrop-filter: blur(20px);
+    10px 10px 30px rgba(0,0,0,0.35),
+    -5px -5px 14px rgba(255,255,255,0.12),
+    inset -2px -2px 8px rgba(0,0,0,0.25),
+    inset 2px 2px 8px rgba(255,255,255,0.2);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.22s ease, transform 0.22s cubic-bezier(.08,1.2,.18,1);
@@ -2782,10 +2781,12 @@
   position: absolute;
   top: -7px; left: 50%; transform: translateX(-50%) rotate(45deg);
   width: 12px; height: 12px;
-  background: linear-gradient(165deg, #11402a, #0e3522);
-  border-top: 1px solid rgba(255,200,58,0.45);
-  border-left: 1px solid rgba(255,200,58,0.45);
-  border-top-left-radius: 3px;
+  background: rgba(255,255,255,0.22);
+  border-top: 2px solid var(--langBorder, rgba(255,255,255,0.28));
+  border-left: 2px solid var(--langBorder, rgba(255,255,255,0.28));
+  border-top-left-radius: 4px;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 .bell-wrap:hover .bell-dropdown, .bell-wrap.open .bell-dropdown {
   opacity: 1;
@@ -2803,7 +2804,7 @@
 .bell-empty {
   display: flex; flex-direction: column; align-items: center; gap: 12px;
   padding: 6px 0 2px;
-  color: rgba(255,236,170,0.78);
+  color: rgba(255,255,255,0.92);
   font-size: 13px; font-weight: 700; letter-spacing: 0.6px; text-align: center;
   font-family: 'Exo 2', sans-serif;
   text-shadow: 0 1px 2px rgba(0,0,0,0.55);
@@ -2822,28 +2823,26 @@
 .profile-wrap { position: relative; }
 .profile-dropdown {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 10px);
   left: 50%;
   transform: translateX(-50%) translateY(8px) scale(0.96);
   transform-origin: top center;
-  width: 240px;
-  background:
-    radial-gradient(120% 80% at 50% -20%, rgba(255,200,58,0.12), transparent 60%),
-    linear-gradient(165deg, #11402a 0%, #0a2516 55%, #061309 100%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 18px;
+  width: 260px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.12));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: 28px;
   overflow: hidden;
   max-height: 0;
   opacity: 0;
   pointer-events: none;
   transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.25s ease;
-  border: 1px solid rgba(255,200,58,0.35);
+  border: 2px solid var(--langBorder, rgba(255,255,255,0.28));
   box-shadow:
-    0 24px 60px rgba(0,0,0,0.55),
-    0 0 0 1px rgba(0,0,0,0.4),
-    inset 0 1px 0 rgba(255,236,170,0.18),
-    inset 0 -30px 40px rgba(0,0,0,0.3);
+    10px 10px 30px rgba(0,0,0,0.35),
+    -5px -5px 14px rgba(255,255,255,0.12),
+    inset -2px -2px 8px rgba(0,0,0,0.25),
+    inset 2px 2px 8px rgba(255,255,255,0.2);
   z-index: 5000;
 }
 .profile-dropdown::before {
@@ -2851,10 +2850,12 @@
   position: absolute;
   top: -7px; left: 50%; transform: translateX(-50%) rotate(45deg);
   width: 12px; height: 12px;
-  background: linear-gradient(165deg, #11402a, #0e3522);
-  border-top: 1px solid rgba(255,200,58,0.45);
-  border-left: 1px solid rgba(255,200,58,0.45);
-  border-top-left-radius: 3px;
+  background: rgba(255,255,255,0.22);
+  border-top: 2px solid var(--langBorder, rgba(255,255,255,0.28));
+  border-left: 2px solid var(--langBorder, rgba(255,255,255,0.28));
+  border-top-left-radius: 4px;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   z-index: 1;
 }
 .profile-wrap::after {
@@ -2879,7 +2880,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: linear-gradient(135deg, rgba(255,200,58,0.10), transparent 70%);
+  background: linear-gradient(135deg, rgba(255,255,255,0.18), transparent 75%);
 }
 .profile-dd-head::after {
   content: '';
@@ -2888,11 +2889,8 @@
   height: 1px;
   background: linear-gradient(90deg,
     transparent 0%,
-    rgba(255,200,58,0.55) 25%,
-    rgba(255,236,170,0.85) 50%,
-    rgba(255,200,58,0.55) 75%,
+    rgba(255,255,255,0.55) 50%,
     transparent 100%);
-  box-shadow: 0 0 6px rgba(255,200,58,0.35);
 }
 .profile-dd-avatar {
   width: 38px; height: 38px;
@@ -2914,13 +2912,14 @@
 }
 .profile-dd-email {
   font-size: 11px;
-  color: rgba(255,236,170,0.55);
+  color: rgba(255,255,255,0.78);
   margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 150px;
+  max-width: 170px;
   letter-spacing: 0.3px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
 }
 .profile-dd-item {
   display: flex;
@@ -2940,11 +2939,11 @@
   transform: translateY(-6px);
 }
 .profile-dd-item:hover {
-  background: linear-gradient(90deg, rgba(255,200,58,0.18), rgba(255,200,58,0.04) 60%, transparent 100%);
-  transform: translateX(6px);
-  border-left-color: rgba(255,200,58,0.85);
-  box-shadow: inset 0 0 0 1px rgba(255,200,58,0.06), 0 4px 12px rgba(255,170,0,0.15);
-  color: #FFEFA8;
+  background: linear-gradient(90deg, rgba(74,222,128,0.22), rgba(74,222,128,0.04) 70%, transparent 100%);
+  transform: translateX(8px);
+  border-left-color: rgba(74,222,128,0.85);
+  box-shadow: inset 0 0 0 1px rgba(74,222,128,0.08), 0 4px 12px rgba(74,222,128,0.18);
+  color: #ffffff;
 }
 .profile-wrap:hover .profile-dd-item {
   opacity: 1;
@@ -2963,7 +2962,7 @@
 .profile-dd-divider {
   height: 1px;
   margin: 4px 14px;
-  background: linear-gradient(90deg, transparent, rgba(255,200,58,0.35), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
 }
 
 /* ── МОДАЛЬНОЕ ОКНО AUTH ── */
@@ -3235,6 +3234,255 @@
   border-radius: 999px; background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.3);
   color: rgba(74,222,128,0.9); font-size: 12px; font-weight: 700; letter-spacing: 1px;
 }
+
+/* ── SECURITY (2FA) CARD INSIDE PROFILE MODAL ── */
+.profile-security{
+  width: 100%;
+  margin: 0 0 22px;
+  padding: 18px 18px 16px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 18px;
+  text-align: left;
+  backdrop-filter: blur(8px);
+}
+.ps-head{ display: flex; align-items: flex-start; gap: 12px; }
+.ps-shield{
+  width: 38px; height: 38px; flex: 0 0 auto;
+  display: grid; place-items: center;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(74,222,128,0.18), rgba(74,222,128,0.06));
+  border: 1px solid rgba(74,222,128,0.4);
+  color: #4ade80;
+}
+.ps-shield svg{ width: 20px; height: 20px; }
+.ps-text{ flex: 1; min-width: 0; }
+.ps-title{ font-weight: 900; font-size: 14px; color: #fff; letter-spacing: 0.5px; margin-bottom: 4px; }
+.ps-sub{ font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.45; }
+.ps-status{
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 10px; border-radius: 999px;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.6px;
+  flex: 0 0 auto;
+  text-transform: uppercase;
+}
+.ps-status[data-state="off"]{ background: rgba(255,140,120,0.12); border: 1px solid rgba(255,140,120,0.35); color: rgba(255,180,160,0.95); }
+.ps-status[data-state="on"]{  background: rgba(74,222,128,0.18);  border: 1px solid rgba(74,222,128,0.45);  color: #b3f5cd; }
+.ps-status-dot{
+  width: 7px; height: 7px; border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 6px currentColor;
+}
+.ps-status[data-state="on"] .ps-status-dot{ animation: psStatusPulse 2s ease-in-out infinite; }
+@keyframes psStatusPulse{ 0%,100%{ opacity:1; transform:scale(1); } 50%{ opacity:.5; transform:scale(1.35); } }
+.ps-actions{ display: flex; gap: 10px; margin-top: 14px; }
+.ps-btn{
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13px; font-weight: 800; letter-spacing: 0.6px;
+  cursor: pointer;
+  font-family: 'Exo 2', sans-serif;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+  text-transform: uppercase;
+}
+.ps-btn-primary{
+  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 60%, #C49100 100%);
+  border: 1px solid rgba(255,200,58,0.6);
+  color: #2a1a00;
+  box-shadow: 0 6px 16px rgba(255,170,0,0.3), inset 0 1px 0 rgba(255,255,255,0.4);
+}
+.ps-btn-primary:hover{ transform: translateY(-2px); box-shadow: 0 10px 24px rgba(255,170,0,0.45), inset 0 1px 0 rgba(255,255,255,0.5); }
+.ps-btn-danger{
+  background: rgba(224,74,42,0.15);
+  border: 1px solid rgba(224,74,42,0.45);
+  color: #FFAE9B;
+}
+.ps-btn-danger:hover{ transform: translateY(-2px); background: rgba(224,74,42,0.28); border-color: rgba(255,150,120,0.65); color: #fff; }
+
+/* ── 2FA MODAL (setup + challenge) ── */
+.tfa-modal-overlay{
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.78);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 9000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tfa-modal-overlay.show{ opacity: 1; pointer-events: auto; }
+.tfa-modal-box{
+  width: 100%; max-width: 440px;
+  background:
+    radial-gradient(120% 80% at 50% -20%, rgba(255,200,58,0.08), transparent 60%),
+    linear-gradient(165deg, #11402a 0%, #0a2516 60%, #061309 100%);
+  border: 1px solid rgba(255,200,58,0.35);
+  border-radius: 26px;
+  padding: 28px 24px 24px;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,236,170,0.18);
+  transform: scale(0.92) translateY(16px);
+  transition: transform .35s cubic-bezier(.08,1.3,.18,1);
+  text-align: center;
+  position: relative;
+}
+.tfa-modal-overlay.show .tfa-modal-box{ transform: scale(1) translateY(0); }
+.tfa-modal-close{
+  position: absolute; top: 14px; right: 14px;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #fff; font-size: 14px; font-weight: 800;
+  cursor: pointer;
+  display: grid; place-items: center;
+  transition: background .2s ease, transform .2s ease;
+}
+.tfa-modal-close:hover{ background: rgba(255,90,90,0.25); transform: rotate(90deg); border-color: rgba(255,140,140,0.5); }
+.tfa-icon{
+  width: 60px; height: 60px;
+  margin: 4px auto 14px;
+  border-radius: 18px;
+  display: grid; place-items: center;
+  background: linear-gradient(180deg, rgba(74,222,128,0.18), rgba(74,222,128,0.05));
+  border: 1px solid rgba(74,222,128,0.45);
+  color: #4ade80;
+}
+.tfa-icon svg{ width: 28px; height: 28px; }
+.tfa-icon-success{
+  background: linear-gradient(180deg, rgba(74,222,128,0.35), rgba(74,222,128,0.12));
+  border-color: rgba(74,222,128,0.65);
+  color: #fff;
+  animation: tfaSuccessIn .55s cubic-bezier(.08,1.4,.18,1);
+}
+@keyframes tfaSuccessIn{ 0%{ transform: scale(.4); opacity: 0; } 60%{ transform: scale(1.15); opacity: 1; } 100%{ transform: scale(1); } }
+.tfa-title{
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px; font-weight: 900; letter-spacing: 1.5px;
+  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 60%, #C49100 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  margin: 0 0 8px;
+}
+.tfa-text{
+  font-size: 13px; color: rgba(255,255,255,0.78); line-height: 1.55;
+  margin: 0 0 18px; font-family: 'Exo 2', sans-serif;
+}
+.tfa-qr-wrap{
+  width: 200px; height: 200px;
+  margin: 0 auto 14px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px;
+  display: grid; place-items: center;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+}
+.tfa-qr-img{ width: 100%; height: 100%; image-rendering: pixelated; }
+.tfa-qr-loading{ display:flex; flex-direction:column; align-items:center; gap:10px; color:#0a2516; font-size:12px; font-weight:700; }
+.tfa-spinner{
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 3px solid rgba(74,222,128,0.25);
+  border-top-color: #4ade80;
+  animation: tfaSpin 0.9s linear infinite;
+}
+@keyframes tfaSpin{ to { transform: rotate(360deg); } }
+.tfa-secret-row{
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 12px;
+  margin: 0 0 18px;
+  flex-wrap: wrap; justify-content: center;
+}
+.tfa-secret-lbl{ font-size: 11px; color: rgba(255,255,255,0.6); font-weight: 700; }
+.tfa-secret-code{
+  font-family: 'Courier New', monospace;
+  font-size: 13px; font-weight: 800;
+  color: #FFEFA8;
+  letter-spacing: 1.5px;
+  user-select: all;
+}
+.tfa-copy-btn{
+  font-size: 11px; font-weight: 800; letter-spacing: 0.5px;
+  padding: 6px 10px; border-radius: 8px;
+  background: rgba(74,222,128,0.16);
+  border: 1px solid rgba(74,222,128,0.4);
+  color: #b3f5cd;
+  cursor: pointer;
+  transition: background .2s ease;
+  text-transform: uppercase;
+}
+.tfa-copy-btn:hover{ background: rgba(74,222,128,0.28); }
+.tfa-copy-btn.is-copied{ background: rgba(74,222,128,0.5); color: #fff; }
+.tfa-code-input{
+  width: 100%;
+  padding: 16px 18px;
+  margin: 0 0 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 14px;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  font-size: 28px; font-weight: 900; letter-spacing: 12px;
+  text-align: center;
+  outline: none;
+  transition: border-color .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.tfa-code-input::placeholder{ color: rgba(255,255,255,0.2); letter-spacing: 12px; }
+.tfa-code-input:focus{
+  border-color: rgba(74,222,128,0.6);
+  box-shadow: 0 0 0 4px rgba(74,222,128,0.15);
+  background: rgba(74,222,128,0.06);
+}
+.tfa-code-input.is-error{
+  border-color: rgba(255,80,80,0.7);
+  box-shadow: 0 0 0 4px rgba(255,80,80,0.15);
+  animation: tfaShake .35s ease;
+}
+@keyframes tfaShake{ 0%,100%{ transform: translateX(0); } 25%{ transform: translateX(-6px); } 75%{ transform: translateX(6px); } }
+.tfa-error{
+  color: #FFAE9B;
+  background: rgba(224,74,42,0.15);
+  border: 1px solid rgba(224,74,42,0.4);
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 12px; font-weight: 700;
+  margin-bottom: 12px;
+  text-align: center;
+}
+.tfa-actions{ display: flex; gap: 10px; }
+.tfa-actions .tfa-cta{ flex: 1; }
+.tfa-cta{
+  width: 100%;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 60%, #C49100 100%);
+  border: 1px solid rgba(255,200,58,0.6);
+  color: #2a1a00;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px; font-weight: 900; letter-spacing: 1.6px;
+  cursor: pointer;
+  text-transform: uppercase;
+  box-shadow: 0 8px 20px rgba(255,170,0,0.32), inset 0 1px 0 rgba(255,255,255,0.45);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.tfa-cta:hover{ transform: translateY(-2px); box-shadow: 0 12px 28px rgba(255,170,0,0.5), inset 0 1px 0 rgba(255,255,255,0.55); }
+.tfa-cta:disabled{ opacity: .55; cursor: not-allowed; transform: none; }
+.tfa-back{
+  flex: 0 0 auto;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #fff;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 12px; font-weight: 800; letter-spacing: 1px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background .2s ease;
+}
+.tfa-back:hover{ background: rgba(255,255,255,0.16); }
 
 /* ── МОДАЛ ВЫХОДА ── */
 .confirm-modal-overlay {
@@ -3818,6 +4066,72 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 22px;
 }
+.faq-search-wrap{
+  max-width: 820px; margin: 0 auto 18px;
+  position: relative;
+}
+.faq-search-ico{
+  position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
+  width: 18px; height: 18px;
+  color: rgba(255,255,255,0.55);
+  pointer-events: none;
+  transition: color .25s ease;
+}
+.faq-search-input{
+  width: 100%;
+  padding: 14px 44px 14px 48px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+  border: 1px solid var(--e3-border);
+  border-radius: 16px;
+  color: #fff;
+  font-size: 14px; font-weight: 600;
+  font-family: 'Exo 2', sans-serif;
+  letter-spacing: 0.3px;
+  outline: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: border-color .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.faq-search-input::placeholder{ color: rgba(255,255,255,0.45); font-weight:500; }
+.faq-search-input::-webkit-search-cancel-button{ display:none; }
+.faq-search-input:focus{
+  border-color: rgba(74,222,128,0.55);
+  box-shadow: 0 0 0 4px rgba(74,222,128,0.12), 0 6px 20px rgba(0,0,0,0.3);
+  background: linear-gradient(145deg, rgba(74,222,128,0.08), rgba(255,255,255,0.04));
+}
+.faq-search-wrap:focus-within .faq-search-ico{ color: rgba(74,222,128,0.85); }
+.faq-search-clear{
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid var(--e3-border);
+  color: #fff; font-size: 16px; font-weight: 800;
+  cursor: pointer; padding: 0;
+  display: grid; place-items: center;
+  line-height: 1;
+  transition: background .2s ease, transform .2s ease;
+}
+.faq-search-clear:hover{ background: rgba(255,80,80,0.25); border-color: rgba(255,140,140,0.5); transform: translateY(-50%) scale(1.08); }
+.faq-empty{
+  max-width: 820px; margin: 0 auto 16px;
+  padding: 26px 22px;
+  border-radius: 18px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border: 1px dashed rgba(255,255,255,0.18);
+  text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: rgba(255,255,255,0.78);
+  font-size: 14px; font-weight: 600; line-height: 1.55;
+  font-family: 'Exo 2', sans-serif;
+}
+.faq-empty-emoji{ font-size: 28px; }
+.faq-item.is-hidden{ display: none; }
+.faq-q mark{
+  background: linear-gradient(180deg, rgba(255,216,77,0.55), rgba(255,200,58,0.35));
+  color: #fff; padding: 1px 4px; border-radius: 4px;
+  box-shadow: 0 1px 0 rgba(255,200,58,0.35);
+  font-weight: 900;
+}
 .faq-list{
   max-width: 820px; margin: 0 auto;
   display: flex; flex-direction: column; gap: 12px;
@@ -4189,6 +4503,38 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
 .social-btn svg{ width: 20px; height: 20px; transition: transform .35s var(--e3-ease); }
 .social-btn:hover{ transform: translateY(-3px) scale(1.04); border-color: var(--sb-color, rgba(74,222,128,0.6)); box-shadow: 0 16px 36px rgba(0,0,0,0.4), 0 0 24px var(--sb-glow, rgba(74,222,128,0.35)); color: var(--sb-color, #4ade80); }
 .social-btn:hover svg{ transform: rotate(-8deg) scale(1.1); }
+
+/* Discord live counter pill */
+.social-btn-discord{ padding-right: 12px; }
+.dc-live{
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-left: 4px;
+  padding: 5px 10px 5px 9px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(74,222,128,0.18), rgba(74,222,128,0.08));
+  border: 1px solid rgba(74,222,128,0.42);
+  color: #b3f5cd;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.6px;
+  text-transform: lowercase;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 4px 10px rgba(0,0,0,0.25);
+  white-space: nowrap;
+  animation: dcLiveIn .45s var(--e3-ease, cubic-bezier(.2,.8,.2,1));
+}
+@keyframes dcLiveIn{ 0%{ opacity:0; transform: scale(.85); } 100%{ opacity:1; transform: scale(1); } }
+.dc-live-dot{
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 0 0 rgba(74,222,128,0.7), 0 0 10px rgba(74,222,128,0.85);
+  animation: dcLivePulse 2s ease-in-out infinite;
+}
+@keyframes dcLivePulse{
+  0%{ box-shadow: 0 0 0 0 rgba(74,222,128,0.7), 0 0 10px rgba(74,222,128,0.6); }
+  70%{ box-shadow: 0 0 0 8px rgba(74,222,128,0), 0 0 12px rgba(74,222,128,0.85); }
+  100%{ box-shadow: 0 0 0 0 rgba(74,222,128,0), 0 0 10px rgba(74,222,128,0.6); }
+}
+.dc-live-num{ color:#fff; font-weight:900; font-size:12px; }
+.dc-live-label{ opacity:.85; }
+.social-btn-discord:hover .dc-live{ border-color: rgba(74,222,128,0.7); background: linear-gradient(180deg, rgba(74,222,128,0.28), rgba(74,222,128,0.12)); }
 
 #e3-back-top{
   position: fixed; right: 32px; bottom: 32px;
@@ -4821,10 +5167,96 @@ svg.ic-svg-login {
     <span class="pmf-value" id="pmJoined">—</span>
   </div>
 </div>
+
+<!-- Security / 2FA card -->
+<div class="profile-security" id="profileSecurity">
+  <div class="ps-head">
+    <span class="ps-shield" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </span>
+    <div class="ps-text">
+      <div class="ps-title" data-i18n="security-2fa-title">Двухфакторная аутентификация</div>
+      <div class="ps-sub" data-i18n="security-2fa-sub">Дополнительная защита аккаунта через приложение-аутентификатор</div>
+    </div>
+    <span class="ps-status" id="ps2faStatus" data-state="off">
+      <span class="ps-status-dot"></span>
+      <span class="ps-status-label" data-i18n="security-2fa-status-off">Выключено</span>
+    </span>
+  </div>
+  <div class="ps-actions">
+    <button type="button" class="ps-btn ps-btn-primary" id="ps2faEnableBtn" onclick="open2faSetupModal()">
+      <span data-i18n="security-2fa-enable">Включить 2FA</span>
+    </button>
+    <button type="button" class="ps-btn ps-btn-danger" id="ps2faDisableBtn" onclick="confirm2faDisable()" hidden>
+      <span data-i18n="security-2fa-disable">Отключить 2FA</span>
+    </button>
+  </div>
+</div>
+
     <div class="profile-modal-badge">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       В системе
     </div>
+  </div>
+</div>
+
+<!-- ─── MODAL: 2FA SETUP (QR + verify) ─── -->
+<div class="tfa-modal-overlay" id="tfa2faSetupOverlay" onclick="close2faSetupOnBg(event)">
+  <div class="tfa-modal-box">
+    <button class="tfa-modal-close" onclick="close2faSetupModal()">✕</button>
+    <div class="tfa-step" id="tfaStep1">
+      <div class="tfa-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </div>
+      <h3 class="tfa-title" data-i18n="tfa-setup-title">Включение 2FA</h3>
+      <p class="tfa-text" data-i18n="tfa-setup-step1">Отсканируй QR-код приложением-аутентификатором (Google Authenticator, Authy, 1Password, Microsoft Authenticator).</p>
+      <div class="tfa-qr-wrap" id="tfaQrWrap">
+        <div class="tfa-qr-loading" id="tfaQrLoading"><span class="tfa-spinner"></span><span data-i18n="tfa-loading">Загрузка...</span></div>
+        <img class="tfa-qr-img" id="tfaQrImg" alt="2FA QR" hidden/>
+      </div>
+      <div class="tfa-secret-row">
+        <span class="tfa-secret-lbl" data-i18n="tfa-secret-label">Или вручную:</span>
+        <code class="tfa-secret-code" id="tfaSecretCode">—</code>
+        <button type="button" class="tfa-copy-btn" id="tfaCopyBtn" onclick="copy2faSecret()" data-i18n="tfa-copy">Копировать</button>
+      </div>
+      <button type="button" class="tfa-cta" onclick="goto2faStep2()" data-i18n="tfa-next">Дальше</button>
+    </div>
+    <div class="tfa-step" id="tfaStep2" hidden>
+      <div class="tfa-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+      </div>
+      <h3 class="tfa-title" data-i18n="tfa-verify-title">Введи 6-значный код</h3>
+      <p class="tfa-text" data-i18n="tfa-verify-text">Открой приложение и впиши код, который оно показывает для «Evades 3».</p>
+      <input type="text" class="tfa-code-input" id="tfaCodeInput" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="off" placeholder="000000"/>
+      <div class="tfa-error" id="tfaError" hidden></div>
+      <div class="tfa-actions">
+        <button type="button" class="tfa-back" onclick="goto2faStep1()" data-i18n="tfa-back">Назад</button>
+        <button type="button" class="tfa-cta" id="tfaVerifyBtn" onclick="verify2faEnroll()" data-i18n="tfa-confirm">Подтвердить</button>
+      </div>
+    </div>
+    <div class="tfa-step" id="tfaStep3" hidden>
+      <div class="tfa-icon tfa-icon-success">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3 class="tfa-title" data-i18n="tfa-success-title">2FA включена</h3>
+      <p class="tfa-text" data-i18n="tfa-success-text">Теперь при входе нужно будет вводить код из приложения. Сохрани секретный ключ в надёжном месте.</p>
+      <button type="button" class="tfa-cta" onclick="close2faSetupModal()" data-i18n="tfa-done">Готово</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MODAL: 2FA CHALLENGE on login ─── -->
+<div class="tfa-modal-overlay" id="tfa2faChallengeOverlay" onclick="close2faChallengeOnBg(event)">
+  <div class="tfa-modal-box">
+    <button class="tfa-modal-close" onclick="cancel2faChallenge()">✕</button>
+    <div class="tfa-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h3 class="tfa-title" data-i18n="tfa-challenge-title">Введи код 2FA</h3>
+    <p class="tfa-text" data-i18n="tfa-challenge-text">Открой приложение-аутентификатор и впиши 6-значный код для «Evades 3».</p>
+    <input type="text" class="tfa-code-input" id="tfaChallengeInput" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" placeholder="000000"/>
+    <div class="tfa-error" id="tfaChallengeError" hidden></div>
+    <button type="button" class="tfa-cta" id="tfaChallengeVerifyBtn" onclick="submit2faChallenge()" data-i18n="tfa-challenge-submit">Войти</button>
   </div>
 </div>
 
@@ -5484,6 +5916,15 @@ svg.ic-svg-login {
         <div class="e3-eyebrow"><span class="dot"></span><span data-i18n="ultra-faq-eyebrow">Часто спрашивают</span></div>
         <h2 id="faq-title" class="e3-title"><span data-i18n="ultra-faq-title-a">Коротко</span> <span class="accent" data-i18n="ultra-faq-title-b">о главном</span></h2>
       </div>
+      <div class="faq-search-wrap">
+        <svg class="faq-search-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input id="faqSearch" type="search" class="faq-search-input" autocomplete="off" placeholder="Поиск по вопросам..." data-i18n-placeholder="ultra-faq-search-placeholder" aria-label="FAQ search"/>
+        <button type="button" class="faq-search-clear" id="faqSearchClear" aria-label="Clear" hidden>×</button>
+      </div>
+      <div class="faq-empty" id="faqEmpty" hidden>
+        <span class="faq-empty-emoji">🔍</span>
+        <span data-i18n="ultra-faq-no-results">Ничего не найдено. Попробуй другой запрос или загляни в Discord — там быстро ответят.</span>
+      </div>
       <div class="faq-list">
         <div class="faq-item reveal" data-delay="1">
           <button class="faq-q" type="button" aria-expanded="false">
@@ -5557,13 +5998,22 @@ svg.ic-svg-login {
         <p class="e3-lead" data-i18n="ultra-social-lead">Discord и YouTube. Будь в курсе каждой новой фичи.</p>
       </div>
       <div class="e3-social">
-        <a class="social-btn" style="--sb-color:#5865F2; --sb-glow:rgba(88,101,242,0.45);" href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">
+        <a class="social-btn social-btn-discord" id="socialBtnDiscord" style="--sb-color:#5865F2; --sb-glow:rgba(88,101,242,0.45);" href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.369A19.791 19.791 0 0 0 16.558 3a14.3 14.3 0 0 0-.7 1.44 18.27 18.27 0 0 0-5.72 0A13.2 13.2 0 0 0 9.444 3 19.72 19.72 0 0 0 5.68 4.37C2.78 8.88 2 13.27 2.39 17.58a19.96 19.96 0 0 0 6.07 3.08c.49-.67.92-1.39 1.29-2.14-.71-.27-1.39-.6-2.03-1 .17-.12.34-.25.5-.39 3.94 1.82 8.19 1.82 12.08 0 .17.14.33.27.5.39-.64.4-1.32.73-2.03 1 .37.75.8 1.47 1.29 2.14a19.96 19.96 0 0 0 6.07-3.08c.46-5.02-.77-9.36-3.32-13.21ZM9.68 15.33c-1.18 0-2.15-1.09-2.15-2.43 0-1.34.95-2.43 2.15-2.43s2.17 1.09 2.15 2.43c0 1.34-.95 2.43-2.15 2.43Zm4.64 0c-1.18 0-2.15-1.09-2.15-2.43 0-1.34.95-2.43 2.15-2.43s2.17 1.09 2.15 2.43c0 1.34-.95 2.43-2.15 2.43Z"/></svg>
-          Discord
+          <span>Discord</span>
+          <span class="dc-live" id="discordLive" hidden>
+            <span class="dc-live-dot" aria-hidden="true"></span>
+            <span class="dc-live-num" id="discordOnline">—</span>
+            <span class="dc-live-label" data-i18n="discord-online">онлайн</span>
+          </span>
         </a>
         <a class="social-btn" style="--sb-color:#ff0033; --sb-glow:rgba(255,0,51,0.4);" href="https://www.youtube.com/@crownbit-u5o" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3.01 3.01 0 0 0-2.12-2.13C19.52 3.5 12 3.5 12 3.5s-7.52 0-9.38.57A3.01 3.01 0 0 0 .5 6.2C0 8.08 0 12 0 12s0 3.92.5 5.8a3.01 3.01 0 0 0 2.12 2.13c1.86.57 9.38.57 9.38.57s7.52 0 9.38-.57a3.01 3.01 0 0 0 2.12-2.13C24 15.92 24 12 24 12s0-3.92-.5-5.8ZM9.6 15.6V8.4l6.24 3.6-6.24 3.6Z"/></svg>
           YouTube
+        </a>
+        <a class="social-btn social-btn-sponsor" id="socialBtnSponsor" style="--sb-color:#f15f2c; --sb-glow:rgba(241,95,44,0.5);" href="https://boosty.to/illya37920_crownbit" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          <span data-i18n="sponsor-btn">Поддержать</span>
         </a>
       </div>
     </section>
@@ -5633,6 +6083,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Есть вопросы? Пишите нам: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Скачать Evades 3',
                 'follow-dev': 'Следить за разработкой',
+
+                'discord-online': 'онлайн',
+
+                'discord-members': 'участников',
                 'dev-badge': 'В разработке',
                 'dev-tooltip': 'Игра ещё в разработке',
                 'trust-site': 'Официальный сайт Evades 3',
@@ -5751,6 +6205,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Have questions? Write to us: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Download Evades 3',
                 'follow-dev': 'Follow development',
+
+                'discord-online': 'online',
+
+                'discord-members': 'members',
                 'dev-badge': 'In Development',
                 'dev-tooltip': 'The game is still in development',
                 'trust-site': 'Official Evades 3 website',
@@ -5869,6 +6327,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Є питання? Пишіть нам: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Завантажити Evades 3',
                 'follow-dev': 'Стежити за розробкою',
+
+                'discord-online': 'онлайн',
+
+                'discord-members': 'учасників',
                 'dev-badge': 'У розробці',
                 'dev-tooltip': 'Гра ще у розробці',
                 'trust-site': 'Офіційний сайт Evades 3',
@@ -5987,6 +6449,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Fragen? Schreib uns: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 herunterladen',
                 'follow-dev': 'Entwicklung verfolgen',
+
+                'discord-online': 'online',
+
+                'discord-members': 'Mitglieder',
                 'dev-badge': 'In Entwicklung',
                 'dev-tooltip': 'Das Spiel ist noch in Entwicklung',
                 'trust-site': 'Offizielle Evades 3-Website',
@@ -6105,6 +6571,10 @@ svg.ic-svg-login {
                 'footer-contact': '¿Tienes preguntas? Escríbenos: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Descargar Evades 3',
                 'follow-dev': 'Seguir el desarrollo',
+
+                'discord-online': 'en línea',
+
+                'discord-members': 'miembros',
                 'dev-badge': 'En Desarrollo',
                 'dev-tooltip': 'El juego aún está en desarrollo',
                 'trust-site': 'Sitio oficial de Evades 3',
@@ -6223,6 +6693,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Des questions ? Écrivez-nous : <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Télécharger Evades 3',
                 'follow-dev': 'Suivre le développement',
+
+                'discord-online': 'en ligne',
+
+                'discord-members': 'membres',
                 'dev-badge': 'En Développement',
                 'dev-tooltip': 'Le jeu est encore en développement',
                 'trust-site': 'Site officiel d\'Evades 3',
@@ -6341,6 +6815,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Hai domande? Scrivici: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Scarica Evades 3',
                 'follow-dev': 'Seguire lo sviluppo',
+
+                'discord-online': 'online',
+
+                'discord-members': 'membri',
                 'dev-badge': 'In Sviluppo',
                 'dev-tooltip': 'Il gioco è ancora in sviluppo',
                 'trust-site': 'Sito ufficiale di Evades 3',
@@ -6459,6 +6937,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Tem dúvidas? Escreva para nós: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Baixar Evades 3',
                 'follow-dev': 'Acompanhar o desenvolvimento',
+
+                'discord-online': 'online',
+
+                'discord-members': 'membros',
                 'dev-badge': 'Em Desenvolvimento',
                 'dev-tooltip': 'O jogo ainda está em desenvolvimento',
                 'trust-site': 'Site oficial do Evades 3',
@@ -6577,6 +7059,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Masz pytania? Napisz do nas: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Pobierz Evades 3',
                 'follow-dev': 'Śledzić rozwój',
+
+                'discord-online': 'online',
+
+                'discord-members': 'członków',
                 'dev-badge': 'W Rozwoju',
                 'dev-tooltip': 'Gra jest nadal w rozwoju',
                 'trust-site': 'Oficjalna strona Evades 3',
@@ -6695,6 +7181,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Sorunuz mu var? Bize yazın: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 İndir',
                 'follow-dev': 'Gelişimi takip et',
+
+                'discord-online': 'çevrimiçi',
+
+                'discord-members': 'üye',
                 'dev-badge': 'Geliştiriliyor',
                 'dev-tooltip': 'Oyun hâlâ geliştirme aşamasında',
                 'trust-site': 'Resmi Evades 3 sitesi',
@@ -6813,6 +7303,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Vragen? Schrijf ons: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Download Evades 3',
                 'follow-dev': 'Volg de ontwikkeling',
+
+                'discord-online': 'online',
+
+                'discord-members': 'leden',
                 'dev-badge': 'In ontwikkeling',
                 'dev-tooltip': 'De game is nog in ontwikkeling',
                 'trust-site': 'Officiële Evades 3-website',
@@ -6931,6 +7425,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Har du frågor? Skriv till oss: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Ladda ner Evades 3',
                 'follow-dev': 'Följ utvecklingen',
+
+                'discord-online': 'online',
+
+                'discord-members': 'medlemmar',
                 'dev-badge': 'Under utveckling',
                 'dev-tooltip': 'Spelet är fortfarande under utveckling',
                 'trust-site': 'Officiell Evades 3-webbplats',
@@ -7049,6 +7547,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Har du spørsmål? Skriv til oss: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Last ned Evades 3',
                 'follow-dev': 'Følg utviklingen',
+
+                'discord-online': 'pålogget',
+
+                'discord-members': 'medlemmer',
                 'dev-badge': 'Under utvikling',
                 'dev-tooltip': 'Spillet er fortsatt under utvikling',
                 'trust-site': 'Offisielt Evades 3-nettsted',
@@ -7167,6 +7669,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Onko kysyttävää? Kirjoita meille: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Lataa Evades 3',
                 'follow-dev': 'Seuraa kehitystä',
+
+                'discord-online': 'paikalla',
+
+                'discord-members': 'jäsentä',
                 'dev-badge': 'Kehitteillä',
                 'dev-tooltip': 'Peli on yhä kehitteillä',
                 'trust-site': 'Evades 3:n virallinen sivusto',
@@ -7285,6 +7791,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Har du spørgsmål? Skriv til os: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Download Evades 3',
                 'follow-dev': 'Følg udviklingen',
+
+                'discord-online': 'online',
+
+                'discord-members': 'medlemmer',
                 'dev-badge': 'Under udvikling',
                 'dev-tooltip': 'Spillet er stadig under udvikling',
                 'trust-site': 'Officiel Evades 3-hjemmeside',
@@ -7403,6 +7913,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Máte dotazy? Napište nám: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Stáhnout Evades 3',
                 'follow-dev': 'Sledovat vývoj',
+
+                'discord-online': 'online',
+
+                'discord-members': 'členů',
                 'dev-badge': 'Ve vývoji',
                 'dev-tooltip': 'Hra je stále ve vývoji',
                 'trust-site': 'Oficiální web Evades 3',
@@ -7521,6 +8035,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Ai întrebări? Scrie-ne: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Descarcă Evades 3',
                 'follow-dev': 'Urmărește dezvoltarea',
+
+                'discord-online': 'online',
+
+                'discord-members': 'membri',
                 'dev-badge': 'În dezvoltare',
                 'dev-tooltip': 'Jocul este încă în dezvoltare',
                 'trust-site': 'Site oficial Evades 3',
@@ -7639,6 +8157,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Kérdésed van? Írj nekünk: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 letöltése',
                 'follow-dev': 'Kövesd a fejlesztést',
+
+                'discord-online': 'online',
+
+                'discord-members': 'tag',
                 'dev-badge': 'Fejlesztés alatt',
                 'dev-tooltip': 'A játék még fejlesztés alatt áll',
                 'trust-site': 'Hivatalos Evades 3 weboldal',
@@ -7757,6 +8279,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Έχεις ερωτήσεις; Γράψε μας: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Λήψη Evades 3',
                 'follow-dev': 'Παρακολούθησε την ανάπτυξη',
+
+                'discord-online': 'online',
+
+                'discord-members': 'μέλη',
                 'dev-badge': 'Υπό ανάπτυξη',
                 'dev-tooltip': 'Το παιχνίδι είναι ακόμη υπό ανάπτυξη',
                 'trust-site': 'Επίσημος ιστότοπος Evades 3',
@@ -7875,6 +8401,10 @@ svg.ic-svg-login {
                 'footer-contact': 'ご質問はありますか？ こちらへ: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 をダウンロード',
                 'follow-dev': '開発を追う',
+
+                'discord-online': 'オンライン',
+
+                'discord-members': 'メンバー',
                 'dev-badge': '開発中',
                 'dev-tooltip': 'ゲームはまだ開発中です',
                 'trust-site': 'Evades 3 公式サイト',
@@ -7993,6 +8523,10 @@ svg.ic-svg-login {
                 'footer-contact': '有问题吗？请写信给我们：<a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': '下载 Evades 3',
                 'follow-dev': '关注开发进展',
+
+                'discord-online': '在线',
+
+                'discord-members': '成员',
                 'dev-badge': '开发中',
                 'dev-tooltip': '游戏仍在开发中',
                 'trust-site': 'Evades 3 官方网站',
@@ -8111,6 +8645,10 @@ svg.ic-svg-login {
                 'footer-contact': '문의가 있으신가요? 메일 주세요: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 다운로드',
                 'follow-dev': '개발 진행 상황 보기',
+
+                'discord-online': '온라인',
+
+                'discord-members': '멤버',
                 'dev-badge': '개발 중',
                 'dev-tooltip': '게임은 아직 개발 중입니다',
                 'trust-site': 'Evades 3 공식 웹사이트',
@@ -8229,6 +8767,10 @@ svg.ic-svg-login {
                 'footer-contact': 'هل لديك أسئلة؟ اكتب لنا: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'تحميل Evades 3',
                 'follow-dev': 'تابع التطوير',
+
+                'discord-online': 'متصل',
+
+                'discord-members': 'عضواً',
                 'dev-badge': 'قيد التطوير',
                 'dev-tooltip': 'اللعبة ما زالت قيد التطوير',
                 'trust-site': 'الموقع الرسمي لـ Evades 3',
@@ -8347,6 +8889,10 @@ svg.ic-svg-login {
                 'footer-contact': 'कोई सवाल है? हमें लिखें: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Evades 3 डाउनलोड करें',
                 'follow-dev': 'विकास पर नज़र रखें',
+
+                'discord-online': 'ऑनलाइन',
+
+                'discord-members': 'सदस्य',
                 'dev-badge': 'विकास में',
                 'dev-tooltip': 'गेम अभी भी विकास में है',
                 'trust-site': 'Evades 3 की आधिकारिक वेबसाइट',
@@ -8465,6 +9011,10 @@ svg.ic-svg-login {
                 'footer-contact': 'มีคำถามไหม? เขียนหาเราได้ที่: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'ดาวน์โหลด Evades 3',
                 'follow-dev': 'ติดตามการพัฒนา',
+
+                'discord-online': 'ออนไลน์',
+
+                'discord-members': 'สมาชิก',
                 'dev-badge': 'อยู่ระหว่างพัฒนา',
                 'dev-tooltip': 'เกมยังอยู่ระหว่างการพัฒนา',
                 'trust-site': 'เว็บไซต์ทางการของ Evades 3',
@@ -8583,6 +9133,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Có câu hỏi? Hãy viết cho chúng tôi: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Tải Evades 3',
                 'follow-dev': 'Theo dõi quá trình phát triển',
+
+                'discord-online': 'trực tuyến',
+
+                'discord-members': 'thành viên',
                 'dev-badge': 'Đang phát triển',
                 'dev-tooltip': 'Trò chơi vẫn đang được phát triển',
                 'trust-site': 'Trang web chính thức của Evades 3',
@@ -8701,6 +9255,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Punya pertanyaan? Tulis ke kami: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Unduh Evades 3',
                 'follow-dev': 'Ikuti pengembangan',
+
+                'discord-online': 'online',
+
+                'discord-members': 'anggota',
                 'dev-badge': 'Dalam Pengembangan',
                 'dev-tooltip': 'Game masih dalam pengembangan',
                 'trust-site': 'Situs resmi Evades 3',
@@ -8819,6 +9377,10 @@ svg.ic-svg-login {
                 'footer-contact': 'Ada soalan? Tulis kepada kami: <a href="mailto:support@evades3.com">support@evades3.com</a>',
                 'download-btn': 'Muat turun Evades 3',
                 'follow-dev': 'Ikuti pembangunan',
+
+                'discord-online': 'dalam talian',
+
+                'discord-members': 'ahli',
                 'dev-badge': 'Dalam pembangunan',
                 'dev-tooltip': 'Permainan ini masih dalam pembangunan',
                 'trust-site': 'Laman rasmi Evades 3',
@@ -9096,6 +9658,8 @@ svg.ic-svg-login {
       localStorage.setItem('selectedLanguage', lang);
       setSelectedLangUI(lang);
 
+      try { document.dispatchEvent(new CustomEvent('e3LangChanged', { detail: { lang } })); } catch(_) {}
+
       restartHeroSequence();
     }
 
@@ -9126,6 +9690,89 @@ svg.ic-svg-login {
       changeLanguage(savedLang);
 
       if (!prefersReducedMotion) createSparkles(50);
+
+      // FAQ search with highlight + empty state
+      (function bootFaqSearch(){
+        const input = document.getElementById('faqSearch');
+        const clear = document.getElementById('faqSearchClear');
+        const empty = document.getElementById('faqEmpty');
+        const list  = document.querySelector('.faq-list');
+        if (!input || !list) return;
+        const items = Array.from(list.querySelectorAll('.faq-item'));
+        // Cache original HTML once so we can re-render highlights cleanly
+        const originals = items.map(it => {
+          const q = it.querySelector('.faq-q > span[data-i18n]');
+          const a = it.querySelector('.faq-a-inner');
+          return { item: it, qEl: q, aEl: a };
+        });
+        function escapeRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
+        function escapeHtml(s){ return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+        function highlight(el, query){
+          if (!el) return;
+          const text = el.getAttribute('data-original-text') || el.textContent;
+          if (!el.getAttribute('data-original-text')) el.setAttribute('data-original-text', text);
+          if (!query){ el.textContent = text; return; }
+          const re = new RegExp(escapeRe(query), 'ig');
+          el.innerHTML = escapeHtml(text).replace(re, m => `<mark>${escapeHtml(m)}</mark>`);
+        }
+        function applyFilter(){
+          const q = input.value.trim();
+          clear.hidden = q.length === 0;
+          let visible = 0;
+          originals.forEach(({ item, qEl, aEl }) => {
+            const qText = (qEl && (qEl.getAttribute('data-original-text') || qEl.textContent)) || '';
+            const aText = (aEl && (aEl.getAttribute('data-original-text') || aEl.textContent)) || '';
+            if (qEl && !qEl.getAttribute('data-original-text')) qEl.setAttribute('data-original-text', qText);
+            if (aEl && !aEl.getAttribute('data-original-text')) aEl.setAttribute('data-original-text', aText);
+            const match = q.length === 0 || qText.toLowerCase().includes(q.toLowerCase()) || aText.toLowerCase().includes(q.toLowerCase());
+            item.classList.toggle('is-hidden', !match);
+            if (match){
+              visible++;
+              highlight(qEl, q);
+            } else {
+              if (qEl) qEl.textContent = qEl.getAttribute('data-original-text') || qEl.textContent;
+            }
+          });
+          empty.hidden = visible !== 0 || q.length === 0;
+        }
+        input.addEventListener('input', applyFilter);
+        clear.addEventListener('click', () => { input.value=''; input.focus(); applyFilter(); });
+        // When language changes, data-i18n updates the text — clear our cached originals so they re-cache
+        document.addEventListener('e3LangChanged', () => {
+          originals.forEach(({ qEl, aEl }) => {
+            if (qEl) qEl.removeAttribute('data-original-text');
+            if (aEl) aEl.removeAttribute('data-original-text');
+          });
+          applyFilter();
+        });
+      })();
+
+      // Live Discord member counter (no auth, public invite endpoint with CORS)
+      (function bootDiscordLive(){
+        const live = document.getElementById('discordLive');
+        const onlineEl = document.getElementById('discordOnline');
+        const btn = document.getElementById('socialBtnDiscord');
+        if (!live || !onlineEl || !btn) return;
+        const fmt = (n) => (typeof Intl !== 'undefined' ? new Intl.NumberFormat().format(n) : String(n));
+        async function refresh(){
+          try{
+            const r = await fetch('https://discord.com/api/v10/invites/kSVnmDRqDs?with_counts=true', { credentials: 'omit', cache: 'no-store' });
+            if (!r.ok) return;
+            const d = await r.json();
+            const online = d.approximate_presence_count;
+            const total  = d.approximate_member_count;
+            if (typeof online !== 'number' || typeof total !== 'number') return;
+            onlineEl.textContent = fmt(online);
+            const lang = (typeof currentLang !== 'undefined' ? currentLang : 'en');
+            const membersWord = (translations[lang] && translations[lang]['discord-members']) || 'members';
+            const onlineWord  = (translations[lang] && translations[lang]['discord-online'])  || 'online';
+            btn.title = `${fmt(total)} ${membersWord} · ${fmt(online)} ${onlineWord}`;
+            live.hidden = false;
+          }catch(_){ /* offline / blocked — keep pill hidden */ }
+        }
+        refresh();
+        setInterval(refresh, 60000);
+      })();
 
       const followDev = document.querySelector('.follow-dev-container');
       if (followDev) {
@@ -9686,6 +10333,265 @@ function tt(k, fb) {
     return (translations && translations[lang] && translations[lang][k]) || fb;
   } catch { return fb; }
 }
+// ===================================================
+// 2FA (TOTP) — enrollment, verification, login challenge
+// ===================================================
+let ev3TfaState = {
+  factorId: null,         // factor being enrolled OR existing factor on login
+  challengeId: null,
+  secret: null,
+  qrSvg: null,
+  pendingLogin: null      // when login needs 2FA challenge: { tempSession, user, nick }
+};
+
+async function supaAuth(path, opts = {}) {
+  // Authenticated request to /auth/v1/* using current access_token (or provided one)
+  const token = opts.token || (ev3Session && ev3Session.access_token) || (ev3TfaState.pendingLogin && ev3TfaState.pendingLogin.tempSession && ev3TfaState.pendingLogin.tempSession.access_token);
+  if (!token) return { ok: false, status: 0, data: null };
+  let r, data;
+  try {
+    r = await fetch(SUPA_URL + path, {
+      method: opts.method || 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPA_KEY,
+        'Authorization': 'Bearer ' + token
+      },
+      body: opts.body ? JSON.stringify(opts.body) : undefined
+    });
+  } catch { return { ok:false, status:0, data:null, networkError:true }; }
+  try { data = await r.json(); } catch { data = null; }
+  return { ok: r.ok, status: r.status, data: data || {} };
+}
+
+// Check whether a user has any verified TOTP factor.
+async function ev3List2faFactors(token) {
+  const r = await supaAuth('/auth/v1/factors', { token });
+  if (!r.ok || !r.data) return [];
+  // Supabase returns { all: [...], totp: [...] } — both may be present
+  const arr = Array.isArray(r.data.all) ? r.data.all : (Array.isArray(r.data.totp) ? r.data.totp : (Array.isArray(r.data) ? r.data : []));
+  return arr.filter(f => f && (f.factor_type === 'totp' || f.type === 'totp') && (f.status === 'verified' || !f.status));
+}
+
+async function refresh2faStatus() {
+  const status = document.getElementById('ps2faStatus');
+  const enableBtn = document.getElementById('ps2faEnableBtn');
+  const disableBtn = document.getElementById('ps2faDisableBtn');
+  if (!status || !ev3Session) return;
+  const factors = await ev3List2faFactors();
+  const isOn = factors.length > 0;
+  status.dataset.state = isOn ? 'on' : 'off';
+  const lblEl = status.querySelector('.ps-status-label');
+  if (lblEl) {
+    lblEl.setAttribute('data-i18n', isOn ? 'security-2fa-status-on' : 'security-2fa-status-off');
+    lblEl.textContent = (translations[currentLang] && translations[currentLang][isOn ? 'security-2fa-status-on' : 'security-2fa-status-off']) || (isOn ? 'Включено' : 'Выключено');
+  }
+  if (enableBtn)  enableBtn.hidden = isOn;
+  if (disableBtn) disableBtn.hidden = !isOn;
+  ev3TfaState.factorId = isOn ? (factors[0].id) : null;
+}
+
+async function open2faSetupModal() {
+  const overlay = document.getElementById('tfa2faSetupOverlay');
+  if (!overlay) return;
+  overlay.classList.add('show');
+  goto2faStep1Visual();
+  // Reset prior state
+  document.getElementById('tfaQrLoading').hidden = false;
+  document.getElementById('tfaQrImg').hidden = true;
+  document.getElementById('tfaSecretCode').textContent = '—';
+  document.getElementById('tfaCodeInput').value = '';
+  document.getElementById('tfaError').hidden = true;
+  // Enroll a new TOTP factor
+  const r = await supaAuth('/auth/v1/factors', {
+    method: 'POST',
+    body: { factor_type: 'totp', issuer: 'Evades 3', friendly_name: 'Authenticator' }
+  });
+  if (!r.ok || !r.data || !r.data.id || !r.data.totp) {
+    document.getElementById('tfaQrLoading').innerHTML = '<span style="color:#FFAE9B;font-weight:800;">' + (tt('tfa-enroll-failed','Не удалось запустить включение 2FA. Попробуй позже.')) + '</span>';
+    return;
+  }
+  ev3TfaState.factorId = r.data.id;
+  ev3TfaState.secret = r.data.totp.secret;
+  // QR is returned as SVG string (data URI works too)
+  const qrSvg = r.data.totp.qr_code;
+  const img = document.getElementById('tfaQrImg');
+  if (qrSvg && qrSvg.startsWith('<svg')) {
+    img.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(qrSvg);
+  } else if (qrSvg) {
+    img.src = qrSvg;
+  }
+  img.onload = () => { document.getElementById('tfaQrLoading').hidden = true; img.hidden = false; };
+  // Format secret with spaces every 4 chars for readability
+  const secret = (ev3TfaState.secret || '').replace(/(.{4})/g, '$1 ').trim();
+  document.getElementById('tfaSecretCode').textContent = secret;
+}
+function close2faSetupModal() {
+  const overlay = document.getElementById('tfa2faSetupOverlay');
+  if (overlay) overlay.classList.remove('show');
+}
+function close2faSetupOnBg(e) { if (e.target === e.currentTarget) close2faSetupModal(); }
+function goto2faStep1Visual() {
+  document.getElementById('tfaStep1').hidden = false;
+  document.getElementById('tfaStep2').hidden = true;
+  document.getElementById('tfaStep3').hidden = true;
+}
+function goto2faStep1() { goto2faStep1Visual(); }
+function goto2faStep2() {
+  document.getElementById('tfaStep1').hidden = true;
+  document.getElementById('tfaStep2').hidden = false;
+  document.getElementById('tfaStep3').hidden = true;
+  setTimeout(() => { const i = document.getElementById('tfaCodeInput'); if (i) i.focus(); }, 60);
+}
+function copy2faSecret() {
+  const code = (ev3TfaState.secret || '').toString();
+  if (!code) return;
+  try {
+    navigator.clipboard.writeText(code);
+    const btn = document.getElementById('tfaCopyBtn');
+    if (!btn) return;
+    btn.classList.add('is-copied');
+    btn.textContent = tt('tfa-copied','Скопировано!');
+    setTimeout(() => {
+      btn.classList.remove('is-copied');
+      btn.textContent = tt('tfa-copy','Копировать');
+    }, 1500);
+  } catch {}
+}
+async function verify2faEnroll() {
+  const input = document.getElementById('tfaCodeInput');
+  const errEl = document.getElementById('tfaError');
+  const btn = document.getElementById('tfaVerifyBtn');
+  const code = (input.value || '').replace(/\D+/g,'');
+  if (code.length !== 6) {
+    input.classList.add('is-error');
+    errEl.textContent = tt('tfa-err-bad-code','Введи 6 цифр');
+    errEl.hidden = false;
+    return;
+  }
+  if (!ev3TfaState.factorId) return;
+  btn.disabled = true; btn.textContent = tt('tfa-verifying','Проверка...');
+  // Need a challenge first
+  const ch = await supaAuth('/auth/v1/factors/' + ev3TfaState.factorId + '/challenge', { method: 'POST' });
+  if (!ch.ok || !ch.data || !ch.data.id) {
+    input.classList.add('is-error'); errEl.textContent = tt('tfa-err-server','Сервер не отвечает. Попробуй ещё раз.'); errEl.hidden = false;
+    btn.disabled = false; btn.textContent = tt('tfa-confirm','Подтвердить');
+    return;
+  }
+  const v = await supaAuth('/auth/v1/factors/' + ev3TfaState.factorId + '/verify', {
+    method: 'POST',
+    body: { challenge_id: ch.data.id, code }
+  });
+  if (!v.ok) {
+    input.classList.add('is-error');
+    errEl.textContent = tt('tfa-err-wrong-code','Неверный код. Попробуй ещё раз.');
+    errEl.hidden = false;
+    btn.disabled = false; btn.textContent = tt('tfa-confirm','Подтвердить');
+    return;
+  }
+  // Success — Supabase returns a session upgraded to AAL2
+  if (v.data && v.data.access_token) saveSession(v.data);
+  document.getElementById('tfaStep1').hidden = true;
+  document.getElementById('tfaStep2').hidden = true;
+  document.getElementById('tfaStep3').hidden = false;
+  setTimeout(refresh2faStatus, 200);
+}
+async function confirm2faDisable() {
+  if (!ev3TfaState.factorId) {
+    const factors = await ev3List2faFactors();
+    if (factors.length === 0) return;
+    ev3TfaState.factorId = factors[0].id;
+  }
+  if (!confirm(tt('tfa-disable-confirm','Отключить двухфакторную аутентификацию? Защита аккаунта будет снижена.'))) return;
+  await supaAuth('/auth/v1/factors/' + ev3TfaState.factorId, { method: 'DELETE' });
+  ev3TfaState.factorId = null;
+  ev3Toast(tt('tfa-disabled','2FA отключена'), '🛡️');
+  refresh2faStatus();
+}
+
+// Login challenge flow
+function show2faChallenge(pending) {
+  ev3TfaState.pendingLogin = pending;
+  const overlay = document.getElementById('tfa2faChallengeOverlay');
+  document.getElementById('tfaChallengeInput').value = '';
+  document.getElementById('tfaChallengeError').hidden = true;
+  if (overlay) overlay.classList.add('show');
+  setTimeout(() => { const i = document.getElementById('tfaChallengeInput'); if (i) i.focus(); }, 80);
+}
+function close2faChallenge() {
+  const overlay = document.getElementById('tfa2faChallengeOverlay');
+  if (overlay) overlay.classList.remove('show');
+}
+function close2faChallengeOnBg(e) { if (e.target === e.currentTarget) cancel2faChallenge(); }
+function cancel2faChallenge() {
+  // User dismissed the 2FA prompt — log out the half-authenticated session
+  ev3TfaState.pendingLogin = null;
+  clearSession();
+  showLoggedOut();
+  close2faChallenge();
+}
+async function submit2faChallenge() {
+  const input = document.getElementById('tfaChallengeInput');
+  const errEl = document.getElementById('tfaChallengeError');
+  const btn   = document.getElementById('tfaChallengeVerifyBtn');
+  const code = (input.value || '').replace(/\D+/g,'');
+  if (code.length !== 6) {
+    input.classList.add('is-error'); errEl.textContent = tt('tfa-err-bad-code','Введи 6 цифр'); errEl.hidden = false;
+    return;
+  }
+  const pending = ev3TfaState.pendingLogin;
+  if (!pending) return;
+  btn.disabled = true; btn.textContent = tt('tfa-verifying','Проверка...');
+  // Use the pending tempSession token to challenge + verify the user's TOTP factor
+  const factors = await ev3List2faFactors(pending.tempSession.access_token);
+  const factor = factors[0];
+  if (!factor) {
+    // Edge case: no factors found — finalize login as-is
+    saveSession(pending.tempSession); ev3User = pending.user;
+    ev3TfaState.pendingLogin = null;
+    close2faChallenge(); closeAuthModal(); showLoggedIn();
+    ev3Toast(tt('auth-ok-login-prefix','Добро пожаловать, ') + pending.nick + '! 🎮', '🎮');
+    return;
+  }
+  const ch = await supaAuth('/auth/v1/factors/' + factor.id + '/challenge', { method: 'POST', token: pending.tempSession.access_token });
+  if (!ch.ok || !ch.data || !ch.data.id) {
+    input.classList.add('is-error'); errEl.textContent = tt('tfa-err-server','Сервер не отвечает. Попробуй ещё раз.'); errEl.hidden = false;
+    btn.disabled = false; btn.textContent = tt('tfa-challenge-submit','Войти');
+    return;
+  }
+  const v = await supaAuth('/auth/v1/factors/' + factor.id + '/verify', {
+    method: 'POST',
+    token: pending.tempSession.access_token,
+    body: { challenge_id: ch.data.id, code }
+  });
+  if (!v.ok) {
+    input.classList.add('is-error'); errEl.textContent = tt('tfa-err-wrong-code','Неверный код. Попробуй ещё раз.'); errEl.hidden = false;
+    btn.disabled = false; btn.textContent = tt('tfa-challenge-submit','Войти');
+    return;
+  }
+  // Success — upgraded to AAL2
+  const finalSession = (v.data && v.data.access_token) ? v.data : pending.tempSession;
+  saveSession(finalSession); ev3User = pending.user;
+  ev3TfaState.pendingLogin = null;
+  close2faChallenge(); closeAuthModal(); showLoggedIn();
+  ev3Toast(tt('auth-ok-login-prefix','Добро пожаловать, ') + pending.nick + '! 🎮', '🎮');
+}
+
+// Auto-clear error state on input change
+document.addEventListener('input', (e) => {
+  if (e.target && (e.target.id === 'tfaCodeInput' || e.target.id === 'tfaChallengeInput')) {
+    e.target.classList.remove('is-error');
+    const errEl = e.target.id === 'tfaCodeInput' ? document.getElementById('tfaError') : document.getElementById('tfaChallengeError');
+    if (errEl) errEl.hidden = true;
+    // Auto-submit when 6 digits filled
+    const v = (e.target.value || '').replace(/\D+/g,'');
+    if (v.length === 6) {
+      if (e.target.id === 'tfaCodeInput') verify2faEnroll();
+      else submit2faChallenge();
+    }
+  }
+});
+
 async function doLogin() {
   const email = document.getElementById('li-email').value.trim();
   const pass = document.getElementById('li-pass').value;
@@ -9705,10 +10611,19 @@ async function doLogin() {
   const resp = await supaPost('/auth/v1/token?grant_type=password', { email, password: pass });
   // Real success = 2xx + access_token present
   if (resp.ok && resp.data && resp.data.access_token) {
-    saveSession(resp.data); ev3User = resp.data.user;
+    const tempSession = resp.data;
+    const user = resp.data.user;
+    const nick = (user && user.user_metadata && user.user_metadata.username) || email.split('@')[0];
+    // Check if user has a verified TOTP factor — if so, require 2FA challenge
+    const factors = await ev3List2faFactors(tempSession.access_token);
+    if (factors.length > 0) {
+      btn.disabled=false; btn.innerHTML='<span class="af-submit-shine"></span><span>'+tt('login-submit-btn','Войти →')+'</span>';
+      show2faChallenge({ tempSession, user, nick });
+      return;
+    }
+    saveSession(tempSession); ev3User = user;
     closeAuthModal();
     showLoggedIn();
-    const nick = (resp.data.user && resp.data.user.user_metadata && resp.data.user.user_metadata.username) || email.split('@')[0];
     ev3Toast(tt('auth-ok-login-prefix','Добро пожаловать, ') + nick + '! 🎮', '🎮');
   } else {
     const friendly = ev3AuthMsg(resp);
@@ -9827,7 +10742,7 @@ async function doForgotSend() {
 // ===================================================
 // PROFILE MODAL
 // ===================================================
-function openProfileModal() { document.getElementById('profileModalOverlay').classList.add('show'); }
+function openProfileModal() { document.getElementById('profileModalOverlay').classList.add('show'); try { refresh2faStatus(); } catch(_) {} }
 function closeProfileModal() { document.getElementById('profileModalOverlay').classList.remove('show'); }
 function closeProfileModalOnBg(e) { if(e.target===e.currentTarget) closeProfileModal(); }
 
@@ -10444,7 +11359,41 @@ verifySession();
         'ultra-social-title-a': 'Присоединяйся к',
         'ultra-social-title-b': 'арене',
         'ultra-social-lead': 'Discord и YouTube. Будь в курсе каждой новой фичи.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'Поиск по вопросам...',
+      'ultra-faq-no-results': 'Ничего не найдено. Попробуй другой запрос или загляни в Discord — там быстро ответят.',
+      'sponsor-btn': 'Поддержать',
+      'security-2fa-title': 'Двухфакторная аутентификация',
+      'security-2fa-sub': 'Дополнительная защита аккаунта через приложение-аутентификатор',
+      'security-2fa-status-off': 'Выключено',
+      'security-2fa-status-on': 'Включено',
+      'security-2fa-enable': 'Включить 2FA',
+      'security-2fa-disable': 'Отключить 2FA',
+      'tfa-setup-title': 'Включение 2FA',
+      'tfa-setup-step1': 'Отсканируй QR-код приложением-аутентификатором (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Загрузка...',
+      'tfa-secret-label': 'Или вручную:',
+      'tfa-copy': 'Копировать',
+      'tfa-copied': 'Скопировано!',
+      'tfa-next': 'Дальше',
+      'tfa-verify-title': 'Введи 6-значный код',
+      'tfa-verify-text': 'Открой приложение и впиши код, который оно показывает для «Evades 3».',
+      'tfa-back': 'Назад',
+      'tfa-confirm': 'Подтвердить',
+      'tfa-verifying': 'Проверка...',
+      'tfa-success-title': '2FA включена',
+      'tfa-success-text': 'Теперь при входе нужно будет вводить код из приложения. Сохрани секретный ключ в надёжном месте.',
+      'tfa-done': 'Готово',
+      'tfa-enroll-failed': 'Не удалось запустить включение 2FA. Попробуй позже.',
+      'tfa-err-bad-code': 'Введи 6 цифр',
+      'tfa-err-wrong-code': 'Неверный код. Попробуй ещё раз.',
+      'tfa-err-server': 'Сервер не отвечает. Попробуй ещё раз.',
+      'tfa-disable-confirm': 'Отключить двухфакторную аутентификацию? Защита аккаунта будет снижена.',
+      'tfa-disabled': '2FA отключена',
+      'tfa-challenge-title': 'Введи код 2FA',
+      'tfa-challenge-text': 'Открой приложение-аутентификатор и впиши 6-значный код для «Evades 3».',
+      'tfa-challenge-submit': 'Войти'
+    },
 
       en: {
         'ultra-scroll-hint': 'Scroll down',
@@ -10566,7 +11515,41 @@ verifySession();
         'ultra-social-title-a': 'Join the',
         'ultra-social-title-b': 'arena',
         'ultra-social-lead': 'Discord and YouTube. Stay on top of every new feature.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'Search the FAQ...',
+      'ultra-faq-no-results': 'Nothing found. Try a different query or ask in our Discord — fast answers.',
+      'sponsor-btn': 'Support us',
+      'security-2fa-title': 'Two-factor authentication',
+      'security-2fa-sub': 'Extra account protection via an authenticator app',
+      'security-2fa-status-off': 'Disabled',
+      'security-2fa-status-on': 'Enabled',
+      'security-2fa-enable': 'Enable 2FA',
+      'security-2fa-disable': 'Disable 2FA',
+      'tfa-setup-title': 'Enable 2FA',
+      'tfa-setup-step1': 'Scan the QR code with an authenticator app (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Loading...',
+      'tfa-secret-label': 'Or enter manually:',
+      'tfa-copy': 'Copy',
+      'tfa-copied': 'Copied!',
+      'tfa-next': 'Next',
+      'tfa-verify-title': 'Enter the 6-digit code',
+      'tfa-verify-text': 'Open the app and type the code it shows for "Evades 3".',
+      'tfa-back': 'Back',
+      'tfa-confirm': 'Confirm',
+      'tfa-verifying': 'Verifying...',
+      'tfa-success-title': '2FA enabled',
+      'tfa-success-text': 'You\'ll need a code from the app every time you sign in. Keep the secret key in a safe place.',
+      'tfa-done': 'Done',
+      'tfa-enroll-failed': 'Could not start 2FA setup. Try again later.',
+      'tfa-err-bad-code': 'Enter 6 digits',
+      'tfa-err-wrong-code': 'Wrong code. Try again.',
+      'tfa-err-server': 'Server is not responding. Try again.',
+      'tfa-disable-confirm': 'Disable two-factor authentication? Your account protection will be reduced.',
+      'tfa-disabled': '2FA disabled',
+      'tfa-challenge-title': 'Enter your 2FA code',
+      'tfa-challenge-text': 'Open your authenticator app and type the 6-digit code for "Evades 3".',
+      'tfa-challenge-submit': 'Sign in'
+    },
 
       uk: {
         'ultra-scroll-hint': 'Прокрути вниз',
@@ -10688,7 +11671,41 @@ verifySession();
         'ultra-social-title-a': 'Приєднуйся до',
         'ultra-social-title-b': 'арени',
         'ultra-social-lead': 'Discord і YouTube. Будь у курсі кожної нової фічі.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'Пошук по питаннях...',
+      'ultra-faq-no-results': 'Нічого не знайдено. Спробуй інший запит або заходь у Discord — там швидко відповідають.',
+      'sponsor-btn': 'Підтримати',
+      'security-2fa-title': 'Двофакторна автентифікація',
+      'security-2fa-sub': 'Додатковий захист акаунту через застосунок-автентифікатор',
+      'security-2fa-status-off': 'Вимкнено',
+      'security-2fa-status-on': 'Увімкнено',
+      'security-2fa-enable': 'Увімкнути 2FA',
+      'security-2fa-disable': 'Вимкнути 2FA',
+      'tfa-setup-title': 'Увімкнення 2FA',
+      'tfa-setup-step1': 'Відскануй QR-код застосунком-автентифікатором (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Завантаження...',
+      'tfa-secret-label': 'Або вручну:',
+      'tfa-copy': 'Копіювати',
+      'tfa-copied': 'Скопійовано!',
+      'tfa-next': 'Далі',
+      'tfa-verify-title': 'Введи 6-значний код',
+      'tfa-verify-text': 'Відкрий застосунок і введи код, який він показує для «Evades 3».',
+      'tfa-back': 'Назад',
+      'tfa-confirm': 'Підтвердити',
+      'tfa-verifying': 'Перевірка...',
+      'tfa-success-title': '2FA увімкнено',
+      'tfa-success-text': 'Тепер під час входу треба буде вводити код із застосунку. Збережи секретний ключ у надійному місці.',
+      'tfa-done': 'Готово',
+      'tfa-enroll-failed': 'Не вдалося запустити увімкнення 2FA. Спробуй пізніше.',
+      'tfa-err-bad-code': 'Введи 6 цифр',
+      'tfa-err-wrong-code': 'Невірний код. Спробуй ще раз.',
+      'tfa-err-server': 'Сервер не відповідає. Спробуй ще раз.',
+      'tfa-disable-confirm': 'Вимкнути двофакторну автентифікацію? Захист акаунту знизиться.',
+      'tfa-disabled': '2FA вимкнено',
+      'tfa-challenge-title': 'Введи код 2FA',
+      'tfa-challenge-text': 'Відкрий застосунок-автентифікатор і введи 6-значний код для «Evades 3».',
+      'tfa-challenge-submit': 'Увійти'
+    },
 
       de: {
         'ultra-scroll-hint': 'Nach unten scrollen',
@@ -10793,7 +11810,41 @@ verifySession();
         'ultra-social-eyebrow': 'Überall, wo du bist',
         'ultra-social-title-a': 'Tritt', 'ultra-social-title-b': 'der Arena bei',
         'ultra-social-lead': 'Discord und YouTube. Bleib bei jedem neuen Feature am Ball.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'FAQ durchsuchen...',
+      'ultra-faq-no-results': 'Nichts gefunden. Versuche eine andere Suche oder frage im Discord — dort gibt\'s schnelle Antworten.',
+      'sponsor-btn': 'Unterstützen',
+      'security-2fa-title': 'Zwei-Faktor-Authentifizierung',
+      'security-2fa-sub': 'Zusätzlicher Kontoschutz über eine Authenticator-App',
+      'security-2fa-status-off': 'Deaktiviert',
+      'security-2fa-status-on': 'Aktiv',
+      'security-2fa-enable': '2FA aktivieren',
+      'security-2fa-disable': '2FA deaktivieren',
+      'tfa-setup-title': '2FA aktivieren',
+      'tfa-setup-step1': 'Scanne den QR-Code mit einer Authenticator-App (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Lädt...',
+      'tfa-secret-label': 'Oder manuell:',
+      'tfa-copy': 'Kopieren',
+      'tfa-copied': 'Kopiert!',
+      'tfa-next': 'Weiter',
+      'tfa-verify-title': 'Gib den 6-stelligen Code ein',
+      'tfa-verify-text': 'Öffne die App und tippe den Code für „Evades 3" ein.',
+      'tfa-back': 'Zurück',
+      'tfa-confirm': 'Bestätigen',
+      'tfa-verifying': 'Prüfe...',
+      'tfa-success-title': '2FA aktiviert',
+      'tfa-success-text': 'Beim Anmelden brauchst du jetzt einen Code aus der App. Bewahre den geheimen Schlüssel sicher auf.',
+      'tfa-done': 'Fertig',
+      'tfa-enroll-failed': '2FA-Aktivierung fehlgeschlagen. Versuche es später erneut.',
+      'tfa-err-bad-code': 'Gib 6 Ziffern ein',
+      'tfa-err-wrong-code': 'Falscher Code. Versuche es erneut.',
+      'tfa-err-server': 'Server antwortet nicht. Versuche es erneut.',
+      'tfa-disable-confirm': 'Zwei-Faktor-Authentifizierung deaktivieren? Dein Kontoschutz wird verringert.',
+      'tfa-disabled': '2FA deaktiviert',
+      'tfa-challenge-title': 'Gib deinen 2FA-Code ein',
+      'tfa-challenge-text': 'Öffne die Authenticator-App und gib den 6-stelligen Code für „Evades 3" ein.',
+      'tfa-challenge-submit': 'Anmelden'
+    },
 
       es: {
         'ultra-scroll-hint': 'Desplázate hacia abajo',
@@ -10898,7 +11949,41 @@ verifySession();
         'ultra-social-eyebrow': 'Dondequiera que estés',
         'ultra-social-title-a': 'Únete', 'ultra-social-title-b': 'a la arena',
         'ultra-social-lead': 'Discord y YouTube. Mantente al día con cada nueva función.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'Buscar en las FAQ...',
+      'ultra-faq-no-results': 'No se encontró nada. Prueba otra búsqueda o pregunta en Discord — respondemos rápido.',
+      'sponsor-btn': 'Apóyanos',
+      'security-2fa-title': 'Autenticación en dos pasos',
+      'security-2fa-sub': 'Protección adicional con una app autenticadora',
+      'security-2fa-status-off': 'Desactivada',
+      'security-2fa-status-on': 'Activada',
+      'security-2fa-enable': 'Activar 2FA',
+      'security-2fa-disable': 'Desactivar 2FA',
+      'tfa-setup-title': 'Activar 2FA',
+      'tfa-setup-step1': 'Escanea el código QR con una app autenticadora (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Cargando...',
+      'tfa-secret-label': 'O manualmente:',
+      'tfa-copy': 'Copiar',
+      'tfa-copied': '¡Copiado!',
+      'tfa-next': 'Siguiente',
+      'tfa-verify-title': 'Introduce el código de 6 dígitos',
+      'tfa-verify-text': 'Abre la app y escribe el código que muestra para «Evades 3».',
+      'tfa-back': 'Atrás',
+      'tfa-confirm': 'Confirmar',
+      'tfa-verifying': 'Verificando...',
+      'tfa-success-title': '2FA activada',
+      'tfa-success-text': 'Ahora necesitarás un código de la app cada vez que inicies sesión. Guarda la clave secreta en un lugar seguro.',
+      'tfa-done': 'Listo',
+      'tfa-enroll-failed': 'No se pudo iniciar la activación 2FA. Inténtalo más tarde.',
+      'tfa-err-bad-code': 'Introduce 6 dígitos',
+      'tfa-err-wrong-code': 'Código incorrecto. Inténtalo de nuevo.',
+      'tfa-err-server': 'El servidor no responde. Inténtalo de nuevo.',
+      'tfa-disable-confirm': '¿Desactivar la autenticación en dos pasos? La protección de tu cuenta se reducirá.',
+      'tfa-disabled': '2FA desactivada',
+      'tfa-challenge-title': 'Introduce tu código 2FA',
+      'tfa-challenge-text': 'Abre tu app autenticadora y escribe el código de 6 dígitos para «Evades 3».',
+      'tfa-challenge-submit': 'Iniciar sesión'
+    },
 
       fr: {
         'ultra-scroll-hint': 'Faire défiler',
@@ -11003,7 +12088,41 @@ verifySession();
         'ultra-social-eyebrow': 'Partout où tu es',
         'ultra-social-title-a': 'Rejoins', 'ultra-social-title-b': 'l\u2019arène',
         'ultra-social-lead': 'Discord et YouTube. Sois au courant de chaque nouvelle fonctionnalité.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'Rechercher dans la FAQ...',
+      'ultra-faq-no-results': 'Aucun résultat. Essaie une autre recherche ou demande sur Discord — réponses rapides.',
+      'sponsor-btn': 'Soutenir',
+      'security-2fa-title': 'Authentification à deux facteurs',
+      'security-2fa-sub': 'Protection supplémentaire du compte via une appli d\'authentification',
+      'security-2fa-status-off': 'Désactivée',
+      'security-2fa-status-on': 'Activée',
+      'security-2fa-enable': 'Activer 2FA',
+      'security-2fa-disable': 'Désactiver 2FA',
+      'tfa-setup-title': 'Activer 2FA',
+      'tfa-setup-step1': 'Scanne le QR code avec une appli d\'authentification (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Chargement...',
+      'tfa-secret-label': 'Ou manuellement :',
+      'tfa-copy': 'Copier',
+      'tfa-copied': 'Copié !',
+      'tfa-next': 'Suivant',
+      'tfa-verify-title': 'Saisis le code à 6 chiffres',
+      'tfa-verify-text': 'Ouvre l\'appli et tape le code qu\'elle affiche pour « Evades 3 ».',
+      'tfa-back': 'Retour',
+      'tfa-confirm': 'Confirmer',
+      'tfa-verifying': 'Vérification...',
+      'tfa-success-title': '2FA activée',
+      'tfa-success-text': 'À chaque connexion, il faudra un code de l\'appli. Conserve la clé secrète en lieu sûr.',
+      'tfa-done': 'Terminé',
+      'tfa-enroll-failed': 'Impossible de lancer l\'activation 2FA. Réessaie plus tard.',
+      'tfa-err-bad-code': 'Saisis 6 chiffres',
+      'tfa-err-wrong-code': 'Code incorrect. Réessaie.',
+      'tfa-err-server': 'Le serveur ne répond pas. Réessaie.',
+      'tfa-disable-confirm': 'Désactiver l\'authentification à deux facteurs ? La protection du compte sera réduite.',
+      'tfa-disabled': '2FA désactivée',
+      'tfa-challenge-title': 'Saisis ton code 2FA',
+      'tfa-challenge-text': 'Ouvre ton appli d\'authentification et tape le code à 6 chiffres pour « Evades 3 ».',
+      'tfa-challenge-submit': 'Se connecter'
+    },
 
       it: {
         'ultra-scroll-hint': 'Scorri giù',
@@ -11108,7 +12227,41 @@ verifySession();
         'ultra-social-eyebrow': 'Ovunque tu sia',
         'ultra-social-title-a': 'Unisciti', 'ultra-social-title-b': 'all\u2019arena',
         'ultra-social-lead': 'Discord e YouTube. Resta aggiornato su ogni nuova funzionalità.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'Cerca nelle FAQ...',
+      'ultra-faq-no-results': 'Nessun risultato. Prova un\'altra ricerca o chiedi su Discord — rispondiamo veloci.',
+      'sponsor-btn': 'Sostieni',
+      'security-2fa-title': 'Autenticazione a due fattori',
+      'security-2fa-sub': 'Protezione extra dell\'account tramite un\'app autenticatrice',
+      'security-2fa-status-off': 'Disattivata',
+      'security-2fa-status-on': 'Attiva',
+      'security-2fa-enable': 'Attiva 2FA',
+      'security-2fa-disable': 'Disattiva 2FA',
+      'tfa-setup-title': 'Attiva 2FA',
+      'tfa-setup-step1': 'Scansiona il QR con un\'app autenticatrice (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Caricamento...',
+      'tfa-secret-label': 'Oppure manualmente:',
+      'tfa-copy': 'Copia',
+      'tfa-copied': 'Copiato!',
+      'tfa-next': 'Avanti',
+      'tfa-verify-title': 'Inserisci il codice a 6 cifre',
+      'tfa-verify-text': 'Apri l\'app e digita il codice mostrato per «Evades 3».',
+      'tfa-back': 'Indietro',
+      'tfa-confirm': 'Conferma',
+      'tfa-verifying': 'Verifica...',
+      'tfa-success-title': '2FA attiva',
+      'tfa-success-text': 'Ad ogni accesso servirà un codice dall\'app. Conserva la chiave segreta in un posto sicuro.',
+      'tfa-done': 'Fatto',
+      'tfa-enroll-failed': 'Impossibile avviare l\'attivazione 2FA. Riprova più tardi.',
+      'tfa-err-bad-code': 'Inserisci 6 cifre',
+      'tfa-err-wrong-code': 'Codice errato. Riprova.',
+      'tfa-err-server': 'Il server non risponde. Riprova.',
+      'tfa-disable-confirm': 'Disattivare l\'autenticazione a due fattori? La protezione dell\'account diminuirà.',
+      'tfa-disabled': '2FA disattivata',
+      'tfa-challenge-title': 'Inserisci il codice 2FA',
+      'tfa-challenge-text': 'Apri l\'app autenticatrice e digita il codice a 6 cifre per «Evades 3».',
+      'tfa-challenge-submit': 'Accedi'
+    },
 
       pt: {
         'ultra-scroll-hint': 'Role para baixo',
@@ -11213,7 +12366,41 @@ verifySession();
         'ultra-social-eyebrow': 'Em qualquer lugar',
         'ultra-social-title-a': 'Junte-se', 'ultra-social-title-b': 'à arena',
         'ultra-social-lead': 'Discord e YouTube. Fique por dentro de cada nova funcionalidade.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'Buscar nas FAQ...',
+      'ultra-faq-no-results': 'Nada encontrado. Tente outra busca ou pergunte no Discord — respondemos rápido.',
+      'sponsor-btn': 'Apoiar',
+      'security-2fa-title': 'Autenticação de dois fatores',
+      'security-2fa-sub': 'Proteção extra da conta através de um app autenticador',
+      'security-2fa-status-off': 'Desativada',
+      'security-2fa-status-on': 'Ativada',
+      'security-2fa-enable': 'Ativar 2FA',
+      'security-2fa-disable': 'Desativar 2FA',
+      'tfa-setup-title': 'Ativar 2FA',
+      'tfa-setup-step1': 'Escaneie o QR code com um app autenticador (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Carregando...',
+      'tfa-secret-label': 'Ou manualmente:',
+      'tfa-copy': 'Copiar',
+      'tfa-copied': 'Copiado!',
+      'tfa-next': 'Próximo',
+      'tfa-verify-title': 'Digite o código de 6 dígitos',
+      'tfa-verify-text': 'Abra o app e digite o código mostrado para "Evades 3".',
+      'tfa-back': 'Voltar',
+      'tfa-confirm': 'Confirmar',
+      'tfa-verifying': 'Verificando...',
+      'tfa-success-title': '2FA ativada',
+      'tfa-success-text': 'A cada login será necessário um código do app. Guarde a chave secreta em local seguro.',
+      'tfa-done': 'Pronto',
+      'tfa-enroll-failed': 'Não foi possível iniciar a ativação 2FA. Tente mais tarde.',
+      'tfa-err-bad-code': 'Digite 6 dígitos',
+      'tfa-err-wrong-code': 'Código incorreto. Tente novamente.',
+      'tfa-err-server': 'O servidor não responde. Tente novamente.',
+      'tfa-disable-confirm': 'Desativar a autenticação de dois fatores? A proteção da conta será reduzida.',
+      'tfa-disabled': '2FA desativada',
+      'tfa-challenge-title': 'Digite seu código 2FA',
+      'tfa-challenge-text': 'Abra seu app autenticador e digite o código de 6 dígitos para "Evades 3".',
+      'tfa-challenge-submit': 'Entrar'
+    },
 
       pl: {
         'ultra-scroll-hint': 'Przewiń w dół',
@@ -11318,7 +12505,41 @@ verifySession();
         'ultra-social-eyebrow': 'Gdziekolwiek jesteś',
         'ultra-social-title-a': 'Dołącz', 'ultra-social-title-b': 'do areny',
         'ultra-social-lead': 'Discord i YouTube. Bądź na bieżąco z każdą nową funkcją.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'Szukaj w FAQ...',
+      'ultra-faq-no-results': 'Nic nie znaleziono. Spróbuj innego zapytania lub zapytaj na Discord — szybko odpowiemy.',
+      'sponsor-btn': 'Wesprzyj',
+      'security-2fa-title': 'Uwierzytelnianie dwuskładnikowe',
+      'security-2fa-sub': 'Dodatkowa ochrona konta przez aplikację uwierzytelniającą',
+      'security-2fa-status-off': 'Wyłączone',
+      'security-2fa-status-on': 'Włączone',
+      'security-2fa-enable': 'Włącz 2FA',
+      'security-2fa-disable': 'Wyłącz 2FA',
+      'tfa-setup-title': 'Włącz 2FA',
+      'tfa-setup-step1': 'Zeskanuj kod QR aplikacją uwierzytelniającą (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Ładowanie...',
+      'tfa-secret-label': 'Lub ręcznie:',
+      'tfa-copy': 'Kopiuj',
+      'tfa-copied': 'Skopiowano!',
+      'tfa-next': 'Dalej',
+      'tfa-verify-title': 'Wpisz 6-cyfrowy kod',
+      'tfa-verify-text': 'Otwórz aplikację i wpisz kod wyświetlony dla „Evades 3".',
+      'tfa-back': 'Wstecz',
+      'tfa-confirm': 'Potwierdź',
+      'tfa-verifying': 'Sprawdzanie...',
+      'tfa-success-title': '2FA włączone',
+      'tfa-success-text': 'Przy każdym logowaniu trzeba będzie podać kod z aplikacji. Zachowaj klucz w bezpiecznym miejscu.',
+      'tfa-done': 'Gotowe',
+      'tfa-enroll-failed': 'Nie udało się rozpocząć włączania 2FA. Spróbuj później.',
+      'tfa-err-bad-code': 'Wpisz 6 cyfr',
+      'tfa-err-wrong-code': 'Błędny kod. Spróbuj ponownie.',
+      'tfa-err-server': 'Serwer nie odpowiada. Spróbuj ponownie.',
+      'tfa-disable-confirm': 'Wyłączyć uwierzytelnianie dwuskładnikowe? Ochrona konta zostanie obniżona.',
+      'tfa-disabled': '2FA wyłączone',
+      'tfa-challenge-title': 'Wpisz kod 2FA',
+      'tfa-challenge-text': 'Otwórz aplikację uwierzytelniającą i wpisz 6-cyfrowy kod dla „Evades 3".',
+      'tfa-challenge-submit': 'Zaloguj'
+    },
 
       tr: {
         'ultra-scroll-hint': 'Aşağı kaydır',
@@ -11423,7 +12644,41 @@ verifySession();
         'ultra-social-eyebrow': 'Her yerde',
         'ultra-social-title-a': 'Arenaya', 'ultra-social-title-b': 'katıl',
         'ultra-social-lead': 'Discord ve YouTube. Her yeni özellikten haberdar ol.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'SSS\'de ara...',
+      'ultra-faq-no-results': 'Sonuç bulunamadı. Farklı bir arama dene ya da Discord\'a sor — hızlı cevap.',
+      'sponsor-btn': 'Destekle',
+      'security-2fa-title': 'İki adımlı doğrulama',
+      'security-2fa-sub': 'Kimlik doğrulayıcı uygulamayla ek hesap koruması',
+      'security-2fa-status-off': 'Kapalı',
+      'security-2fa-status-on': 'Açık',
+      'security-2fa-enable': '2FA\'yı aç',
+      'security-2fa-disable': '2FA\'yı kapat',
+      'tfa-setup-title': '2FA\'yı aç',
+      'tfa-setup-step1': 'Bir kimlik doğrulayıcı uygulamayla (Google Authenticator, Authy, 1Password, Microsoft Authenticator) QR kodu tarat.',
+      'tfa-loading': 'Yükleniyor...',
+      'tfa-secret-label': 'Veya elle:',
+      'tfa-copy': 'Kopyala',
+      'tfa-copied': 'Kopyalandı!',
+      'tfa-next': 'İleri',
+      'tfa-verify-title': '6 haneli kodu gir',
+      'tfa-verify-text': 'Uygulamayı aç ve "Evades 3" için gösterilen kodu yaz.',
+      'tfa-back': 'Geri',
+      'tfa-confirm': 'Onayla',
+      'tfa-verifying': 'Doğrulanıyor...',
+      'tfa-success-title': '2FA açık',
+      'tfa-success-text': 'Artık her girişte uygulamadan bir kod gerekecek. Gizli anahtarı güvenli bir yerde sakla.',
+      'tfa-done': 'Tamam',
+      'tfa-enroll-failed': '2FA açma başlatılamadı. Daha sonra dene.',
+      'tfa-err-bad-code': '6 rakam gir',
+      'tfa-err-wrong-code': 'Yanlış kod. Tekrar dene.',
+      'tfa-err-server': 'Sunucu yanıt vermiyor. Tekrar dene.',
+      'tfa-disable-confirm': 'İki adımlı doğrulamayı kapat? Hesap koruman zayıflayacak.',
+      'tfa-disabled': '2FA kapatıldı',
+      'tfa-challenge-title': '2FA kodunu gir',
+      'tfa-challenge-text': 'Kimlik doğrulayıcı uygulamayı aç ve "Evades 3" için 6 haneli kodu yaz.',
+      'tfa-challenge-submit': 'Giriş yap'
+    },
 
       nl: {
         'ultra-scroll-hint': 'Scroll omlaag',
@@ -11528,7 +12783,41 @@ verifySession();
         'ultra-social-eyebrow': 'Overal waar je bent',
         'ultra-social-title-a': 'Doe mee', 'ultra-social-title-b': 'in de arena',
         'ultra-social-lead': 'Discord en YouTube. Blijf op de hoogte van elke nieuwe functie.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'Zoek in de FAQ...',
+      'ultra-faq-no-results': 'Niets gevonden. Probeer iets anders of vraag op Discord — snel antwoord.',
+      'sponsor-btn': 'Steunen',
+      'security-2fa-title': 'Tweestapsverificatie',
+      'security-2fa-sub': 'Extra accountbeveiliging via een authenticator-app',
+      'security-2fa-status-off': 'Uit',
+      'security-2fa-status-on': 'Aan',
+      'security-2fa-enable': '2FA aanzetten',
+      'security-2fa-disable': '2FA uitzetten',
+      'tfa-setup-title': '2FA aanzetten',
+      'tfa-setup-step1': 'Scan de QR-code met een authenticator-app (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Laden...',
+      'tfa-secret-label': 'Of handmatig:',
+      'tfa-copy': 'Kopiëren',
+      'tfa-copied': 'Gekopieerd!',
+      'tfa-next': 'Volgende',
+      'tfa-verify-title': 'Voer de 6-cijferige code in',
+      'tfa-verify-text': 'Open de app en typ de code die wordt getoond voor "Evades 3".',
+      'tfa-back': 'Terug',
+      'tfa-confirm': 'Bevestigen',
+      'tfa-verifying': 'Controleren...',
+      'tfa-success-title': '2FA aan',
+      'tfa-success-text': 'Bij elke login is nu een code uit de app nodig. Bewaar de geheime sleutel veilig.',
+      'tfa-done': 'Klaar',
+      'tfa-enroll-failed': '2FA-instelling kon niet worden gestart. Probeer later opnieuw.',
+      'tfa-err-bad-code': 'Voer 6 cijfers in',
+      'tfa-err-wrong-code': 'Verkeerde code. Probeer opnieuw.',
+      'tfa-err-server': 'Server reageert niet. Probeer opnieuw.',
+      'tfa-disable-confirm': 'Tweestapsverificatie uitzetten? De accountbeveiliging wordt verlaagd.',
+      'tfa-disabled': '2FA uit',
+      'tfa-challenge-title': 'Voer je 2FA-code in',
+      'tfa-challenge-text': 'Open je authenticator-app en typ de 6-cijferige code voor "Evades 3".',
+      'tfa-challenge-submit': 'Inloggen'
+    },
 
       sv: {
         'ultra-scroll-hint': 'Scrolla ner',
@@ -11633,7 +12922,41 @@ verifySession();
         'ultra-social-eyebrow': 'Var du än är',
         'ultra-social-title-a': 'Gå med', 'ultra-social-title-b': 'i arenan',
         'ultra-social-lead': 'Discord och YouTube. Håll dig uppdaterad om varje ny funktion.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'Sök i FAQ...',
+      'ultra-faq-no-results': 'Inget hittat. Prova en annan sökning eller fråga på Discord — snabba svar.',
+      'sponsor-btn': 'Stötta',
+      'security-2fa-title': 'Tvåfaktorsautentisering',
+      'security-2fa-sub': 'Extra kontoskydd via en autentiseringsapp',
+      'security-2fa-status-off': 'Av',
+      'security-2fa-status-on': 'På',
+      'security-2fa-enable': 'Aktivera 2FA',
+      'security-2fa-disable': 'Stäng av 2FA',
+      'tfa-setup-title': 'Aktivera 2FA',
+      'tfa-setup-step1': 'Skanna QR-koden med en autentiseringsapp (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Laddar...',
+      'tfa-secret-label': 'Eller manuellt:',
+      'tfa-copy': 'Kopiera',
+      'tfa-copied': 'Kopierat!',
+      'tfa-next': 'Nästa',
+      'tfa-verify-title': 'Ange 6-siffrig kod',
+      'tfa-verify-text': 'Öppna appen och skriv koden som visas för "Evades 3".',
+      'tfa-back': 'Tillbaka',
+      'tfa-confirm': 'Bekräfta',
+      'tfa-verifying': 'Verifierar...',
+      'tfa-success-title': '2FA aktiverat',
+      'tfa-success-text': 'Vid varje inloggning behövs nu en kod från appen. Förvara den hemliga nyckeln säkert.',
+      'tfa-done': 'Klar',
+      'tfa-enroll-failed': 'Det gick inte att starta 2FA-aktivering. Försök igen senare.',
+      'tfa-err-bad-code': 'Ange 6 siffror',
+      'tfa-err-wrong-code': 'Fel kod. Försök igen.',
+      'tfa-err-server': 'Servern svarar inte. Försök igen.',
+      'tfa-disable-confirm': 'Stänga av tvåfaktorsautentisering? Kontoskyddet sänks.',
+      'tfa-disabled': '2FA av',
+      'tfa-challenge-title': 'Ange din 2FA-kod',
+      'tfa-challenge-text': 'Öppna autentiseringsappen och skriv den 6-siffriga koden för "Evades 3".',
+      'tfa-challenge-submit': 'Logga in'
+    },
 
       no: {
         'ultra-scroll-hint': 'Rull ned',
@@ -11738,7 +13061,41 @@ verifySession();
         'ultra-social-eyebrow': 'Overalt der du er',
         'ultra-social-title-a': 'Bli med', 'ultra-social-title-b': 'i arenaen',
         'ultra-social-lead': 'Discord og YouTube. Hold deg oppdatert på hver ny funksjon.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'Søk i FAQ...',
+      'ultra-faq-no-results': 'Ingenting funnet. Prøv et annet søk eller spør på Discord — raske svar.',
+      'sponsor-btn': 'Støtt oss',
+      'security-2fa-title': 'Tofaktorautentisering',
+      'security-2fa-sub': 'Ekstra kontobeskyttelse via en autentiseringsapp',
+      'security-2fa-status-off': 'Av',
+      'security-2fa-status-on': 'På',
+      'security-2fa-enable': 'Aktiver 2FA',
+      'security-2fa-disable': 'Slå av 2FA',
+      'tfa-setup-title': 'Aktiver 2FA',
+      'tfa-setup-step1': 'Skann QR-koden med en autentiseringsapp (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Laster...',
+      'tfa-secret-label': 'Eller manuelt:',
+      'tfa-copy': 'Kopier',
+      'tfa-copied': 'Kopiert!',
+      'tfa-next': 'Neste',
+      'tfa-verify-title': 'Skriv inn 6-sifret kode',
+      'tfa-verify-text': 'Åpne appen og skriv inn koden den viser for "Evades 3".',
+      'tfa-back': 'Tilbake',
+      'tfa-confirm': 'Bekreft',
+      'tfa-verifying': 'Verifiserer...',
+      'tfa-success-title': '2FA aktivert',
+      'tfa-success-text': 'Ved hver innlogging trengs nå en kode fra appen. Oppbevar nøkkelen et trygt sted.',
+      'tfa-done': 'Ferdig',
+      'tfa-enroll-failed': 'Kunne ikke starte 2FA-aktivering. Prøv igjen senere.',
+      'tfa-err-bad-code': 'Skriv 6 sifre',
+      'tfa-err-wrong-code': 'Feil kode. Prøv igjen.',
+      'tfa-err-server': 'Serveren svarer ikke. Prøv igjen.',
+      'tfa-disable-confirm': 'Slå av tofaktorautentisering? Kontobeskyttelsen vil bli redusert.',
+      'tfa-disabled': '2FA av',
+      'tfa-challenge-title': 'Skriv inn 2FA-koden din',
+      'tfa-challenge-text': 'Åpne autentiseringsappen og skriv inn 6-sifret kode for "Evades 3".',
+      'tfa-challenge-submit': 'Logg inn'
+    },
 
       fi: {
         'ultra-scroll-hint': 'Vieritä alas',
@@ -11843,7 +13200,41 @@ verifySession();
         'ultra-social-eyebrow': 'Missä tahansa oletkin',
         'ultra-social-title-a': 'Liity', 'ultra-social-title-b': 'areenalle',
         'ultra-social-lead': 'Discord ja YouTube. Pysy ajan tasalla jokaisesta uudesta ominaisuudesta.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'Etsi UKK:sta...',
+      'ultra-faq-no-results': 'Ei tuloksia. Kokeile toista hakua tai kysy Discordista — vastaamme nopeasti.',
+      'sponsor-btn': 'Tue meitä',
+      'security-2fa-title': 'Kaksivaiheinen tunnistus',
+      'security-2fa-sub': 'Lisäsuoja tilille todennussovelluksen avulla',
+      'security-2fa-status-off': 'Pois',
+      'security-2fa-status-on': 'Päällä',
+      'security-2fa-enable': 'Ota 2FA käyttöön',
+      'security-2fa-disable': 'Poista 2FA',
+      'tfa-setup-title': 'Ota 2FA käyttöön',
+      'tfa-setup-step1': 'Skannaa QR-koodi todennussovelluksella (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Ladataan...',
+      'tfa-secret-label': 'Tai manuaalisesti:',
+      'tfa-copy': 'Kopioi',
+      'tfa-copied': 'Kopioitu!',
+      'tfa-next': 'Seuraava',
+      'tfa-verify-title': 'Anna 6-numeroinen koodi',
+      'tfa-verify-text': 'Avaa sovellus ja kirjoita "Evades 3":lle näkyvä koodi.',
+      'tfa-back': 'Takaisin',
+      'tfa-confirm': 'Vahvista',
+      'tfa-verifying': 'Tarkistetaan...',
+      'tfa-success-title': '2FA käytössä',
+      'tfa-success-text': 'Jokaisella kirjautumisella tarvitaan nyt sovelluksen koodi. Säilytä salainen avain turvassa.',
+      'tfa-done': 'Valmis',
+      'tfa-enroll-failed': '2FA:n käyttöönottoa ei voitu aloittaa. Yritä myöhemmin.',
+      'tfa-err-bad-code': 'Anna 6 numeroa',
+      'tfa-err-wrong-code': 'Väärä koodi. Yritä uudelleen.',
+      'tfa-err-server': 'Palvelin ei vastaa. Yritä uudelleen.',
+      'tfa-disable-confirm': 'Poistetaanko kaksivaiheinen tunnistus? Tilin suoja heikkenee.',
+      'tfa-disabled': '2FA pois käytöstä',
+      'tfa-challenge-title': 'Anna 2FA-koodisi',
+      'tfa-challenge-text': 'Avaa todennussovellus ja kirjoita 6-numeroinen koodi "Evades 3":lle.',
+      'tfa-challenge-submit': 'Kirjaudu'
+    },
 
       da: {
         'ultra-scroll-hint': 'Rul ned',
@@ -11948,7 +13339,41 @@ verifySession();
         'ultra-social-eyebrow': 'Alle de steder du er',
         'ultra-social-title-a': 'Deltag', 'ultra-social-title-b': 'i arenaen',
         'ultra-social-lead': 'Discord og YouTube. Hold dig opdateret om hver ny funktion.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'Søg i FAQ...',
+      'ultra-faq-no-results': 'Intet fundet. Prøv en anden søgning eller spørg på Discord — hurtige svar.',
+      'sponsor-btn': 'Støt os',
+      'security-2fa-title': 'Tofaktorgodkendelse',
+      'security-2fa-sub': 'Ekstra kontobeskyttelse via en autentificeringsapp',
+      'security-2fa-status-off': 'Slået fra',
+      'security-2fa-status-on': 'Slået til',
+      'security-2fa-enable': 'Aktivér 2FA',
+      'security-2fa-disable': 'Deaktivér 2FA',
+      'tfa-setup-title': 'Aktivér 2FA',
+      'tfa-setup-step1': 'Scan QR-koden med en autentificeringsapp (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Indlæser...',
+      'tfa-secret-label': 'Eller manuelt:',
+      'tfa-copy': 'Kopiér',
+      'tfa-copied': 'Kopieret!',
+      'tfa-next': 'Næste',
+      'tfa-verify-title': 'Indtast 6-cifret kode',
+      'tfa-verify-text': 'Åbn appen og skriv koden, den viser for "Evades 3".',
+      'tfa-back': 'Tilbage',
+      'tfa-confirm': 'Bekræft',
+      'tfa-verifying': 'Verificerer...',
+      'tfa-success-title': '2FA aktiveret',
+      'tfa-success-text': 'Ved hvert log ind skal du nu bruge en kode fra appen. Opbevar nøglen sikkert.',
+      'tfa-done': 'Færdig',
+      'tfa-enroll-failed': 'Kunne ikke starte 2FA-aktivering. Prøv igen senere.',
+      'tfa-err-bad-code': 'Indtast 6 cifre',
+      'tfa-err-wrong-code': 'Forkert kode. Prøv igen.',
+      'tfa-err-server': 'Serveren svarer ikke. Prøv igen.',
+      'tfa-disable-confirm': 'Deaktivér tofaktorgodkendelse? Kontobeskyttelsen reduceres.',
+      'tfa-disabled': '2FA deaktiveret',
+      'tfa-challenge-title': 'Indtast din 2FA-kode',
+      'tfa-challenge-text': 'Åbn din autentificeringsapp og skriv den 6-cifrede kode for "Evades 3".',
+      'tfa-challenge-submit': 'Log ind'
+    },
 
       cs: {
         'ultra-scroll-hint': 'Rolujte dolů',
@@ -12053,7 +13478,41 @@ verifySession();
         'ultra-social-eyebrow': 'Všude, kde jsi',
         'ultra-social-title-a': 'Přidej se', 'ultra-social-title-b': 'do arény',
         'ultra-social-lead': 'Discord a YouTube. Buď v obraze u každé nové funkce.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'Hledat v FAQ...',
+      'ultra-faq-no-results': 'Nic nenalezeno. Zkus jiný dotaz nebo se zeptej na Discordu — rychlé odpovědi.',
+      'sponsor-btn': 'Podpořit',
+      'security-2fa-title': 'Dvoufaktorové ověření',
+      'security-2fa-sub': 'Další ochrana účtu pomocí autentizační aplikace',
+      'security-2fa-status-off': 'Vypnuto',
+      'security-2fa-status-on': 'Zapnuto',
+      'security-2fa-enable': 'Zapnout 2FA',
+      'security-2fa-disable': 'Vypnout 2FA',
+      'tfa-setup-title': 'Zapnout 2FA',
+      'tfa-setup-step1': 'Naskenuj QR kód autentizační aplikací (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Načítání...',
+      'tfa-secret-label': 'Nebo ručně:',
+      'tfa-copy': 'Kopírovat',
+      'tfa-copied': 'Zkopírováno!',
+      'tfa-next': 'Dále',
+      'tfa-verify-title': 'Zadej 6místný kód',
+      'tfa-verify-text': 'Otevři aplikaci a napiš kód, který zobrazuje pro „Evades 3".',
+      'tfa-back': 'Zpět',
+      'tfa-confirm': 'Potvrdit',
+      'tfa-verifying': 'Ověřuji...',
+      'tfa-success-title': '2FA zapnuto',
+      'tfa-success-text': 'Při každém přihlášení bude potřeba kód z aplikace. Uchovej tajný klíč na bezpečném místě.',
+      'tfa-done': 'Hotovo',
+      'tfa-enroll-failed': 'Nepodařilo se spustit zapnutí 2FA. Zkus to později.',
+      'tfa-err-bad-code': 'Zadej 6 číslic',
+      'tfa-err-wrong-code': 'Špatný kód. Zkus to znovu.',
+      'tfa-err-server': 'Server nereaguje. Zkus to znovu.',
+      'tfa-disable-confirm': 'Vypnout dvoufaktorové ověření? Ochrana účtu bude snížena.',
+      'tfa-disabled': '2FA vypnuto',
+      'tfa-challenge-title': 'Zadej kód 2FA',
+      'tfa-challenge-text': 'Otevři autentizační aplikaci a napiš 6místný kód pro „Evades 3".',
+      'tfa-challenge-submit': 'Přihlásit'
+    },
 
       ro: {
         'ultra-scroll-hint': 'Derulează în jos',
@@ -12158,7 +13617,41 @@ verifySession();
         'ultra-social-eyebrow': 'Oriunde ai fi',
         'ultra-social-title-a': 'Alătură-te', 'ultra-social-title-b': 'arenei',
         'ultra-social-lead': 'Discord și YouTube. Fii la curent cu fiecare funcție nouă.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'Caută în FAQ...',
+      'ultra-faq-no-results': 'Nimic găsit. Încearcă altă căutare sau întreabă pe Discord — răspunsuri rapide.',
+      'sponsor-btn': 'Susține',
+      'security-2fa-title': 'Autentificare în doi pași',
+      'security-2fa-sub': 'Protecție suplimentară a contului prin aplicație de autentificare',
+      'security-2fa-status-off': 'Dezactivată',
+      'security-2fa-status-on': 'Activată',
+      'security-2fa-enable': 'Activează 2FA',
+      'security-2fa-disable': 'Dezactivează 2FA',
+      'tfa-setup-title': 'Activează 2FA',
+      'tfa-setup-step1': 'Scanează codul QR cu o aplicație de autentificare (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Se încarcă...',
+      'tfa-secret-label': 'Sau manual:',
+      'tfa-copy': 'Copiază',
+      'tfa-copied': 'Copiat!',
+      'tfa-next': 'Înainte',
+      'tfa-verify-title': 'Introdu codul din 6 cifre',
+      'tfa-verify-text': 'Deschide aplicația și scrie codul afișat pentru „Evades 3".',
+      'tfa-back': 'Înapoi',
+      'tfa-confirm': 'Confirmă',
+      'tfa-verifying': 'Verifică...',
+      'tfa-success-title': '2FA activată',
+      'tfa-success-text': 'La fiecare conectare va fi nevoie de codul din aplicație. Păstrează cheia secretă într-un loc sigur.',
+      'tfa-done': 'Gata',
+      'tfa-enroll-failed': 'Activarea 2FA nu a putut porni. Încearcă mai târziu.',
+      'tfa-err-bad-code': 'Introdu 6 cifre',
+      'tfa-err-wrong-code': 'Cod greșit. Încearcă din nou.',
+      'tfa-err-server': 'Serverul nu răspunde. Încearcă din nou.',
+      'tfa-disable-confirm': 'Dezactivezi autentificarea în doi pași? Protecția contului va fi redusă.',
+      'tfa-disabled': '2FA dezactivată',
+      'tfa-challenge-title': 'Introdu codul 2FA',
+      'tfa-challenge-text': 'Deschide aplicația de autentificare și scrie codul din 6 cifre pentru „Evades 3".',
+      'tfa-challenge-submit': 'Conectare'
+    },
 
       hu: {
         'ultra-scroll-hint': 'Görgess lejjebb',
@@ -12263,7 +13756,41 @@ verifySession();
         'ultra-social-eyebrow': 'Bárhol is vagy',
         'ultra-social-title-a': 'Csatlakozz', 'ultra-social-title-b': 'az arénához',
         'ultra-social-lead': 'Discord és YouTube. Értesülj minden új funkcióról.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'Keresés a GYIK-ben...',
+      'ultra-faq-no-results': 'Nincs találat. Próbálj más keresést vagy kérdezz a Discordon — gyors válasz.',
+      'sponsor-btn': 'Támogatás',
+      'security-2fa-title': 'Kétlépcsős hitelesítés',
+      'security-2fa-sub': 'További fiókvédelem hitelesítő alkalmazással',
+      'security-2fa-status-off': 'Ki',
+      'security-2fa-status-on': 'Be',
+      'security-2fa-enable': '2FA bekapcsolása',
+      'security-2fa-disable': '2FA kikapcsolása',
+      'tfa-setup-title': '2FA bekapcsolása',
+      'tfa-setup-step1': 'Olvasd be a QR-kódot egy hitelesítő alkalmazással (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Betöltés...',
+      'tfa-secret-label': 'Vagy kézzel:',
+      'tfa-copy': 'Másolás',
+      'tfa-copied': 'Másolva!',
+      'tfa-next': 'Tovább',
+      'tfa-verify-title': 'Add meg a 6 jegyű kódot',
+      'tfa-verify-text': 'Nyisd meg az alkalmazást és írd be a kódot az „Evades 3"-hoz.',
+      'tfa-back': 'Vissza',
+      'tfa-confirm': 'Megerősít',
+      'tfa-verifying': 'Ellenőrzés...',
+      'tfa-success-title': '2FA bekapcsolva',
+      'tfa-success-text': 'Mostantól minden bejelentkezésnél kell az alkalmazás kódja. Tartsd biztos helyen a titkos kulcsot.',
+      'tfa-done': 'Kész',
+      'tfa-enroll-failed': 'A 2FA bekapcsolása nem sikerült. Próbáld később.',
+      'tfa-err-bad-code': 'Adj meg 6 számjegyet',
+      'tfa-err-wrong-code': 'Rossz kód. Próbáld újra.',
+      'tfa-err-server': 'A szerver nem válaszol. Próbáld újra.',
+      'tfa-disable-confirm': 'Kikapcsolod a kétlépcsős hitelesítést? A fiókvédelem csökken.',
+      'tfa-disabled': '2FA kikapcsolva',
+      'tfa-challenge-title': 'Add meg a 2FA kódot',
+      'tfa-challenge-text': 'Nyisd meg a hitelesítő alkalmazást és írd be a 6 jegyű kódot az „Evades 3"-hoz.',
+      'tfa-challenge-submit': 'Belépés'
+    },
 
       el: {
         'ultra-scroll-hint': 'Κύλισε κάτω',
@@ -12368,7 +13895,41 @@ verifySession();
         'ultra-social-eyebrow': 'Όπου κι αν είσαι',
         'ultra-social-title-a': 'Μπες', 'ultra-social-title-b': 'στην αρένα',
         'ultra-social-lead': 'Discord και YouTube. Μείνε ενημερωμένος για κάθε νέο χαρακτηριστικό.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'Αναζήτηση στις Συχνές...',
+      'ultra-faq-no-results': 'Δεν βρέθηκε τίποτα. Δοκίμασε άλλη αναζήτηση ή ρώτα στο Discord — γρήγορες απαντήσεις.',
+      'sponsor-btn': 'Στήριξε',
+      'security-2fa-title': 'Έλεγχος ταυτότητας δύο παραγόντων',
+      'security-2fa-sub': 'Επιπλέον προστασία λογαριασμού μέσω εφαρμογής αυθεντικοποίησης',
+      'security-2fa-status-off': 'Ανενεργό',
+      'security-2fa-status-on': 'Ενεργό',
+      'security-2fa-enable': 'Ενεργοποίηση 2FA',
+      'security-2fa-disable': 'Απενεργοποίηση 2FA',
+      'tfa-setup-title': 'Ενεργοποίηση 2FA',
+      'tfa-setup-step1': 'Σάρωσε τον κωδικό QR με μια εφαρμογή αυθεντικοποίησης (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Φόρτωση...',
+      'tfa-secret-label': 'Ή χειροκίνητα:',
+      'tfa-copy': 'Αντιγραφή',
+      'tfa-copied': 'Αντιγράφηκε!',
+      'tfa-next': 'Επόμενο',
+      'tfa-verify-title': 'Εισάγαγε τον 6ψήφιο κωδικό',
+      'tfa-verify-text': 'Άνοιξε την εφαρμογή και πληκτρολόγησε τον κωδικό για το «Evades 3».',
+      'tfa-back': 'Πίσω',
+      'tfa-confirm': 'Επιβεβαίωση',
+      'tfa-verifying': 'Επαλήθευση...',
+      'tfa-success-title': '2FA ενεργό',
+      'tfa-success-text': 'Σε κάθε σύνδεση θα χρειάζεται κωδικός από την εφαρμογή. Φύλαξε το μυστικό κλειδί ασφαλώς.',
+      'tfa-done': 'Έτοιμο',
+      'tfa-enroll-failed': 'Δεν ήταν δυνατή η ενεργοποίηση του 2FA. Δοκίμασε αργότερα.',
+      'tfa-err-bad-code': 'Εισάγαγε 6 ψηφία',
+      'tfa-err-wrong-code': 'Λάθος κωδικός. Ξαναπροσπάθησε.',
+      'tfa-err-server': 'Ο διακομιστής δεν αποκρίνεται. Ξαναπροσπάθησε.',
+      'tfa-disable-confirm': 'Απενεργοποίηση δύο παραγόντων; Η προστασία του λογαριασμού θα μειωθεί.',
+      'tfa-disabled': '2FA απενεργοποιήθηκε',
+      'tfa-challenge-title': 'Εισάγαγε τον κωδικό 2FA',
+      'tfa-challenge-text': 'Άνοιξε την εφαρμογή αυθεντικοποίησης και πληκτρολόγησε τον 6ψήφιο κωδικό για το «Evades 3».',
+      'tfa-challenge-submit': 'Σύνδεση'
+    },
 
       ja: {
         'ultra-scroll-hint': '下にスクロール',
@@ -12473,7 +14034,41 @@ verifySession();
         'ultra-social-eyebrow': 'どこにいても',
         'ultra-social-title-a': 'アリーナに', 'ultra-social-title-b': '参加しよう',
         'ultra-social-lead': 'DiscordとYouTube。新機能すべてを追いかけよう。'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'FAQを検索...',
+      'ultra-faq-no-results': '見つかりませんでした。別のキーワードを試すか、Discordで質問してください。すぐに答えます。',
+      'sponsor-btn': '支援する',
+      'security-2fa-title': '二要素認証',
+      'security-2fa-sub': '認証アプリによる追加のアカウント保護',
+      'security-2fa-status-off': '無効',
+      'security-2fa-status-on': '有効',
+      'security-2fa-enable': '2FAを有効にする',
+      'security-2fa-disable': '2FAを無効にする',
+      'tfa-setup-title': '2FAを有効化',
+      'tfa-setup-step1': '認証アプリ(Google Authenticator、Authy、1Password、Microsoft Authenticator)でQRコードをスキャンしてください。',
+      'tfa-loading': '読み込み中...',
+      'tfa-secret-label': 'または手動で:',
+      'tfa-copy': 'コピー',
+      'tfa-copied': 'コピーしました!',
+      'tfa-next': '次へ',
+      'tfa-verify-title': '6桁のコードを入力',
+      'tfa-verify-text': 'アプリを開いて「Evades 3」のコードを入力してください。',
+      'tfa-back': '戻る',
+      'tfa-confirm': '確認',
+      'tfa-verifying': '検証中...',
+      'tfa-success-title': '2FA有効',
+      'tfa-success-text': '今後ログイン時にアプリのコードが必要です。秘密キーは安全な場所に保管してください。',
+      'tfa-done': '完了',
+      'tfa-enroll-failed': '2FAの有効化を開始できませんでした。後で試してください。',
+      'tfa-err-bad-code': '6桁の数字を入力',
+      'tfa-err-wrong-code': 'コードが違います。もう一度。',
+      'tfa-err-server': 'サーバーが応答しません。もう一度試してください。',
+      'tfa-disable-confirm': '二要素認証を無効にしますか?アカウントの保護が弱くなります。',
+      'tfa-disabled': '2FAを無効にしました',
+      'tfa-challenge-title': '2FAコードを入力',
+      'tfa-challenge-text': '認証アプリを開いて「Evades 3」の6桁コードを入力してください。',
+      'tfa-challenge-submit': 'ログイン'
+    },
 
       zh: {
         'ultra-scroll-hint': '向下滚动',
@@ -12578,7 +14173,41 @@ verifySession();
         'ultra-social-eyebrow': '随时随地',
         'ultra-social-title-a': '加入', 'ultra-social-title-b': '竞技场',
         'ultra-social-lead': 'Discord 和 YouTube。关注每一项新功能。'
-      },
+      ,
+      'ultra-faq-search-placeholder': '搜索常见问题...',
+      'ultra-faq-no-results': '未找到结果。试试其他搜索或在Discord提问 — 我们会快速回复。',
+      'sponsor-btn': '支持我们',
+      'security-2fa-title': '两步验证',
+      'security-2fa-sub': '通过身份验证器应用为账户提供额外保护',
+      'security-2fa-status-off': '已关闭',
+      'security-2fa-status-on': '已开启',
+      'security-2fa-enable': '开启两步验证',
+      'security-2fa-disable': '关闭两步验证',
+      'tfa-setup-title': '开启两步验证',
+      'tfa-setup-step1': '使用身份验证器应用(Google Authenticator、Authy、1Password、Microsoft Authenticator)扫描二维码。',
+      'tfa-loading': '加载中...',
+      'tfa-secret-label': '或手动输入:',
+      'tfa-copy': '复制',
+      'tfa-copied': '已复制!',
+      'tfa-next': '下一步',
+      'tfa-verify-title': '输入6位验证码',
+      'tfa-verify-text': '打开应用,输入它为"Evades 3"显示的代码。',
+      'tfa-back': '返回',
+      'tfa-confirm': '确认',
+      'tfa-verifying': '验证中...',
+      'tfa-success-title': '两步验证已开启',
+      'tfa-success-text': '每次登录都需要从应用获取代码。请将密钥保管在安全的地方。',
+      'tfa-done': '完成',
+      'tfa-enroll-failed': '无法开始开启两步验证。请稍后再试。',
+      'tfa-err-bad-code': '请输入6位数字',
+      'tfa-err-wrong-code': '代码错误。请重试。',
+      'tfa-err-server': '服务器无响应。请重试。',
+      'tfa-disable-confirm': '要关闭两步验证吗?账户保护将降低。',
+      'tfa-disabled': '两步验证已关闭',
+      'tfa-challenge-title': '输入两步验证码',
+      'tfa-challenge-text': '打开身份验证器应用,输入"Evades 3"的6位代码。',
+      'tfa-challenge-submit': '登录'
+    },
 
       ko: {
         'ultra-scroll-hint': '아래로 스크롤',
@@ -12683,7 +14312,41 @@ verifySession();
         'ultra-social-eyebrow': '어디에 있든',
         'ultra-social-title-a': '아레나에', 'ultra-social-title-b': '참여하기',
         'ultra-social-lead': 'Discord와 YouTube. 새로운 기능 소식을 놓치지 마세요.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'FAQ 검색...',
+      'ultra-faq-no-results': '결과 없음. 다른 검색어를 시도하거나 Discord에서 질문하세요 — 빠른 답변.',
+      'sponsor-btn': '후원하기',
+      'security-2fa-title': '2단계 인증',
+      'security-2fa-sub': '인증 앱을 통한 추가 계정 보호',
+      'security-2fa-status-off': '사용 안 함',
+      'security-2fa-status-on': '사용 중',
+      'security-2fa-enable': '2FA 사용',
+      'security-2fa-disable': '2FA 끄기',
+      'tfa-setup-title': '2FA 사용',
+      'tfa-setup-step1': '인증 앱(Google Authenticator, Authy, 1Password, Microsoft Authenticator)으로 QR 코드를 스캔하세요.',
+      'tfa-loading': '로딩 중...',
+      'tfa-secret-label': '또는 수동으로:',
+      'tfa-copy': '복사',
+      'tfa-copied': '복사됨!',
+      'tfa-next': '다음',
+      'tfa-verify-title': '6자리 코드 입력',
+      'tfa-verify-text': '앱을 열고 "Evades 3"에 표시된 코드를 입력하세요.',
+      'tfa-back': '뒤로',
+      'tfa-confirm': '확인',
+      'tfa-verifying': '확인 중...',
+      'tfa-success-title': '2FA 사용 중',
+      'tfa-success-text': '로그인할 때마다 앱의 코드가 필요합니다. 비밀 키를 안전한 곳에 보관하세요.',
+      'tfa-done': '완료',
+      'tfa-enroll-failed': '2FA 사용을 시작할 수 없습니다. 나중에 다시 시도하세요.',
+      'tfa-err-bad-code': '6자리 숫자 입력',
+      'tfa-err-wrong-code': '잘못된 코드. 다시 시도하세요.',
+      'tfa-err-server': '서버가 응답하지 않습니다. 다시 시도하세요.',
+      'tfa-disable-confirm': '2단계 인증을 끄시겠어요? 계정 보호가 약해집니다.',
+      'tfa-disabled': '2FA 꺼짐',
+      'tfa-challenge-title': '2FA 코드 입력',
+      'tfa-challenge-text': '인증 앱을 열고 "Evades 3"의 6자리 코드를 입력하세요.',
+      'tfa-challenge-submit': '로그인'
+    },
 
       ar: {
         'ultra-scroll-hint': 'مرر إلى الأسفل',
@@ -12788,7 +14451,41 @@ verifySession();
         'ultra-social-eyebrow': 'أينما كنت',
         'ultra-social-title-a': 'انضم', 'ultra-social-title-b': 'إلى الساحة',
         'ultra-social-lead': 'Discord وYouTube. ابقَ على اطلاع بكل ميزة جديدة.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'ابحث في الأسئلة الشائعة...',
+      'ultra-faq-no-results': 'لم يتم العثور على شيء. جرّب بحثًا آخر أو اسأل على Discord — إجابات سريعة.',
+      'sponsor-btn': 'ادعمنا',
+      'security-2fa-title': 'المصادقة الثنائية',
+      'security-2fa-sub': 'حماية إضافية للحساب عبر تطبيق المصادقة',
+      'security-2fa-status-off': 'معطّل',
+      'security-2fa-status-on': 'مُفعّل',
+      'security-2fa-enable': 'تفعيل 2FA',
+      'security-2fa-disable': 'تعطيل 2FA',
+      'tfa-setup-title': 'تفعيل 2FA',
+      'tfa-setup-step1': 'امسح رمز QR بتطبيق مصادقة (Google Authenticator، Authy، 1Password، Microsoft Authenticator).',
+      'tfa-loading': 'جاري التحميل...',
+      'tfa-secret-label': 'أو يدويًا:',
+      'tfa-copy': 'نسخ',
+      'tfa-copied': 'تم النسخ!',
+      'tfa-next': 'التالي',
+      'tfa-verify-title': 'أدخل الرمز المكوّن من 6 أرقام',
+      'tfa-verify-text': 'افتح التطبيق واكتب الرمز الذي يعرضه لـ «Evades 3».',
+      'tfa-back': 'رجوع',
+      'tfa-confirm': 'تأكيد',
+      'tfa-verifying': 'جاري التحقق...',
+      'tfa-success-title': 'تم تفعيل 2FA',
+      'tfa-success-text': 'عند كل تسجيل دخول ستحتاج رمزًا من التطبيق. احتفظ بالمفتاح السري في مكان آمن.',
+      'tfa-done': 'تم',
+      'tfa-enroll-failed': 'تعذّر بدء تفعيل 2FA. حاول لاحقًا.',
+      'tfa-err-bad-code': 'أدخل 6 أرقام',
+      'tfa-err-wrong-code': 'رمز خاطئ. حاول مرة أخرى.',
+      'tfa-err-server': 'الخادم لا يستجيب. حاول مرة أخرى.',
+      'tfa-disable-confirm': 'تعطيل المصادقة الثنائية؟ ستقل حماية الحساب.',
+      'tfa-disabled': 'تم تعطيل 2FA',
+      'tfa-challenge-title': 'أدخل رمز 2FA',
+      'tfa-challenge-text': 'افتح تطبيق المصادقة واكتب الرمز المكوّن من 6 أرقام لـ «Evades 3».',
+      'tfa-challenge-submit': 'دخول'
+    },
 
       hi: {
         'ultra-scroll-hint': 'नीचे स्क्रॉल करें',
@@ -12893,7 +14590,41 @@ verifySession();
         'ultra-social-eyebrow': 'जहाँ भी आप हों',
         'ultra-social-title-a': 'अखाड़े में', 'ultra-social-title-b': 'शामिल हों',
         'ultra-social-lead': 'Discord और YouTube। हर नए फीचर की जानकारी पाएँ।'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'FAQ में खोजें...',
+      'ultra-faq-no-results': 'कुछ नहीं मिला। दूसरी खोज आज़माएं या Discord पर पूछें — तेज़ जवाब।',
+      'sponsor-btn': 'सहयोग करें',
+      'security-2fa-title': 'दो-कारक प्रमाणीकरण',
+      'security-2fa-sub': 'प्रमाणीकरण ऐप के माध्यम से अतिरिक्त खाता सुरक्षा',
+      'security-2fa-status-off': 'बंद',
+      'security-2fa-status-on': 'चालू',
+      'security-2fa-enable': '2FA चालू करें',
+      'security-2fa-disable': '2FA बंद करें',
+      'tfa-setup-title': '2FA चालू करें',
+      'tfa-setup-step1': 'प्रमाणीकरण ऐप (Google Authenticator, Authy, 1Password, Microsoft Authenticator) से QR कोड स्कैन करें।',
+      'tfa-loading': 'लोड हो रहा है...',
+      'tfa-secret-label': 'या मैन्युअल रूप से:',
+      'tfa-copy': 'कॉपी करें',
+      'tfa-copied': 'कॉपी हो गया!',
+      'tfa-next': 'आगे',
+      'tfa-verify-title': '6 अंकों का कोड डालें',
+      'tfa-verify-text': 'ऐप खोलें और "Evades 3" के लिए दिखाया गया कोड टाइप करें।',
+      'tfa-back': 'पीछे',
+      'tfa-confirm': 'पुष्टि करें',
+      'tfa-verifying': 'सत्यापित हो रहा है...',
+      'tfa-success-title': '2FA चालू',
+      'tfa-success-text': 'अब हर बार लॉगिन पर ऐप का कोड चाहिए। गुप्त कुंजी सुरक्षित जगह रखें।',
+      'tfa-done': 'हो गया',
+      'tfa-enroll-failed': '2FA चालू करना शुरू नहीं हो पाया। बाद में कोशिश करें।',
+      'tfa-err-bad-code': '6 अंक डालें',
+      'tfa-err-wrong-code': 'गलत कोड। फिर कोशिश करें।',
+      'tfa-err-server': 'सर्वर जवाब नहीं दे रहा। फिर कोशिश करें।',
+      'tfa-disable-confirm': 'दो-कारक प्रमाणीकरण बंद करें? खाते की सुरक्षा कम होगी।',
+      'tfa-disabled': '2FA बंद हो गया',
+      'tfa-challenge-title': 'अपना 2FA कोड डालें',
+      'tfa-challenge-text': 'अपना प्रमाणीकरण ऐप खोलें और "Evades 3" के लिए 6 अंकों का कोड डालें।',
+      'tfa-challenge-submit': 'लॉगिन'
+    },
 
       th: {
         'ultra-scroll-hint': 'เลื่อนลง',
@@ -12998,7 +14729,41 @@ verifySession();
         'ultra-social-eyebrow': 'ทุกที่ที่คุณอยู่',
         'ultra-social-title-a': 'เข้าร่วม', 'ultra-social-title-b': 'สนามประลอง',
         'ultra-social-lead': 'Discord และ YouTube รับทราบทุกฟีเจอร์ใหม่'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'ค้นหาในคำถามที่พบบ่อย...',
+      'ultra-faq-no-results': 'ไม่พบผลลัพธ์ ลองค้นหาแบบอื่นหรือถามใน Discord — ตอบไว.',
+      'sponsor-btn': 'สนับสนุน',
+      'security-2fa-title': 'การยืนยันตัวตนสองขั้นตอน',
+      'security-2fa-sub': 'การปกป้องบัญชีเพิ่มเติมผ่านแอป Authenticator',
+      'security-2fa-status-off': 'ปิดอยู่',
+      'security-2fa-status-on': 'เปิดอยู่',
+      'security-2fa-enable': 'เปิด 2FA',
+      'security-2fa-disable': 'ปิด 2FA',
+      'tfa-setup-title': 'เปิด 2FA',
+      'tfa-setup-step1': 'สแกน QR ด้วยแอป Authenticator (Google Authenticator, Authy, 1Password, Microsoft Authenticator)',
+      'tfa-loading': 'กำลังโหลด...',
+      'tfa-secret-label': 'หรือป้อนเอง:',
+      'tfa-copy': 'คัดลอก',
+      'tfa-copied': 'คัดลอกแล้ว!',
+      'tfa-next': 'ถัดไป',
+      'tfa-verify-title': 'ป้อนรหัส 6 หลัก',
+      'tfa-verify-text': 'เปิดแอปและพิมพ์รหัสที่แสดงสำหรับ "Evades 3"',
+      'tfa-back': 'ย้อนกลับ',
+      'tfa-confirm': 'ยืนยัน',
+      'tfa-verifying': 'กำลังตรวจสอบ...',
+      'tfa-success-title': 'เปิด 2FA แล้ว',
+      'tfa-success-text': 'ทุกครั้งที่ล็อกอินจะต้องใช้รหัสจากแอป เก็บคีย์ลับไว้ในที่ปลอดภัย',
+      'tfa-done': 'เสร็จ',
+      'tfa-enroll-failed': 'เริ่มเปิด 2FA ไม่ได้ ลองใหม่ภายหลัง',
+      'tfa-err-bad-code': 'ป้อน 6 หลัก',
+      'tfa-err-wrong-code': 'รหัสผิด ลองใหม่',
+      'tfa-err-server': 'เซิร์ฟเวอร์ไม่ตอบสนอง ลองใหม่',
+      'tfa-disable-confirm': 'ปิดการยืนยันตัวตนสองขั้นตอน? การปกป้องบัญชีจะลดลง',
+      'tfa-disabled': 'ปิด 2FA แล้ว',
+      'tfa-challenge-title': 'ป้อนรหัส 2FA',
+      'tfa-challenge-text': 'เปิดแอป Authenticator และพิมพ์รหัส 6 หลักสำหรับ "Evades 3"',
+      'tfa-challenge-submit': 'เข้าสู่ระบบ'
+    },
 
       vi: {
         'ultra-scroll-hint': 'Cuộn xuống',
@@ -13103,7 +14868,41 @@ verifySession();
         'ultra-social-eyebrow': 'Bất cứ nơi đâu',
         'ultra-social-title-a': 'Tham gia', 'ultra-social-title-b': 'đấu trường',
         'ultra-social-lead': 'Discord và YouTube. Luôn cập nhật mọi tính năng mới.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'Tìm trong FAQ...',
+      'ultra-faq-no-results': 'Không tìm thấy. Thử từ khoá khác hoặc hỏi trên Discord — trả lời nhanh.',
+      'sponsor-btn': 'Ủng hộ',
+      'security-2fa-title': 'Xác thực hai yếu tố',
+      'security-2fa-sub': 'Bảo vệ tài khoản thêm qua ứng dụng xác thực',
+      'security-2fa-status-off': 'Đã tắt',
+      'security-2fa-status-on': 'Đang bật',
+      'security-2fa-enable': 'Bật 2FA',
+      'security-2fa-disable': 'Tắt 2FA',
+      'tfa-setup-title': 'Bật 2FA',
+      'tfa-setup-step1': 'Quét mã QR bằng ứng dụng xác thực (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Đang tải...',
+      'tfa-secret-label': 'Hoặc thủ công:',
+      'tfa-copy': 'Sao chép',
+      'tfa-copied': 'Đã sao chép!',
+      'tfa-next': 'Tiếp',
+      'tfa-verify-title': 'Nhập mã 6 chữ số',
+      'tfa-verify-text': 'Mở ứng dụng và nhập mã hiển thị cho "Evades 3".',
+      'tfa-back': 'Quay lại',
+      'tfa-confirm': 'Xác nhận',
+      'tfa-verifying': 'Đang xác thực...',
+      'tfa-success-title': '2FA đã bật',
+      'tfa-success-text': 'Mỗi lần đăng nhập sẽ cần mã từ ứng dụng. Giữ khoá bí mật ở nơi an toàn.',
+      'tfa-done': 'Xong',
+      'tfa-enroll-failed': 'Không thể bắt đầu bật 2FA. Thử lại sau.',
+      'tfa-err-bad-code': 'Nhập 6 chữ số',
+      'tfa-err-wrong-code': 'Sai mã. Thử lại.',
+      'tfa-err-server': 'Máy chủ không phản hồi. Thử lại.',
+      'tfa-disable-confirm': 'Tắt xác thực hai yếu tố? Mức bảo vệ tài khoản sẽ giảm.',
+      'tfa-disabled': '2FA đã tắt',
+      'tfa-challenge-title': 'Nhập mã 2FA',
+      'tfa-challenge-text': 'Mở ứng dụng xác thực và nhập mã 6 chữ số cho "Evades 3".',
+      'tfa-challenge-submit': 'Đăng nhập'
+    },
 
       id: {
         'ultra-scroll-hint': 'Gulir ke bawah',
@@ -13208,7 +15007,41 @@ verifySession();
         'ultra-social-eyebrow': 'Di mana pun kamu',
         'ultra-social-title-a': 'Gabung', 'ultra-social-title-b': 'ke arena',
         'ultra-social-lead': 'Discord dan YouTube. Tetap up-to-date dengan setiap fitur baru.'
-      },
+      ,
+      'ultra-faq-search-placeholder': 'Cari di FAQ...',
+      'ultra-faq-no-results': 'Tidak ditemukan. Coba pencarian lain atau tanya di Discord — jawaban cepat.',
+      'sponsor-btn': 'Dukung',
+      'security-2fa-title': 'Autentikasi dua faktor',
+      'security-2fa-sub': 'Perlindungan akun tambahan via aplikasi otentikator',
+      'security-2fa-status-off': 'Nonaktif',
+      'security-2fa-status-on': 'Aktif',
+      'security-2fa-enable': 'Aktifkan 2FA',
+      'security-2fa-disable': 'Matikan 2FA',
+      'tfa-setup-title': 'Aktifkan 2FA',
+      'tfa-setup-step1': 'Pindai kode QR dengan aplikasi otentikator (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Memuat...',
+      'tfa-secret-label': 'Atau manual:',
+      'tfa-copy': 'Salin',
+      'tfa-copied': 'Tersalin!',
+      'tfa-next': 'Lanjut',
+      'tfa-verify-title': 'Masukkan kode 6 digit',
+      'tfa-verify-text': 'Buka aplikasi dan ketik kode yang ditampilkan untuk "Evades 3".',
+      'tfa-back': 'Kembali',
+      'tfa-confirm': 'Konfirmasi',
+      'tfa-verifying': 'Memverifikasi...',
+      'tfa-success-title': '2FA aktif',
+      'tfa-success-text': 'Setiap login butuh kode dari aplikasi. Simpan kunci rahasia di tempat aman.',
+      'tfa-done': 'Selesai',
+      'tfa-enroll-failed': 'Tidak dapat memulai pengaktifan 2FA. Coba lagi nanti.',
+      'tfa-err-bad-code': 'Masukkan 6 digit',
+      'tfa-err-wrong-code': 'Kode salah. Coba lagi.',
+      'tfa-err-server': 'Server tidak merespons. Coba lagi.',
+      'tfa-disable-confirm': 'Matikan autentikasi dua faktor? Perlindungan akun akan berkurang.',
+      'tfa-disabled': '2FA dimatikan',
+      'tfa-challenge-title': 'Masukkan kode 2FA',
+      'tfa-challenge-text': 'Buka aplikasi otentikator dan ketik kode 6 digit untuk "Evades 3".',
+      'tfa-challenge-submit': 'Masuk'
+    },
 
       ms: {
         'ultra-scroll-hint': 'Tatal ke bawah',
@@ -13313,7 +15146,41 @@ verifySession();
         'ultra-social-eyebrow': 'Di mana sahaja anda',
         'ultra-social-title-a': 'Sertai', 'ultra-social-title-b': 'arena',
         'ultra-social-lead': 'Discord dan YouTube. Kekal terkini dengan setiap ciri baharu.'
-      }
+      ,
+      'ultra-faq-search-placeholder': 'Cari dalam FAQ...',
+      'ultra-faq-no-results': 'Tiada hasil. Cuba carian lain atau tanya di Discord — jawapan pantas.',
+      'sponsor-btn': 'Sokong',
+      'security-2fa-title': 'Pengesahan dua faktor',
+      'security-2fa-sub': 'Perlindungan akaun tambahan melalui aplikasi pengesah',
+      'security-2fa-status-off': 'Dimatikan',
+      'security-2fa-status-on': 'Dihidupkan',
+      'security-2fa-enable': 'Hidupkan 2FA',
+      'security-2fa-disable': 'Matikan 2FA',
+      'tfa-setup-title': 'Hidupkan 2FA',
+      'tfa-setup-step1': 'Imbas kod QR dengan aplikasi pengesah (Google Authenticator, Authy, 1Password, Microsoft Authenticator).',
+      'tfa-loading': 'Memuatkan...',
+      'tfa-secret-label': 'Atau manual:',
+      'tfa-copy': 'Salin',
+      'tfa-copied': 'Disalin!',
+      'tfa-next': 'Seterusnya',
+      'tfa-verify-title': 'Masukkan kod 6 digit',
+      'tfa-verify-text': 'Buka aplikasi dan taip kod yang dipaparkan untuk "Evades 3".',
+      'tfa-back': 'Kembali',
+      'tfa-confirm': 'Sahkan',
+      'tfa-verifying': 'Mengesahkan...',
+      'tfa-success-title': '2FA dihidupkan',
+      'tfa-success-text': 'Setiap log masuk perlu kod dari aplikasi. Simpan kunci rahsia di tempat selamat.',
+      'tfa-done': 'Selesai',
+      'tfa-enroll-failed': 'Tidak dapat memulakan 2FA. Cuba lagi kemudian.',
+      'tfa-err-bad-code': 'Masukkan 6 digit',
+      'tfa-err-wrong-code': 'Kod salah. Cuba lagi.',
+      'tfa-err-server': 'Pelayan tidak menjawab. Cuba lagi.',
+      'tfa-disable-confirm': 'Matikan pengesahan dua faktor? Perlindungan akaun akan berkurang.',
+      'tfa-disabled': '2FA dimatikan',
+      'tfa-challenge-title': 'Masukkan kod 2FA',
+      'tfa-challenge-text': 'Buka aplikasi pengesah dan taip kod 6 digit untuk "Evades 3".',
+      'tfa-challenge-submit': 'Log masuk'
+    }
     };
 
     // Merge extras into existing translations
