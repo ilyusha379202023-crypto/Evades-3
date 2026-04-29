@@ -3543,6 +3543,7 @@
 }
 .tfa-qr-img{ width: 100%; height: 100%; image-rendering: pixelated; }
 .tfa-qr-loading{ display:flex; flex-direction:column; align-items:center; gap:14px; color:#0a2516; font-size:12px; font-weight:800; letter-spacing: 0.5px; }
+.tfa-qr-loading[hidden]{ display: none !important; }
 .tfa-spinner{
   width: 72px; height: 72px;
   position: relative;
@@ -3555,9 +3556,8 @@
   animation: tfaSpin 1.6s linear infinite;
   transform-origin: 50% 50%;
   object-fit: contain;
-  filter:
-    drop-shadow(0 0 6px rgba(74,222,128,0.55))
-    drop-shadow(0 4px 6px rgba(0,0,0,0.35));
+  /* siluet.png has a white background — multiply blends white away on white QR area */
+  mix-blend-mode: multiply;
 }
 @keyframes tfaSpin{ to { transform: rotate(360deg); } }
 @keyframes tfaOrbBob{
@@ -10529,37 +10529,59 @@ async function open2faSetupModal() {
   ev3TfaState.factorId = r.data.id;
   ev3TfaState.secret = r.data.totp.secret;
   // QR can come as: raw SVG string ("<svg..."), already-formed data URI ("data:image/..."), otpauth URI, or be missing.
-  // Build a usable image source for any of these — fall back to generating QR from the otpauth URI server-side.
   const qrRaw = r.data.totp.qr_code;
   const otpauthUri = r.data.totp.uri || ('otpauth://totp/Evades%203:' + (ev3Session && ev3Session.user && ev3Session.user.email ? encodeURIComponent(ev3Session.user.email) : 'user') + '?secret=' + encodeURIComponent(ev3TfaState.secret) + '&issuer=Evades%203');
+  console.log('[2FA] enroll OK. qr_code field type:', typeof qrRaw, qrRaw ? qrRaw.slice(0,40) : '(empty)');
   const img = document.getElementById('tfaQrImg');
+  const loader = document.getElementById('tfaQrLoading');
+  function ev3RevealQr(){
+    loader.hidden = true;
+    loader.style.display = 'none';
+    img.hidden = false;
+    img.style.removeProperty('display');
+    console.log('[2FA] QR revealed');
+  }
+  function ev3HideLoaderShowErr(msg){
+    img.hidden = true;
+    loader.hidden = false;
+    loader.style.removeProperty('display');
+    loader.innerHTML = '<span style="color:#FFAE9B;font-weight:800;display:block;line-height:1.4;">' + msg + '</span>';
+  }
   let qrSrc = '';
   if (typeof qrRaw === 'string' && qrRaw.length) {
     const trimmed = qrRaw.trim();
-    if (trimmed.startsWith('data:')) {
-      qrSrc = trimmed;
-    } else if (trimmed.startsWith('<svg')) {
-      qrSrc = 'data:image/svg+xml;utf8,' + encodeURIComponent(trimmed);
-    } else if (trimmed.startsWith('otpauth://')) {
-      qrSrc = 'https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=' + encodeURIComponent(trimmed);
-    } else {
-      // Looks like raw base64 / URL string, try as-is
-      qrSrc = trimmed;
-    }
+    if (trimmed.startsWith('data:'))            qrSrc = trimmed;
+    else if (trimmed.startsWith('<svg'))        qrSrc = 'data:image/svg+xml;utf8,' + encodeURIComponent(trimmed);
+    else if (trimmed.startsWith('otpauth://'))  qrSrc = 'https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=' + encodeURIComponent(trimmed);
+    else                                        qrSrc = trimmed;
   } else {
-    // No qr_code field returned — generate from otpauth URI
     qrSrc = 'https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=' + encodeURIComponent(otpauthUri);
   }
-  img.onload = () => { document.getElementById('tfaQrLoading').hidden = true; img.hidden = false; };
+  console.log('[2FA] using QR src:', qrSrc.slice(0,80));
+  img.onload  = () => { console.log('[2FA] img.onload fired'); ev3RevealQr(); };
   img.onerror = () => {
-    // Final fallback: re-generate via qrserver from the otpauth URI
+    console.warn('[2FA] img.onerror fired, current src:', img.src.slice(0,80));
     if (otpauthUri && img.src.indexOf('api.qrserver.com') === -1) {
-      img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=' + encodeURIComponent(otpauthUri);
+      const fb = 'https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=' + encodeURIComponent(otpauthUri);
+      console.log('[2FA] retrying with qrserver fallback');
+      img.src = fb;
     } else {
-      document.getElementById('tfaQrLoading').innerHTML = '<span style="color:#FFAE9B;font-weight:800;">' + (tt('tfa-enroll-failed','Не удалось загрузить QR. Введи секрет вручную ниже.')) + '</span>';
+      ev3HideLoaderShowErr(tt('tfa-enroll-failed','Не удалось загрузить QR. Введи секрет вручную ниже.'));
     }
   };
   img.src = qrSrc;
+  // Belt-and-suspenders: if the image is already cached and complete, fire reveal manually.
+  if (img.complete && img.naturalWidth > 0) {
+    console.log('[2FA] img already complete, revealing immediately');
+    ev3RevealQr();
+  }
+  // Final safety: after 4s, force-hide loader if QR loaded but onload never fired (some browsers misbehave with cached SVG).
+  setTimeout(() => {
+    if (img.complete && img.naturalWidth > 0 && !loader.hidden) {
+      console.warn('[2FA] safety timeout: forcing reveal');
+      ev3RevealQr();
+    }
+  }, 4000);
   // Format secret with spaces every 4 chars for readability
   const secret = (ev3TfaState.secret || '').replace(/(.{4})/g, '$1 ').trim();
   document.getElementById('tfaSecretCode').textContent = secret;
