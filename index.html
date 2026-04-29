@@ -16,128 +16,7 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* ===== КАСТОМНЫЙ КУРСОР ===== */
-    *, *::before, *::after { cursor: none !important; }
-
-    #cursor-canvas {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none; z-index: 99994;
-    }
-
-    /* Все курсоры скрыты по умолчанию, показывается только .cur-active */
-    #custom-cursor, #cursor-no, #cursor-ibeam {
-      position: fixed; pointer-events: none;
-      z-index: 99999; top: 0; left: 0;
-      will-change: transform;
-      opacity: 0;
-      transition: opacity 0.2s cubic-bezier(0.4,0,0.2,1);
-    }
-    #custom-cursor.cur-active,
-    #cursor-no.cur-active,
-    #cursor-ibeam.cur-active { opacity: 1; }
-
-    body.cursor-hidden #custom-cursor,
-    body.cursor-hidden #cursor-no,
-    body.cursor-hidden #cursor-ibeam,
-    body.cursor-hidden #cursor-radar,
-    body.cursor-hidden #cursor-inner,
-    body.cursor-hidden #cursor-core { opacity: 0 !important; }
-
-    /* Стрелка 3D */
-    #cursor-arrow {
-      position: absolute; top: 0; left: 0;
-      width: 34px; height: 42px;
-      filter: drop-shadow(2px 3px 3px rgba(0,0,0,0.35)) drop-shadow(0 0 10px rgba(74,222,128,0.5));
-      transition: filter 0.2s ease;
-    }
-
-    /* Знак запрета — центрирован */
-    #cursor-no { margin-left: -20px; margin-top: -20px; }
-    #cursor-no svg {
-      position: absolute; top: 0; left: 0;
-      width: 40px; height: 40px;
-      filter: drop-shadow(0 0 7px rgba(255,59,59,0.75)) drop-shadow(0 0 18px rgba(255,59,59,0.4));
-      animation: noPulse 1.2s ease-in-out infinite;
-    }
-    @keyframes noPulse {
-      0%,100% { filter: drop-shadow(0 0 7px rgba(255,59,59,0.75)) drop-shadow(0 0 18px rgba(255,59,59,0.4)); }
-      50%      { filter: drop-shadow(0 0 12px rgba(255,80,80,1)) drop-shadow(0 0 30px rgba(255,50,50,0.6)); }
-    }
-
-    /* I-beam — центрирован по вертикали */
-    #cursor-ibeam { margin-left: -10px; margin-top: -18px; }
-    #cursor-ibeam svg {
-      position: absolute; top: 0; left: 0;
-      width: 20px; height: 36px;
-      filter: drop-shadow(0 0 4px rgba(255,255,255,0.9)) drop-shadow(0 0 10px rgba(74,222,128,0.7));
-    }
-
-    /* Радар */
-    #cursor-radar {
-      position: fixed; pointer-events: none;
-      z-index: 99995; top: 0; left: 0;
-      width: 56px; height: 56px;
-      margin-left: -28px; margin-top: -28px;
-      border-radius: 50%;
-      border: 1.5px solid rgba(74,222,128,0.45);
-      box-shadow: 0 0 12px rgba(74,222,128,0.25), inset 0 0 10px rgba(74,222,128,0.06);
-      will-change: transform;
-      transition: width .22s cubic-bezier(.4,0,.2,1), height .22s cubic-bezier(.4,0,.2,1),
-                  margin .22s cubic-bezier(.4,0,.2,1), border-color .2s ease, box-shadow .2s ease;
-      animation: radarPulse 2.6s ease-in-out infinite;
-    }
-    @keyframes radarPulse { 0%,100% { opacity:0.7; } 50% { opacity:1; } }
-
-    #cursor-inner {
-      position: fixed; pointer-events: none;
-      z-index: 99996; top: 0; left: 0;
-      width: 22px; height: 22px;
-      margin-left: -11px; margin-top: -11px;
-      border-radius: 50%;
-      border: 1.5px solid rgba(255,255,255,0.55);
-      background: radial-gradient(circle at 38% 32%, rgba(255,255,255,0.18) 0%, rgba(74,222,128,0.08) 50%, transparent 70%);
-      will-change: transform;
-      transition: width .18s ease, height .18s ease, margin .18s ease, border-color .2s ease, opacity .2s ease;
-    }
-
-    #cursor-core {
-      position: fixed; pointer-events: none;
-      z-index: 99999; top: 0; left: 0;
-      width: 6px; height: 6px;
-      margin-left: -3px; margin-top: -3px;
-      border-radius: 50%; background: #fff;
-      box-shadow: 0 0 4px #fff, 0 0 10px rgba(74,222,128,1), 0 0 20px rgba(74,222,128,0.6);
-      will-change: transform;
-      animation: corePulse 1.4s ease-in-out infinite;
-    }
-    @keyframes corePulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.35); } }
-
-    /* Режим запрета: кольца красные */
-    body.cursor-no-mode #cursor-radar { border-color: rgba(255,59,59,0.6); box-shadow: 0 0 16px rgba(255,59,59,0.4); }
-    body.cursor-no-mode #cursor-inner { border-color: rgba(255,59,59,0.7); }
-    body.cursor-no-mode #cursor-core  { box-shadow: 0 0 4px #fff, 0 0 12px rgba(255,59,59,1), 0 0 24px rgba(255,59,59,0.6); }
-
-    /* Режим текста: только маленькое кольцо */
-    body.cursor-text-mode #cursor-radar { width: 28px; height: 28px; margin-left: -14px; margin-top: -14px; border-color: rgba(255,255,255,0.35); box-shadow: none; animation: none; opacity: 0.5; }
-    body.cursor-text-mode #cursor-inner { opacity: 0; width: 0; height: 0; }
-
-    /* Клик */
-    body.cursor-click #cursor-radar { width: 32px; height: 32px; margin-left: -16px; margin-top: -16px; border-color: rgba(255,255,255,0.8); box-shadow: 0 0 20px rgba(255,255,255,0.5); }
-
-    .cursor-ripple {
-      position: fixed; pointer-events: none;
-      z-index: 99993; border-radius: 50%;
-      border: 2px solid rgba(255,255,255,0.7);
-      animation: rippleOut 0.55s ease-out forwards;
-      margin-left: -5px; margin-top: -5px;
-      width: 10px; height: 10px;
-    }
-    @keyframes rippleOut {
-      0%   { width:10px; height:10px; margin-left:-5px; margin-top:-5px; opacity:0.9; }
-      100% { width:90px; height:90px; margin-left:-45px; margin-top:-45px; opacity:0; }
-    }
-    /* ===== КОНЕЦ КАСТОМНОГО КУРСОРА ===== */
+    /* Custom cursor disabled — using native cursor for performance */
 
     :root{
       --langBorder: rgba(255,255,255,0.28);
@@ -1637,12 +1516,14 @@
 
     .preview .ball .orb-crown{
       position: absolute;
-      top: -14px;
+      top: -13px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 16px;
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
-      cursor: default;
+      width: 26px;
+      height: 16px;
+      display: block;
+      filter: drop-shadow(0 3px 4px rgba(0,0,0,0.45));
+      pointer-events: none;
       user-select: none;
       -webkit-user-select: none;
     }
@@ -4349,72 +4230,7 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 22px;
 }
-.faq-search-wrap{
-  max-width: 820px; margin: 0 auto 18px;
-  position: relative;
-}
-.faq-search-ico{
-  position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
-  width: 18px; height: 18px;
-  color: rgba(255,255,255,0.55);
-  pointer-events: none;
-  transition: color .25s ease;
-}
-.faq-search-input{
-  width: 100%;
-  padding: 14px 44px 14px 48px;
-  background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
-  border: 1px solid var(--e3-border);
-  border-radius: 16px;
-  color: #fff;
-  font-size: 14px; font-weight: 600;
-  font-family: 'Exo 2', sans-serif;
-  letter-spacing: 0.3px;
-  outline: none;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: border-color .25s ease, box-shadow .25s ease, background .25s ease;
-}
-.faq-search-input::placeholder{ color: rgba(255,255,255,0.45); font-weight:500; }
-.faq-search-input::-webkit-search-cancel-button{ display:none; }
-.faq-search-input:focus{
-  border-color: rgba(74,222,128,0.55);
-  box-shadow: 0 0 0 4px rgba(74,222,128,0.12), 0 6px 20px rgba(0,0,0,0.3);
-  background: linear-gradient(145deg, rgba(74,222,128,0.08), rgba(255,255,255,0.04));
-}
-.faq-search-wrap:focus-within .faq-search-ico{ color: rgba(74,222,128,0.85); }
-.faq-search-clear{
-  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-  width: 26px; height: 26px; border-radius: 50%;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid var(--e3-border);
-  color: #fff; font-size: 16px; font-weight: 800;
-  cursor: pointer; padding: 0;
-  display: grid; place-items: center;
-  line-height: 1;
-  transition: background .2s ease, transform .2s ease;
-}
-.faq-search-clear:hover{ background: rgba(255,80,80,0.25); border-color: rgba(255,140,140,0.5); transform: translateY(-50%) scale(1.08); }
-.faq-empty{
-  max-width: 820px; margin: 0 auto 16px;
-  padding: 26px 22px;
-  border-radius: 18px;
-  background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-  border: 1px dashed rgba(255,255,255,0.18);
-  text-align: center;
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  color: rgba(255,255,255,0.78);
-  font-size: 14px; font-weight: 600; line-height: 1.55;
-  font-family: 'Exo 2', sans-serif;
-}
-.faq-empty-emoji{ font-size: 28px; }
-.faq-item.is-hidden{ display: none; }
-.faq-q mark{
-  background: linear-gradient(180deg, rgba(255,216,77,0.55), rgba(255,200,58,0.35));
-  color: #fff; padding: 1px 4px; border-radius: 4px;
-  box-shadow: 0 1px 0 rgba(255,200,58,0.35);
-  font-weight: 900;
-}
+
 .faq-list{
   max-width: 820px; margin: 0 auto;
   display: flex; flex-direction: column; gap: 12px;
@@ -4787,37 +4603,7 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
 .social-btn:hover{ transform: translateY(-3px) scale(1.04); border-color: var(--sb-color, rgba(74,222,128,0.6)); box-shadow: 0 16px 36px rgba(0,0,0,0.4), 0 0 24px var(--sb-glow, rgba(74,222,128,0.35)); color: var(--sb-color, #4ade80); }
 .social-btn:hover svg{ transform: rotate(-8deg) scale(1.1); }
 
-/* Discord live counter pill */
-.social-btn-discord{ padding-right: 12px; }
-.dc-live{
-  display: inline-flex; align-items: center; gap: 6px;
-  margin-left: 4px;
-  padding: 5px 10px 5px 9px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(74,222,128,0.18), rgba(74,222,128,0.08));
-  border: 1px solid rgba(74,222,128,0.42);
-  color: #b3f5cd;
-  font-size: 11px; font-weight: 800; letter-spacing: 0.6px;
-  text-transform: lowercase;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 4px 10px rgba(0,0,0,0.25);
-  white-space: nowrap;
-  animation: dcLiveIn .45s var(--e3-ease, cubic-bezier(.2,.8,.2,1));
-}
-@keyframes dcLiveIn{ 0%{ opacity:0; transform: scale(.85); } 100%{ opacity:1; transform: scale(1); } }
-.dc-live-dot{
-  width: 8px; height: 8px; border-radius: 50%;
-  background: #4ade80;
-  box-shadow: 0 0 0 0 rgba(74,222,128,0.7), 0 0 10px rgba(74,222,128,0.85);
-  animation: dcLivePulse 2s ease-in-out infinite;
-}
-@keyframes dcLivePulse{
-  0%{ box-shadow: 0 0 0 0 rgba(74,222,128,0.7), 0 0 10px rgba(74,222,128,0.6); }
-  70%{ box-shadow: 0 0 0 8px rgba(74,222,128,0), 0 0 12px rgba(74,222,128,0.85); }
-  100%{ box-shadow: 0 0 0 0 rgba(74,222,128,0), 0 0 10px rgba(74,222,128,0.6); }
-}
-.dc-live-num{ color:#fff; font-weight:900; font-size:12px; }
-.dc-live-label{ opacity:.85; }
-.social-btn-discord:hover .dc-live{ border-color: rgba(74,222,128,0.7); background: linear-gradient(180deg, rgba(74,222,128,0.28), rgba(74,222,128,0.12)); }
+
 
 #e3-back-top{
   position: fixed; right: 32px; bottom: 32px;
@@ -5075,11 +4861,11 @@ svg.ic-svg-login {
   <button id="e3-back-top" type="button" aria-label="Наверх" title="Наверх">↑</button>
   <!-- ===== END E3 ULTRA UPGRADE layers ===== -->
 
-  <!-- ===== КАСТОМНЫЙ КУРСОР ===== -->
-  <canvas id="cursor-canvas"></canvas>
+  <!-- ===== КАСТОМНЫЙ КУРСОР (отключён — оставлены пустые контейнеры на случай ссылок из JS) ===== -->
+  <canvas id="cursor-canvas" style="display:none"></canvas>
 
   <!-- 1. Стрелка 3D -->
-  <div id="custom-cursor" class="cur-active">
+  <div id="custom-cursor" class="cur-active" style="display:none">
     <svg id="cursor-arrow" viewBox="0 0 34 42" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <!-- Верхняя грань — переливающийся градиент (обновляется из JS) -->
@@ -5128,7 +4914,7 @@ svg.ic-svg-login {
   </div>
 
   <!-- 2. Запрет (кнопка скачать) -->
-  <div id="cursor-no">
+  <div id="cursor-no" style="display:none">
     <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <radialGradient id="noGlow" cx="50%" cy="40%" r="55%">
@@ -5152,7 +4938,7 @@ svg.ic-svg-login {
   </div>
 
   <!-- 3. I-beam (текст) -->
-  <div id="cursor-ibeam">
+  <div id="cursor-ibeam" style="display:none">
     <svg viewBox="0 0 20 36" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g transform="translate(1,1)" opacity="0.3">
         <line x1="10" y1="4" x2="10" y2="32" stroke="#000" stroke-width="3" stroke-linecap="round"/>
@@ -5173,9 +4959,9 @@ svg.ic-svg-login {
     </svg>
   </div>
 
-  <div id="cursor-radar"></div>
-  <div id="cursor-inner"></div>
-  <div id="cursor-core"></div>
+  <div id="cursor-radar" style="display:none"></div>
+  <div id="cursor-inner" style="display:none"></div>
+  <div id="cursor-core" style="display:none"></div>
   <!-- ===== КОНЕЦ КУРСОРА ===== -->
   <!-- Вспышка-оверлей для взрыва -->
   <div class="flash-overlay"></div>
@@ -5243,6 +5029,56 @@ svg.ic-svg-login {
               fill="none" stroke="url(#e3g-red)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M14 12 L3 12"
               fill="none" stroke="url(#e3g-red)" stroke-width="2.2" stroke-linecap="round"/>
+      </symbol>
+
+      <!-- Orb crown — золотая корона с тремя зубцами и драгоценностями -->
+      <symbol id="e3-orb-crown" viewBox="0 0 28 18">
+        <!-- Тень -->
+        <path d="M3 14.6 L5 5.4 L9 9.4 L14 3.4 L19 9.4 L23 5.4 L25 14.6 Z"
+              fill="rgba(0,0,0,0.35)" transform="translate(0.6,0.9)"/>
+        <!-- Корпус короны -->
+        <path d="M3 14 L5 4.8 L9 8.8 L14 2.8 L19 8.8 L23 4.8 L25 14 Z"
+              fill="url(#e3g-gold)" stroke="#7a4a00" stroke-width="0.55" stroke-linejoin="round"/>
+        <!-- Базовая полоска -->
+        <rect x="3" y="13.4" width="22" height="3" rx="0.4"
+              fill="url(#e3g-gold-soft)" stroke="#7a4a00" stroke-width="0.4"/>
+        <!-- Декор-точки на базе -->
+        <circle cx="7" cy="14.9" r="0.55" fill="#7a4a00" opacity="0.6"/>
+        <circle cx="14" cy="14.9" r="0.55" fill="#7a4a00" opacity="0.6"/>
+        <circle cx="21" cy="14.9" r="0.55" fill="#7a4a00" opacity="0.6"/>
+        <!-- Драгоценности на зубцах -->
+        <circle cx="14" cy="5.6" r="1.25" fill="#ff5566" stroke="#7a0f1a" stroke-width="0.3"/>
+        <circle cx="13.6" cy="5.2" r="0.4" fill="#ffd0d8" opacity="0.95"/>
+        <circle cx="5" cy="6.7" r="0.85" fill="#4ade80" stroke="#0a4a20" stroke-width="0.25"/>
+        <circle cx="23" cy="6.7" r="0.85" fill="#5cb6ff" stroke="#0a3a6a" stroke-width="0.25"/>
+        <!-- Блик -->
+        <path d="M5 5.4 L7 4.5" stroke="rgba(255,255,255,0.7)" stroke-width="0.5" stroke-linecap="round"/>
+      </symbol>
+
+      <!-- Player orb — кастомный игровой шар (без эмодзи) -->
+      <symbol id="e3-player-orb" viewBox="0 0 60 70">
+        <defs>
+          <radialGradient id="orbBody" cx="40%" cy="38%" r="65%">
+            <stop offset="0%" stop-color="#ffeaea"/>
+            <stop offset="35%" stop-color="#ff6868"/>
+            <stop offset="75%" stop-color="#c41818"/>
+            <stop offset="100%" stop-color="#5a0707"/>
+          </radialGradient>
+          <radialGradient id="orbHL" cx="35%" cy="30%" r="35%">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.95)"/>
+            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+          </radialGradient>
+        </defs>
+        <!-- Корона сверху -->
+        <use href="#e3-orb-crown" x="16" y="0" width="28" height="18"/>
+        <!-- Тень шара -->
+        <ellipse cx="30" cy="68" rx="14" ry="2.5" fill="rgba(0,0,0,0.35)"/>
+        <!-- Шар -->
+        <circle cx="30" cy="48" r="18" fill="url(#orbBody)" stroke="rgba(0,0,0,0.5)" stroke-width="0.6"/>
+        <!-- Блик -->
+        <ellipse cx="24" cy="42" rx="6.5" ry="4.5" fill="url(#orbHL)"/>
+        <!-- Тонкий контур-блик снизу -->
+        <path d="M16 54 A18 18 0 0 0 44 54" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.7"/>
       </symbol>
     </defs>
   </svg>
@@ -5963,7 +5799,7 @@ svg.ic-svg-login {
           <div class="showcase-caption" data-i18n="showcase-desc-dash">Мгновенный рывок с трейлом и пыльным следом.</div>
           <div class="preview">
             <span class="action-label" data-i18n="showcase-label-dash">DASH</span>
-            <div class="ball"><span class="orb-crown">👑</span></div>
+            <div class="ball"><svg class="orb-crown" aria-hidden="true" focusable="false"><use href="#e3-orb-crown"/></svg></div>
             <div class="trail"></div>
             <div class="afterimage"></div>
             <div class="dust"></div>
@@ -5978,7 +5814,7 @@ svg.ic-svg-login {
           <div class="showcase-caption" data-i18n="showcase-desc-parry">Отбить снаряд щитом — взрыв света и искры.</div>
           <div class="preview">
             <span class="action-label" data-i18n="showcase-label-parry">PARRY</span>
-            <div class="ball"><span class="orb-crown">👑</span></div>
+            <div class="ball"><svg class="orb-crown" aria-hidden="true" focusable="false"><use href="#e3-orb-crown"/></svg></div>
             <div class="projectile"></div>
             <div class="shield"></div>
             <div class="shockwave-ring"></div>
@@ -5996,7 +5832,7 @@ svg.ic-svg-login {
           <div class="preview">
             <span class="action-label" data-i18n="showcase-label-hit">HIT!</span>
             <div class="ball">
-              <span class="orb-crown">👑</span>
+              <svg class="orb-crown" aria-hidden="true" focusable="false"><use href="#e3-orb-crown"/></svg>
               <div class="impact-ring"></div>
               <div class="impact-particle"></div>
             </div>
@@ -6012,7 +5848,7 @@ svg.ic-svg-login {
           <div class="preview">
             <span class="action-label" data-i18n="showcase-label-spawn">SPAWN</span>
             <div class="portal"></div>
-            <div class="ball ball--spawn"><span class="orb-crown">👑</span></div>
+            <div class="ball ball--spawn"><svg class="orb-crown" aria-hidden="true" focusable="false"><use href="#e3-orb-crown"/></svg></div>
             <div class="spawn-aura"></div>
             <div class="progress-bar"></div>
           </div>
@@ -6028,7 +5864,7 @@ svg.ic-svg-login {
             <div class="combo-ghost g1"></div>
             <div class="combo-ghost g2"></div>
             <div class="combo-ghost g3"></div>
-            <div class="ball"><span class="orb-crown">👑</span></div>
+            <div class="ball"><svg class="orb-crown" aria-hidden="true" focusable="false"><use href="#e3-orb-crown"/></svg></div>
             <div class="progress-bar"></div>
           </div>
           <button class="scene-toggle" type="button" data-i18n="pause">Пауза</button>
@@ -6040,7 +5876,7 @@ svg.ic-svg-login {
           <div class="preview">
             <span class="action-label" data-i18n="showcase-label-shield-break">BREAK!</span>
             <div class="shield-bubble"></div>
-            <div class="ball"><span class="orb-crown">👑</span></div>
+            <div class="ball"><svg class="orb-crown" aria-hidden="true" focusable="false"><use href="#e3-orb-crown"/></svg></div>
             <div class="shield-incoming"></div>
             <div class="shield-crack c1"></div>
             <div class="shield-crack c2"></div>
@@ -6247,15 +6083,6 @@ svg.ic-svg-login {
         <div class="e3-eyebrow"><span class="dot"></span><span data-i18n="ultra-faq-eyebrow">Часто спрашивают</span></div>
         <h2 id="faq-title" class="e3-title"><span data-i18n="ultra-faq-title-a">Коротко</span> <span class="accent" data-i18n="ultra-faq-title-b">о главном</span></h2>
       </div>
-      <div class="faq-search-wrap">
-        <svg class="faq-search-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-        <input id="faqSearch" type="search" class="faq-search-input" autocomplete="off" placeholder="Поиск по вопросам..." data-i18n-placeholder="ultra-faq-search-placeholder" aria-label="FAQ search"/>
-        <button type="button" class="faq-search-clear" id="faqSearchClear" aria-label="Clear" hidden>×</button>
-      </div>
-      <div class="faq-empty" id="faqEmpty" hidden>
-        <span class="faq-empty-emoji">🔍</span>
-        <span data-i18n="ultra-faq-no-results">Ничего не найдено. Попробуй другой запрос или загляни в Discord — там быстро ответят.</span>
-      </div>
       <div class="faq-list">
         <div class="faq-item reveal" data-delay="1">
           <button class="faq-q" type="button" aria-expanded="false">
@@ -6330,7 +6157,7 @@ svg.ic-svg-login {
       </div>
       <div class="e3-social">
         <a class="social-btn social-btn-discord" id="socialBtnDiscord" style="--sb-color:#5865F2; --sb-glow:rgba(88,101,242,0.45);" href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.369A19.791 19.791 0 0 0 16.558 3a14.3 14.3 0 0 0-.7 1.44 18.27 18.27 0 0 0-5.72 0A13.2 13.2 0 0 0 9.444 3 19.72 19.72 0 0 0 5.68 4.37C2.78 8.88 2 13.27 2.39 17.58a19.96 19.96 0 0 0 6.07 3.08c.49-.67.92-1.39 1.29-2.14-.71-.27-1.39-.6-2.03-1 .17-.12.34-.25.5-.39 3.94 1.82 8.19 1.82 12.08 0 .17.14.33.27.5.39-.64.4-1.32.73-2.03 1 .37.75.8 1.47 1.29 2.14a19.96 19.96 0 0 0 6.07-3.08c.46-5.02-.77-9.36-3.32-13.21ZM9.68 15.33c-1.18 0-2.15-1.09-2.15-2.43 0-1.34.95-2.43 2.15-2.43s2.17 1.09 2.15 2.43c0 1.34-.95 2.43-2.15 2.43Zm4.64 0c-1.18 0-2.15-1.09-2.15-2.43 0-1.34.95-2.43 2.15-2.43s2.17 1.09 2.15 2.43c0 1.34-.95 2.43-2.15 2.43Z"/></svg>
+          <svg viewBox="-2 -2 28 28" fill="currentColor" aria-hidden="true" style="overflow:visible"><path d="M20.317 4.369A19.791 19.791 0 0 0 16.558 3a14.3 14.3 0 0 0-.7 1.44 18.27 18.27 0 0 0-5.72 0A13.2 13.2 0 0 0 9.444 3 19.72 19.72 0 0 0 5.68 4.37C2.78 8.88 2 13.27 2.39 17.58a19.96 19.96 0 0 0 6.07 3.08c.49-.67.92-1.39 1.29-2.14-.71-.27-1.39-.6-2.03-1 .17-.12.34-.25.5-.39 3.94 1.82 8.19 1.82 12.08 0 .17.14.33.27.5.39-.64.4-1.32.73-2.03 1 .37.75.8 1.47 1.29 2.14a19.96 19.96 0 0 0 6.07-3.08c.46-5.02-.77-9.36-3.32-13.21ZM9.68 15.33c-1.18 0-2.15-1.09-2.15-2.43 0-1.34.95-2.43 2.15-2.43s2.17 1.09 2.15 2.43c0 1.34-.95 2.43-2.15 2.43Zm4.64 0c-1.18 0-2.15-1.09-2.15-2.43 0-1.34.95-2.43 2.15-2.43s2.17 1.09 2.15 2.43c0 1.34-.95 2.43-2.15 2.43Z"/></svg>
           <span>Discord</span>
         </a>
         <a class="social-btn" style="--sb-color:#ff0033; --sb-glow:rgba(255,0,51,0.4);" href="https://www.youtube.com/@crownbit-u5o" target="_blank" rel="noopener">
@@ -10017,61 +9844,7 @@ svg.ic-svg-login {
 
       if (!prefersReducedMotion) createSparkles(50);
 
-      // FAQ search with highlight + empty state
-      (function bootFaqSearch(){
-        const input = document.getElementById('faqSearch');
-        const clear = document.getElementById('faqSearchClear');
-        const empty = document.getElementById('faqEmpty');
-        const list  = document.querySelector('.faq-list');
-        if (!input || !list) return;
-        const items = Array.from(list.querySelectorAll('.faq-item'));
-        // Cache original HTML once so we can re-render highlights cleanly
-        const originals = items.map(it => {
-          const q = it.querySelector('.faq-q > span[data-i18n]');
-          const a = it.querySelector('.faq-a-inner');
-          return { item: it, qEl: q, aEl: a };
-        });
-        function escapeRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
-        function escapeHtml(s){ return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-        function highlight(el, query){
-          if (!el) return;
-          const text = el.getAttribute('data-original-text') || el.textContent;
-          if (!el.getAttribute('data-original-text')) el.setAttribute('data-original-text', text);
-          if (!query){ el.textContent = text; return; }
-          const re = new RegExp(escapeRe(query), 'ig');
-          el.innerHTML = escapeHtml(text).replace(re, m => `<mark>${escapeHtml(m)}</mark>`);
-        }
-        function applyFilter(){
-          const q = input.value.trim();
-          clear.hidden = q.length === 0;
-          let visible = 0;
-          originals.forEach(({ item, qEl, aEl }) => {
-            const qText = (qEl && (qEl.getAttribute('data-original-text') || qEl.textContent)) || '';
-            const aText = (aEl && (aEl.getAttribute('data-original-text') || aEl.textContent)) || '';
-            if (qEl && !qEl.getAttribute('data-original-text')) qEl.setAttribute('data-original-text', qText);
-            if (aEl && !aEl.getAttribute('data-original-text')) aEl.setAttribute('data-original-text', aText);
-            const match = q.length === 0 || qText.toLowerCase().includes(q.toLowerCase()) || aText.toLowerCase().includes(q.toLowerCase());
-            item.classList.toggle('is-hidden', !match);
-            if (match){
-              visible++;
-              highlight(qEl, q);
-            } else {
-              if (qEl) qEl.textContent = qEl.getAttribute('data-original-text') || qEl.textContent;
-            }
-          });
-          empty.hidden = visible !== 0 || q.length === 0;
-        }
-        input.addEventListener('input', applyFilter);
-        clear.addEventListener('click', () => { input.value=''; input.focus(); applyFilter(); });
-        // When language changes, data-i18n updates the text — clear our cached originals so they re-cache
-        document.addEventListener('e3LangChanged', () => {
-          originals.forEach(({ qEl, aEl }) => {
-            if (qEl) qEl.removeAttribute('data-original-text');
-            if (aEl) aEl.removeAttribute('data-original-text');
-          });
-          applyFilter();
-        });
-      })();
+      // FAQ search removed per user request — questions list is short enough
 
       const followDev = document.querySelector('.follow-dev-container');
       if (followDev) {
@@ -10153,8 +9926,9 @@ svg.ic-svg-login {
         requestAnimationFrame(renderSparkles);
       }, { passive: true });
     });
-    // ====== КАСТОМНЫЙ КУРСОР ======
+    // ====== КАСТОМНЫЙ КУРСОР (ОТКЛЮЧЁН — нативный курсор для производительности) ======
     (function() {
+      return; // disabled — using native OS cursor
       const arrowEl = document.getElementById('custom-cursor');
       const noEl    = document.getElementById('cursor-no');
       const ibeamEl = document.getElementById('cursor-ibeam');
