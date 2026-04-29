@@ -1547,29 +1547,77 @@
 
     .preview{
       position: relative;
-      height: 140px;
+      height: 170px;
       border-radius: 18px;
-      background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.15), transparent 60%),
-        rgba(0,0,0,0.35);
+      background:
+        radial-gradient(circle at 20% 25%, rgba(74,222,128,0.10), transparent 55%),
+        radial-gradient(circle at 80% 75%, rgba(255,200,58,0.08), transparent 55%),
+        linear-gradient(180deg, #0a1f14 0%, #061309 100%);
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.15);
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
+      box-shadow: inset 0 0 24px rgba(0,0,0,0.5);
+    }
+    .preview::before{
+      content:"";
+      position:absolute; inset:0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 22px 22px;
+      mask-image: radial-gradient(ellipse at center, #000 50%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse at center, #000 50%, transparent 100%);
+      pointer-events:none;
+    }
+    .preview .action-label{
+      position:absolute;
+      top:10px; left:50%; transform: translateX(-50%) translateY(-4px);
+      font-size: 11px; font-weight: 900; letter-spacing: 1.6px;
+      color:#fff;
+      padding: 4px 10px; border-radius: 999px;
+      background: linear-gradient(90deg, rgba(74,222,128,0.85), rgba(255,200,58,0.85));
+      box-shadow: 0 4px 14px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.4);
+      opacity: 0; pointer-events:none;
+      will-change: transform, opacity;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    }
+    .preview .progress-bar{
+      position:absolute; left:0; right:0; bottom:0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, rgba(74,222,128,0.95), rgba(255,200,58,0.95), transparent);
+      transform-origin: left center;
+      will-change: transform, opacity;
+      animation: progressSweep var(--anim-dur, 3s) linear infinite;
+      opacity: 0.85;
+    }
+    @keyframes progressSweep{
+      0% { transform: scaleX(0); opacity: 1; }
+      96% { transform: scaleX(1); opacity: 1; }
+      100% { transform: scaleX(1); opacity: 0; }
+    }
+    .showcase-card .showcase-caption{
+      font-size: 12px;
+      color: rgba(255,255,255,0.62);
+      margin: -6px 0 12px;
+      letter-spacing: 0.3px;
+      font-weight: 500;
+      line-height: 1.4;
     }
 
     .preview .ball{
       width: 38px;
       height: 38px;
       border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #ff8b8b, #d62828 60%, #8b0d0d 100%);
+      background: radial-gradient(circle at 35% 35%, #ffe5e5, #ff5252 55%, #8b0d0d 100%);
       position: absolute;
-      left: 20px;
+      left: 24px;
       top: 50%;
       transform: translateY(-50%);
       box-shadow:
-        0 8px 14px rgba(0,0,0,0.35),
-        0 0 16px rgba(255, 80, 80, 0.6),
-        inset 0 2px 4px rgba(255,255,255,0.6);
+        0 8px 16px rgba(0,0,0,0.4),
+        0 0 18px rgba(255, 80, 80, 0.55),
+        inset 0 2px 4px rgba(255,255,255,0.55);
       will-change: transform, opacity, filter;
+      z-index: 2;
     }
 
     .preview .ball--spawn{
@@ -1601,56 +1649,57 @@
 
     .preview .trail{
       position: absolute;
-      left: 20px;
+      left: 24px;
       top: 50%;
-      width: 120px;
-      height: 6px;
+      width: 130px;
+      height: 8px;
       border-radius: 999px;
-      background: linear-gradient(90deg, rgba(255, 190, 110, 0.9), transparent);
+      background: linear-gradient(90deg, rgba(255, 220, 130, 0.95), rgba(255, 140, 60, 0.5) 60%, transparent);
       opacity: 0;
-      transform: translateY(-50%);
-      filter: blur(1px);
+      transform: translateY(-50%) scaleX(0.2);
+      transform-origin: left center;
+      filter: blur(1.5px);
       will-change: transform, opacity;
     }
 
     .preview .flash{
       position: absolute;
-      left: 18px;
+      left: 22px;
       top: 50%;
-      width: 18px;
-      height: 18px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
-      background: radial-gradient(circle, #fff4c0, transparent 70%);
+      background: radial-gradient(circle, #fff4c0 0%, rgba(255,200,58,0.6) 40%, transparent 75%);
       opacity: 0;
-      transform: translateY(-50%) scale(0.6);
+      transform: translateY(-50%) scale(0.5);
       filter: blur(1px);
       will-change: transform, opacity;
     }
 
     .preview .afterimage{
       position: absolute;
-      left: 20px;
+      left: 24px;
       top: 50%;
       width: 38px;
       height: 38px;
       border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, rgba(255, 140, 140, 0.6), rgba(255, 80, 80, 0.2));
+      background: radial-gradient(circle at 35% 35%, rgba(255, 160, 160, 0.7), rgba(255, 80, 80, 0.15));
       transform: translateY(-50%);
       opacity: 0;
-      filter: blur(2px);
+      filter: blur(2.5px);
       will-change: transform, opacity;
     }
 
     .preview .dust{
       position: absolute;
-      left: 110px;
-      top: 62%;
-      width: 18px;
-      height: 6px;
+      left: 36px;
+      top: 70%;
+      width: 20px;
+      height: 8px;
       border-radius: 999px;
-      background: radial-gradient(circle, rgba(255, 230, 160, 0.8), transparent 70%);
+      background: radial-gradient(ellipse, rgba(255, 230, 160, 0.85), transparent 70%);
       opacity: 0;
-      filter: blur(1px);
+      filter: blur(1.2px);
       will-change: transform, opacity;
     }
 
@@ -1818,221 +1867,449 @@
       animation-play-state: paused !important;
     }
 
+    .showcase-card[data-anim="dash"]{ --anim-dur: 2.6s; }
     .showcase-card[data-anim="dash"] .ball{
-      animation: dashMove 1.5s ease-in-out infinite;
+      animation: dashMove 2.6s cubic-bezier(.8,.05,.2,1) infinite;
     }
-
     .showcase-card[data-anim="dash"] .trail{
-      animation: dashTrail 1.5s ease-in-out infinite;
+      animation: dashTrail 2.6s ease-in-out infinite;
     }
-
     .showcase-card[data-anim="dash"] .afterimage{
-      animation: dashAfter 1.5s ease-in-out infinite;
+      animation: dashAfter 2.6s ease-out infinite;
     }
-
     .showcase-card[data-anim="dash"] .dust{
-      animation: dashDust 1.5s ease-in-out infinite;
+      animation: dashDust 2.6s ease-out infinite;
     }
-
     .showcase-card[data-anim="dash"] .flash{
-      animation: dashFlash 1.5s ease-in-out infinite;
+      animation: dashFlash 2.6s ease-out infinite;
+    }
+    .showcase-card[data-anim="dash"] .action-label{
+      animation: actionLabelPop 2.6s ease-out infinite;
     }
 
+    .showcase-card[data-anim="parry"]{ --anim-dur: 3s; }
     .showcase-card[data-anim="parry"] .projectile{
-      animation: parryShot 2.4s ease-in-out infinite;
+      animation: parryShot 3s cubic-bezier(.4,0,.2,1) infinite;
     }
-
     .showcase-card[data-anim="parry"] .shield{
-      animation: parryShield 2.4s ease-in-out infinite;
+      animation: parryShield 3s ease-out infinite;
     }
-
     .showcase-card[data-anim="parry"] .shockwave-ring{
-      animation: parryRing 2.4s ease-in-out infinite;
+      animation: parryRing 3s ease-out infinite;
     }
-
     .showcase-card[data-anim="parry"] .spark{
-      animation: parrySpark 2.4s ease-in-out infinite;
+      animation: parrySpark 3s ease-out infinite;
     }
-
     .showcase-card[data-anim="parry"] .flash{
-      animation: parryFlash 2.4s ease-in-out infinite;
+      animation: parryFlash 3s ease-out infinite;
     }
-
     .showcase-card[data-anim="parry"] .sparkle{
-      animation: parrySparkle 2.4s ease-in-out infinite;
+      animation: parrySparkle 3s ease-out infinite;
+    }
+    .showcase-card[data-anim="parry"] .action-label{
+      animation: actionLabelPop 3s ease-out infinite;
+      animation-delay: 0.1s;
     }
 
+    .showcase-card[data-anim="hit"]{ --anim-dur: 2.4s; }
     .showcase-card[data-anim="hit"] .ball{
-      animation: hitStrike 1.8s ease-in-out infinite;
+      animation: hitStrike 2.4s cubic-bezier(.7,0,.3,1) infinite;
     }
-
     .showcase-card[data-anim="hit"] .enemy{
-      animation: hitEnemy 1.8s ease-in-out infinite;
+      animation: hitEnemy 2.4s ease-out infinite;
     }
-
     .showcase-card[data-anim="hit"] .impact-ring{
-      animation: hitRing 1.8s ease-in-out infinite;
+      animation: hitRing 2.4s ease-out infinite;
     }
-
     .showcase-card[data-anim="hit"] .impact-particle{
-      animation: hitParticle 1.8s ease-in-out infinite;
+      animation: hitParticle 2.4s ease-out infinite;
     }
-
     .showcase-card[data-anim="hit"] .preview{
-      animation: hitShake 1.8s ease-in-out infinite;
+      animation: hitShake 2.4s ease-in-out infinite;
+    }
+    .showcase-card[data-anim="hit"] .action-label{
+      animation: actionLabelPop 2.4s ease-out infinite;
+      animation-delay: 0.1s;
     }
 
+    .showcase-card[data-anim="spawn"]{ --anim-dur: 3s; }
     .showcase-card[data-anim="spawn"] .portal{
-      animation: spawnPortal 2.2s ease-in-out infinite;
+      animation: spawnPortal 3s ease-in-out infinite;
     }
-
     .showcase-card[data-anim="spawn"] .ball{
-      animation: spawnBall 2.2s ease-in-out infinite;
+      animation: spawnBall 3s cubic-bezier(.2,.7,.3,1) infinite;
+    }
+    .showcase-card[data-anim="spawn"] .spawn-aura{
+      animation: spawnAura 3s ease-out infinite;
+    }
+    .showcase-card[data-anim="spawn"] .action-label{
+      animation: actionLabelPop 3s ease-out infinite;
+      animation-delay: 0.5s;
     }
 
-    .showcase-card[data-anim="spawn"] .spawn-aura{
-      animation: spawnAura 2.2s ease-in-out infinite;
+    /* Common: action label pop-up */
+    @keyframes actionLabelPop{
+      0%, 25% { opacity: 0; transform: translateX(-50%) translateY(-4px) scale(0.9); }
+      32% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1.08); }
+      45% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+      75% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+      90% { opacity: 0; transform: translateX(-50%) translateY(-4px) scale(0.95); }
+      100% { opacity: 0; }
     }
 
     @keyframes dashMove{
-      0%, 18% { transform: translate(0, -50%) scale(1); }
-      24% { transform: translate(12px, -50%) scale(1.05); }
-      32% { transform: translate(110px, -50%) scale(1.02); }
-      40% { transform: translate(110px, -50%) scale(0.96); }
-      55% { transform: translate(110px, -50%) scale(1); }
-      78% { transform: translate(110px, -50%); }
+      0%, 22% { transform: translate(0, -50%) scaleX(1) scaleY(1); }
+      30% { transform: translate(-4px, -50%) scaleX(0.85) scaleY(1.1); }
+      36% { transform: translate(140px, -50%) scaleX(1.15) scaleY(0.9); }
+      45% { transform: translate(140px, -50%) scaleX(1) scaleY(1); }
+      75% { transform: translate(140px, -50%); }
+      88% { transform: translate(140px, -50%); }
       100% { transform: translate(0, -50%); }
     }
 
     @keyframes dashTrail{
-      0%, 20% { opacity: 0; transform: translateY(-50%) scaleX(0.3); }
-      32% { opacity: 1; transform: translateY(-50%) scaleX(1.1); }
-      52% { opacity: 0; transform: translateY(-50%) scaleX(0.4); }
-      100% { opacity: 0; }
+      0%, 28% { opacity: 0; transform: translateY(-50%) scaleX(0.1); }
+      36% { opacity: 1; transform: translateY(-50%) scaleX(1); }
+      55% { opacity: 0; transform: translateY(-50%) scaleX(1); }
+      100% { opacity: 0; transform: translateY(-50%) scaleX(0.1); }
     }
 
     @keyframes dashAfter{
-      0%, 18% { opacity: 0; transform: translate(0, -50%); }
-      30% { opacity: 0.7; transform: translate(70px, -50%); }
-      44% { opacity: 0; transform: translate(92px, -50%); }
+      0%, 28% { opacity: 0; transform: translate(0, -50%) scale(1); }
+      36% { opacity: 0.65; transform: translate(60px, -50%) scale(0.95); }
+      48% { opacity: 0; transform: translate(120px, -50%) scale(0.85); }
       100% { opacity: 0; }
     }
 
     @keyframes dashDust{
-      0%, 34% { opacity: 0; transform: translate(0, 0); }
-      44% { opacity: 1; transform: translate(10px, 2px) scale(1.1); }
-      68% { opacity: 0; transform: translate(18px, 5px) scale(1.4); }
+      0%, 30% { opacity: 0; transform: translate(0, 0) scale(0.8); }
+      40% { opacity: 1; transform: translate(-6px, 3px) scale(1.2); }
+      62% { opacity: 0; transform: translate(-16px, 8px) scale(1.6); }
       100% { opacity: 0; }
     }
 
     @keyframes dashFlash{
-      0%, 20% { opacity: 0; transform: translateY(-50%) scale(0.6); }
-      26% { opacity: 1; transform: translateY(-50%) scale(1.2); }
-      40% { opacity: 0; transform: translateY(-50%) scale(1.6); }
+      0%, 26% { opacity: 0; transform: translateY(-50%) scale(0.4); }
+      32% { opacity: 1; transform: translateY(-50%) scale(1.6); }
+      42% { opacity: 0; transform: translateY(-50%) scale(2); }
       100% { opacity: 0; }
     }
 
     @keyframes parryShot{
-      0% { transform: translate(0, 0); opacity: 0; }
-      10% { opacity: 1; }
-      42% { transform: translate(-95px, -2px); opacity: 1; }
-      46% { transform: translate(-95px, -2px); opacity: 1; }
-      60% { transform: translate(80px, -18px); opacity: 1; }
-      85% { transform: translate(130px, -26px); opacity: 0; }
+      0%, 8% { transform: translate(0, 0); opacity: 0; }
+      14% { opacity: 1; transform: translate(0, 0); }
+      40% { transform: translate(-110px, -2px); opacity: 1; }
+      44% { transform: translate(-110px, -2px); opacity: 1; }
+      60% { transform: translate(80px, -22px); opacity: 1; }
+      78% { transform: translate(140px, -32px); opacity: 0; }
       100% { opacity: 0; }
     }
 
     @keyframes parryShield{
       0%, 36% { opacity: 0; transform: translateY(-50%) scale(0.7); }
-      42% { opacity: 1; transform: translateY(-50%) scale(1); }
-      58% { opacity: 0; transform: translateY(-50%) scale(1.3); }
+      42% { opacity: 1; transform: translateY(-50%) scale(1.05); }
+      52% { opacity: 1; transform: translateY(-50%) scale(1); }
+      62% { opacity: 0; transform: translateY(-50%) scale(1.4); }
       100% { opacity: 0; }
     }
 
     @keyframes parryRing{
       0%, 40% { opacity: 0; transform: translateY(-50%) scale(0.6); }
-      50% { opacity: 0.9; transform: translateY(-50%) scale(1.1); }
-      70% { opacity: 0; transform: translateY(-50%) scale(1.6); }
+      48% { opacity: 0.95; transform: translateY(-50%) scale(1.1); }
+      68% { opacity: 0; transform: translateY(-50%) scale(2); }
       100% { opacity: 0; }
     }
 
     @keyframes parrySpark{
       0%, 41% { opacity: 0; transform: translate(0, 0); }
-      52% { opacity: 1; transform: translate(14px, -10px); }
-      72% { opacity: 0; transform: translate(22px, -16px); }
+      50% { opacity: 1; transform: translate(20px, -14px); }
+      68% { opacity: 0; transform: translate(34px, -22px); }
       100% { opacity: 0; }
     }
 
     @keyframes parryFlash{
-      0%, 40% { opacity: 0; transform: translateY(-50%) scale(0.6); }
-      46% { opacity: 1; transform: translateY(-50%) scale(1.4); }
-      55% { opacity: 0; transform: translateY(-50%) scale(1.8); }
+      0%, 40% { opacity: 0; transform: translateY(-50%) scale(0.4); }
+      45% { opacity: 1; transform: translateY(-50%) scale(1.6); }
+      55% { opacity: 0; transform: translateY(-50%) scale(2.2); }
       100% { opacity: 0; }
     }
 
     @keyframes parrySparkle{
       0%, 44% { opacity: 0; transform: translate(0, 0); }
-      52% { opacity: 1; transform: translate(10px, 6px); }
-      70% { opacity: 0; transform: translate(18px, 12px); }
+      52% { opacity: 1; transform: translate(16px, 12px); }
+      70% { opacity: 0; transform: translate(28px, 22px); }
       100% { opacity: 0; }
     }
 
     @keyframes hitStrike{
-      0%, 25% { transform: translate(0, -50%); }
-      40% { transform: translate(60px, -50%) scale(1.05); }
-      48% { transform: translate(70px, -50%) scale(0.95); }
-      70% { transform: translate(20px, -50%); }
+      0%, 22% { transform: translate(0, -50%) scale(1); }
+      30% { transform: translate(-8px, -50%) scale(0.9); }
+      42% { transform: translate(78px, -50%) scale(1.15); }
+      48% { transform: translate(78px, -50%) scale(1); }
+      55% { transform: translate(78px, -50%) scale(1); }
+      78% { transform: translate(20px, -50%); }
       100% { transform: translate(0, -50%); }
     }
 
     @keyframes hitEnemy{
-      0%, 40% { transform: translateY(-50%) rotate(45deg); opacity: 1; }
-      55% { transform: translate(-20px, -60%) rotate(20deg); opacity: 1; }
-      75% { transform: translate(-40px, -80%) rotate(-10deg); opacity: 0; }
-      100% { opacity: 0; }
+      0%, 38% { transform: translateY(-50%) rotate(45deg) scale(1); opacity: 1; }
+      45% { transform: translateY(-50%) rotate(45deg) scale(1.1); opacity: 1; }
+      52% { transform: translate(0, -55%) rotate(60deg) scale(1.05); opacity: 1; }
+      62% { transform: translate(34px, -65%) rotate(80deg) scale(0.9); opacity: 1; }
+      78% { transform: translate(60px, -90%) rotate(140deg) scale(0.6); opacity: 0; }
+      100% { opacity: 0; transform: translateY(-50%) rotate(45deg); }
     }
 
     @keyframes hitRing{
-      0%, 45% { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
-      55% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-      75% { opacity: 0; transform: translate(-50%, -50%) scale(1.4); }
+      0%, 43% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+      52% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      70% { opacity: 0; transform: translate(-50%, -50%) scale(1.8); }
       100% { opacity: 0; }
     }
 
     @keyframes hitParticle{
-      0%, 45% { opacity: 0; transform: translate(-50%, -50%); }
-      55% { opacity: 1; transform: translate(-50%, -50%) translate(18px, -10px); }
-      70% { opacity: 0; transform: translate(-50%, -50%) translate(30px, -16px); }
+      0%, 43% { opacity: 0; transform: translate(-50%, -50%); }
+      52% { opacity: 1; transform: translate(-50%, -50%) translate(24px, -14px); }
+      68% { opacity: 0; transform: translate(-50%, -50%) translate(40px, -24px); }
       100% { opacity: 0; }
     }
 
     @keyframes hitShake{
-      0%, 40%, 100% { transform: translate(0, 0); }
-      50% { transform: translate(-2px, 1px); }
-      55% { transform: translate(2px, -1px); }
-      60% { transform: translate(-1px, 2px); }
+      0%, 42%, 70%, 100% { transform: translate(0, 0); }
+      45% { transform: translate(-3px, 1px); }
+      48% { transform: translate(3px, -2px); }
+      52% { transform: translate(-2px, 2px); }
+      56% { transform: translate(2px, -1px); }
+      60% { transform: translate(-1px, 1px); }
     }
 
     @keyframes spawnPortal{
-      0%, 25% { opacity: 0; transform: translate(-50%, -50%) scale(0.6) rotate(0deg); }
-      40% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(90deg); }
-      70% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1) rotate(180deg); }
-      100% { opacity: 0; transform: translate(-50%, -50%) scale(0.6) rotate(240deg); }
+      0%, 18% { opacity: 0; transform: translate(-50%, -50%) scale(0.4) rotate(0deg); }
+      30% { opacity: 1; transform: translate(-50%, -50%) scale(1.1) rotate(120deg); }
+      55% { opacity: 0.95; transform: translate(-50%, -50%) scale(1.15) rotate(220deg); }
+      75% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.05) rotate(300deg); }
+      90% { opacity: 0; transform: translate(-50%, -50%) scale(0.5) rotate(380deg); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(0.4) rotate(380deg); }
     }
 
     @keyframes spawnBall{
-      0%, 35% { opacity: 0; transform: translate(-50%, -50%) scale(0.2); filter: blur(6px); }
-      50% { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); }
-      65% { transform: translate(-50%, -58%) scale(1.05); }
-      80% { transform: translate(-50%, -50%) scale(1); }
-      100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      0%, 35% { opacity: 0; transform: translate(-50%, -50%) scale(0.1); filter: blur(8px) brightness(1.6); }
+      48% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); filter: blur(0) brightness(1.3); }
+      55% { transform: translate(-50%, -50%) scale(0.95); }
+      62% { transform: translate(-50%, -50%) scale(1.02); filter: blur(0) brightness(1); }
+      80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0) brightness(1); }
     }
 
     @keyframes spawnAura{
-      0%, 45% { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
-      60% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.1); }
-      85% { opacity: 0; transform: translate(-50%, -50%) scale(1.4); }
+      0%, 38% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+      48% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      72% { opacity: 0; transform: translate(-50%, -50%) scale(1.8); }
       100% { opacity: 0; }
+    }
+
+    /* === COMBO ANIMATION === */
+    .preview .combo-counter{
+      position: absolute;
+      top: 14px; right: 16px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #FFEFA8, #FFC83A 50%, #C49100);
+      color: #1a0f00;
+      font-size: 13px; font-weight: 900;
+      letter-spacing: 0.5px;
+      box-shadow: 0 6px 18px rgba(255,200,58,0.45), inset 0 1px 0 rgba(255,255,255,0.5);
+      opacity: 0;
+      transform: translateY(-4px) scale(0.85);
+      will-change: transform, opacity;
+      z-index: 3;
+    }
+    .preview .combo-ghost{
+      position: absolute;
+      left: 24px; top: 50%;
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, rgba(255, 220, 130, 0.55), rgba(255, 140, 60, 0.18));
+      transform: translateY(-50%);
+      opacity: 0;
+      filter: blur(2px);
+      will-change: transform, opacity;
+    }
+    .showcase-card[data-anim="combo"]{ --anim-dur: 3.2s; }
+    .showcase-card[data-anim="combo"] .ball{
+      animation: comboBall 3.2s cubic-bezier(.7,0,.3,1) infinite;
+    }
+    .showcase-card[data-anim="combo"] .combo-ghost.g1{
+      animation: comboGhost1 3.2s ease-out infinite;
+    }
+    .showcase-card[data-anim="combo"] .combo-ghost.g2{
+      animation: comboGhost2 3.2s ease-out infinite;
+    }
+    .showcase-card[data-anim="combo"] .combo-ghost.g3{
+      animation: comboGhost3 3.2s ease-out infinite;
+    }
+    .showcase-card[data-anim="combo"] .combo-counter{
+      animation: comboCount 3.2s ease-out infinite;
+    }
+    .showcase-card[data-anim="combo"] .action-label{
+      animation: actionLabelPop 3.2s ease-out infinite;
+      animation-delay: 0.1s;
+    }
+    @keyframes comboBall{
+      0%, 8%   { transform: translate(0, -50%); }
+      18%      { transform: translate(60px, -50%) scale(1.05); }
+      26%      { transform: translate(60px, -50%) scale(1); }
+      36%      { transform: translate(120px, -50%) scale(1.05); }
+      44%      { transform: translate(120px, -50%) scale(1); }
+      54%      { transform: translate(170px, -50%) scale(1.1); }
+      62%      { transform: translate(170px, -50%) scale(1); }
+      85%      { transform: translate(170px, -50%); }
+      100%     { transform: translate(0, -50%); }
+    }
+    @keyframes comboGhost1{
+      0%, 14% { opacity: 0; transform: translate(0, -50%); }
+      20%     { opacity: 0.7; transform: translate(40px, -50%); }
+      36%     { opacity: 0; transform: translate(60px, -50%); }
+      100%    { opacity: 0; }
+    }
+    @keyframes comboGhost2{
+      0%, 28% { opacity: 0; transform: translate(60px, -50%); }
+      36%     { opacity: 0.7; transform: translate(100px, -50%); }
+      52%     { opacity: 0; transform: translate(120px, -50%); }
+      100%    { opacity: 0; }
+    }
+    @keyframes comboGhost3{
+      0%, 46% { opacity: 0; transform: translate(120px, -50%); }
+      54%     { opacity: 0.7; transform: translate(150px, -50%); }
+      72%     { opacity: 0; transform: translate(170px, -50%); }
+      100%    { opacity: 0; }
+    }
+    @keyframes comboCount{
+      0%, 14% { opacity: 0; transform: translateY(-4px) scale(0.85); }
+      22%     { opacity: 1; transform: translateY(0) scale(1.15); }
+      30%     { opacity: 1; transform: translateY(0) scale(1); }
+      40%     { opacity: 1; transform: translateY(0) scale(1.15); }
+      48%     { opacity: 1; transform: translateY(0) scale(1); }
+      58%     { opacity: 1; transform: translateY(0) scale(1.25); }
+      66%     { opacity: 1; transform: translateY(0) scale(1.05); }
+      85%     { opacity: 1; transform: translateY(0) scale(1.05); }
+      95%     { opacity: 0; transform: translateY(-4px) scale(0.9); }
+      100%    { opacity: 0; }
+    }
+
+    /* === SHIELD BREAK ANIMATION === */
+    .preview .shield-bubble{
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 70px; height: 70px;
+      border-radius: 50%;
+      border: 2.5px solid rgba(120, 220, 255, 0.85);
+      box-shadow: 0 0 22px rgba(120, 220, 255, 0.6), inset 0 0 20px rgba(120, 220, 255, 0.25);
+      transform: translate(-50%, -50%) scale(1);
+      will-change: transform, opacity, border-color;
+      background: radial-gradient(circle at 35% 30%, rgba(180, 240, 255, 0.18), transparent 60%);
+    }
+    .preview .shield-bubble::after{
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      border: 1px solid rgba(180, 240, 255, 0.4);
+      pointer-events: none;
+    }
+    .preview .shield-crack{
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 60px; height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.95) 50%, transparent);
+      transform: translate(-50%, -50%) rotate(0deg);
+      opacity: 0;
+      filter: drop-shadow(0 0 4px rgba(180, 240, 255, 0.9));
+      will-change: opacity, transform;
+    }
+    .preview .shield-shard{
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 14px; height: 6px;
+      border-radius: 2px;
+      background: linear-gradient(135deg, rgba(180, 240, 255, 0.95), rgba(80, 180, 230, 0.6));
+      box-shadow: 0 0 8px rgba(120, 220, 255, 0.7);
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+    .preview .shield-incoming{
+      position: absolute;
+      right: 14px; top: 50%;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ff8a8a, #c41818);
+      box-shadow: 0 0 14px rgba(255, 80, 80, 0.85);
+      transform: translateY(-50%);
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+    .showcase-card[data-anim="shield-break"]{ --anim-dur: 3.2s; }
+    .showcase-card[data-anim="shield-break"] .ball{
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .showcase-card[data-anim="shield-break"] .shield-bubble{
+      animation: sbBubble 3.2s ease-out infinite;
+    }
+    .showcase-card[data-anim="shield-break"] .shield-incoming{
+      animation: sbIncoming 3.2s cubic-bezier(.4,0,.2,1) infinite;
+    }
+    .showcase-card[data-anim="shield-break"] .shield-crack{
+      animation: sbCrack 3.2s ease-out infinite;
+    }
+    .showcase-card[data-anim="shield-break"] .shield-crack.c2{
+      animation-delay: 0.04s;
+      transform: translate(-50%, -50%) rotate(60deg);
+    }
+    .showcase-card[data-anim="shield-break"] .shield-crack.c3{
+      animation-delay: 0.08s;
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+    .showcase-card[data-anim="shield-break"] .shield-shard{
+      animation: sbShard 3.2s ease-out infinite;
+    }
+    .showcase-card[data-anim="shield-break"] .shield-shard.s1{ --sx: -42px; --sy: -18px; --sr: -45deg; }
+    .showcase-card[data-anim="shield-break"] .shield-shard.s2{ --sx: 38px; --sy: -22px; --sr: 50deg; }
+    .showcase-card[data-anim="shield-break"] .shield-shard.s3{ --sx: -34px; --sy: 24px; --sr: -120deg; }
+    .showcase-card[data-anim="shield-break"] .shield-shard.s4{ --sx: 42px; --sy: 20px; --sr: 110deg; }
+    .showcase-card[data-anim="shield-break"] .shield-shard.s5{ --sx: 0; --sy: -32px; --sr: 0deg; }
+    .showcase-card[data-anim="shield-break"] .action-label{
+      animation: actionLabelPop 3.2s ease-out infinite;
+      animation-delay: 0.05s;
+    }
+    @keyframes sbBubble{
+      0%, 30%  { opacity: 0.85; transform: translate(-50%, -50%) scale(1); border-color: rgba(120, 220, 255, 0.85); }
+      40%      { opacity: 1; transform: translate(-50%, -50%) scale(1.06); border-color: rgba(255, 230, 130, 0.95); }
+      48%      { opacity: 1; transform: translate(-50%, -50%) scale(0.98); border-color: rgba(255, 180, 90, 0.9); }
+      52%      { opacity: 0; transform: translate(-50%, -50%) scale(1.4); }
+      85%      { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+      92%      { opacity: 0.85; transform: translate(-50%, -50%) scale(1); }
+      100%     { opacity: 0.85; transform: translate(-50%, -50%) scale(1); }
+    }
+    @keyframes sbIncoming{
+      0%, 12%  { opacity: 0; transform: translate(0, -50%); }
+      18%      { opacity: 1; transform: translate(0, -50%); }
+      40%      { opacity: 1; transform: translate(-100px, -50%); }
+      46%      { opacity: 0; transform: translate(-100px, -50%); }
+      100%     { opacity: 0; }
+    }
+    @keyframes sbCrack{
+      0%, 38% { opacity: 0; }
+      45%     { opacity: 1; }
+      52%     { opacity: 0; }
+      100%    { opacity: 0; }
+    }
+    @keyframes sbShard{
+      0%, 45% { opacity: 0; transform: translate(-50%, -50%) rotate(0); }
+      52%     { opacity: 1; transform: translate(calc(-50% + var(--sx, 0) * 0.4), calc(-50% + var(--sy, 0) * 0.4)) rotate(calc(var(--sr, 0deg) * 0.5)); }
+      72%     { opacity: 0; transform: translate(calc(-50% + var(--sx, 0)), calc(-50% + var(--sy, 0))) rotate(var(--sr, 0deg)); }
+      100%    { opacity: 0; }
     }
 
     .demo-reel{
@@ -5682,20 +5959,25 @@ svg.ic-svg-login {
 
       <div class="showcase-grid">
         <div class="showcase-card" data-anim="dash">
-          <div class="showcase-title-mini" data-i18n="showcase-dash">Dash</div>
+          <div class="showcase-title-mini" data-i18n="showcase-dash">Рывок</div>
+          <div class="showcase-caption" data-i18n="showcase-desc-dash">Мгновенный рывок с трейлом и пыльным следом.</div>
           <div class="preview">
+            <span class="action-label" data-i18n="showcase-label-dash">DASH</span>
             <div class="ball"><span class="orb-crown">👑</span></div>
             <div class="trail"></div>
             <div class="afterimage"></div>
             <div class="dust"></div>
             <div class="flash"></div>
+            <div class="progress-bar"></div>
           </div>
           <button class="scene-toggle" type="button" data-i18n="pause">Пауза</button>
         </div>
 
         <div class="showcase-card" data-anim="parry">
-          <div class="showcase-title-mini" data-i18n="showcase-parry">Parry</div>
+          <div class="showcase-title-mini" data-i18n="showcase-parry">Парирование</div>
+          <div class="showcase-caption" data-i18n="showcase-desc-parry">Отбить снаряд щитом — взрыв света и искры.</div>
           <div class="preview">
+            <span class="action-label" data-i18n="showcase-label-parry">PARRY</span>
             <div class="ball"><span class="orb-crown">👑</span></div>
             <div class="projectile"></div>
             <div class="shield"></div>
@@ -5703,29 +5985,72 @@ svg.ic-svg-login {
             <div class="spark"></div>
             <div class="flash"></div>
             <div class="sparkle"></div>
+            <div class="progress-bar"></div>
           </div>
           <button class="scene-toggle" type="button" data-i18n="pause">Пауза</button>
         </div>
 
         <div class="showcase-card" data-anim="hit">
-          <div class="showcase-title-mini" data-i18n="showcase-hit">Hit FX</div>
+          <div class="showcase-title-mini" data-i18n="showcase-hit">Удар</div>
+          <div class="showcase-caption" data-i18n="showcase-desc-hit">Контакт, тряска экрана, отлёт врага.</div>
           <div class="preview">
+            <span class="action-label" data-i18n="showcase-label-hit">HIT!</span>
             <div class="ball">
               <span class="orb-crown">👑</span>
               <div class="impact-ring"></div>
               <div class="impact-particle"></div>
             </div>
             <div class="enemy"></div>
+            <div class="progress-bar"></div>
           </div>
           <button class="scene-toggle" type="button" data-i18n="pause">Пауза</button>
         </div>
 
         <div class="showcase-card" data-anim="spawn">
-          <div class="showcase-title-mini" data-i18n="showcase-spawn">Spawn</div>
+          <div class="showcase-title-mini" data-i18n="showcase-spawn">Появление</div>
+          <div class="showcase-caption" data-i18n="showcase-desc-spawn">Портал открывается — игрок материализуется.</div>
           <div class="preview">
+            <span class="action-label" data-i18n="showcase-label-spawn">SPAWN</span>
             <div class="portal"></div>
             <div class="ball ball--spawn"><span class="orb-crown">👑</span></div>
             <div class="spawn-aura"></div>
+            <div class="progress-bar"></div>
+          </div>
+          <button class="scene-toggle" type="button" data-i18n="pause">Пауза</button>
+        </div>
+
+        <div class="showcase-card" data-anim="combo">
+          <div class="showcase-title-mini" data-i18n="showcase-combo">Комбо</div>
+          <div class="showcase-caption" data-i18n="showcase-desc-combo">Цепочка из трёх рывков — счётчик копит «x3».</div>
+          <div class="preview">
+            <span class="action-label" data-i18n="showcase-label-combo">COMBO</span>
+            <div class="combo-counter" data-i18n="showcase-combo-x">x3</div>
+            <div class="combo-ghost g1"></div>
+            <div class="combo-ghost g2"></div>
+            <div class="combo-ghost g3"></div>
+            <div class="ball"><span class="orb-crown">👑</span></div>
+            <div class="progress-bar"></div>
+          </div>
+          <button class="scene-toggle" type="button" data-i18n="pause">Пауза</button>
+        </div>
+
+        <div class="showcase-card" data-anim="shield-break">
+          <div class="showcase-title-mini" data-i18n="showcase-shield-break">Разлом щита</div>
+          <div class="showcase-caption" data-i18n="showcase-desc-shield-break">Снаряд пробивает щит — осколки летят во все стороны.</div>
+          <div class="preview">
+            <span class="action-label" data-i18n="showcase-label-shield-break">BREAK!</span>
+            <div class="shield-bubble"></div>
+            <div class="ball"><span class="orb-crown">👑</span></div>
+            <div class="shield-incoming"></div>
+            <div class="shield-crack c1"></div>
+            <div class="shield-crack c2"></div>
+            <div class="shield-crack c3"></div>
+            <div class="shield-shard s1"></div>
+            <div class="shield-shard s2"></div>
+            <div class="shield-shard s3"></div>
+            <div class="shield-shard s4"></div>
+            <div class="shield-shard s5"></div>
+            <div class="progress-bar"></div>
           </div>
           <button class="scene-toggle" type="button" data-i18n="pause">Пауза</button>
         </div>
@@ -6007,11 +6332,6 @@ svg.ic-svg-login {
         <a class="social-btn social-btn-discord" id="socialBtnDiscord" style="--sb-color:#5865F2; --sb-glow:rgba(88,101,242,0.45);" href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.369A19.791 19.791 0 0 0 16.558 3a14.3 14.3 0 0 0-.7 1.44 18.27 18.27 0 0 0-5.72 0A13.2 13.2 0 0 0 9.444 3 19.72 19.72 0 0 0 5.68 4.37C2.78 8.88 2 13.27 2.39 17.58a19.96 19.96 0 0 0 6.07 3.08c.49-.67.92-1.39 1.29-2.14-.71-.27-1.39-.6-2.03-1 .17-.12.34-.25.5-.39 3.94 1.82 8.19 1.82 12.08 0 .17.14.33.27.5.39-.64.4-1.32.73-2.03 1 .37.75.8 1.47 1.29 2.14a19.96 19.96 0 0 0 6.07-3.08c.46-5.02-.77-9.36-3.32-13.21ZM9.68 15.33c-1.18 0-2.15-1.09-2.15-2.43 0-1.34.95-2.43 2.15-2.43s2.17 1.09 2.15 2.43c0 1.34-.95 2.43-2.15 2.43Zm4.64 0c-1.18 0-2.15-1.09-2.15-2.43 0-1.34.95-2.43 2.15-2.43s2.17 1.09 2.15 2.43c0 1.34-.95 2.43-2.15 2.43Z"/></svg>
           <span>Discord</span>
-          <span class="dc-live" id="discordLive" hidden>
-            <span class="dc-live-dot" aria-hidden="true"></span>
-            <span class="dc-live-num" id="discordOnline">—</span>
-            <span class="dc-live-label" data-i18n="discord-online">онлайн</span>
-          </span>
         </a>
         <a class="social-btn" style="--sb-color:#ff0033; --sb-glow:rgba(255,0,51,0.4);" href="https://www.youtube.com/@crownbit-u5o" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3.01 3.01 0 0 0-2.12-2.13C19.52 3.5 12 3.5 12 3.5s-7.52 0-9.38.57A3.01 3.01 0 0 0 .5 6.2C0 8.08 0 12 0 12s0 3.92.5 5.8a3.01 3.01 0 0 0 2.12 2.13c1.86.57 9.38.57 9.38.57s7.52 0 9.38-.57a3.01 3.01 0 0 0 2.12-2.13C24 15.92 24 12 24 12s0-3.92-.5-5.8ZM9.6 15.6V8.4l6.24 3.6-6.24 3.6Z"/></svg>
@@ -9753,33 +10073,6 @@ svg.ic-svg-login {
         });
       })();
 
-      // Live Discord member counter (no auth, public invite endpoint with CORS)
-      (function bootDiscordLive(){
-        const live = document.getElementById('discordLive');
-        const onlineEl = document.getElementById('discordOnline');
-        const btn = document.getElementById('socialBtnDiscord');
-        if (!live || !onlineEl || !btn) return;
-        const fmt = (n) => (typeof Intl !== 'undefined' ? new Intl.NumberFormat().format(n) : String(n));
-        async function refresh(){
-          try{
-            const r = await fetch('https://discord.com/api/v10/invites/kSVnmDRqDs?with_counts=true', { credentials: 'omit', cache: 'no-store' });
-            if (!r.ok) return;
-            const d = await r.json();
-            const online = d.approximate_presence_count;
-            const total  = d.approximate_member_count;
-            if (typeof online !== 'number' || typeof total !== 'number') return;
-            onlineEl.textContent = fmt(online);
-            const lang = (typeof currentLang !== 'undefined' ? currentLang : 'en');
-            const membersWord = (translations[lang] && translations[lang]['discord-members']) || 'members';
-            const onlineWord  = (translations[lang] && translations[lang]['discord-online'])  || 'online';
-            btn.title = `${fmt(total)} ${membersWord} · ${fmt(online)} ${onlineWord}`;
-            live.hidden = false;
-          }catch(_){ /* offline / blocked — keep pill hidden */ }
-        }
-        refresh();
-        setInterval(refresh, 60000);
-      })();
-
       const followDev = document.querySelector('.follow-dev-container');
       if (followDev) {
         followDev.style.transitionDelay = '160ms';
@@ -11399,6 +11692,22 @@ verifySession();
       'tfa-challenge-title': 'Введи код 2FA',
       'tfa-challenge-text': 'Открой приложение-аутентификатор и впиши 6-значный код для «Evades 3».',
       'tfa-challenge-submit': 'Войти'
+    ,
+      'showcase-combo': 'Комбо',
+      'showcase-shield-break': 'Разлом щита',
+      'showcase-desc-dash': 'Мгновенный рывок с трейлом и пыльным следом.',
+      'showcase-desc-parry': 'Отбить снаряд щитом — взрыв света и искры.',
+      'showcase-desc-hit': 'Контакт, тряска экрана, отлёт врага.',
+      'showcase-desc-spawn': 'Портал открывается — игрок материализуется.',
+      'showcase-desc-combo': 'Цепочка из трёх рывков — счётчик копит «x3».',
+      'showcase-desc-shield-break': 'Снаряд пробивает щит — осколки летят во все стороны.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       en: {
@@ -11555,6 +11864,22 @@ verifySession();
       'tfa-challenge-title': 'Enter your 2FA code',
       'tfa-challenge-text': 'Open your authenticator app and type the 6-digit code for "Evades 3".',
       'tfa-challenge-submit': 'Sign in'
+    ,
+      'showcase-combo': 'Combo',
+      'showcase-shield-break': 'Shield Break',
+      'showcase-desc-dash': 'Instant dash with a streak and dust kick-up.',
+      'showcase-desc-parry': 'Block a projectile with a shield — burst of light and sparks.',
+      'showcase-desc-hit': 'Contact, screen shake, enemy launched away.',
+      'showcase-desc-spawn': 'A portal opens — the player materializes.',
+      'showcase-desc-combo': 'A chain of three dashes — the counter racks up "x3".',
+      'showcase-desc-shield-break': 'A projectile breaks the shield — shards fly out.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       uk: {
@@ -11711,6 +12036,22 @@ verifySession();
       'tfa-challenge-title': 'Введи код 2FA',
       'tfa-challenge-text': 'Відкрий застосунок-автентифікатор і введи 6-значний код для «Evades 3».',
       'tfa-challenge-submit': 'Увійти'
+    ,
+      'showcase-combo': 'Комбо',
+      'showcase-shield-break': 'Розлам щита',
+      'showcase-desc-dash': 'Миттєвий ривок з трейлом і пиловим слідом.',
+      'showcase-desc-parry': 'Відбити снаряд щитом — спалах світла та іскри.',
+      'showcase-desc-hit': 'Контакт, тремтіння екрана, відліт ворога.',
+      'showcase-desc-spawn': 'Портал відкривається — гравець матеріалізується.',
+      'showcase-desc-combo': 'Ланцюжок із трьох ривків — лічильник копить «x3».',
+      'showcase-desc-shield-break': 'Снаряд пробиває щит — уламки летять навсібіч.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       de: {
@@ -11850,6 +12191,22 @@ verifySession();
       'tfa-challenge-title': 'Gib deinen 2FA-Code ein',
       'tfa-challenge-text': 'Öffne die Authenticator-App und gib den 6-stelligen Code für „Evades 3" ein.',
       'tfa-challenge-submit': 'Anmelden'
+    ,
+      'showcase-combo': 'Combo',
+      'showcase-shield-break': 'Schildbruch',
+      'showcase-desc-dash': 'Sofortiger Dash mit Spur und Staubwolke.',
+      'showcase-desc-parry': 'Geschoss mit Schild abblocken — Lichtblitz und Funken.',
+      'showcase-desc-hit': 'Treffer, Bildschirmbeben, Gegner wird weggeschleudert.',
+      'showcase-desc-spawn': 'Ein Portal öffnet sich — der Spieler materialisiert.',
+      'showcase-desc-combo': 'Drei Dashes in Folge — der Zähler steigt auf „x3".',
+      'showcase-desc-shield-break': 'Geschoss zerbricht das Schild — Splitter fliegen weg.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       es: {
@@ -11989,6 +12346,22 @@ verifySession();
       'tfa-challenge-title': 'Introduce tu código 2FA',
       'tfa-challenge-text': 'Abre tu app autenticadora y escribe el código de 6 dígitos para «Evades 3».',
       'tfa-challenge-submit': 'Iniciar sesión'
+    ,
+      'showcase-combo': 'Combo',
+      'showcase-shield-break': 'Escudo roto',
+      'showcase-desc-dash': 'Dash instantáneo con estela y polvo.',
+      'showcase-desc-parry': 'Bloquea un proyectil con escudo — luz y chispas.',
+      'showcase-desc-hit': 'Contacto, sacudida de pantalla, enemigo lanzado.',
+      'showcase-desc-spawn': 'Se abre un portal — el jugador se materializa.',
+      'showcase-desc-combo': 'Cadena de tres dashes — el contador sube a «x3».',
+      'showcase-desc-shield-break': 'El proyectil rompe el escudo — los fragmentos vuelan.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       fr: {
@@ -12128,6 +12501,22 @@ verifySession();
       'tfa-challenge-title': 'Saisis ton code 2FA',
       'tfa-challenge-text': 'Ouvre ton appli d\'authentification et tape le code à 6 chiffres pour « Evades 3 ».',
       'tfa-challenge-submit': 'Se connecter'
+    ,
+      'showcase-combo': 'Combo',
+      'showcase-shield-break': 'Bouclier brisé',
+      'showcase-desc-dash': 'Dash instantané avec traînée et nuage de poussière.',
+      'showcase-desc-parry': 'Parer un projectile avec un bouclier — éclat et étincelles.',
+      'showcase-desc-hit': 'Contact, secousse de l\'écran, ennemi projeté.',
+      'showcase-desc-spawn': 'Un portail s\'ouvre — le joueur se matérialise.',
+      'showcase-desc-combo': 'Chaîne de trois dashes — le compteur monte à « x3 ».',
+      'showcase-desc-shield-break': 'Le projectile brise le bouclier — les éclats volent.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       it: {
@@ -12267,6 +12656,22 @@ verifySession();
       'tfa-challenge-title': 'Inserisci il codice 2FA',
       'tfa-challenge-text': 'Apri l\'app autenticatrice e digita il codice a 6 cifre per «Evades 3».',
       'tfa-challenge-submit': 'Accedi'
+    ,
+      'showcase-combo': 'Combo',
+      'showcase-shield-break': 'Scudo rotto',
+      'showcase-desc-dash': 'Scatto istantaneo con scia e polvere.',
+      'showcase-desc-parry': 'Para un proiettile con lo scudo — luce e scintille.',
+      'showcase-desc-hit': 'Contatto, scossone, nemico scagliato via.',
+      'showcase-desc-spawn': 'Un portale si apre — il giocatore si materializza.',
+      'showcase-desc-combo': 'Catena di tre scatti — il contatore sale a «x3».',
+      'showcase-desc-shield-break': 'Il proiettile rompe lo scudo — schegge ovunque.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       pt: {
@@ -12406,6 +12811,22 @@ verifySession();
       'tfa-challenge-title': 'Digite seu código 2FA',
       'tfa-challenge-text': 'Abra seu app autenticador e digite o código de 6 dígitos para "Evades 3".',
       'tfa-challenge-submit': 'Entrar'
+    ,
+      'showcase-combo': 'Combo',
+      'showcase-shield-break': 'Escudo quebrado',
+      'showcase-desc-dash': 'Dash instantâneo com rastro e poeira.',
+      'showcase-desc-parry': 'Bloqueie um projétil com escudo — luz e faíscas.',
+      'showcase-desc-hit': 'Contato, tremor da tela, inimigo arremessado.',
+      'showcase-desc-spawn': 'Um portal abre — o jogador se materializa.',
+      'showcase-desc-combo': 'Cadeia de três dashes — o contador sobe para "x3".',
+      'showcase-desc-shield-break': 'O projétil quebra o escudo — estilhaços voam.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       pl: {
@@ -12545,6 +12966,22 @@ verifySession();
       'tfa-challenge-title': 'Wpisz kod 2FA',
       'tfa-challenge-text': 'Otwórz aplikację uwierzytelniającą i wpisz 6-cyfrowy kod dla „Evades 3".',
       'tfa-challenge-submit': 'Zaloguj'
+    ,
+      'showcase-combo': 'Combo',
+      'showcase-shield-break': 'Pęknięcie tarczy',
+      'showcase-desc-dash': 'Natychmiastowy dash ze smugą i kurzem.',
+      'showcase-desc-parry': 'Odbij pocisk tarczą — błysk i iskry.',
+      'showcase-desc-hit': 'Kontakt, wstrząs ekranu, wróg odrzucony.',
+      'showcase-desc-spawn': 'Otwiera się portal — gracz się materializuje.',
+      'showcase-desc-combo': 'Łańcuch trzech dashów — licznik rośnie do „x3".',
+      'showcase-desc-shield-break': 'Pocisk przebija tarczę — odłamki lecą.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       tr: {
@@ -12684,6 +13121,22 @@ verifySession();
       'tfa-challenge-title': '2FA kodunu gir',
       'tfa-challenge-text': 'Kimlik doğrulayıcı uygulamayı aç ve "Evades 3" için 6 haneli kodu yaz.',
       'tfa-challenge-submit': 'Giriş yap'
+    ,
+      'showcase-combo': 'Kombo',
+      'showcase-shield-break': 'Kalkan kırılması',
+      'showcase-desc-dash': 'İz ve toz bulutuyla anlık atılım.',
+      'showcase-desc-parry': 'Mermiyi kalkanla savuştur — ışık ve kıvılcımlar.',
+      'showcase-desc-hit': 'Temas, ekran sarsıntısı, düşman fırlatılır.',
+      'showcase-desc-spawn': 'Bir portal açılır — oyuncu belirir.',
+      'showcase-desc-combo': 'Üç atılımlık zincir — sayaç "x3"e çıkar.',
+      'showcase-desc-shield-break': 'Mermi kalkanı kırar — parçalar uçuşur.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       nl: {
@@ -12823,6 +13276,22 @@ verifySession();
       'tfa-challenge-title': 'Voer je 2FA-code in',
       'tfa-challenge-text': 'Open je authenticator-app en typ de 6-cijferige code voor "Evades 3".',
       'tfa-challenge-submit': 'Inloggen'
+    ,
+      'showcase-combo': 'Combo',
+      'showcase-shield-break': 'Schild breekt',
+      'showcase-desc-dash': 'Directe dash met streep en stofwolk.',
+      'showcase-desc-parry': 'Blokkeer projectiel met schild — licht en vonken.',
+      'showcase-desc-hit': 'Contact, schermtrilling, vijand weggeslingerd.',
+      'showcase-desc-spawn': 'Een portaal opent — de speler materialiseert.',
+      'showcase-desc-combo': 'Reeks van drie dashes — teller stijgt naar "x3".',
+      'showcase-desc-shield-break': 'Projectiel breekt het schild — scherven vliegen.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       sv: {
@@ -12962,6 +13431,22 @@ verifySession();
       'tfa-challenge-title': 'Ange din 2FA-kod',
       'tfa-challenge-text': 'Öppna autentiseringsappen och skriv den 6-siffriga koden för "Evades 3".',
       'tfa-challenge-submit': 'Logga in'
+    ,
+      'showcase-combo': 'Combo',
+      'showcase-shield-break': 'Sköld bryts',
+      'showcase-desc-dash': 'Omedelbar dash med spår och dammoln.',
+      'showcase-desc-parry': 'Blockera projektil med sköld — ljus och gnistor.',
+      'showcase-desc-hit': 'Kontakt, skärmskakning, fienden slungas iväg.',
+      'showcase-desc-spawn': 'En portal öppnas — spelaren materialiseras.',
+      'showcase-desc-combo': 'Kedja av tre dashar — räknaren går till "x3".',
+      'showcase-desc-shield-break': 'Projektil bryter skölden — splitter flyger.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       no: {
@@ -13101,6 +13586,22 @@ verifySession();
       'tfa-challenge-title': 'Skriv inn 2FA-koden din',
       'tfa-challenge-text': 'Åpne autentiseringsappen og skriv inn 6-sifret kode for "Evades 3".',
       'tfa-challenge-submit': 'Logg inn'
+    ,
+      'showcase-combo': 'Combo',
+      'showcase-shield-break': 'Skjold brytes',
+      'showcase-desc-dash': 'Umiddelbar dash med stripe og støvsky.',
+      'showcase-desc-parry': 'Avverg prosjektil med skjold — lys og gnister.',
+      'showcase-desc-hit': 'Kontakt, skjermrysting, fienden slynges av sted.',
+      'showcase-desc-spawn': 'En portal åpner seg — spilleren materialiseres.',
+      'showcase-desc-combo': 'Kjede av tre dasher — telleren går til "x3".',
+      'showcase-desc-shield-break': 'Prosjektilet bryter skjoldet — splinter flyr.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       fi: {
@@ -13240,6 +13741,22 @@ verifySession();
       'tfa-challenge-title': 'Anna 2FA-koodisi',
       'tfa-challenge-text': 'Avaa todennussovellus ja kirjoita 6-numeroinen koodi "Evades 3":lle.',
       'tfa-challenge-submit': 'Kirjaudu'
+    ,
+      'showcase-combo': 'Combo',
+      'showcase-shield-break': 'Kilpi murtuu',
+      'showcase-desc-dash': 'Välitön ryntäys, jälki ja pölypilvi.',
+      'showcase-desc-parry': 'Torju ammus kilvellä — valo ja kipinät.',
+      'showcase-desc-hit': 'Kontakti, ruudun tärinä, vihollinen sinkoaa.',
+      'showcase-desc-spawn': 'Portaali aukeaa — pelaaja materialisoituu.',
+      'showcase-desc-combo': 'Kolmen ryntäyksen ketju — laskuri nousee "x3":een.',
+      'showcase-desc-shield-break': 'Ammus rikkoo kilven — sirpaleet lentävät.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       da: {
@@ -13379,6 +13896,22 @@ verifySession();
       'tfa-challenge-title': 'Indtast din 2FA-kode',
       'tfa-challenge-text': 'Åbn din autentificeringsapp og skriv den 6-cifrede kode for "Evades 3".',
       'tfa-challenge-submit': 'Log ind'
+    ,
+      'showcase-combo': 'Combo',
+      'showcase-shield-break': 'Skjold brydes',
+      'showcase-desc-dash': 'Øjeblikkeligt dash med spor og støvsky.',
+      'showcase-desc-parry': 'Bloker projektil med skjold — lys og gnister.',
+      'showcase-desc-hit': 'Kontakt, skærmrystelse, fjenden slynges væk.',
+      'showcase-desc-spawn': 'En portal åbnes — spilleren materialiseres.',
+      'showcase-desc-combo': 'Kæde af tre dashes — tælleren stiger til "x3".',
+      'showcase-desc-shield-break': 'Projektilet bryder skjoldet — splinter flyver.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       cs: {
@@ -13518,6 +14051,22 @@ verifySession();
       'tfa-challenge-title': 'Zadej kód 2FA',
       'tfa-challenge-text': 'Otevři autentizační aplikaci a napiš 6místný kód pro „Evades 3".',
       'tfa-challenge-submit': 'Přihlásit'
+    ,
+      'showcase-combo': 'Kombo',
+      'showcase-shield-break': 'Rozbití štítu',
+      'showcase-desc-dash': 'Okamžitý výpad se stopou a prachem.',
+      'showcase-desc-parry': 'Odraz střely štítem — záblesk a jiskry.',
+      'showcase-desc-hit': 'Kontakt, otřes obrazovky, nepřítel odlétá.',
+      'showcase-desc-spawn': 'Otevře se portál — hráč se materializuje.',
+      'showcase-desc-combo': 'Řetězec tří výpadů — počítadlo stoupá na „x3".',
+      'showcase-desc-shield-break': 'Střela rozbíjí štít — úlomky letí.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       ro: {
@@ -13657,6 +14206,22 @@ verifySession();
       'tfa-challenge-title': 'Introdu codul 2FA',
       'tfa-challenge-text': 'Deschide aplicația de autentificare și scrie codul din 6 cifre pentru „Evades 3".',
       'tfa-challenge-submit': 'Conectare'
+    ,
+      'showcase-combo': 'Combo',
+      'showcase-shield-break': 'Scut spart',
+      'showcase-desc-dash': 'Dash instantaneu cu dâră și praf.',
+      'showcase-desc-parry': 'Parează un proiectil cu scutul — lumină și scântei.',
+      'showcase-desc-hit': 'Contact, tremur al ecranului, inamic aruncat.',
+      'showcase-desc-spawn': 'Se deschide un portal — jucătorul se materializează.',
+      'showcase-desc-combo': 'Lanț de trei dash-uri — contorul urcă la „x3".',
+      'showcase-desc-shield-break': 'Proiectilul sparge scutul — schije zboară.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       hu: {
@@ -13796,6 +14361,22 @@ verifySession();
       'tfa-challenge-title': 'Add meg a 2FA kódot',
       'tfa-challenge-text': 'Nyisd meg a hitelesítő alkalmazást és írd be a 6 jegyű kódot az „Evades 3"-hoz.',
       'tfa-challenge-submit': 'Belépés'
+    ,
+      'showcase-combo': 'Kombó',
+      'showcase-shield-break': 'Pajzstörés',
+      'showcase-desc-dash': 'Azonnali dash csíkkal és porfelhővel.',
+      'showcase-desc-parry': 'Hárítsd a lövedéket pajzzsal — fény és szikrák.',
+      'showcase-desc-hit': 'Találat, képernyőrázkódás, ellenfél elrepül.',
+      'showcase-desc-spawn': 'Portál nyílik — a játékos megjelenik.',
+      'showcase-desc-combo': 'Három dash láncolata — a számláló „x3"-ig megy.',
+      'showcase-desc-shield-break': 'A lövedék áttöri a pajzsot — szilánkok repülnek.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       el: {
@@ -13935,6 +14516,22 @@ verifySession();
       'tfa-challenge-title': 'Εισάγαγε τον κωδικό 2FA',
       'tfa-challenge-text': 'Άνοιξε την εφαρμογή αυθεντικοποίησης και πληκτρολόγησε τον 6ψήφιο κωδικό για το «Evades 3».',
       'tfa-challenge-submit': 'Σύνδεση'
+    ,
+      'showcase-combo': 'Combo',
+      'showcase-shield-break': 'Σπάσιμο ασπίδας',
+      'showcase-desc-dash': 'Ακαριαία εκτίναξη με ίχνος και σκόνη.',
+      'showcase-desc-parry': 'Απόκρουση βλήματος με ασπίδα — φως και σπίθες.',
+      'showcase-desc-hit': 'Επαφή, σεισμός οθόνης, εχθρός εκτοξεύεται.',
+      'showcase-desc-spawn': 'Ανοίγει πύλη — ο παίκτης υλοποιείται.',
+      'showcase-desc-combo': 'Αλυσίδα τριών εκτινάξεων — μετρητής στο «x3».',
+      'showcase-desc-shield-break': 'Το βλήμα σπάει την ασπίδα — θραύσματα παντού.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       ja: {
@@ -14074,6 +14671,22 @@ verifySession();
       'tfa-challenge-title': '2FAコードを入力',
       'tfa-challenge-text': '認証アプリを開いて「Evades 3」の6桁コードを入力してください。',
       'tfa-challenge-submit': 'ログイン'
+    ,
+      'showcase-combo': 'コンボ',
+      'showcase-shield-break': 'シールド破壊',
+      'showcase-desc-dash': '瞬間ダッシュ、軌跡と砂埃。',
+      'showcase-desc-parry': 'シールドで弾を弾く — 閃光と火花。',
+      'showcase-desc-hit': '接触、画面振動、敵が吹き飛ぶ。',
+      'showcase-desc-spawn': 'ポータルが開く — プレイヤーが現れる。',
+      'showcase-desc-combo': '3連続ダッシュ — カウンターが「x3」に。',
+      'showcase-desc-shield-break': '弾がシールドを砕く — 破片が飛び散る。',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       zh: {
@@ -14213,6 +14826,22 @@ verifySession();
       'tfa-challenge-title': '输入两步验证码',
       'tfa-challenge-text': '打开身份验证器应用,输入"Evades 3"的6位代码。',
       'tfa-challenge-submit': '登录'
+    ,
+      'showcase-combo': '连击',
+      'showcase-shield-break': '护盾破碎',
+      'showcase-desc-dash': '瞬间冲刺,带轨迹和尘土。',
+      'showcase-desc-parry': '用护盾格挡弹丸 — 闪光与火花。',
+      'showcase-desc-hit': '撞击、屏幕震动、敌人被弹飞。',
+      'showcase-desc-spawn': '传送门开启 — 玩家显形。',
+      'showcase-desc-combo': '三连冲刺 — 计数升至"x3"。',
+      'showcase-desc-shield-break': '弹丸击碎护盾 — 碎片四溅。',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       ko: {
@@ -14352,6 +14981,22 @@ verifySession();
       'tfa-challenge-title': '2FA 코드 입력',
       'tfa-challenge-text': '인증 앱을 열고 "Evades 3"의 6자리 코드를 입력하세요.',
       'tfa-challenge-submit': '로그인'
+    ,
+      'showcase-combo': '콤보',
+      'showcase-shield-break': '방패 파괴',
+      'showcase-desc-dash': '즉각 대시, 궤적과 먼지.',
+      'showcase-desc-parry': '방패로 투사체 막기 — 빛과 불꽃.',
+      'showcase-desc-hit': '접촉, 화면 흔들림, 적이 날아감.',
+      'showcase-desc-spawn': '포탈이 열린다 — 플레이어가 나타남.',
+      'showcase-desc-combo': '대시 3연속 — 카운터가 "x3"까지.',
+      'showcase-desc-shield-break': '투사체가 방패를 깨뜨림 — 파편이 날림.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       ar: {
@@ -14491,6 +15136,22 @@ verifySession();
       'tfa-challenge-title': 'أدخل رمز 2FA',
       'tfa-challenge-text': 'افتح تطبيق المصادقة واكتب الرمز المكوّن من 6 أرقام لـ «Evades 3».',
       'tfa-challenge-submit': 'دخول'
+    ,
+      'showcase-combo': 'كومبو',
+      'showcase-shield-break': 'كسر الدرع',
+      'showcase-desc-dash': 'انقضاض فوري بأثر وغبار.',
+      'showcase-desc-parry': 'صد المقذوف بالدرع — وميض وشرر.',
+      'showcase-desc-hit': 'تماس، اهتزاز الشاشة، العدو يُقذف.',
+      'showcase-desc-spawn': 'بوابة تُفتح — اللاعب يتجسد.',
+      'showcase-desc-combo': 'سلسلة من ثلاث انقضاضات — العداد يرتفع إلى «x3».',
+      'showcase-desc-shield-break': 'المقذوف يكسر الدرع — الشظايا تتطاير.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       hi: {
@@ -14630,6 +15291,22 @@ verifySession();
       'tfa-challenge-title': 'अपना 2FA कोड डालें',
       'tfa-challenge-text': 'अपना प्रमाणीकरण ऐप खोलें और "Evades 3" के लिए 6 अंकों का कोड डालें।',
       'tfa-challenge-submit': 'लॉगिन'
+    ,
+      'showcase-combo': 'कॉम्बो',
+      'showcase-shield-break': 'ढाल टूटना',
+      'showcase-desc-dash': 'तुरंत डैश, निशान और धूल।',
+      'showcase-desc-parry': 'ढाल से प्रोजेक्टाइल रोकें — चमक और चिंगारी।',
+      'showcase-desc-hit': 'टक्कर, स्क्रीन हिलना, दुश्मन उड़ जाता है।',
+      'showcase-desc-spawn': 'पोर्टल खुलता है — खिलाड़ी प्रकट होता है।',
+      'showcase-desc-combo': 'तीन डैश की चेन — काउंटर "x3" तक चढ़ता है।',
+      'showcase-desc-shield-break': 'प्रोजेक्टाइल ढाल तोड़ता है — टुकड़े उड़ते हैं।',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       th: {
@@ -14769,6 +15446,22 @@ verifySession();
       'tfa-challenge-title': 'ป้อนรหัส 2FA',
       'tfa-challenge-text': 'เปิดแอป Authenticator และพิมพ์รหัส 6 หลักสำหรับ "Evades 3"',
       'tfa-challenge-submit': 'เข้าสู่ระบบ'
+    ,
+      'showcase-combo': 'คอมโบ',
+      'showcase-shield-break': 'โล่แตก',
+      'showcase-desc-dash': 'พุ่งทันที พร้อมเส้นทางและฝุ่น',
+      'showcase-desc-parry': 'ปัดกระสุนด้วยโล่ — แสงและประกายไฟ',
+      'showcase-desc-hit': 'กระทบ จอสั่น ศัตรูถูกเหวี่ยง',
+      'showcase-desc-spawn': 'พอร์ทัลเปิด — ผู้เล่นปรากฏตัว',
+      'showcase-desc-combo': 'พุ่ง 3 ครั้งติด — ตัวนับขึ้นเป็น "x3"',
+      'showcase-desc-shield-break': 'กระสุนทำลายโล่ — เศษกระจายว่อน',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       vi: {
@@ -14908,6 +15601,22 @@ verifySession();
       'tfa-challenge-title': 'Nhập mã 2FA',
       'tfa-challenge-text': 'Mở ứng dụng xác thực và nhập mã 6 chữ số cho "Evades 3".',
       'tfa-challenge-submit': 'Đăng nhập'
+    ,
+      'showcase-combo': 'Combo',
+      'showcase-shield-break': 'Vỡ khiên',
+      'showcase-desc-dash': 'Lướt tức thời, có vệt và bụi.',
+      'showcase-desc-parry': 'Đỡ đạn bằng khiên — chớp sáng và tia lửa.',
+      'showcase-desc-hit': 'Va chạm, rung màn, kẻ địch văng đi.',
+      'showcase-desc-spawn': 'Cổng mở — người chơi hiện ra.',
+      'showcase-desc-combo': 'Chuỗi 3 lướt — bộ đếm lên "x3".',
+      'showcase-desc-shield-break': 'Đạn phá khiên — mảnh vỡ bay tứ phía.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       id: {
@@ -15047,6 +15756,22 @@ verifySession();
       'tfa-challenge-title': 'Masukkan kode 2FA',
       'tfa-challenge-text': 'Buka aplikasi otentikator dan ketik kode 6 digit untuk "Evades 3".',
       'tfa-challenge-submit': 'Masuk'
+    ,
+      'showcase-combo': 'Combo',
+      'showcase-shield-break': 'Perisai pecah',
+      'showcase-desc-dash': 'Dash instan dengan jejak dan debu.',
+      'showcase-desc-parry': 'Tangkis proyektil dengan perisai — kilat dan percikan.',
+      'showcase-desc-hit': 'Kontak, layar berguncang, musuh terlempar.',
+      'showcase-desc-spawn': 'Portal terbuka — pemain muncul.',
+      'showcase-desc-combo': 'Rangkaian tiga dash — penghitung naik ke "x3".',
+      'showcase-desc-shield-break': 'Proyektil pecahkan perisai — pecahan beterbangan.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     },
 
       ms: {
@@ -15186,6 +15911,22 @@ verifySession();
       'tfa-challenge-title': 'Masukkan kod 2FA',
       'tfa-challenge-text': 'Buka aplikasi pengesah dan taip kod 6 digit untuk "Evades 3".',
       'tfa-challenge-submit': 'Log masuk'
+    ,
+      'showcase-combo': 'Combo',
+      'showcase-shield-break': 'Perisai pecah',
+      'showcase-desc-dash': 'Dash segera dengan kesan dan habuk.',
+      'showcase-desc-parry': 'Tangkis peluru dengan perisai — kilat dan percikan.',
+      'showcase-desc-hit': 'Hentakan, skrin gegar, musuh dilontar.',
+      'showcase-desc-spawn': 'Portal terbuka — pemain muncul.',
+      'showcase-desc-combo': 'Rangkaian tiga dash — pembilang naik ke "x3".',
+      'showcase-desc-shield-break': 'Peluru pecahkan perisai — serpihan terbang.',
+      'showcase-label-dash': 'DASH',
+      'showcase-label-parry': 'PARRY',
+      'showcase-label-hit': 'HIT!',
+      'showcase-label-spawn': 'SPAWN',
+      'showcase-label-combo': 'COMBO',
+      'showcase-label-shield-break': 'BREAK!',
+      'showcase-combo-x': 'x3'
     }
     };
 
