@@ -3,8 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Evades 3 - Скорость. Тактика. Победа.</title>
+  <title>Evades 3 — Скорость. Тактика. Победа.</title>
+  <meta name="description" content="Evades 3 — браузерная аркада на Unity. Уворачивайся от снарядов, осваивай героев и доминируй на арене. Бесплатно, на 28 языках." />
+  <meta name="theme-color" content="#0a2516" />
   <link rel="icon" href="logo.png" />
+  <link rel="apple-touch-icon" href="logo.png" />
+  <link rel="canonical" href="https://evades3.com/" />
+
+  <!-- ============ Open Graph / Facebook / Discord / Telegram ============ -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Evades 3" />
+  <meta property="og:url" content="https://evades3.com/" />
+  <meta property="og:title" content="Evades 3 — Скорость. Тактика. Победа." />
+  <meta property="og:description" content="Браузерная аркада на Unity. Уворачивайся от снарядов, осваивай героев и доминируй на арене. Бесплатно, на 28 языках." />
+  <meta property="og:image" content="https://evades3.com/og-image.png" />
+  <meta property="og:image:secure_url" content="https://evades3.com/og-image.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Evades 3 — браузерная аркада на Unity" />
+  <meta property="og:locale" content="ru_RU" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="uk_UA" />
+
+  <!-- ============ Twitter Card ============ -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Evades 3 — Скорость. Тактика. Победа." />
+  <meta name="twitter:description" content="Браузерная аркада на Unity. Уворачивайся от снарядов, осваивай героев и доминируй на арене. Бесплатно, на 28 языках." />
+  <meta name="twitter:image" content="https://evades3.com/og-image.png" />
+  <meta name="twitter:image:alt" content="Evades 3 — браузерная аркада на Unity" />
+
+  <!-- ============ Schema.org (rich result for Google) ============ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Evades 3",
+    "url": "https://evades3.com/",
+    "image": "https://evades3.com/og-image.png",
+    "description": "Браузерная аркада на Unity. Уворачивайся от снарядов, осваивай героев и доминируй на арене.",
+    "applicationCategory": "GameApplication",
+    "genre": ["Arcade", "Action", "Multiplayer"],
+    "gamePlatform": ["Web Browser", "PC", "Mobile"],
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "inLanguage": ["ru", "en", "uk", "de", "es", "fr", "it", "pt", "pl", "tr", "nl", "sv", "no", "fi", "da", "cs", "ro", "hu", "el", "ja", "zh", "ko", "ar", "he", "th", "vi", "id", "hi"]
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -4598,6 +4643,92 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
   display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
   margin-top: 22px;
 }
+
+/* ===== Live Discord widget ===== */
+.dc-widget-wrap{
+  max-width: 460px;
+  margin: 32px auto 0;
+  padding: 0 4px;
+}
+.dc-widget-head{
+  display: flex; align-items: center; gap: 10px;
+  margin: 0 0 12px;
+  padding: 0 6px;
+}
+.dc-widget-dot{
+  width: 9px; height: 9px; border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 0 0 rgba(74,222,128,0.55);
+  animation: dcDotPulse 1.8s ease-out infinite;
+  flex-shrink: 0;
+}
+@keyframes dcDotPulse{
+  0%   { box-shadow: 0 0 0 0 rgba(74,222,128,0.55); }
+  70%  { box-shadow: 0 0 0 10px rgba(74,222,128,0); }
+  100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+}
+.dc-widget-title{
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px; font-weight: 800; letter-spacing: 1.5px;
+  color: #fff; text-transform: uppercase;
+}
+.dc-widget-sub{
+  font-size: 12px; font-weight: 600;
+  color: rgba(255,255,255,0.55);
+  margin-left: auto;
+}
+.dc-widget-frame{
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(88,101,242,0.35);
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.45),
+    0 0 0 1px rgba(255,255,255,0.04) inset,
+    0 0 30px rgba(88,101,242,0.18);
+  background: #36393f;
+}
+.dc-widget-frame iframe{
+  display: block; width: 100%;
+  border: 0;
+  background: #36393f;
+}
+.dc-widget-fallback{
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 14px;
+  padding: 24px;
+  text-align: center;
+  background: linear-gradient(160deg, #2c2f36 0%, #1f2126 100%);
+}
+.dc-widget-fallback[hidden]{ display: none !important; }
+.dc-widget-fallback-text{
+  font-family: 'Exo 2', sans-serif;
+  font-size: 14px; font-weight: 600; line-height: 1.55;
+  color: rgba(255,255,255,0.78);
+  max-width: 320px;
+}
+.dc-widget-fallback-btn{
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 22px;
+  background: #5865F2;
+  color: #fff;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px; font-weight: 800; letter-spacing: 0.6px;
+  text-decoration: none;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(88,101,242,0.45);
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.dc-widget-fallback-btn:hover{
+  background: #4752c4;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(88,101,242,0.55);
+}
+@media (max-width: 540px){
+  .dc-widget-wrap{ max-width: 100%; }
+  .dc-widget-frame iframe{ height: 380px; }
+}
 .social-btn{
   position: relative;
   display: inline-flex; align-items: center; gap: 10px;
@@ -6187,6 +6318,34 @@ svg.ic-svg-login {
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
           <span data-i18n="sponsor-btn">Поддержать</span>
         </a>
+      </div>
+
+      <!-- Live Discord widget — официальный iframe от Discord. Показывает онлайн-участников и активные голосовые. -->
+      <div class="dc-widget-wrap">
+        <div class="dc-widget-head">
+          <span class="dc-widget-dot" aria-hidden="true"></span>
+          <span class="dc-widget-title" data-i18n="dc-widget-title">Сервер прямо сейчас</span>
+          <span class="dc-widget-sub" data-i18n="dc-widget-sub">Заходи и пиши</span>
+        </div>
+        <div class="dc-widget-frame">
+          <iframe
+            id="dcWidgetIframe"
+            src="https://discord.com/widget?id=1469002477209784435&theme=dark"
+            width="100%"
+            height="420"
+            allowtransparency="true"
+            frameborder="0"
+            sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+            loading="lazy"
+            title="Discord — Evades 3 Official Community"></iframe>
+          <div class="dc-widget-fallback" id="dcWidgetFallback" hidden>
+            <div class="dc-widget-fallback-ico" aria-hidden="true">
+              <svg viewBox="-2 -2 28 28" fill="currentColor" style="overflow:visible;width:32px;height:32px;color:#5865F2;"><path d="M20.317 4.369A19.791 19.791 0 0 0 16.558 3a14.3 14.3 0 0 0-.7 1.44 18.27 18.27 0 0 0-5.72 0A13.2 13.2 0 0 0 9.444 3 19.72 19.72 0 0 0 5.68 4.37C2.78 8.88 2 13.27 2.39 17.58a19.96 19.96 0 0 0 6.07 3.08c.49-.67.92-1.39 1.29-2.14-.71-.27-1.39-.6-2.03-1 .17-.12.34-.25.5-.39 3.94 1.82 8.19 1.82 12.08 0 .17.14.33.27.5.39-.64.4-1.32.73-2.03 1 .37.75.8 1.47 1.29 2.14a19.96 19.96 0 0 0 6.07-3.08c.46-5.02-.77-9.36-3.32-13.21ZM9.68 15.33c-1.18 0-2.15-1.09-2.15-2.43 0-1.34.95-2.43 2.15-2.43s2.17 1.09 2.15 2.43c0 1.34-.95 2.43-2.15 2.43Zm4.64 0c-1.18 0-2.15-1.09-2.15-2.43 0-1.34.95-2.43 2.15-2.43s2.17 1.09 2.15 2.43c0 1.34-.95 2.43-2.15 2.43Z"/></svg>
+            </div>
+            <div class="dc-widget-fallback-text" data-i18n="dc-widget-fallback">Виджет недоступен. Открой Discord и присоединяйся напрямую.</div>
+            <a class="dc-widget-fallback-btn" href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener" data-i18n="dc-widget-join">Войти в Discord</a>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -9865,6 +10024,26 @@ svg.ic-svg-login {
 
       // FAQ search removed per user request — questions list is short enough
 
+      // Live Discord widget — verify the iframe actually has content; if widget is disabled in
+      // the Discord server settings, the request returns 403 and shows a black box. Probe via
+      // widget.json (CORS-allowed) and toggle the fallback message on failure.
+      (function bootDiscordWidget(){
+        const frame = document.getElementById('dcWidgetIframe');
+        const fallback = document.getElementById('dcWidgetFallback');
+        if (!frame || !fallback) return;
+        const guildId = '1469002477209784435';
+        fetch('https://discord.com/api/guilds/' + guildId + '/widget.json', { cache: 'no-store' })
+          .then(r => {
+            if (!r.ok) throw new Error('widget disabled (' + r.status + ')');
+            return r.json();
+          })
+          .catch(() => {
+            // Widget not enabled or network error — hide iframe and show fallback CTA
+            frame.style.display = 'none';
+            fallback.hidden = false;
+          });
+      })();
+
       const followDev = document.querySelector('.follow-dev-container');
       if (followDev) {
         followDev.style.transitionDelay = '160ms';
@@ -11521,6 +11700,10 @@ verifySession();
         'ultra-social-lead': 'Discord и YouTube. Будь в курсе каждой новой фичи.'
       ,
       'ultra-faq-search-placeholder': 'Поиск по вопросам...',
+      'dc-widget-title': 'Сервер прямо сейчас',
+      'dc-widget-sub': 'Заходи и пиши',
+      'dc-widget-fallback': 'Виджет недоступен. Открой Discord и присоединяйся напрямую.',
+      'dc-widget-join': 'Войти в Discord',
       'ultra-faq-no-results': 'Ничего не найдено. Попробуй другой запрос или загляни в Discord — там быстро ответят.',
       'sponsor-btn': 'Поддержать',
       'security-2fa-title': 'Двухфакторная аутентификация',
@@ -11693,6 +11876,10 @@ verifySession();
         'ultra-social-lead': 'Discord and YouTube. Stay on top of every new feature.'
       ,
       'ultra-faq-search-placeholder': 'Search the FAQ...',
+      'dc-widget-title': 'Server right now',
+      'dc-widget-sub': 'Hop in and chat',
+      'dc-widget-fallback': 'Widget unavailable. Open Discord and join directly.',
+      'dc-widget-join': 'Join Discord',
       'ultra-faq-no-results': 'Nothing found. Try a different query or ask in our Discord — fast answers.',
       'sponsor-btn': 'Support us',
       'security-2fa-title': 'Two-factor authentication',
@@ -11865,6 +12052,10 @@ verifySession();
         'ultra-social-lead': 'Discord і YouTube. Будь у курсі кожної нової фічі.'
       ,
       'ultra-faq-search-placeholder': 'Пошук по питаннях...',
+      'dc-widget-title': 'Сервер просто зараз',
+      'dc-widget-sub': 'Заходь і пиши',
+      'dc-widget-fallback': 'Віджет недоступний. Відкрий Discord і приєднайся.',
+      'dc-widget-join': 'Зайти в Discord',
       'ultra-faq-no-results': 'Нічого не знайдено. Спробуй інший запит або заходь у Discord — там швидко відповідають.',
       'sponsor-btn': 'Підтримати',
       'security-2fa-title': 'Двофакторна автентифікація',
@@ -12020,6 +12211,10 @@ verifySession();
         'ultra-social-lead': 'Discord und YouTube. Bleib bei jedem neuen Feature am Ball.'
       ,
       'ultra-faq-search-placeholder': 'FAQ durchsuchen...',
+      'dc-widget-title': 'Server gerade jetzt',
+      'dc-widget-sub': 'Reinkommen und schreiben',
+      'dc-widget-fallback': 'Widget nicht verfügbar. Öffne Discord und tritt direkt bei.',
+      'dc-widget-join': 'Discord beitreten',
       'ultra-faq-no-results': 'Nichts gefunden. Versuche eine andere Suche oder frage im Discord — dort gibt\'s schnelle Antworten.',
       'sponsor-btn': 'Unterstützen',
       'security-2fa-title': 'Zwei-Faktor-Authentifizierung',
@@ -12175,6 +12370,10 @@ verifySession();
         'ultra-social-lead': 'Discord y YouTube. Mantente al día con cada nueva función.'
       ,
       'ultra-faq-search-placeholder': 'Buscar en las FAQ...',
+      'dc-widget-title': 'Servidor ahora mismo',
+      'dc-widget-sub': 'Entra y escribe',
+      'dc-widget-fallback': 'Widget no disponible. Abre Discord y únete directamente.',
+      'dc-widget-join': 'Entrar a Discord',
       'ultra-faq-no-results': 'No se encontró nada. Prueba otra búsqueda o pregunta en Discord — respondemos rápido.',
       'sponsor-btn': 'Apóyanos',
       'security-2fa-title': 'Autenticación en dos pasos',
@@ -12330,6 +12529,10 @@ verifySession();
         'ultra-social-lead': 'Discord et YouTube. Sois au courant de chaque nouvelle fonctionnalité.'
       ,
       'ultra-faq-search-placeholder': 'Rechercher dans la FAQ...',
+      'dc-widget-title': 'Serveur en direct',
+      'dc-widget-sub': 'Rejoins et discute',
+      'dc-widget-fallback': 'Widget indisponible. Ouvre Discord et rejoins directement.',
+      'dc-widget-join': 'Rejoindre Discord',
       'ultra-faq-no-results': 'Aucun résultat. Essaie une autre recherche ou demande sur Discord — réponses rapides.',
       'sponsor-btn': 'Soutenir',
       'security-2fa-title': 'Authentification à deux facteurs',
@@ -12485,6 +12688,10 @@ verifySession();
         'ultra-social-lead': 'Discord e YouTube. Resta aggiornato su ogni nuova funzionalità.'
       ,
       'ultra-faq-search-placeholder': 'Cerca nelle FAQ...',
+      'dc-widget-title': 'Server proprio ora',
+      'dc-widget-sub': 'Entra e scrivi',
+      'dc-widget-fallback': 'Widget non disponibile. Apri Discord e unisciti direttamente.',
+      'dc-widget-join': 'Entra in Discord',
       'ultra-faq-no-results': 'Nessun risultato. Prova un\'altra ricerca o chiedi su Discord — rispondiamo veloci.',
       'sponsor-btn': 'Sostieni',
       'security-2fa-title': 'Autenticazione a due fattori',
@@ -12640,6 +12847,10 @@ verifySession();
         'ultra-social-lead': 'Discord e YouTube. Fique por dentro de cada nova funcionalidade.'
       ,
       'ultra-faq-search-placeholder': 'Buscar nas FAQ...',
+      'dc-widget-title': 'Servidor agora mesmo',
+      'dc-widget-sub': 'Entra e conversa',
+      'dc-widget-fallback': 'Widget indisponível. Abre o Discord e junta-te.',
+      'dc-widget-join': 'Entrar no Discord',
       'ultra-faq-no-results': 'Nada encontrado. Tente outra busca ou pergunte no Discord — respondemos rápido.',
       'sponsor-btn': 'Apoiar',
       'security-2fa-title': 'Autenticação de dois fatores',
@@ -12795,6 +13006,10 @@ verifySession();
         'ultra-social-lead': 'Discord i YouTube. Bądź na bieżąco z każdą nową funkcją.'
       ,
       'ultra-faq-search-placeholder': 'Szukaj w FAQ...',
+      'dc-widget-title': 'Serwer w tej chwili',
+      'dc-widget-sub': 'Wskocz i pisz',
+      'dc-widget-fallback': 'Widget niedostępny. Otwórz Discord i dołącz bezpośrednio.',
+      'dc-widget-join': 'Dołącz do Discord',
       'ultra-faq-no-results': 'Nic nie znaleziono. Spróbuj innego zapytania lub zapytaj na Discord — szybko odpowiemy.',
       'sponsor-btn': 'Wesprzyj',
       'security-2fa-title': 'Uwierzytelnianie dwuskładnikowe',
@@ -12950,6 +13165,10 @@ verifySession();
         'ultra-social-lead': 'Discord ve YouTube. Her yeni özellikten haberdar ol.'
       ,
       'ultra-faq-search-placeholder': 'SSS\'de ara...',
+      'dc-widget-title': 'Sunucu şu anda',
+      'dc-widget-sub': 'Atla ve yaz',
+      'dc-widget-fallback': 'Widget kullanılamıyor. Discord\'u aç ve doğrudan katıl.',
+      'dc-widget-join': 'Discord\'a katıl',
       'ultra-faq-no-results': 'Sonuç bulunamadı. Farklı bir arama dene ya da Discord\'a sor — hızlı cevap.',
       'sponsor-btn': 'Destekle',
       'security-2fa-title': 'İki adımlı doğrulama',
@@ -13105,6 +13324,10 @@ verifySession();
         'ultra-social-lead': 'Discord en YouTube. Blijf op de hoogte van elke nieuwe functie.'
       ,
       'ultra-faq-search-placeholder': 'Zoek in de FAQ...',
+      'dc-widget-title': 'Server nu',
+      'dc-widget-sub': 'Spring erin en typ',
+      'dc-widget-fallback': 'Widget niet beschikbaar. Open Discord en sluit je direct aan.',
+      'dc-widget-join': 'Doe mee op Discord',
       'ultra-faq-no-results': 'Niets gevonden. Probeer iets anders of vraag op Discord — snel antwoord.',
       'sponsor-btn': 'Steunen',
       'security-2fa-title': 'Tweestapsverificatie',
@@ -13260,6 +13483,10 @@ verifySession();
         'ultra-social-lead': 'Discord och YouTube. Håll dig uppdaterad om varje ny funktion.'
       ,
       'ultra-faq-search-placeholder': 'Sök i FAQ...',
+      'dc-widget-title': 'Servern just nu',
+      'dc-widget-sub': 'Hoppa in och chatta',
+      'dc-widget-fallback': 'Widget inte tillgänglig. Öppna Discord och gå med direkt.',
+      'dc-widget-join': 'Gå med i Discord',
       'ultra-faq-no-results': 'Inget hittat. Prova en annan sökning eller fråga på Discord — snabba svar.',
       'sponsor-btn': 'Stötta',
       'security-2fa-title': 'Tvåfaktorsautentisering',
@@ -13415,6 +13642,10 @@ verifySession();
         'ultra-social-lead': 'Discord og YouTube. Hold deg oppdatert på hver ny funksjon.'
       ,
       'ultra-faq-search-placeholder': 'Søk i FAQ...',
+      'dc-widget-title': 'Serveren akkurat nå',
+      'dc-widget-sub': 'Hopp inn og skriv',
+      'dc-widget-fallback': 'Widget ikke tilgjengelig. Åpne Discord og bli med direkte.',
+      'dc-widget-join': 'Bli med på Discord',
       'ultra-faq-no-results': 'Ingenting funnet. Prøv et annet søk eller spør på Discord — raske svar.',
       'sponsor-btn': 'Støtt oss',
       'security-2fa-title': 'Tofaktorautentisering',
@@ -13570,6 +13801,10 @@ verifySession();
         'ultra-social-lead': 'Discord ja YouTube. Pysy ajan tasalla jokaisesta uudesta ominaisuudesta.'
       ,
       'ultra-faq-search-placeholder': 'Etsi UKK:sta...',
+      'dc-widget-title': 'Palvelin juuri nyt',
+      'dc-widget-sub': 'Hyppää sisään',
+      'dc-widget-fallback': 'Widget ei käytettävissä. Avaa Discord ja liity suoraan.',
+      'dc-widget-join': 'Liity Discordiin',
       'ultra-faq-no-results': 'Ei tuloksia. Kokeile toista hakua tai kysy Discordista — vastaamme nopeasti.',
       'sponsor-btn': 'Tue meitä',
       'security-2fa-title': 'Kaksivaiheinen tunnistus',
@@ -13725,6 +13960,10 @@ verifySession();
         'ultra-social-lead': 'Discord og YouTube. Hold dig opdateret om hver ny funktion.'
       ,
       'ultra-faq-search-placeholder': 'Søg i FAQ...',
+      'dc-widget-title': 'Serveren lige nu',
+      'dc-widget-sub': 'Hop ind og skriv',
+      'dc-widget-fallback': 'Widget ikke tilgængelig. Åbn Discord og deltag direkte.',
+      'dc-widget-join': 'Deltag på Discord',
       'ultra-faq-no-results': 'Intet fundet. Prøv en anden søgning eller spørg på Discord — hurtige svar.',
       'sponsor-btn': 'Støt os',
       'security-2fa-title': 'Tofaktorgodkendelse',
@@ -13880,6 +14119,10 @@ verifySession();
         'ultra-social-lead': 'Discord a YouTube. Buď v obraze u každé nové funkce.'
       ,
       'ultra-faq-search-placeholder': 'Hledat v FAQ...',
+      'dc-widget-title': 'Server právě teď',
+      'dc-widget-sub': 'Skoč dovnitř a piš',
+      'dc-widget-fallback': 'Widget není dostupný. Otevři Discord a připoj se přímo.',
+      'dc-widget-join': 'Připojit se na Discord',
       'ultra-faq-no-results': 'Nic nenalezeno. Zkus jiný dotaz nebo se zeptej na Discordu — rychlé odpovědi.',
       'sponsor-btn': 'Podpořit',
       'security-2fa-title': 'Dvoufaktorové ověření',
@@ -14035,6 +14278,10 @@ verifySession();
         'ultra-social-lead': 'Discord și YouTube. Fii la curent cu fiecare funcție nouă.'
       ,
       'ultra-faq-search-placeholder': 'Caută în FAQ...',
+      'dc-widget-title': 'Serverul chiar acum',
+      'dc-widget-sub': 'Intră și scrie',
+      'dc-widget-fallback': 'Widget indisponibil. Deschide Discord și alătură-te direct.',
+      'dc-widget-join': 'Intră pe Discord',
       'ultra-faq-no-results': 'Nimic găsit. Încearcă altă căutare sau întreabă pe Discord — răspunsuri rapide.',
       'sponsor-btn': 'Susține',
       'security-2fa-title': 'Autentificare în doi pași',
@@ -14190,6 +14437,10 @@ verifySession();
         'ultra-social-lead': 'Discord és YouTube. Értesülj minden új funkcióról.'
       ,
       'ultra-faq-search-placeholder': 'Keresés a GYIK-ben...',
+      'dc-widget-title': 'A szerver most',
+      'dc-widget-sub': 'Ugorj be és írj',
+      'dc-widget-fallback': 'A widget nem érhető el. Nyisd meg a Discordot és csatlakozz.',
+      'dc-widget-join': 'Csatlakozz a Discordhoz',
       'ultra-faq-no-results': 'Nincs találat. Próbálj más keresést vagy kérdezz a Discordon — gyors válasz.',
       'sponsor-btn': 'Támogatás',
       'security-2fa-title': 'Kétlépcsős hitelesítés',
@@ -14345,6 +14596,10 @@ verifySession();
         'ultra-social-lead': 'Discord και YouTube. Μείνε ενημερωμένος για κάθε νέο χαρακτηριστικό.'
       ,
       'ultra-faq-search-placeholder': 'Αναζήτηση στις Συχνές...',
+      'dc-widget-title': 'Ο διακομιστής τώρα',
+      'dc-widget-sub': 'Μπες και γράψε',
+      'dc-widget-fallback': 'Το widget δεν είναι διαθέσιμο. Άνοιξε το Discord.',
+      'dc-widget-join': 'Είσοδος στο Discord',
       'ultra-faq-no-results': 'Δεν βρέθηκε τίποτα. Δοκίμασε άλλη αναζήτηση ή ρώτα στο Discord — γρήγορες απαντήσεις.',
       'sponsor-btn': 'Στήριξε',
       'security-2fa-title': 'Έλεγχος ταυτότητας δύο παραγόντων',
@@ -14500,6 +14755,10 @@ verifySession();
         'ultra-social-lead': 'DiscordとYouTube。新機能すべてを追いかけよう。'
       ,
       'ultra-faq-search-placeholder': 'FAQを検索...',
+      'dc-widget-title': 'サーバーの今',
+      'dc-widget-sub': '入ってチャット',
+      'dc-widget-fallback': 'ウィジェットは利用できません。Discord を開いて参加してください。',
+      'dc-widget-join': 'Discord に参加',
       'ultra-faq-no-results': '見つかりませんでした。別のキーワードを試すか、Discordで質問してください。すぐに答えます。',
       'sponsor-btn': '支援する',
       'security-2fa-title': '二要素認証',
@@ -14655,6 +14914,10 @@ verifySession();
         'ultra-social-lead': 'Discord 和 YouTube。关注每一项新功能。'
       ,
       'ultra-faq-search-placeholder': '搜索常见问题...',
+      'dc-widget-title': '服务器实时状态',
+      'dc-widget-sub': '进来聊聊',
+      'dc-widget-fallback': '小部件不可用。请打开 Discord 直接加入。',
+      'dc-widget-join': '加入 Discord',
       'ultra-faq-no-results': '未找到结果。试试其他搜索或在Discord提问 — 我们会快速回复。',
       'sponsor-btn': '支持我们',
       'security-2fa-title': '两步验证',
@@ -14810,6 +15073,10 @@ verifySession();
         'ultra-social-lead': 'Discord와 YouTube. 새로운 기능 소식을 놓치지 마세요.'
       ,
       'ultra-faq-search-placeholder': 'FAQ 검색...',
+      'dc-widget-title': '서버 실시간',
+      'dc-widget-sub': '들어와서 채팅',
+      'dc-widget-fallback': '위젯을 사용할 수 없습니다. Discord를 열어 직접 참여하세요.',
+      'dc-widget-join': 'Discord 참여하기',
       'ultra-faq-no-results': '결과 없음. 다른 검색어를 시도하거나 Discord에서 질문하세요 — 빠른 답변.',
       'sponsor-btn': '후원하기',
       'security-2fa-title': '2단계 인증',
@@ -14965,6 +15232,10 @@ verifySession();
         'ultra-social-lead': 'Discord وYouTube. ابقَ على اطلاع بكل ميزة جديدة.'
       ,
       'ultra-faq-search-placeholder': 'ابحث في الأسئلة الشائعة...',
+      'dc-widget-title': 'الخادم الآن',
+      'dc-widget-sub': 'انضم واكتب',
+      'dc-widget-fallback': 'الأداة غير متاحة. افتح Discord وانضم مباشرة.',
+      'dc-widget-join': 'الانضمام إلى Discord',
       'ultra-faq-no-results': 'لم يتم العثور على شيء. جرّب بحثًا آخر أو اسأل على Discord — إجابات سريعة.',
       'sponsor-btn': 'ادعمنا',
       'security-2fa-title': 'المصادقة الثنائية',
@@ -15120,6 +15391,10 @@ verifySession();
         'ultra-social-lead': 'Discord और YouTube। हर नए फीचर की जानकारी पाएँ।'
       ,
       'ultra-faq-search-placeholder': 'FAQ में खोजें...',
+      'dc-widget-title': 'השרת ממש עכשיו',
+      'dc-widget-sub': 'קפצו פנימה וכתבו',
+      'dc-widget-fallback': 'הוויג\'ט אינו זמין. פתחו Discord והצטרפו ישירות.',
+      'dc-widget-join': 'הצטרפות ל־Discord',
       'ultra-faq-no-results': 'कुछ नहीं मिला। दूसरी खोज आज़माएं या Discord पर पूछें — तेज़ जवाब।',
       'sponsor-btn': 'सहयोग करें',
       'security-2fa-title': 'दो-कारक प्रमाणीकरण',
@@ -15275,6 +15550,10 @@ verifySession();
         'ultra-social-lead': 'Discord และ YouTube รับทราบทุกฟีเจอร์ใหม่'
       ,
       'ultra-faq-search-placeholder': 'ค้นหาในคำถามที่พบบ่อย...',
+      'dc-widget-title': 'เซิร์ฟเวอร์ตอนนี้',
+      'dc-widget-sub': 'เข้ามาคุยกัน',
+      'dc-widget-fallback': 'วิดเจ็ตใช้งานไม่ได้ เปิด Discord เพื่อเข้าร่วม',
+      'dc-widget-join': 'เข้า Discord',
       'ultra-faq-no-results': 'ไม่พบผลลัพธ์ ลองค้นหาแบบอื่นหรือถามใน Discord — ตอบไว.',
       'sponsor-btn': 'สนับสนุน',
       'security-2fa-title': 'การยืนยันตัวตนสองขั้นตอน',
@@ -15430,6 +15709,10 @@ verifySession();
         'ultra-social-lead': 'Discord và YouTube. Luôn cập nhật mọi tính năng mới.'
       ,
       'ultra-faq-search-placeholder': 'Tìm trong FAQ...',
+      'dc-widget-title': 'Server ngay bây giờ',
+      'dc-widget-sub': 'Vào và chat',
+      'dc-widget-fallback': 'Widget không khả dụng. Mở Discord và tham gia trực tiếp.',
+      'dc-widget-join': 'Tham gia Discord',
       'ultra-faq-no-results': 'Không tìm thấy. Thử từ khoá khác hoặc hỏi trên Discord — trả lời nhanh.',
       'sponsor-btn': 'Ủng hộ',
       'security-2fa-title': 'Xác thực hai yếu tố',
@@ -15585,6 +15868,10 @@ verifySession();
         'ultra-social-lead': 'Discord dan YouTube. Tetap up-to-date dengan setiap fitur baru.'
       ,
       'ultra-faq-search-placeholder': 'Cari di FAQ...',
+      'dc-widget-title': 'Server sekarang juga',
+      'dc-widget-sub': 'Masuk dan ngobrol',
+      'dc-widget-fallback': 'Widget tidak tersedia. Buka Discord dan bergabung langsung.',
+      'dc-widget-join': 'Gabung Discord',
       'ultra-faq-no-results': 'Tidak ditemukan. Coba pencarian lain atau tanya di Discord — jawaban cepat.',
       'sponsor-btn': 'Dukung',
       'security-2fa-title': 'Autentikasi dua faktor',
@@ -15740,6 +16027,10 @@ verifySession();
         'ultra-social-lead': 'Discord dan YouTube. Kekal terkini dengan setiap ciri baharu.'
       ,
       'ultra-faq-search-placeholder': 'Cari dalam FAQ...',
+      'dc-widget-title': 'सर्वर अभी',
+      'dc-widget-sub': 'आओ और चैट करो',
+      'dc-widget-fallback': 'विजेट उपलब्ध नहीं है। Discord खोलें और सीधे जुड़ें।',
+      'dc-widget-join': 'Discord में शामिल हों',
       'ultra-faq-no-results': 'Tiada hasil. Cuba carian lain atau tanya di Discord — jawapan pantas.',
       'sponsor-btn': 'Sokong',
       'security-2fa-title': 'Pengesahan dua faktor',
