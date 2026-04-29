@@ -1,0 +1,1709 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="page-title">Evades 3 — Политика cookies</title>
+  <link rel="icon" href="../logo.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;600;700&family=Exo+2:wght@300;600;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root{
+      --langBorder: rgba(255,255,255,0.28);
+    }
+
+    /* ================= Флаги меню языков ================= */
+    .lang-flag{
+      width: 22px; height: 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 18px; line-height: 1;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35));
+    }
+    .lang-flag img{
+      width: 22px !important; height: 16px !important;
+      object-fit: cover; border-radius: 3px; display: block;
+      box-shadow: 0 0 4px rgba(0,0,0,0.3);
+    }
+
+    /* Галочка (SVG с анимацией "рисования") */
+    .lang-check {
+      width: 22px; height: 22px; margin-left: auto;
+      opacity: 0; transform: scale(0.85);
+      transition: opacity .18s ease, transform .18s ease;
+      pointer-events: none;
+    }
+    .lang-item.is-selected .lang-check { opacity: 1; transform: scale(1); }
+    .lang-check svg { width: 22px; height: 22px; display: block; }
+    .lang-check path {
+      fill: none; stroke: rgba(255,255,255,0.95);
+      stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 30; stroke-dashoffset: 30;
+    }
+    .lang-item.is-selected .lang-check path { animation: checkDraw 260ms ease-out forwards; }
+    @keyframes checkDraw { to { stroke-dashoffset: 0; } }
+
+    body {
+      font-family: 'Exo 2', 'Orbitron', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: linear-gradient(135deg, #1a4d2e 0%, #2d7a4f 25%, #4a9d6f 50%, #2d7a4f 75%, #1a4d2e 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+      color: #fff;
+    }
+    body::before {
+      content: '';
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.03) 0%, transparent 50%);
+      pointer-events: none; z-index: 1;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ================= Меню языков (ТОЧ В ТОЧ как на главной) ================= */
+    .language-menu {
+      position: absolute;
+      top: 20px; right: 50px;
+      z-index: 1000;
+      user-select: none; -webkit-user-select: none;
+      cursor: default;
+    }
+    .menu-button {
+      background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.15));
+      color: white;
+      padding: 15px 35px;
+      cursor: pointer;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: 50px;
+      font-size: 18px; font-weight: 900;
+      backdrop-filter: blur(15px);
+      transition: all 0.3s ease;
+      font-family: 'Exo 2', sans-serif;
+      letter-spacing: 2px;
+      box-shadow:
+        6px 6px 16px rgba(0,0,0,0.3),
+        -3px -3px 10px rgba(255,255,255,0.1),
+        inset -2px -2px 6px rgba(0,0,0,0.2),
+        inset 2px 2px 6px rgba(255,255,255,0.2);
+    }
+    .menu-button:hover {
+      background: linear-gradient(145deg, rgba(255,255,255,0.35), rgba(255,255,255,0.25));
+      transform: translateY(-2px);
+      box-shadow:
+        8px 8px 20px rgba(0,0,0,0.4),
+        -4px -4px 12px rgba(255,255,255,0.15),
+        inset -2px -2px 6px rgba(0,0,0,0.2),
+        inset 2px 2px 6px rgba(255,255,255,0.2);
+    }
+    .language-dropdown{
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) scale(0.96);
+      background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.12));
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border-radius: 28px;
+      overflow: hidden;
+      max-height: 0; opacity: 0;
+      transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.25s ease;
+      border: 2px solid var(--langBorder);
+      box-shadow:
+        10px 10px 30px rgba(0,0,0,0.35),
+        -5px -5px 14px rgba(255,255,255,0.12),
+        inset -2px -2px 8px rgba(0,0,0,0.25),
+        inset 2px 2px 8px rgba(255,255,255,0.2);
+      min-width: 170px;
+      user-select: none; -webkit-user-select: none;
+    }
+    .language-menu:hover .language-dropdown {
+      max-height: 400px; opacity: 1; transform: translateX(-50%) scale(1);
+    }
+    .language-scroll {
+      max-height: 400px; overflow-y: auto; overflow-x: hidden;
+      padding: 10px 12px 10px 0;
+    }
+    .language-scroll::-webkit-scrollbar{ width: 5px; }
+    .language-scroll::-webkit-scrollbar-track{ background: rgba(255,255,255,0.08); border-radius: 999px; }
+    .language-scroll::-webkit-scrollbar-thumb{ background: var(--langBorder); border-radius: 999px; min-height: 160px; }
+    .language-scroll::-webkit-scrollbar-thumb:hover{ background: rgba(255,255,255,0.45); }
+
+    .lang-item{
+      position: relative;
+      padding: 12px 20px;
+      color: white;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 12px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-left: 3px solid transparent;
+      opacity: 0; transform: translateY(-8px);
+    }
+    .language-menu:hover .lang-item {
+      opacity: 1; transform: translateY(0);
+      transition-delay: var(--item-delay, 0ms);
+    }
+    .lang-item:hover {
+      background: linear-gradient(90deg, rgba(74,222,128,0.2), transparent);
+      transform: translateX(8px);
+      box-shadow: 0 4px 12px rgba(74,222,128,0.1);
+    }
+    .lang-code {
+      font-weight: bold; min-width: 45px;
+      font-family: 'Exo 2', sans-serif;
+    }
+    .lang-item.is-selected .lang-check::after{
+      content: "";
+      position: absolute; inset: -4px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.65);
+      opacity: 0;
+      animation: checkPing 1.4s ease-out infinite;
+    }
+    @keyframes checkPing{
+      0% { transform: scale(0.6); opacity: 0.8; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+
+    /* ================= Контент ================= */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 80px 24px 40px;
+      position: relative; z-index: 5;
+    }
+
+    .back-home{
+      position: fixed;
+      top: 18px; left: 22px;
+      z-index: 1500;
+      display: inline-block;
+      margin: 0; padding: 0;
+      border: none; background: none;
+      text-decoration: none;
+      cursor: pointer;
+      animation: logoFloat 4.5s ease-in-out infinite;
+      transition: transform .3s ease, filter .3s ease;
+    }
+    .back-home img{
+      display: block;
+      height: 118px; width: auto;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.55));
+      transition: transform .4s cubic-bezier(.2,.9,.3,1.3), filter .35s ease;
+      animation: logoGlow 3.2s ease-in-out infinite;
+    }
+    .back-home:hover{ animation-play-state: paused; }
+    .back-home:hover img{
+      transform: scale(1.12) rotate(-6deg);
+      filter: drop-shadow(0 14px 30px rgba(0,0,0,0.6)) drop-shadow(0 0 46px rgba(255,216,77,0.8));
+    }
+    .back-home:active img{ transform: scale(1.05) rotate(-2deg); }
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50%      { transform: translateY(-9px) rotate(-3deg); }
+    }
+    @keyframes logoGlow {
+      0%, 100% { filter: drop-shadow(0 8px 18px rgba(0,0,0,0.55)) drop-shadow(0 0 18px rgba(255,216,77,0.28)); }
+      50%      { filter: drop-shadow(0 8px 18px rgba(0,0,0,0.55)) drop-shadow(0 0 40px rgba(255,216,77,0.6)); }
+    }
+    @media (max-width: 640px) {
+      .back-home{ top: 10px; left: 10px; }
+      .back-home img{ height: 72px; }
+    }
+
+    .page-title{
+      font-family: 'Orbitron', 'Exo 2', sans-serif;
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #FFD84D;
+      -webkit-text-stroke: 2px #000;
+      paint-order: stroke fill;
+      text-shadow:
+        0 2px 0 #B8860B, 0 4px 0 #9A7209, 0 6px 0 #7C5E07,
+        0 10px 20px rgba(0,0,0,0.5),
+        0 0 30px rgba(255,215,0,0.6);
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .page-sub{
+      text-align: center;
+      color: rgba(255,255,255,0.75);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .glass-card {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(20px);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 40px 44px;
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.2);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .glass-card::before {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      animation: shine 4s infinite;
+      pointer-events: none; z-index: 0;
+    }
+    .glass-card > * { position: relative; z-index: 1; }
+    @keyframes shine {
+      0% { left: -100%; } 50% { left: 100%; } 100% { left: 100%; }
+    }
+
+    .section-title{
+      font-family: 'Orbitron', 'Exo 2', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: #ffd84d;
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-title::before{
+      content: ""; display: inline-block;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffd84d, #b88915);
+      box-shadow: 0 0 10px rgba(255,216,77,0.8);
+      flex: 0 0 auto;
+    }
+    .section-text{
+      color: rgba(255,255,255,0.88);
+      font-size: 16px;
+      line-height: 1.7;
+      font-weight: 400;
+    }
+    .section-text a{ color: #ffd84d; font-weight: 600; }
+    .intro-text{
+      font-size: 17px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 8px;
+    }
+    .updated{
+      display: inline-block;
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.65);
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.22);
+      border: 1px solid rgba(255,255,255,0.12);
+      margin-bottom: 20px;
+    }
+
+    /* ================= Footer ================= */
+    .site-footer {
+      position: relative; z-index: 5;
+      margin: 40px auto 0;
+      padding: 28px 24px 22px;
+      color: rgba(255,255,255,0.78);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(15,45,27,0.25), rgba(10,30,18,0.55));
+      backdrop-filter: blur(6px);
+    }
+    .site-footer-inner{
+      max-width: 1180px; margin: 0 auto;
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 14px 28px;
+    }
+    .site-footer-brand{
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700; color: #fff; letter-spacing: 1px;
+    }
+    .site-footer-brand .brand-dot{
+      width: 8px; height: 8px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffd84d, #b88915);
+      box-shadow: 0 0 10px rgba(255,216,77,0.6);
+    }
+    .site-footer-copy{ color: rgba(255,255,255,0.55); font-weight: 500; font-size: 0.86rem; letter-spacing: 0.3px; }
+    .site-footer-links{ display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
+    .site-footer-links a{
+      color: rgba(255,255,255,0.78); text-decoration: none;
+      font-weight: 600; padding: 4px 10px; border-radius: 999px;
+      transition: background .2s ease, color .2s ease;
+    }
+    .site-footer-links a:hover{ color: #fff; background: rgba(255,255,255,0.08); }
+    .site-footer-links .dot{ color: rgba(255,255,255,0.25); user-select: none; }
+    .site-footer-contact{
+      width: 100%; text-align: center;
+      margin-top: 12px; padding-top: 14px;
+      border-top: 1px dashed rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.6); font-size: 0.86rem;
+    }
+    .site-footer-contact a{ color: #ffd84d; text-decoration: none; font-weight: 700; }
+    .site-footer-contact a:hover{ text-decoration: underline; }
+    @media (max-width: 640px){
+      .site-footer-inner{ justify-content: center; text-align: center; }
+      .site-footer-links{ justify-content: center; }
+      .language-menu{ right: 20px; top: 16px; }
+      .menu-button{ padding: 12px 22px; font-size: 14px; }
+      .glass-card{ padding: 28px 22px; border-radius: 22px; }
+    }
+
+    html[lang="ar"] body, html[lang="ar"] .container { direction: rtl; }
+    html[lang="ar"] .section-title{ flex-direction: row-reverse; }
+    html[lang="ar"] .back-home:hover img{ transform: translateX(4px) scale(1.04); }
+  
+    /* ================= Анимированный фон (движущиеся шары) ================= */
+    .bg-orbs{
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 2;
+      overflow: hidden;
+    }
+    .bg-orb{
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.55;
+      will-change: transform;
+    }
+    .bg-orb.o1{ width: 440px; height: 440px; background: radial-gradient(circle, rgba(255,216,77,0.5), transparent 65%); top: -130px; left: -130px; animation: orbDrift1 20s ease-in-out infinite; }
+    .bg-orb.o2{ width: 560px; height: 560px; background: radial-gradient(circle, rgba(74,157,111,0.85), transparent 65%); bottom: -230px; right: -180px; animation: orbDrift2 24s ease-in-out infinite; }
+    .bg-orb.o3{ width: 340px; height: 340px; background: radial-gradient(circle, rgba(255,255,255,0.22), transparent 65%); top: 38%; right: 18%; animation: orbDrift3 28s ease-in-out infinite; }
+    .bg-orb.o4{ width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,216,77,0.28), transparent 65%); top: 60%; left: 8%; animation: orbDrift4 32s ease-in-out infinite; }
+    @keyframes orbDrift1 { 0%,100%{transform: translate(0,0);}        50%{transform: translate(140px, 110px);} }
+    @keyframes orbDrift2 { 0%,100%{transform: translate(0,0);}        50%{transform: translate(-160px,-110px);} }
+    @keyframes orbDrift3 { 0%,100%{transform: translate(0,0) scale(1);} 50%{transform: translate(70px,-90px) scale(1.15);} }
+    @keyframes orbDrift4 { 0%,100%{transform: translate(0,0) scale(1);} 50%{transform: translate(-90px, 60px) scale(1.1);} }
+
+    /* Поднимающиеся частицы */
+    .bg-particles{
+      position: fixed; inset: 0; pointer-events: none; z-index: 3;
+      overflow: hidden;
+    }
+    .bg-particle{
+      position: absolute; bottom: -20px;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,216,77,0.9), rgba(255,216,77,0));
+      opacity: 0;
+      animation: particleFloat linear infinite;
+    }
+    @keyframes particleFloat {
+      0%   { transform: translateY(0) translateX(0);          opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.8; }
+      100% { transform: translateY(-110vh) translateX(24px);  opacity: 0; }
+    }
+
+    /* ================= Анимация заголовка ================= */
+    .page-title{
+      animation: titleIn 900ms cubic-bezier(.2,.9,.25,1.15) both,
+                 titlePulse 4.5s ease-in-out 900ms infinite;
+    }
+    @keyframes titleIn {
+      0%   { opacity: 0; transform: translateY(-26px) scale(.92); letter-spacing: 12px; }
+      100% { opacity: 1; transform: none;                          letter-spacing: 4px; }
+    }
+    @keyframes titlePulse {
+      0%,100% {
+        text-shadow:
+          0 2px 0 #B8860B, 0 4px 0 #9A7209, 0 6px 0 #7C5E07,
+          0 10px 20px rgba(0,0,0,0.5),
+          0 0 30px rgba(255,215,0,0.55);
+      }
+      50% {
+        text-shadow:
+          0 2px 0 #B8860B, 0 4px 0 #9A7209, 0 6px 0 #7C5E07,
+          0 10px 20px rgba(0,0,0,0.5),
+          0 0 60px rgba(255,215,0,1);
+      }
+    }
+    .page-sub{ animation: subIn 900ms ease 200ms both; }
+    @keyframes subIn { from{opacity:0; transform: translateY(-10px);} to{opacity:1; transform:none;} }
+
+    /* ================= Появление карточек ================= */
+    .glass-card{
+      opacity: 0;
+      transform: translateY(28px);
+      transition:
+        transform .5s cubic-bezier(.2,.9,.25,1.05),
+        opacity .5s ease,
+        box-shadow .45s ease,
+        border-color .45s ease;
+    }
+    .glass-card.revealed{
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .glass-card:hover{
+      transform: translateY(-5px) scale(1.004);
+      border-color: rgba(255,216,77,0.35);
+      box-shadow:
+        0 30px 80px rgba(0,0,0,0.45),
+        0 0 0 1px rgba(255,216,77,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.25);
+    }
+    .section-title::before{
+      animation: dotPulse 2.4s ease-in-out infinite;
+    }
+    @keyframes dotPulse {
+      0%,100% { box-shadow: 0 0 10px rgba(255,216,77,0.7); transform: scale(1); }
+      50%     { box-shadow: 0 0 22px rgba(255,216,77,1);   transform: scale(1.3); }
+    }
+
+    /* ================= Плавная смена языка ================= */
+    [data-i18n]{
+      transition: opacity .22s ease, transform .22s ease, filter .22s ease;
+    }
+    body.lang-switching [data-i18n]{
+      opacity: 0;
+      transform: translateY(-4px);
+      filter: blur(2px);
+    }
+    body.lang-switching .menu-button{
+      box-shadow:
+        0 0 0 2px rgba(255,216,77,0.55),
+        6px 6px 16px rgba(0,0,0,0.3),
+        -3px -3px 10px rgba(255,255,255,0.1);
+    }
+
+    /* Уважаем prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce) {
+      .back-home, .back-home img,
+      .bg-orb, .bg-particle,
+      .page-title, .page-sub,
+      .section-title::before,
+      body, body::before {
+        animation: none !important;
+      }
+      .glass-card{ opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Анимационный фон -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="bg-orb o1"></div>
+    <div class="bg-orb o2"></div>
+    <div class="bg-orb o3"></div>
+    <div class="bg-orb o4"></div>
+  </div>
+  <div class="bg-particles" aria-hidden="true" id="bgParticles"></div>
+  <!-- Меню языков (ТОЧ В ТОЧ как на главной) -->
+  <div class="language-menu">
+    <div class="menu-button" data-i18n="languages">Языки ▼</div>
+    <div class="language-dropdown">
+      <div class="language-scroll">
+        <div class="lang-item" data-lang="ru"><span class="lang-flag"><img src="../flags/ru.png" alt="Русский" /></span><span class="lang-code">RUS</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="en"><span class="lang-flag"><img src="../flags/gb.png" alt="English" /></span><span class="lang-code">ENG</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="uk"><span class="lang-flag"><img src="../flags/ua.png" alt="Українська" /></span><span class="lang-code">UKR</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="de"><span class="lang-flag"><img src="../flags/de.jpg" alt="Deutsch" /></span><span class="lang-code">DEU</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="es"><span class="lang-flag"><img src="../flags/es.png" alt="Español" /></span><span class="lang-code">ESP</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="fr"><span class="lang-flag"><img src="../flags/fr.png" alt="Français" /></span><span class="lang-code">FRA</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="it"><span class="lang-flag"><img src="../flags/it.png" alt="Italiano" /></span><span class="lang-code">ITA</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="pt"><span class="lang-flag"><img src="../flags/pt.png" alt="Português" /></span><span class="lang-code">POR</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="pl"><span class="lang-flag"><img src="../flags/pl.png" alt="Polski" /></span><span class="lang-code">POL</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="tr"><span class="lang-flag"><img src="../flags/tr.png" alt="Türkçe" /></span><span class="lang-code">TUR</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="nl"><span class="lang-flag"><img src="../flags/nl.png" alt="Nederlands" /></span><span class="lang-code">NLD</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="sv"><span class="lang-flag"><img src="../flags/sv.png" alt="Svenska" /></span><span class="lang-code">SWE</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="no"><span class="lang-flag"><img src="../flags/no.png" alt="Norsk" /></span><span class="lang-code">NOR</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="fi"><span class="lang-flag"><img src="../flags/fi.png" alt="Suomi" /></span><span class="lang-code">FIN</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="da"><span class="lang-flag"><img src="../flags/da.png" alt="Dansk" /></span><span class="lang-code">DAN</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="cs"><span class="lang-flag"><img src="../flags/cs.png" alt="Čeština" /></span><span class="lang-code">CES</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="ro"><span class="lang-flag"><img src="../flags/ro.png" alt="Română" /></span><span class="lang-code">RON</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="hu"><span class="lang-flag"><img src="../flags/hu.png" alt="Magyar" /></span><span class="lang-code">HUN</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="el"><span class="lang-flag"><img src="../flags/el.png" alt="Ελληνικά" /></span><span class="lang-code">ELL</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="ja"><span class="lang-flag"><img src="../flags/ja.png" alt="日本語" /></span><span class="lang-code">JPN</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="zh"><span class="lang-flag"><img src="../flags/zh.png" alt="中文" /></span><span class="lang-code">ZHO</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="ko"><span class="lang-flag"><img src="../flags/ko.png" alt="한국어" /></span><span class="lang-code">KOR</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="ar"><span class="lang-flag"><img src="../flags/ar.png" alt="العربية" /></span><span class="lang-code">ARA</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="hi"><span class="lang-flag"><img src="../flags/hi.png" alt="हिन्दी" /></span><span class="lang-code">HIN</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="th"><span class="lang-flag"><img src="../flags/th.png" alt="ไทย" /></span><span class="lang-code">THA</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="vi"><span class="lang-flag"><img src="../flags/vi.png" alt="Tiếng Việt" /></span><span class="lang-code">VIE</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="id"><span class="lang-flag"><img src="../flags/id.png" alt="Bahasa Indonesia" /></span><span class="lang-code">IDN</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+        <div class="lang-item" data-lang="ms"><span class="lang-flag"><img src="../flags/ms.png" alt="Bahasa Melayu" /></span><span class="lang-code">MSA</span><span class="lang-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"></path></svg></span></div>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+    <a class="back-home" href="../index.html" aria-label="Evades 3"><img src="../logo.png" alt="Evades 3" /></a>
+
+    <h1 class="page-title" data-i18n="page-heading">Политика cookies</h1>
+    <div class="page-sub" data-i18n="page-sub">Evades 3 — Официальный документ</div>
+
+    <div class="glass-card">
+      <span class="updated" data-i18n="updated">Последнее обновление: 23 апреля 2026</span>
+      <p class="intro-text" data-i18n="intro">На сайте Evades 3 используются файлы cookies и схожие технологии. В этом документе мы понятным языком объясняем, какие именно cookies мы устанавливаем, зачем они нужны и как вы можете ими управлять.</p>
+    </div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s1-title">1. Что такое cookies</div><div class="section-text" data-i18n="s1-text">Cookies — это маленькие текстовые файлы, которые сайт сохраняет в вашем браузере при посещении. Они помогают сайту запоминать ваши действия и настройки (например, выбранный язык), чтобы вы не вводили их заново при каждом возвращении.</div></div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s2-title">2. Зачем мы используем cookies</div><div class="section-text" data-i18n="s2-text">Мы применяем cookies, чтобы сайт работал стабильно, чтобы запоминать выбранный язык и настройки интерфейса, чтобы анализировать, как игроки используют страницы, и чтобы показывать вам релевантный игровой контент.</div></div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s3-title">3. Строго необходимые cookies</div><div class="section-text" data-i18n="s3-text">Эти файлы обязательны для базовой работы сайта: вход в аккаунт, защита от подделки запросов, сохранение игровой сессии. Без них некоторые функции просто не будут работать. Их нельзя отключить через настройки сайта.</div></div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s4-title">4. Аналитические cookies</div><div class="section-text" data-i18n="s4-text">С помощью обезличенной статистики (например, Google Analytics) мы понимаем, какие разделы популярны, где игроки сталкиваются с проблемами и что улучшить. Эти данные не идентифицируют вас лично.</div></div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s5-title">5. Функциональные cookies</div><div class="section-text" data-i18n="s5-text">Запоминают ваши предпочтения: выбранный язык, режим отображения, открытые подсказки. Без них сайт продолжит работать, но удобство уменьшится — каждый раз придётся настраивать его заново.</div></div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s6-title">6. Сторонние cookies</div><div class="section-text" data-i18n="s6-text">Некоторые функции (видео, виджеты соцсетей, платёжные модули) подгружаются с внешних сервисов и могут устанавливать собственные cookies. Их использование регулируется политиками этих сервисов.</div></div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s7-title">7. Как управлять cookies</div><div class="section-text" data-i18n="s7-text">Вы можете очистить или заблокировать cookies в настройках браузера (Chrome, Firefox, Safari, Edge). Также большинство браузеров поддерживают режим инкогнито, где cookies удаляются после закрытия окна. Учтите: при отключении части cookies сайт может работать ограниченно.</div></div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s8-title">8. Срок хранения</div><div class="section-text" data-i18n="s8-text">Сессионные cookies удаляются автоматически после закрытия браузера. Постоянные хранятся от нескольких дней до нескольких лет — в зависимости от назначения. Точные сроки указаны в самом cookie-файле в вашем браузере.</div></div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s9-title">9. Изменения политики</div><div class="section-text" data-i18n="s9-text">Мы можем обновлять эту Политику cookies при изменении набора используемых технологий или законодательства. Актуальная версия всегда доступна на этой странице, дата обновления указана сверху.</div></div>
+
+    <div class="glass-card"><div class="section-title" data-i18n="s10-title">10. Контакты</div><div class="section-text" data-i18n="s10-text">По вопросам, связанным с cookies, пишите на <a href="mailto:support@evades3.com">support@evades3.com</a>. Мы постараемся ответить как можно быстрее.</div></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <div class="site-footer-brand"><span class="brand-dot"></span><span>EVADES 3</span></div>
+      <div class="site-footer-copy" data-i18n="footer-copy">© 2026 Evades 3. Все права защищены.</div>
+      <nav class="site-footer-links" aria-label="Footer">
+        <a href="terms.html" data-i18n="footer-terms">Условия использования</a><span class="dot">•</span>
+        <a href="privacy.html" data-i18n="footer-privacy">Политика конфиденциальности</a><span class="dot">•</span>
+        <a href="cookies.html" data-i18n="footer-cookies">Cookies</a><span class="dot">•</span>
+        <a href="#" data-i18n="footer-support">Поддержка</a>
+      </nav>
+    </div>
+    <p class="site-footer-contact" data-i18n="footer-contact">Есть вопросы? Пишите нам: <a href="mailto:support@evades3.com">support@evades3.com</a></p>
+  </footer>
+
+  <script>
+/* Evades 3 — Cookie Policy translations (28 languages) */
+const translations = {
+
+  ru: {
+    'page-title': 'Evades 3 — Политика cookies',
+    'languages': 'Языки ▼',
+    'back-home': '← На главную',
+    'page-heading': 'Политика cookies',
+    'page-sub': 'Evades 3 — Официальный документ',
+    'updated': 'Последнее обновление: 23 апреля 2026',
+    'intro': 'На сайте Evades 3 используются файлы cookies и схожие технологии. В этом документе мы понятным языком объясняем, какие именно cookies мы устанавливаем, зачем они нужны и как вы можете ими управлять.',
+    's1-title': '1. Что такое cookies',
+    's1-text': 'Cookies — это маленькие текстовые файлы, которые сайт сохраняет в вашем браузере при посещении. Они помогают сайту запоминать ваши действия и настройки (например, выбранный язык), чтобы вы не вводили их заново при каждом возвращении.',
+    's2-title': '2. Зачем мы используем cookies',
+    's2-text': 'Мы применяем cookies, чтобы сайт работал стабильно, чтобы запоминать выбранный язык и настройки интерфейса, чтобы анализировать, как игроки используют страницы, и чтобы показывать вам релевантный игровой контент.',
+    's3-title': '3. Строго необходимые cookies',
+    's3-text': 'Эти файлы обязательны для базовой работы сайта: вход в аккаунт, защита от подделки запросов, сохранение игровой сессии. Без них некоторые функции просто не будут работать. Их нельзя отключить через настройки сайта.',
+    's4-title': '4. Аналитические cookies',
+    's4-text': 'С помощью обезличенной статистики (например, Google Analytics) мы понимаем, какие разделы популярны, где игроки сталкиваются с проблемами и что улучшить. Эти данные не идентифицируют вас лично.',
+    's5-title': '5. Функциональные cookies',
+    's5-text': 'Запоминают ваши предпочтения: выбранный язык, режим отображения, открытые подсказки. Без них сайт продолжит работать, но удобство уменьшится — каждый раз придётся настраивать его заново.',
+    's6-title': '6. Сторонние cookies',
+    's6-text': 'Некоторые функции (видео, виджеты соцсетей, платёжные модули) подгружаются с внешних сервисов и могут устанавливать собственные cookies. Их использование регулируется политиками этих сервисов.',
+    's7-title': '7. Как управлять cookies',
+    's7-text': 'Вы можете очистить или заблокировать cookies в настройках браузера (Chrome, Firefox, Safari, Edge). Также большинство браузеров поддерживают режим инкогнито, где cookies удаляются после закрытия окна. Учтите: при отключении части cookies сайт может работать ограниченно.',
+    's8-title': '8. Срок хранения',
+    's8-text': 'Сессионные cookies удаляются автоматически после закрытия браузера. Постоянные хранятся от нескольких дней до нескольких лет — в зависимости от назначения. Точные сроки указаны в самом cookie-файле в вашем браузере.',
+    's9-title': '9. Изменения политики',
+    's9-text': 'Мы можем обновлять эту Политику cookies при изменении набора используемых технологий или законодательства. Актуальная версия всегда доступна на этой странице, дата обновления указана сверху.',
+    's10-title': '10. Контакты',
+    's10-text': 'По вопросам, связанным с cookies, пишите на <a href="mailto:support@evades3.com">support@evades3.com</a>. Мы постараемся ответить как можно быстрее.',
+    'footer-copy': '© 2026 Evades 3. Все права защищены.',
+    'footer-terms': 'Условия использования',
+    'footer-privacy': 'Политика конфиденциальности',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Поддержка',
+    'footer-contact': 'Есть вопросы? Пишите нам: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  en: {
+    'page-title': 'Evades 3 — Cookie Policy',
+    'languages': 'Languages ▼',
+    'back-home': '← Back to home',
+    'page-heading': 'Cookie Policy',
+    'page-sub': 'Evades 3 — Official document',
+    'updated': 'Last updated: April 23, 2026',
+    'intro': 'The Evades 3 website uses cookies and similar technologies. This document explains in plain language which cookies we set, why we need them, and how you can control them.',
+    's1-title': '1. What are cookies',
+    's1-text': 'Cookies are small text files that a website stores in your browser when you visit. They help the site remember your actions and preferences (such as your chosen language) so you don\'t have to enter them again each time you return.',
+    's2-title': '2. Why we use cookies',
+    's2-text': 'We use cookies to keep the site running reliably, to remember your language and interface preferences, to analyse how players use our pages, and to show you relevant game content.',
+    's3-title': '3. Strictly necessary cookies',
+    's3-text': 'These files are required for the basic functioning of the site: logging in, protecting against forged requests, and keeping your game session alive. Without them some features simply won\'t work. They cannot be disabled through site settings.',
+    's4-title': '4. Analytics cookies',
+    's4-text': 'Through anonymised statistics (for example Google Analytics) we understand which sections are popular, where players run into problems, and what to improve. These data do not identify you personally.',
+    's5-title': '5. Functional cookies',
+    's5-text': 'These remember your preferences: chosen language, display mode, dismissed tips. Without them the site will still work, but it will be less convenient — you\'d have to configure it again each visit.',
+    's6-title': '6. Third-party cookies',
+    's6-text': 'Some features (videos, social widgets, payment modules) are loaded from external services and may set their own cookies. Their use is governed by the policies of those services.',
+    's7-title': '7. How to manage cookies',
+    's7-text': 'You can clear or block cookies in your browser settings (Chrome, Firefox, Safari, Edge). Most browsers also offer an incognito/private mode where cookies are deleted after the window closes. Note that disabling some cookies may limit the site\'s functionality.',
+    's8-title': '8. Retention period',
+    's8-text': 'Session cookies are deleted automatically when you close the browser. Persistent cookies are stored for anywhere from a few days to a few years, depending on their purpose. The exact lifetime is shown on each cookie inside your browser.',
+    's9-title': '9. Changes to this policy',
+    's9-text': 'We may update this Cookie Policy when the technologies we use or applicable legislation change. The current version is always available on this page; the update date appears at the top.',
+    's10-title': '10. Contact',
+    's10-text': 'For any questions about cookies, please write to <a href="mailto:support@evades3.com">support@evades3.com</a>. We will reply as soon as possible.',
+    'footer-copy': '© 2026 Evades 3. All rights reserved.',
+    'footer-terms': 'Terms of Use',
+    'footer-privacy': 'Privacy Policy',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Support',
+    'footer-contact': 'Got questions? Write to us: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  uk: {
+    'page-title': 'Evades 3 — Політика cookies',
+    'languages': 'Мови ▼',
+    'back-home': '← На головну',
+    'page-heading': 'Політика cookies',
+    'page-sub': 'Evades 3 — Офіційний документ',
+    'updated': 'Останнє оновлення: 23 квітня 2026',
+    'intro': 'На сайті Evades 3 використовуються файли cookies та схожі технології. У цьому документі простою мовою пояснюємо, які саме cookies ми встановлюємо, навіщо вони потрібні і як ви можете ними керувати.',
+    's1-title': '1. Що таке cookies',
+    's1-text': 'Cookies — це маленькі текстові файли, які сайт зберігає у вашому браузері під час відвідування. Вони допомагають сайту запам\'ятовувати ваші дії та налаштування (наприклад, обрану мову), щоб ви не вводили їх знову щоразу.',
+    's2-title': '2. Навіщо ми використовуємо cookies',
+    's2-text': 'Ми застосовуємо cookies, щоб сайт працював стабільно, щоб пам\'ятати обрану мову та налаштування інтерфейсу, щоб аналізувати, як гравці користуються сторінками, та щоб показувати релевантний ігровий контент.',
+    's3-title': '3. Строго необхідні cookies',
+    's3-text': 'Ці файли потрібні для базової роботи сайту: вхід в акаунт, захист від підробки запитів, збереження ігрової сесії. Без них деякі функції просто не працюватимуть. Їх не можна вимкнути через налаштування сайту.',
+    's4-title': '4. Аналітичні cookies',
+    's4-text': 'За допомогою знеособленої статистики (наприклад, Google Analytics) ми розуміємо, які розділи популярні, де гравці стикаються з проблемами та що покращити. Ці дані не ідентифікують вас особисто.',
+    's5-title': '5. Функціональні cookies',
+    's5-text': 'Запам\'ятовують ваші вподобання: обрану мову, режим відображення, закриті підказки. Без них сайт працюватиме, але зручність зменшиться — щоразу доведеться налаштовувати його знову.',
+    's6-title': '6. Сторонні cookies',
+    's6-text': 'Деякі функції (відео, віджети соцмереж, платіжні модулі) підвантажуються із зовнішніх сервісів і можуть встановлювати власні cookies. Їхнє використання регулюється політиками цих сервісів.',
+    's7-title': '7. Як керувати cookies',
+    's7-text': 'Ви можете очистити або заблокувати cookies у налаштуваннях браузера (Chrome, Firefox, Safari, Edge). Більшість браузерів також підтримують режим інкогніто, де cookies видаляються після закриття вікна. Врахуйте: при вимкненні частини cookies сайт може працювати обмежено.',
+    's8-title': '8. Термін зберігання',
+    's8-text': 'Сесійні cookies видаляються автоматично після закриття браузера. Постійні зберігаються від кількох днів до кількох років — залежно від призначення. Точні терміни зазначені в самому cookie-файлі у вашому браузері.',
+    's9-title': '9. Зміни політики',
+    's9-text': 'Ми можемо оновлювати цю Політику cookies при зміні набору технологій або законодавства. Актуальна версія завжди доступна на цій сторінці, дата оновлення вказана зверху.',
+    's10-title': '10. Контакти',
+    's10-text': 'З питань, пов\'язаних із cookies, пишіть на <a href="mailto:support@evades3.com">support@evades3.com</a>. Ми постараємося відповісти якнайшвидше.',
+    'footer-copy': '© 2026 Evades 3. Усі права захищено.',
+    'footer-terms': 'Умови використання',
+    'footer-privacy': 'Політика конфіденційності',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Підтримка',
+    'footer-contact': 'Є питання? Пишіть нам: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  de: {
+    'page-title': 'Evades 3 — Cookie-Richtlinie',
+    'languages': 'Sprachen ▼',
+    'back-home': '← Zur Startseite',
+    'page-heading': 'Cookie-Richtlinie',
+    'page-sub': 'Evades 3 — Offizielles Dokument',
+    'updated': 'Letzte Aktualisierung: 23. April 2026',
+    'intro': 'Die Website von Evades 3 verwendet Cookies und ähnliche Technologien. In diesem Dokument erklären wir verständlich, welche Cookies wir setzen, wozu sie dienen und wie Sie sie verwalten können.',
+    's1-title': '1. Was sind Cookies',
+    's1-text': 'Cookies sind kleine Textdateien, die eine Website beim Besuch in Ihrem Browser speichert. Sie helfen der Seite, Ihre Aktionen und Einstellungen (z. B. die gewählte Sprache) zu merken, damit Sie diese nicht jedes Mal neu eingeben müssen.',
+    's2-title': '2. Wofür wir Cookies einsetzen',
+    's2-text': 'Wir setzen Cookies ein, damit die Seite zuverlässig läuft, um Sprache und Interface-Einstellungen zu speichern, um zu analysieren, wie Spieler die Seiten nutzen, und um Ihnen relevante Spielinhalte anzuzeigen.',
+    's3-title': '3. Unbedingt notwendige Cookies',
+    's3-text': 'Diese Dateien sind für die Grundfunktionen der Seite erforderlich: Login, Schutz vor gefälschten Anfragen, Erhalt der Spielsitzung. Ohne sie funktionieren manche Funktionen schlicht nicht. Sie lassen sich nicht über die Seiteneinstellungen abschalten.',
+    's4-title': '4. Analyse-Cookies',
+    's4-text': 'Mit anonymisierten Statistiken (z. B. Google Analytics) verstehen wir, welche Bereiche beliebt sind, wo Spieler auf Probleme stoßen und was verbessert werden muss. Diese Daten identifizieren Sie nicht persönlich.',
+    's5-title': '5. Funktionale Cookies',
+    's5-text': 'Sie speichern Ihre Präferenzen: gewählte Sprache, Anzeigemodus, weggeklickte Hinweise. Ohne sie funktioniert die Seite weiter, aber weniger komfortabel — Sie müssten alles bei jedem Besuch neu einstellen.',
+    's6-title': '6. Cookies von Drittanbietern',
+    's6-text': 'Einige Funktionen (Videos, Social-Widgets, Zahlungsmodule) werden von externen Diensten geladen und können eigene Cookies setzen. Deren Nutzung unterliegt den Richtlinien der jeweiligen Anbieter.',
+    's7-title': '7. Cookies verwalten',
+    's7-text': 'Sie können Cookies in den Browser-Einstellungen (Chrome, Firefox, Safari, Edge) löschen oder blockieren. Die meisten Browser bieten auch einen Inkognito-Modus, in dem Cookies nach dem Schließen des Fensters gelöscht werden. Beachten Sie: Wenn Sie bestimmte Cookies abschalten, kann die Seite eingeschränkt funktionieren.',
+    's8-title': '8. Speicherdauer',
+    's8-text': 'Sitzungs-Cookies werden automatisch beim Schließen des Browsers gelöscht. Dauerhafte Cookies werden je nach Zweck zwischen einigen Tagen und mehreren Jahren gespeichert. Die genaue Lebensdauer steht in der Cookie-Übersicht Ihres Browsers.',
+    's9-title': '9. Änderungen der Richtlinie',
+    's9-text': 'Wir können diese Cookie-Richtlinie aktualisieren, wenn sich eingesetzte Technologien oder Gesetze ändern. Die aktuelle Fassung ist stets auf dieser Seite verfügbar, das Aktualisierungsdatum steht oben.',
+    's10-title': '10. Kontakt',
+    's10-text': 'Fragen zu Cookies bitte an <a href="mailto:support@evades3.com">support@evades3.com</a>. Wir antworten so schnell wie möglich.',
+    'footer-copy': '© 2026 Evades 3. Alle Rechte vorbehalten.',
+    'footer-terms': 'Nutzungsbedingungen',
+    'footer-privacy': 'Datenschutzerklärung',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Support',
+    'footer-contact': 'Fragen? Schreiben Sie uns: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  es: {
+    'page-title': 'Evades 3 — Política de cookies',
+    'languages': 'Idiomas ▼',
+    'back-home': '← Volver al inicio',
+    'page-heading': 'Política de cookies',
+    'page-sub': 'Evades 3 — Documento oficial',
+    'updated': 'Última actualización: 23 de abril de 2026',
+    'intro': 'El sitio de Evades 3 utiliza cookies y tecnologías similares. En este documento explicamos en lenguaje sencillo qué cookies establecemos, para qué sirven y cómo puedes gestionarlas.',
+    's1-title': '1. Qué son las cookies',
+    's1-text': 'Las cookies son pequeños archivos de texto que un sitio guarda en tu navegador cuando lo visitas. Ayudan al sitio a recordar tus acciones y preferencias (por ejemplo, el idioma elegido) para que no tengas que introducirlas cada vez.',
+    's2-title': '2. Por qué usamos cookies',
+    's2-text': 'Empleamos cookies para que el sitio funcione de forma estable, para recordar tu idioma y ajustes de interfaz, para analizar cómo usan los jugadores las páginas y para mostrarte contenido del juego relevante.',
+    's3-title': '3. Cookies estrictamente necesarias',
+    's3-text': 'Son imprescindibles para el funcionamiento básico del sitio: iniciar sesión, proteger contra peticiones falsificadas y mantener tu sesión de juego. Sin ellas algunas funciones no operan. No se pueden desactivar desde la configuración del sitio.',
+    's4-title': '4. Cookies analíticas',
+    's4-text': 'Mediante estadísticas anónimas (por ejemplo, Google Analytics) entendemos qué secciones son populares, dónde encuentran problemas los jugadores y qué mejorar. Estos datos no te identifican personalmente.',
+    's5-title': '5. Cookies funcionales',
+    's5-text': 'Recuerdan tus preferencias: idioma elegido, modo de visualización, avisos descartados. Sin ellas el sitio sigue funcionando, pero la comodidad disminuye: tendrías que configurarlo de nuevo cada vez.',
+    's6-title': '6. Cookies de terceros',
+    's6-text': 'Algunas funciones (vídeos, widgets sociales, módulos de pago) se cargan desde servicios externos y pueden establecer sus propias cookies. Su uso se rige por las políticas de esos servicios.',
+    's7-title': '7. Cómo gestionar las cookies',
+    's7-text': 'Puedes borrar o bloquear cookies en la configuración de tu navegador (Chrome, Firefox, Safari, Edge). La mayoría de navegadores también ofrecen modo incógnito, donde las cookies se borran al cerrar la ventana. Ten en cuenta: si desactivas algunas, el sitio puede funcionar de forma limitada.',
+    's8-title': '8. Período de conservación',
+    's8-text': 'Las cookies de sesión se eliminan automáticamente al cerrar el navegador. Las persistentes se conservan desde unos días hasta varios años, según su finalidad. La duración exacta figura en cada cookie dentro de tu navegador.',
+    's9-title': '9. Cambios en la política',
+    's9-text': 'Podemos actualizar esta Política de cookies cuando cambien las tecnologías que usamos o la legislación aplicable. La versión vigente está siempre disponible en esta página, con la fecha de actualización arriba.',
+    's10-title': '10. Contacto',
+    's10-text': 'Para cualquier consulta sobre cookies, escríbenos a <a href="mailto:support@evades3.com">support@evades3.com</a>. Responderemos lo antes posible.',
+    'footer-copy': '© 2026 Evades 3. Todos los derechos reservados.',
+    'footer-terms': 'Términos de uso',
+    'footer-privacy': 'Política de privacidad',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Soporte',
+    'footer-contact': '¿Tienes preguntas? Escríbenos: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  fr: {
+    'page-title': 'Evades 3 — Politique des cookies',
+    'languages': 'Langues ▼',
+    'back-home': '← Retour à l\'accueil',
+    'page-heading': 'Politique des cookies',
+    'page-sub': 'Evades 3 — Document officiel',
+    'updated': 'Dernière mise à jour : 23 avril 2026',
+    'intro': 'Le site Evades 3 utilise des cookies et technologies similaires. Ce document explique simplement quels cookies nous déposons, à quoi ils servent et comment vous pouvez les gérer.',
+    's1-title': '1. Que sont les cookies',
+    's1-text': 'Les cookies sont de petits fichiers texte qu\'un site enregistre dans votre navigateur lorsque vous le visitez. Ils permettent de mémoriser vos actions et préférences (langue choisie, par exemple) pour ne pas avoir à les ressaisir à chaque visite.',
+    's2-title': '2. Pourquoi nous utilisons les cookies',
+    's2-text': 'Nous utilisons les cookies pour que le site fonctionne de manière fiable, pour mémoriser votre langue et vos réglages d\'interface, pour analyser l\'usage des pages et pour afficher du contenu de jeu pertinent.',
+    's3-title': '3. Cookies strictement nécessaires',
+    's3-text': 'Ces fichiers sont indispensables au fonctionnement de base : connexion au compte, protection contre les requêtes falsifiées, maintien de la session de jeu. Sans eux, certaines fonctions ne marchent pas. Ils ne peuvent pas être désactivés via les paramètres du site.',
+    's4-title': '4. Cookies analytiques',
+    's4-text': 'Grâce à des statistiques anonymisées (Google Analytics, par exemple), nous comprenons quelles sections sont populaires, où les joueurs rencontrent des problèmes et ce qu\'il faut améliorer. Ces données ne vous identifient pas personnellement.',
+    's5-title': '5. Cookies fonctionnels',
+    's5-text': 'Ils mémorisent vos préférences : langue, mode d\'affichage, conseils fermés. Sans eux, le site fonctionne toujours, mais le confort diminue — il faudrait reconfigurer à chaque visite.',
+    's6-title': '6. Cookies tiers',
+    's6-text': 'Certaines fonctions (vidéos, widgets sociaux, modules de paiement) sont chargées depuis des services externes et peuvent déposer leurs propres cookies. Leur usage est régi par les politiques de ces services.',
+    's7-title': '7. Comment gérer les cookies',
+    's7-text': 'Vous pouvez effacer ou bloquer les cookies dans les paramètres de votre navigateur (Chrome, Firefox, Safari, Edge). La plupart des navigateurs proposent un mode privé/incognito où les cookies sont supprimés à la fermeture. Note : si vous désactivez certains cookies, le site peut fonctionner de façon limitée.',
+    's8-title': '8. Durée de conservation',
+    's8-text': 'Les cookies de session sont supprimés automatiquement à la fermeture du navigateur. Les persistants sont conservés de quelques jours à plusieurs années, selon leur finalité. La durée exacte figure sur chaque cookie dans votre navigateur.',
+    's9-title': '9. Modifications de la politique',
+    's9-text': 'Nous pouvons mettre à jour cette Politique des cookies en cas de changement des technologies utilisées ou de la législation. La version actuelle est toujours disponible sur cette page, la date de mise à jour figure en haut.',
+    's10-title': '10. Contact',
+    's10-text': 'Pour toute question sur les cookies, écrivez à <a href="mailto:support@evades3.com">support@evades3.com</a>. Nous répondrons dès que possible.',
+    'footer-copy': '© 2026 Evades 3. Tous droits réservés.',
+    'footer-terms': 'Conditions d\'utilisation',
+    'footer-privacy': 'Politique de confidentialité',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Support',
+    'footer-contact': 'Des questions ? Écrivez-nous : <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  it: {
+    'page-title': 'Evades 3 — Informativa sui cookie',
+    'languages': 'Lingue ▼',
+    'back-home': '← Torna alla home',
+    'page-heading': 'Informativa sui cookie',
+    'page-sub': 'Evades 3 — Documento ufficiale',
+    'updated': 'Ultimo aggiornamento: 23 aprile 2026',
+    'intro': 'Il sito di Evades 3 utilizza cookie e tecnologie simili. In questo documento spieghiamo in modo chiaro quali cookie impostiamo, a cosa servono e come puoi gestirli.',
+    's1-title': '1. Cosa sono i cookie',
+    's1-text': 'I cookie sono piccoli file di testo che un sito salva nel tuo browser quando lo visiti. Aiutano il sito a ricordare le tue azioni e preferenze (ad esempio la lingua scelta) per non doverle reinserire a ogni visita.',
+    's2-title': '2. Perché usiamo i cookie',
+    's2-text': 'Usiamo i cookie per far funzionare il sito in modo stabile, per ricordare lingua e impostazioni dell\'interfaccia, per analizzare come i giocatori usano le pagine e per mostrarti contenuti di gioco pertinenti.',
+    's3-title': '3. Cookie strettamente necessari',
+    's3-text': 'Sono indispensabili per il funzionamento di base: accesso all\'account, protezione dalle richieste contraffatte, mantenimento della sessione di gioco. Senza di essi alcune funzioni non operano. Non possono essere disattivati dalle impostazioni del sito.',
+    's4-title': '4. Cookie analitici',
+    's4-text': 'Con statistiche anonimizzate (ad esempio Google Analytics) capiamo quali sezioni sono popolari, dove i giocatori incontrano problemi e cosa migliorare. Questi dati non ti identificano personalmente.',
+    's5-title': '5. Cookie funzionali',
+    's5-text': 'Ricordano le tue preferenze: lingua, modalità di visualizzazione, suggerimenti chiusi. Senza di essi il sito funziona comunque, ma con minore comodità: dovresti riconfigurarlo a ogni visita.',
+    's6-title': '6. Cookie di terze parti',
+    's6-text': 'Alcune funzioni (video, widget social, moduli di pagamento) sono caricate da servizi esterni e possono impostare i propri cookie. Il loro uso è regolato dalle policy di tali servizi.',
+    's7-title': '7. Come gestire i cookie',
+    's7-text': 'Puoi cancellare o bloccare i cookie nelle impostazioni del browser (Chrome, Firefox, Safari, Edge). La maggior parte dei browser offre anche una modalità in incognito in cui i cookie vengono eliminati alla chiusura. Nota: disabilitando alcuni cookie il sito potrebbe funzionare in modo limitato.',
+    's8-title': '8. Durata di conservazione',
+    's8-text': 'I cookie di sessione vengono eliminati automaticamente alla chiusura del browser. Quelli persistenti durano da alcuni giorni a diversi anni, in base allo scopo. La durata esatta è indicata su ciascun cookie nel browser.',
+    's9-title': '9. Modifiche all\'informativa',
+    's9-text': 'Possiamo aggiornare questa Informativa sui cookie quando cambiano le tecnologie utilizzate o la normativa applicabile. La versione attuale è sempre disponibile su questa pagina, con la data di aggiornamento in alto.',
+    's10-title': '10. Contatti',
+    's10-text': 'Per qualsiasi domanda sui cookie, scrivi a <a href="mailto:support@evades3.com">support@evades3.com</a>. Risponderemo il prima possibile.',
+    'footer-copy': '© 2026 Evades 3. Tutti i diritti riservati.',
+    'footer-terms': 'Termini di utilizzo',
+    'footer-privacy': 'Informativa sulla privacy',
+    'footer-cookies': 'Cookie',
+    'footer-support': 'Supporto',
+    'footer-contact': 'Domande? Scrivici: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  pt: {
+    'page-title': 'Evades 3 — Política de cookies',
+    'languages': 'Idiomas ▼',
+    'back-home': '← Voltar ao início',
+    'page-heading': 'Política de cookies',
+    'page-sub': 'Evades 3 — Documento oficial',
+    'updated': 'Última atualização: 23 de abril de 2026',
+    'intro': 'O site do Evades 3 utiliza cookies e tecnologias semelhantes. Neste documento explicamos de forma clara quais cookies definimos, para que servem e como pode geri-los.',
+    's1-title': '1. O que são cookies',
+    's1-text': 'Os cookies são pequenos ficheiros de texto que um site guarda no seu navegador ao visitá-lo. Ajudam o site a lembrar as suas ações e preferências (por exemplo, o idioma escolhido) para não ter de inseri-las em cada visita.',
+    's2-title': '2. Por que usamos cookies',
+    's2-text': 'Usamos cookies para que o site funcione de forma estável, para guardar idioma e definições de interface, para analisar como os jogadores usam as páginas e para mostrar conteúdo de jogo relevante.',
+    's3-title': '3. Cookies estritamente necessários',
+    's3-text': 'São indispensáveis ao funcionamento básico: início de sessão, proteção contra pedidos falsificados, manutenção da sessão de jogo. Sem eles algumas funcionalidades não operam. Não podem ser desativados nas definições do site.',
+    's4-title': '4. Cookies analíticos',
+    's4-text': 'Com estatísticas anonimizadas (por exemplo, Google Analytics) percebemos quais secções são populares, onde os jogadores encontram problemas e o que melhorar. Estes dados não o identificam pessoalmente.',
+    's5-title': '5. Cookies funcionais',
+    's5-text': 'Lembram as suas preferências: idioma, modo de exibição, dicas fechadas. Sem eles o site continua a funcionar, mas com menos comodidade — teria de configurá-lo em cada visita.',
+    's6-title': '6. Cookies de terceiros',
+    's6-text': 'Algumas funcionalidades (vídeos, widgets sociais, módulos de pagamento) são carregadas a partir de serviços externos e podem definir os seus próprios cookies. O seu uso é regido pelas políticas desses serviços.',
+    's7-title': '7. Como gerir cookies',
+    's7-text': 'Pode limpar ou bloquear cookies nas definições do navegador (Chrome, Firefox, Safari, Edge). A maioria dos navegadores oferece também um modo anónimo onde os cookies são eliminados ao fechar a janela. Nota: ao desativar alguns cookies, o site pode funcionar de forma limitada.',
+    's8-title': '8. Período de retenção',
+    's8-text': 'Os cookies de sessão são eliminados automaticamente ao fechar o navegador. Os persistentes mantêm-se de alguns dias a vários anos, conforme a finalidade. A duração exata aparece em cada cookie no seu navegador.',
+    's9-title': '9. Alterações à política',
+    's9-text': 'Podemos atualizar esta Política de cookies quando as tecnologias utilizadas ou a legislação mudarem. A versão atual está sempre disponível nesta página, com a data de atualização no topo.',
+    's10-title': '10. Contacto',
+    's10-text': 'Para questões sobre cookies, escreva para <a href="mailto:support@evades3.com">support@evades3.com</a>. Responderemos o mais rapidamente possível.',
+    'footer-copy': '© 2026 Evades 3. Todos os direitos reservados.',
+    'footer-terms': 'Termos de uso',
+    'footer-privacy': 'Política de privacidade',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Suporte',
+    'footer-contact': 'Tem dúvidas? Escreva-nos: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  pl: {
+    'page-title': 'Evades 3 — Polityka cookies',
+    'languages': 'Języki ▼',
+    'back-home': '← Powrót na stronę główną',
+    'page-heading': 'Polityka cookies',
+    'page-sub': 'Evades 3 — Dokument oficjalny',
+    'updated': 'Ostatnia aktualizacja: 23 kwietnia 2026',
+    'intro': 'Strona Evades 3 używa plików cookies i podobnych technologii. W tym dokumencie wyjaśniamy prostym językiem, jakie cookies ustawiamy, do czego służą i jak możesz nimi zarządzać.',
+    's1-title': '1. Czym są cookies',
+    's1-text': 'Cookies to małe pliki tekstowe, które strona zapisuje w przeglądarce podczas odwiedzin. Pomagają stronie zapamiętać Twoje działania i ustawienia (np. wybrany język), abyś nie musiał wprowadzać ich za każdym razem.',
+    's2-title': '2. Dlaczego używamy cookies',
+    's2-text': 'Stosujemy cookies, aby strona działała stabilnie, aby zapamiętać język i ustawienia interfejsu, aby analizować, jak gracze korzystają ze stron, oraz aby pokazywać Ci odpowiednie treści gry.',
+    's3-title': '3. Cookies niezbędne',
+    's3-text': 'Te pliki są wymagane do podstawowego działania strony: logowanie, ochrona przed sfałszowanymi żądaniami, utrzymanie sesji gry. Bez nich niektóre funkcje nie działają. Nie można ich wyłączyć w ustawieniach strony.',
+    's4-title': '4. Cookies analityczne',
+    's4-text': 'Dzięki anonimowym statystykom (np. Google Analytics) wiemy, które sekcje są popularne, gdzie gracze napotykają problemy i co poprawić. Dane te nie identyfikują Cię osobiście.',
+    's5-title': '5. Cookies funkcjonalne',
+    's5-text': 'Zapamiętują Twoje preferencje: wybrany język, tryb wyświetlania, zamknięte podpowiedzi. Bez nich strona nadal działa, ale wygoda spada — trzeba by konfigurować ją przy każdej wizycie.',
+    's6-title': '6. Cookies stron trzecich',
+    's6-text': 'Niektóre funkcje (filmy, widżety społecznościowe, moduły płatności) są ładowane z zewnętrznych usług i mogą ustawiać własne cookies. Ich użycie reguluje polityka tych usług.',
+    's7-title': '7. Jak zarządzać cookies',
+    's7-text': 'Możesz wyczyścić lub zablokować cookies w ustawieniach przeglądarki (Chrome, Firefox, Safari, Edge). Większość przeglądarek oferuje również tryb prywatny, gdzie cookies są usuwane po zamknięciu okna. Uwaga: po wyłączeniu części cookies strona może działać w ograniczony sposób.',
+    's8-title': '8. Okres przechowywania',
+    's8-text': 'Cookies sesyjne usuwane są automatycznie po zamknięciu przeglądarki. Trwałe przechowywane są od kilku dni do kilku lat, w zależności od celu. Dokładny czas widać przy każdym cookie w przeglądarce.',
+    's9-title': '9. Zmiany polityki',
+    's9-text': 'Możemy aktualizować tę Politykę cookies, gdy zmienią się stosowane technologie lub przepisy. Aktualna wersja jest zawsze dostępna na tej stronie, data aktualizacji widnieje na górze.',
+    's10-title': '10. Kontakt',
+    's10-text': 'W sprawach dotyczących cookies pisz na <a href="mailto:support@evades3.com">support@evades3.com</a>. Odpowiemy tak szybko, jak to możliwe.',
+    'footer-copy': '© 2026 Evades 3. Wszelkie prawa zastrzeżone.',
+    'footer-terms': 'Regulamin',
+    'footer-privacy': 'Polityka prywatności',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Wsparcie',
+    'footer-contact': 'Masz pytania? Napisz do nas: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  tr: {
+    'page-title': 'Evades 3 — Çerez Politikası',
+    'languages': 'Diller ▼',
+    'back-home': '← Ana sayfaya dön',
+    'page-heading': 'Çerez Politikası',
+    'page-sub': 'Evades 3 — Resmî belge',
+    'updated': 'Son güncelleme: 23 Nisan 2026',
+    'intro': 'Evades 3 sitesi çerezler ve benzer teknolojiler kullanır. Bu belgede hangi çerezleri yerleştirdiğimizi, neye yaradığını ve nasıl yönetebileceğinizi açık bir dille anlatıyoruz.',
+    's1-title': '1. Çerez nedir',
+    's1-text': 'Çerezler, ziyaret ettiğinizde sitenin tarayıcınıza kaydettiği küçük metin dosyalarıdır. Eylemlerinizi ve tercihlerinizi (örneğin seçtiğiniz dil) hatırlamasına yardımcı olur, böylece her dönüşünüzde yeniden girmeniz gerekmez.',
+    's2-title': '2. Çerezleri neden kullanıyoruz',
+    's2-text': 'Sitenin kararlı çalışması, dil ve arayüz tercihlerinizin hatırlanması, oyuncuların sayfaları nasıl kullandığının analizi ve size ilgili oyun içeriği göstermek için çerez kullanırız.',
+    's3-title': '3. Kesinlikle gerekli çerezler',
+    's3-text': 'Bu dosyalar sitenin temel işlevleri için zorunludur: giriş yapma, sahte istek koruması, oyun oturumunun sürdürülmesi. Onlarsız bazı işlevler çalışmaz. Site ayarlarından devre dışı bırakılamazlar.',
+    's4-title': '4. Analitik çerezler',
+    's4-text': 'Anonim istatistiklerle (örneğin Google Analytics) hangi bölümlerin popüler olduğunu, oyuncuların nerede sorun yaşadığını ve neyi iyileştirmemiz gerektiğini anlarız. Bu veriler sizi kişisel olarak tanımlamaz.',
+    's5-title': '5. İşlevsel çerezler',
+    's5-text': 'Tercihlerinizi hatırlar: seçtiğiniz dil, görüntü modu, kapatılan ipuçları. Onlar olmadan site çalışmaya devam eder ama her ziyarette yeniden ayarlamak gerekir.',
+    's6-title': '6. Üçüncü taraf çerezler',
+    's6-text': 'Bazı işlevler (videolar, sosyal widget\'lar, ödeme modülleri) dış hizmetlerden yüklenir ve kendi çerezlerini yerleştirebilir. Bunların kullanımı ilgili hizmetlerin politikalarına tabidir.',
+    's7-title': '7. Çerezleri nasıl yönetirsiniz',
+    's7-text': 'Tarayıcı ayarlarından (Chrome, Firefox, Safari, Edge) çerezleri silebilir veya engelleyebilirsiniz. Çoğu tarayıcı pencere kapandığında çerezleri silen gizli modu sunar. Bazı çerezleri kapatırsanız sitenin işlevleri kısıtlı çalışabilir.',
+    's8-title': '8. Saklama süresi',
+    's8-text': 'Oturum çerezleri tarayıcı kapatılınca otomatik silinir. Kalıcı çerezler amaçlarına göre birkaç gün ile birkaç yıl arasında saklanır. Tam süreyi tarayıcınızdaki her çerez üzerinde görebilirsiniz.',
+    's9-title': '9. Politikadaki değişiklikler',
+    's9-text': 'Kullandığımız teknolojiler veya geçerli yasalar değiştiğinde bu Çerez Politikasını güncelleyebiliriz. Güncel sürüm her zaman bu sayfada mevcuttur, güncelleme tarihi en üstte yer alır.',
+    's10-title': '10. İletişim',
+    's10-text': 'Çerezlerle ilgili sorular için <a href="mailto:support@evades3.com">support@evades3.com</a> adresine yazın. En kısa sürede yanıtlayacağız.',
+    'footer-copy': '© 2026 Evades 3. Tüm hakları saklıdır.',
+    'footer-terms': 'Kullanım Koşulları',
+    'footer-privacy': 'Gizlilik Politikası',
+    'footer-cookies': 'Çerezler',
+    'footer-support': 'Destek',
+    'footer-contact': 'Sorularınız mı var? Bize yazın: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  nl: {
+    'page-title': 'Evades 3 — Cookiebeleid',
+    'languages': 'Talen ▼',
+    'back-home': '← Terug naar home',
+    'page-heading': 'Cookiebeleid',
+    'page-sub': 'Evades 3 — Officieel document',
+    'updated': 'Laatst bijgewerkt: 23 april 2026',
+    'intro': 'De website van Evades 3 gebruikt cookies en vergelijkbare technologieën. In dit document leggen we in begrijpelijke taal uit welke cookies we plaatsen, waarvoor ze dienen en hoe je ze kunt beheren.',
+    's1-title': '1. Wat zijn cookies',
+    's1-text': 'Cookies zijn kleine tekstbestanden die een site in je browser opslaat als je hem bezoekt. Ze helpen de site om je acties en voorkeuren (zoals de gekozen taal) te onthouden, zodat je ze niet steeds opnieuw hoeft in te voeren.',
+    's2-title': '2. Waarom we cookies gebruiken',
+    's2-text': 'We gebruiken cookies om de site stabiel te laten draaien, om je taal en interface-instellingen te onthouden, om te analyseren hoe spelers de pagina\'s gebruiken en om relevante spelinhoud te tonen.',
+    's3-title': '3. Strikt noodzakelijke cookies',
+    's3-text': 'Deze bestanden zijn nodig voor de basiswerking: inloggen, bescherming tegen vervalste verzoeken, behoud van je spelsessie. Zonder deze werken sommige functies niet. Ze kunnen niet via de site-instellingen worden uitgeschakeld.',
+    's4-title': '4. Analytische cookies',
+    's4-text': 'Met geanonimiseerde statistieken (bijvoorbeeld Google Analytics) begrijpen we welke secties populair zijn, waar spelers vastlopen en wat we kunnen verbeteren. Deze gegevens identificeren jou niet persoonlijk.',
+    's5-title': '5. Functionele cookies',
+    's5-text': 'Ze onthouden je voorkeuren: gekozen taal, weergavemodus, weggeklikte tips. Zonder deze blijft de site werken, maar minder comfortabel — je zou alles bij elk bezoek opnieuw moeten instellen.',
+    's6-title': '6. Cookies van derden',
+    's6-text': 'Sommige functies (video\'s, social-widgets, betaalmodules) worden geladen vanaf externe diensten en kunnen eigen cookies plaatsen. Hun gebruik valt onder het beleid van die diensten.',
+    's7-title': '7. Cookies beheren',
+    's7-text': 'Je kunt cookies verwijderen of blokkeren in de browserinstellingen (Chrome, Firefox, Safari, Edge). De meeste browsers bieden ook een incognitomodus waarbij cookies worden gewist nadat het venster sluit. Let op: door bepaalde cookies uit te schakelen kan de site beperkt werken.',
+    's8-title': '8. Bewaartermijn',
+    's8-text': 'Sessiecookies worden automatisch verwijderd zodra de browser sluit. Persistente cookies blijven enkele dagen tot enkele jaren staan, afhankelijk van het doel. De exacte levensduur staat per cookie in je browser.',
+    's9-title': '9. Wijzigingen in dit beleid',
+    's9-text': 'We kunnen dit Cookiebeleid bijwerken wanneer onze technologieën of de wetgeving veranderen. De actuele versie staat altijd op deze pagina, de datum van bijwerken bovenaan.',
+    's10-title': '10. Contact',
+    's10-text': 'Vragen over cookies? Schrijf naar <a href="mailto:support@evades3.com">support@evades3.com</a>. We reageren zo snel mogelijk.',
+    'footer-copy': '© 2026 Evades 3. Alle rechten voorbehouden.',
+    'footer-terms': 'Gebruiksvoorwaarden',
+    'footer-privacy': 'Privacybeleid',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Ondersteuning',
+    'footer-contact': 'Heb je vragen? Schrijf ons: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  sv: {
+    'page-title': 'Evades 3 — Cookiepolicy',
+    'languages': 'Språk ▼',
+    'back-home': '← Tillbaka till startsidan',
+    'page-heading': 'Cookiepolicy',
+    'page-sub': 'Evades 3 — Officiellt dokument',
+    'updated': 'Senast uppdaterad: 23 april 2026',
+    'intro': 'Evades 3:s webbplats använder cookies och liknande tekniker. I det här dokumentet förklarar vi tydligt vilka cookies vi sätter, varför de behövs och hur du kan hantera dem.',
+    's1-title': '1. Vad är cookies',
+    's1-text': 'Cookies är små textfiler som en webbplats sparar i din webbläsare när du besöker den. De hjälper sidan att komma ihåg dina val och inställningar (t.ex. valt språk) så att du slipper ange dem på nytt vid varje besök.',
+    's2-title': '2. Varför vi använder cookies',
+    's2-text': 'Vi använder cookies för att webbplatsen ska fungera stabilt, för att komma ihåg språk och gränssnittsinställningar, för att analysera hur spelare använder sidorna och för att visa relevant spelinnehåll.',
+    's3-title': '3. Nödvändiga cookies',
+    's3-text': 'Dessa filer krävs för grundläggande funktion: inloggning, skydd mot förfalskade förfrågningar och bibehållande av spelsessionen. Utan dem fungerar vissa funktioner inte. De kan inte stängas av via webbplatsens inställningar.',
+    's4-title': '4. Analyscookies',
+    's4-text': 'Med anonymiserad statistik (t.ex. Google Analytics) förstår vi vilka avsnitt som är populära, var spelare stöter på problem och vad som ska förbättras. Dessa data identifierar dig inte personligen.',
+    's5-title': '5. Funktionella cookies',
+    's5-text': 'De minns dina inställningar: valt språk, visningsläge, stängda tips. Utan dem fungerar sidan ändå men mindre bekvämt — du skulle behöva ställa in på nytt vid varje besök.',
+    's6-title': '6. Tredjepartscookies',
+    's6-text': 'Vissa funktioner (videor, sociala widgets, betalningsmoduler) laddas från externa tjänster och kan sätta egna cookies. Användningen styrs av dessa tjänsters policy.',
+    's7-title': '7. Hantera cookies',
+    's7-text': 'Du kan rensa eller blockera cookies i webbläsarens inställningar (Chrome, Firefox, Safari, Edge). De flesta webbläsare har också ett inkognitoläge där cookies tas bort när fönstret stängs. Tänk på att vissa funktioner kan begränsas om du stänger av cookies.',
+    's8-title': '8. Lagringstid',
+    's8-text': 'Sessionscookies tas bort automatiskt när webbläsaren stängs. Permanenta lagras från några dagar till flera år beroende på syfte. Den exakta livslängden visas på varje cookie i webbläsaren.',
+    's9-title': '9. Ändringar i policyn',
+    's9-text': 'Vi kan uppdatera denna Cookiepolicy när teknik eller lagstiftning ändras. Den aktuella versionen finns alltid här på sidan, datumet syns högst upp.',
+    's10-title': '10. Kontakt',
+    's10-text': 'Frågor om cookies? Skriv till <a href="mailto:support@evades3.com">support@evades3.com</a>. Vi svarar så snart vi kan.',
+    'footer-copy': '© 2026 Evades 3. Alla rättigheter förbehållna.',
+    'footer-terms': 'Användarvillkor',
+    'footer-privacy': 'Integritetspolicy',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Support',
+    'footer-contact': 'Frågor? Skriv till oss: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  no: {
+    'page-title': 'Evades 3 — Informasjonskapsler',
+    'languages': 'Språk ▼',
+    'back-home': '← Tilbake til forsiden',
+    'page-heading': 'Retningslinjer for informasjonskapsler',
+    'page-sub': 'Evades 3 — Offisielt dokument',
+    'updated': 'Sist oppdatert: 23. april 2026',
+    'intro': 'Evades 3-nettstedet bruker informasjonskapsler og lignende teknologier. I dette dokumentet forklarer vi enkelt hvilke kapsler vi setter, hvorfor de trengs og hvordan du kan styre dem.',
+    's1-title': '1. Hva er informasjonskapsler',
+    's1-text': 'Informasjonskapsler er små tekstfiler som et nettsted lagrer i nettleseren din når du besøker det. De hjelper nettstedet å huske handlinger og innstillinger (for eksempel valgt språk) slik at du slipper å taste dem inn på nytt hver gang.',
+    's2-title': '2. Hvorfor vi bruker kapsler',
+    's2-text': 'Vi bruker informasjonskapsler for at siden skal fungere stabilt, for å huske språk- og grensesnittinnstillinger, for å analysere hvordan spillere bruker sidene og for å vise relevant spillinnhold.',
+    's3-title': '3. Strengt nødvendige kapsler',
+    's3-text': 'Disse er nødvendige for grunnleggende funksjon: innlogging, beskyttelse mot falske forespørsler og bevaring av spilløkten. Uten dem fungerer enkelte funksjoner ikke. De kan ikke skrus av i nettstedets innstillinger.',
+    's4-title': '4. Analyse-kapsler',
+    's4-text': 'Med anonymisert statistikk (for eksempel Google Analytics) forstår vi hvilke deler som er populære, hvor spillere møter problemer og hva som kan forbedres. Disse dataene identifiserer deg ikke personlig.',
+    's5-title': '5. Funksjonelle kapsler',
+    's5-text': 'De husker preferansene dine: språk, visningsmodus, lukkede tips. Uten dem fungerer siden fortsatt, men mindre praktisk — du måtte konfigurere alt på nytt hver gang.',
+    's6-title': '6. Kapsler fra tredjepart',
+    's6-text': 'Noen funksjoner (videoer, sosiale widgets, betalingsmoduler) lastes fra eksterne tjenester og kan sette sine egne kapsler. Bruken styres av disse tjenestenes retningslinjer.',
+    's7-title': '7. Slik administrerer du kapsler',
+    's7-text': 'Du kan slette eller blokkere kapsler i nettleserens innstillinger (Chrome, Firefox, Safari, Edge). De fleste nettlesere har også en inkognitomodus der kapsler slettes når vinduet lukkes. Merk: visse funksjoner kan bli begrenset hvis du slår av kapsler.',
+    's8-title': '8. Lagringstid',
+    's8-text': 'Øktkapsler slettes automatisk når nettleseren lukkes. Vedvarende kapsler lagres fra noen dager til flere år, avhengig av formål. Nøyaktig levetid vises for hver kapsel i nettleseren.',
+    's9-title': '9. Endringer i retningslinjene',
+    's9-text': 'Vi kan oppdatere disse retningslinjene når teknologiene vi bruker eller lover endres. Den gjeldende versjonen er alltid tilgjengelig her, og oppdateringsdatoen står øverst.',
+    's10-title': '10. Kontakt',
+    's10-text': 'Spørsmål om informasjonskapsler? Skriv til <a href="mailto:support@evades3.com">support@evades3.com</a>. Vi svarer så snart som mulig.',
+    'footer-copy': '© 2026 Evades 3. Alle rettigheter forbeholdt.',
+    'footer-terms': 'Brukervilkår',
+    'footer-privacy': 'Personvernerklæring',
+    'footer-cookies': 'Informasjonskapsler',
+    'footer-support': 'Støtte',
+    'footer-contact': 'Har du spørsmål? Skriv til oss: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  fi: {
+    'page-title': 'Evades 3 — Evästekäytäntö',
+    'languages': 'Kielet ▼',
+    'back-home': '← Etusivulle',
+    'page-heading': 'Evästekäytäntö',
+    'page-sub': 'Evades 3 — Virallinen asiakirja',
+    'updated': 'Päivitetty viimeksi: 23. huhtikuuta 2026',
+    'intro': 'Evades 3:n verkkosivusto käyttää evästeitä ja vastaavia tekniikoita. Tässä asiakirjassa kerromme selkeästi, mitä evästeitä asetamme, mihin niitä tarvitaan ja miten voit hallita niitä.',
+    's1-title': '1. Mitä evästeet ovat',
+    's1-text': 'Evästeet ovat pieniä tekstitiedostoja, jotka sivusto tallentaa selaimeesi vieraillessasi. Ne auttavat sivustoa muistamaan toimintosi ja asetuksesi (esim. valitun kielen), joten sinun ei tarvitse syöttää niitä uudelleen.',
+    's2-title': '2. Miksi käytämme evästeitä',
+    's2-text': 'Käytämme evästeitä, jotta sivusto toimii vakaasti, jotta voimme muistaa kielen ja käyttöliittymäasetukset, analysoida miten pelaajat käyttävät sivuja ja näyttää sopivaa pelisisältöä.',
+    's3-title': '3. Välttämättömät evästeet',
+    's3-text': 'Nämä tiedostot ovat välttämättömiä sivuston perustoiminnoille: kirjautuminen, suojaus väärennetyiltä pyynnöiltä ja peliistunnon säilyminen. Ilman niitä jotkin toiminnot eivät toimi. Niitä ei voi poistaa käytöstä sivuston asetuksista.',
+    's4-title': '4. Analytiikkaevästeet',
+    's4-text': 'Anonymisoidun tilaston (esim. Google Analytics) avulla ymmärrämme, mitkä osat ovat suosittuja, missä pelaajat kohtaavat ongelmia ja mitä parantaa. Nämä tiedot eivät tunnista sinua henkilökohtaisesti.',
+    's5-title': '5. Toiminnalliset evästeet',
+    's5-text': 'Nämä muistavat asetuksesi: valitun kielen, näyttötilan, suljetut vinkit. Ilman niitä sivusto toimii silti, mutta mukavuus heikkenee — kaikki olisi asetettava uudelleen joka kerta.',
+    's6-title': '6. Kolmansien osapuolten evästeet',
+    's6-text': 'Joitakin toimintoja (videot, sosiaalisen median widgetit, maksumoduulit) ladataan ulkoisista palveluista ja ne voivat asettaa omia evästeitään. Käyttöä säätelevät näiden palveluiden käytännöt.',
+    's7-title': '7. Evästeiden hallinta',
+    's7-text': 'Voit tyhjentää tai estää evästeet selaimen asetuksista (Chrome, Firefox, Safari, Edge). Useimmissa selaimissa on myös yksityinen tila, jossa evästeet poistetaan ikkunan sulkemisen jälkeen. Huomaa: jotkut toiminnot voivat rajoittua, jos poistat evästeet käytöstä.',
+    's8-title': '8. Säilytysaika',
+    's8-text': 'Istuntoevästeet poistetaan automaattisesti selaimen sulkemisen jälkeen. Pysyvät säilytetään muutamasta päivästä useisiin vuosiin tarkoituksen mukaan. Tarkka kesto näkyy selaimesi jokaisessa evästeessä.',
+    's9-title': '9. Käytäntöön tehdyt muutokset',
+    's9-text': 'Voimme päivittää tätä Evästekäytäntöä, kun käyttämämme teknologiat tai laki muuttuvat. Nykyinen versio on aina saatavilla tällä sivulla, päivityspäivä on ylhäällä.',
+    's10-title': '10. Yhteystiedot',
+    's10-text': 'Kysymyksiä evästeistä? Kirjoita osoitteeseen <a href="mailto:support@evades3.com">support@evades3.com</a>. Vastaamme mahdollisimman pian.',
+    'footer-copy': '© 2026 Evades 3. Kaikki oikeudet pidätetään.',
+    'footer-terms': 'Käyttöehdot',
+    'footer-privacy': 'Tietosuojakäytäntö',
+    'footer-cookies': 'Evästeet',
+    'footer-support': 'Tuki',
+    'footer-contact': 'Onko kysyttävää? Kirjoita meille: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  da: {
+    'page-title': 'Evades 3 — Cookiepolitik',
+    'languages': 'Sprog ▼',
+    'back-home': '← Tilbage til forsiden',
+    'page-heading': 'Cookiepolitik',
+    'page-sub': 'Evades 3 — Officielt dokument',
+    'updated': 'Sidst opdateret: 23. april 2026',
+    'intro': 'Evades 3-websitet bruger cookies og lignende teknologier. I dette dokument forklarer vi i et klart sprog, hvilke cookies vi sætter, hvorfor de er nødvendige, og hvordan du kan styre dem.',
+    's1-title': '1. Hvad er cookies',
+    's1-text': 'Cookies er små tekstfiler, som et website gemmer i din browser, når du besøger det. De hjælper sitet med at huske dine handlinger og indstillinger (fx valgt sprog), så du ikke skal indtaste dem igen ved hvert besøg.',
+    's2-title': '2. Hvorfor vi bruger cookies',
+    's2-text': 'Vi bruger cookies, for at sitet kører stabilt, for at huske sprog og interface-indstillinger, for at analysere hvordan spillere bruger siderne og for at vise relevant spilindhold.',
+    's3-title': '3. Strengt nødvendige cookies',
+    's3-text': 'Disse filer er nødvendige for sitets grundlæggende funktion: log ind, beskyttelse mod forfalskede anmodninger og opretholdelse af spilsessionen. Uden dem fungerer nogle funktioner ikke. De kan ikke slås fra via sitets indstillinger.',
+    's4-title': '4. Analytiske cookies',
+    's4-text': 'Med anonymiseret statistik (fx Google Analytics) forstår vi, hvilke sektioner der er populære, hvor spillere støder på problemer, og hvad vi kan forbedre. Disse data identificerer dig ikke personligt.',
+    's5-title': '5. Funktionelle cookies',
+    's5-text': 'De husker dine præferencer: valgt sprog, visningstilstand, lukkede tips. Uden dem virker sitet stadig, men mindre bekvemt — du ville skulle indstille det igen hver gang.',
+    's6-title': '6. Tredjeparts cookies',
+    's6-text': 'Nogle funktioner (videoer, sociale widgets, betalingsmoduler) hentes fra eksterne tjenester og kan sætte deres egne cookies. Brugen er reguleret af disse tjenesters politikker.',
+    's7-title': '7. Sådan administrerer du cookies',
+    's7-text': 'Du kan slette eller blokere cookies i browserens indstillinger (Chrome, Firefox, Safari, Edge). De fleste browsere tilbyder også en inkognito-tilstand, hvor cookies slettes, når vinduet lukkes. Bemærk: Nogle funktioner kan blive begrænset, hvis du slår cookies fra.',
+    's8-title': '8. Opbevaringsperiode',
+    's8-text': 'Sessionscookies slettes automatisk, når browseren lukkes. Vedvarende cookies opbevares fra nogle dage til flere år, afhængigt af formål. Den nøjagtige levetid vises ved hver cookie i din browser.',
+    's9-title': '9. Ændringer i politikken',
+    's9-text': 'Vi kan opdatere denne Cookiepolitik, når de teknologier vi bruger, eller lovgivningen, ændrer sig. Den nuværende version er altid tilgængelig her på siden, opdateringsdatoen står øverst.',
+    's10-title': '10. Kontakt',
+    's10-text': 'Spørgsmål om cookies? Skriv til <a href="mailto:support@evades3.com">support@evades3.com</a>. Vi svarer så hurtigt som muligt.',
+    'footer-copy': '© 2026 Evades 3. Alle rettigheder forbeholdes.',
+    'footer-terms': 'Brugsbetingelser',
+    'footer-privacy': 'Privatlivspolitik',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Support',
+    'footer-contact': 'Har du spørgsmål? Skriv til os: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  cs: {
+    'page-title': 'Evades 3 — Zásady cookies',
+    'languages': 'Jazyky ▼',
+    'back-home': '← Zpět na hlavní',
+    'page-heading': 'Zásady cookies',
+    'page-sub': 'Evades 3 — Oficiální dokument',
+    'updated': 'Naposledy aktualizováno: 23. dubna 2026',
+    'intro': 'Web Evades 3 využívá cookies a podobné technologie. V tomto dokumentu srozumitelně vysvětlujeme, jaké cookies nastavujeme, proč je potřebujeme a jak je můžete spravovat.',
+    's1-title': '1. Co jsou cookies',
+    's1-text': 'Cookies jsou malé textové soubory, které stránka při návštěvě uloží do vašeho prohlížeče. Pomáhají stránce zapamatovat si vaše akce a nastavení (např. zvolený jazyk), abyste je nemuseli zadávat při každém návratu.',
+    's2-title': '2. Proč cookies používáme',
+    's2-text': 'Používáme cookies, aby web fungoval stabilně, aby si pamatoval jazyk a nastavení rozhraní, aby analyzoval, jak hráči používají stránky, a aby vám zobrazoval relevantní herní obsah.',
+    's3-title': '3. Striktně nezbytné cookies',
+    's3-text': 'Tyto soubory jsou potřebné pro základní fungování stránky: přihlášení, ochrana před padělanými požadavky, udržení herní relace. Bez nich některé funkce nepracují. Nelze je vypnout v nastavení stránky.',
+    's4-title': '4. Analytické cookies',
+    's4-text': 'Pomocí anonymizovaných statistik (např. Google Analytics) zjišťujeme, které sekce jsou oblíbené, kde hráči narážejí na problémy a co zlepšit. Tato data vás osobně neidentifikují.',
+    's5-title': '5. Funkční cookies',
+    's5-text': 'Pamatují si vaše preference: zvolený jazyk, režim zobrazení, zavřené nápovědy. Bez nich web stále funguje, ale méně pohodlně — vše byste museli nastavovat při každé návštěvě.',
+    's6-title': '6. Cookies třetích stran',
+    's6-text': 'Některé funkce (videa, sociální widgety, platební moduly) se načítají z externích služeb a mohou nastavovat vlastní cookies. Jejich použití se řídí zásadami těchto služeb.',
+    's7-title': '7. Jak spravovat cookies',
+    's7-text': 'Cookies můžete vymazat nebo zablokovat v nastavení prohlížeče (Chrome, Firefox, Safari, Edge). Většina prohlížečů nabízí i anonymní režim, kde se cookies po zavření okna smažou. Pozor: vypnutím některých cookies může být web omezený.',
+    's8-title': '8. Doba uchování',
+    's8-text': 'Relační cookies se po zavření prohlížeče smažou automaticky. Trvalé se uchovávají od několika dnů po několik let, podle účelu. Přesnou platnost vidíte u každé cookie ve vašem prohlížeči.',
+    's9-title': '9. Změny zásad',
+    's9-text': 'Tyto Zásady cookies můžeme aktualizovat při změně používaných technologií nebo legislativy. Aktuální verze je vždy na této stránce, datum aktualizace nahoře.',
+    's10-title': '10. Kontakt',
+    's10-text': 'Dotazy ohledně cookies pište na <a href="mailto:support@evades3.com">support@evades3.com</a>. Odpovíme co nejdříve.',
+    'footer-copy': '© 2026 Evades 3. Všechna práva vyhrazena.',
+    'footer-terms': 'Podmínky použití',
+    'footer-privacy': 'Zásady ochrany osobních údajů',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Podpora',
+    'footer-contact': 'Máte otázky? Napište nám: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  ro: {
+    'page-title': 'Evades 3 — Politica privind cookies',
+    'languages': 'Limbi ▼',
+    'back-home': '← Înapoi la pagina principală',
+    'page-heading': 'Politica privind cookies',
+    'page-sub': 'Evades 3 — Document oficial',
+    'updated': 'Ultima actualizare: 23 aprilie 2026',
+    'intro': 'Site-ul Evades 3 utilizează cookies și tehnologii similare. În acest document explicăm clar ce cookies setăm, la ce servesc și cum le poți gestiona.',
+    's1-title': '1. Ce sunt cookies',
+    's1-text': 'Cookies sunt fișiere text mici pe care un site le salvează în browserul tău la vizitare. Ele ajută site-ul să-ți rețină acțiunile și setările (de exemplu limba aleasă), astfel încât să nu trebuiască să le introduci de fiecare dată.',
+    's2-title': '2. De ce folosim cookies',
+    's2-text': 'Folosim cookies pentru ca site-ul să funcționeze stabil, pentru a reține limba și setările interfeței, pentru a analiza modul în care jucătorii utilizează paginile și pentru a-ți arăta conținut de joc relevant.',
+    's3-title': '3. Cookies strict necesare',
+    's3-text': 'Aceste fișiere sunt necesare pentru funcționarea de bază: autentificare, protecție împotriva cererilor falsificate și menținerea sesiunii de joc. Fără ele, anumite funcții nu operează. Nu pot fi dezactivate din setările site-ului.',
+    's4-title': '4. Cookies de analiză',
+    's4-text': 'Cu statistici anonimizate (de exemplu Google Analytics) înțelegem ce secțiuni sunt populare, unde jucătorii întâmpină probleme și ce trebuie îmbunătățit. Aceste date nu te identifică personal.',
+    's5-title': '5. Cookies funcționale',
+    's5-text': 'Rețin preferințele tale: limba aleasă, modul de afișare, sugestiile închise. Fără ele site-ul funcționează în continuare, dar mai puțin confortabil — ar trebui să-l configurezi la fiecare vizită.',
+    's6-title': '6. Cookies de la terți',
+    's6-text': 'Anumite funcții (videoclipuri, widget-uri sociale, module de plată) sunt încărcate de la servicii externe și pot seta propriile cookies. Utilizarea lor este reglementată de politicile acestor servicii.',
+    's7-title': '7. Cum gestionezi cookies',
+    's7-text': 'Poți șterge sau bloca cookies din setările browserului (Chrome, Firefox, Safari, Edge). Majoritatea browserelor oferă și un mod incognito în care cookies sunt șterse după închiderea ferestrei. Reține: dezactivarea unor cookies poate limita funcționalitatea site-ului.',
+    's8-title': '8. Perioada de păstrare',
+    's8-text': 'Cookies de sesiune sunt șterse automat la închiderea browserului. Cele persistente sunt păstrate de la câteva zile până la câțiva ani, în funcție de scop. Durata exactă apare la fiecare cookie din browser.',
+    's9-title': '9. Modificări ale politicii',
+    's9-text': 'Putem actualiza această Politică privind cookies când se schimbă tehnologiile folosite sau legislația. Versiunea actuală este mereu disponibilă pe această pagină, data actualizării apare sus.',
+    's10-title': '10. Contact',
+    's10-text': 'Pentru întrebări legate de cookies, scrie la <a href="mailto:support@evades3.com">support@evades3.com</a>. Vom răspunde cât mai repede posibil.',
+    'footer-copy': '© 2026 Evades 3. Toate drepturile rezervate.',
+    'footer-terms': 'Termeni de utilizare',
+    'footer-privacy': 'Politica de confidențialitate',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Suport',
+    'footer-contact': 'Ai întrebări? Scrie-ne: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  hu: {
+    'page-title': 'Evades 3 — Cookie-szabályzat',
+    'languages': 'Nyelvek ▼',
+    'back-home': '← Vissza a főoldalra',
+    'page-heading': 'Cookie-szabályzat',
+    'page-sub': 'Evades 3 — Hivatalos dokumentum',
+    'updated': 'Utolsó frissítés: 2026. április 23.',
+    'intro': 'Az Evades 3 weboldala cookie-kat és hasonló technológiákat használ. Ebben a dokumentumban közérthetően elmagyarázzuk, milyen cookie-kat állítunk be, mire valók és hogyan kezelheted őket.',
+    's1-title': '1. Mi a cookie',
+    's1-text': 'A cookie-k apró szövegfájlok, amelyeket egy weboldal látogatáskor a böngésződ ment el. Segítenek megjegyezni a beállításaidat (pl. a választott nyelvet), így nem kell minden alkalommal újra megadnod őket.',
+    's2-title': '2. Miért használunk cookie-kat',
+    's2-text': 'Cookie-kat azért használunk, hogy az oldal stabilan működjön, megjegyezzük a nyelvet és felület-beállításokat, elemezzük, hogyan használják a játékosok az oldalakat, és releváns játéktartalmat mutathassunk.',
+    's3-title': '3. Feltétlenül szükséges cookie-k',
+    's3-text': 'Ezek a fájlok az oldal alapvető működéséhez kellenek: bejelentkezés, hamisított kérések elleni védelem, játék-munkamenet fenntartása. Nélkülük egyes funkciók nem működnek. Az oldal beállításaiból nem kapcsolhatók ki.',
+    's4-title': '4. Analitikai cookie-k',
+    's4-text': 'Anonimizált statisztika (pl. Google Analytics) segítségével megértjük, mely részek népszerűek, hol akadnak el a játékosok, és mit kell fejleszteni. Ezek az adatok nem azonosítanak téged személyesen.',
+    's5-title': '5. Funkcionális cookie-k',
+    's5-text': 'Megjegyzik a beállításaidat: nyelv, megjelenítési mód, bezárt tippek. Nélkülük is működik az oldal, de kényelmetlenebb — minden látogatáskor újra be kellene állítanod.',
+    's6-title': '6. Harmadik féltől származó cookie-k',
+    's6-text': 'Egyes funkciók (videók, közösségi widgetek, fizetési modulok) külső szolgáltatásokból töltődnek be, és saját cookie-kat helyezhetnek el. Használatukra az adott szolgáltatások szabályzatai vonatkoznak.',
+    's7-title': '7. Hogyan kezeld a cookie-kat',
+    's7-text': 'A cookie-kat törölheted vagy letilthatod a böngésző beállításaiban (Chrome, Firefox, Safari, Edge). A legtöbb böngésző inkognitó módot is kínál, ahol a cookie-k az ablak bezárása után törlődnek. Egyes cookie-k kikapcsolása korlátozhatja az oldalt.',
+    's8-title': '8. Tárolási idő',
+    's8-text': 'A munkamenet-cookie-k automatikusan törlődnek a böngésző bezárásakor. A maradandóakat a céltól függően néhány naptól több évig tároljuk. A pontos élettartam a böngésződben minden cookie-nál látható.',
+    's9-title': '9. A szabályzat módosításai',
+    's9-text': 'Ezt a Cookie-szabályzatot frissíthetjük, amikor megváltoznak az általunk használt technológiák vagy a vonatkozó jogszabályok. Az aktuális verzió mindig ezen az oldalon érhető el, a frissítés dátuma fent látható.',
+    's10-title': '10. Kapcsolat',
+    's10-text': 'Cookie-kkal kapcsolatos kérdésekkel írj a <a href="mailto:support@evades3.com">support@evades3.com</a> címre. Igyekszünk minél hamarabb válaszolni.',
+    'footer-copy': '© 2026 Evades 3. Minden jog fenntartva.',
+    'footer-terms': 'Felhasználási feltételek',
+    'footer-privacy': 'Adatvédelmi szabályzat',
+    'footer-cookies': 'Cookie-k',
+    'footer-support': 'Támogatás',
+    'footer-contact': 'Kérdésed van? Írj nekünk: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  el: {
+    'page-title': 'Evades 3 — Πολιτική cookies',
+    'languages': 'Γλώσσες ▼',
+    'back-home': '← Επιστροφή στην αρχική',
+    'page-heading': 'Πολιτική cookies',
+    'page-sub': 'Evades 3 — Επίσημο έγγραφο',
+    'updated': 'Τελευταία ενημέρωση: 23 Απριλίου 2026',
+    'intro': 'Ο ιστότοπος Evades 3 χρησιμοποιεί cookies και παρόμοιες τεχνολογίες. Σε αυτό το έγγραφο εξηγούμε με απλά λόγια ποια cookies τοποθετούμε, γιατί χρειάζονται και πώς μπορείτε να τα διαχειριστείτε.',
+    's1-title': '1. Τι είναι τα cookies',
+    's1-text': 'Τα cookies είναι μικρά αρχεία κειμένου που ένας ιστότοπος αποθηκεύει στο πρόγραμμα περιήγησής σας όταν τον επισκέπτεστε. Βοηθούν τον ιστότοπο να θυμάται τις ενέργειες και τις προτιμήσεις σας (π.χ. τη γλώσσα), ώστε να μην τις εισάγετε ξανά κάθε φορά.',
+    's2-title': '2. Γιατί χρησιμοποιούμε cookies',
+    's2-text': 'Χρησιμοποιούμε cookies για να λειτουργεί ο ιστότοπος σταθερά, να θυμάται γλώσσα και ρυθμίσεις, να αναλύει πώς χρησιμοποιούν τις σελίδες οι παίκτες και να εμφανίζει σχετικό περιεχόμενο παιχνιδιού.',
+    's3-title': '3. Απολύτως απαραίτητα cookies',
+    's3-text': 'Αυτά τα αρχεία απαιτούνται για τη βασική λειτουργία: σύνδεση, προστασία από πλαστές αιτήσεις, διατήρηση της συνεδρίας παιχνιδιού. Χωρίς αυτά κάποιες λειτουργίες δεν δουλεύουν. Δεν μπορούν να απενεργοποιηθούν από τις ρυθμίσεις του ιστότοπου.',
+    's4-title': '4. Cookies ανάλυσης',
+    's4-text': 'Με ανώνυμα στατιστικά (π.χ. Google Analytics) κατανοούμε ποιες ενότητες είναι δημοφιλείς, πού αντιμετωπίζουν προβλήματα οι παίκτες και τι πρέπει να βελτιωθεί. Τα δεδομένα αυτά δεν σας αναγνωρίζουν προσωπικά.',
+    's5-title': '5. Λειτουργικά cookies',
+    's5-text': 'Θυμούνται τις προτιμήσεις σας: γλώσσα, λειτουργία προβολής, κλειστές υποδείξεις. Χωρίς αυτά ο ιστότοπος εξακολουθεί να λειτουργεί αλλά λιγότερο άνετα — θα χρειαζόταν ρύθμιση σε κάθε επίσκεψη.',
+    's6-title': '6. Cookies τρίτων',
+    's6-text': 'Ορισμένες λειτουργίες (βίντεο, widgets κοινωνικών δικτύων, ενότητες πληρωμών) φορτώνονται από εξωτερικές υπηρεσίες και ενδέχεται να ορίσουν δικά τους cookies. Η χρήση τους διέπεται από τις πολιτικές των υπηρεσιών αυτών.',
+    's7-title': '7. Πώς διαχειρίζεστε τα cookies',
+    's7-text': 'Μπορείτε να διαγράψετε ή να μπλοκάρετε cookies από τις ρυθμίσεις του προγράμματος περιήγησης (Chrome, Firefox, Safari, Edge). Τα περισσότερα προγράμματα προσφέρουν λειτουργία ανώνυμης περιήγησης, όπου τα cookies διαγράφονται με το κλείσιμο του παραθύρου. Σημείωση: η απενεργοποίηση ορισμένων cookies μπορεί να περιορίσει τη λειτουργικότητα.',
+    's8-title': '8. Διάρκεια διατήρησης',
+    's8-text': 'Τα cookies συνεδρίας διαγράφονται αυτόματα όταν κλείνει το πρόγραμμα περιήγησης. Τα μόνιμα διατηρούνται από λίγες ημέρες έως αρκετά χρόνια, ανάλογα με τον σκοπό. Η ακριβής διάρκεια εμφανίζεται σε κάθε cookie στο πρόγραμμα περιήγησης.',
+    's9-title': '9. Αλλαγές στην πολιτική',
+    's9-text': 'Μπορούμε να ενημερώσουμε αυτή την Πολιτική cookies όταν αλλάζουν οι τεχνολογίες που χρησιμοποιούμε ή η νομοθεσία. Η τρέχουσα έκδοση είναι πάντα διαθέσιμη σε αυτή τη σελίδα, η ημερομηνία ενημέρωσης φαίνεται επάνω.',
+    's10-title': '10. Επικοινωνία',
+    's10-text': 'Για ερωτήσεις σχετικά με τα cookies, γράψτε στο <a href="mailto:support@evades3.com">support@evades3.com</a>. Θα απαντήσουμε το συντομότερο δυνατό.',
+    'footer-copy': '© 2026 Evades 3. Με επιφύλαξη παντός δικαιώματος.',
+    'footer-terms': 'Όροι χρήσης',
+    'footer-privacy': 'Πολιτική απορρήτου',
+    'footer-cookies': 'Cookies',
+    'footer-support': 'Υποστήριξη',
+    'footer-contact': 'Έχετε ερωτήσεις; Γράψτε μας: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  ja: {
+    'page-title': 'Evades 3 — クッキーポリシー',
+    'languages': '言語 ▼',
+    'back-home': '← トップへ戻る',
+    'page-heading': 'クッキーポリシー',
+    'page-sub': 'Evades 3 — 公式ドキュメント',
+    'updated': '最終更新日: 2026年4月23日',
+    'intro': 'Evades 3 のサイトでは Cookie および類似技術を使用しています。本書では、どの Cookie を設定しているか、なぜ必要か、どのように管理できるかをわかりやすく説明します。',
+    's1-title': '1. Cookie とは',
+    's1-text': 'Cookie とは、サイト訪問時にブラウザに保存される小さなテキストファイルです。ユーザーの操作や設定（例: 選択した言語）を記憶し、再訪のたびに入力しなくてよいようにします。',
+    's2-title': '2. Cookie の利用目的',
+    's2-text': 'サイトを安定して動作させるため、言語や UI 設定の保持のため、プレイヤーがどのように利用しているかを分析するため、関連するゲームコンテンツを表示するために Cookie を使用します。',
+    's3-title': '3. 厳密に必要な Cookie',
+    's3-text': 'サイトの基本機能（ログイン、リクエスト偽造の防止、ゲームセッションの維持）に不可欠です。これらが無いと一部の機能は動作しません。サイト設定からは無効化できません。',
+    's4-title': '4. 解析用 Cookie',
+    's4-text': '匿名化された統計情報（例: Google Analytics）により、人気のセクション、プレイヤーが詰まる箇所、改善点を把握します。これらのデータでお客様個人を特定することはありません。',
+    's5-title': '5. 機能性 Cookie',
+    's5-text': '選択した言語、表示モード、閉じたヒントなどの設定を記憶します。無くてもサイトは動作しますが、毎回設定し直す必要があり利便性が下がります。',
+    's6-title': '6. 第三者 Cookie',
+    's6-text': '動画、ソーシャルウィジェット、決済モジュールなどの一部機能は外部サービスから読み込まれ、独自の Cookie を設定する場合があります。これらの利用は各サービスのポリシーに従います。',
+    's7-title': '7. Cookie の管理方法',
+    's7-text': 'ブラウザの設定（Chrome、Firefox、Safari、Edge）から Cookie を削除またはブロックできます。多くのブラウザには、ウィンドウを閉じると Cookie が削除されるシークレットモード／プライベートモードもあります。一部の Cookie を無効にすると機能が制限される場合があります。',
+    's8-title': '8. 保存期間',
+    's8-text': 'セッション Cookie はブラウザを閉じると自動的に削除されます。永続 Cookie は目的に応じて数日から数年保持されます。正確な期間はブラウザ内の各 Cookie で確認できます。',
+    's9-title': '9. ポリシーの変更',
+    's9-text': '使用する技術や関連法が変わった場合、本クッキーポリシーを更新することがあります。最新版は常にこのページに掲載され、更新日は冒頭に表示されます。',
+    's10-title': '10. お問い合わせ',
+    's10-text': 'Cookie に関するお問い合わせは <a href="mailto:support@evades3.com">support@evades3.com</a> までご連絡ください。できるだけ早くお返事します。',
+    'footer-copy': '© 2026 Evades 3. 全著作権所有。',
+    'footer-terms': '利用規約',
+    'footer-privacy': 'プライバシーポリシー',
+    'footer-cookies': 'Cookie',
+    'footer-support': 'サポート',
+    'footer-contact': 'ご質問はこちら: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  zh: {
+    'page-title': 'Evades 3 — Cookie 政策',
+    'languages': '语言 ▼',
+    'back-home': '← 返回首页',
+    'page-heading': 'Cookie 政策',
+    'page-sub': 'Evades 3 — 官方文件',
+    'updated': '最后更新：2026年4月23日',
+    'intro': 'Evades 3 网站使用 Cookie 及类似技术。本文件以通俗的语言说明我们设置了哪些 Cookie、为何需要它们以及您可以如何进行管理。',
+    's1-title': '1. 什么是 Cookie',
+    's1-text': 'Cookie 是您访问网站时由网站保存到您浏览器中的小型文本文件。它们帮助网站记住您的操作和偏好（例如所选语言），让您不必每次都重新设置。',
+    's2-title': '2. 我们为何使用 Cookie',
+    's2-text': '我们使用 Cookie 让网站稳定运行、记住语言与界面设置、分析玩家如何使用页面，并向您展示相关的游戏内容。',
+    's3-title': '3. 严格必要的 Cookie',
+    's3-text': '这些文件是网站基本运行所必需的：登录、防止伪造请求、保持游戏会话。没有它们，部分功能将无法工作。无法通过网站设置禁用。',
+    's4-title': '4. 分析类 Cookie',
+    's4-text': '通过匿名统计（例如 Google Analytics）我们了解哪些版块受欢迎、玩家在哪里遇到问题以及需要改进的地方。这些数据不会识别您本人。',
+    's5-title': '5. 功能性 Cookie',
+    's5-text': '用于记住您的偏好：所选语言、显示模式、已关闭的提示。没有它们网站仍可运行，但每次访问都需要重新设置，体验较差。',
+    's6-title': '6. 第三方 Cookie',
+    's6-text': '部分功能（视频、社交插件、支付模块）由外部服务加载，并可能设置其自己的 Cookie。其使用受这些服务自身政策约束。',
+    's7-title': '7. 如何管理 Cookie',
+    's7-text': '您可以在浏览器设置（Chrome、Firefox、Safari、Edge）中清除或拦截 Cookie。多数浏览器还提供隐身/无痕模式，关闭窗口后 Cookie 将被清除。请注意：禁用部分 Cookie 可能会限制网站功能。',
+    's8-title': '8. 保留期限',
+    's8-text': '会话型 Cookie 在浏览器关闭时自动删除。持久型 Cookie 根据用途保存几天到数年不等。具体期限可在浏览器中每个 Cookie 上查看。',
+    's9-title': '9. 政策变更',
+    's9-text': '当我们使用的技术或相关法规变化时，我们可能会更新本 Cookie 政策。当前版本始终在本页面提供，更新日期显示在顶部。',
+    's10-title': '10. 联系我们',
+    's10-text': '如有关于 Cookie 的问题，请发送邮件至 <a href="mailto:support@evades3.com">support@evades3.com</a>。我们会尽快回复。',
+    'footer-copy': '© 2026 Evades 3. 保留所有权利。',
+    'footer-terms': '使用条款',
+    'footer-privacy': '隐私政策',
+    'footer-cookies': 'Cookie',
+    'footer-support': '支持',
+    'footer-contact': '有疑问？写信给我们：<a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  ko: {
+    'page-title': 'Evades 3 — 쿠키 정책',
+    'languages': '언어 ▼',
+    'back-home': '← 메인으로',
+    'page-heading': '쿠키 정책',
+    'page-sub': 'Evades 3 — 공식 문서',
+    'updated': '최종 업데이트: 2026년 4월 23일',
+    'intro': 'Evades 3 웹사이트는 쿠키 및 유사 기술을 사용합니다. 본 문서에서는 어떤 쿠키를 설정하는지, 왜 필요한지, 그리고 어떻게 관리할 수 있는지를 쉬운 언어로 설명합니다.',
+    's1-title': '1. 쿠키란 무엇인가',
+    's1-text': '쿠키는 사이트 방문 시 브라우저에 저장되는 작은 텍스트 파일입니다. 사용자의 동작과 설정(예: 선택한 언어)을 기억해 매번 다시 입력하지 않아도 되게 도와줍니다.',
+    's2-title': '2. 쿠키 사용 목적',
+    's2-text': '사이트가 안정적으로 작동하고, 언어와 인터페이스 설정을 기억하며, 플레이어가 페이지를 어떻게 사용하는지 분석하고, 관련 있는 게임 콘텐츠를 보여주기 위해 쿠키를 사용합니다.',
+    's3-title': '3. 반드시 필요한 쿠키',
+    's3-text': '이 파일들은 사이트의 기본 동작(로그인, 위조 요청 방지, 게임 세션 유지)에 필수입니다. 없으면 일부 기능이 작동하지 않습니다. 사이트 설정에서는 비활성화할 수 없습니다.',
+    's4-title': '4. 분석 쿠키',
+    's4-text': '익명화된 통계(예: Google Analytics)를 통해 인기 있는 섹션, 플레이어가 어려움을 겪는 부분, 개선점을 파악합니다. 이러한 데이터로 개인을 식별하지 않습니다.',
+    's5-title': '5. 기능성 쿠키',
+    's5-text': '언어, 표시 모드, 닫은 도움말 등의 설정을 기억합니다. 이 쿠키가 없어도 사이트는 동작하지만, 매 방문 시 다시 설정해야 하므로 편의성이 떨어집니다.',
+    's6-title': '6. 제3자 쿠키',
+    's6-text': '동영상, 소셜 위젯, 결제 모듈 등 일부 기능은 외부 서비스에서 로드되며 자체 쿠키를 설정할 수 있습니다. 사용은 해당 서비스의 정책을 따릅니다.',
+    's7-title': '7. 쿠키 관리 방법',
+    's7-text': '브라우저 설정(Chrome, Firefox, Safari, Edge)에서 쿠키를 삭제하거나 차단할 수 있습니다. 대부분의 브라우저는 창을 닫으면 쿠키가 삭제되는 시크릿/프라이빗 모드도 제공합니다. 일부 쿠키를 비활성화하면 사이트 기능이 제한될 수 있습니다.',
+    's8-title': '8. 보관 기간',
+    's8-text': '세션 쿠키는 브라우저를 닫으면 자동으로 삭제됩니다. 영구 쿠키는 용도에 따라 며칠에서 몇 년까지 보관됩니다. 정확한 기간은 브라우저의 각 쿠키 정보에서 확인할 수 있습니다.',
+    's9-title': '9. 정책 변경',
+    's9-text': '사용하는 기술이나 관련 법령이 변경되면 본 쿠키 정책을 업데이트할 수 있습니다. 최신 버전은 항상 이 페이지에서 확인할 수 있으며, 업데이트 날짜는 상단에 표시됩니다.',
+    's10-title': '10. 문의',
+    's10-text': '쿠키 관련 문의는 <a href="mailto:support@evades3.com">support@evades3.com</a>으로 보내주세요. 최대한 빨리 답변드리겠습니다.',
+    'footer-copy': '© 2026 Evades 3. 모든 권리 보유.',
+    'footer-terms': '이용 약관',
+    'footer-privacy': '개인정보 처리방침',
+    'footer-cookies': '쿠키',
+    'footer-support': '지원',
+    'footer-contact': '문의가 있으신가요? <a href="mailto:support@evades3.com">support@evades3.com</a>으로 보내주세요',
+  },
+
+  ar: {
+    'page-title': 'Evades 3 — سياسة ملفات تعريف الارتباط',
+    'languages': 'اللغات ▼',
+    'back-home': '← العودة إلى الرئيسية',
+    'page-heading': 'سياسة ملفات تعريف الارتباط',
+    'page-sub': 'Evades 3 — وثيقة رسمية',
+    'updated': 'آخر تحديث: 23 أبريل 2026',
+    'intro': 'يستخدم موقع Evades 3 ملفات تعريف الارتباط (الكوكيز) وتقنيات مماثلة. في هذه الوثيقة نشرح بلغة مبسطة أنواع الكوكيز التي نضعها، ولماذا نحتاجها، وكيف يمكنك التحكم بها.',
+    's1-title': '1. ما هي ملفات تعريف الارتباط',
+    's1-text': 'الكوكيز هي ملفات نصية صغيرة يحفظها الموقع في متصفحك عند الزيارة. تساعد الموقع على تذكر تفضيلاتك (مثل اللغة المختارة) حتى لا تحتاج إلى إدخالها في كل مرة.',
+    's2-title': '2. لماذا نستخدم الكوكيز',
+    's2-text': 'نستخدم الكوكيز لكي يعمل الموقع باستقرار، ولتذكر اللغة وإعدادات الواجهة، ولتحليل كيفية استخدام اللاعبين للصفحات، ولإظهار محتوى ألعاب ذي صلة لك.',
+    's3-title': '3. الكوكيز الضرورية تمامًا',
+    's3-text': 'هذه الملفات لازمة للعمل الأساسي للموقع: تسجيل الدخول، الحماية من الطلبات المزورة، الحفاظ على جلسة اللعب. بدونها لا تعمل بعض الميزات. لا يمكن إيقافها من إعدادات الموقع.',
+    's4-title': '4. كوكيز التحليل',
+    's4-text': 'بفضل إحصاءات مجهولة الهوية (مثل Google Analytics) نفهم أي الأقسام أكثر شعبية، وأين يواجه اللاعبون مشكلات، وما الذي يجب تحسينه. هذه البيانات لا تحدد هويتك شخصيًا.',
+    's5-title': '5. الكوكيز الوظيفية',
+    's5-text': 'تتذكر تفضيلاتك: اللغة المختارة، وضع العرض، التلميحات المغلقة. بدونها يستمر الموقع في العمل لكن مع راحة أقل — ستحتاج إلى ضبط كل شيء في كل زيارة.',
+    's6-title': '6. الكوكيز الخاصة بأطراف ثالثة',
+    's6-text': 'بعض الميزات (الفيديو، عناصر التواصل الاجتماعي، وحدات الدفع) تُحمَّل من خدمات خارجية وقد تضع كوكيز خاصة بها. ينظم استخدامها سياسات تلك الخدمات.',
+    's7-title': '7. كيفية إدارة الكوكيز',
+    's7-text': 'يمكنك مسح الكوكيز أو حظرها من إعدادات المتصفح (Chrome وFirefox وSafari وEdge). توفر معظم المتصفحات أيضًا وضع تصفح خاص يحذف الكوكيز عند إغلاق النافذة. ملاحظة: تعطيل بعض الكوكيز قد يحد من ميزات الموقع.',
+    's8-title': '8. مدة الاحتفاظ',
+    's8-text': 'تُحذف كوكيز الجلسة تلقائيًا عند إغلاق المتصفح. الكوكيز الدائمة تُحفظ من بضعة أيام إلى عدة سنوات حسب الغرض. تظهر المدة الدقيقة لكل كوكي داخل متصفحك.',
+    's9-title': '9. تغييرات السياسة',
+    's9-text': 'قد نقوم بتحديث سياسة الكوكيز هذه عند تغير التقنيات المستخدمة أو القوانين السارية. النسخة الحالية متاحة دائمًا على هذه الصفحة، وتاريخ التحديث مذكور في الأعلى.',
+    's10-title': '10. التواصل',
+    's10-text': 'لأي استفسار حول الكوكيز، اكتب إلى <a href="mailto:support@evades3.com">support@evades3.com</a>. سنرد في أسرع وقت ممكن.',
+    'footer-copy': '© 2026 Evades 3. جميع الحقوق محفوظة.',
+    'footer-terms': 'شروط الاستخدام',
+    'footer-privacy': 'سياسة الخصوصية',
+    'footer-cookies': 'ملفات تعريف الارتباط',
+    'footer-support': 'الدعم',
+    'footer-contact': 'هل لديك أسئلة؟ راسلنا: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  hi: {
+    'page-title': 'Evades 3 — कुकी नीति',
+    'languages': 'भाषाएँ ▼',
+    'back-home': '← मुख्य पृष्ठ पर वापस',
+    'page-heading': 'कुकी नीति',
+    'page-sub': 'Evades 3 — आधिकारिक दस्तावेज़',
+    'updated': 'अंतिम अपडेट: 23 अप्रैल 2026',
+    'intro': 'Evades 3 की वेबसाइट कुकीज़ और समान तकनीकों का उपयोग करती है। इस दस्तावेज़ में हम सरल भाषा में बताते हैं कि हम कौन-सी कुकीज़ सेट करते हैं, क्यों ज़रूरी हैं और आप उन्हें कैसे प्रबंधित कर सकते हैं।',
+    's1-title': '1. कुकीज़ क्या हैं',
+    's1-text': 'कुकीज़ छोटी टेक्स्ट फ़ाइलें हैं जिन्हें कोई वेबसाइट आपके ब्राउज़र में आपकी विज़िट के दौरान सहेजती है। ये साइट को आपकी क्रियाएँ और प्राथमिकताएँ (जैसे चुनी हुई भाषा) याद रखने में मदद करती हैं ताकि हर बार उन्हें फिर से दर्ज न करना पड़े।',
+    's2-title': '2. हम कुकीज़ का उपयोग क्यों करते हैं',
+    's2-text': 'हम कुकीज़ का उपयोग साइट को स्थिर रखने, भाषा और इंटरफ़ेस सेटिंग्स याद रखने, खिलाड़ियों द्वारा पन्नों के उपयोग का विश्लेषण करने और प्रासंगिक गेम सामग्री दिखाने के लिए करते हैं।',
+    's3-title': '3. कड़ाई से आवश्यक कुकीज़',
+    's3-text': 'ये फ़ाइलें साइट के मूल कार्य के लिए ज़रूरी हैं: लॉग इन, जाली अनुरोधों से सुरक्षा, गेम सत्र बनाए रखना। इनके बिना कुछ सुविधाएँ काम नहीं करेंगी। साइट सेटिंग्स से इन्हें बंद नहीं किया जा सकता।',
+    's4-title': '4. विश्लेषणात्मक कुकीज़',
+    's4-text': 'गुमनाम आँकड़ों (उदाहरण: Google Analytics) के माध्यम से हम समझते हैं कि कौन-से अनुभाग लोकप्रिय हैं, खिलाड़ियों को कहाँ समस्याएँ आती हैं और क्या सुधारना है। ये डेटा आपकी व्यक्तिगत पहचान नहीं करते।',
+    's5-title': '5. क्रियात्मक कुकीज़',
+    's5-text': 'ये आपकी पसंद याद रखती हैं: भाषा, प्रदर्शन मोड, बंद किए गए सुझाव। इनके बिना भी साइट चलेगी, लेकिन हर विज़िट में दोबारा सेट करना पड़ेगा, जो सुविधाजनक नहीं है।',
+    's6-title': '6. तृतीय-पक्ष कुकीज़',
+    's6-text': 'कुछ सुविधाएँ (वीडियो, सोशल विजेट, भुगतान मॉड्यूल) बाहरी सेवाओं से लोड होती हैं और अपनी कुकीज़ सेट कर सकती हैं। उनका उपयोग उन सेवाओं की नीतियों के अनुसार होता है।',
+    's7-title': '7. कुकीज़ कैसे प्रबंधित करें',
+    's7-text': 'आप ब्राउज़र सेटिंग्स (Chrome, Firefox, Safari, Edge) में कुकीज़ को मिटा या ब्लॉक कर सकते हैं। अधिकांश ब्राउज़र निजी/इनकॉग्निटो मोड भी देते हैं, जहाँ खिड़की बंद करने पर कुकीज़ हट जाती हैं। ध्यान दें: कुछ कुकीज़ बंद करने से साइट सीमित रूप से काम कर सकती है।',
+    's8-title': '8. भंडारण अवधि',
+    's8-text': 'सत्र कुकीज़ ब्राउज़र बंद होने पर स्वतः हट जाती हैं। स्थायी कुकीज़ उद्देश्य के अनुसार कुछ दिनों से कई वर्षों तक संग्रहीत रहती हैं। सटीक अवधि आपके ब्राउज़र में हर कुकी पर दिखाई देती है।',
+    's9-title': '9. नीति में परिवर्तन',
+    's9-text': 'जब हमारी तकनीकें या लागू कानून बदलें, हम इस कुकी नीति को अपडेट कर सकते हैं। मौजूदा संस्करण हमेशा इसी पृष्ठ पर उपलब्ध रहेगा, अपडेट की तारीख ऊपर दिखाई देती है।',
+    's10-title': '10. संपर्क',
+    's10-text': 'कुकीज़ के बारे में किसी भी प्रश्न के लिए <a href="mailto:support@evades3.com">support@evades3.com</a> पर लिखें। हम जल्द से जल्द उत्तर देंगे।',
+    'footer-copy': '© 2026 Evades 3. सर्वाधिकार सुरक्षित।',
+    'footer-terms': 'उपयोग की शर्तें',
+    'footer-privacy': 'गोपनीयता नीति',
+    'footer-cookies': 'कुकीज़',
+    'footer-support': 'सहायता',
+    'footer-contact': 'कोई प्रश्न है? हमें लिखें: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  th: {
+    'page-title': 'Evades 3 — นโยบายคุกกี้',
+    'languages': 'ภาษา ▼',
+    'back-home': '← กลับไปหน้าหลัก',
+    'page-heading': 'นโยบายคุกกี้',
+    'page-sub': 'Evades 3 — เอกสารทางการ',
+    'updated': 'อัปเดตล่าสุด: 23 เมษายน 2026',
+    'intro': 'เว็บไซต์ Evades 3 ใช้คุกกี้และเทคโนโลยีที่คล้ายคลึงกัน เอกสารนี้อธิบายอย่างเข้าใจง่ายว่าเราใช้คุกกี้ใดบ้าง เพื่ออะไร และคุณสามารถจัดการได้อย่างไร',
+    's1-title': '1. คุกกี้คืออะไร',
+    's1-text': 'คุกกี้คือไฟล์ข้อความขนาดเล็กที่เว็บไซต์บันทึกในเบราว์เซอร์ของคุณเมื่อเข้าชม คุกกี้ช่วยให้เว็บไซต์จดจำการกระทำและการตั้งค่าของคุณ (เช่น ภาษาที่เลือก) เพื่อไม่ต้องป้อนใหม่ทุกครั้ง',
+    's2-title': '2. ทำไมเราจึงใช้คุกกี้',
+    's2-text': 'เราใช้คุกกี้เพื่อให้เว็บไซต์ทำงานได้เสถียร จดจำภาษาและการตั้งค่าหน้าจอ วิเคราะห์การใช้งานของผู้เล่น และแสดงเนื้อหาเกมที่เกี่ยวข้องแก่คุณ',
+    's3-title': '3. คุกกี้ที่จำเป็นอย่างยิ่ง',
+    's3-text': 'ไฟล์เหล่านี้จำเป็นต่อการทำงานพื้นฐานของไซต์: การเข้าสู่ระบบ การป้องกันการปลอมแปลงคำขอ การคงเซสชันของเกม หากไม่มีคุกกี้นี้ บางฟังก์ชันจะใช้งานไม่ได้ และไม่สามารถปิดใช้จากการตั้งค่าของเว็บไซต์ได้',
+    's4-title': '4. คุกกี้เพื่อการวิเคราะห์',
+    's4-text': 'ผ่านสถิติแบบไม่ระบุตัวตน (เช่น Google Analytics) เราเข้าใจว่าส่วนใดได้รับความนิยม ผู้เล่นพบปัญหาตรงไหน และควรปรับปรุงอะไร ข้อมูลเหล่านี้ไม่ได้ระบุตัวคุณเป็นการส่วนตัว',
+    's5-title': '5. คุกกี้เชิงฟังก์ชัน',
+    's5-text': 'จดจำการตั้งค่าของคุณ: ภาษาที่เลือก โหมดการแสดงผล คำแนะนำที่ปิดไปแล้ว หากไม่มีคุกกี้นี้ เว็บไซต์ยังใช้ได้ แต่ต้องตั้งค่าใหม่ทุกครั้งที่เข้าชม',
+    's6-title': '6. คุกกี้ของบุคคลภายนอก',
+    's6-text': 'ฟังก์ชันบางอย่าง (วิดีโอ วิดเจ็ตโซเชียล โมดูลชำระเงิน) โหลดมาจากบริการภายนอก และอาจตั้งคุกกี้ของตนเอง การใช้งานเป็นไปตามนโยบายของบริการเหล่านั้น',
+    's7-title': '7. วิธีจัดการคุกกี้',
+    's7-text': 'คุณสามารถลบหรือบล็อกคุกกี้ในการตั้งค่าเบราว์เซอร์ (Chrome, Firefox, Safari, Edge) เบราว์เซอร์ส่วนใหญ่มีโหมดส่วนตัว/ไม่ระบุตัวตน ซึ่งคุกกี้จะถูกลบเมื่อปิดหน้าต่าง การปิดคุกกี้บางส่วนอาจทำให้บางฟังก์ชันใช้งานได้จำกัด',
+    's8-title': '8. ระยะเวลาเก็บข้อมูล',
+    's8-text': 'คุกกี้เซสชันจะถูกลบโดยอัตโนมัติเมื่อปิดเบราว์เซอร์ คุกกี้ถาวรเก็บไว้ตั้งแต่ไม่กี่วันจนถึงหลายปี ขึ้นอยู่กับวัตถุประสงค์ ระยะเวลาที่แน่นอนจะแสดงในแต่ละคุกกี้ในเบราว์เซอร์',
+    's9-title': '9. การเปลี่ยนแปลงนโยบาย',
+    's9-text': 'เราอาจอัปเดตนโยบายคุกกี้นี้เมื่อเทคโนโลยีที่ใช้หรือกฎหมายที่เกี่ยวข้องเปลี่ยนแปลง เวอร์ชันปัจจุบันมีอยู่ในหน้านี้เสมอ และวันที่อัปเดตจะแสดงไว้ด้านบน',
+    's10-title': '10. ติดต่อ',
+    's10-text': 'หากมีคำถามเกี่ยวกับคุกกี้ โปรดเขียนมาที่ <a href="mailto:support@evades3.com">support@evades3.com</a> เราจะตอบกลับโดยเร็วที่สุด',
+    'footer-copy': '© 2026 Evades 3. สงวนลิขสิทธิ์ทุกประการ',
+    'footer-terms': 'ข้อกำหนดการใช้งาน',
+    'footer-privacy': 'นโยบายความเป็นส่วนตัว',
+    'footer-cookies': 'คุกกี้',
+    'footer-support': 'การสนับสนุน',
+    'footer-contact': 'มีคำถามใช่ไหม? เขียนหาเราได้ที่: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  vi: {
+    'page-title': 'Evades 3 — Chính sách Cookie',
+    'languages': 'Ngôn ngữ ▼',
+    'back-home': '← Trở về trang chủ',
+    'page-heading': 'Chính sách Cookie',
+    'page-sub': 'Evades 3 — Tài liệu chính thức',
+    'updated': 'Cập nhật lần cuối: 23 tháng 4 2026',
+    'intro': 'Trang web Evades 3 sử dụng cookie và các công nghệ tương tự. Tài liệu này giải thích bằng ngôn ngữ dễ hiểu các loại cookie chúng tôi đặt, vì sao cần và cách bạn có thể quản lý chúng.',
+    's1-title': '1. Cookie là gì',
+    's1-text': 'Cookie là các tệp văn bản nhỏ mà trang web lưu trong trình duyệt khi bạn truy cập. Chúng giúp trang web ghi nhớ hành động và tùy chọn của bạn (ví dụ: ngôn ngữ đã chọn) để bạn không phải nhập lại mỗi lần.',
+    's2-title': '2. Vì sao chúng tôi dùng cookie',
+    's2-text': 'Chúng tôi dùng cookie để trang web hoạt động ổn định, ghi nhớ ngôn ngữ và cài đặt giao diện, phân tích cách người chơi sử dụng các trang và hiển thị nội dung trò chơi phù hợp.',
+    's3-title': '3. Cookie cần thiết',
+    's3-text': 'Các tệp này cần thiết cho hoạt động cơ bản: đăng nhập, chống yêu cầu giả mạo, duy trì phiên chơi. Không có chúng, một số tính năng không hoạt động. Không thể tắt qua cài đặt trang web.',
+    's4-title': '4. Cookie phân tích',
+    's4-text': 'Bằng thống kê ẩn danh (ví dụ Google Analytics), chúng tôi biết được phần nào phổ biến, người chơi gặp khó khăn ở đâu và cần cải thiện gì. Dữ liệu này không nhận diện cá nhân bạn.',
+    's5-title': '5. Cookie chức năng',
+    's5-text': 'Ghi nhớ tùy chọn của bạn: ngôn ngữ, chế độ hiển thị, các gợi ý đã đóng. Không có chúng, trang vẫn chạy nhưng kém tiện lợi — bạn sẽ phải cấu hình lại mỗi lần truy cập.',
+    's6-title': '6. Cookie của bên thứ ba',
+    's6-text': 'Một số tính năng (video, widget mạng xã hội, mô-đun thanh toán) được tải từ dịch vụ bên ngoài và có thể đặt cookie riêng. Việc sử dụng tuân theo chính sách của các dịch vụ đó.',
+    's7-title': '7. Cách quản lý cookie',
+    's7-text': 'Bạn có thể xóa hoặc chặn cookie trong cài đặt trình duyệt (Chrome, Firefox, Safari, Edge). Hầu hết trình duyệt đều có chế độ ẩn danh, cookie sẽ bị xóa khi đóng cửa sổ. Lưu ý: tắt một số cookie có thể giới hạn chức năng của trang.',
+    's8-title': '8. Thời gian lưu trữ',
+    's8-text': 'Cookie phiên sẽ tự động bị xóa khi bạn đóng trình duyệt. Cookie cố định được lưu từ vài ngày đến vài năm, tùy mục đích. Thời gian chính xác hiển thị trên từng cookie trong trình duyệt.',
+    's9-title': '9. Thay đổi chính sách',
+    's9-text': 'Chúng tôi có thể cập nhật Chính sách Cookie này khi công nghệ sử dụng hoặc luật áp dụng thay đổi. Phiên bản hiện tại luôn có trên trang này, ngày cập nhật ở đầu trang.',
+    's10-title': '10. Liên hệ',
+    's10-text': 'Mọi câu hỏi về cookie xin gửi đến <a href="mailto:support@evades3.com">support@evades3.com</a>. Chúng tôi sẽ phản hồi sớm nhất có thể.',
+    'footer-copy': '© 2026 Evades 3. Bảo lưu mọi quyền.',
+    'footer-terms': 'Điều khoản sử dụng',
+    'footer-privacy': 'Chính sách bảo mật',
+    'footer-cookies': 'Cookie',
+    'footer-support': 'Hỗ trợ',
+    'footer-contact': 'Có câu hỏi? Hãy viết cho chúng tôi: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  id: {
+    'page-title': 'Evades 3 — Kebijakan Cookie',
+    'languages': 'Bahasa ▼',
+    'back-home': '← Kembali ke beranda',
+    'page-heading': 'Kebijakan Cookie',
+    'page-sub': 'Evades 3 — Dokumen resmi',
+    'updated': 'Pembaruan terakhir: 23 April 2026',
+    'intro': 'Situs Evades 3 menggunakan cookie dan teknologi serupa. Dokumen ini menjelaskan dengan bahasa sederhana cookie apa yang kami pasang, untuk apa, dan bagaimana Anda dapat mengelolanya.',
+    's1-title': '1. Apa itu cookie',
+    's1-text': 'Cookie adalah berkas teks kecil yang disimpan situs web ke peramban Anda saat Anda berkunjung. Cookie membantu situs mengingat tindakan dan preferensi Anda (misalnya bahasa yang dipilih) sehingga Anda tidak perlu memasukkannya kembali setiap kali.',
+    's2-title': '2. Mengapa kami menggunakan cookie',
+    's2-text': 'Kami menggunakan cookie agar situs berjalan stabil, mengingat bahasa dan pengaturan antarmuka, menganalisis bagaimana pemain menggunakan halaman, dan menampilkan konten game yang relevan.',
+    's3-title': '3. Cookie yang sangat diperlukan',
+    's3-text': 'Berkas ini diperlukan untuk fungsi dasar situs: login, perlindungan dari permintaan palsu, mempertahankan sesi permainan. Tanpa ini beberapa fungsi tidak berjalan. Tidak dapat dinonaktifkan melalui pengaturan situs.',
+    's4-title': '4. Cookie analitik',
+    's4-text': 'Dengan statistik anonim (misalnya Google Analytics), kami memahami bagian mana yang populer, di mana pemain mengalami masalah, dan apa yang perlu ditingkatkan. Data ini tidak mengenali Anda secara pribadi.',
+    's5-title': '5. Cookie fungsional',
+    's5-text': 'Mereka mengingat preferensi Anda: bahasa, mode tampilan, tip yang ditutup. Tanpa cookie ini situs tetap bekerja, tetapi kurang nyaman — Anda harus mengatur ulang setiap kunjungan.',
+    's6-title': '6. Cookie pihak ketiga',
+    's6-text': 'Beberapa fitur (video, widget sosial, modul pembayaran) dimuat dari layanan eksternal dan mungkin memasang cookie sendiri. Penggunaannya tunduk pada kebijakan layanan tersebut.',
+    's7-title': '7. Cara mengelola cookie',
+    's7-text': 'Anda dapat menghapus atau memblokir cookie di pengaturan peramban (Chrome, Firefox, Safari, Edge). Sebagian besar peramban juga memiliki mode penyamaran yang menghapus cookie saat jendela ditutup. Catatan: menonaktifkan sebagian cookie dapat membatasi fitur situs.',
+    's8-title': '8. Periode penyimpanan',
+    's8-text': 'Cookie sesi otomatis dihapus saat peramban ditutup. Cookie permanen disimpan dari beberapa hari hingga beberapa tahun, tergantung tujuannya. Lama tepatnya ditampilkan pada setiap cookie di peramban Anda.',
+    's9-title': '9. Perubahan kebijakan',
+    's9-text': 'Kami dapat memperbarui Kebijakan Cookie ini ketika teknologi yang digunakan atau peraturan berubah. Versi terbaru selalu tersedia di halaman ini, tanggal pembaruan ada di atas.',
+    's10-title': '10. Kontak',
+    's10-text': 'Untuk pertanyaan tentang cookie, kirim email ke <a href="mailto:support@evades3.com">support@evades3.com</a>. Kami akan membalas secepat mungkin.',
+    'footer-copy': '© 2026 Evades 3. Hak cipta dilindungi.',
+    'footer-terms': 'Ketentuan Penggunaan',
+    'footer-privacy': 'Kebijakan Privasi',
+    'footer-cookies': 'Cookie',
+    'footer-support': 'Dukungan',
+    'footer-contact': 'Ada pertanyaan? Tulis kepada kami: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+  ms: {
+    'page-title': 'Evades 3 — Dasar Kuki',
+    'languages': 'Bahasa ▼',
+    'back-home': '← Kembali ke laman utama',
+    'page-heading': 'Dasar Kuki',
+    'page-sub': 'Evades 3 — Dokumen rasmi',
+    'updated': 'Kemaskini terkini: 23 April 2026',
+    'intro': 'Laman Evades 3 menggunakan kuki dan teknologi yang serupa. Dokumen ini menerangkan dengan bahasa mudah kuki apa yang kami tetapkan, mengapa diperlukan dan bagaimana anda boleh menguruskannya.',
+    's1-title': '1. Apakah kuki',
+    's1-text': 'Kuki ialah fail teks kecil yang disimpan oleh laman web di pelayar anda apabila anda melawat. Ia membantu laman web mengingat tindakan dan keutamaan anda (contohnya bahasa yang dipilih) supaya anda tidak perlu memasukkannya semula setiap kali.',
+    's2-title': '2. Kenapa kami menggunakan kuki',
+    's2-text': 'Kami menggunakan kuki untuk memastikan laman web beroperasi stabil, mengingat bahasa dan tetapan antara muka, menganalisis cara pemain menggunakan halaman, dan menunjukkan kandungan permainan yang relevan.',
+    's3-title': '3. Kuki yang benar-benar diperlukan',
+    's3-text': 'Fail ini diperlukan untuk operasi asas laman: log masuk, perlindungan daripada permintaan palsu, mengekalkan sesi permainan. Tanpa ia sesetengah fungsi tidak berfungsi. Tidak boleh dinyahaktifkan melalui tetapan laman.',
+    's4-title': '4. Kuki analitik',
+    's4-text': 'Dengan statistik tanpa nama (contoh Google Analytics), kami memahami bahagian mana yang popular, di mana pemain menghadapi masalah dan apa yang perlu diperbaiki. Data ini tidak mengenal pasti anda secara peribadi.',
+    's5-title': '5. Kuki fungsi',
+    's5-text': 'Ia mengingati keutamaan anda: bahasa pilihan, mod paparan, petua yang ditutup. Tanpa ia, laman tetap berfungsi tetapi kurang selesa — anda perlu menetapkannya semula setiap lawatan.',
+    's6-title': '6. Kuki pihak ketiga',
+    's6-text': 'Sesetengah fungsi (video, widget sosial, modul pembayaran) dimuatkan daripada perkhidmatan luar dan mungkin menetapkan kuki tersendiri. Penggunaannya tertakluk kepada dasar perkhidmatan berkenaan.',
+    's7-title': '7. Cara mengurus kuki',
+    's7-text': 'Anda boleh memadam atau menyekat kuki dalam tetapan pelayar (Chrome, Firefox, Safari, Edge). Kebanyakan pelayar juga menawarkan mod inkognito di mana kuki dipadam apabila tetingkap ditutup. Nota: menyahaktifkan sebahagian kuki boleh menghadkan fungsi laman.',
+    's8-title': '8. Tempoh penyimpanan',
+    's8-text': 'Kuki sesi dipadam secara automatik apabila pelayar ditutup. Kuki kekal disimpan beberapa hari hingga beberapa tahun bergantung kepada tujuan. Tempoh tepat dipaparkan pada setiap kuki dalam pelayar anda.',
+    's9-title': '9. Perubahan dasar',
+    's9-text': 'Kami boleh mengemas kini Dasar Kuki ini apabila teknologi yang digunakan atau undang-undang berubah. Versi terkini sentiasa tersedia di halaman ini dan tarikh kemas kini muncul di bahagian atas.',
+    's10-title': '10. Hubungi',
+    's10-text': 'Sebarang soalan berkaitan kuki, sila e-mel ke <a href="mailto:support@evades3.com">support@evades3.com</a>. Kami akan menjawab secepat mungkin.',
+    'footer-copy': '© 2026 Evades 3. Hak cipta terpelihara.',
+    'footer-terms': 'Syarat Penggunaan',
+    'footer-privacy': 'Dasar Privasi',
+    'footer-cookies': 'Kuki',
+    'footer-support': 'Sokongan',
+    'footer-contact': 'Ada soalan? Hubungi kami: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+  },
+
+};
+
+</script>
+  <script>
+    function applyTranslations(lang) {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const t =
+          (translations[lang] && translations[lang][key]) ||
+          (translations.en && translations.en[key]) ||
+          el.innerHTML;
+        if (el.tagName === 'TITLE') el.textContent = t.replace(/<[^>]+>/g, '');
+        else el.innerHTML = t;
+      });
+    }
+    function setSelectedLangUI(lang) {
+      document.querySelectorAll('.lang-item').forEach(item => {
+        item.classList.toggle('is-selected', item.dataset.lang === lang);
+      });
+    }
+
+    let currentLang = null;
+    let langSwitchTimer = null;
+
+    function applyLangNow(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+      document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+      applyTranslations(lang);
+      localStorage.setItem('selectedLanguage', lang);
+      setSelectedLangUI(lang);
+    }
+
+    function changeLanguage(lang) {
+      if (!translations[lang]) lang = 'en';
+      if (lang === currentLang) return;
+      // Первая загрузка — без затухания
+      if (currentLang === null) {
+        applyLangNow(lang);
+        return;
+      }
+      // Плавный fade: скрыть → сменить → показать
+      document.body.classList.add('lang-switching');
+      clearTimeout(langSwitchTimer);
+      langSwitchTimer = setTimeout(() => {
+        applyLangNow(lang);
+        requestAnimationFrame(() => {
+          document.body.classList.remove('lang-switching');
+        });
+      }, 220);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.lang-item').forEach((item, index) => {
+        item.style.setProperty('--item-delay', `${index * 20}ms`);
+        item.addEventListener('click', () => changeLanguage(item.dataset.lang));
+      });
+      const saved = localStorage.getItem('selectedLanguage') || 'ru';
+      changeLanguage(saved);
+
+      // Каскадное появление карточек при прокрутке
+      const cards = document.querySelectorAll('.glass-card');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              const idx = Array.prototype.indexOf.call(cards, e.target);
+              e.target.style.transitionDelay = Math.min(idx * 70, 420) + 'ms';
+              e.target.classList.add('revealed');
+              io.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+        cards.forEach(c => io.observe(c));
+      } else {
+        cards.forEach(c => c.classList.add('revealed'));
+      }
+
+      // Генерация парящих частиц
+      const pContainer = document.getElementById('bgParticles');
+      if (pContainer) {
+        for (let i = 0; i < 18; i++) {
+          const p = document.createElement('div');
+          p.className = 'bg-particle';
+          const dur = 12 + Math.random() * 16;
+          const size = 3 + Math.random() * 5;
+          p.style.left = (Math.random() * 100) + '%';
+          p.style.width = size + 'px';
+          p.style.height = size + 'px';
+          p.style.animationDuration = dur + 's';
+          p.style.animationDelay = (-Math.random() * dur) + 's';
+          if (Math.random() < 0.4) {
+            p.style.background = 'radial-gradient(circle, rgba(255,255,255,0.85), rgba(255,255,255,0))';
+          }
+          pContainer.appendChild(p);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
