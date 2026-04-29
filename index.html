@@ -2840,14 +2840,13 @@
   background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent);
 }
 .profile-dd-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #ff8b8b, #d62828 60%, #8b0d0d);
-  box-shadow: 0 0 12px rgba(255,80,80,0.4), inset 0 2px 3px rgba(255,255,255,0.4);
+  width: 38px; height: 38px;
+  background: transparent;
+  box-shadow: none;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
 .profile-dd-avatar svg {
-  width: 18px; height: 18px; stroke: rgba(255,255,255,0.9); fill: none;
-  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+  width: 38px; height: 38px;
 }
 .profile-dd-name { font-size: 15px; font-weight: 900; color: #ffd700; letter-spacing: 0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .profile-dd-email { 
@@ -3137,12 +3136,13 @@
   box-shadow: 0 0 20px rgba(74,222,128,0.4);
 }
 .profile-modal-avatar {
-  width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 18px;
-  background: radial-gradient(circle at 35% 35%, #ff8b8b, #d62828 60%, #8b0d0d);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.4), 0 0 28px rgba(255,80,80,0.4), inset 0 2px 4px rgba(255,255,255,0.4);
+  width: 96px; height: 96px;
+  margin: 0 auto 18px;
+  background: transparent;
+  box-shadow: none;
   display: flex; align-items: center; justify-content: center;
 }
-.profile-modal-avatar svg { width: 38px; height: 38px; stroke: rgba(255,255,255,0.85); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.profile-modal-avatar svg { width: 96px; height: 96px; }
 .profile-modal-name { font-size: 24px; font-weight: 900; color: #ffd700; letter-spacing: 2px; margin-bottom: 4px; }
 .profile-modal-email { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 24px; }
 .profile-modal-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 24px; }
@@ -3907,6 +3907,197 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
 .news-perk{ display: inline-flex; align-items: center; gap: 6px; }
 .news-perk b{ color: var(--e3-emerald); }
 
+
+/* ===== Community reviews (auto-scroll marquee) ===== */
+.reviews-wrap{
+  position: relative; overflow: hidden;
+  max-width: 1200px; margin: 0 auto;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.reviews-track{
+  display: flex; gap: 18px;
+  width: max-content;
+  padding: 8px 0;
+  animation: reviewsScroll 60s linear infinite;
+}
+.reviews-track:hover{ animation-play-state: paused; }
+@keyframes reviewsScroll{
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.review-card{
+  flex: 0 0 320px;
+  padding: 22px 22px 18px;
+  border-radius: 18px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  border: 1px solid var(--e3-border);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.08);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.review-stars{
+  color: var(--e3-gold);
+  font-size: 18px; letter-spacing: 2px;
+  filter: drop-shadow(0 2px 6px rgba(255,216,77,0.35));
+}
+.review-text{
+  color: rgba(255,255,255,0.88);
+  font-size: 14px; line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 5; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.review-meta{
+  margin-top: auto;
+  color: rgba(255,255,255,0.5);
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  font-family: 'Orbitron', sans-serif;
+}
+.reviews-empty{
+  max-width: 560px; margin: 0 auto;
+  padding: 40px 28px;
+  border-radius: 22px; text-align: center;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(74,222,128,0.18), transparent 70%),
+    linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+  border: 1px dashed rgba(255,255,255,0.22);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 18px 48px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.08);
+  position: relative; overflow: hidden;
+}
+.reviews-empty-icon{
+  font-size: 44px; margin-bottom: 8px;
+  filter: drop-shadow(0 6px 14px rgba(74,222,128,0.45));
+}
+.reviews-empty-title{
+  font-family: 'Exo 2', 'Orbitron', sans-serif;
+  font-size: 22px; font-weight: 900; letter-spacing: 1px;
+  color: #fff; margin-bottom: 6px; text-transform: uppercase;
+}
+.reviews-empty-sub{
+  color: rgba(255,255,255,0.72);
+  font-size: 14px; margin-bottom: 22px; line-height: 1.55;
+}
+.reviews-empty-btn{
+  display: inline-block;
+  padding: 12px 26px; border-radius: 999px;
+  background: linear-gradient(135deg, var(--e3-gold), #ff8c00);
+  color: #1a1f14;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900; font-size: 12px; letter-spacing: 2.5px;
+  text-transform: uppercase; text-decoration: none;
+  box-shadow: 0 12px 28px rgba(255,140,0,0.4), inset 0 1px 0 rgba(255,255,255,0.5);
+  transition: transform .2s var(--e3-ease), box-shadow .2s var(--e3-ease);
+}
+.reviews-empty-btn:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(255,140,0,0.55), inset 0 1px 0 rgba(255,255,255,0.5);
+}
+
+/* ===== Rating / feedback form ===== */
+.rating-box{
+  max-width: 720px; margin: 0 auto;
+  padding: 34px 28px 30px;
+  border-radius: 22px;
+  position: relative; overflow: hidden;
+  background:
+    radial-gradient(circle at 0% 100%, rgba(74,222,128,0.16), transparent 55%),
+    radial-gradient(circle at 100% 0%, rgba(255,216,77,0.16), transparent 55%),
+    linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  border: 1px solid var(--e3-border);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--e3-shadow-xl), inset 0 1px 0 rgba(255,255,255,0.1);
+  text-align: center;
+}
+.rating-box::before{
+  content:""; position: absolute; inset: -50%;
+  background: conic-gradient(from 270deg, rgba(255,216,77,0.22), transparent 25%, rgba(74,222,128,0.28) 50%, transparent 75%, rgba(255,216,77,0.22));
+  animation: mpSpin 26s linear infinite reverse;
+  opacity: 0.3; filter: blur(40px); pointer-events: none;
+}
+.rating-content{ position: relative; z-index: 1; }
+.rating-title{
+  font-family: 'Exo 2','Orbitron',sans-serif;
+  font-size: 28px; font-weight: 900; letter-spacing: 1px;
+  color: #fff; margin-bottom: 8px; text-transform: uppercase;
+}
+.rating-sub{
+  color: rgba(255,255,255,0.78); font-size: 14px;
+  max-width: 520px; margin: 0 auto 22px; line-height: 1.6;
+}
+.rating-form{
+  display: flex; flex-direction: column; align-items: center;
+  gap: 14px;
+  max-width: 560px; margin: 0 auto;
+}
+.rating-stars{
+  display: inline-flex; gap: 8px;
+  padding: 6px; border-radius: 999px;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.3);
+}
+.rating-star{
+  width: 44px; height: 44px; padding: 6px;
+  background: none; border: none; cursor: pointer;
+  color: rgba(255,255,255,0.3);
+  transition: transform .18s var(--e3-ease), color .18s ease, filter .18s ease;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+}
+.rating-star svg{ width: 100%; height: 100%; fill: currentColor; }
+.rating-star:hover{ transform: scale(1.12); }
+.rating-star.is-on{
+  color: var(--e3-gold);
+  filter: drop-shadow(0 2px 10px rgba(255,216,77,0.55));
+}
+.rating-star:focus-visible{
+  outline: 2px solid rgba(74,222,128,0.8);
+  outline-offset: 2px;
+}
+.rating-value{
+  color: rgba(255,255,255,0.6);
+  font-size: 12px; letter-spacing: 1.5px;
+  text-transform: uppercase; font-weight: 700;
+  font-family: 'Orbitron', sans-serif;
+  min-height: 16px;
+}
+.rating-textarea{
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--e3-border);
+  color: #fff; font-size: 14px; line-height: 1.55;
+  outline: none;
+  resize: vertical; min-height: 96px;
+  transition: border-color .25s ease, box-shadow .25s ease;
+  font-family: inherit;
+}
+.rating-textarea::placeholder{ color: rgba(255,255,255,0.4); }
+.rating-textarea:focus{
+  border-color: rgba(74,222,128,0.7);
+  box-shadow: 0 0 0 4px rgba(74,222,128,0.15), 0 8px 22px rgba(0,0,0,0.25);
+}
+.rating-submit{
+  position: relative; overflow: hidden;
+  padding: 14px 32px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--e3-gold), #ff8c00);
+  color: #1a1f14; font-weight: 900; letter-spacing: 2px; font-size: 12px;
+  font-family: 'Orbitron', sans-serif;
+  text-transform: uppercase;
+  border: none; cursor: pointer;
+  box-shadow: 0 12px 28px rgba(255,140,0,0.35), inset 0 1px 0 rgba(255,255,255,0.5);
+  transition: transform .2s var(--e3-ease), box-shadow .2s var(--e3-ease);
+}
+.rating-submit:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(255,140,0,0.5), inset 0 1px 0 rgba(255,255,255,0.5);
+}
+.rating-submit:disabled{ opacity: 0.6; cursor: not-allowed; }
+
 .e3-social{
   display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
   margin-top: 22px;
@@ -3985,6 +4176,65 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
 /* ========================================================================
    ===============   END   E3 ULTRA UPGRADE BLOCK              ==============
    ======================================================================== */
+
+/* ========== ПРЕМИУМ-ИКОНКИ: профиль / вход / выход ========== */
+svg.ic-svg-profile,
+svg.ic-svg-profile-mini,
+svg.ic-svg-profile-big,
+svg.ic-svg-login,
+svg.ic-svg-mini {
+  display: inline-block; flex-shrink: 0; pointer-events: none;
+  fill: initial; stroke: initial; overflow: visible;
+}
+.nav-icon-btn svg.ic-svg-profile,
+svg.ic-svg-profile {
+  width: 32px; height: 32px;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.55)) drop-shadow(0 0 8px rgba(255,200,58,0.35));
+  transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), filter 0.4s ease;
+}
+.nav-icon-btn:hover svg.ic-svg-profile {
+  transform: scale(1.08) rotate(-3deg);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6)) drop-shadow(0 0 18px rgba(255,200,58,0.95));
+}
+.profile-dd-avatar svg.ic-svg-profile-mini,
+svg.ic-svg-profile-mini {
+  width: 38px; height: 38px;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.45)) drop-shadow(0 0 6px rgba(255,200,58,0.45));
+}
+.profile-modal-avatar svg.ic-svg-profile-big,
+svg.ic-svg-profile-big {
+  width: 96px; height: 96px;
+  filter: drop-shadow(0 5px 10px rgba(0,0,0,0.55)) drop-shadow(0 0 22px rgba(255,200,58,0.6));
+  animation: e3ProfileGlowPulse 3.6s ease-in-out infinite;
+}
+@keyframes e3ProfileGlowPulse {
+  0%, 100% { filter: drop-shadow(0 5px 10px rgba(0,0,0,0.55)) drop-shadow(0 0 22px rgba(255,200,58,0.6)); }
+  50%      { filter: drop-shadow(0 5px 10px rgba(0,0,0,0.55)) drop-shadow(0 0 38px rgba(255,200,58,1)); }
+}
+.profile-dd-item svg.ic-svg-mini,
+svg.ic-svg-mini {
+  width: 20px; height: 20px;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+.profile-dd-item:hover svg.ic-svg-mini {
+  transform: scale(1.1) rotate(-3deg);
+}
+svg.ic-svg-login {
+  width: 20px; height: 20px;
+  margin-right: 10px;
+  vertical-align: -4px;
+  filter: drop-shadow(0 0 6px rgba(255,215,0,0.65));
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), filter 0.35s ease;
+}
+.btn-login:hover svg.ic-svg-login {
+  transform: translateX(4px) scale(1.1);
+  filter: drop-shadow(0 0 12px rgba(255,215,0,1));
+}
+.btn-login {
+  display: inline-flex; align-items: center; gap: 0;
+}
+.btn-login .lg-text { display: inline-block; vertical-align: middle; }
   </style>
 </head>
 
@@ -4105,12 +4355,78 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
   <div class="explosion-layer" aria-hidden="true"></div>
   <div class="early-access-banner" data-i18n="early-access">*Ранний доступ</div>
 
+  <!-- ============ Глобальные SVG-определения для премиум-иконок ============ -->
+  <svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="e3g-gold" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"  stop-color="#FFEFA8"/>
+        <stop offset="45%" stop-color="#FFC83A"/>
+        <stop offset="100%" stop-color="#9B6E00"/>
+      </linearGradient>
+      <linearGradient id="e3g-gold-soft" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"  stop-color="#FFF6CC"/>
+        <stop offset="55%" stop-color="#FFD24D"/>
+        <stop offset="100%" stop-color="#C49100"/>
+      </linearGradient>
+      <linearGradient id="e3g-emerald" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#1f5f3a" stop-opacity="0.85"/>
+        <stop offset="100%" stop-color="#0a2516" stop-opacity="0.97"/>
+      </linearGradient>
+      <radialGradient id="e3g-glow-gold">
+        <stop offset="0%"   stop-color="#FFEC8B" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#FFD24D" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="e3g-red" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#FFAE9B"/>
+        <stop offset="60%"  stop-color="#E04A2A"/>
+        <stop offset="100%" stop-color="#7E0F0F"/>
+      </linearGradient>
+
+      <!-- Профиль: золотой геймерский гекс-бэйдж -->
+      <symbol id="e3-ic-profile-hex" viewBox="0 0 32 32">
+        <circle cx="16" cy="16" r="15" fill="url(#e3g-glow-gold)"/>
+        <path d="M16 2.6 L28.4 9.7 L28.4 22.3 L16 29.4 L3.6 22.3 L3.6 9.7 Z"
+              fill="url(#e3g-emerald)" stroke="url(#e3g-gold)" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M16 4.8 L26.4 10.8 L26.4 21.2 L16 27.2 L5.6 21.2 L5.6 10.8 Z"
+              fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.6"/>
+        <circle cx="16" cy="13.3" r="3.7"
+                fill="url(#e3g-gold-soft)" stroke="rgba(255,255,255,0.55)" stroke-width="0.4"/>
+        <ellipse cx="14.55" cy="11.85" rx="1.25" ry="0.65" fill="#FFFFFF" opacity="0.7"/>
+        <path d="M9 24.2 C9 19.5, 11.5 17.7, 16 17.7 C20.5 17.7, 23 19.5, 23 24.2 L23 24.7 C23 25.0, 22.7 25.3, 22.4 25.3 L9.6 25.3 C9.3 25.3, 9 25.0, 9 24.7 Z"
+              fill="url(#e3g-gold-soft)" stroke="rgba(255,255,255,0.55)" stroke-width="0.4"/>
+        <path d="M11 21.4 C12.5 19.3, 14.8 18.9, 16 19"
+              stroke="rgba(255,255,255,0.7)" stroke-width="0.55" fill="none" stroke-linecap="round"/>
+      </symbol>
+
+      <!-- Логин: дверь + стрелка внутрь -->
+      <symbol id="e3-ic-login" viewBox="0 0 24 24">
+        <path d="M14.5 3.5 L4.5 3.5 L4.5 20.5 L14.5 20.5"
+              fill="none" stroke="url(#e3g-gold)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M16.5 7.5 L21 12 L16.5 16.5"
+              fill="none" stroke="url(#e3g-gold)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M10 12 L21 12"
+              fill="none" stroke="url(#e3g-gold)" stroke-width="2.2" stroke-linecap="round"/>
+      </symbol>
+
+      <!-- Логаут: дверь + стрелка наружу (красный градиент) -->
+      <symbol id="e3-ic-logout" viewBox="0 0 24 24">
+        <path d="M9.5 3.5 L19.5 3.5 L19.5 20.5 L9.5 20.5"
+              fill="none" stroke="url(#e3g-red)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M7.5 7.5 L3 12 L7.5 16.5"
+              fill="none" stroke="url(#e3g-red)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M14 12 L3 12"
+              fill="none" stroke="url(#e3g-red)" stroke-width="2.2" stroke-linecap="round"/>
+      </symbol>
+    </defs>
+  </svg>
+  <!-- ============ Конец глобальных SVG-определений ============ -->
+
   <img class="logo-image" src="logo.png" alt="Evades 3 logo" />
 
   <!-- ─── NAV AUTH AREA ─── -->
 <div class="nav-auth-area" id="navAuthArea">
   <!-- Кнопка "Войти" (скрыта когда залогинен) -->
-  <button class="btn-login" id="btnLogin" onclick="openAuthModal('login')" data-i18n="btn-login">Войти / Регистрация</button>
+  <button class="btn-login" id="btnLogin" onclick="openAuthModal('login')"><svg class="ic-svg-login" aria-hidden="true" focusable="false"><use href="#e3-ic-login"/></svg><span class="lg-text" data-i18n="btn-login">Войти / Регистрация</span></button>
 
   <!-- Колокольчик (показывается только залогиненным) -->
   <div class="nav-icon-btn bell-wrap" id="navBell" style="display:none;" title="Уведомления">
@@ -4129,13 +4445,13 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
 
   <!-- Кнопка профиля (показывается только залогиненным) -->
   <div class="nav-icon-btn profile-wrap" id="navProfile" style="display:none;">
-    <!-- User SVG -->
-    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <!-- Премиум-иконка профиля (золотой гекс-бэйдж) -->
+    <svg class="ic-svg-profile" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex"/></svg>
     <!-- Дропдаун профиля -->
     <div class="profile-dropdown" id="profileDropdown">
       <div class="profile-dd-head">
         <div class="profile-dd-avatar">
-          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <svg class="ic-svg-profile-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex"/></svg>
         </div>
         <div>
           <div class="profile-dd-name" id="ddName" data-i18n="profile-player">Игрок</div>
@@ -4143,12 +4459,12 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
         </div>
       </div>
       <button class="profile-dd-item" onclick="openProfileModal()" data-i18n="auth-profile">
-        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <svg class="ic-svg-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex"/></svg>
         Профиль
       </button>
       <div class="profile-dd-divider"></div>
       <button class="profile-dd-item danger" onclick="openConfirmLogout()" data-i18n="auth-logout">
-        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <svg class="ic-svg-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-logout"/></svg>
         Выйти
       </button>
     </div>
@@ -4287,7 +4603,7 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
   <div class="profile-modal-box">
     <button class="profile-modal-close" onclick="closeProfileModal()">✕</button>
     <div class="profile-modal-avatar">
-      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <svg class="ic-svg-profile-big" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex"/></svg>
     </div>
     <div class="profile-modal-name" id="pmName" data-i18n="profile-player">Игрок</div>
     <div class="profile-modal-email" id="pmEmail">—</div>
@@ -4943,7 +5259,24 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
       </div>
     </section>
 
-    <!-- Community testimonials removed — no real player reviews yet -->
+    <!-- ============ E3 UPGRADE: COMMUNITY REVIEWS ============ -->
+    <section class="e3-section reveal" id="reviews" aria-labelledby="rv-title">
+      <div class="e3-section-head">
+        <div class="e3-eyebrow"><span class="dot"></span><span data-i18n="ultra-reviews-eyebrow">Сообщество</span></div>
+        <h2 id="rv-title" class="e3-title"><span data-i18n="ultra-reviews-title-a">Отзывы</span> <span class="accent" data-i18n="ultra-reviews-title-b">игроков</span></h2>
+        <p class="e3-lead" data-i18n="ultra-reviews-lead">Впечатления тех, кто уже заглянул в альфу.</p>
+      </div>
+
+      <div class="reviews-wrap" id="reviewsWrap">
+        <div class="reviews-empty" id="reviewsEmpty">
+          <div class="reviews-empty-icon" aria-hidden="true">💬</div>
+          <div class="reviews-empty-title" data-i18n="ultra-reviews-empty-title">Отзывов пока нет</div>
+          <div class="reviews-empty-sub" data-i18n="ultra-reviews-empty-sub">Будь первым, кто поделится впечатлением об Evades 3 — твой отзыв появится прямо здесь.</div>
+          <a class="reviews-empty-btn" href="#rating" data-i18n="ultra-reviews-empty-btn">Оставить отзыв</a>
+        </div>
+        <div class="reviews-track" id="reviewsTrack" hidden></div>
+      </div>
+    </section>
 
     <!-- ============ E3 ULTRA UPGRADE: FAQ ============ -->
     <section class="e3-section reveal" id="faq" aria-labelledby="faq-title">
@@ -5011,6 +5344,7 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
             <span class="news-perk"><b>✓</b><span data-i18n="ultra-news-perk-2">Приоритет в альфу</span></span>
             <span class="news-perk"><b>✓</b><span data-i18n="ultra-news-perk-3">Эксклюзив-скин</span></span>
           </div>
+
         </div>
       </div>
     </section>
@@ -5031,6 +5365,30 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3.01 3.01 0 0 0-2.12-2.13C19.52 3.5 12 3.5 12 3.5s-7.52 0-9.38.57A3.01 3.01 0 0 0 .5 6.2C0 8.08 0 12 0 12s0 3.92.5 5.8a3.01 3.01 0 0 0 2.12 2.13c1.86.57 9.38.57 9.38.57s7.52 0 9.38-.57a3.01 3.01 0 0 0 2.12-2.13C24 15.92 24 12 24 12s0-3.92-.5-5.8ZM9.6 15.6V8.4l6.24 3.6-6.24 3.6Z"/></svg>
           YouTube
         </a>
+      </div>
+    </section>
+
+    <!-- ============ E3 UPGRADE: RATING / FEEDBACK ============ -->
+    <section class="e3-section reveal reveal-zoom" id="rating" aria-labelledby="rt-title">
+      <div class="rating-box">
+        <div class="rating-content">
+          <div class="e3-eyebrow" style="margin-bottom:14px;"><span class="dot"></span><span data-i18n="ultra-rating-eyebrow">Твоё мнение</span></div>
+          <h2 id="rt-title" class="rating-title" data-i18n="ultra-rating-title">Как тебе проект?</h2>
+          <p class="rating-sub" data-i18n="ultra-rating-sub">Поставь оценку и поделись мыслями — это поможет сделать Evades 3 лучше.</p>
+
+          <form class="rating-form" id="ratingForm" autocomplete="off" novalidate>
+            <div class="rating-stars" id="ratingStars" role="radiogroup" aria-label="rating">
+              <button type="button" class="rating-star" data-value="1" aria-label="1 star"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>
+              <button type="button" class="rating-star" data-value="2" aria-label="2 stars"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>
+              <button type="button" class="rating-star" data-value="3" aria-label="3 stars"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>
+              <button type="button" class="rating-star" data-value="4" aria-label="4 stars"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>
+              <button type="button" class="rating-star" data-value="5" aria-label="5 stars"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>
+            </div>
+            <div class="rating-value" id="ratingValueLabel" data-i18n="ultra-rating-hint">Кликни по звезде, чтобы выбрать оценку</div>
+            <textarea class="rating-textarea" id="ratingComment" rows="4" maxlength="1000" placeholder="Что понравилось, а что улучшить?" data-i18n-placeholder="ultra-rating-placeholder"></textarea>
+            <button class="rating-submit" type="submit" data-i18n="ultra-rating-submit">Отправить отзыв</button>
+          </form>
+        </div>
       </div>
     </section>
   </div>
@@ -8833,14 +9191,67 @@ const SUPA_URL = 'https://twgrguukftwtbnmnqgsd.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3Z3JndXVrZnR3dGJubW5xZ3NkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMzQwMDMsImV4cCI6MjA5MTkxMDAwM30.xJZk61nSpfcIZmH_Srmbo8Eeyvj9Hm2SCFqCL0npP6Y';
 
 async function supaPost(path, body) {
-  const r = await fetch(SUPA_URL + path, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY },
-    body: JSON.stringify(body)
-  });
-  const data = await r.json();
-  console.log('STATUS:', r.status, 'DATA:', JSON.stringify(data));
-  return data;
+  let r, data;
+  try {
+    r = await fetch(SUPA_URL + path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY },
+      body: JSON.stringify(body)
+    });
+  } catch (e) {
+    // No network / CORS / DNS
+    return { ok: false, status: 0, data: null, networkError: true };
+  }
+  try { data = await r.json(); } catch { data = null; }
+  return { ok: r.ok, status: r.status, data: data || {}, networkError: false };
+}
+
+// Map Supabase Auth error → i18n key. Returns { key, fallback } for unknown errors.
+function ev3AuthErrorKey(resp) {
+  if (!resp) return { key: 'auth-err-unknown', fallback: 'Неизвестная ошибка. Попробуй позже' };
+  if (resp.networkError)       return { key: 'auth-err-network',   fallback: 'Нет соединения. Проверь интернет' };
+  const d = resp.data || {};
+  const code = (d.error_code || d.code || d.error || '').toString().toLowerCase();
+  const msg  = (d.error_description || d.msg || d.message || d.error || '').toString();
+  const msgL = msg.toLowerCase();
+
+  // ---- Explicit Supabase codes ----
+  if (code === 'invalid_credentials'        || msgL.includes('invalid login') || msgL.includes('invalid credentials'))
+    return { key: 'auth-err-invalid-credentials', fallback: 'Неверный email или пароль' };
+  if (code === 'email_not_confirmed'        || msgL.includes('email not confirmed') || msgL.includes('not confirmed'))
+    return { key: 'auth-err-email-not-confirmed', fallback: 'Подтверди email перед входом (проверь почту)' };
+  if (code === 'user_already_exists'        || code === 'email_exists' || msgL.includes('already registered') || msgL.includes('already exists') || msgL.includes('user already') || /duplicate/.test(msgL))
+    return { key: 'auth-err-email-exists',        fallback: 'Этот email уже зарегистрирован' };
+  if (code === 'weak_password'              || msgL.includes('weak password') || msgL.includes('password should be') || msgL.includes('password is too short') || msgL.includes('password must'))
+    return { key: 'auth-err-weak-password',       fallback: 'Пароль слишком слабый — минимум 8 символов, буквы и цифры' };
+  if (code === 'signup_disabled'            || msgL.includes('signup') && msgL.includes('disabled'))
+    return { key: 'auth-err-signup-disabled',     fallback: 'Регистрация временно закрыта' };
+  if (code === 'email_address_invalid'      || code === 'validation_failed' || msgL.includes('valid email') || msgL.includes('invalid email') || msgL.includes('email address is invalid'))
+    return { key: 'auth-err-invalid-email',       fallback: 'Неверный формат email' };
+  if (code === 'user_not_found'             || msgL.includes('user not found') || msgL.includes('no user'))
+    return { key: 'auth-err-user-not-found',      fallback: 'Пользователь с таким email не найден' };
+  if (code === 'over_email_send_rate_limit' || code === 'over_request_rate_limit' || resp.status === 429 || msgL.includes('rate limit') || msgL.includes('too many'))
+    return { key: 'auth-err-rate-limit',          fallback: 'Слишком много попыток. Подожди минуту и попробуй снова' };
+  if (code === 'captcha_failed'             || msgL.includes('captcha'))
+    return { key: 'auth-err-captcha',             fallback: 'Проверка капчи не пройдена, попробуй ещё раз' };
+  if (code === 'otp_expired'                || msgL.includes('otp') && msgL.includes('expired'))
+    return { key: 'auth-err-otp-expired',         fallback: 'Код подтверждения истёк. Запроси новый' };
+  if (code === 'same_password'              || msgL.includes('same password'))
+    return { key: 'auth-err-same-password',       fallback: 'Новый пароль должен отличаться от старого' };
+  if (resp.status >= 500)
+    return { key: 'auth-err-server',              fallback: 'Сервер временно не отвечает. Попробуй позже' };
+  if (resp.status === 401 || resp.status === 403)
+    return { key: 'auth-err-invalid-credentials', fallback: 'Неверный email или пароль' };
+  if (resp.status >= 400)
+    return { key: 'auth-err-unknown',             fallback: (msg || ('Ошибка ' + resp.status)) };
+  return { key: 'auth-err-unknown',               fallback: 'Неизвестная ошибка. Попробуй позже' };
+}
+function ev3AuthMsg(resp) {
+  const { key, fallback } = ev3AuthErrorKey(resp);
+  try {
+    const lang = (typeof currentLanguage === 'string' && currentLanguage) || 'ru';
+    return (translations && translations[lang] && translations[lang][key]) || fallback;
+  } catch { return fallback; }
 }
 
 // ===================================================
@@ -8982,33 +9393,51 @@ function riValidConfirm(inp) {
 // ===================================================
 // LOGIN
 // ===================================================
+function tt(k, fb) {
+  try {
+    const lang = (typeof currentLanguage === 'string' && currentLanguage) || 'ru';
+    return (translations && translations[lang] && translations[lang][k]) || fb;
+  } catch { return fb; }
+}
 async function doLogin() {
   const email = document.getElementById('li-email').value.trim();
   const pass = document.getElementById('li-pass').value;
   const btn = document.getElementById('li-submit');
+  const emailInp = document.getElementById('li-email');
+  const passInp  = document.getElementById('li-pass');
   let ok = true;
-  if (!email) { setHint('li-email-hint','Введи email или ник','err'); ok=false; } else setHint('li-email-hint','','');
-  if (!pass) { setHint('li-pass-hint','Введи пароль','err'); ok=false; } else setHint('li-pass-hint','','');
+  // clear previous state
+  setHint('li-email-hint','',''); setHint('li-pass-hint','','');
+  emailInp.classList.remove('error'); passInp.classList.remove('error');
+
+  if (!email)  { setHint('li-email-hint', tt('auth-err-email-required','Введи email или ник'),'err'); setInpState(emailInp,'error'); ok=false; }
+  if (!pass)   { setHint('li-pass-hint',  tt('auth-err-password-required','Введи пароль'),'err');     setInpState(passInp,'error');  ok=false; }
   if (!ok) return;
 
-  btn.disabled=true; btn.innerHTML='<span class="af-submit-shine"></span><span>⏳ Вход...</span>';
-  try {
-    const data = await supaPost('/auth/v1/token?grant_type=password', { email, password: pass });
-if (data.error || data.error_description || data.msg) {
-      const msg = data.error_description || data.error || 'Ошибка';
-      const friendly = msg.includes('Invalid login') ? 'Неверный email или пароль'
-        : msg.includes('Email not confirmed') ? 'Подтверди email перед входом' : msg;
-      setHint('li-pass-hint', friendly, 'err');
-      document.getElementById('li-pass').classList.add('error');
+  btn.disabled=true; btn.innerHTML='<span class="af-submit-shine"></span><span>⏳ '+tt('auth-busy-login','Вход...')+'</span>';
+  const resp = await supaPost('/auth/v1/token?grant_type=password', { email, password: pass });
+  // Real success = 2xx + access_token present
+  if (resp.ok && resp.data && resp.data.access_token) {
+    saveSession(resp.data); ev3User = resp.data.user;
+    closeAuthModal();
+    showLoggedIn();
+    const nick = (resp.data.user && resp.data.user.user_metadata && resp.data.user.user_metadata.username) || email.split('@')[0];
+    ev3Toast(tt('auth-ok-login-prefix','Добро пожаловать, ') + nick + '! 🎮', '🎮');
+  } else {
+    const friendly = ev3AuthMsg(resp);
+    const info = ev3AuthErrorKey(resp);
+    // Place error near the relevant input:
+    if (info.key === 'auth-err-email-exists' || info.key === 'auth-err-invalid-email' || info.key === 'auth-err-user-not-found') {
+      setHint('li-email-hint', friendly, 'err'); setInpState(emailInp,'error');
+    } else if (info.key === 'auth-err-weak-password' || info.key === 'auth-err-same-password') {
+      setHint('li-pass-hint',  friendly, 'err'); setInpState(passInp,'error');
     } else {
-      saveSession(data); ev3User = data.user;
-      closeAuthModal();
-      showLoggedIn();
-      const nick = data.user?.user_metadata?.username || email.split('@')[0];
-      ev3Toast(`Добро пожаловать, ${nick}! 🎮`, '🎮');
+      setHint('li-pass-hint',  friendly, 'err'); setInpState(passInp,'error');
     }
-  } catch { setHint('li-pass-hint','Ошибка соединения','err'); }
-  btn.disabled=false; btn.innerHTML='<span class="af-submit-shine"></span><span>Войти →</span>';
+    try { ev3Toast(friendly, '⚠️'); } catch {}
+    if (typeof console !== 'undefined') console.warn('[AUTH login]', resp.status, resp.data);
+  }
+  btn.disabled=false; btn.innerHTML='<span class="af-submit-shine"></span><span>'+tt('login-submit-btn','Войти →')+'</span>';
 }
 
 // ===================================================
@@ -9021,33 +9450,57 @@ async function doRegister() {
   const pass2 = document.getElementById('ri-pass2').value;
   const terms = document.getElementById('ri-terms').checked;
   const btn = document.getElementById('ri-submit');
+  const nickInp  = document.getElementById('ri-nick');
+  const emailInp = document.getElementById('ri-email');
+  const passInp  = document.getElementById('ri-pass');
+  const pass2Inp = document.getElementById('ri-pass2');
 
   let ok = true;
+  // clear previous state
+  ['ri-nick-hint','ri-email-hint','ri-pass-hint','ri-pass2-hint'].forEach(id => setHint(id,'',''));
+  [nickInp, emailInp, passInp, pass2Inp].forEach(e => { if (e) e.classList.remove('error'); });
 
-  if (!nick||!/^[a-zA-Zа-яёА-ЯЁ0-9_]{3,20}$/.test(nick)) { setHint('ri-nick-hint','Введи корректный ник','err'); setInpState(document.getElementById('ri-nick'),'error'); ok=false; }
-  if (!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setHint('ri-email-hint','Введи корректный email','err'); setInpState(document.getElementById('ri-email'),'error'); ok=false; }
-  if (pass.length<8) { setHint('ri-pass-hint','Минимум 8 символов','err'); ok=false; }
-  if (pass!==pass2) { setHint('ri-pass2-hint','Пароли не совпадают','err'); setInpState(document.getElementById('ri-pass2'),'error'); ok=false; }
-  if (!terms) { ev3Toast('Прими условия использования','⚠️'); ok=false; }
+  if (!nick||!/^[a-zA-Zа-яёА-ЯЁ0-9_]{3,20}$/.test(nick)) { setHint('ri-nick-hint', tt('auth-err-bad-nick','Введи корректный ник (3-20 символов)'),'err'); setInpState(nickInp,'error'); ok=false; }
+  if (!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setHint('ri-email-hint', tt('auth-err-invalid-email','Неверный формат email'),'err'); setInpState(emailInp,'error'); ok=false; }
+  if (pass.length<8) { setHint('ri-pass-hint', tt('auth-err-pass-min','Минимум 8 символов'),'err'); setInpState(passInp,'error'); ok=false; }
+  if (pass!==pass2) { setHint('ri-pass2-hint', tt('auth-err-pass-mismatch','Пароли не совпадают'),'err'); setInpState(pass2Inp,'error'); ok=false; }
+  if (!terms) { ev3Toast(tt('auth-err-accept-terms','Прими условия использования'),'⚠️'); ok=false; }
   if (!ok) return;
 
-  btn.disabled=true; btn.innerHTML='<span class="af-submit-shine"></span><span>⏳ Создаём аккаунт...</span>';
-  try {
-    const data = await supaPost('/auth/v1/signup', { email, password: pass, data: { username: nick } });
-    if (data.error || data.error_description) {
-      const msg = data.error_description || data.error || data.msg || 'Ошибка';
-      const friendly = (msg.includes('already')||msg.includes('exists')) ? 'Этот email уже зарегистрирован' : msg;
-      setHint('ri-email-hint', friendly, 'err'); setInpState(document.getElementById('ri-email'),'error');
-    } else if (data.session) {
-      saveSession(data.session); ev3User = data.user;
+  btn.disabled=true; btn.innerHTML='<span class="af-submit-shine"></span><span>⏳ '+tt('auth-busy-register','Создаём аккаунт...')+'</span>';
+  const resp = await supaPost('/auth/v1/signup', { email, password: pass, data: { username: nick } });
+  if (resp.ok && resp.data) {
+    // Either a session is returned (auto sign-in) or a user object with confirmation required
+    if (resp.data.access_token) {
+      saveSession(resp.data); ev3User = resp.data.user;
       closeAuthModal(); showLoggedIn();
-      ev3Toast(`Аккаунт ${nick} создан! 🎉`, '🎉');
-    } else {
-      ev3Toast(`Подтверди email — письмо отправлено на ${email}!`, '📧');
+      ev3Toast(tt('auth-ok-register-prefix','Аккаунт ') + nick + tt('auth-ok-register-suffix',' создан! 🎉'), '🎉');
+    } else if (resp.data.session && resp.data.session.access_token) {
+      saveSession(resp.data.session); ev3User = resp.data.user;
+      closeAuthModal(); showLoggedIn();
+      ev3Toast(tt('auth-ok-register-prefix','Аккаунт ') + nick + tt('auth-ok-register-suffix',' создан! 🎉'), '🎉');
+    } else if (resp.data.user || resp.data.id) {
+      // email confirmation required
+      ev3Toast(tt('auth-ok-register-confirm','Подтверди email — письмо отправлено на ') + email, '📧');
       setTimeout(() => switchAuthTab('login'), 1800);
+    } else {
+      // Response shape unexpected but HTTP OK — treat as confirm-needed
+      ev3Toast(tt('auth-ok-register-confirm','Подтверди email — письмо отправлено на ') + email, '📧');
     }
-  } catch { setHint('ri-email-hint','Ошибка соединения','err'); }
-  btn.disabled=false; btn.innerHTML='<span class="af-submit-shine"></span><span>Создать аккаунт ⚡</span>';
+  } else {
+    const friendly = ev3AuthMsg(resp);
+    const info = ev3AuthErrorKey(resp);
+    if (info.key === 'auth-err-email-exists' || info.key === 'auth-err-invalid-email') {
+      setHint('ri-email-hint', friendly, 'err'); setInpState(emailInp,'error');
+    } else if (info.key === 'auth-err-weak-password') {
+      setHint('ri-pass-hint',  friendly, 'err'); setInpState(passInp,'error');
+    } else {
+      setHint('ri-email-hint', friendly, 'err'); setInpState(emailInp,'error');
+    }
+    try { ev3Toast(friendly, '⚠️'); } catch {}
+    if (typeof console !== 'undefined') console.warn('[AUTH signup]', resp.status, resp.data);
+  }
+  btn.disabled=false; btn.innerHTML='<span class="af-submit-shine"></span><span>'+tt('register-submit-btn','Создать аккаунт ⚡')+'</span>';
 }
 
 // ===================================================
@@ -9070,12 +9523,18 @@ function closeForgotOnBg(e) { if(e.target===e.currentTarget) closeForgotModal();
 // ===================================================
 async function doForgotSend() {
   const email = document.getElementById('forgot-email-input').value.trim();
-  if (!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { ev3Toast('Введи корректный email','⚠️'); return; }
+  if (!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { ev3Toast(tt('auth-err-invalid-email','Неверный формат email'),'⚠️'); return; }
   const btn = document.getElementById('forgotSendBtn');
-  btn.disabled=true; btn.textContent='⏳ Отправка...';
-  try { await supaPost('/auth/v1/recover', { email }); closeForgotModal(); ev3Toast('Письмо для сброса отправлено! Проверь почту 📧','📧'); }
-  catch { ev3Toast('Ошибка отправки. Попробуй позже.','⚠️'); }
-  btn.disabled=false; btn.textContent='Отправить →';
+  btn.disabled=true; btn.textContent='⏳ '+tt('auth-busy-forgot','Отправка...');
+  const resp = await supaPost('/auth/v1/recover', { email });
+  if (resp.ok) {
+    closeForgotModal();
+    ev3Toast(tt('auth-ok-forgot','Письмо для сброса отправлено! Проверь почту 📧'),'📧');
+  } else {
+    ev3Toast(ev3AuthMsg(resp),'⚠️');
+    if (typeof console !== 'undefined') console.warn('[AUTH recover]', resp.status, resp.data);
+  }
+  btn.disabled=false; btn.textContent=tt('auth-forgot-submit','Отправить →');
 }
 
 // ===================================================
@@ -9390,19 +9849,20 @@ verifySession();
   });
 
   // ----- Newsletter form (Supabase integration) -----
-  const nForm  = document.getElementById('newsForm');
-  const nInput = document.getElementById('newsEmail');
-  if (nForm && nInput) {
-    const SUPABASE_URL = 'https://twgrguukftwtbnmnqgsd.supabase.co';
+  (function newsletterForm() {
+    const SUPABASE_URL  = 'https://twgrguukftwtbnmnqgsd.supabase.co';
     const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3Z3JndXVrZnR3dGJubW5xZ3NkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMzQwMDMsImV4cCI6MjA5MTkxMDAwM30.xJZk61nSpfcIZmH_Srmbo8Eeyvj9Hm2SCFqCL0npP6Y';
     const reEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-    const nBtn = nForm.querySelector('.news-btn');
     const tt = (k, fb) => {
       try {
         const lang = (typeof currentLanguage === 'string' && currentLanguage) || 'ru';
         return (translations && translations[lang] && translations[lang][k]) || fb;
       } catch { return fb; }
     };
+    const nForm  = document.getElementById('newsForm');
+    const nInput = document.getElementById('newsEmail');
+    if (!nForm || !nInput) return;
+    const nBtn = nForm.querySelector('.news-btn');
     nForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const v = (nInput.value || '').trim();
@@ -9424,7 +9884,7 @@ verifySession();
             'Content-Type': 'application/json',
             'Prefer': 'return=minimal'
           },
-          body: JSON.stringify({ email: v, lang: lang })
+          body: JSON.stringify({ email: v, lang })
         });
         if (res.status === 201 || res.status === 204) {
           nInput.classList.add('is-ok');
@@ -9442,6 +9902,7 @@ verifySession();
           } else {
             nInput.classList.add('is-bad');
             try { ev3Toast && ev3Toast(tt('ultra-news-toast-err', 'Что-то пошло не так, попробуй ещё раз'), '⚠️'); } catch {}
+            if (typeof console !== 'undefined') console.warn('[NEWSLETTER]', res.status, msg);
           }
         }
       } catch (err) {
@@ -9451,7 +9912,114 @@ verifySession();
         if (nBtn) { nBtn.disabled = false; if (nBtn.dataset._label) { nBtn.textContent = nBtn.dataset._label; delete nBtn.dataset._label; } }
       }
     });
-  }
+  })();
+
+  // ----- Reviews carousel (load from Supabase) + Rating form -----
+  (function reviewsAndRating() {
+    const SUPABASE_URL  = 'https://twgrguukftwtbnmnqgsd.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3Z3JndXVrZnR3dGJubW5xZ3NkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMzQwMDMsImV4cCI6MjA5MTkxMDAwM30.xJZk61nSpfcIZmH_Srmbo8Eeyvj9Hm2SCFqCL0npP6Y';
+    const tt = (k, fb) => {
+      try {
+        const lang = (typeof currentLanguage === 'string' && currentLanguage) || 'ru';
+        return (translations && translations[lang] && translations[lang][k]) || fb;
+      } catch { return fb; }
+    };
+    const toast = (msg, icon) => { try { ev3Toast && ev3Toast(msg, icon); } catch {} };
+
+    // --- Load reviews (rating >= 4, non-empty comment). Table may not exist yet. ---
+    (async function loadReviews() {
+      const wrap  = document.getElementById('reviewsWrap');
+      const track = document.getElementById('reviewsTrack');
+      const empty = document.getElementById('reviewsEmpty');
+      if (!wrap || !track || !empty) return;
+      try {
+        // Only approved reviews are visible to the public. Approve via Supabase
+        // Table Editor → feedback → toggle `approved` = true.
+        const res = await fetch(SUPABASE_URL + '/rest/v1/feedback?select=rating,comment,lang,created_at&approved=eq.true&order=created_at.desc&limit=30', {
+          headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + SUPABASE_ANON }
+        });
+        if (!res.ok) return; // keep empty state
+        const data = await res.json();
+        const filtered = (Array.isArray(data) ? data : []).filter(r => (r && r.comment && r.comment.trim().length >= 3));
+        if (filtered.length === 0) return;
+        const list = filtered.concat(filtered); // duplicate for seamless marquee
+        const esc = (s) => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        track.innerHTML = list.map(r => {
+          const rat = Math.max(1, Math.min(5, (r.rating|0) || 5));
+          const stars = '★'.repeat(rat) + '☆'.repeat(5 - rat);
+          const date = (() => { try { return new Date(r.created_at).toLocaleDateString(); } catch { return ''; } })();
+          const code = (r.lang || 'anon').toUpperCase();
+          return '<article class="review-card">'
+            + '<div class="review-stars" aria-label="' + rat + '/5">' + stars + '</div>'
+            + '<p class="review-text">' + esc(r.comment) + '</p>'
+            + '<div class="review-meta">' + esc(code) + (date ? ' · ' + esc(date) : '') + '</div>'
+            + '</article>';
+        }).join('');
+        track.hidden = false;
+        empty.hidden = true;
+      } catch { /* network or missing table — keep empty state */ }
+    })();
+
+    // --- Rating form ---
+    const rForm   = document.getElementById('ratingForm');
+    const rStars  = Array.from(document.querySelectorAll('#ratingStars .rating-star'));
+    const rLabel  = document.getElementById('ratingValueLabel');
+    const rText   = document.getElementById('ratingComment');
+    const rGroup  = document.getElementById('ratingStars');
+    if (!rForm || rStars.length === 0) return;
+
+    let currentRating = 0;
+    const paint = (n) => rStars.forEach((s, i) => s.classList.toggle('is-on', i < n));
+
+    rStars.forEach(s => {
+      const v = +s.dataset.value;
+      s.addEventListener('mouseenter', () => paint(v));
+      s.addEventListener('focus',       () => paint(v));
+      s.addEventListener('click', () => {
+        currentRating = v;
+        paint(v);
+        if (rLabel) rLabel.textContent = tt('ultra-rating-chosen', 'Твоя оценка: ') + v + ' / 5';
+      });
+    });
+    if (rGroup) rGroup.addEventListener('mouseleave', () => paint(currentRating));
+
+    rForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!currentRating) {
+        toast(tt('ultra-rating-err-no-stars', 'Сначала выбери количество звёзд'), '⭐');
+        return;
+      }
+      const submit = rForm.querySelector('.rating-submit');
+      if (submit) { submit.disabled = true; submit.dataset._label = submit.textContent; submit.textContent = tt('ultra-rating-sending', 'Отправляем…'); }
+      const lang = (typeof currentLanguage === 'string' && currentLanguage) || 'ru';
+      const comment = ((rText && rText.value) || '').trim();
+      try {
+        const res = await fetch(SUPABASE_URL + '/rest/v1/feedback', {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_ANON,
+            'Authorization': 'Bearer ' + SUPABASE_ANON,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ rating: currentRating, comment: comment || null, lang: lang })
+        });
+        if (res.status === 201 || res.status === 204) {
+          toast(tt('ultra-rating-toast-ok', 'Спасибо за отзыв! 🎉'), '🎉');
+          if (rText) rText.value = '';
+          currentRating = 0;
+          paint(0);
+          if (rLabel) rLabel.textContent = tt('ultra-rating-hint', 'Кликни по звезде, чтобы выбрать оценку');
+        } else {
+          toast(tt('ultra-rating-toast-err', 'Не удалось отправить. Попробуй ещё раз'), '⚠️');
+        }
+      } catch {
+        toast(tt('ultra-rating-toast-net', 'Нет соединения. Проверь интернет'), '⚠️');
+      } finally {
+        if (submit) { submit.disabled = false; if (submit.dataset._label) { submit.textContent = submit.dataset._label; delete submit.dataset._label; } }
+      }
+    });
+  })();
 
   // ----- Subtle parallax on hero title/subtitle -----
   const hero = document.querySelector('.title-section');
@@ -9536,6 +10104,54 @@ verifySession();
         'ultra-news-perk-1': 'Без спама',
         'ultra-news-perk-2': 'Приоритет в альфу',
         'ultra-news-perk-3': 'Эксклюзив-скин',
+        'ultra-reviews-eyebrow': 'Сообщество',
+        'ultra-reviews-title-a': 'Отзывы',
+        'ultra-reviews-title-b': 'игроков',
+        'ultra-reviews-lead': 'Впечатления тех, кто уже заглянул в альфу.',
+        'ultra-reviews-empty-title': 'Отзывов пока нет',
+        'ultra-reviews-empty-sub': 'Будь первым, кто поделится впечатлением об Evades 3 — твой отзыв появится прямо здесь.',
+        'ultra-reviews-empty-btn': 'Оставить отзыв',
+        'ultra-rating-eyebrow': 'Твоё мнение',
+        'ultra-rating-title': 'Как тебе проект?',
+        'ultra-rating-sub': 'Поставь оценку и поделись мыслями — это поможет сделать Evades 3 лучше.',
+        'ultra-rating-hint': 'Кликни по звезде, чтобы выбрать оценку',
+        'ultra-rating-chosen': 'Твоя оценка: ',
+        'ultra-rating-placeholder': 'Что понравилось, а что улучшить?',
+        'ultra-rating-submit': 'Отправить отзыв',
+        'ultra-rating-sending': 'Отправляем…',
+        'ultra-rating-err-no-stars': 'Сначала выбери количество звёзд',
+        'ultra-rating-toast-ok': 'Спасибо за отзыв! 🎉',
+        'ultra-rating-toast-err': 'Не удалось отправить. Попробуй ещё раз',
+        'ultra-rating-toast-net': 'Нет соединения. Проверь интернет и попробуй снова',
+        'auth-err-email-required': 'Введи email или ник',
+        'auth-err-password-required': 'Введи пароль',
+        'auth-err-bad-nick': '3-20 символов: буквы, цифры или _',
+        'auth-err-invalid-email': 'Неверный формат email',
+        'auth-err-pass-min': 'Минимум 8 символов',
+        'auth-err-pass-mismatch': 'Пароли не совпадают',
+        'auth-err-accept-terms': 'Прими условия использования',
+        'auth-err-invalid-credentials': 'Неверный email или пароль',
+        'auth-err-email-not-confirmed': 'Подтверди email перед входом (проверь почту)',
+        'auth-err-email-exists': 'Этот email уже зарегистрирован',
+        'auth-err-weak-password': 'Пароль слишком слабый — минимум 8 символов, буквы и цифры',
+        'auth-err-signup-disabled': 'Регистрация временно закрыта',
+        'auth-err-user-not-found': 'Пользователя с таким email не существует',
+        'auth-err-rate-limit': 'Слишком много попыток. Подожди минуту и попробуй снова',
+        'auth-err-captcha': 'Проверка капчи не пройдена, попробуй ещё раз',
+        'auth-err-otp-expired': 'Код подтверждения истёк. Запроси новый',
+        'auth-err-same-password': 'Новый пароль должен отличаться от старого',
+        'auth-err-server': 'Сервер временно не отвечает. Попробуй позже',
+        'auth-err-network': 'Нет соединения. Проверь интернет',
+        'auth-err-unknown': 'Неизвестная ошибка. Попробуй позже',
+        'auth-busy-login': 'Вход...',
+        'auth-busy-register': 'Создаём аккаунт...',
+        'auth-busy-forgot': 'Отправка...',
+        'auth-ok-login-prefix': 'Добро пожаловать, ',
+        'auth-ok-register-prefix': 'Аккаунт ',
+        'auth-ok-register-suffix': ' создан! 🎉',
+        'auth-ok-register-confirm': 'Подтверди email — письмо отправлено на ',
+        'auth-ok-forgot': 'Письмо для сброса отправлено! Проверь почту 📧',
+        'auth-forgot-submit': 'Отправить →',
 
         'ultra-social-eyebrow': 'Везде, где ты есть',
         'ultra-social-title-a': 'Присоединяйся к',
@@ -9610,6 +10226,54 @@ verifySession();
         'ultra-news-perk-1': 'No spam',
         'ultra-news-perk-2': 'Alpha priority',
         'ultra-news-perk-3': 'Exclusive skin',
+        'ultra-reviews-eyebrow': 'Community',
+        'ultra-reviews-title-a': 'Player',
+        'ultra-reviews-title-b': 'reviews',
+        'ultra-reviews-lead': 'Impressions from people who already tried the alpha.',
+        'ultra-reviews-empty-title': 'No reviews yet',
+        'ultra-reviews-empty-sub': 'Be the first to share your thoughts about Evades 3 — your review will appear right here.',
+        'ultra-reviews-empty-btn': 'Leave a review',
+        'ultra-rating-eyebrow': 'Your take',
+        'ultra-rating-title': 'How do you like the project?',
+        'ultra-rating-sub': 'Rate the game and share your thoughts — it helps make Evades 3 better.',
+        'ultra-rating-hint': 'Click a star to pick your rating',
+        'ultra-rating-chosen': 'Your rating: ',
+        'ultra-rating-placeholder': 'What did you like, what would you improve?',
+        'ultra-rating-submit': 'Send feedback',
+        'ultra-rating-sending': 'Sending…',
+        'ultra-rating-err-no-stars': 'Pick a star rating first',
+        'ultra-rating-toast-ok': 'Thanks for the feedback! 🎉',
+        'ultra-rating-toast-err': 'Could not send. Try again',
+        'ultra-rating-toast-net': 'No connection. Check your internet and try again',
+        'auth-err-email-required': 'Enter your email or nickname',
+        'auth-err-password-required': 'Enter your password',
+        'auth-err-bad-nick': 'Use 3-20 letters, digits or underscore',
+        'auth-err-invalid-email': 'Invalid email format',
+        'auth-err-pass-min': 'Password must be at least 8 characters',
+        'auth-err-pass-mismatch': 'Passwords don\'t match',
+        'auth-err-accept-terms': 'Please accept the terms of use',
+        'auth-err-invalid-credentials': 'Wrong email or password',
+        'auth-err-email-not-confirmed': 'Confirm your email first (check your inbox)',
+        'auth-err-email-exists': 'This email is already registered',
+        'auth-err-weak-password': 'Password too weak — 8+ chars, letters and digits',
+        'auth-err-signup-disabled': 'Sign-up is temporarily disabled',
+        'auth-err-user-not-found': 'No account with this email',
+        'auth-err-rate-limit': 'Too many attempts. Wait a minute and try again',
+        'auth-err-captcha': 'Captcha check failed, try again',
+        'auth-err-otp-expired': 'Confirmation code expired, request a new one',
+        'auth-err-same-password': 'New password must differ from the old one',
+        'auth-err-server': 'Server is not responding. Try again later',
+        'auth-err-network': 'No connection. Check your internet',
+        'auth-err-unknown': 'Unknown error. Try again later',
+        'auth-busy-login': 'Signing in...',
+        'auth-busy-register': 'Creating account...',
+        'auth-busy-forgot': 'Sending...',
+        'auth-ok-login-prefix': 'Welcome, ',
+        'auth-ok-register-prefix': 'Account ',
+        'auth-ok-register-suffix': ' created! 🎉',
+        'auth-ok-register-confirm': 'Confirm your email — a message was sent to ',
+        'auth-ok-forgot': 'Reset email sent! Check your inbox 📧',
+        'auth-forgot-submit': 'Send →',
 
         'ultra-social-eyebrow': 'Wherever you are',
         'ultra-social-title-a': 'Join the',
@@ -9684,6 +10348,54 @@ verifySession();
         'ultra-news-perk-1': 'Без спаму',
         'ultra-news-perk-2': 'Пріоритет у альфу',
         'ultra-news-perk-3': 'Ексклюзив-скін',
+        'ultra-reviews-eyebrow': 'Спільнота',
+        'ultra-reviews-title-a': 'Відгуки',
+        'ultra-reviews-title-b': 'гравців',
+        'ultra-reviews-lead': 'Враження тих, хто вже зазирнув в альфу.',
+        'ultra-reviews-empty-title': 'Відгуків ще немає',
+        'ultra-reviews-empty-sub': 'Стань першим, хто поділиться враженням про Evades 3 — твій відгук з’явиться прямо тут.',
+        'ultra-reviews-empty-btn': 'Залишити відгук',
+        'ultra-rating-eyebrow': 'Твоя думка',
+        'ultra-rating-title': 'Як тобі проєкт?',
+        'ultra-rating-sub': 'Постав оцінку та поділись думками — це допоможе зробити Evades 3 кращим.',
+        'ultra-rating-hint': 'Натисни на зірку, щоб обрати оцінку',
+        'ultra-rating-chosen': 'Твоя оцінка: ',
+        'ultra-rating-placeholder': 'Що сподобалось, а що покращити?',
+        'ultra-rating-submit': 'Надіслати відгук',
+        'ultra-rating-sending': 'Надсилаємо…',
+        'ultra-rating-err-no-stars': 'Спочатку обери кількість зірок',
+        'ultra-rating-toast-ok': 'Дякуємо за відгук! 🎉',
+        'ultra-rating-toast-err': 'Не вдалося надіслати. Спробуй ще раз',
+        'ultra-rating-toast-net': 'Немає з’єднання. Перевір інтернет і спробуй знову',
+        'auth-err-email-required': 'Введи email або нік',
+        'auth-err-password-required': 'Введи пароль',
+        'auth-err-bad-nick': '3-20 символів: літери, цифри або _',
+        'auth-err-invalid-email': 'Невірний формат email',
+        'auth-err-pass-min': 'Мінімум 8 символів',
+        'auth-err-pass-mismatch': 'Паролі не співпадають',
+        'auth-err-accept-terms': 'Прийми умови використання',
+        'auth-err-invalid-credentials': 'Невірний email або пароль',
+        'auth-err-email-not-confirmed': 'Підтверди email перед входом (перевір пошту)',
+        'auth-err-email-exists': 'Цей email уже зареєстровано',
+        'auth-err-weak-password': 'Пароль заслабкий — мінімум 8 символів, літери і цифри',
+        'auth-err-signup-disabled': 'Реєстрація тимчасово закрита',
+        'auth-err-user-not-found': 'Користувача з таким email не існує',
+        'auth-err-rate-limit': 'Забагато спроб. Зачекай хвилину і спробуй знову',
+        'auth-err-captcha': 'Перевірку капчі не пройдено, спробуй ще раз',
+        'auth-err-otp-expired': 'Код підтвердження минув. Запитай новий',
+        'auth-err-same-password': 'Новий пароль має відрізнятися від старого',
+        'auth-err-server': 'Сервер тимчасово не відповідає. Спробуй пізніше',
+        'auth-err-network': 'Немає з’єднання. Перевір інтернет',
+        'auth-err-unknown': 'Невідома помилка. Спробуй пізніше',
+        'auth-busy-login': 'Вхід...',
+        'auth-busy-register': 'Створюємо акаунт...',
+        'auth-busy-forgot': 'Надсилання...',
+        'auth-ok-login-prefix': 'Ласкаво просимо, ',
+        'auth-ok-register-prefix': 'Акаунт ',
+        'auth-ok-register-suffix': ' створено! 🎉',
+        'auth-ok-register-confirm': 'Підтверди email — лист надіслано на ',
+        'auth-ok-forgot': 'Лист для скидання надіслано! Перевір пошту 📧',
+        'auth-forgot-submit': 'Надіслати →',
 
         'ultra-social-eyebrow': 'Усюди, де ти є',
         'ultra-social-title-a': 'Приєднуйся до',
@@ -9743,6 +10455,54 @@ verifySession();
         'ultra-news-toast-err': 'Etwas ist schiefgelaufen, bitte erneut versuchen',
         'ultra-news-toast-net': 'Keine Verbindung. Internet prüfen und erneut versuchen',
         'ultra-news-perk-1': 'Kein Spam', 'ultra-news-perk-2': 'Alpha-Priorität', 'ultra-news-perk-3': 'Exklusiver Skin',
+        'ultra-reviews-eyebrow': 'Community',
+        'ultra-reviews-title-a': 'Spieler',
+        'ultra-reviews-title-b': 'bewertungen',
+        'ultra-reviews-lead': 'Eindrücke derer, die die Alpha bereits ausprobiert haben.',
+        'ultra-reviews-empty-title': 'Noch keine Bewertungen',
+        'ultra-reviews-empty-sub': 'Sei der Erste, der seine Meinung zu Evades 3 teilt — deine Bewertung erscheint direkt hier.',
+        'ultra-reviews-empty-btn': 'Bewertung abgeben',
+        'ultra-rating-eyebrow': 'Deine Meinung',
+        'ultra-rating-title': 'Wie gefällt dir das Projekt?',
+        'ultra-rating-sub': 'Bewerte das Spiel und teile deine Gedanken — so wird Evades 3 besser.',
+        'ultra-rating-hint': 'Klicke auf einen Stern, um zu bewerten',
+        'ultra-rating-chosen': 'Deine Bewertung: ',
+        'ultra-rating-placeholder': 'Was hat dir gefallen, was könnte besser sein?',
+        'ultra-rating-submit': 'Feedback senden',
+        'ultra-rating-sending': 'Senden…',
+        'ultra-rating-err-no-stars': 'Wähle zuerst eine Sternebewertung',
+        'ultra-rating-toast-ok': 'Danke für dein Feedback! 🎉',
+        'ultra-rating-toast-err': 'Senden fehlgeschlagen. Bitte erneut versuchen',
+        'ultra-rating-toast-net': 'Keine Verbindung. Internet prüfen und erneut versuchen',
+        'auth-err-email-required': 'E-Mail oder Nickname eingeben',
+        'auth-err-password-required': 'Passwort eingeben',
+        'auth-err-bad-nick': '3-20 Zeichen: Buchstaben, Ziffern oder _',
+        'auth-err-invalid-email': 'Ungültiges E-Mail-Format',
+        'auth-err-pass-min': 'Mindestens 8 Zeichen',
+        'auth-err-pass-mismatch': 'Passwörter stimmen nicht überein',
+        'auth-err-accept-terms': 'Akzeptiere die Nutzungsbedingungen',
+        'auth-err-invalid-credentials': 'Falsche E-Mail oder falsches Passwort',
+        'auth-err-email-not-confirmed': 'E-Mail zuerst bestätigen (Posteingang prüfen)',
+        'auth-err-email-exists': 'Diese E-Mail ist bereits registriert',
+        'auth-err-weak-password': 'Passwort zu schwach — mindestens 8 Zeichen mit Buchstaben und Ziffern',
+        'auth-err-signup-disabled': 'Registrierung ist vorübergehend geschlossen',
+        'auth-err-user-not-found': 'Kein Konto mit dieser E-Mail',
+        'auth-err-rate-limit': 'Zu viele Versuche. Warte eine Minute und versuche es erneut',
+        'auth-err-captcha': 'Captcha-Prüfung fehlgeschlagen, erneut versuchen',
+        'auth-err-otp-expired': 'Bestätigungscode abgelaufen. Neuen anfordern',
+        'auth-err-same-password': 'Neues Passwort muss sich vom alten unterscheiden',
+        'auth-err-server': 'Server antwortet nicht. Später erneut versuchen',
+        'auth-err-network': 'Keine Verbindung. Internet prüfen',
+        'auth-err-unknown': 'Unbekannter Fehler. Später erneut versuchen',
+        'auth-busy-login': 'Anmelden...',
+        'auth-busy-register': 'Konto wird erstellt...',
+        'auth-busy-forgot': 'Senden...',
+        'auth-ok-login-prefix': 'Willkommen, ',
+        'auth-ok-register-prefix': 'Konto ',
+        'auth-ok-register-suffix': ' erstellt! 🎉',
+        'auth-ok-register-confirm': 'Bestätige deine E-Mail — Nachricht gesendet an ',
+        'auth-ok-forgot': 'Reset-E-Mail gesendet! Posteingang prüfen 📧',
+        'auth-forgot-submit': 'Senden →',
         'ultra-social-eyebrow': 'Überall, wo du bist',
         'ultra-social-title-a': 'Tritt', 'ultra-social-title-b': 'der Arena bei',
         'ultra-social-lead': 'Discord und YouTube. Bleib bei jedem neuen Feature am Ball.'
@@ -9800,6 +10560,54 @@ verifySession();
         'ultra-news-toast-err': 'Algo salió mal, inténtalo de nuevo',
         'ultra-news-toast-net': 'Sin conexión. Revisa tu internet e inténtalo de nuevo',
         'ultra-news-perk-1': 'Sin spam', 'ultra-news-perk-2': 'Prioridad en la alfa', 'ultra-news-perk-3': 'Skin exclusivo',
+        'ultra-reviews-eyebrow': 'Comunidad',
+        'ultra-reviews-title-a': 'Opiniones',
+        'ultra-reviews-title-b': 'de jugadores',
+        'ultra-reviews-lead': 'Impresiones de quienes ya probaron la alfa.',
+        'ultra-reviews-empty-title': 'Aún no hay opiniones',
+        'ultra-reviews-empty-sub': 'Sé el primero en compartir tu opinión sobre Evades 3 — tu reseña aparecerá justo aquí.',
+        'ultra-reviews-empty-btn': 'Dejar opinión',
+        'ultra-rating-eyebrow': 'Tu opinión',
+        'ultra-rating-title': '¿Qué te parece el proyecto?',
+        'ultra-rating-sub': 'Puntúa el juego y comparte tus ideas — ayuda a mejorar Evades 3.',
+        'ultra-rating-hint': 'Haz clic en una estrella para puntuar',
+        'ultra-rating-chosen': 'Tu puntuación: ',
+        'ultra-rating-placeholder': '¿Qué te gustó y qué mejorarías?',
+        'ultra-rating-submit': 'Enviar opinión',
+        'ultra-rating-sending': 'Enviando…',
+        'ultra-rating-err-no-stars': 'Elige primero las estrellas',
+        'ultra-rating-toast-ok': '¡Gracias por tu opinión! 🎉',
+        'ultra-rating-toast-err': 'No se pudo enviar. Inténtalo de nuevo',
+        'ultra-rating-toast-net': 'Sin conexión. Revisa tu internet e inténtalo de nuevo',
+        'auth-err-email-required': 'Escribe tu email o nick',
+        'auth-err-password-required': 'Escribe tu contraseña',
+        'auth-err-bad-nick': '3-20 caracteres: letras, números o _',
+        'auth-err-invalid-email': 'Formato de email inválido',
+        'auth-err-pass-min': 'Mínimo 8 caracteres',
+        'auth-err-pass-mismatch': 'Las contraseñas no coinciden',
+        'auth-err-accept-terms': 'Acepta los términos de uso',
+        'auth-err-invalid-credentials': 'Email o contraseña incorrectos',
+        'auth-err-email-not-confirmed': 'Confirma tu email antes de entrar (revisa tu correo)',
+        'auth-err-email-exists': 'Este email ya está registrado',
+        'auth-err-weak-password': 'Contraseña débil — mínimo 8 caracteres con letras y números',
+        'auth-err-signup-disabled': 'El registro está temporalmente cerrado',
+        'auth-err-user-not-found': 'No existe cuenta con este email',
+        'auth-err-rate-limit': 'Demasiados intentos. Espera un minuto y reintenta',
+        'auth-err-captcha': 'Captcha fallido, intenta de nuevo',
+        'auth-err-otp-expired': 'Código de confirmación expirado. Pide uno nuevo',
+        'auth-err-same-password': 'La nueva contraseña debe ser distinta a la anterior',
+        'auth-err-server': 'El servidor no responde. Inténtalo más tarde',
+        'auth-err-network': 'Sin conexión. Revisa tu internet',
+        'auth-err-unknown': 'Error desconocido. Inténtalo más tarde',
+        'auth-busy-login': 'Entrando...',
+        'auth-busy-register': 'Creando cuenta...',
+        'auth-busy-forgot': 'Enviando...',
+        'auth-ok-login-prefix': 'Bienvenido, ',
+        'auth-ok-register-prefix': 'Cuenta ',
+        'auth-ok-register-suffix': ' creada! 🎉',
+        'auth-ok-register-confirm': 'Confirma tu email — mensaje enviado a ',
+        'auth-ok-forgot': '¡Email de restablecimiento enviado! Revisa tu correo 📧',
+        'auth-forgot-submit': 'Enviar →',
         'ultra-social-eyebrow': 'Dondequiera que estés',
         'ultra-social-title-a': 'Únete', 'ultra-social-title-b': 'a la arena',
         'ultra-social-lead': 'Discord y YouTube. Mantente al día con cada nueva función.'
@@ -9857,6 +10665,54 @@ verifySession();
         'ultra-news-toast-err': 'Une erreur est survenue, réessaie',
         'ultra-news-toast-net': 'Pas de connexion. Vérifie ton internet et réessaie',
         'ultra-news-perk-1': 'Pas de spam', 'ultra-news-perk-2': 'Priorité alpha', 'ultra-news-perk-3': 'Skin exclusif',
+        'ultra-reviews-eyebrow': 'Communauté',
+        'ultra-reviews-title-a': 'Avis',
+        'ultra-reviews-title-b': 'des joueurs',
+        'ultra-reviews-lead': 'Les impressions de ceux qui ont déjà testé l’alpha.',
+        'ultra-reviews-empty-title': 'Pas encore d’avis',
+        'ultra-reviews-empty-sub': 'Sois le premier à partager ton avis sur Evades 3 — il apparaîtra ici.',
+        'ultra-reviews-empty-btn': 'Laisser un avis',
+        'ultra-rating-eyebrow': 'Ton avis',
+        'ultra-rating-title': 'Comment trouves-tu le projet ?',
+        'ultra-rating-sub': 'Note le jeu et partage tes idées — ça aide à améliorer Evades 3.',
+        'ultra-rating-hint': 'Clique sur une étoile pour noter',
+        'ultra-rating-chosen': 'Ta note : ',
+        'ultra-rating-placeholder': 'Ce que tu as aimé, ce qu’il faudrait améliorer ?',
+        'ultra-rating-submit': 'Envoyer l’avis',
+        'ultra-rating-sending': 'Envoi…',
+        'ultra-rating-err-no-stars': 'Choisis d’abord le nombre d’étoiles',
+        'ultra-rating-toast-ok': 'Merci pour ton avis ! 🎉',
+        'ultra-rating-toast-err': 'Envoi impossible. Réessaie',
+        'ultra-rating-toast-net': 'Pas de connexion. Vérifie ton internet et réessaie',
+        'auth-err-email-required': 'Entre ton email ou pseudo',
+        'auth-err-password-required': 'Entre ton mot de passe',
+        'auth-err-bad-nick': '3-20 caractères : lettres, chiffres ou _',
+        'auth-err-invalid-email': 'Format email invalide',
+        'auth-err-pass-min': 'Minimum 8 caractères',
+        'auth-err-pass-mismatch': 'Les mots de passe ne correspondent pas',
+        'auth-err-accept-terms': 'Accepte les conditions d’utilisation',
+        'auth-err-invalid-credentials': 'Email ou mot de passe incorrect',
+        'auth-err-email-not-confirmed': 'Confirme ton email avant (vérifie ta boîte)',
+        'auth-err-email-exists': 'Cet email est déjà enregistré',
+        'auth-err-weak-password': 'Mot de passe trop faible — 8+ caractères, lettres et chiffres',
+        'auth-err-signup-disabled': 'L’inscription est temporairement fermée',
+        'auth-err-user-not-found': 'Aucun compte avec cet email',
+        'auth-err-rate-limit': 'Trop de tentatives. Attends une minute et réessaie',
+        'auth-err-captcha': 'Échec du captcha, réessaie',
+        'auth-err-otp-expired': 'Code de confirmation expiré. Demande-en un nouveau',
+        'auth-err-same-password': 'Le nouveau mot de passe doit être différent',
+        'auth-err-server': 'Le serveur ne répond pas. Réessaie plus tard',
+        'auth-err-network': 'Pas de connexion. Vérifie ton internet',
+        'auth-err-unknown': 'Erreur inconnue. Réessaie plus tard',
+        'auth-busy-login': 'Connexion...',
+        'auth-busy-register': 'Création du compte...',
+        'auth-busy-forgot': 'Envoi...',
+        'auth-ok-login-prefix': 'Bienvenue, ',
+        'auth-ok-register-prefix': 'Compte ',
+        'auth-ok-register-suffix': ' créé ! 🎉',
+        'auth-ok-register-confirm': 'Confirme ton email — message envoyé à ',
+        'auth-ok-forgot': 'Email de réinitialisation envoyé ! 📧',
+        'auth-forgot-submit': 'Envoyer →',
         'ultra-social-eyebrow': 'Partout où tu es',
         'ultra-social-title-a': 'Rejoins', 'ultra-social-title-b': 'l\u2019arène',
         'ultra-social-lead': 'Discord et YouTube. Sois au courant de chaque nouvelle fonctionnalité.'
@@ -9914,6 +10770,54 @@ verifySession();
         'ultra-news-toast-err': 'Qualcosa è andato storto, riprova',
         'ultra-news-toast-net': 'Nessuna connessione. Controlla internet e riprova',
         'ultra-news-perk-1': 'Niente spam', 'ultra-news-perk-2': 'Priorità alpha', 'ultra-news-perk-3': 'Skin esclusiva',
+        'ultra-reviews-eyebrow': 'Community',
+        'ultra-reviews-title-a': 'Recensioni',
+        'ultra-reviews-title-b': 'dei giocatori',
+        'ultra-reviews-lead': 'Le impressioni di chi ha già provato l’alpha.',
+        'ultra-reviews-empty-title': 'Ancora nessuna recensione',
+        'ultra-reviews-empty-sub': 'Sii il primo a condividere la tua opinione su Evades 3 — la recensione apparirà qui.',
+        'ultra-reviews-empty-btn': 'Lascia una recensione',
+        'ultra-rating-eyebrow': 'La tua opinione',
+        'ultra-rating-title': 'Come ti sembra il progetto?',
+        'ultra-rating-sub': 'Valuta il gioco e condividi i tuoi pensieri — aiuta a migliorare Evades 3.',
+        'ultra-rating-hint': 'Clicca una stella per votare',
+        'ultra-rating-chosen': 'Il tuo voto: ',
+        'ultra-rating-placeholder': 'Cosa ti è piaciuto, cosa miglioreresti?',
+        'ultra-rating-submit': 'Invia recensione',
+        'ultra-rating-sending': 'Invio…',
+        'ultra-rating-err-no-stars': 'Prima scegli il numero di stelle',
+        'ultra-rating-toast-ok': 'Grazie per il feedback! 🎉',
+        'ultra-rating-toast-err': 'Impossibile inviare. Riprova',
+        'ultra-rating-toast-net': 'Nessuna connessione. Controlla internet e riprova',
+        'auth-err-email-required': 'Inserisci email o nickname',
+        'auth-err-password-required': 'Inserisci la password',
+        'auth-err-bad-nick': '3-20 caratteri: lettere, numeri o _',
+        'auth-err-invalid-email': 'Formato email non valido',
+        'auth-err-pass-min': 'Minimo 8 caratteri',
+        'auth-err-pass-mismatch': 'Le password non coincidono',
+        'auth-err-accept-terms': 'Accetta i termini d’uso',
+        'auth-err-invalid-credentials': 'Email o password errati',
+        'auth-err-email-not-confirmed': 'Conferma prima la tua email (controlla la casella)',
+        'auth-err-email-exists': 'Questa email è già registrata',
+        'auth-err-weak-password': 'Password troppo debole — 8+ caratteri con lettere e cifre',
+        'auth-err-signup-disabled': 'La registrazione è temporaneamente chiusa',
+        'auth-err-user-not-found': 'Nessun account con questa email',
+        'auth-err-rate-limit': 'Troppi tentativi. Aspetta un minuto e riprova',
+        'auth-err-captcha': 'Verifica captcha non riuscita, riprova',
+        'auth-err-otp-expired': 'Codice di conferma scaduto. Richiedine uno nuovo',
+        'auth-err-same-password': 'La nuova password deve essere diversa',
+        'auth-err-server': 'Il server non risponde. Riprova più tardi',
+        'auth-err-network': 'Nessuna connessione. Controlla internet',
+        'auth-err-unknown': 'Errore sconosciuto. Riprova più tardi',
+        'auth-busy-login': 'Accesso...',
+        'auth-busy-register': 'Creazione account...',
+        'auth-busy-forgot': 'Invio...',
+        'auth-ok-login-prefix': 'Benvenuto, ',
+        'auth-ok-register-prefix': 'Account ',
+        'auth-ok-register-suffix': ' creato! 🎉',
+        'auth-ok-register-confirm': 'Conferma la tua email — messaggio inviato a ',
+        'auth-ok-forgot': 'Email di reset inviata! Controlla la posta 📧',
+        'auth-forgot-submit': 'Invia →',
         'ultra-social-eyebrow': 'Ovunque tu sia',
         'ultra-social-title-a': 'Unisciti', 'ultra-social-title-b': 'all\u2019arena',
         'ultra-social-lead': 'Discord e YouTube. Resta aggiornato su ogni nuova funzionalità.'
@@ -9971,6 +10875,54 @@ verifySession();
         'ultra-news-toast-err': 'Algo deu errado, tente de novo',
         'ultra-news-toast-net': 'Sem conexão. Verifique a internet e tente novamente',
         'ultra-news-perk-1': 'Sem spam', 'ultra-news-perk-2': 'Prioridade no alfa', 'ultra-news-perk-3': 'Skin exclusiva',
+        'ultra-reviews-eyebrow': 'Comunidade',
+        'ultra-reviews-title-a': 'Opiniões',
+        'ultra-reviews-title-b': 'dos jogadores',
+        'ultra-reviews-lead': 'Impressões de quem já experimentou o alfa.',
+        'ultra-reviews-empty-title': 'Ainda sem opiniões',
+        'ultra-reviews-empty-sub': 'Seja o primeiro a compartilhar sua opinião sobre Evades 3 — sua avaliação aparece aqui.',
+        'ultra-reviews-empty-btn': 'Deixar avaliação',
+        'ultra-rating-eyebrow': 'Sua opinião',
+        'ultra-rating-title': 'O que acha do projeto?',
+        'ultra-rating-sub': 'Avalie o jogo e compartilhe ideias — ajuda a melhorar Evades 3.',
+        'ultra-rating-hint': 'Clique numa estrela para avaliar',
+        'ultra-rating-chosen': 'Sua nota: ',
+        'ultra-rating-placeholder': 'O que gostou, o que melhoraria?',
+        'ultra-rating-submit': 'Enviar avaliação',
+        'ultra-rating-sending': 'Enviando…',
+        'ultra-rating-err-no-stars': 'Escolha primeiro as estrelas',
+        'ultra-rating-toast-ok': 'Obrigado pela avaliação! 🎉',
+        'ultra-rating-toast-err': 'Não foi possível enviar. Tente novamente',
+        'ultra-rating-toast-net': 'Sem conexão. Verifique a internet e tente novamente',
+        'auth-err-email-required': 'Digite seu email ou nick',
+        'auth-err-password-required': 'Digite sua senha',
+        'auth-err-bad-nick': '3-20 caracteres: letras, números ou _',
+        'auth-err-invalid-email': 'Formato de email inválido',
+        'auth-err-pass-min': 'Mínimo 8 caracteres',
+        'auth-err-pass-mismatch': 'As senhas não coincidem',
+        'auth-err-accept-terms': 'Aceite os termos de uso',
+        'auth-err-invalid-credentials': 'Email ou senha incorretos',
+        'auth-err-email-not-confirmed': 'Confirme seu email antes (veja sua caixa)',
+        'auth-err-email-exists': 'Este email já está registrado',
+        'auth-err-weak-password': 'Senha muito fraca — 8+ caracteres com letras e números',
+        'auth-err-signup-disabled': 'Cadastro temporariamente fechado',
+        'auth-err-user-not-found': 'Nenhuma conta com este email',
+        'auth-err-rate-limit': 'Muitas tentativas. Espere um minuto e tente novamente',
+        'auth-err-captcha': 'Verificação de captcha falhou, tente de novo',
+        'auth-err-otp-expired': 'Código de confirmação expirou. Peça outro',
+        'auth-err-same-password': 'A nova senha deve ser diferente da antiga',
+        'auth-err-server': 'O servidor não responde. Tente mais tarde',
+        'auth-err-network': 'Sem conexão. Verifique a internet',
+        'auth-err-unknown': 'Erro desconhecido. Tente mais tarde',
+        'auth-busy-login': 'Entrando...',
+        'auth-busy-register': 'Criando conta...',
+        'auth-busy-forgot': 'Enviando...',
+        'auth-ok-login-prefix': 'Bem-vindo, ',
+        'auth-ok-register-prefix': 'Conta ',
+        'auth-ok-register-suffix': ' criada! 🎉',
+        'auth-ok-register-confirm': 'Confirme seu email — mensagem enviada para ',
+        'auth-ok-forgot': 'Email de redefinição enviado! 📧',
+        'auth-forgot-submit': 'Enviar →',
         'ultra-social-eyebrow': 'Em qualquer lugar',
         'ultra-social-title-a': 'Junte-se', 'ultra-social-title-b': 'à arena',
         'ultra-social-lead': 'Discord e YouTube. Fique por dentro de cada nova funcionalidade.'
@@ -10028,6 +10980,54 @@ verifySession();
         'ultra-news-toast-err': 'Coś poszło nie tak, spróbuj jeszcze raz',
         'ultra-news-toast-net': 'Brak połączenia. Sprawdź internet i spróbuj ponownie',
         'ultra-news-perk-1': 'Bez spamu', 'ultra-news-perk-2': 'Priorytet w alfie', 'ultra-news-perk-3': 'Ekskluzywny skin',
+        'ultra-reviews-eyebrow': 'Społeczność',
+        'ultra-reviews-title-a': 'Opinie',
+        'ultra-reviews-title-b': 'graczy',
+        'ultra-reviews-lead': 'Wrażenia tych, którzy już wypróbowali alfę.',
+        'ultra-reviews-empty-title': 'Jeszcze brak opinii',
+        'ultra-reviews-empty-sub': 'Bądź pierwszy i podziel się opinią o Evades 3 — pojawi się tutaj.',
+        'ultra-reviews-empty-btn': 'Dodaj opinię',
+        'ultra-rating-eyebrow': 'Twoja opinia',
+        'ultra-rating-title': 'Jak Ci się podoba projekt?',
+        'ultra-rating-sub': 'Oceń grę i podziel się myślami — pomaga ulepszyć Evades 3.',
+        'ultra-rating-hint': 'Kliknij gwiazdkę, aby ocenić',
+        'ultra-rating-chosen': 'Twoja ocena: ',
+        'ultra-rating-placeholder': 'Co Ci się spodobało, co poprawić?',
+        'ultra-rating-submit': 'Wyślij opinię',
+        'ultra-rating-sending': 'Wysyłanie…',
+        'ultra-rating-err-no-stars': 'Najpierw wybierz liczbę gwiazdek',
+        'ultra-rating-toast-ok': 'Dzięki za opinię! 🎉',
+        'ultra-rating-toast-err': 'Nie udało się wysłać. Spróbuj ponownie',
+        'ultra-rating-toast-net': 'Brak połączenia. Sprawdź internet i spróbuj ponownie',
+        'auth-err-email-required': 'Wpisz email lub nick',
+        'auth-err-password-required': 'Wpisz hasło',
+        'auth-err-bad-nick': '3-20 znaków: litery, cyfry lub _',
+        'auth-err-invalid-email': 'Nieprawidłowy format email',
+        'auth-err-pass-min': 'Minimum 8 znaków',
+        'auth-err-pass-mismatch': 'Hasła się nie zgadzają',
+        'auth-err-accept-terms': 'Zaakceptuj warunki użytkowania',
+        'auth-err-invalid-credentials': 'Nieprawidłowy email lub hasło',
+        'auth-err-email-not-confirmed': 'Potwierdź email przed logowaniem (sprawdź skrzynkę)',
+        'auth-err-email-exists': 'Ten email jest już zarejestrowany',
+        'auth-err-weak-password': 'Hasło za słabe — 8+ znaków z literami i cyframi',
+        'auth-err-signup-disabled': 'Rejestracja tymczasowo zamknięta',
+        'auth-err-user-not-found': 'Brak konta z tym emailem',
+        'auth-err-rate-limit': 'Za dużo prób. Poczekaj minutę i spróbuj ponownie',
+        'auth-err-captcha': 'Błąd weryfikacji captcha, spróbuj ponownie',
+        'auth-err-otp-expired': 'Kod potwierdzenia wygasł. Poproś o nowy',
+        'auth-err-same-password': 'Nowe hasło musi różnić się od starego',
+        'auth-err-server': 'Serwer nie odpowiada. Spróbuj później',
+        'auth-err-network': 'Brak połączenia. Sprawdź internet',
+        'auth-err-unknown': 'Nieznany błąd. Spróbuj później',
+        'auth-busy-login': 'Logowanie...',
+        'auth-busy-register': 'Tworzenie konta...',
+        'auth-busy-forgot': 'Wysyłanie...',
+        'auth-ok-login-prefix': 'Witaj, ',
+        'auth-ok-register-prefix': 'Konto ',
+        'auth-ok-register-suffix': ' utworzone! 🎉',
+        'auth-ok-register-confirm': 'Potwierdź email — wiadomość wysłana na ',
+        'auth-ok-forgot': 'Email resetujący wysłany! 📧',
+        'auth-forgot-submit': 'Wyślij →',
         'ultra-social-eyebrow': 'Gdziekolwiek jesteś',
         'ultra-social-title-a': 'Dołącz', 'ultra-social-title-b': 'do areny',
         'ultra-social-lead': 'Discord i YouTube. Bądź na bieżąco z każdą nową funkcją.'
@@ -10085,6 +11085,54 @@ verifySession();
         'ultra-news-toast-err': 'Bir şeyler ters gitti, tekrar dene',
         'ultra-news-toast-net': 'Bağlantı yok. İnternetini kontrol et ve tekrar dene',
         'ultra-news-perk-1': 'Spam yok', 'ultra-news-perk-2': 'Alfa önceliği', 'ultra-news-perk-3': 'Özel kostüm',
+        'ultra-reviews-eyebrow': 'Topluluk',
+        'ultra-reviews-title-a': 'Oyuncu',
+        'ultra-reviews-title-b': 'yorumları',
+        'ultra-reviews-lead': 'Alfayı deneyenlerin izlenimleri.',
+        'ultra-reviews-empty-title': 'Henüz yorum yok',
+        'ultra-reviews-empty-sub': 'Evades 3 hakkında görüşünü paylaşan ilk kişi ol — yorumun burada görünecek.',
+        'ultra-reviews-empty-btn': 'Yorum bırak',
+        'ultra-rating-eyebrow': 'Görüşün',
+        'ultra-rating-title': 'Projeyi nasıl buldun?',
+        'ultra-rating-sub': 'Oyunu puanla ve düşüncelerini paylaş — Evades 3’ü geliştirmeye yardım eder.',
+        'ultra-rating-hint': 'Puanlamak için bir yıldıza tıkla',
+        'ultra-rating-chosen': 'Senin puanın: ',
+        'ultra-rating-placeholder': 'Ne beğendin, ne geliştirilmeli?',
+        'ultra-rating-submit': 'Gönder',
+        'ultra-rating-sending': 'Gönderiliyor…',
+        'ultra-rating-err-no-stars': 'Önce bir yıldız sayısı seç',
+        'ultra-rating-toast-ok': 'Görüşün için teşekkürler! 🎉',
+        'ultra-rating-toast-err': 'Gönderilemedi. Tekrar dene',
+        'ultra-rating-toast-net': 'Bağlantı yok. İnterneti kontrol edip tekrar dene',
+        'auth-err-email-required': 'E-posta veya takma ad girin',
+        'auth-err-password-required': 'Şifrenizi girin',
+        'auth-err-bad-nick': '3-20 karakter: harf, rakam veya _',
+        'auth-err-invalid-email': 'Geçersiz e-posta formatı',
+        'auth-err-pass-min': 'En az 8 karakter',
+        'auth-err-pass-mismatch': 'Şifreler eşleşmiyor',
+        'auth-err-accept-terms': 'Kullanım koşullarını kabul et',
+        'auth-err-invalid-credentials': 'Hatalı e-posta veya şifre',
+        'auth-err-email-not-confirmed': 'Önce e-postayı onayla (kutunu kontrol et)',
+        'auth-err-email-exists': 'Bu e-posta zaten kayıtlı',
+        'auth-err-weak-password': 'Şifre çok zayıf — 8+ karakter, harf ve rakam',
+        'auth-err-signup-disabled': 'Kayıt geçici olarak kapalı',
+        'auth-err-user-not-found': 'Bu e-posta ile hesap yok',
+        'auth-err-rate-limit': 'Çok fazla deneme. Bir dakika bekle ve tekrar dene',
+        'auth-err-captcha': 'Captcha doğrulaması başarısız, tekrar dene',
+        'auth-err-otp-expired': 'Onay kodu süresi doldu. Yeni bir tane iste',
+        'auth-err-same-password': 'Yeni şifre eskisinden farklı olmalı',
+        'auth-err-server': 'Sunucu yanıt vermiyor. Sonra tekrar dene',
+        'auth-err-network': 'Bağlantı yok. İnterneti kontrol et',
+        'auth-err-unknown': 'Bilinmeyen hata. Sonra tekrar dene',
+        'auth-busy-login': 'Giriş yapılıyor...',
+        'auth-busy-register': 'Hesap oluşturuluyor...',
+        'auth-busy-forgot': 'Gönderiliyor...',
+        'auth-ok-login-prefix': 'Hoş geldin, ',
+        'auth-ok-register-prefix': 'Hesap ',
+        'auth-ok-register-suffix': ' oluşturuldu! 🎉',
+        'auth-ok-register-confirm': 'E-postayı onayla — mesaj gönderildi: ',
+        'auth-ok-forgot': 'Sıfırlama e-postası gönderildi! 📧',
+        'auth-forgot-submit': 'Gönder →',
         'ultra-social-eyebrow': 'Her yerde',
         'ultra-social-title-a': 'Arenaya', 'ultra-social-title-b': 'katıl',
         'ultra-social-lead': 'Discord ve YouTube. Her yeni özellikten haberdar ol.'
@@ -10142,6 +11190,54 @@ verifySession();
         'ultra-news-toast-err': 'Er ging iets mis, probeer opnieuw',
         'ultra-news-toast-net': 'Geen verbinding. Controleer je internet en probeer opnieuw',
         'ultra-news-perk-1': 'Geen spam', 'ultra-news-perk-2': 'Alpha-prioriteit', 'ultra-news-perk-3': 'Exclusieve skin',
+        'ultra-reviews-eyebrow': 'Community',
+        'ultra-reviews-title-a': 'Beoordelingen',
+        'ultra-reviews-title-b': 'van spelers',
+        'ultra-reviews-lead': 'Indrukken van wie de alpha al heeft geprobeerd.',
+        'ultra-reviews-empty-title': 'Nog geen reviews',
+        'ultra-reviews-empty-sub': 'Wees de eerste die zijn mening over Evades 3 deelt — je review verschijnt hier.',
+        'ultra-reviews-empty-btn': 'Laat een review achter',
+        'ultra-rating-eyebrow': 'Jouw mening',
+        'ultra-rating-title': 'Wat vind je van het project?',
+        'ultra-rating-sub': 'Geef een score en deel je gedachten — helpt Evades 3 beter te maken.',
+        'ultra-rating-hint': 'Klik op een ster om te beoordelen',
+        'ultra-rating-chosen': 'Jouw score: ',
+        'ultra-rating-placeholder': 'Wat vond je leuk, wat kan beter?',
+        'ultra-rating-submit': 'Feedback versturen',
+        'ultra-rating-sending': 'Verzenden…',
+        'ultra-rating-err-no-stars': 'Kies eerst een sterrenscore',
+        'ultra-rating-toast-ok': 'Bedankt voor je feedback! 🎉',
+        'ultra-rating-toast-err': 'Versturen mislukt. Probeer opnieuw',
+        'ultra-rating-toast-net': 'Geen verbinding. Controleer je internet',
+        'auth-err-email-required': 'Vul je email of nickname in',
+        'auth-err-password-required': 'Vul je wachtwoord in',
+        'auth-err-bad-nick': '3-20 tekens: letters, cijfers of _',
+        'auth-err-invalid-email': 'Ongeldig emailformaat',
+        'auth-err-pass-min': 'Minimaal 8 tekens',
+        'auth-err-pass-mismatch': 'Wachtwoorden komen niet overeen',
+        'auth-err-accept-terms': 'Accepteer de gebruiksvoorwaarden',
+        'auth-err-invalid-credentials': 'Verkeerde email of wachtwoord',
+        'auth-err-email-not-confirmed': 'Bevestig eerst je email (controleer je inbox)',
+        'auth-err-email-exists': 'Dit email is al geregistreerd',
+        'auth-err-weak-password': 'Wachtwoord te zwak — 8+ tekens met letters en cijfers',
+        'auth-err-signup-disabled': 'Registratie tijdelijk gesloten',
+        'auth-err-user-not-found': 'Geen account met dit email',
+        'auth-err-rate-limit': 'Te veel pogingen. Wacht een minuut en probeer opnieuw',
+        'auth-err-captcha': 'Captcha mislukt, probeer opnieuw',
+        'auth-err-otp-expired': 'Bevestigingscode verlopen. Vraag een nieuwe aan',
+        'auth-err-same-password': 'Nieuw wachtwoord moet anders zijn dan het oude',
+        'auth-err-server': 'Server reageert niet. Probeer later opnieuw',
+        'auth-err-network': 'Geen verbinding. Controleer je internet',
+        'auth-err-unknown': 'Onbekende fout. Probeer later opnieuw',
+        'auth-busy-login': 'Aanmelden...',
+        'auth-busy-register': 'Account aanmaken...',
+        'auth-busy-forgot': 'Verzenden...',
+        'auth-ok-login-prefix': 'Welkom, ',
+        'auth-ok-register-prefix': 'Account ',
+        'auth-ok-register-suffix': ' aangemaakt! 🎉',
+        'auth-ok-register-confirm': 'Bevestig je email — bericht gestuurd naar ',
+        'auth-ok-forgot': 'Reset-email verstuurd! 📧',
+        'auth-forgot-submit': 'Versturen →',
         'ultra-social-eyebrow': 'Overal waar je bent',
         'ultra-social-title-a': 'Doe mee', 'ultra-social-title-b': 'in de arena',
         'ultra-social-lead': 'Discord en YouTube. Blijf op de hoogte van elke nieuwe functie.'
@@ -10199,6 +11295,54 @@ verifySession();
         'ultra-news-toast-err': 'Något gick fel, försök igen',
         'ultra-news-toast-net': 'Ingen anslutning. Kontrollera internet och försök igen',
         'ultra-news-perk-1': 'Ingen spam', 'ultra-news-perk-2': 'Alfa-prioritet', 'ultra-news-perk-3': 'Exklusiv skin',
+        'ultra-reviews-eyebrow': 'Community',
+        'ultra-reviews-title-a': 'Spelar',
+        'ultra-reviews-title-b': 'recensioner',
+        'ultra-reviews-lead': 'Intryck från de som redan testat alfan.',
+        'ultra-reviews-empty-title': 'Inga recensioner än',
+        'ultra-reviews-empty-sub': 'Bli först med att dela din åsikt om Evades 3 — din recension dyker upp här.',
+        'ultra-reviews-empty-btn': 'Lämna en recension',
+        'ultra-rating-eyebrow': 'Din åsikt',
+        'ultra-rating-title': 'Vad tycker du om projektet?',
+        'ultra-rating-sub': 'Betygsätt spelet och dela dina tankar — hjälper göra Evades 3 bättre.',
+        'ultra-rating-hint': 'Klicka på en stjärna för att betygsätta',
+        'ultra-rating-chosen': 'Ditt betyg: ',
+        'ultra-rating-placeholder': 'Vad gillade du, vad kan förbättras?',
+        'ultra-rating-submit': 'Skicka feedback',
+        'ultra-rating-sending': 'Skickar…',
+        'ultra-rating-err-no-stars': 'Välj antal stjärnor först',
+        'ultra-rating-toast-ok': 'Tack för din feedback! 🎉',
+        'ultra-rating-toast-err': 'Kunde inte skicka. Försök igen',
+        'ultra-rating-toast-net': 'Ingen anslutning. Kontrollera internet och försök igen',
+        'auth-err-email-required': 'Ange email eller nickname',
+        'auth-err-password-required': 'Ange ditt lösenord',
+        'auth-err-bad-nick': '3-20 tecken: bokstäver, siffror eller _',
+        'auth-err-invalid-email': 'Ogiltigt emailformat',
+        'auth-err-pass-min': 'Minst 8 tecken',
+        'auth-err-pass-mismatch': 'Lösenorden matchar inte',
+        'auth-err-accept-terms': 'Acceptera användarvillkoren',
+        'auth-err-invalid-credentials': 'Fel email eller lösenord',
+        'auth-err-email-not-confirmed': 'Bekräfta din email först (kolla inkorgen)',
+        'auth-err-email-exists': 'Denna email är redan registrerad',
+        'auth-err-weak-password': 'Lösenordet för svagt — 8+ tecken med bokstäver och siffror',
+        'auth-err-signup-disabled': 'Registrering tillfälligt stängd',
+        'auth-err-user-not-found': 'Inget konto med denna email',
+        'auth-err-rate-limit': 'För många försök. Vänta en minut och försök igen',
+        'auth-err-captcha': 'Captcha-kontroll misslyckades, försök igen',
+        'auth-err-otp-expired': 'Bekräftelsekoden har gått ut. Begär en ny',
+        'auth-err-same-password': 'Nya lösenordet måste skilja sig från det gamla',
+        'auth-err-server': 'Servern svarar inte. Försök igen senare',
+        'auth-err-network': 'Ingen anslutning. Kontrollera internet',
+        'auth-err-unknown': 'Okänt fel. Försök igen senare',
+        'auth-busy-login': 'Loggar in...',
+        'auth-busy-register': 'Skapar konto...',
+        'auth-busy-forgot': 'Skickar...',
+        'auth-ok-login-prefix': 'Välkommen, ',
+        'auth-ok-register-prefix': 'Kontot ',
+        'auth-ok-register-suffix': ' skapat! 🎉',
+        'auth-ok-register-confirm': 'Bekräfta din email — meddelande skickat till ',
+        'auth-ok-forgot': 'Återställningsmail skickat! 📧',
+        'auth-forgot-submit': 'Skicka →',
         'ultra-social-eyebrow': 'Var du än är',
         'ultra-social-title-a': 'Gå med', 'ultra-social-title-b': 'i arenan',
         'ultra-social-lead': 'Discord och YouTube. Håll dig uppdaterad om varje ny funktion.'
@@ -10256,6 +11400,54 @@ verifySession();
         'ultra-news-toast-err': 'Noe gikk galt, prøv igjen',
         'ultra-news-toast-net': 'Ingen tilkobling. Sjekk internett og prøv igjen',
         'ultra-news-perk-1': 'Ingen spam', 'ultra-news-perk-2': 'Alfa-prioritet', 'ultra-news-perk-3': 'Eksklusiv skin',
+        'ultra-reviews-eyebrow': 'Community',
+        'ultra-reviews-title-a': 'Spiller',
+        'ultra-reviews-title-b': 'anmeldelser',
+        'ultra-reviews-lead': 'Inntrykk fra de som allerede har prøvd alfaen.',
+        'ultra-reviews-empty-title': 'Ingen anmeldelser ennå',
+        'ultra-reviews-empty-sub': 'Vær den første til å dele din mening om Evades 3 — anmeldelsen vises her.',
+        'ultra-reviews-empty-btn': 'Legg igjen anmeldelse',
+        'ultra-rating-eyebrow': 'Din mening',
+        'ultra-rating-title': 'Hva synes du om prosjektet?',
+        'ultra-rating-sub': 'Gi spillet en karakter og del tankene dine — hjelper å gjøre Evades 3 bedre.',
+        'ultra-rating-hint': 'Klikk på en stjerne for å stemme',
+        'ultra-rating-chosen': 'Din karakter: ',
+        'ultra-rating-placeholder': 'Hva likte du, hva kan forbedres?',
+        'ultra-rating-submit': 'Send tilbakemelding',
+        'ultra-rating-sending': 'Sender…',
+        'ultra-rating-err-no-stars': 'Velg antall stjerner først',
+        'ultra-rating-toast-ok': 'Takk for tilbakemeldingen! 🎉',
+        'ultra-rating-toast-err': 'Kunne ikke sende. Prøv igjen',
+        'ultra-rating-toast-net': 'Ingen tilkobling. Sjekk internett og prøv igjen',
+        'auth-err-email-required': 'Skriv inn email eller nickname',
+        'auth-err-password-required': 'Skriv inn passordet',
+        'auth-err-bad-nick': '3-20 tegn: bokstaver, tall eller _',
+        'auth-err-invalid-email': 'Ugyldig emailformat',
+        'auth-err-pass-min': 'Minst 8 tegn',
+        'auth-err-pass-mismatch': 'Passordene stemmer ikke',
+        'auth-err-accept-terms': 'Godta bruksvilkårene',
+        'auth-err-invalid-credentials': 'Feil email eller passord',
+        'auth-err-email-not-confirmed': 'Bekreft emailen først (sjekk innboksen)',
+        'auth-err-email-exists': 'Denne emailen er allerede registrert',
+        'auth-err-weak-password': 'Passordet er for svakt — 8+ tegn med bokstaver og tall',
+        'auth-err-signup-disabled': 'Registrering midlertidig stengt',
+        'auth-err-user-not-found': 'Ingen konto med denne emailen',
+        'auth-err-rate-limit': 'For mange forsøk. Vent et minutt og prøv igjen',
+        'auth-err-captcha': 'Captcha-sjekk feilet, prøv igjen',
+        'auth-err-otp-expired': 'Bekreftelseskoden er utløpt. Be om en ny',
+        'auth-err-same-password': 'Nytt passord må være ulikt det gamle',
+        'auth-err-server': 'Serveren svarer ikke. Prøv igjen senere',
+        'auth-err-network': 'Ingen forbindelse. Sjekk internett',
+        'auth-err-unknown': 'Ukjent feil. Prøv igjen senere',
+        'auth-busy-login': 'Logger inn...',
+        'auth-busy-register': 'Oppretter konto...',
+        'auth-busy-forgot': 'Sender...',
+        'auth-ok-login-prefix': 'Velkommen, ',
+        'auth-ok-register-prefix': 'Kontoen ',
+        'auth-ok-register-suffix': ' opprettet! 🎉',
+        'auth-ok-register-confirm': 'Bekreft emailen — melding sendt til ',
+        'auth-ok-forgot': 'Tilbakestillings-email sendt! 📧',
+        'auth-forgot-submit': 'Send →',
         'ultra-social-eyebrow': 'Overalt der du er',
         'ultra-social-title-a': 'Bli med', 'ultra-social-title-b': 'i arenaen',
         'ultra-social-lead': 'Discord og YouTube. Hold deg oppdatert på hver ny funksjon.'
@@ -10313,6 +11505,54 @@ verifySession();
         'ultra-news-toast-err': 'Jotain meni pieleen, yritä uudelleen',
         'ultra-news-toast-net': 'Ei yhteyttä. Tarkista internet ja yritä uudelleen',
         'ultra-news-perk-1': 'Ei roskapostia', 'ultra-news-perk-2': 'Alpha-etusija', 'ultra-news-perk-3': 'Eksklusiivinen skin',
+        'ultra-reviews-eyebrow': 'Yhteisö',
+        'ultra-reviews-title-a': 'Pelaajien',
+        'ultra-reviews-title-b': 'arviot',
+        'ultra-reviews-lead': 'Vaikutelmia niiltä, jotka ovat jo kokeilleet alfaa.',
+        'ultra-reviews-empty-title': 'Ei vielä arvioita',
+        'ultra-reviews-empty-sub': 'Ole ensimmäinen, joka jakaa mielipiteensä Evades 3:sta — arviosi näkyy täällä.',
+        'ultra-reviews-empty-btn': 'Jätä arvio',
+        'ultra-rating-eyebrow': 'Sinun mielipide',
+        'ultra-rating-title': 'Mitä pidät projektista?',
+        'ultra-rating-sub': 'Anna arvosana ja jaa ajatuksesi — auttaa Evades 3:n parantamisessa.',
+        'ultra-rating-hint': 'Klikkaa tähteä antaaksesi arvion',
+        'ultra-rating-chosen': 'Arvosanasi: ',
+        'ultra-rating-placeholder': 'Mikä toimi, mitä parantaisit?',
+        'ultra-rating-submit': 'Lähetä palaute',
+        'ultra-rating-sending': 'Lähetetään…',
+        'ultra-rating-err-no-stars': 'Valitse ensin tähtien määrä',
+        'ultra-rating-toast-ok': 'Kiitos palautteesta! 🎉',
+        'ultra-rating-toast-err': 'Lähetys epäonnistui. Yritä uudelleen',
+        'ultra-rating-toast-net': 'Ei yhteyttä. Tarkista internet ja yritä uudelleen',
+        'auth-err-email-required': 'Anna email tai nimimerkki',
+        'auth-err-password-required': 'Anna salasana',
+        'auth-err-bad-nick': '3-20 merkkiä: kirjaimet, numerot tai _',
+        'auth-err-invalid-email': 'Virheellinen email-muoto',
+        'auth-err-pass-min': 'Vähintään 8 merkkiä',
+        'auth-err-pass-mismatch': 'Salasanat eivät täsmää',
+        'auth-err-accept-terms': 'Hyväksy käyttöehdot',
+        'auth-err-invalid-credentials': 'Väärä email tai salasana',
+        'auth-err-email-not-confirmed': 'Vahvista email ensin (tarkista postilaatikko)',
+        'auth-err-email-exists': 'Tämä email on jo rekisteröity',
+        'auth-err-weak-password': 'Salasana liian heikko — 8+ merkkiä, kirjaimia ja numeroita',
+        'auth-err-signup-disabled': 'Rekisteröinti väliaikaisesti suljettu',
+        'auth-err-user-not-found': 'Tilin ei löydy tällä emaililla',
+        'auth-err-rate-limit': 'Liian monta yritystä. Odota minuutti ja yritä uudelleen',
+        'auth-err-captcha': 'Captcha-tarkistus epäonnistui, yritä uudelleen',
+        'auth-err-otp-expired': 'Vahvistuskoodi vanhentunut. Pyydä uusi',
+        'auth-err-same-password': 'Uuden salasanan pitää erota vanhasta',
+        'auth-err-server': 'Palvelin ei vastaa. Yritä myöhemmin',
+        'auth-err-network': 'Ei yhteyttä. Tarkista internet',
+        'auth-err-unknown': 'Tuntematon virhe. Yritä myöhemmin',
+        'auth-busy-login': 'Kirjaudutaan...',
+        'auth-busy-register': 'Luodaan tiliä...',
+        'auth-busy-forgot': 'Lähetetään...',
+        'auth-ok-login-prefix': 'Tervetuloa, ',
+        'auth-ok-register-prefix': 'Tili ',
+        'auth-ok-register-suffix': ' luotu! 🎉',
+        'auth-ok-register-confirm': 'Vahvista email — viesti lähetetty osoitteeseen ',
+        'auth-ok-forgot': 'Palautusviesti lähetetty! 📧',
+        'auth-forgot-submit': 'Lähetä →',
         'ultra-social-eyebrow': 'Missä tahansa oletkin',
         'ultra-social-title-a': 'Liity', 'ultra-social-title-b': 'areenalle',
         'ultra-social-lead': 'Discord ja YouTube. Pysy ajan tasalla jokaisesta uudesta ominaisuudesta.'
@@ -10370,6 +11610,54 @@ verifySession();
         'ultra-news-toast-err': 'Noget gik galt, prøv igen',
         'ultra-news-toast-net': 'Ingen forbindelse. Tjek internettet og prøv igen',
         'ultra-news-perk-1': 'Ingen spam', 'ultra-news-perk-2': 'Alfa-prioritet', 'ultra-news-perk-3': 'Eksklusiv skin',
+        'ultra-reviews-eyebrow': 'Community',
+        'ultra-reviews-title-a': 'Spiller',
+        'ultra-reviews-title-b': 'anmeldelser',
+        'ultra-reviews-lead': 'Indtryk fra dem, der allerede har prøvet alfaen.',
+        'ultra-reviews-empty-title': 'Ingen anmeldelser endnu',
+        'ultra-reviews-empty-sub': 'Vær den første til at dele din mening om Evades 3 — din anmeldelse vises her.',
+        'ultra-reviews-empty-btn': 'Skriv anmeldelse',
+        'ultra-rating-eyebrow': 'Din mening',
+        'ultra-rating-title': 'Hvad synes du om projektet?',
+        'ultra-rating-sub': 'Giv spillet en vurdering og del dine tanker — gør Evades 3 bedre.',
+        'ultra-rating-hint': 'Klik på en stjerne for at vurdere',
+        'ultra-rating-chosen': 'Din vurdering: ',
+        'ultra-rating-placeholder': 'Hvad kunne du lide, hvad kan forbedres?',
+        'ultra-rating-submit': 'Send feedback',
+        'ultra-rating-sending': 'Sender…',
+        'ultra-rating-err-no-stars': 'Vælg antal stjerner først',
+        'ultra-rating-toast-ok': 'Tak for din feedback! 🎉',
+        'ultra-rating-toast-err': 'Kunne ikke sende. Prøv igen',
+        'ultra-rating-toast-net': 'Ingen forbindelse. Tjek internettet og prøv igen',
+        'auth-err-email-required': 'Indtast email eller nickname',
+        'auth-err-password-required': 'Indtast adgangskoden',
+        'auth-err-bad-nick': '3-20 tegn: bogstaver, tal eller _',
+        'auth-err-invalid-email': 'Ugyldigt emailformat',
+        'auth-err-pass-min': 'Minimum 8 tegn',
+        'auth-err-pass-mismatch': 'Adgangskoderne passer ikke',
+        'auth-err-accept-terms': 'Accepter betingelserne',
+        'auth-err-invalid-credentials': 'Forkert email eller adgangskode',
+        'auth-err-email-not-confirmed': 'Bekræft din email først (tjek indbakken)',
+        'auth-err-email-exists': 'Denne email er allerede registreret',
+        'auth-err-weak-password': 'Adgangskode for svag — 8+ tegn med bogstaver og tal',
+        'auth-err-signup-disabled': 'Registrering midlertidigt lukket',
+        'auth-err-user-not-found': 'Ingen konto med denne email',
+        'auth-err-rate-limit': 'For mange forsøg. Vent et minut og prøv igen',
+        'auth-err-captcha': 'Captcha-tjek mislykkedes, prøv igen',
+        'auth-err-otp-expired': 'Bekræftelseskode udløbet. Bed om en ny',
+        'auth-err-same-password': 'Ny adgangskode skal være forskellig fra den gamle',
+        'auth-err-server': 'Serveren svarer ikke. Prøv senere',
+        'auth-err-network': 'Ingen forbindelse. Tjek internettet',
+        'auth-err-unknown': 'Ukendt fejl. Prøv senere',
+        'auth-busy-login': 'Logger ind...',
+        'auth-busy-register': 'Opretter konto...',
+        'auth-busy-forgot': 'Sender...',
+        'auth-ok-login-prefix': 'Velkommen, ',
+        'auth-ok-register-prefix': 'Kontoen ',
+        'auth-ok-register-suffix': ' oprettet! 🎉',
+        'auth-ok-register-confirm': 'Bekræft din email — besked sendt til ',
+        'auth-ok-forgot': 'Nulstillings-email sendt! 📧',
+        'auth-forgot-submit': 'Send →',
         'ultra-social-eyebrow': 'Alle de steder du er',
         'ultra-social-title-a': 'Deltag', 'ultra-social-title-b': 'i arenaen',
         'ultra-social-lead': 'Discord og YouTube. Hold dig opdateret om hver ny funktion.'
@@ -10427,6 +11715,54 @@ verifySession();
         'ultra-news-toast-err': 'Něco se pokazilo, zkus to znovu',
         'ultra-news-toast-net': 'Žádné připojení. Zkontroluj internet a zkus to znovu',
         'ultra-news-perk-1': 'Žádný spam', 'ultra-news-perk-2': 'Priorita v alfě', 'ultra-news-perk-3': 'Exkluzivní skin',
+        'ultra-reviews-eyebrow': 'Komunita',
+        'ultra-reviews-title-a': 'Recenze',
+        'ultra-reviews-title-b': 'hráčů',
+        'ultra-reviews-lead': 'Dojmy těch, kdo si už zahráli v alfě.',
+        'ultra-reviews-empty-title': 'Zatím žádné recenze',
+        'ultra-reviews-empty-sub': 'Buď první, kdo se podělí o názor na Evades 3 — recenze se objeví tady.',
+        'ultra-reviews-empty-btn': 'Napsat recenzi',
+        'ultra-rating-eyebrow': 'Tvůj názor',
+        'ultra-rating-title': 'Jak se ti projekt líbí?',
+        'ultra-rating-sub': 'Ohodnoť hru a podělej se o nápady — pomůže vylepšit Evades 3.',
+        'ultra-rating-hint': 'Klikni na hvězdičku pro hodnocení',
+        'ultra-rating-chosen': 'Tvoje hodnocení: ',
+        'ultra-rating-placeholder': 'Co se ti líbilo, co vylepšit?',
+        'ultra-rating-submit': 'Odeslat recenzi',
+        'ultra-rating-sending': 'Odesíláme…',
+        'ultra-rating-err-no-stars': 'Nejdřív vyber počet hvězdiček',
+        'ultra-rating-toast-ok': 'Díky za zpětnou vazbu! 🎉',
+        'ultra-rating-toast-err': 'Nepodařilo se odeslat. Zkus to znovu',
+        'ultra-rating-toast-net': 'Bez připojení. Zkontroluj internet a zkus to znovu',
+        'auth-err-email-required': 'Zadej email nebo přezdívku',
+        'auth-err-password-required': 'Zadej heslo',
+        'auth-err-bad-nick': '3-20 znaků: písmena, číslice nebo _',
+        'auth-err-invalid-email': 'Neplatný formát emailu',
+        'auth-err-pass-min': 'Minimálně 8 znaků',
+        'auth-err-pass-mismatch': 'Hesla se neshodují',
+        'auth-err-accept-terms': 'Přijmi podmínky použití',
+        'auth-err-invalid-credentials': 'Nesprávný email nebo heslo',
+        'auth-err-email-not-confirmed': 'Nejdřív potvrď email (zkontroluj schránku)',
+        'auth-err-email-exists': 'Tento email je už zaregistrován',
+        'auth-err-weak-password': 'Heslo je příliš slabé — 8+ znaků s písmeny a číslicemi',
+        'auth-err-signup-disabled': 'Registrace je dočasně uzavřena',
+        'auth-err-user-not-found': 'Žádný účet s tímto emailem',
+        'auth-err-rate-limit': 'Příliš mnoho pokusů. Počkej minutu a zkus to znovu',
+        'auth-err-captcha': 'Ověření captcha selhalo, zkus to znovu',
+        'auth-err-otp-expired': 'Potvrzovací kód vypršel. Vyžádej si nový',
+        'auth-err-same-password': 'Nové heslo musí být jiné než staré',
+        'auth-err-server': 'Server nereaguje. Zkus to později',
+        'auth-err-network': 'Bez připojení. Zkontroluj internet',
+        'auth-err-unknown': 'Neznámá chyba. Zkus to později',
+        'auth-busy-login': 'Přihlašování...',
+        'auth-busy-register': 'Vytváříme účet...',
+        'auth-busy-forgot': 'Odesílání...',
+        'auth-ok-login-prefix': 'Vítej, ',
+        'auth-ok-register-prefix': 'Účet ',
+        'auth-ok-register-suffix': ' vytvořen! 🎉',
+        'auth-ok-register-confirm': 'Potvrď email — zpráva odeslána na ',
+        'auth-ok-forgot': 'Email pro reset odeslán! 📧',
+        'auth-forgot-submit': 'Odeslat →',
         'ultra-social-eyebrow': 'Všude, kde jsi',
         'ultra-social-title-a': 'Přidej se', 'ultra-social-title-b': 'do arény',
         'ultra-social-lead': 'Discord a YouTube. Buď v obraze u každé nové funkce.'
@@ -10484,6 +11820,54 @@ verifySession();
         'ultra-news-toast-err': 'Ceva nu a mers, încearcă din nou',
         'ultra-news-toast-net': 'Fără conexiune. Verifică internetul și încearcă din nou',
         'ultra-news-perk-1': 'Fără spam', 'ultra-news-perk-2': 'Prioritate la alfa', 'ultra-news-perk-3': 'Skin exclusiv',
+        'ultra-reviews-eyebrow': 'Comunitate',
+        'ultra-reviews-title-a': 'Recenziile',
+        'ultra-reviews-title-b': 'jucătorilor',
+        'ultra-reviews-lead': 'Impresii ale celor care au încercat deja alfa.',
+        'ultra-reviews-empty-title': 'Încă nicio recenzie',
+        'ultra-reviews-empty-sub': 'Fii primul care împărtășește părerea despre Evades 3 — recenzia ta va apărea aici.',
+        'ultra-reviews-empty-btn': 'Lasă o recenzie',
+        'ultra-rating-eyebrow': 'Părerea ta',
+        'ultra-rating-title': 'Cum ți se pare proiectul?',
+        'ultra-rating-sub': 'Dă o notă și împărtășește-ți gândurile — ajută să facem Evades 3 mai bun.',
+        'ultra-rating-hint': 'Dă clic pe o stea pentru a evalua',
+        'ultra-rating-chosen': 'Nota ta: ',
+        'ultra-rating-placeholder': 'Ce ți-a plăcut, ce s-ar putea îmbunătăți?',
+        'ultra-rating-submit': 'Trimite recenzia',
+        'ultra-rating-sending': 'Se trimite…',
+        'ultra-rating-err-no-stars': 'Alege mai întâi numărul de stele',
+        'ultra-rating-toast-ok': 'Mulțumim pentru feedback! 🎉',
+        'ultra-rating-toast-err': 'Nu s-a putut trimite. Încearcă din nou',
+        'ultra-rating-toast-net': 'Fără conexiune. Verifică internetul și încearcă din nou',
+        'auth-err-email-required': 'Introdu email sau nickname',
+        'auth-err-password-required': 'Introdu parola',
+        'auth-err-bad-nick': '3-20 caractere: litere, cifre sau _',
+        'auth-err-invalid-email': 'Format email invalid',
+        'auth-err-pass-min': 'Minim 8 caractere',
+        'auth-err-pass-mismatch': 'Parolele nu se potrivesc',
+        'auth-err-accept-terms': 'Acceptă termenii',
+        'auth-err-invalid-credentials': 'Email sau parolă greșită',
+        'auth-err-email-not-confirmed': 'Confirmă emailul mai întâi (verifică inbox)',
+        'auth-err-email-exists': 'Acest email este deja înregistrat',
+        'auth-err-weak-password': 'Parolă prea slabă — 8+ caractere cu litere și cifre',
+        'auth-err-signup-disabled': 'Înregistrările sunt temporar închise',
+        'auth-err-user-not-found': 'Nu există cont cu acest email',
+        'auth-err-rate-limit': 'Prea multe încercări. Așteaptă un minut și reîncearcă',
+        'auth-err-captcha': 'Captcha a eșuat, reîncearcă',
+        'auth-err-otp-expired': 'Codul de confirmare a expirat. Cere unul nou',
+        'auth-err-same-password': 'Noua parolă trebuie să difere de cea veche',
+        'auth-err-server': 'Serverul nu răspunde. Încearcă mai târziu',
+        'auth-err-network': 'Fără conexiune. Verifică internetul',
+        'auth-err-unknown': 'Eroare necunoscută. Încearcă mai târziu',
+        'auth-busy-login': 'Autentificare...',
+        'auth-busy-register': 'Se creează contul...',
+        'auth-busy-forgot': 'Se trimite...',
+        'auth-ok-login-prefix': 'Bun venit, ',
+        'auth-ok-register-prefix': 'Contul ',
+        'auth-ok-register-suffix': ' creat! 🎉',
+        'auth-ok-register-confirm': 'Confirmă emailul — mesaj trimis la ',
+        'auth-ok-forgot': 'Email de resetare trimis! 📧',
+        'auth-forgot-submit': 'Trimite →',
         'ultra-social-eyebrow': 'Oriunde ai fi',
         'ultra-social-title-a': 'Alătură-te', 'ultra-social-title-b': 'arenei',
         'ultra-social-lead': 'Discord și YouTube. Fii la curent cu fiecare funcție nouă.'
@@ -10541,6 +11925,54 @@ verifySession();
         'ultra-news-toast-err': 'Valami félrement, próbáld újra',
         'ultra-news-toast-net': 'Nincs kapcsolat. Ellenőrizd a netet és próbáld újra',
         'ultra-news-perk-1': 'Spammentes', 'ultra-news-perk-2': 'Alfa prioritás', 'ultra-news-perk-3': 'Exkluzív skin',
+        'ultra-reviews-eyebrow': 'Közösség',
+        'ultra-reviews-title-a': 'Játékos',
+        'ultra-reviews-title-b': 'vélemények',
+        'ultra-reviews-lead': 'Benyomások azoktól, akik már kipróbálták az alfát.',
+        'ultra-reviews-empty-title': 'Még nincs vélemény',
+        'ultra-reviews-empty-sub': 'Légy az első, aki megosztja a véleményét az Evades 3-ról — itt fog megjelenni.',
+        'ultra-reviews-empty-btn': 'Vélemény írása',
+        'ultra-rating-eyebrow': 'A te véleményed',
+        'ultra-rating-title': 'Hogy tetszik a projekt?',
+        'ultra-rating-sub': 'Értékeld a játékot és oszd meg gondolataidat — segít jobbá tenni az Evades 3-at.',
+        'ultra-rating-hint': 'Kattints egy csillagra az értékeléshez',
+        'ultra-rating-chosen': 'A te értékelésed: ',
+        'ultra-rating-placeholder': 'Mi tetszett, min javítanál?',
+        'ultra-rating-submit': 'Vélemény küldése',
+        'ultra-rating-sending': 'Küldés…',
+        'ultra-rating-err-no-stars': 'Előbb válassz csillagot',
+        'ultra-rating-toast-ok': 'Köszönjük a visszajelzést! 🎉',
+        'ultra-rating-toast-err': 'Nem sikerült elküldeni. Próbáld újra',
+        'ultra-rating-toast-net': 'Nincs kapcsolat. Ellenőrizd az internetet, és próbáld újra',
+        'auth-err-email-required': 'Add meg az emailt vagy becenevet',
+        'auth-err-password-required': 'Add meg a jelszót',
+        'auth-err-bad-nick': '3-20 karakter: betűk, számok vagy _',
+        'auth-err-invalid-email': 'Érvénytelen email-formátum',
+        'auth-err-pass-min': 'Legalább 8 karakter',
+        'auth-err-pass-mismatch': 'A jelszavak nem egyeznek',
+        'auth-err-accept-terms': 'Fogadd el a felhasználási feltételeket',
+        'auth-err-invalid-credentials': 'Helytelen email vagy jelszó',
+        'auth-err-email-not-confirmed': 'Először erősítsd meg az emailt (nézd meg a postafiókot)',
+        'auth-err-email-exists': 'Ez az email már regisztrálva van',
+        'auth-err-weak-password': 'Túl gyenge jelszó — 8+ karakter, betűk és számok',
+        'auth-err-signup-disabled': 'A regisztráció átmenetileg zárva',
+        'auth-err-user-not-found': 'Nincs fiók ezzel az emaillel',
+        'auth-err-rate-limit': 'Túl sok próbálkozás. Várj egy percet és próbáld újra',
+        'auth-err-captcha': 'Captcha ellenőrzés sikertelen, próbáld újra',
+        'auth-err-otp-expired': 'A megerősítő kód lejárt. Kérj újat',
+        'auth-err-same-password': 'Az új jelszó különbözzön a régitől',
+        'auth-err-server': 'A szerver nem válaszol. Próbáld később',
+        'auth-err-network': 'Nincs kapcsolat. Ellenőrizd az internetet',
+        'auth-err-unknown': 'Ismeretlen hiba. Próbáld később',
+        'auth-busy-login': 'Bejelentkezés...',
+        'auth-busy-register': 'Fiók létrehozása...',
+        'auth-busy-forgot': 'Küldés...',
+        'auth-ok-login-prefix': 'Üdv, ',
+        'auth-ok-register-prefix': 'A fiók ',
+        'auth-ok-register-suffix': ' létrehozva! 🎉',
+        'auth-ok-register-confirm': 'Erősítsd meg az emailt — üzenet elküldve: ',
+        'auth-ok-forgot': 'Visszaállító email elküldve! 📧',
+        'auth-forgot-submit': 'Küldés →',
         'ultra-social-eyebrow': 'Bárhol is vagy',
         'ultra-social-title-a': 'Csatlakozz', 'ultra-social-title-b': 'az arénához',
         'ultra-social-lead': 'Discord és YouTube. Értesülj minden új funkcióról.'
@@ -10598,6 +12030,54 @@ verifySession();
         'ultra-news-toast-err': 'Κάτι πήγε στραβά, δοκίμασε ξανά',
         'ultra-news-toast-net': 'Χωρίς σύνδεση. Έλεγξε το internet και δοκίμασε ξανά',
         'ultra-news-perk-1': 'Χωρίς spam', 'ultra-news-perk-2': 'Προτεραιότητα στην άλφα', 'ultra-news-perk-3': 'Αποκλειστικό skin',
+        'ultra-reviews-eyebrow': 'Κοινότητα',
+        'ultra-reviews-title-a': 'Κριτικές',
+        'ultra-reviews-title-b': 'παικτών',
+        'ultra-reviews-lead': 'Εντυπώσεις όσων έχουν ήδη δοκιμάσει την άλφα.',
+        'ultra-reviews-empty-title': 'Καμία κριτική ακόμα',
+        'ultra-reviews-empty-sub': 'Γίνε ο πρώτος που θα μοιραστεί γνώμη για το Evades 3 — η κριτική σου θα εμφανιστεί εδώ.',
+        'ultra-reviews-empty-btn': 'Άφησε κριτική',
+        'ultra-rating-eyebrow': 'Η γνώμη σου',
+        'ultra-rating-title': 'Πώς σου φαίνεται το πρότζεκτ;',
+        'ultra-rating-sub': 'Βαθμολόγησε το παιχνίδι και μοιράσου σκέψεις — βοηθάει το Evades 3 να γίνει καλύτερο.',
+        'ultra-rating-hint': 'Κάνε κλικ σε αστέρι για βαθμολόγηση',
+        'ultra-rating-chosen': 'Η βαθμολογία σου: ',
+        'ultra-rating-placeholder': 'Τι σου άρεσε, τι θα άλλαζες;',
+        'ultra-rating-submit': 'Αποστολή',
+        'ultra-rating-sending': 'Αποστολή…',
+        'ultra-rating-err-no-stars': 'Διάλεξε πρώτα αστέρια',
+        'ultra-rating-toast-ok': 'Ευχαριστούμε για την κριτική! 🎉',
+        'ultra-rating-toast-err': 'Αποτυχία αποστολής. Ξαναδοκίμασε',
+        'ultra-rating-toast-net': 'Χωρίς σύνδεση. Έλεγξε το ίντερνετ και ξαναδοκίμασε',
+        'auth-err-email-required': 'Πληκτρολόγησε email ή nickname',
+        'auth-err-password-required': 'Πληκτρολόγησε τον κωδικό',
+        'auth-err-bad-nick': '3-20 χαρακτήρες: γράμματα, ψηφία ή _',
+        'auth-err-invalid-email': 'Μη έγκυρη μορφή email',
+        'auth-err-pass-min': 'Τουλάχιστον 8 χαρακτήρες',
+        'auth-err-pass-mismatch': 'Οι κωδικοί δεν ταιριάζουν',
+        'auth-err-accept-terms': 'Αποδέξου τους όρους',
+        'auth-err-invalid-credentials': 'Λάθος email ή κωδικός',
+        'auth-err-email-not-confirmed': 'Επιβεβαίωσε πρώτα το email (έλεγξε τα εισερχόμενα)',
+        'auth-err-email-exists': 'Αυτό το email έχει ήδη εγγραφεί',
+        'auth-err-weak-password': 'Πολύ αδύναμος κωδικός — 8+ χαρακτήρες με γράμματα και ψηφία',
+        'auth-err-signup-disabled': 'Η εγγραφή είναι προσωρινά κλειστή',
+        'auth-err-user-not-found': 'Δεν υπάρχει λογαριασμός με αυτό το email',
+        'auth-err-rate-limit': 'Πολλές προσπάθειες. Περίμενε ένα λεπτό και ξαναδοκίμασε',
+        'auth-err-captcha': 'Αποτυχία captcha, ξαναδοκίμασε',
+        'auth-err-otp-expired': 'Ο κωδικός επιβεβαίωσης έληξε. Ζήτα νέο',
+        'auth-err-same-password': 'Ο νέος κωδικός πρέπει να διαφέρει από τον παλιό',
+        'auth-err-server': 'Ο διακομιστής δεν απαντά. Προσπάθησε αργότερα',
+        'auth-err-network': 'Χωρίς σύνδεση. Έλεγξε το διαδίκτυο',
+        'auth-err-unknown': 'Άγνωστο σφάλμα. Προσπάθησε αργότερα',
+        'auth-busy-login': 'Σύνδεση...',
+        'auth-busy-register': 'Δημιουργία λογαριασμού...',
+        'auth-busy-forgot': 'Αποστολή...',
+        'auth-ok-login-prefix': 'Καλώς όρισες, ',
+        'auth-ok-register-prefix': 'Ο λογαριασμός ',
+        'auth-ok-register-suffix': ' δημιουργήθηκε! 🎉',
+        'auth-ok-register-confirm': 'Επιβεβαίωσε το email — μήνυμα στάλθηκε στο ',
+        'auth-ok-forgot': 'Email επαναφοράς στάλθηκε! 📧',
+        'auth-forgot-submit': 'Αποστολή →',
         'ultra-social-eyebrow': 'Όπου κι αν είσαι',
         'ultra-social-title-a': 'Μπες', 'ultra-social-title-b': 'στην αρένα',
         'ultra-social-lead': 'Discord και YouTube. Μείνε ενημερωμένος για κάθε νέο χαρακτηριστικό.'
@@ -10655,6 +12135,54 @@ verifySession();
         'ultra-news-toast-err': '問題が発生しました。再度お試しください',
         'ultra-news-toast-net': '接続がありません。インターネットを確認して再試行してください',
         'ultra-news-perk-1': 'スパムなし', 'ultra-news-perk-2': 'アルファ優先', 'ultra-news-perk-3': '限定スキン',
+        'ultra-reviews-eyebrow': 'コミュニティ',
+        'ultra-reviews-title-a': 'プレイヤー',
+        'ultra-reviews-title-b': 'レビュー',
+        'ultra-reviews-lead': 'アルファを試した人たちの感想。',
+        'ultra-reviews-empty-title': 'まだレビューがありません',
+        'ultra-reviews-empty-sub': 'Evades 3 の感想を最初にシェアしよう — あなたのレビューがここに表示されます。',
+        'ultra-reviews-empty-btn': 'レビューを書く',
+        'ultra-rating-eyebrow': 'あなたの意見',
+        'ultra-rating-title': 'プロジェクトはどう?',
+        'ultra-rating-sub': '評価と感想を教えてください — Evades 3 の改善に役立ちます。',
+        'ultra-rating-hint': '星をクリックして評価してね',
+        'ultra-rating-chosen': 'あなたの評価: ',
+        'ultra-rating-placeholder': 'よかった点、改善してほしい点は?',
+        'ultra-rating-submit': 'レビューを送る',
+        'ultra-rating-sending': '送信中…',
+        'ultra-rating-err-no-stars': 'まず星の数を選んでください',
+        'ultra-rating-toast-ok': 'レビューありがとう! 🎉',
+        'ultra-rating-toast-err': '送信できませんでした。もう一度お試しください',
+        'ultra-rating-toast-net': '接続がありません。ネットを確認してもう一度',
+        'auth-err-email-required': 'メールまたはニックネームを入力してください',
+        'auth-err-password-required': 'パスワードを入力してください',
+        'auth-err-bad-nick': '3〜20文字: 英数字または _',
+        'auth-err-invalid-email': 'メールの形式が正しくありません',
+        'auth-err-pass-min': '8文字以上必要です',
+        'auth-err-pass-mismatch': 'パスワードが一致しません',
+        'auth-err-accept-terms': '利用規約に同意してください',
+        'auth-err-invalid-credentials': 'メールまたはパスワードが違います',
+        'auth-err-email-not-confirmed': 'まずメールを確認してください (受信箱)',
+        'auth-err-email-exists': 'このメールは既に登録されています',
+        'auth-err-weak-password': 'パスワードが弱すぎます — 8文字以上で英字と数字',
+        'auth-err-signup-disabled': '登録は一時的に停止中です',
+        'auth-err-user-not-found': 'このメールのアカウントはありません',
+        'auth-err-rate-limit': '試行回数が多すぎます。少し待ってから再試行してください',
+        'auth-err-captcha': 'captcha 認証に失敗しました、もう一度',
+        'auth-err-otp-expired': '確認コードの有効期限切れ。新しいものを取得してください',
+        'auth-err-same-password': '新しいパスワードは古いものと異なる必要があります',
+        'auth-err-server': 'サーバーが応答しません。後で再試行してください',
+        'auth-err-network': '接続がありません。インターネットを確認してください',
+        'auth-err-unknown': '不明なエラー。後で再試行してください',
+        'auth-busy-login': 'ログイン中...',
+        'auth-busy-register': 'アカウント作成中...',
+        'auth-busy-forgot': '送信中...',
+        'auth-ok-login-prefix': 'ようこそ ',
+        'auth-ok-register-prefix': 'アカウント ',
+        'auth-ok-register-suffix': ' を作成しました! 🎉',
+        'auth-ok-register-confirm': 'メールを確認してください — 送信先: ',
+        'auth-ok-forgot': 'リセットメールを送信しました! 📧',
+        'auth-forgot-submit': '送信 →',
         'ultra-social-eyebrow': 'どこにいても',
         'ultra-social-title-a': 'アリーナに', 'ultra-social-title-b': '参加しよう',
         'ultra-social-lead': 'DiscordとYouTube。新機能すべてを追いかけよう。'
@@ -10712,6 +12240,54 @@ verifySession();
         'ultra-news-toast-err': '出错了，请重试',
         'ultra-news-toast-net': '无连接。请检查网络后重试',
         'ultra-news-perk-1': '无垃圾邮件', 'ultra-news-perk-2': 'Alpha 优先', 'ultra-news-perk-3': '专属皮肤',
+        'ultra-reviews-eyebrow': '社区',
+        'ultra-reviews-title-a': '玩家',
+        'ultra-reviews-title-b': '评价',
+        'ultra-reviews-lead': '体验过 Alpha 的玩家印象。',
+        'ultra-reviews-empty-title': '暂无评价',
+        'ultra-reviews-empty-sub': '成为第一个分享 Evades 3 体验的玩家 — 你的评价会显示在这里。',
+        'ultra-reviews-empty-btn': '留下评价',
+        'ultra-rating-eyebrow': '你的看法',
+        'ultra-rating-title': '你觉得这个项目怎么样?',
+        'ultra-rating-sub': '给游戏打分并分享想法 — 帮助让 Evades 3 更好。',
+        'ultra-rating-hint': '点击星星进行评分',
+        'ultra-rating-chosen': '你的评分: ',
+        'ultra-rating-placeholder': '喜欢什么?希望改进什么?',
+        'ultra-rating-submit': '提交评价',
+        'ultra-rating-sending': '提交中…',
+        'ultra-rating-err-no-stars': '请先选择星级',
+        'ultra-rating-toast-ok': '感谢你的反馈! 🎉',
+        'ultra-rating-toast-err': '发送失败,请再试一次',
+        'ultra-rating-toast-net': '无网络连接。检查后再试',
+        'auth-err-email-required': '请输入邮箱或昵称',
+        'auth-err-password-required': '请输入密码',
+        'auth-err-bad-nick': '3-20 个字符: 字母、数字或 _',
+        'auth-err-invalid-email': '邮箱格式无效',
+        'auth-err-pass-min': '至少 8 个字符',
+        'auth-err-pass-mismatch': '两次密码不一致',
+        'auth-err-accept-terms': '请接受使用条款',
+        'auth-err-invalid-credentials': '邮箱或密码错误',
+        'auth-err-email-not-confirmed': '请先确认邮箱 (检查收件箱)',
+        'auth-err-email-exists': '该邮箱已注册',
+        'auth-err-weak-password': '密码太弱 — 至少 8 位,含字母和数字',
+        'auth-err-signup-disabled': '注册暂时关闭',
+        'auth-err-user-not-found': '未找到该邮箱对应的账号',
+        'auth-err-rate-limit': '尝试次数过多。请等待一分钟后重试',
+        'auth-err-captcha': '人机验证失败,请重试',
+        'auth-err-otp-expired': '确认码已过期。请重新获取',
+        'auth-err-same-password': '新密码必须与旧密码不同',
+        'auth-err-server': '服务器无响应。请稍后重试',
+        'auth-err-network': '无网络连接。请检查网络',
+        'auth-err-unknown': '未知错误。请稍后重试',
+        'auth-busy-login': '登录中...',
+        'auth-busy-register': '创建账号中...',
+        'auth-busy-forgot': '发送中...',
+        'auth-ok-login-prefix': '欢迎,',
+        'auth-ok-register-prefix': '账号 ',
+        'auth-ok-register-suffix': ' 已创建! 🎉',
+        'auth-ok-register-confirm': '请确认邮箱 — 邮件已发送至 ',
+        'auth-ok-forgot': '重置邮件已发送! 📧',
+        'auth-forgot-submit': '发送 →',
         'ultra-social-eyebrow': '随时随地',
         'ultra-social-title-a': '加入', 'ultra-social-title-b': '竞技场',
         'ultra-social-lead': 'Discord 和 YouTube。关注每一项新功能。'
@@ -10769,6 +12345,54 @@ verifySession();
         'ultra-news-toast-err': '문제가 발생했습니다. 다시 시도해 주세요',
         'ultra-news-toast-net': '연결 없음. 인터넷을 확인하고 다시 시도하세요',
         'ultra-news-perk-1': '스팸 없음', 'ultra-news-perk-2': '알파 우선', 'ultra-news-perk-3': '전용 스킨',
+        'ultra-reviews-eyebrow': '커뮤니티',
+        'ultra-reviews-title-a': '플레이어',
+        'ultra-reviews-title-b': '리뷰',
+        'ultra-reviews-lead': '이미 알파를 플레이한 사람들의 소감.',
+        'ultra-reviews-empty-title': '아직 리뷰가 없습니다',
+        'ultra-reviews-empty-sub': 'Evades 3 에 대한 첫 리뷰를 남겨주세요 — 이곳에 표시됩니다.',
+        'ultra-reviews-empty-btn': '리뷰 남기기',
+        'ultra-rating-eyebrow': '당신의 의견',
+        'ultra-rating-title': '프로젝트는 어떤가요?',
+        'ultra-rating-sub': '게임을 평가하고 생각을 공유해 주세요 — Evades 3 를 개선하는 데 도움이 됩니다.',
+        'ultra-rating-hint': '별을 눌러 평점을 선택하세요',
+        'ultra-rating-chosen': '당신의 평점: ',
+        'ultra-rating-placeholder': '좋았던 점, 개선할 점은?',
+        'ultra-rating-submit': '리뷰 보내기',
+        'ultra-rating-sending': '보내는 중…',
+        'ultra-rating-err-no-stars': '먼저 별 개수를 선택해 주세요',
+        'ultra-rating-toast-ok': '피드백 감사합니다! 🎉',
+        'ultra-rating-toast-err': '전송 실패. 다시 시도해 주세요',
+        'ultra-rating-toast-net': '연결 없음. 인터넷 확인 후 다시 시도',
+        'auth-err-email-required': '이메일 또는 닉네임을 입력하세요',
+        'auth-err-password-required': '비밀번호를 입력하세요',
+        'auth-err-bad-nick': '3-20자: 영문, 숫자 또는 _',
+        'auth-err-invalid-email': '이메일 형식이 올바르지 않습니다',
+        'auth-err-pass-min': '최소 8자',
+        'auth-err-pass-mismatch': '비밀번호가 일치하지 않습니다',
+        'auth-err-accept-terms': '이용 약관에 동의해 주세요',
+        'auth-err-invalid-credentials': '이메일 또는 비밀번호가 틀렸습니다',
+        'auth-err-email-not-confirmed': '먼저 이메일을 확인해 주세요 (받은편지함 확인)',
+        'auth-err-email-exists': '이미 등록된 이메일입니다',
+        'auth-err-weak-password': '비밀번호가 너무 약합니다 — 8자 이상, 문자와 숫자',
+        'auth-err-signup-disabled': '가입이 일시 중단되었습니다',
+        'auth-err-user-not-found': '해당 이메일의 계정이 없습니다',
+        'auth-err-rate-limit': '시도 횟수 초과. 잠시 후 다시 시도하세요',
+        'auth-err-captcha': 'captcha 확인 실패, 다시 시도하세요',
+        'auth-err-otp-expired': '확인 코드 만료. 새 코드를 요청하세요',
+        'auth-err-same-password': '새 비밀번호는 이전과 달라야 합니다',
+        'auth-err-server': '서버 응답 없음. 나중에 다시 시도하세요',
+        'auth-err-network': '연결 없음. 인터넷을 확인하세요',
+        'auth-err-unknown': '알 수 없는 오류. 나중에 다시 시도하세요',
+        'auth-busy-login': '로그인 중...',
+        'auth-busy-register': '계정 생성 중...',
+        'auth-busy-forgot': '전송 중...',
+        'auth-ok-login-prefix': '환영합니다, ',
+        'auth-ok-register-prefix': '계정 ',
+        'auth-ok-register-suffix': ' 생성됨! 🎉',
+        'auth-ok-register-confirm': '이메일을 확인하세요 — 메시지 전송 대상: ',
+        'auth-ok-forgot': '재설정 이메일 전송됨! 📧',
+        'auth-forgot-submit': '전송 →',
         'ultra-social-eyebrow': '어디에 있든',
         'ultra-social-title-a': '아레나에', 'ultra-social-title-b': '참여하기',
         'ultra-social-lead': 'Discord와 YouTube. 새로운 기능 소식을 놓치지 마세요.'
@@ -10826,6 +12450,54 @@ verifySession();
         'ultra-news-toast-err': 'حدث خطأ، حاول مرة أخرى',
         'ultra-news-toast-net': 'لا يوجد اتصال. تحقق من الإنترنت وحاول مجددًا',
         'ultra-news-perk-1': 'بدون سبام', 'ultra-news-perk-2': 'أولوية ألفا', 'ultra-news-perk-3': 'سكن حصري',
+        'ultra-reviews-eyebrow': 'المجتمع',
+        'ultra-reviews-title-a': 'آراء',
+        'ultra-reviews-title-b': 'اللاعبين',
+        'ultra-reviews-lead': 'انطباعات من جربوا الألفا بالفعل.',
+        'ultra-reviews-empty-title': 'لا توجد آراء بعد',
+        'ultra-reviews-empty-sub': 'كن أول من يشارك رأيه حول Evades 3 — سيظهر تقييمك هنا.',
+        'ultra-reviews-empty-btn': 'اكتب تقييماً',
+        'ultra-rating-eyebrow': 'رأيك',
+        'ultra-rating-title': 'ما رأيك في المشروع؟',
+        'ultra-rating-sub': 'قيّم اللعبة وشارك أفكارك — يساعد في تطوير Evades 3.',
+        'ultra-rating-hint': 'انقر على نجمة للتقييم',
+        'ultra-rating-chosen': 'تقييمك: ',
+        'ultra-rating-placeholder': 'ماذا أعجبك وما الذي يمكن تحسينه؟',
+        'ultra-rating-submit': 'إرسال التقييم',
+        'ultra-rating-sending': 'إرسال…',
+        'ultra-rating-err-no-stars': 'اختر عدد النجوم أولاً',
+        'ultra-rating-toast-ok': 'شكراً على رأيك! 🎉',
+        'ultra-rating-toast-err': 'تعذر الإرسال. حاول مجدداً',
+        'ultra-rating-toast-net': 'لا يوجد اتصال. تحقق من الإنترنت وحاول مجدداً',
+        'auth-err-email-required': 'أدخل البريد أو اللقب',
+        'auth-err-password-required': 'أدخل كلمة المرور',
+        'auth-err-bad-nick': '3-20 حرفاً: أحرف أو أرقام أو _',
+        'auth-err-invalid-email': 'صيغة البريد غير صالحة',
+        'auth-err-pass-min': '8 أحرف على الأقل',
+        'auth-err-pass-mismatch': 'كلمتا المرور غير متطابقتين',
+        'auth-err-accept-terms': 'وافق على شروط الاستخدام',
+        'auth-err-invalid-credentials': 'البريد أو كلمة المرور غير صحيحة',
+        'auth-err-email-not-confirmed': 'أكّد بريدك أولاً (تحقق من الوارد)',
+        'auth-err-email-exists': 'هذا البريد مسجَّل بالفعل',
+        'auth-err-weak-password': 'كلمة المرور ضعيفة — 8 أحرف+ مع أحرف وأرقام',
+        'auth-err-signup-disabled': 'التسجيل مغلق مؤقتاً',
+        'auth-err-user-not-found': 'لا يوجد حساب بهذا البريد',
+        'auth-err-rate-limit': 'محاولات كثيرة. انتظر دقيقة وحاول مجدداً',
+        'auth-err-captcha': 'فشل التحقق من captcha، حاول مجدداً',
+        'auth-err-otp-expired': 'انتهت صلاحية رمز التأكيد. اطلب آخر',
+        'auth-err-same-password': 'يجب أن تختلف كلمة المرور الجديدة عن القديمة',
+        'auth-err-server': 'الخادم لا يستجيب. حاول لاحقاً',
+        'auth-err-network': 'لا يوجد اتصال. تحقق من الإنترنت',
+        'auth-err-unknown': 'خطأ غير معروف. حاول لاحقاً',
+        'auth-busy-login': 'جارٍ تسجيل الدخول...',
+        'auth-busy-register': 'جارٍ إنشاء الحساب...',
+        'auth-busy-forgot': 'جارٍ الإرسال...',
+        'auth-ok-login-prefix': 'أهلاً ',
+        'auth-ok-register-prefix': 'الحساب ',
+        'auth-ok-register-suffix': ' تم إنشاؤه! 🎉',
+        'auth-ok-register-confirm': 'أكّد بريدك — أُرسلت الرسالة إلى ',
+        'auth-ok-forgot': 'تم إرسال بريد إعادة التعيين! 📧',
+        'auth-forgot-submit': 'إرسال →',
         'ultra-social-eyebrow': 'أينما كنت',
         'ultra-social-title-a': 'انضم', 'ultra-social-title-b': 'إلى الساحة',
         'ultra-social-lead': 'Discord وYouTube. ابقَ على اطلاع بكل ميزة جديدة.'
@@ -10883,6 +12555,54 @@ verifySession();
         'ultra-news-toast-err': 'कुछ गलत हुआ, फिर कोशिश करें',
         'ultra-news-toast-net': 'कनेक्शन नहीं। इंटरनेट जाँचें और फिर कोशिश करें',
         'ultra-news-perk-1': 'कोई स्पैम नहीं', 'ultra-news-perk-2': 'अल्फ़ा प्राथमिकता', 'ultra-news-perk-3': 'विशेष स्किन',
+        'ultra-reviews-eyebrow': 'समुदाय',
+        'ultra-reviews-title-a': 'खिलाड़ियों',
+        'ultra-reviews-title-b': 'की समीक्षाएँ',
+        'ultra-reviews-lead': 'जिन्होंने अल्फ़ा आज़माया, उनके इंप्रेशन।',
+        'ultra-reviews-empty-title': 'अभी कोई समीक्षा नहीं',
+        'ultra-reviews-empty-sub': 'Evades 3 पर अपनी राय साझा करने वाले पहले बनें — आपकी समीक्षा यहाँ दिखेगी।',
+        'ultra-reviews-empty-btn': 'समीक्षा लिखें',
+        'ultra-rating-eyebrow': 'आपकी राय',
+        'ultra-rating-title': 'प्रोजेक्ट कैसा लगा?',
+        'ultra-rating-sub': 'गेम को रेट करें और विचार साझा करें — Evades 3 को बेहतर बनाने में मदद मिलती है।',
+        'ultra-rating-hint': 'रेटिंग के लिए सितारे पर क्लिक करें',
+        'ultra-rating-chosen': 'आपकी रेटिंग: ',
+        'ultra-rating-placeholder': 'क्या पसंद आया, क्या सुधारें?',
+        'ultra-rating-submit': 'समीक्षा भेजें',
+        'ultra-rating-sending': 'भेज रहे…',
+        'ultra-rating-err-no-stars': 'पहले सितारे चुनें',
+        'ultra-rating-toast-ok': 'फीडबैक के लिए धन्यवाद! 🎉',
+        'ultra-rating-toast-err': 'भेजा नहीं जा सका। फिर से कोशिश करें',
+        'ultra-rating-toast-net': 'कनेक्शन नहीं। इंटरनेट जाँचें और पुनः प्रयास करें',
+        'auth-err-email-required': 'ईमेल या निकनेम दर्ज करें',
+        'auth-err-password-required': 'पासवर्ड दर्ज करें',
+        'auth-err-bad-nick': '3-20 अक्षर: अक्षर, संख्या या _',
+        'auth-err-invalid-email': 'अमान्य ईमेल प्रारूप',
+        'auth-err-pass-min': 'कम से कम 8 अक्षर',
+        'auth-err-pass-mismatch': 'पासवर्ड मेल नहीं खाते',
+        'auth-err-accept-terms': 'शर्तें स्वीकार करें',
+        'auth-err-invalid-credentials': 'गलत ईमेल या पासवर्ड',
+        'auth-err-email-not-confirmed': 'पहले ईमेल सत्यापित करें (इनबॉक्स देखें)',
+        'auth-err-email-exists': 'यह ईमेल पहले से पंजीकृत है',
+        'auth-err-weak-password': 'पासवर्ड कमज़ोर है — 8+ अक्षर, अक्षर और संख्या',
+        'auth-err-signup-disabled': 'पंजीकरण अस्थायी रूप से बंद है',
+        'auth-err-user-not-found': 'इस ईमेल से कोई खाता नहीं',
+        'auth-err-rate-limit': 'बहुत अधिक प्रयास। एक मिनट रुकें और फिर कोशिश करें',
+        'auth-err-captcha': 'captcha विफल, फिर कोशिश करें',
+        'auth-err-otp-expired': 'पुष्टिकरण कोड समाप्त। नया अनुरोध करें',
+        'auth-err-same-password': 'नया पासवर्ड पुराने से अलग होना चाहिए',
+        'auth-err-server': 'सर्वर प्रतिक्रिया नहीं दे रहा। बाद में कोशिश करें',
+        'auth-err-network': 'कोई कनेक्शन नहीं। इंटरनेट जाँचें',
+        'auth-err-unknown': 'अज्ञात त्रुटि। बाद में कोशिश करें',
+        'auth-busy-login': 'साइन-इन हो रहा है...',
+        'auth-busy-register': 'खाता बनाया जा रहा है...',
+        'auth-busy-forgot': 'भेजा जा रहा है...',
+        'auth-ok-login-prefix': 'स्वागत है, ',
+        'auth-ok-register-prefix': 'खाता ',
+        'auth-ok-register-suffix': ' बनाया गया! 🎉',
+        'auth-ok-register-confirm': 'ईमेल सत्यापित करें — संदेश भेजा गया: ',
+        'auth-ok-forgot': 'रीसेट ईमेल भेजा गया! 📧',
+        'auth-forgot-submit': 'भेजें →',
         'ultra-social-eyebrow': 'जहाँ भी आप हों',
         'ultra-social-title-a': 'अखाड़े में', 'ultra-social-title-b': 'शामिल हों',
         'ultra-social-lead': 'Discord और YouTube। हर नए फीचर की जानकारी पाएँ।'
@@ -10940,6 +12660,54 @@ verifySession();
         'ultra-news-toast-err': 'เกิดข้อผิดพลาด ลองอีกครั้ง',
         'ultra-news-toast-net': 'ไม่มีการเชื่อมต่อ ตรวจสอบอินเทอร์เน็ตแล้วลองใหม่',
         'ultra-news-perk-1': 'ไม่มีสแปม', 'ultra-news-perk-2': 'สิทธิ์อัลฟ่าก่อน', 'ultra-news-perk-3': 'สกินพิเศษ',
+        'ultra-reviews-eyebrow': 'ชุมชน',
+        'ultra-reviews-title-a': 'รีวิว',
+        'ultra-reviews-title-b': 'จากผู้เล่น',
+        'ultra-reviews-lead': 'ความรู้สึกจากคนที่ลองอัลฟาแล้ว.',
+        'ultra-reviews-empty-title': 'ยังไม่มีรีวิว',
+        'ultra-reviews-empty-sub': 'เป็นคนแรกที่แชร์ความเห็นเกี่ยวกับ Evades 3 — รีวิวของคุณจะแสดงที่นี่.',
+        'ultra-reviews-empty-btn': 'เขียนรีวิว',
+        'ultra-rating-eyebrow': 'ความเห็นของคุณ',
+        'ultra-rating-title': 'ชอบโปรเจกต์ไหม?',
+        'ultra-rating-sub': 'ให้คะแนนและแชร์ความคิด — ช่วยให้ Evades 3 ดีขึ้น.',
+        'ultra-rating-hint': 'คลิกดาวเพื่อให้คะแนน',
+        'ultra-rating-chosen': 'คะแนนของคุณ: ',
+        'ultra-rating-placeholder': 'ชอบอะไร อยากให้ปรับอะไร?',
+        'ultra-rating-submit': 'ส่งรีวิว',
+        'ultra-rating-sending': 'กำลังส่ง…',
+        'ultra-rating-err-no-stars': 'กรุณาเลือกจำนวนดาวก่อน',
+        'ultra-rating-toast-ok': 'ขอบคุณสำหรับรีวิว! 🎉',
+        'ultra-rating-toast-err': 'ส่งไม่สำเร็จ ลองใหม่อีกครั้ง',
+        'ultra-rating-toast-net': 'ไม่มีการเชื่อมต่อ ตรวจสอบอินเทอร์เน็ตแล้วลองใหม่',
+        'auth-err-email-required': 'กรุณากรอกอีเมลหรือชื่อเล่น',
+        'auth-err-password-required': 'กรุณากรอกรหัสผ่าน',
+        'auth-err-bad-nick': '3-20 ตัวอักษร: ตัวอักษร ตัวเลข หรือ _',
+        'auth-err-invalid-email': 'รูปแบบอีเมลไม่ถูกต้อง',
+        'auth-err-pass-min': 'อย่างน้อย 8 ตัวอักษร',
+        'auth-err-pass-mismatch': 'รหัสผ่านไม่ตรงกัน',
+        'auth-err-accept-terms': 'กรุณายอมรับเงื่อนไข',
+        'auth-err-invalid-credentials': 'อีเมลหรือรหัสผ่านไม่ถูกต้อง',
+        'auth-err-email-not-confirmed': 'โปรดยืนยันอีเมลก่อน (เช็คกล่องจดหมาย)',
+        'auth-err-email-exists': 'อีเมลนี้ลงทะเบียนแล้ว',
+        'auth-err-weak-password': 'รหัสผ่านอ่อนเกินไป — 8+ ตัว ตัวอักษรและตัวเลข',
+        'auth-err-signup-disabled': 'ปิดการลงทะเบียนชั่วคราว',
+        'auth-err-user-not-found': 'ไม่พบบัญชีด้วยอีเมลนี้',
+        'auth-err-rate-limit': 'ลองหลายครั้งเกินไป รอสักครู่แล้วลองใหม่',
+        'auth-err-captcha': 'captcha ล้มเหลว ลองใหม่',
+        'auth-err-otp-expired': 'รหัสยืนยันหมดอายุ ขอใหม่',
+        'auth-err-same-password': 'รหัสผ่านใหม่ต้องต่างจากเดิม',
+        'auth-err-server': 'เซิร์ฟเวอร์ไม่ตอบสนอง ลองใหม่ภายหลัง',
+        'auth-err-network': 'ไม่มีการเชื่อมต่อ ตรวจสอบอินเทอร์เน็ต',
+        'auth-err-unknown': 'ข้อผิดพลาดไม่ทราบสาเหตุ ลองใหม่ภายหลัง',
+        'auth-busy-login': 'กำลังเข้าสู่ระบบ...',
+        'auth-busy-register': 'กำลังสร้างบัญชี...',
+        'auth-busy-forgot': 'กำลังส่ง...',
+        'auth-ok-login-prefix': 'ยินดีต้อนรับ ',
+        'auth-ok-register-prefix': 'บัญชี ',
+        'auth-ok-register-suffix': ' สร้างแล้ว! 🎉',
+        'auth-ok-register-confirm': 'ยืนยันอีเมล — ส่งข้อความไปที่ ',
+        'auth-ok-forgot': 'อีเมลรีเซ็ตถูกส่งแล้ว! 📧',
+        'auth-forgot-submit': 'ส่ง →',
         'ultra-social-eyebrow': 'ทุกที่ที่คุณอยู่',
         'ultra-social-title-a': 'เข้าร่วม', 'ultra-social-title-b': 'สนามประลอง',
         'ultra-social-lead': 'Discord และ YouTube รับทราบทุกฟีเจอร์ใหม่'
@@ -10997,6 +12765,54 @@ verifySession();
         'ultra-news-toast-err': 'Đã xảy ra lỗi, vui lòng thử lại',
         'ultra-news-toast-net': 'Không có kết nối. Kiểm tra internet và thử lại',
         'ultra-news-perk-1': 'Không spam', 'ultra-news-perk-2': 'Ưu tiên alpha', 'ultra-news-perk-3': 'Skin độc quyền',
+        'ultra-reviews-eyebrow': 'Cộng đồng',
+        'ultra-reviews-title-a': 'Đánh giá',
+        'ultra-reviews-title-b': 'người chơi',
+        'ultra-reviews-lead': 'Cảm nhận từ những người đã thử alpha.',
+        'ultra-reviews-empty-title': 'Chưa có đánh giá',
+        'ultra-reviews-empty-sub': 'Hãy là người đầu tiên chia sẻ cảm nhận về Evades 3 — đánh giá của bạn sẽ hiện ở đây.',
+        'ultra-reviews-empty-btn': 'Viết đánh giá',
+        'ultra-rating-eyebrow': 'Ý kiến của bạn',
+        'ultra-rating-title': 'Bạn thấy dự án thế nào?',
+        'ultra-rating-sub': 'Đánh giá game và chia sẻ suy nghĩ — giúp Evades 3 tốt hơn.',
+        'ultra-rating-hint': 'Nhấn vào một ngôi sao để đánh giá',
+        'ultra-rating-chosen': 'Điểm của bạn: ',
+        'ultra-rating-placeholder': 'Bạn thích gì, muốn cải thiện gì?',
+        'ultra-rating-submit': 'Gửi đánh giá',
+        'ultra-rating-sending': 'Đang gửi…',
+        'ultra-rating-err-no-stars': 'Hãy chọn số sao trước',
+        'ultra-rating-toast-ok': 'Cảm ơn đã phản hồi! 🎉',
+        'ultra-rating-toast-err': 'Không gửi được. Vui lòng thử lại',
+        'ultra-rating-toast-net': 'Không có kết nối. Kiểm tra internet và thử lại',
+        'auth-err-email-required': 'Nhập email hoặc biệt danh',
+        'auth-err-password-required': 'Nhập mật khẩu',
+        'auth-err-bad-nick': '3-20 ký tự: chữ, số hoặc _',
+        'auth-err-invalid-email': 'Định dạng email không hợp lệ',
+        'auth-err-pass-min': 'Tối thiểu 8 ký tự',
+        'auth-err-pass-mismatch': 'Mật khẩu không khớp',
+        'auth-err-accept-terms': 'Chấp nhận điều khoản',
+        'auth-err-invalid-credentials': 'Sai email hoặc mật khẩu',
+        'auth-err-email-not-confirmed': 'Xác nhận email trước (kiểm tra hộp thư)',
+        'auth-err-email-exists': 'Email này đã được đăng ký',
+        'auth-err-weak-password': 'Mật khẩu quá yếu — 8+ ký tự với chữ và số',
+        'auth-err-signup-disabled': 'Đăng ký tạm đóng',
+        'auth-err-user-not-found': 'Không có tài khoản với email này',
+        'auth-err-rate-limit': 'Quá nhiều lần thử. Đợi một phút và thử lại',
+        'auth-err-captcha': 'Xác minh captcha thất bại, thử lại',
+        'auth-err-otp-expired': 'Mã xác nhận hết hạn. Yêu cầu mã mới',
+        'auth-err-same-password': 'Mật khẩu mới phải khác mật khẩu cũ',
+        'auth-err-server': 'Máy chủ không phản hồi. Thử lại sau',
+        'auth-err-network': 'Không có kết nối. Kiểm tra internet',
+        'auth-err-unknown': 'Lỗi không xác định. Thử lại sau',
+        'auth-busy-login': 'Đang đăng nhập...',
+        'auth-busy-register': 'Đang tạo tài khoản...',
+        'auth-busy-forgot': 'Đang gửi...',
+        'auth-ok-login-prefix': 'Chào mừng, ',
+        'auth-ok-register-prefix': 'Tài khoản ',
+        'auth-ok-register-suffix': ' đã tạo! 🎉',
+        'auth-ok-register-confirm': 'Xác nhận email — tin nhắn gửi tới ',
+        'auth-ok-forgot': 'Email đặt lại đã gửi! 📧',
+        'auth-forgot-submit': 'Gửi →',
         'ultra-social-eyebrow': 'Bất cứ nơi đâu',
         'ultra-social-title-a': 'Tham gia', 'ultra-social-title-b': 'đấu trường',
         'ultra-social-lead': 'Discord và YouTube. Luôn cập nhật mọi tính năng mới.'
@@ -11054,6 +12870,54 @@ verifySession();
         'ultra-news-toast-err': 'Ada yang salah, coba lagi',
         'ultra-news-toast-net': 'Tidak ada koneksi. Periksa internet dan coba lagi',
         'ultra-news-perk-1': 'Tanpa spam', 'ultra-news-perk-2': 'Prioritas alpha', 'ultra-news-perk-3': 'Skin eksklusif',
+        'ultra-reviews-eyebrow': 'Komunitas',
+        'ultra-reviews-title-a': 'Ulasan',
+        'ultra-reviews-title-b': 'pemain',
+        'ultra-reviews-lead': 'Kesan dari mereka yang sudah mencoba alfa.',
+        'ultra-reviews-empty-title': 'Belum ada ulasan',
+        'ultra-reviews-empty-sub': 'Jadilah yang pertama berbagi kesan tentang Evades 3 — ulasan kamu tampil di sini.',
+        'ultra-reviews-empty-btn': 'Tulis ulasan',
+        'ultra-rating-eyebrow': 'Pendapatmu',
+        'ultra-rating-title': 'Bagaimana proyeknya?',
+        'ultra-rating-sub': 'Beri rating dan bagikan pemikiran — membantu membuat Evades 3 lebih baik.',
+        'ultra-rating-hint': 'Klik bintang untuk menilai',
+        'ultra-rating-chosen': 'Rating kamu: ',
+        'ultra-rating-placeholder': 'Apa yang disukai, apa yang perlu diperbaiki?',
+        'ultra-rating-submit': 'Kirim ulasan',
+        'ultra-rating-sending': 'Mengirim…',
+        'ultra-rating-err-no-stars': 'Pilih jumlah bintang dulu',
+        'ultra-rating-toast-ok': 'Terima kasih atas masukan! 🎉',
+        'ultra-rating-toast-err': 'Gagal mengirim. Coba lagi',
+        'ultra-rating-toast-net': 'Tidak ada koneksi. Periksa internet dan coba lagi',
+        'auth-err-email-required': 'Masukkan email atau nickname',
+        'auth-err-password-required': 'Masukkan kata sandi',
+        'auth-err-bad-nick': '3-20 karakter: huruf, angka atau _',
+        'auth-err-invalid-email': 'Format email tidak valid',
+        'auth-err-pass-min': 'Minimal 8 karakter',
+        'auth-err-pass-mismatch': 'Kata sandi tidak cocok',
+        'auth-err-accept-terms': 'Terima syarat penggunaan',
+        'auth-err-invalid-credentials': 'Email atau kata sandi salah',
+        'auth-err-email-not-confirmed': 'Konfirmasi email dulu (cek kotak masuk)',
+        'auth-err-email-exists': 'Email ini sudah terdaftar',
+        'auth-err-weak-password': 'Kata sandi lemah — 8+ karakter dengan huruf dan angka',
+        'auth-err-signup-disabled': 'Pendaftaran ditutup sementara',
+        'auth-err-user-not-found': 'Tidak ada akun dengan email ini',
+        'auth-err-rate-limit': 'Terlalu banyak percobaan. Tunggu sebentar dan coba lagi',
+        'auth-err-captcha': 'Verifikasi captcha gagal, coba lagi',
+        'auth-err-otp-expired': 'Kode konfirmasi kedaluwarsa. Minta yang baru',
+        'auth-err-same-password': 'Kata sandi baru harus berbeda dari yang lama',
+        'auth-err-server': 'Server tidak merespons. Coba lagi nanti',
+        'auth-err-network': 'Tidak ada koneksi. Periksa internet',
+        'auth-err-unknown': 'Kesalahan tidak diketahui. Coba lagi nanti',
+        'auth-busy-login': 'Masuk...',
+        'auth-busy-register': 'Membuat akun...',
+        'auth-busy-forgot': 'Mengirim...',
+        'auth-ok-login-prefix': 'Selamat datang, ',
+        'auth-ok-register-prefix': 'Akun ',
+        'auth-ok-register-suffix': ' dibuat! 🎉',
+        'auth-ok-register-confirm': 'Konfirmasi email — pesan dikirim ke ',
+        'auth-ok-forgot': 'Email reset dikirim! 📧',
+        'auth-forgot-submit': 'Kirim →',
         'ultra-social-eyebrow': 'Di mana pun kamu',
         'ultra-social-title-a': 'Gabung', 'ultra-social-title-b': 'ke arena',
         'ultra-social-lead': 'Discord dan YouTube. Tetap up-to-date dengan setiap fitur baru.'
@@ -11111,6 +12975,54 @@ verifySession();
         'ultra-news-toast-err': 'Sesuatu tidak kena, cuba semula',
         'ultra-news-toast-net': 'Tiada sambungan. Semak internet dan cuba semula',
         'ultra-news-perk-1': 'Tiada spam', 'ultra-news-perk-2': 'Keutamaan alfa', 'ultra-news-perk-3': 'Skin eksklusif',
+        'ultra-reviews-eyebrow': 'Komuniti',
+        'ultra-reviews-title-a': 'Ulasan',
+        'ultra-reviews-title-b': 'pemain',
+        'ultra-reviews-lead': 'Tanggapan mereka yang sudah mencuba alfa.',
+        'ultra-reviews-empty-title': 'Belum ada ulasan',
+        'ultra-reviews-empty-sub': 'Jadilah yang pertama berkongsi pendapat tentang Evades 3 — ulasan anda akan muncul di sini.',
+        'ultra-reviews-empty-btn': 'Tulis ulasan',
+        'ultra-rating-eyebrow': 'Pendapat anda',
+        'ultra-rating-title': 'Bagaimana projek ini?',
+        'ultra-rating-sub': 'Nilai permainan dan kongsi pemikiran — membantu Evades 3 menjadi lebih baik.',
+        'ultra-rating-hint': 'Klik bintang untuk menilai',
+        'ultra-rating-chosen': 'Penilaian anda: ',
+        'ultra-rating-placeholder': 'Apa yang disukai, apa yang perlu diperbaiki?',
+        'ultra-rating-submit': 'Hantar ulasan',
+        'ultra-rating-sending': 'Menghantar…',
+        'ultra-rating-err-no-stars': 'Pilih bilangan bintang dahulu',
+        'ultra-rating-toast-ok': 'Terima kasih atas maklum balas! 🎉',
+        'ultra-rating-toast-err': 'Gagal menghantar. Cuba lagi',
+        'ultra-rating-toast-net': 'Tiada sambungan. Semak internet dan cuba lagi',
+        'auth-err-email-required': 'Masukkan email atau nickname',
+        'auth-err-password-required': 'Masukkan kata laluan',
+        'auth-err-bad-nick': '3-20 aksara: huruf, angka atau _',
+        'auth-err-invalid-email': 'Format email tidak sah',
+        'auth-err-pass-min': 'Sekurang-kurangnya 8 aksara',
+        'auth-err-pass-mismatch': 'Kata laluan tidak sepadan',
+        'auth-err-accept-terms': 'Terima syarat penggunaan',
+        'auth-err-invalid-credentials': 'Email atau kata laluan salah',
+        'auth-err-email-not-confirmed': 'Sahkan email dahulu (semak peti masuk)',
+        'auth-err-email-exists': 'Email ini sudah didaftarkan',
+        'auth-err-weak-password': 'Kata laluan lemah — 8+ aksara dengan huruf dan angka',
+        'auth-err-signup-disabled': 'Pendaftaran ditutup sementara',
+        'auth-err-user-not-found': 'Tiada akaun dengan email ini',
+        'auth-err-rate-limit': 'Terlalu banyak percubaan. Tunggu seminit dan cuba lagi',
+        'auth-err-captcha': 'Pengesahan captcha gagal, cuba lagi',
+        'auth-err-otp-expired': 'Kod pengesahan tamat. Minta yang baharu',
+        'auth-err-same-password': 'Kata laluan baharu mesti berbeza daripada yang lama',
+        'auth-err-server': 'Pelayan tidak bertindak balas. Cuba lagi kemudian',
+        'auth-err-network': 'Tiada sambungan. Semak internet',
+        'auth-err-unknown': 'Ralat tidak diketahui. Cuba lagi kemudian',
+        'auth-busy-login': 'Log masuk...',
+        'auth-busy-register': 'Mencipta akaun...',
+        'auth-busy-forgot': 'Menghantar...',
+        'auth-ok-login-prefix': 'Selamat datang, ',
+        'auth-ok-register-prefix': 'Akaun ',
+        'auth-ok-register-suffix': ' dicipta! 🎉',
+        'auth-ok-register-confirm': 'Sahkan email — mesej dihantar ke ',
+        'auth-ok-forgot': 'Email set semula dihantar! 📧',
+        'auth-forgot-submit': 'Hantar →',
         'ultra-social-eyebrow': 'Di mana sahaja anda',
         'ultra-social-title-a': 'Sertai', 'ultra-social-title-b': 'arena',
         'ultra-social-lead': 'Discord dan YouTube. Kekal terkini dengan setiap ciri baharu.'
@@ -11148,4 +13060,3 @@ verifySession();
   </script>
 </body>
 </html>
-<!-- final restart -->
