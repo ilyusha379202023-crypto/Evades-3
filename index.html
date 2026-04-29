@@ -4304,6 +4304,135 @@ svg.ic-svg-login {
   display: inline-flex; align-items: center; gap: 0;
 }
 .btn-login .lg-text { display: inline-block; vertical-align: middle; }
+
+/* ── COOKIE CONSENT BANNER ── */
+.cookie-banner {
+  position: fixed;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%) translateY(140%);
+  width: min(720px, calc(100vw - 28px));
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 22px 16px 20px;
+  border-radius: 22px;
+  background:
+    radial-gradient(120% 120% at 0% 0%, rgba(255,200,58,0.14), transparent 55%),
+    linear-gradient(165deg, #11402a 0%, #0a2516 55%, #061309 100%);
+  border: 1px solid rgba(255,200,58,0.45);
+  box-shadow:
+    0 24px 60px rgba(0,0,0,0.55),
+    0 0 0 1px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,236,170,0.22),
+    inset 0 -30px 40px rgba(0,0,0,0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  font-family: 'Exo 2', sans-serif;
+  color: rgba(255,236,170,0.92);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.55s cubic-bezier(0.18,1.2,0.22,1), opacity 0.4s ease;
+}
+.cookie-banner.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.cookie-banner.hide {
+  transform: translateX(-50%) translateY(140%);
+  opacity: 0;
+  pointer-events: none;
+}
+.cookie-banner-icon {
+  flex-shrink: 0;
+  font-size: 38px;
+  line-height: 1;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.55)) drop-shadow(0 0 12px rgba(255,200,58,0.55));
+  animation: e3CookieWiggle 4s ease-in-out infinite;
+}
+@keyframes e3CookieWiggle {
+  0%, 100% { transform: rotate(-6deg) scale(1); }
+  50%      { transform: rotate(6deg) scale(1.05); }
+}
+.cookie-banner-text {
+  flex: 1 1 auto;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: 0.2px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.55);
+}
+.cookie-banner-text a {
+  color: #FFEFA8;
+  text-decoration: underline;
+  text-decoration-color: rgba(255,200,58,0.55);
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+.cookie-banner-text a:hover { color: #FFFFFF; text-decoration-color: #FFEFA8; }
+.cookie-banner-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.cookie-banner-btn {
+  font-family: 'Orbitron', 'Exo 2', sans-serif;
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 10px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1), box-shadow 0.25s ease, filter 0.25s ease;
+  white-space: nowrap;
+}
+.cookie-banner-btn.primary {
+  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 55%, #C49100 100%);
+  color: #1a1000;
+  border-color: rgba(255,236,170,0.7);
+  box-shadow:
+    0 6px 14px rgba(255,170,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.55),
+    inset 0 -10px 14px rgba(0,0,0,0.2);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+}
+.cookie-banner-btn.primary:hover {
+  transform: translateY(-1px) scale(1.03);
+  box-shadow:
+    0 10px 22px rgba(255,170,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.7),
+    inset 0 -10px 14px rgba(0,0,0,0.15);
+  filter: brightness(1.05);
+}
+.cookie-banner-btn.secondary {
+  background: rgba(255,236,170,0.06);
+  color: rgba(255,236,170,0.88);
+  border-color: rgba(255,200,58,0.45);
+  box-shadow: inset 0 1px 0 rgba(255,236,170,0.12);
+}
+.cookie-banner-btn.secondary:hover {
+  transform: translateY(-1px);
+  background: rgba(255,200,58,0.14);
+  border-color: rgba(255,200,58,0.75);
+  color: #FFEFA8;
+  box-shadow: 0 6px 14px rgba(255,170,0,0.18), inset 0 1px 0 rgba(255,236,170,0.2);
+}
+@media (max-width: 640px) {
+  .cookie-banner {
+    flex-wrap: wrap;
+    bottom: 12px;
+    padding: 14px 16px;
+    gap: 12px;
+  }
+  .cookie-banner-text { flex-basis: 100%; font-size: 13px; }
+  .cookie-banner-icon { font-size: 32px; }
+  .cookie-banner-actions { width: 100%; justify-content: stretch; }
+  .cookie-banner-btn { flex: 1 1 0; padding: 12px 14px; }
+}
   </style>
 </head>
 
@@ -5478,7 +5607,7 @@ svg.ic-svg-login {
         <span class="dot" aria-hidden="true">·</span>
         <a href="privacy/" data-i18n="footer-privacy">Политика конфиденциальности</a>
         <span class="dot" aria-hidden="true">·</span>
-        <a href="#" data-i18n="footer-cookies">Cookies</a>
+        <a href="cookies/" data-i18n="footer-cookies">Cookies</a>
         <span class="dot" aria-hidden="true">·</span>
         <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener" data-i18n="footer-support">Поддержка</a>
       </nav>
@@ -5491,6 +5620,9 @@ svg.ic-svg-login {
         const translations = {
             ru: {
                 'languages': 'Языки ▼',
+                'cookie-banner-text': "Мы используем cookies для входа, языка и работы сайта. Подробнее в <a href=\"cookies/\">Политике cookies</a>.",
+                'cookie-banner-decline': "Отклонить",
+                'cookie-banner-accept': "Принять",
                 'early-access': '*Ранний доступ',
                 'subtitle': 'Скорость. Тактика.',
                 'footer-copy': '© 2026 Evades 3. Все права защищены.',
@@ -5606,6 +5738,9 @@ svg.ic-svg-login {
             },
             en: {
                 'languages': 'Languages ▼',
+                'cookie-banner-text': "We use cookies for sign-in, language and site features. Details in our <a href=\"cookies/\">Cookies Policy</a>.",
+                'cookie-banner-decline': "Decline",
+                'cookie-banner-accept': "Accept",
                 'early-access': '*Early Access',
                 'subtitle': 'Speed. Tactics.',
                 'footer-copy': '© 2026 Evades 3. All rights reserved.',
@@ -5721,6 +5856,9 @@ svg.ic-svg-login {
             },
             uk: {
                 'languages': 'Мови ▼',
+                'cookie-banner-text': "Ми використовуємо cookies для входу, мови і роботи сайту. Деталі в <a href=\"cookies/\">Політиці cookies</a>.",
+                'cookie-banner-decline': "Відхилити",
+                'cookie-banner-accept': "Прийняти",
                 'early-access': '*Ранній доступ',
                 'subtitle': 'Швидкість. Тактика.',
                 'footer-copy': '© 2026 Evades 3. Усі права захищені.',
@@ -5836,6 +5974,9 @@ svg.ic-svg-login {
             },
             de: {
                 'languages': 'Sprachen ▼',
+                'cookie-banner-text': "Wir verwenden Cookies für Anmeldung, Sprache und Funktionen. Mehr in unseren <a href=\"cookies/\">Cookie-Richtlinien</a>.",
+                'cookie-banner-decline': "Ablehnen",
+                'cookie-banner-accept': "Akzeptieren",
                 'early-access': '*Früher Zugang',
                 'subtitle': 'Geschwindigkeit. Taktik.',
                 'footer-copy': '© 2026 Evades 3. Alle Rechte vorbehalten.',
@@ -5951,6 +6092,9 @@ svg.ic-svg-login {
             },
             es: {
                 'languages': 'Idiomas ▼',
+                'cookie-banner-text': "Usamos cookies para el inicio de sesión, idioma y funciones del sitio. Más detalles en nuestra <a href=\"cookies/\">Política de cookies</a>.",
+                'cookie-banner-decline': "Rechazar",
+                'cookie-banner-accept': "Aceptar",
                 'early-access': '*Acceso anticipado',
                 'subtitle': 'Velocidad. Táctica.',
                 'footer-copy': '© 2026 Evades 3. Todos los derechos reservados.',
@@ -6066,6 +6210,9 @@ svg.ic-svg-login {
             },
             fr: {
                 'languages': 'Langues ▼',
+                'cookie-banner-text': "Nous utilisons des cookies pour la connexion, la langue et les fonctionnalités. Détails dans notre <a href=\"cookies/\">Politique de cookies</a>.",
+                'cookie-banner-decline': "Refuser",
+                'cookie-banner-accept': "Accepter",
                 'early-access': '*Accès anticipé',
                 'subtitle': 'Vitesse. Tactique.',
                 'footer-copy': '© 2026 Evades 3. Tous droits réservés.',
@@ -6181,6 +6328,9 @@ svg.ic-svg-login {
             },
             it: {
                 'languages': 'Lingue ▼',
+                'cookie-banner-text': "Usiamo i cookie per accesso, lingua e funzionalità del sito. Dettagli nella nostra <a href=\"cookies/\">Cookie Policy</a>.",
+                'cookie-banner-decline': "Rifiuta",
+                'cookie-banner-accept': "Accetta",
                 'early-access': '*Accesso anticipato',
                 'subtitle': 'Velocità. Tattica.',
                 'footer-copy': '© 2026 Evades 3. Tutti i diritti riservati.',
@@ -6296,6 +6446,9 @@ svg.ic-svg-login {
             },
             pt: {
                 'languages': 'Idiomas ▼',
+                'cookie-banner-text': "Usamos cookies para login, idioma e funcionamento do site. Detalhes na nossa <a href=\"cookies/\">Política de Cookies</a>.",
+                'cookie-banner-decline': "Rejeitar",
+                'cookie-banner-accept': "Aceitar",
                 'early-access': '*Acesso antecipado',
                 'subtitle': 'Velocidade. Tática.',
                 'footer-copy': '© 2026 Evades 3. Todos os direitos reservados.',
@@ -6411,6 +6564,9 @@ svg.ic-svg-login {
             },
             pl: {
                 'languages': 'Języki ▼',
+                'cookie-banner-text': "Używamy plików cookies do logowania, języka i działania strony. Szczegóły w naszej <a href=\"cookies/\">Polityce cookies</a>.",
+                'cookie-banner-decline': "Odrzuć",
+                'cookie-banner-accept': "Akceptuj",
                 'early-access': '*Wczesny dostęp',
                 'subtitle': 'Prędkość. Taktyka.',
                 'footer-copy': '© 2026 Evades 3. Wszelkie prawa zastrzeżone.',
@@ -6526,6 +6682,9 @@ svg.ic-svg-login {
             },
             tr: {
                 'languages': 'Diller ▼',
+                'cookie-banner-text': "Giriş, dil ve site özellikleri için çerez kullanıyoruz. Ayrıntılar <a href=\"cookies/\">Çerez Politikası</a>'nda.",
+                'cookie-banner-decline': "Reddet",
+                'cookie-banner-accept': "Kabul et",
                 'early-access': '*Erken erişim',
                 'subtitle': 'Hız. Taktik.',
                 'footer-copy': '© 2026 Evades 3. Tüm hakları saklıdır.',
@@ -6641,6 +6800,9 @@ svg.ic-svg-login {
             },
             nl: {
                 'languages': 'Talen ▼',
+                'cookie-banner-text': "We gebruiken cookies voor login, taal en sitefuncties. Details in ons <a href=\"cookies/\">Cookiebeleid</a>.",
+                'cookie-banner-decline': "Weigeren",
+                'cookie-banner-accept': "Accepteren",
                 'early-access': '*Vroege toegang',
                 'subtitle': 'Snelheid. Tactiek.',
                 'footer-copy': '© 2026 Evades 3. Alle rechten voorbehouden.',
@@ -6756,6 +6918,9 @@ svg.ic-svg-login {
             },
             sv: {
                 'languages': 'Språk ▼',
+                'cookie-banner-text': "Vi använder cookies för inloggning, språk och sidfunktioner. Detaljer i vår <a href=\"cookies/\">Cookiepolicy</a>.",
+                'cookie-banner-decline': "Avvisa",
+                'cookie-banner-accept': "Acceptera",
                 'early-access': '*Tidig åtkomst',
                 'subtitle': 'Hastighet. Taktik.',
                 'footer-copy': '© 2026 Evades 3. Alla rättigheter förbehållna.',
@@ -6871,6 +7036,9 @@ svg.ic-svg-login {
             },
             no: {
                 'languages': 'Språk ▼',
+                'cookie-banner-text': "Vi bruker informasjonskapsler for innlogging, språk og funksjoner. Detaljer i vår <a href=\"cookies/\">Cookie-retningslinjer</a>.",
+                'cookie-banner-decline': "Avslå",
+                'cookie-banner-accept': "Godta",
                 'early-access': '*Tidlig tilgang',
                 'subtitle': 'Fart. Taktikk.',
                 'footer-copy': '© 2026 Evades 3. Alle rettigheter reservert.',
@@ -6986,6 +7154,9 @@ svg.ic-svg-login {
             },
             fi: {
                 'languages': 'Kielet ▼',
+                'cookie-banner-text': "Käytämme evästeitä kirjautumiseen, kieleen ja sivuston toimintoihin. Lisätietoja <a href=\"cookies/\">evästekäytännössämme</a>.",
+                'cookie-banner-decline': "Hylkää",
+                'cookie-banner-accept': "Hyväksy",
                 'early-access': '*Varhainen pääsy',
                 'subtitle': 'Nopeus. Taktiikka.',
                 'footer-copy': '© 2026 Evades 3. Kaikki oikeudet pidätetään.',
@@ -7101,6 +7272,9 @@ svg.ic-svg-login {
             },
             da: {
                 'languages': 'Sprog ▼',
+                'cookie-banner-text': "Vi bruger cookies til login, sprog og sidefunktioner. Detaljer i vores <a href=\"cookies/\">Cookiepolitik</a>.",
+                'cookie-banner-decline': "Afvis",
+                'cookie-banner-accept': "Acceptér",
                 'early-access': '*Tidlig adgang',
                 'subtitle': 'Hastighed. Taktik.',
                 'footer-copy': '© 2026 Evades 3. Alle rettigheder forbeholdes.',
@@ -7216,6 +7390,9 @@ svg.ic-svg-login {
             },
             cs: {
                 'languages': 'Jazyky ▼',
+                'cookie-banner-text': "Používáme cookies pro přihlášení, jazyk a funkce webu. Detaily v našich <a href=\"cookies/\">Zásadách cookies</a>.",
+                'cookie-banner-decline': "Odmítnout",
+                'cookie-banner-accept': "Přijmout",
                 'early-access': '*Předběžný přístup',
                 'subtitle': 'Rychlost. Taktika.',
                 'footer-copy': '© 2026 Evades 3. Všechna práva vyhrazena.',
@@ -7331,6 +7508,9 @@ svg.ic-svg-login {
             },
             ro: {
                 'languages': 'Limbi ▼',
+                'cookie-banner-text': "Folosim cookie-uri pentru autentificare, limbă și funcționalitatea site-ului. Detalii în <a href=\"cookies/\">Politica de cookies</a>.",
+                'cookie-banner-decline': "Refuză",
+                'cookie-banner-accept': "Acceptă",
                 'early-access': '*Acces timpuriu',
                 'subtitle': 'Viteză. Tactică.',
                 'footer-copy': '© 2026 Evades 3. Toate drepturile rezervate.',
@@ -7446,6 +7626,9 @@ svg.ic-svg-login {
             },
             hu: {
                 'languages': 'Nyelvek ▼',
+                'cookie-banner-text': "Cookie-kat használunk a bejelentkezéshez, nyelvhez és a webhely működéséhez. Részletek a <a href=\"cookies/\">Cookie-szabályzatunkban</a>.",
+                'cookie-banner-decline': "Elutasítás",
+                'cookie-banner-accept': "Elfogadás",
                 'early-access': '*Korai hozzáférés',
                 'subtitle': 'Sebesség. Taktika.',
                 'footer-copy': '© 2026 Evades 3. Minden jog fenntartva.',
@@ -7561,6 +7744,9 @@ svg.ic-svg-login {
             },
             el: {
                 'languages': 'Γλώσσες ▼',
+                'cookie-banner-text': "Χρησιμοποιούμε cookies για σύνδεση, γλώσσα και λειτουργίες του ιστότοπου. Λεπτομέρειες στην <a href=\"cookies/\">Πολιτική Cookies</a>.",
+                'cookie-banner-decline': "Απόρριψη",
+                'cookie-banner-accept': "Αποδοχή",
                 'early-access': '*Πρόωρη πρόσβαση',
                 'subtitle': 'Ταχύτητα. Τακτική.',
                 'footer-copy': '© 2026 Evades 3. Με την επιφύλαξη παντός δικαιώματος.',
@@ -7676,6 +7862,9 @@ svg.ic-svg-login {
             },
             ja: {
                 'languages': '言語 ▼',
+                'cookie-banner-text': "ログイン、言語、サイト機能のために Cookie を使用しています。詳しくは<a href=\"cookies/\">Cookie ポリシー</a>。",
+                'cookie-banner-decline': "拒否",
+                'cookie-banner-accept': "同意する",
                 'early-access': '*早期アクセス',
                 'subtitle': 'スピード. 戦術.',
                 'footer-copy': '© 2026 Evades 3. All rights reserved.',
@@ -7791,6 +7980,9 @@ svg.ic-svg-login {
             },
             zh: {
                 'languages': '语言 ▼',
+                'cookie-banner-text': "我们使用 cookies 用于登录、语言和站点功能。详情见<a href=\"cookies/\">Cookie 政策</a>。",
+                'cookie-banner-decline': "拒绝",
+                'cookie-banner-accept': "接受",
                 'early-access': '*抢先体验',
                 'subtitle': '速度. 战术.',
                 'footer-copy': '© 2026 Evades 3。保留所有权利。',
@@ -7906,6 +8098,9 @@ svg.ic-svg-login {
             },
             ko: {
                 'languages': '언어 ▼',
+                'cookie-banner-text': "로그인, 언어, 사이트 기능을 위해 쿠키를 사용합니다. 자세한 내용은 <a href=\"cookies/\">쿠키 정책</a>을 참조하세요.",
+                'cookie-banner-decline': "거부",
+                'cookie-banner-accept': "동의",
                 'early-access': '*얼리 액세스',
                 'subtitle': '속도. 전술.',
                 'footer-copy': '© 2026 Evades 3. 모든 권리 보유.',
@@ -8021,6 +8216,9 @@ svg.ic-svg-login {
             },
             ar: {
                 'languages': 'اللغات ▼',
+                'cookie-banner-text': "نستخدم ملفات تعريف الارتباط لتسجيل الدخول واللغة وميزات الموقع. التفاصيل في <a href=\"cookies/\">سياسة ملفات تعريف الارتباط</a>.",
+                'cookie-banner-decline': "رفض",
+                'cookie-banner-accept': "قبول",
                 'early-access': '*وصول مبكر',
                 'subtitle': 'السرعة. التكتيك.',
                 'footer-copy': '© 2026 Evades 3. جميع الحقوق محفوظة.',
@@ -8136,6 +8334,9 @@ svg.ic-svg-login {
             },
             hi: {
                 'languages': 'भाषाएँ ▼',
+                'cookie-banner-text': "हम लॉगिन, भाषा और साइट कार्यों के लिए cookies का उपयोग करते हैं। विवरण <a href=\"cookies/\">Cookies नीति</a> में।",
+                'cookie-banner-decline': "अस्वीकार",
+                'cookie-banner-accept': "स्वीकार",
                 'early-access': '*प्रारंभिक पहुँच',
                 'subtitle': 'स्पीड. रणनीति.',
                 'footer-copy': '© 2026 Evades 3. सर्वाधिकार सुरक्षित।',
@@ -8251,6 +8452,9 @@ svg.ic-svg-login {
             },
             th: {
                 'languages': 'ภาษา ▼',
+                'cookie-banner-text': "เราใช้คุกกี้สำหรับการเข้าสู่ระบบ ภาษา และฟังก์ชันของไซต์ รายละเอียดใน<a href=\"cookies/\">นโยบายคุกกี้</a>",
+                'cookie-banner-decline': "ปฏิเสธ",
+                'cookie-banner-accept': "ยอมรับ",
                 'early-access': '*เข้าถึงก่อนใคร',
                 'subtitle': 'ความเร็ว. แทคติก.',
                 'footer-copy': '© 2026 Evades 3. สงวนลิขสิทธิ์',
@@ -8366,6 +8570,9 @@ svg.ic-svg-login {
             },
             vi: {
                 'languages': 'Ngôn ngữ ▼',
+                'cookie-banner-text': "Chúng tôi dùng cookies cho đăng nhập, ngôn ngữ và tính năng của trang. Chi tiết trong <a href=\"cookies/\">Chính sách Cookies</a>.",
+                'cookie-banner-decline': "Từ chối",
+                'cookie-banner-accept': "Chấp nhận",
                 'early-access': '*Truy cập sớm',
                 'subtitle': 'Tốc độ. Chiến thuật.',
                 'footer-copy': '© 2026 Evades 3. Đã đăng ký bản quyền.',
@@ -8481,6 +8688,9 @@ svg.ic-svg-login {
             },
             id: {
                 'languages': 'Bahasa ▼',
+                'cookie-banner-text': "Kami menggunakan cookies untuk login, bahasa, dan fungsi situs. Detail di <a href=\"cookies/\">Kebijakan Cookies</a>.",
+                'cookie-banner-decline': "Tolak",
+                'cookie-banner-accept': "Terima",
                 'early-access': '*Akses awal',
                 'subtitle': 'Kecepatan. Taktik.',
                 'footer-copy': '© 2026 Evades 3. Hak cipta dilindungi.',
@@ -8596,6 +8806,9 @@ svg.ic-svg-login {
             },
             ms: {
                 'languages': 'Bahasa ▼',
+                'cookie-banner-text': "Kami menggunakan cookies untuk log masuk, bahasa dan fungsi laman. Butiran dalam <a href=\"cookies/\">Dasar Cookies</a>.",
+                'cookie-banner-decline': "Tolak",
+                'cookie-banner-accept': "Terima",
                 'early-access': '*Akses awal',
                 'subtitle': 'Kelajuan. Taktik.',
                 'footer-copy': '© 2026 Evades 3. Hak cipta terpelihara.',
@@ -13129,5 +13342,51 @@ verifySession();
 })();
 
   </script>
+
+<!-- ─── COOKIE CONSENT BANNER ─── -->
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie consent">
+  <div class="cookie-banner-icon" aria-hidden="true">🍪</div>
+  <div class="cookie-banner-text" data-i18n="cookie-banner-text">Мы используем cookies для входа, языка и работы сайта. Подробнее в <a href="cookies/">Политике cookies</a>.</div>
+  <div class="cookie-banner-actions">
+    <button type="button" class="cookie-banner-btn secondary" id="cookieDecline" data-i18n="cookie-banner-decline">Отклонить</button>
+    <button type="button" class="cookie-banner-btn primary" id="cookieAccept" data-i18n="cookie-banner-accept">Принять</button>
+  </div>
+</div>
+<script>
+(function(){
+  const KEY = 'e3CookieChoice';
+  const banner = document.getElementById('cookieBanner');
+  if (!banner) return;
+  const accept = document.getElementById('cookieAccept');
+  const decline = document.getElementById('cookieDecline');
+  function hasChoice(){
+    try { return !!localStorage.getItem(KEY); } catch { return false; }
+  }
+  function setChoice(v){
+    try {
+      localStorage.setItem(KEY, v);
+      localStorage.setItem(KEY + 'Time', String(Date.now()));
+    } catch {}
+  }
+  function hide(){
+    banner.classList.remove('show');
+    banner.classList.add('hide');
+    setTimeout(() => { banner.style.display = 'none'; }, 600);
+  }
+  function show(){
+    banner.style.display = 'flex';
+    // double rAF so the slide-in animation actually plays from the offscreen state
+    requestAnimationFrame(() => requestAnimationFrame(() => banner.classList.add('show')));
+  }
+  accept && accept.addEventListener('click', () => { setChoice('accepted'); hide(); });
+  decline && decline.addEventListener('click', () => { setChoice('declined'); hide(); });
+  if (!hasChoice()) {
+    // small delay so the page settles first
+    setTimeout(show, 800);
+  } else {
+    banner.style.display = 'none';
+  }
+})();
+</script>
 </body>
 </html>
