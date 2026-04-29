@@ -3542,14 +3542,28 @@
   box-shadow: 0 12px 30px rgba(0,0,0,0.4);
 }
 .tfa-qr-img{ width: 100%; height: 100%; image-rendering: pixelated; }
-.tfa-qr-loading{ display:flex; flex-direction:column; align-items:center; gap:10px; color:#0a2516; font-size:12px; font-weight:700; }
+.tfa-qr-loading{ display:flex; flex-direction:column; align-items:center; gap:14px; color:#0a2516; font-size:12px; font-weight:800; letter-spacing: 0.5px; }
 .tfa-spinner{
-  width: 28px; height: 28px; border-radius: 50%;
-  border: 3px solid rgba(74,222,128,0.25);
-  border-top-color: #4ade80;
-  animation: tfaSpin 0.9s linear infinite;
+  width: 72px; height: 72px;
+  position: relative;
+  animation: tfaOrbBob 1.4s ease-in-out infinite;
+}
+.tfa-spinner img,
+.tfa-spinner svg{
+  width: 100%; height: 100%;
+  display: block;
+  animation: tfaSpin 1.6s linear infinite;
+  transform-origin: 50% 50%;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 0 6px rgba(74,222,128,0.55))
+    drop-shadow(0 4px 6px rgba(0,0,0,0.35));
 }
 @keyframes tfaSpin{ to { transform: rotate(360deg); } }
+@keyframes tfaOrbBob{
+  0%,100%{ transform: translateY(0); }
+  50%    { transform: translateY(-4px); }
+}
 .tfa-secret-row{
   display: flex; align-items: center; gap: 8px;
   padding: 10px 12px;
@@ -5330,7 +5344,12 @@ svg.ic-svg-login {
       <h3 class="tfa-title" data-i18n="tfa-setup-title">Включение 2FA</h3>
       <p class="tfa-text" data-i18n="tfa-setup-step1">Отсканируй QR-код приложением-аутентификатором (Google Authenticator, Authy, 1Password, Microsoft Authenticator).</p>
       <div class="tfa-qr-wrap" id="tfaQrWrap">
-        <div class="tfa-qr-loading" id="tfaQrLoading"><span class="tfa-spinner"></span><span data-i18n="tfa-loading">Загрузка...</span></div>
+        <div class="tfa-qr-loading" id="tfaQrLoading">
+          <span class="tfa-spinner" aria-hidden="true">
+            <img src="siluet.png" alt="" draggable="false"/>
+          </span>
+          <span data-i18n="tfa-loading">Загрузка...</span>
+        </div>
         <img class="tfa-qr-img" id="tfaQrImg" alt="2FA QR" hidden/>
       </div>
       <div class="tfa-secret-row">
@@ -10486,15 +10505,38 @@ async function open2faSetupModal() {
   }
   ev3TfaState.factorId = r.data.id;
   ev3TfaState.secret = r.data.totp.secret;
-  // QR is returned as SVG string (data URI works too)
-  const qrSvg = r.data.totp.qr_code;
+  // QR can come as: raw SVG string ("<svg..."), already-formed data URI ("data:image/..."), otpauth URI, or be missing.
+  // Build a usable image source for any of these — fall back to generating QR from the otpauth URI server-side.
+  const qrRaw = r.data.totp.qr_code;
+  const otpauthUri = r.data.totp.uri || ('otpauth://totp/Evades%203:' + (ev3Session && ev3Session.user && ev3Session.user.email ? encodeURIComponent(ev3Session.user.email) : 'user') + '?secret=' + encodeURIComponent(ev3TfaState.secret) + '&issuer=Evades%203');
   const img = document.getElementById('tfaQrImg');
-  if (qrSvg && qrSvg.startsWith('<svg')) {
-    img.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(qrSvg);
-  } else if (qrSvg) {
-    img.src = qrSvg;
+  let qrSrc = '';
+  if (typeof qrRaw === 'string' && qrRaw.length) {
+    const trimmed = qrRaw.trim();
+    if (trimmed.startsWith('data:')) {
+      qrSrc = trimmed;
+    } else if (trimmed.startsWith('<svg')) {
+      qrSrc = 'data:image/svg+xml;utf8,' + encodeURIComponent(trimmed);
+    } else if (trimmed.startsWith('otpauth://')) {
+      qrSrc = 'https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=' + encodeURIComponent(trimmed);
+    } else {
+      // Looks like raw base64 / URL string, try as-is
+      qrSrc = trimmed;
+    }
+  } else {
+    // No qr_code field returned — generate from otpauth URI
+    qrSrc = 'https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=' + encodeURIComponent(otpauthUri);
   }
   img.onload = () => { document.getElementById('tfaQrLoading').hidden = true; img.hidden = false; };
+  img.onerror = () => {
+    // Final fallback: re-generate via qrserver from the otpauth URI
+    if (otpauthUri && img.src.indexOf('api.qrserver.com') === -1) {
+      img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=' + encodeURIComponent(otpauthUri);
+    } else {
+      document.getElementById('tfaQrLoading').innerHTML = '<span style="color:#FFAE9B;font-weight:800;">' + (tt('tfa-enroll-failed','Не удалось загрузить QR. Введи секрет вручную ниже.')) + '</span>';
+    }
+  };
+  img.src = qrSrc;
   // Format secret with spaces every 4 chars for readability
   const secret = (ev3TfaState.secret || '').replace(/(.{4})/g, '$1 ').trim();
   document.getElementById('tfaSecretCode').textContent = secret;
