@@ -2929,29 +2929,61 @@
 
 /* ── КРУГЛЫЕ КНОПКИ ── */
 .nav-icon-btn {
-  width: 46px; height: 46px; border-radius: 50%;
-  border: 1.5px solid rgba(255,255,255,0.22);
-  background: linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.07));
+  width: 52px; height: 52px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.55);
+  background:
+    radial-gradient(circle at 30% 28%, rgba(255,255,255,0.45), rgba(255,255,255,0.18) 60%, rgba(255,255,255,0.08) 100%),
+    linear-gradient(145deg, rgba(20,40,30,0.55), rgba(10,25,18,0.65));
   backdrop-filter: blur(14px);
-  box-shadow: 4px 4px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.18);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 6px 18px rgba(0,0,0,0.45),
+    0 0 0 1px rgba(0,0,0,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.45),
+    inset 0 -2px 6px rgba(0,0,0,0.2);
   display: flex; align-items: center; justify-content: center;
   position: relative;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  color: rgba(255,255,255,0.85);
+  color: #ffffff;
+}
+.nav-icon-btn::before{
+  /* outer accent ring — gives the button a clear silhouette on any bg */
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(74,222,128,0.55);
+  filter: blur(0.4px);
+  opacity: 0.65;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 .nav-icon-btn:hover {
   transform: translateY(-3px) scale(1.08);
-  border-color: rgba(255,255,255,0.4);
-  box-shadow: 6px 6px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.25), 0 0 25px rgba(255,255,255,0.2);
+  border-color: rgba(255,255,255,0.85);
+  box-shadow:
+    0 12px 28px rgba(0,0,0,0.55),
+    0 0 0 1px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.55),
+    inset 0 -2px 6px rgba(0,0,0,0.25),
+    0 0 32px rgba(74,222,128,0.35);
   color: #fff;
+}
+.nav-icon-btn:hover::before{
+  opacity: 1;
+  transform: scale(1.04);
+  border-color: rgba(74,222,128,0.85);
 }
 .nav-icon-btn:active {
   transform: translateY(-1px) scale(1.03);
   transition: all 0.1s ease;
 }
 .nav-icon-btn svg {
-  width: 20px; height: 20px; stroke: currentColor; fill: none;
-  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; pointer-events: none;
+  width: 26px; height: 26px;
+  stroke: #ffffff; fill: none;
+  stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.6));
 }
 
 /* ── КОЛОКОЛЬЧИК ── */
@@ -4817,28 +4849,28 @@ svg.ic-svg-mini {
 }
 .nav-icon-btn svg.ic-svg-profile,
 svg.ic-svg-profile {
-  width: 32px; height: 32px;
-  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.55)) drop-shadow(0 0 8px rgba(255,200,58,0.35));
+  width: 36px; height: 36px;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.65)) drop-shadow(0 0 10px rgba(216,222,230,0.55));
   transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), filter 0.4s ease;
 }
 .nav-icon-btn:hover svg.ic-svg-profile {
-  transform: scale(1.08) rotate(-3deg);
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6)) drop-shadow(0 0 18px rgba(255,200,58,0.95));
+  transform: scale(1.1) rotate(-3deg);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.7)) drop-shadow(0 0 18px rgba(234,241,250,0.95));
 }
 .profile-dd-avatar svg.ic-svg-profile-mini,
 svg.ic-svg-profile-mini {
   width: 38px; height: 38px;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.45)) drop-shadow(0 0 6px rgba(255,200,58,0.45));
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5)) drop-shadow(0 0 6px rgba(216,222,230,0.55));
 }
 .profile-modal-avatar svg.ic-svg-profile-big,
 svg.ic-svg-profile-big {
   width: 96px; height: 96px;
-  filter: drop-shadow(0 5px 10px rgba(0,0,0,0.55)) drop-shadow(0 0 22px rgba(255,200,58,0.6));
+  filter: drop-shadow(0 5px 10px rgba(0,0,0,0.55)) drop-shadow(0 0 22px rgba(216,222,230,0.6));
   animation: e3ProfileGlowPulse 3.6s ease-in-out infinite;
 }
 @keyframes e3ProfileGlowPulse {
-  0%, 100% { filter: drop-shadow(0 5px 10px rgba(0,0,0,0.55)) drop-shadow(0 0 22px rgba(255,200,58,0.6)); }
-  50%      { filter: drop-shadow(0 5px 10px rgba(0,0,0,0.55)) drop-shadow(0 0 38px rgba(255,200,58,1)); }
+  0%, 100% { filter: drop-shadow(0 5px 10px rgba(0,0,0,0.55)) drop-shadow(0 0 22px rgba(216,222,230,0.6)); }
+  50%      { filter: drop-shadow(0 5px 10px rgba(0,0,0,0.55)) drop-shadow(0 0 38px rgba(234,241,250,1)); }
 }
 .profile-dd-item svg.ic-svg-mini,
 svg.ic-svg-mini {
@@ -5134,13 +5166,28 @@ svg.ic-svg-login {
         <stop offset="0%"   stop-color="#FFEC8B" stop-opacity="0.55"/>
         <stop offset="100%" stop-color="#FFD24D" stop-opacity="0"/>
       </radialGradient>
+      <!-- Silver palette (for regular tier; gold reserved for VIP) -->
+      <linearGradient id="e3g-silver" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"  stop-color="#FFFFFF"/>
+        <stop offset="45%" stop-color="#D8DEE6"/>
+        <stop offset="100%" stop-color="#7C8794"/>
+      </linearGradient>
+      <linearGradient id="e3g-silver-soft" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"  stop-color="#FAFCFF"/>
+        <stop offset="55%" stop-color="#C7CFD9"/>
+        <stop offset="100%" stop-color="#8A95A4"/>
+      </linearGradient>
+      <radialGradient id="e3g-glow-silver">
+        <stop offset="0%"   stop-color="#EAF1FA" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#C7CFD9" stop-opacity="0"/>
+      </radialGradient>
       <linearGradient id="e3g-red" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%"   stop-color="#FFAE9B"/>
         <stop offset="60%"  stop-color="#E04A2A"/>
         <stop offset="100%" stop-color="#7E0F0F"/>
       </linearGradient>
 
-      <!-- Профиль: золотой геймерский гекс-бэйдж -->
+      <!-- Профиль (VIP): золотой геймерский гекс-бэйдж — зарезервирован под платную подписку -->
       <symbol id="e3-ic-profile-hex" viewBox="0 0 32 32">
         <circle cx="16" cy="16" r="15" fill="url(#e3g-glow-gold)"/>
         <path d="M16 2.6 L28.4 9.7 L28.4 22.3 L16 29.4 L3.6 22.3 L3.6 9.7 Z"
@@ -5154,6 +5201,22 @@ svg.ic-svg-login {
               fill="url(#e3g-gold-soft)" stroke="rgba(255,255,255,0.55)" stroke-width="0.4"/>
         <path d="M11 21.4 C12.5 19.3, 14.8 18.9, 16 19"
               stroke="rgba(255,255,255,0.7)" stroke-width="0.55" fill="none" stroke-linecap="round"/>
+      </symbol>
+
+      <!-- Профиль (обычный пользователь): СЕРЕБРЯНЫЙ гекс-бэйдж -->
+      <symbol id="e3-ic-profile-hex-silver" viewBox="0 0 32 32">
+        <circle cx="16" cy="16" r="15" fill="url(#e3g-glow-silver)"/>
+        <path d="M16 2.6 L28.4 9.7 L28.4 22.3 L16 29.4 L3.6 22.3 L3.6 9.7 Z"
+              fill="url(#e3g-emerald)" stroke="url(#e3g-silver)" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M16 4.8 L26.4 10.8 L26.4 21.2 L16 27.2 L5.6 21.2 L5.6 10.8 Z"
+              fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="0.6"/>
+        <circle cx="16" cy="13.3" r="3.7"
+                fill="url(#e3g-silver-soft)" stroke="rgba(255,255,255,0.7)" stroke-width="0.4"/>
+        <ellipse cx="14.55" cy="11.85" rx="1.25" ry="0.65" fill="#FFFFFF" opacity="0.85"/>
+        <path d="M9 24.2 C9 19.5, 11.5 17.7, 16 17.7 C20.5 17.7, 23 19.5, 23 24.2 L23 24.7 C23 25.0, 22.7 25.3, 22.4 25.3 L9.6 25.3 C9.3 25.3, 9 25.0, 9 24.7 Z"
+              fill="url(#e3g-silver-soft)" stroke="rgba(255,255,255,0.7)" stroke-width="0.4"/>
+        <path d="M11 21.4 C12.5 19.3, 14.8 18.9, 16 19"
+              stroke="rgba(255,255,255,0.85)" stroke-width="0.55" fill="none" stroke-linecap="round"/>
       </symbol>
 
       <!-- Логин: дверь + стрелка внутрь -->
@@ -5256,12 +5319,12 @@ svg.ic-svg-login {
   <!-- Кнопка профиля (показывается только залогиненным) -->
   <div class="nav-icon-btn profile-wrap" id="navProfile" style="display:none;">
     <!-- Премиум-иконка профиля (золотой гекс-бэйдж) -->
-    <svg class="ic-svg-profile" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex"/></svg>
+    <svg class="ic-svg-profile" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex-silver"/></svg>
     <!-- Дропдаун профиля -->
     <div class="profile-dropdown" id="profileDropdown">
       <div class="profile-dd-head">
         <div class="profile-dd-avatar">
-          <svg class="ic-svg-profile-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex"/></svg>
+          <svg class="ic-svg-profile-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex-silver"/></svg>
         </div>
         <div>
           <div class="profile-dd-name" id="ddName" data-i18n="profile-player">Игрок</div>
@@ -5269,7 +5332,7 @@ svg.ic-svg-login {
         </div>
       </div>
       <button class="profile-dd-item" onclick="openProfileModal()" data-i18n="auth-profile">
-        <svg class="ic-svg-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex"/></svg>
+        <svg class="ic-svg-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex-silver"/></svg>
         Профиль
       </button>
       <div class="profile-dd-divider"></div>
@@ -5413,7 +5476,7 @@ svg.ic-svg-login {
   <div class="profile-modal-box">
     <button class="profile-modal-close" onclick="closeProfileModal()">✕</button>
     <div class="profile-modal-avatar">
-      <svg class="ic-svg-profile-big" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex"/></svg>
+      <svg class="ic-svg-profile-big" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex-silver"/></svg>
     </div>
     <div class="profile-modal-name" id="pmName" data-i18n="profile-player">Игрок</div>
     <div class="profile-modal-email" id="pmEmail">—</div>
