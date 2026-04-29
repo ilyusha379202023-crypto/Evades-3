@@ -3296,12 +3296,17 @@
 }
 .profile-dd-name {
   font-size: 15px; font-weight: 900;
-  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 60%, #C49100 100%);
+  /* SILVER (base — free и pro). Золотой градиент будет выдан VIP-роли. */
+  background: linear-gradient(180deg, #ffffff 0%, #e9edf2 50%, #b6bcc6 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent; color: transparent;
   letter-spacing: 0.6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   text-shadow: 0 1px 0 rgba(0,0,0,0.4);
   filter: drop-shadow(0 1px 1px rgba(0,0,0,0.45));
+}
+.profile-dd-name.is-vip {
+  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 60%, #C49100 100%);
+  -webkit-background-clip: text; background-clip: text;
 }
 .profile-dd-email {
   font-size: 11px;
@@ -3641,7 +3646,16 @@
   display: flex; align-items: center; justify-content: center;
 }
 .profile-modal-avatar svg { width: 96px; height: 96px; }
-.profile-modal-name { font-size: 24px; font-weight: 900; color: #ffd700; letter-spacing: 2px; margin-bottom: 4px; }
+.profile-modal-name {
+  font-size: 24px; font-weight: 900;
+  /* SILVER (base). Золотой будет у VIP. */
+  background: linear-gradient(180deg, #ffffff 0%, #e9edf2 50%, #b6bcc6 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.45));
+  letter-spacing: 2px; margin-bottom: 4px;
+}
+.profile-modal-name.is-vip { background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 60%, #C49100 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .profile-modal-email { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 24px; }
 .profile-modal-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 24px; }
 .profile-stat {
@@ -5516,7 +5530,7 @@ svg.ic-svg-login {
           <svg class="ic-svg-profile-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex-silver"/></svg>
         </div>
         <div>
-          <div class="profile-dd-name" id="ddName" data-i18n="profile-player">Игрок</div>
+          <div class="profile-dd-name" id="ddName"></div>
           <div class="profile-dd-email" id="ddEmail">—</div>
         </div>
       </div>
@@ -5666,7 +5680,7 @@ svg.ic-svg-login {
     <div class="profile-modal-avatar">
       <svg class="ic-svg-profile-big" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex-silver"/></svg>
     </div>
-    <div class="profile-modal-name" id="pmName" data-i18n="profile-player">Игрок</div>
+    <div class="profile-modal-name" id="pmName"></div>
     <div class="profile-modal-email" id="pmEmail">—</div>
 <div class="profile-modal-fields">
   <div class="profile-modal-field">
@@ -11484,7 +11498,9 @@ function showLoggedIn() {
   document.getElementById('btnLogin').style.display = 'none';
   document.getElementById('navBell').style.display = 'flex';
   document.getElementById('navProfile').style.display = 'flex';
-  const nick = ev3User?.user_metadata?.username || ev3User?.email?.split('@')[0] || 'Игрок';
+  // Ник никогда не локализуется — это идентификатор юзера. Берём username из метаданных,
+  // иначе — часть email до «@», иначе пустая строка (узел отрисуется без имени).
+  const nick = ev3User?.user_metadata?.username || ev3User?.email?.split('@')[0] || '';
   const email = ev3User?.email || '—';
   document.getElementById('ddName').textContent = nick;
   document.getElementById('ddEmail').textContent = email;
@@ -11497,7 +11513,13 @@ if (langEl) langEl.textContent = (localStorage.getItem('selectedLanguage') || 'r
 const joinedEl = document.getElementById('pmJoined');
 if (joinedEl) {
   const created = ev3User?.created_at;
-  joinedEl.textContent = created ? new Date(created).toLocaleDateString('ru-RU', {day:'numeric',month:'long',year:'numeric'}) : '—';
+  // Дата в формате текущего языка интерфейса (а не всегда ru-RU)
+  const dateLocale = (typeof currentLang === 'string' && currentLang) || localStorage.getItem('selectedLanguage') || 'en';
+  try {
+    joinedEl.textContent = created ? new Date(created).toLocaleDateString(dateLocale, {day:'numeric',month:'long',year:'numeric'}) : '—';
+  } catch {
+    joinedEl.textContent = created ? new Date(created).toLocaleDateString('en', {day:'numeric',month:'long',year:'numeric'}) : '—';
+  }
 }
   // Cookie consent banner — shown only for logged-in users who haven't chosen yet
   if (window.e3CookieBanner) window.e3CookieBanner.maybeShow();
