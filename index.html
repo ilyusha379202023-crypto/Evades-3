@@ -1714,12 +1714,10 @@
       transform: translate(-50%, -50%);
     }
 
-    /* В карточке Удар FX игрок (красный шар) стоит в центре превью.
-       hitStrike анимирует transform: translate(0, -50%), поэтому смещение по X через margin-left. */
-    .showcase-card[data-anim="hit"] .ball{
-      left: 50%;
-      margin-left: -19px; /* центрирование по X (ball width 38 / 2) */
-    }
+    /* В карточке Удар FX игрок (красный шар) стоит слева (дефолтная позиция),
+       а серый шар-снаряд летит справа налево СЗАДИ игрока (z-index 1 < ball z-index 2). */
+    .showcase-card[data-anim="hit"] .ball{ z-index: 2; }
+    .showcase-card[data-anim="hit"] .enemy{ z-index: 1; }
 
     .preview .ball::after{
       content: "";
@@ -2148,51 +2146,53 @@
       100% { opacity: 0; }
     }
 
-    /* Игрок (красный шар) стоит на месте; в момент контакта с серым шаром
-       становится полупрозрачным («фаза» / dash-immunity), серый шар проходит сквозь. */
+    /* Игрок (красный шар, СЛЕВА) на 30-40% выпускает «волну удара» — пульс +
+       яркий glow. Игрок остаётся непрозрачным. */
     @keyframes hitStrike{
-      0%, 38%   { transform: translate(0, -50%) scale(1);    opacity: 1; filter: none; }
-      45%       { transform: translate(0, -50%) scale(1.05); opacity: 0.45; filter: brightness(1.4) saturate(1.4); }
-      55%       { transform: translate(0, -50%) scale(1.05); opacity: 0.45; filter: brightness(1.4) saturate(1.4); }
-      68%       { transform: translate(0, -50%) scale(1);    opacity: 1;    filter: none; }
-      100%      { transform: translate(0, -50%) scale(1);    opacity: 1;    filter: none; }
+      0%, 25%  { transform: translate(0, -50%) scale(1);    filter: none; }
+      30%      { transform: translate(0, -50%) scale(1.14); filter: brightness(1.45) drop-shadow(0 0 10px rgba(255,90,90,0.8)); }
+      38%      { transform: translate(2px,-50%) scale(1.05);filter: brightness(1.2)  drop-shadow(0 0 6px  rgba(255,90,90,0.5)); }
+      50%      { transform: translate(0, -50%) scale(1);    filter: none; }
+      100%     { transform: translate(0, -50%) scale(1);    filter: none; }
     }
 
-    /* Серый шар летит справа налево, проходит сквозь игрока (центр), улетает влево.
-       В момент пересечения игрок «фейдится» (см. hitStrike). */
+    /* Серый шар летит справа налево. На 38-42% (когда волна игрока его догнала)
+       сам становится полупрозрачным (opacity: 0.5). Затем проходит за игроком
+       (z-index: 1) и улетает влево. ИГРОК НЕ ПРОЗРАЧНЫЙ — только серый шар. */
     @keyframes hitEnemy{
-      0%       { transform: translate(0,    -50%) scale(0.95); opacity: 0; }
-      8%       { transform: translate(0,    -50%) scale(1);    opacity: 1; }
-      35%      { transform: translate(-50px,-50%) scale(1);    opacity: 1; }
-      50%      { transform: translate(-110px,-50%) scale(1.04);opacity: 1; }
-      65%      { transform: translate(-180px,-50%) scale(1);   opacity: 1; }
-      85%      { transform: translate(-260px,-50%) scale(0.9); opacity: 0; }
-      100%     { transform: translate(-260px,-50%) scale(0.9); opacity: 0; }
+      0%       { transform: translate(0,    -50%) scale(0.95); opacity: 0; filter: none; }
+      8%       { transform: translate(0,    -50%) scale(1);    opacity: 1; filter: none; }
+      32%      { transform: translate(-50px, -50%) scale(1);   opacity: 1; filter: none; }
+      40%      { transform: translate(-75px, -50%) scale(1.04); opacity: 0.5; filter: brightness(1.2) blur(0.4px); }
+      55%      { transform: translate(-130px,-50%) scale(1);    opacity: 0.5; filter: blur(0.4px); }
+      70%      { transform: translate(-190px,-50%) scale(0.95); opacity: 0.45; filter: blur(0.4px); }
+      88%      { transform: translate(-260px,-50%) scale(0.9);  opacity: 0;   filter: blur(0.4px); }
+      100%     { transform: translate(-260px,-50%) scale(0.9);  opacity: 0;   filter: none; }
     }
 
-    /* Кольцо «фазы» — мягкая голубоватая окружность вокруг игрока в момент прохождения */
+    /* Волна-кольцо, расходящаяся ОТ ИГРОКА (impact-ring находится внутри .ball) */
     @keyframes hitRing{
-      0%, 40%  { opacity: 0; transform: translate(-50%, -50%) scale(0.5); border-color: rgba(160, 200, 255, 0); }
-      50%      { opacity: 0.85; transform: translate(-50%, -50%) scale(1.2); border-color: rgba(180, 215, 255, 0.85); }
-      66%      { opacity: 0; transform: translate(-50%, -50%) scale(1.6); border-color: rgba(180, 215, 255, 0); }
+      0%, 25%  { opacity: 0; transform: translate(-50%, -50%) scale(0.4); border-color: rgba(255,120,120,0); border-width: 2px; }
+      30%      { opacity: 1; transform: translate(-50%, -50%) scale(0.7); border-color: rgba(255,150,150,0.95); border-width: 3px; }
+      48%      { opacity: 0.55; transform: translate(-50%, -50%) scale(2.2); border-color: rgba(255,150,150,0.5); border-width: 1.5px; }
+      60%      { opacity: 0; transform: translate(-50%, -50%) scale(2.8); border-color: rgba(255,150,150,0); border-width: 1px; }
       100%     { opacity: 0; }
     }
 
-    /* Мини-вспышка контакта (одна частица) */
+    /* Дополнительный sparkle-выхлоп от удара игрока */
     @keyframes hitParticle{
-      0%, 42%  { opacity: 0; transform: translate(-50%, -50%) scale(0.5); background: #cfd8e0; }
-      50%      { opacity: 1; transform: translate(-50%, -50%) scale(1.4); background: #e8eef5; }
-      62%      { opacity: 0; transform: translate(-50%, -50%) scale(1.8); }
+      0%, 27%  { opacity: 0; transform: translate(-50%, -50%) scale(0.4); background: #ffd1d1; }
+      32%      { opacity: 1; transform: translate(-50%, -50%) translate(14px, -2px) scale(1.5); background: #fff4e0; }
+      45%      { opacity: 0; transform: translate(-50%, -50%) translate(28px, -4px) scale(2.0); }
       100%     { opacity: 0; }
     }
 
-    /* Тряска на момент пересечения */
+    /* Лёгкая тряска превью на момент удара (не нужна сильная — чтобы не отвлекать) */
     @keyframes hitShake{
-      0%, 42%, 66%, 100% { transform: translate(0, 0); }
-      46% { transform: translate(-2px, 1px); }
-      50% { transform: translate(2px, -1px); }
-      54% { transform: translate(-1px, 2px); }
-      58% { transform: translate(1px, -1px); }
+      0%, 28%, 50%, 100% { transform: translate(0, 0); }
+      32% { transform: translate(-2px, 1px); }
+      36% { transform: translate(2px, -1px); }
+      40% { transform: translate(-1px, 1px); }
     }
 
     @keyframes spawnPortal{
