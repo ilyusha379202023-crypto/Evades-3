@@ -1591,11 +1591,17 @@
     }
 
     .showcase-grid{
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       gap: 20px;
       position: relative;
       z-index: 5;
+    }
+    .showcase-grid > .showcase-card{
+      flex: 1 1 230px;
+      max-width: 320px;
+      min-width: 230px;
     }
 
     .showcase-card{
@@ -1706,6 +1712,13 @@
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
+    }
+
+    /* В карточке Удар FX игрок (красный шар) стоит в центре превью.
+       hitStrike анимирует transform: translate(0, -50%), поэтому смещение по X через margin-left. */
+    .showcase-card[data-anim="hit"] .ball{
+      left: 50%;
+      margin-left: -19px; /* центрирование по X (ball width 38 / 2) */
     }
 
     .preview .ball::after{
@@ -1852,26 +1865,36 @@
       will-change: transform, opacity;
     }
 
+    /* Серый 3D-шар-снаряд (атакующий) */
     .preview .enemy{
       position: absolute;
       right: 18px;
       top: 50%;
-      width: 26px;
-      height: 26px;
-      transform: translateY(-50%) rotate(45deg);
-      background: linear-gradient(135deg, #2b2b2b, #0c0c0c);
-      box-shadow: 0 0 12px rgba(0,0,0,0.6);
-      border-radius: 6px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      transform: translateY(-50%);
+      background: radial-gradient(circle at 32% 30%, #f3f6fa 0%, #b9c0c9 35%, #6e7682 70%, #2c333d 100%);
+      box-shadow:
+        inset 0 -6px 10px rgba(0,0,0,0.55),
+        inset 0 3px 6px rgba(255,255,255,0.45),
+        0 8px 16px rgba(0,0,0,0.45),
+        0 0 14px rgba(180, 195, 215, 0.45);
       will-change: transform, opacity;
     }
 
+    /* Лёгкий бликовый highlight сверху-слева для 3D-эффекта */
     .preview .enemy::after{
       content: "";
       position: absolute;
-      inset: 7px;
+      left: 22%;
+      top: 18%;
+      width: 30%;
+      height: 22%;
       border-radius: 50%;
-      background: radial-gradient(circle, #ff6b6b, #7c0f0f);
-      transform: rotate(-45deg);
+      background: radial-gradient(ellipse, rgba(255,255,255,0.85), rgba(255,255,255,0) 70%);
+      filter: blur(0.5px);
+      pointer-events: none;
     }
 
     .preview .impact-ring{
@@ -2125,46 +2148,51 @@
       100% { opacity: 0; }
     }
 
+    /* Игрок (красный шар) стоит на месте; в момент контакта с серым шаром
+       становится полупрозрачным («фаза» / dash-immunity), серый шар проходит сквозь. */
     @keyframes hitStrike{
-      0%, 22% { transform: translate(0, -50%) scale(1); }
-      30% { transform: translate(-8px, -50%) scale(0.9); }
-      42% { transform: translate(78px, -50%) scale(1.15); }
-      48% { transform: translate(78px, -50%) scale(1); }
-      55% { transform: translate(78px, -50%) scale(1); }
-      78% { transform: translate(20px, -50%); }
-      100% { transform: translate(0, -50%); }
+      0%, 38%   { transform: translate(0, -50%) scale(1);    opacity: 1; filter: none; }
+      45%       { transform: translate(0, -50%) scale(1.05); opacity: 0.45; filter: brightness(1.4) saturate(1.4); }
+      55%       { transform: translate(0, -50%) scale(1.05); opacity: 0.45; filter: brightness(1.4) saturate(1.4); }
+      68%       { transform: translate(0, -50%) scale(1);    opacity: 1;    filter: none; }
+      100%      { transform: translate(0, -50%) scale(1);    opacity: 1;    filter: none; }
     }
 
+    /* Серый шар летит справа налево, проходит сквозь игрока (центр), улетает влево.
+       В момент пересечения игрок «фейдится» (см. hitStrike). */
     @keyframes hitEnemy{
-      0%, 38% { transform: translateY(-50%) rotate(45deg) scale(1); opacity: 1; }
-      45% { transform: translateY(-50%) rotate(45deg) scale(1.1); opacity: 1; }
-      52% { transform: translate(0, -55%) rotate(60deg) scale(1.05); opacity: 1; }
-      62% { transform: translate(34px, -65%) rotate(80deg) scale(0.9); opacity: 1; }
-      78% { transform: translate(60px, -90%) rotate(140deg) scale(0.6); opacity: 0; }
-      100% { opacity: 0; transform: translateY(-50%) rotate(45deg); }
+      0%       { transform: translate(0,    -50%) scale(0.95); opacity: 0; }
+      8%       { transform: translate(0,    -50%) scale(1);    opacity: 1; }
+      35%      { transform: translate(-50px,-50%) scale(1);    opacity: 1; }
+      50%      { transform: translate(-110px,-50%) scale(1.04);opacity: 1; }
+      65%      { transform: translate(-180px,-50%) scale(1);   opacity: 1; }
+      85%      { transform: translate(-260px,-50%) scale(0.9); opacity: 0; }
+      100%     { transform: translate(-260px,-50%) scale(0.9); opacity: 0; }
     }
 
+    /* Кольцо «фазы» — мягкая голубоватая окружность вокруг игрока в момент прохождения */
     @keyframes hitRing{
-      0%, 43% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-      52% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-      70% { opacity: 0; transform: translate(-50%, -50%) scale(1.8); }
-      100% { opacity: 0; }
+      0%, 40%  { opacity: 0; transform: translate(-50%, -50%) scale(0.5); border-color: rgba(160, 200, 255, 0); }
+      50%      { opacity: 0.85; transform: translate(-50%, -50%) scale(1.2); border-color: rgba(180, 215, 255, 0.85); }
+      66%      { opacity: 0; transform: translate(-50%, -50%) scale(1.6); border-color: rgba(180, 215, 255, 0); }
+      100%     { opacity: 0; }
     }
 
+    /* Мини-вспышка контакта (одна частица) */
     @keyframes hitParticle{
-      0%, 43% { opacity: 0; transform: translate(-50%, -50%); }
-      52% { opacity: 1; transform: translate(-50%, -50%) translate(24px, -14px); }
-      68% { opacity: 0; transform: translate(-50%, -50%) translate(40px, -24px); }
-      100% { opacity: 0; }
+      0%, 42%  { opacity: 0; transform: translate(-50%, -50%) scale(0.5); background: #cfd8e0; }
+      50%      { opacity: 1; transform: translate(-50%, -50%) scale(1.4); background: #e8eef5; }
+      62%      { opacity: 0; transform: translate(-50%, -50%) scale(1.8); }
+      100%     { opacity: 0; }
     }
 
+    /* Тряска на момент пересечения */
     @keyframes hitShake{
-      0%, 42%, 70%, 100% { transform: translate(0, 0); }
-      45% { transform: translate(-3px, 1px); }
-      48% { transform: translate(3px, -2px); }
-      52% { transform: translate(-2px, 2px); }
-      56% { transform: translate(2px, -1px); }
-      60% { transform: translate(-1px, 1px); }
+      0%, 42%, 66%, 100% { transform: translate(0, 0); }
+      46% { transform: translate(-2px, 1px); }
+      50% { transform: translate(2px, -1px); }
+      54% { transform: translate(-1px, 2px); }
+      58% { transform: translate(1px, -1px); }
     }
 
     @keyframes spawnPortal{
@@ -2239,33 +2267,36 @@
       animation: actionLabelPop 3.2s ease-out infinite;
       animation-delay: 0.1s;
     }
+    /* Ball start: left:24px; preview min width ~186px при min card width 230px.
+       Уменьшил дальность шага, чтобы шар не вылезал за край превью.
+       Шаги: 0 → 50px → 100px → 130px (шар 38px → правый край шара ~192px). */
     @keyframes comboBall{
       0%, 8%   { transform: translate(0, -50%); }
-      18%      { transform: translate(60px, -50%) scale(1.05); }
-      26%      { transform: translate(60px, -50%) scale(1); }
-      36%      { transform: translate(120px, -50%) scale(1.05); }
-      44%      { transform: translate(120px, -50%) scale(1); }
-      54%      { transform: translate(170px, -50%) scale(1.1); }
-      62%      { transform: translate(170px, -50%) scale(1); }
-      85%      { transform: translate(170px, -50%); }
+      18%      { transform: translate(50px, -50%) scale(1.05); }
+      26%      { transform: translate(50px, -50%) scale(1); }
+      36%      { transform: translate(100px, -50%) scale(1.05); }
+      44%      { transform: translate(100px, -50%) scale(1); }
+      54%      { transform: translate(130px, -50%) scale(1.1); }
+      62%      { transform: translate(130px, -50%) scale(1); }
+      85%      { transform: translate(130px, -50%); }
       100%     { transform: translate(0, -50%); }
     }
     @keyframes comboGhost1{
       0%, 14% { opacity: 0; transform: translate(0, -50%); }
-      20%     { opacity: 0.7; transform: translate(40px, -50%); }
-      36%     { opacity: 0; transform: translate(60px, -50%); }
+      20%     { opacity: 0.7; transform: translate(30px, -50%); }
+      36%     { opacity: 0; transform: translate(50px, -50%); }
       100%    { opacity: 0; }
     }
     @keyframes comboGhost2{
-      0%, 28% { opacity: 0; transform: translate(60px, -50%); }
-      36%     { opacity: 0.7; transform: translate(100px, -50%); }
-      52%     { opacity: 0; transform: translate(120px, -50%); }
+      0%, 28% { opacity: 0; transform: translate(50px, -50%); }
+      36%     { opacity: 0.7; transform: translate(80px, -50%); }
+      52%     { opacity: 0; transform: translate(100px, -50%); }
       100%    { opacity: 0; }
     }
     @keyframes comboGhost3{
-      0%, 46% { opacity: 0; transform: translate(120px, -50%); }
-      54%     { opacity: 0.7; transform: translate(150px, -50%); }
-      72%     { opacity: 0; transform: translate(170px, -50%); }
+      0%, 46% { opacity: 0; transform: translate(100px, -50%); }
+      54%     { opacity: 0.7; transform: translate(120px, -50%); }
+      72%     { opacity: 0; transform: translate(130px, -50%); }
       100%    { opacity: 0; }
     }
     @keyframes comboCount{
@@ -11952,8 +11983,29 @@ document.addEventListener('input', (e) => {
   }
 });
 
+// Резолв ник → email через RPC public.get_email_by_username (см. supabase-migration.sql).
+// Если фича не настроена в БД, RPC вернёт 404/permission denied — тогда возвращаем null
+// и пусть ошибка логина (как обычно) сообщит, что юзер не найден.
+async function ev3ResolveNickToEmail(nick) {
+  try {
+    const r = await fetch(SUPA_URL + '/rest/v1/rpc/get_email_by_username', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPA_KEY,
+        'Authorization': 'Bearer ' + SUPA_KEY
+      },
+      body: JSON.stringify({ p_username: nick })
+    });
+    if (!r.ok) return null;
+    const data = await r.json();
+    // RPC возвращает строку (email) или null
+    return (typeof data === 'string' && data.includes('@')) ? data : null;
+  } catch { return null; }
+}
+
 async function doLogin() {
-  const email = document.getElementById('li-email').value.trim();
+  const idInput = document.getElementById('li-email').value.trim();
   const pass = document.getElementById('li-pass').value;
   const btn = document.getElementById('li-submit');
   const emailInp = document.getElementById('li-email');
@@ -11963,11 +12015,25 @@ async function doLogin() {
   setHint('li-email-hint','',''); setHint('li-pass-hint','','');
   emailInp.classList.remove('error'); passInp.classList.remove('error');
 
-  if (!email)  { setHint('li-email-hint', tt('auth-err-email-required','Введи email или ник'),'err'); setInpState(emailInp,'error'); ok=false; }
-  if (!pass)   { setHint('li-pass-hint',  tt('auth-err-password-required','Введи пароль'),'err');     setInpState(passInp,'error');  ok=false; }
+  if (!idInput) { setHint('li-email-hint', tt('auth-err-email-required','Введи email или ник'),'err'); setInpState(emailInp,'error'); ok=false; }
+  if (!pass)    { setHint('li-pass-hint',  tt('auth-err-password-required','Введи пароль'),'err');     setInpState(passInp,'error');  ok=false; }
   if (!ok) return;
 
   btn.disabled=true; btn.innerHTML='<span class="af-submit-shine"></span><span>⏳ '+tt('auth-busy-login','Вход...')+'</span>';
+
+  // Если в поле нет «@» — считаем что юзер ввёл НИК. Резолвим ник → email через RPC.
+  let email = idInput;
+  if (!idInput.includes('@')) {
+    const resolved = await ev3ResolveNickToEmail(idInput);
+    if (!resolved) {
+      setHint('li-email-hint', tt('auth-err-user-not-found','Пользователь не найден'),'err');
+      setInpState(emailInp,'error');
+      btn.disabled=false; btn.innerHTML='<span class="af-submit-shine"></span><span>'+tt('login-submit-btn','Войти →')+'</span>';
+      return;
+    }
+    email = resolved;
+  }
+
   const resp = await supaPost('/auth/v1/token?grant_type=password', { email, password: pass });
   // Real success = 2xx + access_token present
   if (resp.ok && resp.data && resp.data.access_token) {
