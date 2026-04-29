@@ -10456,13 +10456,28 @@ async function supaAuth(path, opts = {}) {
   return { ok: r.ok, status: r.status, data: data || {} };
 }
 
-// Check whether a user has any verified TOTP factor.
-async function ev3List2faFactors(token) {
+// Get raw list of all TOTP factors (any status: verified, unverified, etc).
+async function ev3List2faFactorsRaw(token) {
   const r = await supaAuth('/auth/v1/factors', { token });
   if (!r.ok || !r.data) return [];
-  // Supabase returns { all: [...], totp: [...] } — both may be present
   const arr = Array.isArray(r.data.all) ? r.data.all : (Array.isArray(r.data.totp) ? r.data.totp : (Array.isArray(r.data) ? r.data : []));
-  return arr.filter(f => f && (f.factor_type === 'totp' || f.type === 'totp') && (f.status === 'verified' || !f.status));
+  return arr.filter(f => f && (f.factor_type === 'totp' || f.type === 'totp'));
+}
+// Check whether a user has any verified TOTP factor.
+async function ev3List2faFactors(token) {
+  const all = await ev3List2faFactorsRaw(token);
+  return all.filter(f => f.status === 'verified' || !f.status);
+}
+// Delete any half-enrolled (unverified) TOTP factors so a fresh enroll can succeed.
+async function ev3CleanupUnverifiedFactors(token) {
+  const all = await ev3List2faFactorsRaw(token);
+  const stale = all.filter(f => f.status && f.status !== 'verified');
+  for (const f of stale) {
+    if (!f.id) continue;
+    try { await supaAuth('/auth/v1/factors/' + f.id, { method: 'DELETE', token }); }
+    catch { /* ignore */ }
+  }
+  return stale.length;
 }
 
 async function refresh2faStatus() {
@@ -10490,17 +10505,25 @@ async function open2faSetupModal() {
   goto2faStep1Visual();
   // Reset prior state
   document.getElementById('tfaQrLoading').hidden = false;
+  // Restore default loader content (in case previous attempt replaced it with an error)
+  document.getElementById('tfaQrLoading').innerHTML = '<span class="tfa-spinner" aria-hidden="true"><img src="siluet.png" alt="" draggable="false"/></span><span data-i18n="tfa-loading">' + tt('tfa-loading','Загрузка...') + '</span>';
   document.getElementById('tfaQrImg').hidden = true;
   document.getElementById('tfaSecretCode').textContent = '—';
   document.getElementById('tfaCodeInput').value = '';
   document.getElementById('tfaError').hidden = true;
+  // Cleanup any half-enrolled / stale TOTP factors first — Supabase rejects new enrolls if dupes exist.
+  try { await ev3CleanupUnverifiedFactors(); } catch (e) { console.warn('[2FA] cleanup error:', e); }
   // Enroll a new TOTP factor
   const r = await supaAuth('/auth/v1/factors', {
     method: 'POST',
-    body: { factor_type: 'totp', issuer: 'Evades 3', friendly_name: 'Authenticator' }
+    body: { factor_type: 'totp', issuer: 'Evades 3', friendly_name: 'Evades 3 Authenticator (' + Date.now() + ')' }
   });
   if (!r.ok || !r.data || !r.data.id || !r.data.totp) {
-    document.getElementById('tfaQrLoading').innerHTML = '<span style="color:#FFAE9B;font-weight:800;">' + (tt('tfa-enroll-failed','Не удалось запустить включение 2FA. Попробуй позже.')) + '</span>';
+    console.error('[2FA] enroll failed:', r.status, r.data);
+    const serverMsg = (r.data && (r.data.msg || r.data.message || r.data.error_description || r.data.error)) || '';
+    const fallback = tt('tfa-enroll-failed','Не удалось запустить включение 2FA. Попробуй позже.');
+    const text = serverMsg ? (fallback + '<br><span style="font-size:10px;opacity:0.7;font-weight:500;">' + serverMsg.replace(/[<>]/g,'') + '</span>') : fallback;
+    document.getElementById('tfaQrLoading').innerHTML = '<span style="color:#FFAE9B;font-weight:800;display:block;line-height:1.4;">' + text + '</span>';
     return;
   }
   ev3TfaState.factorId = r.data.id;
