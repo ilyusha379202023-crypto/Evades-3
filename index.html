@@ -9582,11 +9582,14 @@ if (joinedEl) {
   const created = ev3User?.created_at;
   joinedEl.textContent = created ? new Date(created).toLocaleDateString('ru-RU', {day:'numeric',month:'long',year:'numeric'}) : '—';
 }
+  // Cookie consent banner — shown only for logged-in users who haven't chosen yet
+  if (window.e3CookieBanner) window.e3CookieBanner.maybeShow();
 }
 function showLoggedOut() {
   document.getElementById('btnLogin').style.display = '';
   document.getElementById('navBell').style.display = 'none';
   document.getElementById('navProfile').style.display = 'none';
+  if (window.e3CookieBanner) window.e3CookieBanner.hide();
 }
 
 // ===================================================
@@ -13359,6 +13362,7 @@ verifySession();
   if (!banner) return;
   const accept = document.getElementById('cookieAccept');
   const decline = document.getElementById('cookieDecline');
+  banner.style.display = 'none';
   function hasChoice(){
     try { return !!localStorage.getItem(KEY); } catch { return false; }
   }
@@ -13374,18 +13378,20 @@ verifySession();
     setTimeout(() => { banner.style.display = 'none'; }, 600);
   }
   function show(){
+    if (hasChoice()) return;
     banner.style.display = 'flex';
-    // double rAF so the slide-in animation actually plays from the offscreen state
+    banner.classList.remove('hide');
     requestAnimationFrame(() => requestAnimationFrame(() => banner.classList.add('show')));
   }
   accept && accept.addEventListener('click', () => { setChoice('accepted'); hide(); });
   decline && decline.addEventListener('click', () => { setChoice('declined'); hide(); });
-  if (!hasChoice()) {
-    // small delay so the page settles first
-    setTimeout(show, 800);
-  } else {
-    banner.style.display = 'none';
-  }
+  // Public API — banner is shown ONLY when user is logged in (showLoggedIn)
+  // and hidden on logout. Also auto-shows if a session is already restored.
+  window.e3CookieBanner = {
+    maybeShow(){ setTimeout(show, 600); },
+    hide,
+    reset(){ try { localStorage.removeItem(KEY); localStorage.removeItem(KEY+'Time'); } catch {} },
+  };
 })();
 </script>
 </body>
