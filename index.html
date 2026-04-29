@@ -298,19 +298,19 @@
       will-change: transform;
     }
 
-    /* ===== По-словная анимация subtitle ===== */
+    /* ===== По-словная анимация subtitle (старый вариант) ===== */
     .subtitle .word{
       opacity: 0;
       transform: translateY(10px);
       filter: blur(2px);
       display: inline-block;
     }
+    .subtitle .word + .word{ margin-left: 0.35em; }
 
     .hero-anim .subtitle .word.word1{
       animation: wordIn 520ms ease-out forwards;
       animation-delay: 150ms;
     }
-
     .hero-anim .subtitle .word.word2{
       animation: wordIn 520ms ease-out forwards;
       animation-delay: 850ms;
@@ -324,12 +324,21 @@
       }
     }
 
-    /* ===== EVADES 3 МЕГА-ВЗРЫВ ===== */
-    .main-title{
-      opacity: 0;
-      transform: scale(0.92);
-      filter: blur(2px) drop-shadow(0 0 0 rgba(255,215,0,0));
+    /* ===== EVADES 3 МЕГА-ВЗРЫВ (старый вариант) ===== */
+    .title-section{ position: relative; }
+    .title-stage{
+      position: relative;
+      display: inline-block;
     }
+    /* FX-слой полностью скрыт (старый вариант его не использует) */
+    .title-fx,
+    .title-fx-line,
+    .title-fx-flash,
+    .title-fx-ring,
+    .title-fx-streak{ display: none !important; }
+
+    /* === Заголовок целиком (старый вариант) — titleMegaBurst === */
+    .main-title{ position: relative; z-index: 1; }
 
     .hero-anim .main-title{
       animation: titleMegaBurst 1.2s cubic-bezier(.08,1.3,.18,1) forwards;
@@ -694,7 +703,7 @@
       50% { transform: translate(-50%, -4px); }
     }
 
-    /* дополнительная тень как глубина */
+    /* Дополнительная глубокая тень под надписью (старый вариант — data-title) */
     .main-title::before{
       content: attr(data-title);
       position: absolute;
@@ -707,7 +716,7 @@
       filter: blur(2px);
     }
 
-    /* Мягкое переливание по надписи */
+    /* Мягкое золотое переливание по надписи (старый вариант) */
     .main-title::after{
       content: attr(data-title);
       position: absolute;
@@ -736,9 +745,9 @@
     }
 
     @keyframes titleGoldWave {
-      0% { background-position: 200% 50%; opacity: 0; }
-      40% { background-position: 200% 50%; opacity: 0; }
-      70% { background-position: -120% 50%; opacity: 0.8; }
+      0%   { background-position: 200% 50%; opacity: 0; }
+      40%  { background-position: 200% 50%; opacity: 0; }
+      70%  { background-position: -120% 50%; opacity: 0.8; }
       100% { background-position: -120% 50%; opacity: 0; }
     }
 
@@ -817,6 +826,139 @@
         inset 0 2px 0 rgba(255,255,255,0.65),
         inset 0 -12px 22px rgba(0,0,0,0.5);
     }
+
+    /* ===== 3D ЗАМОК + ЦЕПИ — висят над кнопкой ===== */
+    .lock-cage{
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      perspective: 800px;
+      transform-style: preserve-3d;
+    }
+
+    /* Цепи прицеплены за верхние углы кнопки и идут вниз к замку.
+       Используем абсолютное позиционирование с transform-origin наверху,
+       чтобы рост был «из угла» и под наклоном. */
+    .lock-cage .chain{
+      position: absolute;
+      top: -8px;
+      width: 28px;
+      height: 150px;          /* финальная длина цепи */
+      transform-origin: 50% 6px;  /* точка крепления — где anchor-circle */
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.55));
+      opacity: 0;
+      transform: scaleY(0) rotate(0deg);
+      will-change: transform, opacity;
+    }
+    .lock-cage .chain-left{
+      left: 18%;
+      transform: scaleY(0) rotate(-18deg);
+    }
+    .lock-cage .chain-right{
+      right: 18%;
+      transform: scaleY(0) rotate(18deg);
+    }
+
+    /* Сам замок — по центру кнопки, чуть выше базы */
+    .lock-cage .lock-3d-wrap{
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -75%) scale(0);
+      transform-origin: 50% 0%;
+      width: clamp(80px, 16vw, 130px);
+      filter:
+        drop-shadow(0 12px 18px rgba(0,0,0,0.55))
+        drop-shadow(0 0 18px rgba(80, 200, 130, 0.0));
+      opacity: 0;
+      will-change: transform, opacity, filter;
+    }
+    .lock-cage .lock-3d{
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* === Тайминги (запускаются когда body становится .ui-ready):
+         t=0       button alpha-flash начинается
+         t=1600ms  button уже серая
+         t=1700ms  замок появляется в центре (scale 0→1.1→1, opacity 0→1)
+         t=2150ms  цепи появляются и «защёлкиваются» (вырастают из углов)
+         t=2400ms  замок проседает вниз (translateY +18px)
+         t=2600ms  замок начинает раскачиваться (затухающий sway, ~1100ms)
+         t=2700ms  бейдж «В разработке» появляется штампом (см. ниже)
+    === */
+
+    .ui-ready .lock-cage .chain-left{
+      animation: chainDropL 520ms cubic-bezier(.4, 1.4, .55, 1) 2150ms forwards,
+                 chainSwayL 1100ms cubic-bezier(.36,.07,.19,.97) 2700ms;
+    }
+    .ui-ready .lock-cage .chain-right{
+      animation: chainDropR 520ms cubic-bezier(.4, 1.4, .55, 1) 2150ms forwards,
+                 chainSwayR 1100ms cubic-bezier(.36,.07,.19,.97) 2700ms;
+    }
+    .ui-ready .lock-cage .lock-3d-wrap{
+      animation:
+        lockAppear 600ms cubic-bezier(.18, 1.3, .22, 1)  1700ms forwards,
+        lockDrop   320ms cubic-bezier(.25, .2, .35, 1.4) 2400ms forwards,
+        lockSway   1100ms cubic-bezier(.36,.07,.19,.97)  2700ms;
+    }
+
+    @keyframes lockAppear{
+      0%   { opacity: 0; transform: translate(-50%, -120%) scale(0); filter: drop-shadow(0 12px 18px rgba(0,0,0,0.55)) drop-shadow(0 0 60px rgba(150,255,200,1)); }
+      55%  { opacity: 1; transform: translate(-50%, -68%)  scale(1.18); filter: drop-shadow(0 12px 18px rgba(0,0,0,0.55)) drop-shadow(0 0 40px rgba(150,255,200,0.9)); }
+      80%  { transform: translate(-50%, -78%) scale(0.95); }
+      100% { opacity: 1; transform: translate(-50%, -75%) scale(1); filter: drop-shadow(0 12px 18px rgba(0,0,0,0.55)) drop-shadow(0 0 0   rgba(150,255,200,0)); }
+    }
+    @keyframes lockDrop{
+      /* Замок падает вниз пока цепи не натянутся */
+      0%   { transform: translate(-50%, -75%) scale(1); }
+      75%  { transform: translate(-50%, -55%) scale(1); }
+      100% { transform: translate(-50%, -58%) scale(1); }
+    }
+    @keyframes lockSway{
+      /* Затухающее качание после рывка цепей. transform-origin: 50% 0% (наверху, у точки крепления). */
+      0%   { transform: translate(-50%, -58%) scale(1) rotate(0deg);   }
+      18%  { transform: translate(-50%, -58%) scale(1) rotate(-2.4deg);}
+      36%  { transform: translate(-50%, -58%) scale(1) rotate(1.6deg); }
+      54%  { transform: translate(-50%, -58%) scale(1) rotate(-1.0deg);}
+      72%  { transform: translate(-50%, -58%) scale(1) rotate(0.55deg);}
+      88%  { transform: translate(-50%, -58%) scale(1) rotate(-0.25deg);}
+      100% { transform: translate(-50%, -58%) scale(1) rotate(0deg);   }
+    }
+
+    @keyframes chainDropL{
+      0%   { opacity: 0; transform: scaleY(0)    rotate(-18deg); }
+      40%  { opacity: 1; transform: scaleY(1.06) rotate(-18deg); }
+      70%  { transform: scaleY(0.97) rotate(-18deg); }
+      100% { opacity: 1; transform: scaleY(1)    rotate(-18deg); }
+    }
+    @keyframes chainDropR{
+      0%   { opacity: 0; transform: scaleY(0)    rotate(18deg); }
+      40%  { opacity: 1; transform: scaleY(1.06) rotate(18deg); }
+      70%  { transform: scaleY(0.97) rotate(18deg); }
+      100% { opacity: 1; transform: scaleY(1)    rotate(18deg); }
+    }
+    /* Цепи слегка покачиваются вместе с замком (синхронно, но меньшая амплитуда) */
+    @keyframes chainSwayL{
+      0%   { transform: scaleY(1) rotate(-18deg); }
+      18%  { transform: scaleY(1) rotate(-19.0deg);}
+      36%  { transform: scaleY(1) rotate(-17.4deg);}
+      54%  { transform: scaleY(1) rotate(-18.4deg);}
+      72%  { transform: scaleY(1) rotate(-17.8deg);}
+      100% { transform: scaleY(1) rotate(-18deg); }
+    }
+    @keyframes chainSwayR{
+      0%   { transform: scaleY(1) rotate(18deg); }
+      18%  { transform: scaleY(1) rotate(19.0deg); }
+      36%  { transform: scaleY(1) rotate(17.4deg); }
+      54%  { transform: scaleY(1) rotate(18.4deg); }
+      72%  { transform: scaleY(1) rotate(17.8deg); }
+      100% { transform: scaleY(1) rotate(18deg); }
+    }
+
+    /* Зелёная вспышка кнопки удалена по запросу пользователя — кнопка сразу серая */
 
         .follow-dev-container {
       margin: -20px 0 20px;
@@ -929,8 +1071,24 @@
         0 0 18px rgba(255, 177, 94, 0.45),
         inset 0 1px 0 rgba(255,255,255,0.65),
         inset 0 -6px 12px rgba(0,0,0,0.25);
-      transform: translateZ(0) rotate(4deg);
-      animation: statusGlow 2.6s ease-in-out infinite;
+      /* Скрыт до конца цепочки lock-cage; затем «штамп» появление + idle-glow */
+      opacity: 0;
+      transform: translateZ(0) rotate(20deg) scale(0.3);
+      transform-origin: 50% 50%;
+      animation: none;
+      will-change: transform, opacity;
+    }
+    .ui-ready .dev-badge{
+      animation:
+        badgeStamp  720ms cubic-bezier(.18, 1.55, .22, 1) 1700ms forwards,
+        statusGlow  2.6s  ease-in-out 2500ms infinite;
+    }
+    @keyframes badgeStamp{
+      0%   { opacity: 0;   transform: translateZ(0) rotate(20deg) scale(2.4); filter: blur(6px) brightness(1.4); }
+      35%  { opacity: 1;   transform: translateZ(0) rotate(0deg)  scale(0.92); filter: blur(0)   brightness(1.6); }
+      55%  { transform: translateZ(0) rotate(6deg)  scale(1.10); filter: blur(0) brightness(1.15); }
+      75%  { transform: translateZ(0) rotate(3deg)  scale(0.97); }
+      100% { opacity: 1;   transform: translateZ(0) rotate(4deg)  scale(1);    filter: none; }
     }
 
     .dev-badge::before{
@@ -5066,7 +5224,7 @@ svg.ic-svg-login {
   <div class="e3-aurora" aria-hidden="true"></div>
   <div class="e3-grain" aria-hidden="true"></div>
   <div id="e3-scroll-progress" aria-hidden="true"></div>
-  <button id="e3-back-top" type="button" aria-label="Наверх" title="Наверх">↑</button>
+  <button id="e3-back-top" type="button" aria-label="Наверх" title="Наверх" data-i18n-aria-label="back-to-top" data-i18n-title="back-to-top">↑</button>
   <!-- ===== END E3 ULTRA UPGRADE layers ===== -->
 
   <!-- ===== КАСТОМНЫЙ КУРСОР (отключён — оставлены пустые контейнеры на случай ссылок из JS) ===== -->
@@ -5331,7 +5489,7 @@ svg.ic-svg-login {
   <button class="btn-login" id="btnLogin" onclick="openAuthModal('login')"><svg class="ic-svg-login" aria-hidden="true" focusable="false"><use href="#e3-ic-login"/></svg><span class="lg-text" data-i18n="btn-login">Войти / Регистрация</span></button>
 
   <!-- Колокольчик (показывается только залогиненным) -->
-  <div class="nav-icon-btn bell-wrap" id="navBell" style="display:none;" title="Уведомления">
+  <div class="nav-icon-btn bell-wrap" id="navBell" style="display:none;" title="Уведомления" data-i18n-title="nav-notifications">
     <!-- Bell SVG -->
     <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
     <!-- Дропдаун уведомлений -->
@@ -5416,7 +5574,7 @@ svg.ic-svg-login {
         <div class="af-wrap">
           <svg class="af-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <input class="af-input has-eye" type="password" id="li-pass" data-i18n-placeholder="login-password-placeholder" placeholder="••••••••••" autocomplete="current-password" />
-          <button class="af-eye" type="button" onclick="toggleEye('li-pass',this)" data-i18n-aria="show-password-aria" aria-label="Показать пароль">
+          <button class="af-eye" type="button" onclick="toggleEye('li-pass',this)" aria-label="Показать пароль" data-i18n-aria-label="show-password-aria">
             <svg id="eye-li-pass" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
         </div>
@@ -5472,7 +5630,7 @@ svg.ic-svg-login {
         <div class="af-wrap">
           <svg class="af-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <input class="af-input has-eye" type="password" id="ri-pass" data-i18n-placeholder="register-password-placeholder" placeholder="Минимум 8 символов" autocomplete="new-password" oninput="riUpdateStrength(this)" />
-          <button class="af-eye" type="button" onclick="toggleEye('ri-pass',this)" aria-label="Показать пароль">
+          <button class="af-eye" type="button" onclick="toggleEye('ri-pass',this)" aria-label="Показать пароль" data-i18n-aria-label="show-password-aria">
             <svg id="eye-ri-pass" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
         </div>
@@ -5484,7 +5642,7 @@ svg.ic-svg-login {
         <div class="af-wrap">
           <svg class="af-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <input class="af-input has-eye" type="password" id="ri-pass2" placeholder="••••••••••" autocomplete="new-password" oninput="riValidConfirm(this)" />
-          <button class="af-eye" type="button" onclick="toggleEye('ri-pass2',this)" aria-label="Показать пароль">
+          <button class="af-eye" type="button" onclick="toggleEye('ri-pass2',this)" aria-label="Показать пароль" data-i18n-aria-label="show-password-aria">
             <svg id="eye-ri-pass2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
         </div>
@@ -5513,15 +5671,15 @@ svg.ic-svg-login {
     <div class="profile-modal-email" id="pmEmail">—</div>
 <div class="profile-modal-fields">
   <div class="profile-modal-field">
-    <span class="pmf-label">📧 Email</span>
+    <span class="pmf-label" data-i18n="profile-field-email">📧 Email</span>
     <span class="pmf-value" id="pmEmail2">—</span>
   </div>
   <div class="profile-modal-field">
-    <span class="pmf-label">🌍 Язык</span>
+    <span class="pmf-label" data-i18n="profile-field-language">🌍 Язык</span>
     <span class="pmf-value" id="pmLang">—</span>
   </div>
   <div class="profile-modal-field">
-    <span class="pmf-label">📅 В проекте с</span>
+    <span class="pmf-label" data-i18n="profile-field-joined">📅 В проекте с</span>
     <span class="pmf-value" id="pmJoined">—</span>
   </div>
 </div>
@@ -5906,11 +6064,162 @@ svg.ic-svg-login {
   <div class="container">
     <div class="title-section">
       <div class="subtitle" data-i18n="subtitle">Скорость. Тактика.</div>
-      <h1 class="main-title" data-title="EVADES 3">EVADES 3</h1>
+
+      <div class="title-stage">
+        <h1 class="main-title" data-title="EVADES 3">EVADES 3</h1>
+      </div>
     </div>
 
     <div class="button-container">
       <span class="magnetic" data-magnetic><button class="download-button" data-i18n="download-btn">Скачать Evades 3</button></span>
+
+      <!-- 3D замок + цепи: ОТКЛЮЧЕНО (откат по запросу пользователя) -->
+      <div class="lock-cage" aria-hidden="true" hidden style="display:none">
+        <!-- Левая цепь, прицеплена к верхнему-левому углу кнопки -->
+        <svg class="chain chain-left" viewBox="0 0 28 240" preserveAspectRatio="xMidYMin meet" aria-hidden="true">
+          <defs>
+            <radialGradient id="e3-chain-grad-l" cx="32%" cy="28%" r="70%">
+              <stop offset="0%"  stop-color="#f0f4fa"/>
+              <stop offset="35%" stop-color="#9aa5b3"/>
+              <stop offset="80%" stop-color="#3d4651"/>
+              <stop offset="100%" stop-color="#1a1f25"/>
+            </radialGradient>
+            <linearGradient id="e3-chain-shine-l" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"  stop-color="rgba(255,255,255,0)"/>
+              <stop offset="40%" stop-color="rgba(255,255,255,0.5)"/>
+              <stop offset="55%" stop-color="rgba(255,255,255,0.8)"/>
+              <stop offset="70%" stop-color="rgba(255,255,255,0.4)"/>
+              <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+            </linearGradient>
+          </defs>
+          <!-- Anchor stud at the top (where chain hooks to button corner) -->
+          <circle cx="14" cy="6" r="5" fill="url(#e3-chain-grad-l)" stroke="#0a0d12" stroke-width="1"/>
+          <!-- 6 chain links alternating orientation: vertical, horizontal, vertical, horizontal... -->
+          <g class="chain-links">
+            <ellipse cx="14" cy="22"  rx="6.2" ry="11"  fill="url(#e3-chain-grad-l)" stroke="#0a0d12" stroke-width="1"/>
+            <ellipse cx="14" cy="22"  rx="2.6" ry="6"   fill="#0d1117"/>
+            <ellipse cx="11" cy="18"  rx="1.8" ry="4"   fill="rgba(255,255,255,0.45)"/>
+
+            <ellipse cx="14" cy="44"  rx="11"  ry="6.2" fill="url(#e3-chain-grad-l)" stroke="#0a0d12" stroke-width="1"/>
+            <ellipse cx="14" cy="44"  rx="6"   ry="2.6" fill="#0d1117"/>
+            <ellipse cx="10" cy="42"  rx="4"   ry="1.6" fill="rgba(255,255,255,0.45)"/>
+
+            <ellipse cx="14" cy="66"  rx="6.2" ry="11"  fill="url(#e3-chain-grad-l)" stroke="#0a0d12" stroke-width="1"/>
+            <ellipse cx="14" cy="66"  rx="2.6" ry="6"   fill="#0d1117"/>
+            <ellipse cx="11" cy="62"  rx="1.8" ry="4"   fill="rgba(255,255,255,0.45)"/>
+
+            <ellipse cx="14" cy="88"  rx="11"  ry="6.2" fill="url(#e3-chain-grad-l)" stroke="#0a0d12" stroke-width="1"/>
+            <ellipse cx="14" cy="88"  rx="6"   ry="2.6" fill="#0d1117"/>
+            <ellipse cx="10" cy="86"  rx="4"   ry="1.6" fill="rgba(255,255,255,0.45)"/>
+
+            <ellipse cx="14" cy="110" rx="6.2" ry="11"  fill="url(#e3-chain-grad-l)" stroke="#0a0d12" stroke-width="1"/>
+            <ellipse cx="14" cy="110" rx="2.6" ry="6"   fill="#0d1117"/>
+            <ellipse cx="11" cy="106" rx="1.8" ry="4"   fill="rgba(255,255,255,0.45)"/>
+
+            <ellipse cx="14" cy="132" rx="11"  ry="6.2" fill="url(#e3-chain-grad-l)" stroke="#0a0d12" stroke-width="1"/>
+            <ellipse cx="14" cy="132" rx="6"   ry="2.6" fill="#0d1117"/>
+            <ellipse cx="10" cy="130" rx="4"   ry="1.6" fill="rgba(255,255,255,0.45)"/>
+          </g>
+        </svg>
+
+        <!-- Правая цепь — зеркальная -->
+        <svg class="chain chain-right" viewBox="0 0 28 240" preserveAspectRatio="xMidYMin meet" aria-hidden="true">
+          <defs>
+            <radialGradient id="e3-chain-grad-r" cx="68%" cy="28%" r="70%">
+              <stop offset="0%"  stop-color="#f0f4fa"/>
+              <stop offset="35%" stop-color="#9aa5b3"/>
+              <stop offset="80%" stop-color="#3d4651"/>
+              <stop offset="100%" stop-color="#1a1f25"/>
+            </radialGradient>
+          </defs>
+          <circle cx="14" cy="6" r="5" fill="url(#e3-chain-grad-r)" stroke="#0a0d12" stroke-width="1"/>
+          <g class="chain-links">
+            <ellipse cx="14" cy="22"  rx="6.2" ry="11"  fill="url(#e3-chain-grad-r)" stroke="#0a0d12" stroke-width="1"/>
+            <ellipse cx="14" cy="22"  rx="2.6" ry="6"   fill="#0d1117"/>
+            <ellipse cx="17" cy="18"  rx="1.8" ry="4"   fill="rgba(255,255,255,0.45)"/>
+
+            <ellipse cx="14" cy="44"  rx="11"  ry="6.2" fill="url(#e3-chain-grad-r)" stroke="#0a0d12" stroke-width="1"/>
+            <ellipse cx="14" cy="44"  rx="6"   ry="2.6" fill="#0d1117"/>
+            <ellipse cx="18" cy="42"  rx="4"   ry="1.6" fill="rgba(255,255,255,0.45)"/>
+
+            <ellipse cx="14" cy="66"  rx="6.2" ry="11"  fill="url(#e3-chain-grad-r)" stroke="#0a0d12" stroke-width="1"/>
+            <ellipse cx="14" cy="66"  rx="2.6" ry="6"   fill="#0d1117"/>
+            <ellipse cx="17" cy="62"  rx="1.8" ry="4"   fill="rgba(255,255,255,0.45)"/>
+
+            <ellipse cx="14" cy="88"  rx="11"  ry="6.2" fill="url(#e3-chain-grad-r)" stroke="#0a0d12" stroke-width="1"/>
+            <ellipse cx="14" cy="88"  rx="6"   ry="2.6" fill="#0d1117"/>
+            <ellipse cx="18" cy="86"  rx="4"   ry="1.6" fill="rgba(255,255,255,0.45)"/>
+
+            <ellipse cx="14" cy="110" rx="6.2" ry="11"  fill="url(#e3-chain-grad-r)" stroke="#0a0d12" stroke-width="1"/>
+            <ellipse cx="14" cy="110" rx="2.6" ry="6"   fill="#0d1117"/>
+            <ellipse cx="17" cy="106" rx="1.8" ry="4"   fill="rgba(255,255,255,0.45)"/>
+
+            <ellipse cx="14" cy="132" rx="11"  ry="6.2" fill="url(#e3-chain-grad-r)" stroke="#0a0d12" stroke-width="1"/>
+            <ellipse cx="14" cy="132" rx="6"   ry="2.6" fill="#0d1117"/>
+            <ellipse cx="18" cy="130" rx="4"   ry="1.6" fill="rgba(255,255,255,0.45)"/>
+          </g>
+        </svg>
+
+        <!-- Сам 3D замок -->
+        <div class="lock-3d-wrap">
+          <svg class="lock-3d" viewBox="0 0 100 130" aria-hidden="true">
+            <defs>
+              <linearGradient id="e3-lock-body" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%"  stop-color="#7c8794"/>
+                <stop offset="22%" stop-color="#3d4651"/>
+                <stop offset="55%" stop-color="#252b34"/>
+                <stop offset="100%" stop-color="#0e1218"/>
+              </linearGradient>
+              <linearGradient id="e3-lock-shackle" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%"  stop-color="#e6ebf2"/>
+                <stop offset="40%" stop-color="#8d98a6"/>
+                <stop offset="80%" stop-color="#3d4651"/>
+                <stop offset="100%" stop-color="#1a1f25"/>
+              </linearGradient>
+              <radialGradient id="e3-lock-shine" cx="32%" cy="28%" r="55%">
+                <stop offset="0%"  stop-color="rgba(255,255,255,0.7)"/>
+                <stop offset="60%" stop-color="rgba(255,255,255,0.12)"/>
+                <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+              </radialGradient>
+              <radialGradient id="e3-lock-keyhole" cx="50%" cy="35%" r="50%">
+                <stop offset="0%"  stop-color="#020407"/>
+                <stop offset="80%" stop-color="#0a0d12"/>
+                <stop offset="100%" stop-color="#1a1f25"/>
+              </radialGradient>
+              <filter id="e3-lock-shadow" x="-30%" y="-30%" width="160%" height="160%">
+                <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#000" flood-opacity="0.55"/>
+              </filter>
+            </defs>
+
+            <g filter="url(#e3-lock-shadow)">
+              <!-- Дужка замка (U-shape) -->
+              <path d="M 32 64 V 38 a 18 18 0 0 1 36 0 V 64"
+                    fill="none" stroke="url(#e3-lock-shackle)" stroke-width="11" stroke-linecap="round"/>
+              <!-- Внутренняя подсветка дужки -->
+              <path d="M 33.5 64 V 39 a 16.5 16.5 0 0 1 33 0 V 64"
+                    fill="none" stroke="rgba(255,255,255,0.32)" stroke-width="2.2"/>
+              <!-- Тело замка -->
+              <rect x="12" y="58" width="76" height="64" rx="10"
+                    fill="url(#e3-lock-body)" stroke="#05080c" stroke-width="1.6"/>
+              <!-- Внутренняя рамка-подсветка -->
+              <rect x="15" y="61" width="70" height="58" rx="8"
+                    fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.9"/>
+              <!-- Верхний highlight -->
+              <ellipse cx="50" cy="66" rx="34" ry="7" fill="url(#e3-lock-shine)" opacity="0.85"/>
+              <!-- Боковой highlight слева -->
+              <rect x="16" y="66" width="6" height="48" rx="3" fill="rgba(255,255,255,0.12)"/>
+              <!-- Замочная скважина -->
+              <circle cx="50" cy="86" r="7"  fill="url(#e3-lock-keyhole)" stroke="#05080c" stroke-width="0.8"/>
+              <rect   x="46.6" y="91" width="6.8" height="16" rx="1.5"
+                      fill="url(#e3-lock-keyhole)" stroke="#05080c" stroke-width="0.6"/>
+              <!-- Заклёпки внизу -->
+              <circle cx="20" cy="114" r="2.6" fill="#1a1f25" stroke="#5a6470" stroke-width="0.7"/>
+              <circle cx="80" cy="114" r="2.6" fill="#1a1f25" stroke="#5a6470" stroke-width="0.7"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+
       <div class="dev-badge" data-tooltip="Игра ещё в разработке">
         <span class="status-sash" aria-hidden="true"></span>
         <span class="status-icon" aria-hidden="true">⏳</span>
@@ -6494,6 +6803,28 @@ svg.ic-svg-login {
         // Переводы (НЕ УДАЛЯТЬ — все языки сохранены)
         const translations = {
             ru: {
+                'back-to-top': 'Наверх',
+                'nav-notifications': 'Уведомления',
+                'profile-field-email': '📧 Email',
+                'profile-field-language': '🌍 Язык',
+                'profile-field-joined': '📅 В проекте с',
+                'auth-toast-oauth-redirect': 'Перенаправление на {provider}...',
+                'auth-toast-logged-out': 'Вы вышли из аккаунта 👋',
+                'auth-toast-oauth-ok': 'Вы вошли через {provider} 🎉',
+                'auth-toast-oauth-err': 'Ошибка авторизации',
+                'logout-busy': 'Выход...',
+                'auth-hint-nick-empty': '3–20 символов, только буквы, цифры и _',
+                'auth-hint-nick-bad': 'Недопустимые символы или длина',
+                'auth-hint-nick-ok': '✓ Ник подходит',
+                'auth-hint-email-bad': 'Неверный формат email',
+                'auth-hint-email-ok': '✓ Email корректный',
+                'auth-pass-strength-1': 'Слабый',
+                'auth-pass-strength-2': 'Средний',
+                'auth-pass-strength-3': 'Хороший',
+                'auth-pass-strength-4': 'Сильный',
+                'auth-hint-pass2-ok': '✓ Пароли совпадают',
+                'auth-hint-pass2-bad': 'Пароли не совпадают',
+                'logout-confirm-yes': 'Да, выйти',
                 'languages': 'Языки ▼',
                 'cookie-banner-text': "Мы используем cookies для входа, языка и работы сайта. Подробнее в <a href=\"cookies/\">Политике cookies</a>.",
                 'cookie-banner-decline': "Отклонить",
@@ -6616,6 +6947,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Войти',
             },
             en: {
+                'back-to-top': 'Back to top',
+                'nav-notifications': 'Notifications',
+                'profile-field-email': '📧 Email',
+                'profile-field-language': '🌍 Language',
+                'profile-field-joined': '📅 Joined',
+                'auth-toast-oauth-redirect': 'Redirecting to {provider}...',
+                'auth-toast-logged-out': 'You are logged out 👋',
+                'auth-toast-oauth-ok': 'Signed in with {provider} 🎉',
+                'auth-toast-oauth-err': 'Authorization error',
+                'logout-busy': 'Signing out...',
+                'auth-hint-nick-empty': '3–20 characters: letters, digits, underscore',
+                'auth-hint-nick-bad': 'Invalid characters or length',
+                'auth-hint-nick-ok': '✓ Nickname looks good',
+                'auth-hint-email-bad': 'Invalid email format',
+                'auth-hint-email-ok': '✓ Email is valid',
+                'auth-pass-strength-1': 'Weak',
+                'auth-pass-strength-2': 'Medium',
+                'auth-pass-strength-3': 'Good',
+                'auth-pass-strength-4': 'Strong',
+                'auth-hint-pass2-ok': '✓ Passwords match',
+                'auth-hint-pass2-bad': 'Passwords do not match',
+                'logout-confirm-yes': 'Yes, sign out',
                 'languages': 'Languages ▼',
                 'cookie-banner-text': "We use cookies for sign-in, language and site features. Details in our <a href=\"cookies/\">Cookies Policy</a>.",
                 'cookie-banner-decline': "Decline",
@@ -6738,6 +7091,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Login',
             },
             uk: {
+                'back-to-top': 'Догори',
+                'nav-notifications': 'Сповіщення',
+                'profile-field-email': '📧 Email',
+                'profile-field-language': '🌍 Мова',
+                'profile-field-joined': '📅 У проекті з',
+                'auth-toast-oauth-redirect': 'Перенаправлення на {provider}...',
+                'auth-toast-logged-out': 'Ви вийшли з акаунта 👋',
+                'auth-toast-oauth-ok': 'Ви увійшли через {provider} 🎉',
+                'auth-toast-oauth-err': 'Помилка авторизації',
+                'logout-busy': 'Вихід...',
+                'auth-hint-nick-empty': '3–20 символів, лише літери, цифри та _',
+                'auth-hint-nick-bad': 'Недопустимі символи або довжина',
+                'auth-hint-nick-ok': '✓ Нік підходить',
+                'auth-hint-email-bad': 'Неправильний формат email',
+                'auth-hint-email-ok': '✓ Email правильний',
+                'auth-pass-strength-1': 'Слабкий',
+                'auth-pass-strength-2': 'Середній',
+                'auth-pass-strength-3': 'Хороший',
+                'auth-pass-strength-4': 'Сильний',
+                'auth-hint-pass2-ok': '✓ Паролі збігаються',
+                'auth-hint-pass2-bad': 'Паролі не збігаються',
+                'logout-confirm-yes': 'Так, вийти',
                 'languages': 'Мови ▼',
                 'cookie-banner-text': "Ми використовуємо cookies для входу, мови і роботи сайту. Деталі в <a href=\"cookies/\">Політиці cookies</a>.",
                 'cookie-banner-decline': "Відхилити",
@@ -6860,6 +7235,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Увійти',
             },
             de: {
+                'back-to-top': 'Nach oben',
+                'nav-notifications': 'Benachrichtigungen',
+                'profile-field-email': '📧 E-Mail',
+                'profile-field-language': '🌍 Sprache',
+                'profile-field-joined': '📅 Dabei seit',
+                'auth-toast-oauth-redirect': 'Weiterleitung zu {provider}...',
+                'auth-toast-logged-out': 'Du bist abgemeldet 👋',
+                'auth-toast-oauth-ok': 'Angemeldet über {provider} 🎉',
+                'auth-toast-oauth-err': 'Anmeldefehler',
+                'logout-busy': 'Abmelden...',
+                'auth-hint-nick-empty': '3–20 Zeichen: Buchstaben, Zahlen, _',
+                'auth-hint-nick-bad': 'Ungültige Zeichen oder Länge',
+                'auth-hint-nick-ok': '✓ Nickname ist gut',
+                'auth-hint-email-bad': 'Ungültiges E-Mail-Format',
+                'auth-hint-email-ok': '✓ E-Mail ist gültig',
+                'auth-pass-strength-1': 'Schwach',
+                'auth-pass-strength-2': 'Mittel',
+                'auth-pass-strength-3': 'Gut',
+                'auth-pass-strength-4': 'Stark',
+                'auth-hint-pass2-ok': '✓ Passwörter stimmen überein',
+                'auth-hint-pass2-bad': 'Passwörter stimmen nicht überein',
+                'logout-confirm-yes': 'Ja, abmelden',
                 'languages': 'Sprachen ▼',
                 'cookie-banner-text': "Wir verwenden Cookies für Anmeldung, Sprache und Funktionen. Mehr in unseren <a href=\"cookies/\">Cookie-Richtlinien</a>.",
                 'cookie-banner-decline': "Ablehnen",
@@ -6982,6 +7379,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Anmelden',
             },
             es: {
+                'back-to-top': 'Arriba',
+                'nav-notifications': 'Notificaciones',
+                'profile-field-email': '📧 Email',
+                'profile-field-language': '🌍 Idioma',
+                'profile-field-joined': '📅 Miembro desde',
+                'auth-toast-oauth-redirect': 'Redirigiendo a {provider}...',
+                'auth-toast-logged-out': 'Has cerrado sesión 👋',
+                'auth-toast-oauth-ok': 'Has iniciado sesión con {provider} 🎉',
+                'auth-toast-oauth-err': 'Error de autorización',
+                'logout-busy': 'Cerrando sesión...',
+                'auth-hint-nick-empty': '3–20 caracteres: letras, números, _',
+                'auth-hint-nick-bad': 'Caracteres o longitud no válidos',
+                'auth-hint-nick-ok': '✓ El nombre es válido',
+                'auth-hint-email-bad': 'Formato de email no válido',
+                'auth-hint-email-ok': '✓ Email correcto',
+                'auth-pass-strength-1': 'Débil',
+                'auth-pass-strength-2': 'Media',
+                'auth-pass-strength-3': 'Buena',
+                'auth-pass-strength-4': 'Fuerte',
+                'auth-hint-pass2-ok': '✓ Las contraseñas coinciden',
+                'auth-hint-pass2-bad': 'Las contraseñas no coinciden',
+                'logout-confirm-yes': 'Sí, cerrar sesión',
                 'languages': 'Idiomas ▼',
                 'cookie-banner-text': "Usamos cookies para el inicio de sesión, idioma y funciones del sitio. Más detalles en nuestra <a href=\"cookies/\">Política de cookies</a>.",
                 'cookie-banner-decline': "Rechazar",
@@ -7104,6 +7523,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Iniciar sesión',
             },
             fr: {
+                'back-to-top': 'Haut de page',
+                'nav-notifications': 'Notifications',
+                'profile-field-email': '📧 Email',
+                'profile-field-language': '🌍 Langue',
+                'profile-field-joined': '📅 Membre depuis',
+                'auth-toast-oauth-redirect': 'Redirection vers {provider}...',
+                'auth-toast-logged-out': 'Vous êtes déconnecté 👋',
+                'auth-toast-oauth-ok': 'Connecté via {provider} 🎉',
+                'auth-toast-oauth-err': 'Erreur d\'autorisation',
+                'logout-busy': 'Déconnexion...',
+                'auth-hint-nick-empty': '3–20 caractères : lettres, chiffres, _',
+                'auth-hint-nick-bad': 'Caractères ou longueur invalides',
+                'auth-hint-nick-ok': '✓ Pseudo valide',
+                'auth-hint-email-bad': 'Format d\'email invalide',
+                'auth-hint-email-ok': '✓ Email valide',
+                'auth-pass-strength-1': 'Faible',
+                'auth-pass-strength-2': 'Moyen',
+                'auth-pass-strength-3': 'Bon',
+                'auth-pass-strength-4': 'Fort',
+                'auth-hint-pass2-ok': '✓ Les mots de passe correspondent',
+                'auth-hint-pass2-bad': 'Les mots de passe ne correspondent pas',
+                'logout-confirm-yes': 'Oui, se déconnecter',
                 'languages': 'Langues ▼',
                 'cookie-banner-text': "Nous utilisons des cookies pour la connexion, la langue et les fonctionnalités. Détails dans notre <a href=\"cookies/\">Politique de cookies</a>.",
                 'cookie-banner-decline': "Refuser",
@@ -7226,6 +7667,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Se connecter',
             },
             it: {
+                'back-to-top': 'Torna su',
+                'nav-notifications': 'Notifiche',
+                'profile-field-email': '📧 Email',
+                'profile-field-language': '🌍 Lingua',
+                'profile-field-joined': '📅 Membro dal',
+                'auth-toast-oauth-redirect': 'Reindirizzamento a {provider}...',
+                'auth-toast-logged-out': 'Hai effettuato il logout 👋',
+                'auth-toast-oauth-ok': 'Accesso con {provider} 🎉',
+                'auth-toast-oauth-err': 'Errore di autorizzazione',
+                'logout-busy': 'Disconnessione...',
+                'auth-hint-nick-empty': '3–20 caratteri: lettere, numeri, _',
+                'auth-hint-nick-bad': 'Caratteri o lunghezza non validi',
+                'auth-hint-nick-ok': '✓ Nickname valido',
+                'auth-hint-email-bad': 'Formato email non valido',
+                'auth-hint-email-ok': '✓ Email valida',
+                'auth-pass-strength-1': 'Debole',
+                'auth-pass-strength-2': 'Media',
+                'auth-pass-strength-3': 'Buona',
+                'auth-pass-strength-4': 'Forte',
+                'auth-hint-pass2-ok': '✓ Le password coincidono',
+                'auth-hint-pass2-bad': 'Le password non coincidono',
+                'logout-confirm-yes': 'Sì, esci',
                 'languages': 'Lingue ▼',
                 'cookie-banner-text': "Usiamo i cookie per accesso, lingua e funzionalità del sito. Dettagli nella nostra <a href=\"cookies/\">Cookie Policy</a>.",
                 'cookie-banner-decline': "Rifiuta",
@@ -7348,6 +7811,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Accedi',
             },
             pt: {
+                'back-to-top': 'Topo',
+                'nav-notifications': 'Notificações',
+                'profile-field-email': '📧 Email',
+                'profile-field-language': '🌍 Idioma',
+                'profile-field-joined': '📅 Membro desde',
+                'auth-toast-oauth-redirect': 'Redirecionando para {provider}...',
+                'auth-toast-logged-out': 'Você saiu da conta 👋',
+                'auth-toast-oauth-ok': 'Conectado com {provider} 🎉',
+                'auth-toast-oauth-err': 'Erro de autorização',
+                'logout-busy': 'Saindo...',
+                'auth-hint-nick-empty': '3–20 caracteres: letras, dígitos, _',
+                'auth-hint-nick-bad': 'Caracteres ou tamanho inválidos',
+                'auth-hint-nick-ok': '✓ Nick válido',
+                'auth-hint-email-bad': 'Formato de email inválido',
+                'auth-hint-email-ok': '✓ Email válido',
+                'auth-pass-strength-1': 'Fraca',
+                'auth-pass-strength-2': 'Média',
+                'auth-pass-strength-3': 'Boa',
+                'auth-pass-strength-4': 'Forte',
+                'auth-hint-pass2-ok': '✓ As senhas coincidem',
+                'auth-hint-pass2-bad': 'As senhas não coincidem',
+                'logout-confirm-yes': 'Sim, sair',
                 'languages': 'Idiomas ▼',
                 'cookie-banner-text': "Usamos cookies para login, idioma e funcionamento do site. Detalhes na nossa <a href=\"cookies/\">Política de Cookies</a>.",
                 'cookie-banner-decline': "Rejeitar",
@@ -7470,6 +7955,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Entrar',
             },
             pl: {
+                'back-to-top': 'Do góry',
+                'nav-notifications': 'Powiadomienia',
+                'profile-field-email': '📧 Email',
+                'profile-field-language': '🌍 Język',
+                'profile-field-joined': '📅 W projekcie od',
+                'auth-toast-oauth-redirect': 'Przekierowanie do {provider}...',
+                'auth-toast-logged-out': 'Wylogowano 👋',
+                'auth-toast-oauth-ok': 'Zalogowano przez {provider} 🎉',
+                'auth-toast-oauth-err': 'Błąd autoryzacji',
+                'logout-busy': 'Wylogowywanie...',
+                'auth-hint-nick-empty': '3–20 znaków: litery, cyfry, _',
+                'auth-hint-nick-bad': 'Nieprawidłowe znaki lub długość',
+                'auth-hint-nick-ok': '✓ Nick poprawny',
+                'auth-hint-email-bad': 'Nieprawidłowy format email',
+                'auth-hint-email-ok': '✓ Email poprawny',
+                'auth-pass-strength-1': 'Słabe',
+                'auth-pass-strength-2': 'Średnie',
+                'auth-pass-strength-3': 'Dobre',
+                'auth-pass-strength-4': 'Silne',
+                'auth-hint-pass2-ok': '✓ Hasła są zgodne',
+                'auth-hint-pass2-bad': 'Hasła nie są zgodne',
+                'logout-confirm-yes': 'Tak, wyloguj',
                 'languages': 'Języki ▼',
                 'cookie-banner-text': "Używamy plików cookies do logowania, języka i działania strony. Szczegóły w naszej <a href=\"cookies/\">Polityce cookies</a>.",
                 'cookie-banner-decline': "Odrzuć",
@@ -7592,6 +8099,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Zaloguj się',
             },
             tr: {
+                'back-to-top': 'Yukarı',
+                'nav-notifications': 'Bildirimler',
+                'profile-field-email': '📧 E-posta',
+                'profile-field-language': '🌍 Dil',
+                'profile-field-joined': '📅 Üyelik tarihi',
+                'auth-toast-oauth-redirect': '{provider} sayfasına yönlendiriliyor...',
+                'auth-toast-logged-out': 'Çıkış yapıldı 👋',
+                'auth-toast-oauth-ok': '{provider} ile giriş yapıldı 🎉',
+                'auth-toast-oauth-err': 'Yetkilendirme hatası',
+                'logout-busy': 'Çıkış yapılıyor...',
+                'auth-hint-nick-empty': '3–20 karakter: harf, rakam, _',
+                'auth-hint-nick-bad': 'Geçersiz karakter veya uzunluk',
+                'auth-hint-nick-ok': '✓ Kullanıcı adı uygun',
+                'auth-hint-email-bad': 'Geçersiz e-posta formatı',
+                'auth-hint-email-ok': '✓ E-posta geçerli',
+                'auth-pass-strength-1': 'Zayıf',
+                'auth-pass-strength-2': 'Orta',
+                'auth-pass-strength-3': 'İyi',
+                'auth-pass-strength-4': 'Güçlü',
+                'auth-hint-pass2-ok': '✓ Şifreler eşleşiyor',
+                'auth-hint-pass2-bad': 'Şifreler eşleşmiyor',
+                'logout-confirm-yes': 'Evet, çıkış yap',
                 'languages': 'Diller ▼',
                 'cookie-banner-text': "Giriş, dil ve site özellikleri için çerez kullanıyoruz. Ayrıntılar <a href=\"cookies/\">Çerez Politikası</a>'nda.",
                 'cookie-banner-decline': "Reddet",
@@ -7714,6 +8243,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Giriş yap',
             },
             nl: {
+                'back-to-top': 'Naar boven',
+                'nav-notifications': 'Meldingen',
+                'profile-field-email': '📧 E-mail',
+                'profile-field-language': '🌍 Taal',
+                'profile-field-joined': '📅 Lid sinds',
+                'auth-toast-oauth-redirect': 'Doorverwijzen naar {provider}...',
+                'auth-toast-logged-out': 'Je bent uitgelogd 👋',
+                'auth-toast-oauth-ok': 'Ingelogd via {provider} 🎉',
+                'auth-toast-oauth-err': 'Autorisatiefout',
+                'logout-busy': 'Uitloggen...',
+                'auth-hint-nick-empty': '3–20 tekens: letters, cijfers, _',
+                'auth-hint-nick-bad': 'Ongeldige tekens of lengte',
+                'auth-hint-nick-ok': '✓ Bijnaam is goed',
+                'auth-hint-email-bad': 'Ongeldig e-mailformaat',
+                'auth-hint-email-ok': '✓ E-mail is geldig',
+                'auth-pass-strength-1': 'Zwak',
+                'auth-pass-strength-2': 'Gemiddeld',
+                'auth-pass-strength-3': 'Goed',
+                'auth-pass-strength-4': 'Sterk',
+                'auth-hint-pass2-ok': '✓ Wachtwoorden komen overeen',
+                'auth-hint-pass2-bad': 'Wachtwoorden komen niet overeen',
+                'logout-confirm-yes': 'Ja, uitloggen',
                 'languages': 'Talen ▼',
                 'cookie-banner-text': "We gebruiken cookies voor login, taal en sitefuncties. Details in ons <a href=\"cookies/\">Cookiebeleid</a>.",
                 'cookie-banner-decline': "Weigeren",
@@ -7836,6 +8387,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Inloggen',
             },
             sv: {
+                'back-to-top': 'Till toppen',
+                'nav-notifications': 'Aviseringar',
+                'profile-field-email': '📧 E-post',
+                'profile-field-language': '🌍 Språk',
+                'profile-field-joined': '📅 Medlem sedan',
+                'auth-toast-oauth-redirect': 'Omdirigerar till {provider}...',
+                'auth-toast-logged-out': 'Du har loggat ut 👋',
+                'auth-toast-oauth-ok': 'Inloggad via {provider} 🎉',
+                'auth-toast-oauth-err': 'Auktoriseringsfel',
+                'logout-busy': 'Loggar ut...',
+                'auth-hint-nick-empty': '3–20 tecken: bokstäver, siffror, _',
+                'auth-hint-nick-bad': 'Ogiltiga tecken eller längd',
+                'auth-hint-nick-ok': '✓ Smeknamnet är okej',
+                'auth-hint-email-bad': 'Ogiltigt e-postformat',
+                'auth-hint-email-ok': '✓ E-post är giltig',
+                'auth-pass-strength-1': 'Svagt',
+                'auth-pass-strength-2': 'Medel',
+                'auth-pass-strength-3': 'Bra',
+                'auth-pass-strength-4': 'Starkt',
+                'auth-hint-pass2-ok': '✓ Lösenorden matchar',
+                'auth-hint-pass2-bad': 'Lösenorden matchar inte',
+                'logout-confirm-yes': 'Ja, logga ut',
                 'languages': 'Språk ▼',
                 'cookie-banner-text': "Vi använder cookies för inloggning, språk och sidfunktioner. Detaljer i vår <a href=\"cookies/\">Cookiepolicy</a>.",
                 'cookie-banner-decline': "Avvisa",
@@ -7958,6 +8531,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Logga in',
             },
             no: {
+                'back-to-top': 'Til toppen',
+                'nav-notifications': 'Varsler',
+                'profile-field-email': '📧 E-post',
+                'profile-field-language': '🌍 Språk',
+                'profile-field-joined': '📅 Medlem siden',
+                'auth-toast-oauth-redirect': 'Omdirigerer til {provider}...',
+                'auth-toast-logged-out': 'Du er logget ut 👋',
+                'auth-toast-oauth-ok': 'Logget inn via {provider} 🎉',
+                'auth-toast-oauth-err': 'Autorisasjonsfeil',
+                'logout-busy': 'Logger ut...',
+                'auth-hint-nick-empty': '3–20 tegn: bokstaver, tall, _',
+                'auth-hint-nick-bad': 'Ugyldige tegn eller lengde',
+                'auth-hint-nick-ok': '✓ Kallenavnet er bra',
+                'auth-hint-email-bad': 'Ugyldig e-postformat',
+                'auth-hint-email-ok': '✓ E-post er gyldig',
+                'auth-pass-strength-1': 'Svakt',
+                'auth-pass-strength-2': 'Middels',
+                'auth-pass-strength-3': 'Bra',
+                'auth-pass-strength-4': 'Sterkt',
+                'auth-hint-pass2-ok': '✓ Passordene matcher',
+                'auth-hint-pass2-bad': 'Passordene matcher ikke',
+                'logout-confirm-yes': 'Ja, logg ut',
                 'languages': 'Språk ▼',
                 'cookie-banner-text': "Vi bruker informasjonskapsler for innlogging, språk og funksjoner. Detaljer i vår <a href=\"cookies/\">Cookie-retningslinjer</a>.",
                 'cookie-banner-decline': "Avslå",
@@ -8080,6 +8675,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Logg inn',
             },
             fi: {
+                'back-to-top': 'Ylös',
+                'nav-notifications': 'Ilmoitukset',
+                'profile-field-email': '📧 Sähköposti',
+                'profile-field-language': '🌍 Kieli',
+                'profile-field-joined': '📅 Jäsenyys alkoi',
+                'auth-toast-oauth-redirect': 'Uudelleenohjataan palveluun {provider}...',
+                'auth-toast-logged-out': 'Olet kirjautunut ulos 👋',
+                'auth-toast-oauth-ok': 'Kirjauduttu palvelulla {provider} 🎉',
+                'auth-toast-oauth-err': 'Valtuutusvirhe',
+                'logout-busy': 'Kirjaudutaan ulos...',
+                'auth-hint-nick-empty': '3–20 merkkiä: kirjaimet, numerot, _',
+                'auth-hint-nick-bad': 'Virheelliset merkit tai pituus',
+                'auth-hint-nick-ok': '✓ Nimimerkki on hyvä',
+                'auth-hint-email-bad': 'Virheellinen sähköpostimuoto',
+                'auth-hint-email-ok': '✓ Sähköposti on kelvollinen',
+                'auth-pass-strength-1': 'Heikko',
+                'auth-pass-strength-2': 'Keskinkertainen',
+                'auth-pass-strength-3': 'Hyvä',
+                'auth-pass-strength-4': 'Vahva',
+                'auth-hint-pass2-ok': '✓ Salasanat täsmäävät',
+                'auth-hint-pass2-bad': 'Salasanat eivät täsmää',
+                'logout-confirm-yes': 'Kyllä, kirjaudu ulos',
                 'languages': 'Kielet ▼',
                 'cookie-banner-text': "Käytämme evästeitä kirjautumiseen, kieleen ja sivuston toimintoihin. Lisätietoja <a href=\"cookies/\">evästekäytännössämme</a>.",
                 'cookie-banner-decline': "Hylkää",
@@ -8202,6 +8819,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Kirjaudu',
             },
             da: {
+                'back-to-top': 'Til toppen',
+                'nav-notifications': 'Notifikationer',
+                'profile-field-email': '📧 E-mail',
+                'profile-field-language': '🌍 Sprog',
+                'profile-field-joined': '📅 Medlem siden',
+                'auth-toast-oauth-redirect': 'Omdirigerer til {provider}...',
+                'auth-toast-logged-out': 'Du er logget ud 👋',
+                'auth-toast-oauth-ok': 'Logget ind via {provider} 🎉',
+                'auth-toast-oauth-err': 'Godkendelsesfejl',
+                'logout-busy': 'Logger ud...',
+                'auth-hint-nick-empty': '3–20 tegn: bogstaver, tal, _',
+                'auth-hint-nick-bad': 'Ugyldige tegn eller længde',
+                'auth-hint-nick-ok': '✓ Kaldenavnet er godt',
+                'auth-hint-email-bad': 'Ugyldigt e-mailformat',
+                'auth-hint-email-ok': '✓ E-mail er gyldig',
+                'auth-pass-strength-1': 'Svag',
+                'auth-pass-strength-2': 'Mellem',
+                'auth-pass-strength-3': 'God',
+                'auth-pass-strength-4': 'Stærk',
+                'auth-hint-pass2-ok': '✓ Adgangskoder matcher',
+                'auth-hint-pass2-bad': 'Adgangskoder matcher ikke',
+                'logout-confirm-yes': 'Ja, log ud',
                 'languages': 'Sprog ▼',
                 'cookie-banner-text': "Vi bruger cookies til login, sprog og sidefunktioner. Detaljer i vores <a href=\"cookies/\">Cookiepolitik</a>.",
                 'cookie-banner-decline': "Afvis",
@@ -8324,6 +8963,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Log ind',
             },
             cs: {
+                'back-to-top': 'Nahoru',
+                'nav-notifications': 'Oznámení',
+                'profile-field-email': '📧 E-mail',
+                'profile-field-language': '🌍 Jazyk',
+                'profile-field-joined': '📅 V projektu od',
+                'auth-toast-oauth-redirect': 'Přesměrování na {provider}...',
+                'auth-toast-logged-out': 'Byli jste odhlášeni 👋',
+                'auth-toast-oauth-ok': 'Přihlášení přes {provider} 🎉',
+                'auth-toast-oauth-err': 'Chyba autorizace',
+                'logout-busy': 'Odhlašování...',
+                'auth-hint-nick-empty': '3–20 znaků: písmena, číslice, _',
+                'auth-hint-nick-bad': 'Neplatné znaky nebo délka',
+                'auth-hint-nick-ok': '✓ Přezdívka je v pořádku',
+                'auth-hint-email-bad': 'Neplatný formát emailu',
+                'auth-hint-email-ok': '✓ Email je platný',
+                'auth-pass-strength-1': 'Slabé',
+                'auth-pass-strength-2': 'Střední',
+                'auth-pass-strength-3': 'Dobré',
+                'auth-pass-strength-4': 'Silné',
+                'auth-hint-pass2-ok': '✓ Hesla se shodují',
+                'auth-hint-pass2-bad': 'Hesla se neshodují',
+                'logout-confirm-yes': 'Ano, odhlásit',
                 'languages': 'Jazyky ▼',
                 'cookie-banner-text': "Používáme cookies pro přihlášení, jazyk a funkce webu. Detaily v našich <a href=\"cookies/\">Zásadách cookies</a>.",
                 'cookie-banner-decline': "Odmítnout",
@@ -8446,6 +9107,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Přihlásit se',
             },
             ro: {
+                'back-to-top': 'Sus',
+                'nav-notifications': 'Notificări',
+                'profile-field-email': '📧 Email',
+                'profile-field-language': '🌍 Limbă',
+                'profile-field-joined': '📅 Membru din',
+                'auth-toast-oauth-redirect': 'Redirecționare către {provider}...',
+                'auth-toast-logged-out': 'Te-ai deconectat 👋',
+                'auth-toast-oauth-ok': 'Conectat prin {provider} 🎉',
+                'auth-toast-oauth-err': 'Eroare de autorizare',
+                'logout-busy': 'Deconectare...',
+                'auth-hint-nick-empty': '3–20 caractere: litere, cifre, _',
+                'auth-hint-nick-bad': 'Caractere sau lungime invalide',
+                'auth-hint-nick-ok': '✓ Pseudonimul e bun',
+                'auth-hint-email-bad': 'Format de email invalid',
+                'auth-hint-email-ok': '✓ Email valid',
+                'auth-pass-strength-1': 'Slabă',
+                'auth-pass-strength-2': 'Medie',
+                'auth-pass-strength-3': 'Bună',
+                'auth-pass-strength-4': 'Puternică',
+                'auth-hint-pass2-ok': '✓ Parolele coincid',
+                'auth-hint-pass2-bad': 'Parolele nu coincid',
+                'logout-confirm-yes': 'Da, deconectare',
                 'languages': 'Limbi ▼',
                 'cookie-banner-text': "Folosim cookie-uri pentru autentificare, limbă și funcționalitatea site-ului. Detalii în <a href=\"cookies/\">Politica de cookies</a>.",
                 'cookie-banner-decline': "Refuză",
@@ -8568,6 +9251,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Autentificare',
             },
             hu: {
+                'back-to-top': 'Vissza a tetejére',
+                'nav-notifications': 'Értesítések',
+                'profile-field-email': '📧 E-mail',
+                'profile-field-language': '🌍 Nyelv',
+                'profile-field-joined': '📅 Tag ettől',
+                'auth-toast-oauth-redirect': 'Átirányítás ide: {provider}...',
+                'auth-toast-logged-out': 'Kijelentkeztél 👋',
+                'auth-toast-oauth-ok': 'Belépve {provider} fiókkal 🎉',
+                'auth-toast-oauth-err': 'Hitelesítési hiba',
+                'logout-busy': 'Kijelentkezés...',
+                'auth-hint-nick-empty': '3–20 karakter: betűk, számok, _',
+                'auth-hint-nick-bad': 'Érvénytelen karakter vagy hossz',
+                'auth-hint-nick-ok': '✓ A becenév rendben',
+                'auth-hint-email-bad': 'Érvénytelen email formátum',
+                'auth-hint-email-ok': '✓ Az email érvényes',
+                'auth-pass-strength-1': 'Gyenge',
+                'auth-pass-strength-2': 'Közepes',
+                'auth-pass-strength-3': 'Jó',
+                'auth-pass-strength-4': 'Erős',
+                'auth-hint-pass2-ok': '✓ A jelszavak megegyeznek',
+                'auth-hint-pass2-bad': 'A jelszavak nem egyeznek',
+                'logout-confirm-yes': 'Igen, kijelentkezés',
                 'languages': 'Nyelvek ▼',
                 'cookie-banner-text': "Cookie-kat használunk a bejelentkezéshez, nyelvhez és a webhely működéséhez. Részletek a <a href=\"cookies/\">Cookie-szabályzatunkban</a>.",
                 'cookie-banner-decline': "Elutasítás",
@@ -8690,6 +9395,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Bejelentkezés',
             },
             el: {
+                'back-to-top': 'Επάνω',
+                'nav-notifications': 'Ειδοποιήσεις',
+                'profile-field-email': '📧 Email',
+                'profile-field-language': '🌍 Γλώσσα',
+                'profile-field-joined': '📅 Μέλος από',
+                'auth-toast-oauth-redirect': 'Ανακατεύθυνση σε {provider}...',
+                'auth-toast-logged-out': 'Αποσυνδεθήκατε 👋',
+                'auth-toast-oauth-ok': 'Συνδεθήκατε μέσω {provider} 🎉',
+                'auth-toast-oauth-err': 'Σφάλμα εξουσιοδότησης',
+                'logout-busy': 'Αποσύνδεση...',
+                'auth-hint-nick-empty': '3–20 χαρακτήρες: γράμματα, ψηφία, _',
+                'auth-hint-nick-bad': 'Μη έγκυροι χαρακτήρες ή μήκος',
+                'auth-hint-nick-ok': '✓ Το ψευδώνυμο είναι καλό',
+                'auth-hint-email-bad': 'Μη έγκυρη μορφή email',
+                'auth-hint-email-ok': '✓ Το email είναι έγκυρο',
+                'auth-pass-strength-1': 'Αδύναμος',
+                'auth-pass-strength-2': 'Μέτριος',
+                'auth-pass-strength-3': 'Καλός',
+                'auth-pass-strength-4': 'Ισχυρός',
+                'auth-hint-pass2-ok': '✓ Οι κωδικοί ταιριάζουν',
+                'auth-hint-pass2-bad': 'Οι κωδικοί δεν ταιριάζουν',
+                'logout-confirm-yes': 'Ναι, αποσύνδεση',
                 'languages': 'Γλώσσες ▼',
                 'cookie-banner-text': "Χρησιμοποιούμε cookies για σύνδεση, γλώσσα και λειτουργίες του ιστότοπου. Λεπτομέρειες στην <a href=\"cookies/\">Πολιτική Cookies</a>.",
                 'cookie-banner-decline': "Απόρριψη",
@@ -8812,6 +9539,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Σύνδεση',
             },
             ja: {
+                'back-to-top': 'トップへ',
+                'nav-notifications': '通知',
+                'profile-field-email': '📧 メール',
+                'profile-field-language': '🌍 言語',
+                'profile-field-joined': '📅 参加日',
+                'auth-toast-oauth-redirect': '{provider}にリダイレクト中...',
+                'auth-toast-logged-out': 'ログアウトしました 👋',
+                'auth-toast-oauth-ok': '{provider}でログインしました 🎉',
+                'auth-toast-oauth-err': '認証エラー',
+                'logout-busy': 'ログアウト中...',
+                'auth-hint-nick-empty': '3〜20文字、英数字とアンダースコア',
+                'auth-hint-nick-bad': '使用できない文字または長さです',
+                'auth-hint-nick-ok': '✓ ニックネームOK',
+                'auth-hint-email-bad': 'メールアドレスの形式が正しくありません',
+                'auth-hint-email-ok': '✓ メールアドレスは有効です',
+                'auth-pass-strength-1': '弱い',
+                'auth-pass-strength-2': '普通',
+                'auth-pass-strength-3': '良い',
+                'auth-pass-strength-4': '強い',
+                'auth-hint-pass2-ok': '✓ パスワードが一致',
+                'auth-hint-pass2-bad': 'パスワードが一致しません',
+                'logout-confirm-yes': 'はい、ログアウト',
                 'languages': '言語 ▼',
                 'cookie-banner-text': "ログイン、言語、サイト機能のために Cookie を使用しています。詳しくは<a href=\"cookies/\">Cookie ポリシー</a>。",
                 'cookie-banner-decline': "拒否",
@@ -8934,6 +9683,28 @@ svg.ic-svg-login {
                 'register-login-link': 'ログイン',
             },
             zh: {
+                'back-to-top': '回到顶部',
+                'nav-notifications': '通知',
+                'profile-field-email': '📧 邮箱',
+                'profile-field-language': '🌍 语言',
+                'profile-field-joined': '📅 加入于',
+                'auth-toast-oauth-redirect': '正在跳转到 {provider}...',
+                'auth-toast-logged-out': '已退出登录 👋',
+                'auth-toast-oauth-ok': '已通过 {provider} 登录 🎉',
+                'auth-toast-oauth-err': '授权错误',
+                'logout-busy': '退出中...',
+                'auth-hint-nick-empty': '3–20个字符：字母、数字、下划线',
+                'auth-hint-nick-bad': '字符无效或长度不对',
+                'auth-hint-nick-ok': '✓ 昵称可用',
+                'auth-hint-email-bad': '邮箱格式无效',
+                'auth-hint-email-ok': '✓ 邮箱有效',
+                'auth-pass-strength-1': '弱',
+                'auth-pass-strength-2': '中等',
+                'auth-pass-strength-3': '良好',
+                'auth-pass-strength-4': '强',
+                'auth-hint-pass2-ok': '✓ 密码匹配',
+                'auth-hint-pass2-bad': '密码不匹配',
+                'logout-confirm-yes': '是的，退出',
                 'languages': '语言 ▼',
                 'cookie-banner-text': "我们使用 cookies 用于登录、语言和站点功能。详情见<a href=\"cookies/\">Cookie 政策</a>。",
                 'cookie-banner-decline': "拒绝",
@@ -9056,6 +9827,28 @@ svg.ic-svg-login {
                 'register-login-link': '登录',
             },
             ko: {
+                'back-to-top': '맨 위로',
+                'nav-notifications': '알림',
+                'profile-field-email': '📧 이메일',
+                'profile-field-language': '🌍 언어',
+                'profile-field-joined': '📅 가입일',
+                'auth-toast-oauth-redirect': '{provider}로 리디렉션 중...',
+                'auth-toast-logged-out': '로그아웃되었습니다 👋',
+                'auth-toast-oauth-ok': '{provider}로 로그인됨 🎉',
+                'auth-toast-oauth-err': '인증 오류',
+                'logout-busy': '로그아웃 중...',
+                'auth-hint-nick-empty': '3~20자: 영문, 숫자, _',
+                'auth-hint-nick-bad': '사용할 수 없는 문자 또는 길이',
+                'auth-hint-nick-ok': '✓ 닉네임 사용 가능',
+                'auth-hint-email-bad': '잘못된 이메일 형식',
+                'auth-hint-email-ok': '✓ 이메일 유효',
+                'auth-pass-strength-1': '약함',
+                'auth-pass-strength-2': '보통',
+                'auth-pass-strength-3': '양호',
+                'auth-pass-strength-4': '강함',
+                'auth-hint-pass2-ok': '✓ 비밀번호 일치',
+                'auth-hint-pass2-bad': '비밀번호 불일치',
+                'logout-confirm-yes': '예, 로그아웃',
                 'languages': '언어 ▼',
                 'cookie-banner-text': "로그인, 언어, 사이트 기능을 위해 쿠키를 사용합니다. 자세한 내용은 <a href=\"cookies/\">쿠키 정책</a>을 참조하세요.",
                 'cookie-banner-decline': "거부",
@@ -9178,6 +9971,28 @@ svg.ic-svg-login {
                 'register-login-link': '로그인',
             },
             ar: {
+                'back-to-top': 'إلى الأعلى',
+                'nav-notifications': 'الإشعارات',
+                'profile-field-email': '📧 البريد الإلكتروني',
+                'profile-field-language': '🌍 اللغة',
+                'profile-field-joined': '📅 عضو منذ',
+                'auth-toast-oauth-redirect': 'إعادة التوجيه إلى {provider}...',
+                'auth-toast-logged-out': 'تم تسجيل الخروج 👋',
+                'auth-toast-oauth-ok': 'تم تسجيل الدخول عبر {provider} 🎉',
+                'auth-toast-oauth-err': 'خطأ في التفويض',
+                'logout-busy': 'جاري تسجيل الخروج...',
+                'auth-hint-nick-empty': '3–20 حرفًا: حروف، أرقام، شرطة سفلية',
+                'auth-hint-nick-bad': 'أحرف أو طول غير صالح',
+                'auth-hint-nick-ok': '✓ اسم المستخدم مناسب',
+                'auth-hint-email-bad': 'صيغة البريد الإلكتروني غير صحيحة',
+                'auth-hint-email-ok': '✓ البريد الإلكتروني صحيح',
+                'auth-pass-strength-1': 'ضعيفة',
+                'auth-pass-strength-2': 'متوسطة',
+                'auth-pass-strength-3': 'جيدة',
+                'auth-pass-strength-4': 'قوية',
+                'auth-hint-pass2-ok': '✓ كلمتا المرور متطابقتان',
+                'auth-hint-pass2-bad': 'كلمتا المرور غير متطابقتين',
+                'logout-confirm-yes': 'نعم، تسجيل الخروج',
                 'languages': 'اللغات ▼',
                 'cookie-banner-text': "نستخدم ملفات تعريف الارتباط لتسجيل الدخول واللغة وميزات الموقع. التفاصيل في <a href=\"cookies/\">سياسة ملفات تعريف الارتباط</a>.",
                 'cookie-banner-decline': "رفض",
@@ -9300,6 +10115,28 @@ svg.ic-svg-login {
                 'register-login-link': 'تسجيل الدخول',
             },
             hi: {
+                'back-to-top': 'ऊपर जाएँ',
+                'nav-notifications': 'सूचनाएँ',
+                'profile-field-email': '📧 ईमेल',
+                'profile-field-language': '🌍 भाषा',
+                'profile-field-joined': '📅 सदस्य बने',
+                'auth-toast-oauth-redirect': '{provider} पर रीडायरेक्ट हो रहा है...',
+                'auth-toast-logged-out': 'आप लॉग आउट हो गए 👋',
+                'auth-toast-oauth-ok': '{provider} से लॉग इन किया गया 🎉',
+                'auth-toast-oauth-err': 'प्राधिकरण त्रुटि',
+                'logout-busy': 'लॉग आउट हो रहा है...',
+                'auth-hint-nick-empty': '3–20 अक्षर: अक्षर, अंक, _',
+                'auth-hint-nick-bad': 'अमान्य अक्षर या लंबाई',
+                'auth-hint-nick-ok': '✓ उपनाम ठीक है',
+                'auth-hint-email-bad': 'अमान्य ईमेल प्रारूप',
+                'auth-hint-email-ok': '✓ ईमेल मान्य है',
+                'auth-pass-strength-1': 'कमज़ोर',
+                'auth-pass-strength-2': 'मध्यम',
+                'auth-pass-strength-3': 'अच्छा',
+                'auth-pass-strength-4': 'मज़बूत',
+                'auth-hint-pass2-ok': '✓ पासवर्ड मेल खाते हैं',
+                'auth-hint-pass2-bad': 'पासवर्ड मेल नहीं खाते',
+                'logout-confirm-yes': 'हाँ, लॉग आउट',
                 'languages': 'भाषाएँ ▼',
                 'cookie-banner-text': "हम लॉगिन, भाषा और साइट कार्यों के लिए cookies का उपयोग करते हैं। विवरण <a href=\"cookies/\">Cookies नीति</a> में।",
                 'cookie-banner-decline': "अस्वीकार",
@@ -9422,6 +10259,28 @@ svg.ic-svg-login {
                 'register-login-link': 'लॉगिन',
             },
             th: {
+                'back-to-top': 'กลับขึ้นบน',
+                'nav-notifications': 'การแจ้งเตือน',
+                'profile-field-email': '📧 อีเมล',
+                'profile-field-language': '🌍 ภาษา',
+                'profile-field-joined': '📅 เข้าร่วมเมื่อ',
+                'auth-toast-oauth-redirect': 'กำลังเปลี่ยนเส้นทางไปยัง {provider}...',
+                'auth-toast-logged-out': 'ออกจากระบบแล้ว 👋',
+                'auth-toast-oauth-ok': 'เข้าสู่ระบบด้วย {provider} 🎉',
+                'auth-toast-oauth-err': 'ข้อผิดพลาดในการอนุมัติ',
+                'logout-busy': 'กำลังออกจากระบบ...',
+                'auth-hint-nick-empty': '3–20 ตัวอักษร: ตัวอักษร ตัวเลข _',
+                'auth-hint-nick-bad': 'อักขระหรือความยาวไม่ถูกต้อง',
+                'auth-hint-nick-ok': '✓ ชื่อเล่นใช้ได้',
+                'auth-hint-email-bad': 'รูปแบบอีเมลไม่ถูกต้อง',
+                'auth-hint-email-ok': '✓ อีเมลถูกต้อง',
+                'auth-pass-strength-1': 'อ่อน',
+                'auth-pass-strength-2': 'ปานกลาง',
+                'auth-pass-strength-3': 'ดี',
+                'auth-pass-strength-4': 'แข็งแกร่ง',
+                'auth-hint-pass2-ok': '✓ รหัสผ่านตรงกัน',
+                'auth-hint-pass2-bad': 'รหัสผ่านไม่ตรงกัน',
+                'logout-confirm-yes': 'ใช่ ออกจากระบบ',
                 'languages': 'ภาษา ▼',
                 'cookie-banner-text': "เราใช้คุกกี้สำหรับการเข้าสู่ระบบ ภาษา และฟังก์ชันของไซต์ รายละเอียดใน<a href=\"cookies/\">นโยบายคุกกี้</a>",
                 'cookie-banner-decline': "ปฏิเสธ",
@@ -9544,6 +10403,28 @@ svg.ic-svg-login {
                 'register-login-link': 'เข้าสู่ระบบ',
             },
             vi: {
+                'back-to-top': 'Lên đầu',
+                'nav-notifications': 'Thông báo',
+                'profile-field-email': '📧 Email',
+                'profile-field-language': '🌍 Ngôn ngữ',
+                'profile-field-joined': '📅 Thành viên từ',
+                'auth-toast-oauth-redirect': 'Đang chuyển hướng đến {provider}...',
+                'auth-toast-logged-out': 'Bạn đã đăng xuất 👋',
+                'auth-toast-oauth-ok': 'Đã đăng nhập qua {provider} 🎉',
+                'auth-toast-oauth-err': 'Lỗi ủy quyền',
+                'logout-busy': 'Đang đăng xuất...',
+                'auth-hint-nick-empty': '3–20 ký tự: chữ, số, _',
+                'auth-hint-nick-bad': 'Ký tự hoặc độ dài không hợp lệ',
+                'auth-hint-nick-ok': '✓ Biệt danh hợp lệ',
+                'auth-hint-email-bad': 'Định dạng email không hợp lệ',
+                'auth-hint-email-ok': '✓ Email hợp lệ',
+                'auth-pass-strength-1': 'Yếu',
+                'auth-pass-strength-2': 'Trung bình',
+                'auth-pass-strength-3': 'Tốt',
+                'auth-pass-strength-4': 'Mạnh',
+                'auth-hint-pass2-ok': '✓ Mật khẩu khớp',
+                'auth-hint-pass2-bad': 'Mật khẩu không khớp',
+                'logout-confirm-yes': 'Có, đăng xuất',
                 'languages': 'Ngôn ngữ ▼',
                 'cookie-banner-text': "Chúng tôi dùng cookies cho đăng nhập, ngôn ngữ và tính năng của trang. Chi tiết trong <a href=\"cookies/\">Chính sách Cookies</a>.",
                 'cookie-banner-decline': "Từ chối",
@@ -9666,6 +10547,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Đăng nhập',
             },
             id: {
+                'back-to-top': 'Ke atas',
+                'nav-notifications': 'Notifikasi',
+                'profile-field-email': '📧 Email',
+                'profile-field-language': '🌍 Bahasa',
+                'profile-field-joined': '📅 Bergabung sejak',
+                'auth-toast-oauth-redirect': 'Mengalihkan ke {provider}...',
+                'auth-toast-logged-out': 'Anda telah keluar 👋',
+                'auth-toast-oauth-ok': 'Masuk melalui {provider} 🎉',
+                'auth-toast-oauth-err': 'Kesalahan otorisasi',
+                'logout-busy': 'Keluar...',
+                'auth-hint-nick-empty': '3–20 karakter: huruf, angka, _',
+                'auth-hint-nick-bad': 'Karakter atau panjang tidak valid',
+                'auth-hint-nick-ok': '✓ Nama pengguna OK',
+                'auth-hint-email-bad': 'Format email tidak valid',
+                'auth-hint-email-ok': '✓ Email valid',
+                'auth-pass-strength-1': 'Lemah',
+                'auth-pass-strength-2': 'Sedang',
+                'auth-pass-strength-3': 'Bagus',
+                'auth-pass-strength-4': 'Kuat',
+                'auth-hint-pass2-ok': '✓ Kata sandi cocok',
+                'auth-hint-pass2-bad': 'Kata sandi tidak cocok',
+                'logout-confirm-yes': 'Ya, keluar',
                 'languages': 'Bahasa ▼',
                 'cookie-banner-text': "Kami menggunakan cookies untuk login, bahasa, dan fungsi situs. Detail di <a href=\"cookies/\">Kebijakan Cookies</a>.",
                 'cookie-banner-decline': "Tolak",
@@ -9788,6 +10691,28 @@ svg.ic-svg-login {
                 'register-login-link': 'Masuk',
             },
             ms: {
+                'back-to-top': 'Ke atas',
+                'nav-notifications': 'Pemberitahuan',
+                'profile-field-email': '📧 E-mel',
+                'profile-field-language': '🌍 Bahasa',
+                'profile-field-joined': '📅 Ahli sejak',
+                'auth-toast-oauth-redirect': 'Mengalihkan ke {provider}...',
+                'auth-toast-logged-out': 'Anda telah log keluar 👋',
+                'auth-toast-oauth-ok': 'Log masuk melalui {provider} 🎉',
+                'auth-toast-oauth-err': 'Ralat kebenaran',
+                'logout-busy': 'Log keluar...',
+                'auth-hint-nick-empty': '3–20 aksara: huruf, nombor, _',
+                'auth-hint-nick-bad': 'Aksara atau panjang tidak sah',
+                'auth-hint-nick-ok': '✓ Nama pengguna OK',
+                'auth-hint-email-bad': 'Format e-mel tidak sah',
+                'auth-hint-email-ok': '✓ E-mel sah',
+                'auth-pass-strength-1': 'Lemah',
+                'auth-pass-strength-2': 'Sederhana',
+                'auth-pass-strength-3': 'Baik',
+                'auth-pass-strength-4': 'Kuat',
+                'auth-hint-pass2-ok': '✓ Kata laluan sepadan',
+                'auth-hint-pass2-bad': 'Kata laluan tidak sepadan',
+                'logout-confirm-yes': 'Ya, log keluar',
                 'languages': 'Bahasa ▼',
                 'cookie-banner-text': "Kami menggunakan cookies untuk log masuk, bahasa dan fungsi laman. Butiran dalam <a href=\"cookies/\">Dasar Cookies</a>.",
                 'cookie-banner-decline': "Tolak",
@@ -9912,15 +10837,21 @@ svg.ic-svg-login {
         };
 
     function applyTranslations(lang) {
-      const elements = document.querySelectorAll('[data-i18n]');
-      elements.forEach(el => {
+      const tr = (translations[lang]) || translations.en || {};
+      const fb = translations.en || {};
+      // Text content / innerHTML
+      document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        const t =
-          (translations[lang] && translations[lang][key]) ||
-          (translations.en && translations.en[key]) ||
-          el.innerHTML;
-
+        const t = tr[key] || fb[key] || el.innerHTML;
         el.innerHTML = t;
+      });
+      // Attribute-based: placeholder / title / aria-label / alt
+      ['placeholder','title','aria-label','alt'].forEach(attr => {
+        document.querySelectorAll('[data-i18n-' + attr + ']').forEach(el => {
+          const key = el.getAttribute('data-i18n-' + attr);
+          const t = tr[key] || fb[key];
+          if (t) el.setAttribute(attr, t);
+        });
       });
     }
 
@@ -10053,21 +10984,24 @@ svg.ic-svg-login {
         requestAnimationFrame(() => {
           document.body.classList.add('hero-anim');
 
-          const onEnd = (e) => {
-            if (e.animationName !== 'titleMegaBurst') return;
-            title.removeEventListener('animationend', onEnd);
-            document.body.classList.add('ui-ready');
-          };
-          title.addEventListener('animationend', onEnd);
-
+          // Тайминг сцены (старый вариант):
+          //   150ms / 850ms — subtitle: «Скорость.» / «Тактика.»
+          //  1500ms — старт titleMegaBurst (заголовок появляется и проходит scale 0.6→1.45→1)
+          //  1900ms — пик взрыва (вспышка 35% от 1.2s = 420ms после старта)
+          //  2700ms — заголовок осел в финальную позицию
+          //  2800ms — ui-ready: появляется кнопка
           setTimeout(() => {
             explodeTitle();
             document.body.classList.add('screen-shake');
-            
+
             setTimeout(() => {
               document.body.classList.remove('screen-shake');
-            }, 600);
-          }, 1920);
+            }, 500);
+          }, 1900);
+
+          setTimeout(() => {
+            document.body.classList.add('ui-ready');
+          }, 2800);
         });
       });
     }
@@ -10545,7 +11479,7 @@ function ev3AuthErrorKey(resp) {
 function ev3AuthMsg(resp) {
   const { key, fallback } = ev3AuthErrorKey(resp);
   try {
-    const lang = (typeof currentLanguage === 'string' && currentLanguage) || 'ru';
+    const lang = (typeof currentLang === "string" && currentLang) || 'ru';
     return (translations && translations[lang] && translations[lang][key]) || fallback;
   } catch { return fallback; }
 }
@@ -10663,20 +11597,20 @@ function setInpState(inp, cls) { inp.classList.remove('valid','error'); if(cls) 
 
 function riValidNick(inp) {
   const v = inp.value.trim();
-  if (!v) { setHint('ri-nick-hint','3–20 символов, только буквы, цифры и _',''); setInpState(inp,''); return; }
-  if (!/^[a-zA-Zа-яёА-ЯЁ0-9_]{3,20}$/.test(v)) { setHint('ri-nick-hint','Недопустимые символы или длина','err'); setInpState(inp,'error'); }
-  else { setHint('ri-nick-hint','✓ Ник подходит','ok'); setInpState(inp,'valid'); }
+  if (!v) { setHint('ri-nick-hint', tt('auth-hint-nick-empty','3–20 символов, только буквы, цифры и _'),''); setInpState(inp,''); return; }
+  if (!/^[a-zA-Zа-яёА-ЯЁ0-9_]{3,20}$/.test(v)) { setHint('ri-nick-hint', tt('auth-hint-nick-bad','Недопустимые символы или длина'),'err'); setInpState(inp,'error'); }
+  else { setHint('ri-nick-hint', tt('auth-hint-nick-ok','✓ Ник подходит'),'ok'); setInpState(inp,'valid'); }
 }
 function riValidEmail(inp) {
   const v = inp.value.trim();
   if (!v) { setHint('ri-email-hint','',''); setInpState(inp,''); return; }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { setHint('ri-email-hint','Неверный формат email','err'); setInpState(inp,'error'); }
-  else { setHint('ri-email-hint','✓ Email корректный','ok'); setInpState(inp,'valid'); }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { setHint('ri-email-hint', tt('auth-hint-email-bad','Неверный формат email'),'err'); setInpState(inp,'error'); }
+  else { setHint('ri-email-hint', tt('auth-hint-email-ok','✓ Email корректный'),'ok'); setInpState(inp,'valid'); }
 }
 function riUpdateStrength(inp) {
   const v = inp.value; let s = 0;
   if (v.length>=8) s++; if (/[A-Z]/.test(v)) s++; if (/[0-9]/.test(v)) s++; if (/[^A-Za-z0-9]/.test(v)) s++;
-  const labels = ['','Слабый','Средний','Хороший','Сильный'];
+  const labels = ['', tt('auth-pass-strength-1','Слабый'), tt('auth-pass-strength-2','Средний'), tt('auth-pass-strength-3','Хороший'), tt('auth-pass-strength-4','Сильный')];
   const sc = ['','s1','s2','s3','s4'];
   for (let i=1;i<=4;i++) { const el=document.getElementById('rs'+i); el.className='af-seg'+(i<=s?' '+sc[s]:''); }
   setHint('ri-pass-hint', v.length ? labels[s]||'' : '', s>=3?'ok':s>0?'err':'');
@@ -10685,8 +11619,8 @@ function riUpdateStrength(inp) {
 function riValidConfirm(inp) {
   const pass = document.getElementById('ri-pass').value;
   if (!inp.value) { setHint('ri-pass2-hint','',''); setInpState(inp,''); return; }
-  if (inp.value===pass) { setHint('ri-pass2-hint','✓ Пароли совпадают','ok'); setInpState(inp,'valid'); }
-  else { setHint('ri-pass2-hint','Пароли не совпадают','err'); setInpState(inp,'error'); }
+  if (inp.value===pass) { setHint('ri-pass2-hint', tt('auth-hint-pass2-ok','✓ Пароли совпадают'),'ok'); setInpState(inp,'valid'); }
+  else { setHint('ri-pass2-hint', tt('auth-hint-pass2-bad','Пароли не совпадают'),'err'); setInpState(inp,'error'); }
 }
 
 // ===================================================
@@ -10694,7 +11628,7 @@ function riValidConfirm(inp) {
 // ===================================================
 function tt(k, fb) {
   try {
-    const lang = (typeof currentLanguage === 'string' && currentLanguage) || 'ru';
+    const lang = (typeof currentLang === "string" && currentLang) || 'ru';
     return (translations && translations[lang] && translations[lang][k]) || fb;
   } catch { return fb; }
 }
@@ -11142,7 +12076,7 @@ async function doRegister() {
 // OAUTH
 // ===================================================
 function oauthSignIn(provider) {
-  ev3Toast(`Перенаправление на ${provider}...`, '🔗');
+  ev3Toast(tt('auth-toast-oauth-redirect','Перенаправление на {provider}...').replace('{provider}', provider), '🔗');
   window.location.href = 'https://twgrguukftwtbnmnqgsd.supabase.co/auth/v1/authorize?provider=' + provider + '&redirect_to=' + encodeURIComponent(window.location.origin + window.location.pathname);
 }
 
@@ -11198,7 +12132,7 @@ async function doLogout() {
       style="animation: spinLoader 0.7s linear infinite; vertical-align: middle; margin-right: 6px;"
       stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
       <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-    </svg>Выход...`;
+    </svg>${tt('logout-busy','Выход...')}`;
 
   if (ev3Session?.access_token) {
     try { await fetch(SUPA_URL+'/auth/v1/logout',{method:'POST',headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+ev3Session.access_token}}); } catch {}
@@ -11211,11 +12145,11 @@ async function doLogout() {
   setTimeout(() => {
     btn.disabled = false;
     cancelBtn.disabled = false;
-    btn.innerHTML = 'Да, выйти';
+    btn.innerHTML = tt('logout-confirm-yes','Да, выйти');
   }, 400);
   
   showLoggedOut();
-  ev3Toast('Вы вышли из аккаунта 👋','👋');
+  ev3Toast(tt('auth-toast-logged-out','Вы вышли из аккаунта 👋'),'👋');
 }
 
 // ===================================================
@@ -11251,11 +12185,11 @@ verifySession();
     saveSession(session);
     ev3User = user;
     showLoggedIn();
-    ev3Toast('Вы вошли через ' + (user.app_metadata?.provider || 'OAuth') + ' 🎉', '🎉');
+    ev3Toast(tt('auth-toast-oauth-ok','Вы вошли через {provider} 🎉').replace('{provider}', user.app_metadata?.provider || 'OAuth'), '🎉');
     // Убираем токен из URL
     history.replaceState(null, '', window.location.pathname);
   })
-  .catch(() => ev3Toast('Ошибка авторизации', '❌'));
+  .catch(() => ev3Toast(tt('auth-toast-oauth-err','Ошибка авторизации'), '❌'));
 })();
 
 // =====================================================================
@@ -11490,7 +12424,7 @@ verifySession();
     const reEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     const tt = (k, fb) => {
       try {
-        const lang = (typeof currentLanguage === 'string' && currentLanguage) || 'ru';
+        const lang = (typeof currentLang === "string" && currentLang) || 'ru';
         return (translations && translations[lang] && translations[lang][k]) || fb;
       } catch { return fb; }
     };
@@ -11510,7 +12444,7 @@ verifySession();
       }
       if (nBtn) { nBtn.disabled = true; nBtn.dataset._label = nBtn.textContent; nBtn.textContent = tt('ultra-news-btn-sending', 'Отправляем…'); }
       try {
-        const lang = (typeof currentLanguage === 'string' && currentLanguage) || 'ru';
+        const lang = (typeof currentLang === "string" && currentLang) || 'ru';
         const res = await fetch(SUPABASE_URL + '/rest/v1/subscribers', {
           method: 'POST',
           headers: {
@@ -11555,7 +12489,7 @@ verifySession();
     const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3Z3JndXVrZnR3dGJubW5xZ3NkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMzQwMDMsImV4cCI6MjA5MTkxMDAwM30.xJZk61nSpfcIZmH_Srmbo8Eeyvj9Hm2SCFqCL0npP6Y';
     const tt = (k, fb) => {
       try {
-        const lang = (typeof currentLanguage === 'string' && currentLanguage) || 'ru';
+        const lang = (typeof currentLang === "string" && currentLang) || 'ru';
         return (translations && translations[lang] && translations[lang][k]) || fb;
       } catch { return fb; }
     };
@@ -11626,7 +12560,7 @@ verifySession();
       }
       const submit = rForm.querySelector('.rating-submit');
       if (submit) { submit.disabled = true; submit.dataset._label = submit.textContent; submit.textContent = tt('ultra-rating-sending', 'Отправляем…'); }
-      const lang = (typeof currentLanguage === 'string' && currentLanguage) || 'ru';
+      const lang = (typeof currentLang === "string" && currentLang) || 'ru';
       const comment = ((rText && rText.value) || '').trim();
       try {
         const res = await fetch(SUPABASE_URL + '/rest/v1/feedback', {
