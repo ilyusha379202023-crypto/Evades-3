@@ -4734,6 +4734,18 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
+/* Когда отзывов мало — показываем статично, без бегущей строки */
+.reviews-wrap.is-static{
+  mask-image: none;
+  -webkit-mask-image: none;
+  overflow: visible;
+}
+.reviews-wrap.is-static .reviews-track{
+  width: 100%;
+  animation: none;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 .review-card{
   flex: 0 0 320px;
   padding: 22px 22px 18px;
@@ -4905,6 +4917,33 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
   box-shadow: 0 18px 36px rgba(255,140,0,0.5), inset 0 1px 0 rgba(255,255,255,0.5);
 }
 .rating-submit:disabled{ opacity: 0.6; cursor: not-allowed; }
+
+/* Панель "вы уже оставили отзыв" */
+.rating-done{
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  padding: 28px 24px;
+  border-radius: 18px;
+  max-width: 560px; margin: 0 auto;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(74,222,128,0.18), transparent 70%),
+    linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border: 1px solid rgba(74,222,128,0.35);
+  box-shadow: 0 14px 38px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08);
+  text-align: center;
+}
+.rating-done-icon{
+  font-size: 44px; line-height: 1;
+  filter: drop-shadow(0 6px 14px rgba(74,222,128,0.5));
+}
+.rating-done-title{
+  font-family: 'Exo 2', 'Orbitron', sans-serif;
+  font-size: 20px; font-weight: 900; letter-spacing: 1px;
+  color: #fff; text-transform: uppercase;
+}
+.rating-done-sub{
+  color: rgba(255,255,255,0.78);
+  font-size: 14px; line-height: 1.55;
+}
 
 .e3-social{
   display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
@@ -6817,6 +6856,11 @@ svg.ic-svg-login {
             <textarea class="rating-textarea" id="ratingComment" rows="4" maxlength="1000" placeholder="Что понравилось, а что улучшить?" data-i18n-placeholder="ultra-rating-placeholder"></textarea>
             <button class="rating-submit" type="submit" data-i18n="ultra-rating-submit">Отправить отзыв</button>
           </form>
+          <div class="rating-done" id="ratingDone" hidden>
+            <div class="rating-done-icon" aria-hidden="true">✅</div>
+            <div class="rating-done-title" data-i18n="ultra-rating-already-title">Вы уже оставили отзыв</div>
+            <div class="rating-done-sub" data-i18n="ultra-rating-already-sub">Спасибо! Мы получили твой отзыв. Хочешь добавить ещё мысли — напиши нам в Discord.</div>
+          </div>
         </div>
       </div>
     </section>
@@ -12137,6 +12181,8 @@ async function doRegister() {
 // ===================================================
 function oauthSignIn(provider) {
   ev3Toast(tt('auth-toast-oauth-redirect','Перенаправление на {provider}...').replace('{provider}', provider), '🔗');
+  // Запоминаем выбранный провайдер, чтобы показать корректное имя в тосте после callback
+  try { sessionStorage.setItem('ev3_oauth_provider', provider); } catch (_) {}
   window.location.href = 'https://twgrguukftwtbnmnqgsd.supabase.co/auth/v1/authorize?provider=' + provider + '&redirect_to=' + encodeURIComponent(window.location.origin + window.location.pathname);
 }
 
@@ -12245,7 +12291,23 @@ verifySession();
     saveSession(session);
     ev3User = user;
     showLoggedIn();
-    ev3Toast(tt('auth-toast-oauth-ok','Вы вошли через {provider} 🎉').replace('{provider}', user.app_metadata?.provider || 'OAuth'), '🎉');
+    // Имя провайдера: берём из sessionStorage (то что юзер кликнул), затем app_metadata, затем fallback
+    let providerName = '';
+    try { providerName = sessionStorage.getItem('ev3_oauth_provider') || ''; } catch (_) {}
+    if (!providerName) {
+      const meta = user && user.app_metadata;
+      if (meta) {
+        if (Array.isArray(meta.providers)) {
+          providerName = meta.providers.find(p => p && p !== 'email') || meta.provider || '';
+        } else {
+          providerName = meta.provider || '';
+        }
+      }
+    }
+    if (!providerName || providerName === 'email') providerName = 'OAuth';
+    const providerLabel = providerName.charAt(0).toUpperCase() + providerName.slice(1);
+    try { sessionStorage.removeItem('ev3_oauth_provider'); } catch (_) {}
+    ev3Toast(tt('auth-toast-oauth-ok','Вы вошли через {provider} 🎉').replace('{provider}', providerLabel), '🎉');
     // Убираем токен из URL
     history.replaceState(null, '', window.location.pathname);
   })
@@ -12571,7 +12633,12 @@ verifySession();
         const data = await res.json();
         const filtered = (Array.isArray(data) ? data : []).filter(r => (r && r.comment && r.comment.trim().length >= 3));
         if (filtered.length === 0) return;
-        const list = filtered.concat(filtered); // duplicate for seamless marquee
+        // Карусель включается только когда отзывов достаточно (>= 4).
+        // Иначе показываем статично, по центру, без дублирования и бегущей строки.
+        const MARQUEE_THRESHOLD = 4;
+        const useMarquee = filtered.length >= MARQUEE_THRESHOLD;
+        const list = useMarquee ? filtered.concat(filtered) : filtered;
+        wrap.classList.toggle('is-static', !useMarquee);
         const esc = (s) => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
         track.innerHTML = list.map(r => {
           const rat = Math.max(1, Math.min(5, (r.rating|0) || 5));
@@ -12595,7 +12662,19 @@ verifySession();
     const rLabel  = document.getElementById('ratingValueLabel');
     const rText   = document.getElementById('ratingComment');
     const rGroup  = document.getElementById('ratingStars');
+    const rDone   = document.getElementById('ratingDone');
     if (!rForm || rStars.length === 0) return;
+
+    // Если пользователь уже оставлял отзыв — прячем форму и показываем благодарность
+    const FEEDBACK_FLAG = 'ev3_feedback_submitted';
+    const showAlreadySubmitted = () => {
+      rForm.hidden = true;
+      rForm.style.display = 'none';
+      if (rDone) rDone.hidden = false;
+    };
+    try {
+      if (localStorage.getItem(FEEDBACK_FLAG) === '1') showAlreadySubmitted();
+    } catch (_) {}
 
     let currentRating = 0;
     const paint = (n) => rStars.forEach((s, i) => s.classList.toggle('is-on', i < n));
@@ -12639,6 +12718,8 @@ verifySession();
           currentRating = 0;
           paint(0);
           if (rLabel) rLabel.textContent = tt('ultra-rating-hint', 'Кликни по звезде, чтобы выбрать оценку');
+          try { localStorage.setItem(FEEDBACK_FLAG, '1'); } catch (_) {}
+          showAlreadySubmitted();
         } else {
           toast(tt('ultra-rating-toast-err', 'Не удалось отправить. Попробуй ещё раз'), '⚠️');
         }
@@ -12744,6 +12825,8 @@ verifySession();
         'ultra-rating-title': 'Как тебе проект?',
         'ultra-rating-sub': 'Поставь оценку и поделись мыслями — это поможет сделать Evades 3 лучше.',
         'ultra-rating-hint': 'Кликни по звезде, чтобы выбрать оценку',
+        'ultra-rating-already-title': 'Вы уже оставили отзыв',
+        'ultra-rating-already-sub': 'Спасибо! Мы получили твой отзыв. Хочешь добавить ещё мысли — напиши нам в Discord.',
         'ultra-rating-chosen': 'Твоя оценка: ',
         'ultra-rating-placeholder': 'Что понравилось, а что улучшить?',
         'ultra-rating-submit': 'Отправить отзыв',
@@ -12920,6 +13003,8 @@ verifySession();
         'ultra-rating-title': 'How do you like the project?',
         'ultra-rating-sub': 'Rate the game and share your thoughts — it helps make Evades 3 better.',
         'ultra-rating-hint': 'Click a star to pick your rating',
+        'ultra-rating-already-title': 'You already left a review',
+        'ultra-rating-already-sub': 'Thanks! We got your feedback. Want to add more thoughts — ping us on Discord.',
         'ultra-rating-chosen': 'Your rating: ',
         'ultra-rating-placeholder': 'What did you like, what would you improve?',
         'ultra-rating-submit': 'Send feedback',
@@ -13096,6 +13181,8 @@ verifySession();
         'ultra-rating-title': 'Як тобі проєкт?',
         'ultra-rating-sub': 'Постав оцінку та поділись думками — це допоможе зробити Evades 3 кращим.',
         'ultra-rating-hint': 'Натисни на зірку, щоб обрати оцінку',
+        'ultra-rating-already-title': 'Ви вже залишили відгук',
+        'ultra-rating-already-sub': 'Дякуємо! Ми отримали твій відгук. Хочеш додати ще думки — напиши нам у Discord.',
         'ultra-rating-chosen': 'Твоя оцінка: ',
         'ultra-rating-placeholder': 'Що сподобалось, а що покращити?',
         'ultra-rating-submit': 'Надіслати відгук',
@@ -13257,6 +13344,8 @@ verifySession();
         'ultra-rating-title': 'Wie gefällt dir das Projekt?',
         'ultra-rating-sub': 'Bewerte das Spiel und teile deine Gedanken — so wird Evades 3 besser.',
         'ultra-rating-hint': 'Klicke auf einen Stern, um zu bewerten',
+        'ultra-rating-already-title': 'Du hast bereits eine Bewertung abgegeben',
+        'ultra-rating-already-sub': 'Danke! Wir haben dein Feedback erhalten. Mehr Gedanken? Schreib uns auf Discord.',
         'ultra-rating-chosen': 'Deine Bewertung: ',
         'ultra-rating-placeholder': 'Was hat dir gefallen, was könnte besser sein?',
         'ultra-rating-submit': 'Feedback senden',
@@ -13416,6 +13505,8 @@ verifySession();
         'ultra-rating-title': '¿Qué te parece el proyecto?',
         'ultra-rating-sub': 'Puntúa el juego y comparte tus ideas — ayuda a mejorar Evades 3.',
         'ultra-rating-hint': 'Haz clic en una estrella para puntuar',
+        'ultra-rating-already-title': 'Ya has dejado una opinión',
+        'ultra-rating-already-sub': '¡Gracias! Recibimos tu opinión. ¿Quieres añadir más? Escríbenos en Discord.',
         'ultra-rating-chosen': 'Tu puntuación: ',
         'ultra-rating-placeholder': '¿Qué te gustó y qué mejorarías?',
         'ultra-rating-submit': 'Enviar opinión',
@@ -13575,6 +13666,8 @@ verifySession();
         'ultra-rating-title': 'Comment trouves-tu le projet ?',
         'ultra-rating-sub': 'Note le jeu et partage tes idées — ça aide à améliorer Evades 3.',
         'ultra-rating-hint': 'Clique sur une étoile pour noter',
+        'ultra-rating-already-title': 'Tu as déjà laissé un avis',
+        'ultra-rating-already-sub': 'Merci ! On a bien reçu ton retour. Plus à dire ? Rejoins-nous sur Discord.',
         'ultra-rating-chosen': 'Ta note : ',
         'ultra-rating-placeholder': 'Ce que tu as aimé, ce qu’il faudrait améliorer ?',
         'ultra-rating-submit': 'Envoyer l’avis',
@@ -13734,6 +13827,8 @@ verifySession();
         'ultra-rating-title': 'Come ti sembra il progetto?',
         'ultra-rating-sub': 'Valuta il gioco e condividi i tuoi pensieri — aiuta a migliorare Evades 3.',
         'ultra-rating-hint': 'Clicca una stella per votare',
+        'ultra-rating-already-title': 'Hai già lasciato una recensione',
+        'ultra-rating-already-sub': 'Grazie! Abbiamo ricevuto il tuo feedback. Altro da dire? Scrivici su Discord.',
         'ultra-rating-chosen': 'Il tuo voto: ',
         'ultra-rating-placeholder': 'Cosa ti è piaciuto, cosa miglioreresti?',
         'ultra-rating-submit': 'Invia recensione',
@@ -13893,6 +13988,8 @@ verifySession();
         'ultra-rating-title': 'O que acha do projeto?',
         'ultra-rating-sub': 'Avalie o jogo e compartilhe ideias — ajuda a melhorar Evades 3.',
         'ultra-rating-hint': 'Clique numa estrela para avaliar',
+        'ultra-rating-already-title': 'Você já deixou uma avaliação',
+        'ultra-rating-already-sub': 'Obrigado! Recebemos seu feedback. Quer adicionar mais? Fale conosco no Discord.',
         'ultra-rating-chosen': 'Sua nota: ',
         'ultra-rating-placeholder': 'O que gostou, o que melhoraria?',
         'ultra-rating-submit': 'Enviar avaliação',
@@ -14052,6 +14149,8 @@ verifySession();
         'ultra-rating-title': 'Jak Ci się podoba projekt?',
         'ultra-rating-sub': 'Oceń grę i podziel się myślami — pomaga ulepszyć Evades 3.',
         'ultra-rating-hint': 'Kliknij gwiazdkę, aby ocenić',
+        'ultra-rating-already-title': 'Już zostawiłeś opinię',
+        'ultra-rating-already-sub': 'Dzięki! Otrzymaliśmy Twoją opinię. Chcesz dodać więcej? Napisz na Discordzie.',
         'ultra-rating-chosen': 'Twoja ocena: ',
         'ultra-rating-placeholder': 'Co Ci się spodobało, co poprawić?',
         'ultra-rating-submit': 'Wyślij opinię',
@@ -14211,6 +14310,8 @@ verifySession();
         'ultra-rating-title': 'Projeyi nasıl buldun?',
         'ultra-rating-sub': 'Oyunu puanla ve düşüncelerini paylaş — Evades 3’ü geliştirmeye yardım eder.',
         'ultra-rating-hint': 'Puanlamak için bir yıldıza tıkla',
+        'ultra-rating-already-title': 'Yorumunu zaten bıraktın',
+        'ultra-rating-already-sub': 'Teşekkürler! Geri bildirimini aldık. Daha fazla mı söylemek istiyorsun? Discord\'dan yaz.',
         'ultra-rating-chosen': 'Senin puanın: ',
         'ultra-rating-placeholder': 'Ne beğendin, ne geliştirilmeli?',
         'ultra-rating-submit': 'Gönder',
@@ -14370,6 +14471,8 @@ verifySession();
         'ultra-rating-title': 'Wat vind je van het project?',
         'ultra-rating-sub': 'Geef een score en deel je gedachten — helpt Evades 3 beter te maken.',
         'ultra-rating-hint': 'Klik op een ster om te beoordelen',
+        'ultra-rating-already-title': 'Je hebt al een review achtergelaten',
+        'ultra-rating-already-sub': 'Bedankt! We hebben je feedback ontvangen. Meer toe te voegen? Stuur ons een bericht op Discord.',
         'ultra-rating-chosen': 'Jouw score: ',
         'ultra-rating-placeholder': 'Wat vond je leuk, wat kan beter?',
         'ultra-rating-submit': 'Feedback versturen',
@@ -14529,6 +14632,8 @@ verifySession();
         'ultra-rating-title': 'Vad tycker du om projektet?',
         'ultra-rating-sub': 'Betygsätt spelet och dela dina tankar — hjälper göra Evades 3 bättre.',
         'ultra-rating-hint': 'Klicka på en stjärna för att betygsätta',
+        'ultra-rating-already-title': 'Du har redan lämnat ett omdöme',
+        'ultra-rating-already-sub': 'Tack! Vi fick din feedback. Vill du säga mer? Skriv till oss på Discord.',
         'ultra-rating-chosen': 'Ditt betyg: ',
         'ultra-rating-placeholder': 'Vad gillade du, vad kan förbättras?',
         'ultra-rating-submit': 'Skicka feedback',
@@ -14688,6 +14793,8 @@ verifySession();
         'ultra-rating-title': 'Hva synes du om prosjektet?',
         'ultra-rating-sub': 'Gi spillet en karakter og del tankene dine — hjelper å gjøre Evades 3 bedre.',
         'ultra-rating-hint': 'Klikk på en stjerne for å stemme',
+        'ultra-rating-already-title': 'Du har allerede lagt igjen en anmeldelse',
+        'ultra-rating-already-sub': 'Takk! Vi mottok tilbakemeldingen din. Mer å si? Skriv til oss på Discord.',
         'ultra-rating-chosen': 'Din karakter: ',
         'ultra-rating-placeholder': 'Hva likte du, hva kan forbedres?',
         'ultra-rating-submit': 'Send tilbakemelding',
@@ -14847,6 +14954,8 @@ verifySession();
         'ultra-rating-title': 'Mitä pidät projektista?',
         'ultra-rating-sub': 'Anna arvosana ja jaa ajatuksesi — auttaa Evades 3:n parantamisessa.',
         'ultra-rating-hint': 'Klikkaa tähteä antaaksesi arvion',
+        'ultra-rating-already-title': 'Olet jo jättänyt arvostelun',
+        'ultra-rating-already-sub': 'Kiitos! Saimme palautteesi. Haluatko lisää? Viesti meille Discordissa.',
         'ultra-rating-chosen': 'Arvosanasi: ',
         'ultra-rating-placeholder': 'Mikä toimi, mitä parantaisit?',
         'ultra-rating-submit': 'Lähetä palaute',
@@ -15006,6 +15115,8 @@ verifySession();
         'ultra-rating-title': 'Hvad synes du om projektet?',
         'ultra-rating-sub': 'Giv spillet en vurdering og del dine tanker — gør Evades 3 bedre.',
         'ultra-rating-hint': 'Klik på en stjerne for at vurdere',
+        'ultra-rating-already-title': 'Du har allerede skrevet en anmeldelse',
+        'ultra-rating-already-sub': 'Tak! Vi modtog din feedback. Mere at sige? Skriv til os på Discord.',
         'ultra-rating-chosen': 'Din vurdering: ',
         'ultra-rating-placeholder': 'Hvad kunne du lide, hvad kan forbedres?',
         'ultra-rating-submit': 'Send feedback',
@@ -15165,6 +15276,8 @@ verifySession();
         'ultra-rating-title': 'Jak se ti projekt líbí?',
         'ultra-rating-sub': 'Ohodnoť hru a podělej se o nápady — pomůže vylepšit Evades 3.',
         'ultra-rating-hint': 'Klikni na hvězdičku pro hodnocení',
+        'ultra-rating-already-title': 'Recenzi jsi už zanechal',
+        'ultra-rating-already-sub': 'Díky! Tvou zpětnou vazbu jsme dostali. Chceš dodat víc? Napiš na Discord.',
         'ultra-rating-chosen': 'Tvoje hodnocení: ',
         'ultra-rating-placeholder': 'Co se ti líbilo, co vylepšit?',
         'ultra-rating-submit': 'Odeslat recenzi',
@@ -15324,6 +15437,8 @@ verifySession();
         'ultra-rating-title': 'Cum ți se pare proiectul?',
         'ultra-rating-sub': 'Dă o notă și împărtășește-ți gândurile — ajută să facem Evades 3 mai bun.',
         'ultra-rating-hint': 'Dă clic pe o stea pentru a evalua',
+        'ultra-rating-already-title': 'Ai lăsat deja o recenzie',
+        'ultra-rating-already-sub': 'Mulțumim! Am primit feedback-ul tău. Vrei să adaugi mai mult? Scrie-ne pe Discord.',
         'ultra-rating-chosen': 'Nota ta: ',
         'ultra-rating-placeholder': 'Ce ți-a plăcut, ce s-ar putea îmbunătăți?',
         'ultra-rating-submit': 'Trimite recenzia',
@@ -15483,6 +15598,8 @@ verifySession();
         'ultra-rating-title': 'Hogy tetszik a projekt?',
         'ultra-rating-sub': 'Értékeld a játékot és oszd meg gondolataidat — segít jobbá tenni az Evades 3-at.',
         'ultra-rating-hint': 'Kattints egy csillagra az értékeléshez',
+        'ultra-rating-already-title': 'Már írtál értékelést',
+        'ultra-rating-already-sub': 'Köszönjük! Megkaptuk a visszajelzésed. Még valamit? Írj nekünk Discordon.',
         'ultra-rating-chosen': 'A te értékelésed: ',
         'ultra-rating-placeholder': 'Mi tetszett, min javítanál?',
         'ultra-rating-submit': 'Vélemény küldése',
@@ -15642,6 +15759,8 @@ verifySession();
         'ultra-rating-title': 'Πώς σου φαίνεται το πρότζεκτ;',
         'ultra-rating-sub': 'Βαθμολόγησε το παιχνίδι και μοιράσου σκέψεις — βοηθάει το Evades 3 να γίνει καλύτερο.',
         'ultra-rating-hint': 'Κάνε κλικ σε αστέρι για βαθμολόγηση',
+        'ultra-rating-already-title': 'Έχεις ήδη αφήσει κριτική',
+        'ultra-rating-already-sub': 'Ευχαριστούμε! Λάβαμε τα σχόλιά σου. Θες να πεις κάτι ακόμη; Στείλε μας στο Discord.',
         'ultra-rating-chosen': 'Η βαθμολογία σου: ',
         'ultra-rating-placeholder': 'Τι σου άρεσε, τι θα άλλαζες;',
         'ultra-rating-submit': 'Αποστολή',
@@ -15801,6 +15920,8 @@ verifySession();
         'ultra-rating-title': 'プロジェクトはどう?',
         'ultra-rating-sub': '評価と感想を教えてください — Evades 3 の改善に役立ちます。',
         'ultra-rating-hint': '星をクリックして評価してね',
+        'ultra-rating-already-title': 'すでにレビューを投稿済みです',
+        'ultra-rating-already-sub': 'ありがとう!フィードバックを受け取りました。追加コメントはDiscordへどうぞ。',
         'ultra-rating-chosen': 'あなたの評価: ',
         'ultra-rating-placeholder': 'よかった点、改善してほしい点は?',
         'ultra-rating-submit': 'レビューを送る',
@@ -15960,6 +16081,8 @@ verifySession();
         'ultra-rating-title': '你觉得这个项目怎么样?',
         'ultra-rating-sub': '给游戏打分并分享想法 — 帮助让 Evades 3 更好。',
         'ultra-rating-hint': '点击星星进行评分',
+        'ultra-rating-already-title': '你已经留下了评价',
+        'ultra-rating-already-sub': '感谢!我们已收到你的反馈。还想补充吗?在 Discord 联系我们。',
         'ultra-rating-chosen': '你的评分: ',
         'ultra-rating-placeholder': '喜欢什么?希望改进什么?',
         'ultra-rating-submit': '提交评价',
@@ -16119,6 +16242,8 @@ verifySession();
         'ultra-rating-title': '프로젝트는 어떤가요?',
         'ultra-rating-sub': '게임을 평가하고 생각을 공유해 주세요 — Evades 3 를 개선하는 데 도움이 됩니다.',
         'ultra-rating-hint': '별을 눌러 평점을 선택하세요',
+        'ultra-rating-already-title': '이미 리뷰를 남겼습니다',
+        'ultra-rating-already-sub': '감사합니다! 피드백을 받았어요. 더 하고 싶은 말이 있다면 Discord로 보내주세요.',
         'ultra-rating-chosen': '당신의 평점: ',
         'ultra-rating-placeholder': '좋았던 점, 개선할 점은?',
         'ultra-rating-submit': '리뷰 보내기',
@@ -16278,6 +16403,8 @@ verifySession();
         'ultra-rating-title': 'ما رأيك في المشروع؟',
         'ultra-rating-sub': 'قيّم اللعبة وشارك أفكارك — يساعد في تطوير Evades 3.',
         'ultra-rating-hint': 'انقر على نجمة للتقييم',
+        'ultra-rating-already-title': 'لقد تركت مراجعة بالفعل',
+        'ultra-rating-already-sub': 'شكراً! تلقّينا ملاحظاتك. تريد أن تضيف المزيد؟ راسلنا على Discord.',
         'ultra-rating-chosen': 'تقييمك: ',
         'ultra-rating-placeholder': 'ماذا أعجبك وما الذي يمكن تحسينه؟',
         'ultra-rating-submit': 'إرسال التقييم',
@@ -16437,6 +16564,8 @@ verifySession();
         'ultra-rating-title': 'प्रोजेक्ट कैसा लगा?',
         'ultra-rating-sub': 'गेम को रेट करें और विचार साझा करें — Evades 3 को बेहतर बनाने में मदद मिलती है।',
         'ultra-rating-hint': 'रेटिंग के लिए सितारे पर क्लिक करें',
+        'ultra-rating-already-title': 'आपने पहले ही समीक्षा दी है',
+        'ultra-rating-already-sub': 'धन्यवाद! हमें आपकी प्रतिक्रिया मिल गई। और कहना चाहते हैं? Discord पर लिखें।',
         'ultra-rating-chosen': 'आपकी रेटिंग: ',
         'ultra-rating-placeholder': 'क्या पसंद आया, क्या सुधारें?',
         'ultra-rating-submit': 'समीक्षा भेजें',
@@ -16596,6 +16725,8 @@ verifySession();
         'ultra-rating-title': 'ชอบโปรเจกต์ไหม?',
         'ultra-rating-sub': 'ให้คะแนนและแชร์ความคิด — ช่วยให้ Evades 3 ดีขึ้น.',
         'ultra-rating-hint': 'คลิกดาวเพื่อให้คะแนน',
+        'ultra-rating-already-title': 'คุณได้รีวิวแล้ว',
+        'ultra-rating-already-sub': 'ขอบคุณ! เราได้รับฟีดแบ็กของคุณแล้ว อยากเพิ่มเติม? ทักเรามาที่ Discord ได้เลย',
         'ultra-rating-chosen': 'คะแนนของคุณ: ',
         'ultra-rating-placeholder': 'ชอบอะไร อยากให้ปรับอะไร?',
         'ultra-rating-submit': 'ส่งรีวิว',
@@ -16755,6 +16886,8 @@ verifySession();
         'ultra-rating-title': 'Bạn thấy dự án thế nào?',
         'ultra-rating-sub': 'Đánh giá game và chia sẻ suy nghĩ — giúp Evades 3 tốt hơn.',
         'ultra-rating-hint': 'Nhấn vào một ngôi sao để đánh giá',
+        'ultra-rating-already-title': 'Bạn đã để lại đánh giá rồi',
+        'ultra-rating-already-sub': 'Cảm ơn! Bọn mình đã nhận được phản hồi của bạn. Muốn nói thêm? Nhắn bọn mình trên Discord.',
         'ultra-rating-chosen': 'Điểm của bạn: ',
         'ultra-rating-placeholder': 'Bạn thích gì, muốn cải thiện gì?',
         'ultra-rating-submit': 'Gửi đánh giá',
@@ -16914,6 +17047,8 @@ verifySession();
         'ultra-rating-title': 'Bagaimana proyeknya?',
         'ultra-rating-sub': 'Beri rating dan bagikan pemikiran — membantu membuat Evades 3 lebih baik.',
         'ultra-rating-hint': 'Klik bintang untuk menilai',
+        'ultra-rating-already-title': 'Anda sudah meninggalkan ulasan',
+        'ultra-rating-already-sub': 'Terima kasih! Kami sudah menerima masukan Anda. Ingin menambah? Hubungi kami di Discord.',
         'ultra-rating-chosen': 'Rating kamu: ',
         'ultra-rating-placeholder': 'Apa yang disukai, apa yang perlu diperbaiki?',
         'ultra-rating-submit': 'Kirim ulasan',
@@ -17073,6 +17208,8 @@ verifySession();
         'ultra-rating-title': 'Bagaimana projek ini?',
         'ultra-rating-sub': 'Nilai permainan dan kongsi pemikiran — membantu Evades 3 menjadi lebih baik.',
         'ultra-rating-hint': 'Klik bintang untuk menilai',
+        'ultra-rating-already-title': 'Anda sudah meninggalkan ulasan',
+        'ultra-rating-already-sub': 'Terima kasih! Kami sudah menerima masukan Anda. Ingin menambah? Hubungi kami di Discord.',
         'ultra-rating-chosen': 'Penilaian anda: ',
         'ultra-rating-placeholder': 'Apa yang disukai, apa yang perlu diperbaiki?',
         'ultra-rating-submit': 'Hantar ulasan',
