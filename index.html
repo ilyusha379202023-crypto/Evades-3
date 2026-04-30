@@ -4955,6 +4955,55 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
   font-size: 14px; line-height: 1.55;
 }
 
+/* Панель "Войди / зарегистрируйся" — для незалогиненных */
+.rating-authcta{
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  padding: 28px 24px;
+  border-radius: 18px;
+  max-width: 560px; margin: 0 auto;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255,176,72,0.20), transparent 70%),
+    linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,176,72,0.40);
+  box-shadow: 0 14px 38px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08);
+  text-align: center;
+}
+.rating-authcta-icon{
+  font-size: 38px; line-height: 1;
+  filter: drop-shadow(0 6px 14px rgba(255,176,72,0.55));
+}
+.rating-authcta-title{
+  font-family: 'Exo 2', 'Orbitron', sans-serif;
+  font-size: 20px; font-weight: 900; letter-spacing: 1px;
+  color: #fff; text-transform: uppercase;
+}
+.rating-authcta-sub{
+  color: rgba(255,255,255,0.78);
+  font-size: 14px; line-height: 1.55;
+  max-width: 420px;
+}
+.rating-authcta-btns{
+  display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+  margin-top: 6px;
+}
+.rating-authcta-btn{
+  appearance: none; border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.06);
+  color: #fff; font-family: 'Exo 2', sans-serif; font-weight: 700;
+  font-size: 14px; letter-spacing: 0.6px; text-transform: uppercase;
+  padding: 11px 22px; border-radius: 999px; cursor: pointer;
+  transition: transform .15s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+.rating-authcta-btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.3); }
+.rating-authcta-btn.primary{
+  background: linear-gradient(135deg, #ffb048, #ff7a18);
+  border-color: rgba(255,176,72,0.6);
+  box-shadow: 0 10px 24px rgba(255,122,24,0.35);
+}
+.rating-authcta-btn.primary:hover{
+  box-shadow: 0 14px 30px rgba(255,122,24,0.5);
+}
+
 .e3-social{
   display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
   margin-top: 22px;
@@ -6898,6 +6947,15 @@ svg.ic-svg-login {
             <div class="rating-done-icon" aria-hidden="true">✅</div>
             <div class="rating-done-title" data-i18n="ultra-rating-already-title">Вы уже оставили отзыв</div>
             <div class="rating-done-sub" data-i18n="ultra-rating-already-sub">Спасибо! Мы получили твой отзыв. Хочешь добавить ещё мысли — напиши нам в Discord.</div>
+          </div>
+          <div class="rating-authcta" id="ratingAuthCta" hidden>
+            <div class="rating-authcta-icon" aria-hidden="true">🔒</div>
+            <div class="rating-authcta-title" data-i18n="ultra-rating-auth-title">Войди или зарегистрируйся</div>
+            <div class="rating-authcta-sub" data-i18n="ultra-rating-auth-sub">Чтобы оставить отзыв, нужен аккаунт.</div>
+            <div class="rating-authcta-btns">
+              <button type="button" class="rating-authcta-btn primary" onclick="openAuthModal('login')" data-i18n="ultra-rating-auth-login">Войти</button>
+              <button type="button" class="rating-authcta-btn" onclick="openAuthModal('register')" data-i18n="ultra-rating-auth-signup">Регистрация</button>
+            </div>
           </div>
         </div>
       </div>
@@ -12808,48 +12866,72 @@ async function doResetPassword() {
     const rText   = document.getElementById('ratingComment');
     const rGroup  = document.getElementById('ratingStars');
     const rDone   = document.getElementById('ratingDone');
+    const rAuth   = document.getElementById('ratingAuthCta');
     if (!rForm || rStars.length === 0) return;
 
-    // Чистим устаревший глобальный ключ (раньше флаг был общий на браузер,
-    // из-за чего «уже оставил отзыв» вылезал на чужих аккаунтах).
-    try { localStorage.removeItem('ev3_feedback_submitted'); } catch (_) {}
+    // Чистим устаревшие localStorage-флаги (раньше пробовали хранить флаг локально,
+    // теперь проверка идёт серверно — у каждого отзыва есть user_id).
+    try {
+      localStorage.removeItem('ev3_feedback_submitted');
+      Object.keys(localStorage).forEach(k => {
+        if (k && k.indexOf('ev3_feedback_submitted:') === 0) localStorage.removeItem(k);
+      });
+    } catch (_) {}
 
-    // Флаг «уже оставил отзыв» теперь привязан к email текущего юзера.
-    // Если юзер не залогинен — флаг не используем (форма видна).
-    const FEEDBACK_KEY_BASE = 'ev3_feedback_submitted';
-    const feedbackKey = () => {
+    // Состояние: 'auth' | 'submitted' | 'form'
+    let _state = 'auth';
+    const _isLoggedIn = () => {
+      const sess = (typeof ev3Session !== 'undefined' && ev3Session) || null;
+      const uid = (typeof ev3User !== 'undefined' && ev3User && ev3User.id) || null;
+      return !!(sess && sess.access_token && uid);
+    };
+
+    // Серверная проверка: есть ли отзыв у текущего юзера?
+    const checkServerSubmitted = async () => {
       try {
-        const e = (typeof ev3User !== 'undefined' && ev3User && ev3User.email) || '';
-        return e ? FEEDBACK_KEY_BASE + ':' + String(e).toLowerCase() : '';
-      } catch { return ''; }
+        const sess = (typeof ev3Session !== 'undefined' && ev3Session) || null;
+        const uid = (typeof ev3User !== 'undefined' && ev3User && ev3User.id) || null;
+        if (!sess || !sess.access_token || !uid) return false;
+        const r = await fetch(SUPABASE_URL + '/rest/v1/feedback?select=id&user_id=eq.' + encodeURIComponent(uid) + '&limit=1', {
+          headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + sess.access_token }
+        });
+        if (!r.ok) return false;
+        const arr = await r.json();
+        return Array.isArray(arr) && arr.length > 0;
+      } catch (_) { return false; }
     };
-    const isAlreadySubmitted = () => {
-      const k = feedbackKey();
-      if (!k) return false;
-      try { return localStorage.getItem(k) === '1'; } catch { return false; }
-    };
-    const markSubmitted = () => {
-      const k = feedbackKey();
-      if (!k) return;
-      try { localStorage.setItem(k, '1'); } catch {}
-    };
-    const refreshRatingForm = () => {
-      if (isAlreadySubmitted()) {
-        rForm.classList.add('is-hidden');
-        rForm.hidden = true;
+
+    const renderRatingState = () => {
+      // Сначала всё прячем
+      rForm.classList.add('is-hidden'); rForm.hidden = true;
+      if (rDone) rDone.hidden = true;
+      if (rAuth) rAuth.hidden = true;
+      // Потом показываем нужное
+      if (_state === 'auth') {
+        if (rAuth) rAuth.hidden = false;
+      } else if (_state === 'submitted') {
         if (rDone) rDone.hidden = false;
       } else {
-        rForm.classList.remove('is-hidden');
-        rForm.hidden = false;
-        if (rDone) rDone.hidden = true;
+        rForm.classList.remove('is-hidden'); rForm.hidden = false;
       }
+    };
+    const refreshRatingForm = async () => {
+      if (!_isLoggedIn()) {
+        _state = 'auth';
+      } else {
+        const submitted = await checkServerSubmitted();
+        _state = submitted ? 'submitted' : 'form';
+      }
+      renderRatingState();
     };
     // Делаем доступным извне, чтобы перерисовать после login/logout
     window.ev3RefreshRatingForm = refreshRatingForm;
-    refreshRatingForm();
-    // Дождёмся завершения verifySession (которая может проставить ev3User)
+    // На старте: пока сессия не проверена — показываем CTA "войди"
+    _state = 'auth';
+    renderRatingState();
+    // verifySession() асинхронна — даём ей время проставить ev3User
     setTimeout(refreshRatingForm, 600);
-    setTimeout(refreshRatingForm, 1500);
+    setTimeout(refreshRatingForm, 1800);
 
     let currentRating = 0;
     const paint = (n) => rStars.forEach((s, i) => s.classList.toggle('is-on', i < n));
@@ -12872,9 +12954,11 @@ async function doResetPassword() {
         toast(tt('ultra-rating-err-no-stars', 'Сначала выбери количество звёзд'), '⭐');
         return;
       }
-      // Требуем логин — чтобы привязать отзыв к нику
+      // Требуем логин — чтобы привязать отзыв к user_id и нику
+      const sess = (typeof ev3Session !== 'undefined' && ev3Session) || null;
       const userEmail = (typeof ev3User !== 'undefined' && ev3User && ev3User.email) || '';
-      if (!userEmail) {
+      const userId = (typeof ev3User !== 'undefined' && ev3User && ev3User.id) || '';
+      if (!sess || !sess.access_token || !userId) {
         toast(tt('ultra-rating-err-login', 'Войди в аккаунт, чтобы оставить отзыв'), '🔒');
         try { openAuthModal && openAuthModal('login'); } catch {}
         return;
@@ -12885,18 +12969,24 @@ async function doResetPassword() {
       const comment = ((rText && rText.value) || '').trim();
       // Никнейм: username из метаданных или часть email до @
       const nickname = (ev3User && ev3User.user_metadata && ev3User.user_metadata.username)
-        || (userEmail.split('@')[0])
+        || (userEmail ? userEmail.split('@')[0] : '')
         || '';
       try {
         const res = await fetch(SUPABASE_URL + '/rest/v1/feedback', {
           method: 'POST',
           headers: {
             'apikey': SUPABASE_ANON,
-            'Authorization': 'Bearer ' + SUPABASE_ANON,
+            'Authorization': 'Bearer ' + sess.access_token,
             'Content-Type': 'application/json',
             'Prefer': 'return=minimal'
           },
-          body: JSON.stringify({ rating: currentRating, comment: comment || null, lang: lang, nickname: nickname || null })
+          body: JSON.stringify({
+            rating: currentRating,
+            comment: comment || null,
+            lang: lang,
+            nickname: nickname || null,
+            user_id: userId
+          })
         });
         if (res.status === 201 || res.status === 204) {
           toast(tt('ultra-rating-toast-ok', 'Спасибо за отзыв! 🎉'), '🎉');
@@ -12904,10 +12994,19 @@ async function doResetPassword() {
           currentRating = 0;
           paint(0);
           if (rLabel) rLabel.textContent = tt('ultra-rating-hint', 'Кликни по звезде, чтобы выбрать оценку');
-          markSubmitted();
-          refreshRatingForm();
+          _state = 'submitted';
+          renderRatingState();
         } else {
-          toast(tt('ultra-rating-toast-err', 'Не удалось отправить. Попробуй ещё раз'), '⚠️');
+          let errText = '';
+          try { const d = await res.json(); errText = (d && (d.message || d.error || d.error_description)) || ''; } catch (_) {}
+          if (res.status === 409 || /duplicate|unique|already/i.test(errText)) {
+            // Сервер сказал, что отзыв от этого юзера уже есть
+            _state = 'submitted';
+            renderRatingState();
+            toast(tt('ultra-rating-already-toast','Ты уже оставлял отзыв 👌'), '👌');
+          } else {
+            toast(tt('ultra-rating-toast-err', 'Не удалось отправить. Попробуй ещё раз'), '⚠️');
+          }
         }
       } catch {
         toast(tt('ultra-rating-toast-net', 'Нет соединения. Проверь интернет'), '⚠️');
@@ -13022,6 +13121,10 @@ async function doResetPassword() {
         'reset-toast-ok': 'Пароль обновлён! Войди с новым паролем 🔐',
         'ultra-rating-already-title': 'Вы уже оставили отзыв',
         'ultra-rating-already-sub': 'Спасибо! Мы получили твой отзыв. Хочешь добавить ещё мысли — напиши нам в Discord.',
+        'ultra-rating-auth-title': 'Войди или зарегистрируйся',
+        'ultra-rating-auth-sub': 'Чтобы оставить отзыв, нужен аккаунт.',
+        'ultra-rating-auth-login': 'Войти',
+        'ultra-rating-auth-signup': 'Регистрация',
         'ultra-rating-chosen': 'Твоя оценка: ',
         'ultra-rating-placeholder': 'Что понравилось, а что улучшить?',
         'ultra-rating-submit': 'Отправить отзыв',
@@ -13209,6 +13312,10 @@ async function doResetPassword() {
         'reset-toast-ok': 'Password updated! Sign in with your new password 🔐',
         'ultra-rating-already-title': 'You already left a review',
         'ultra-rating-already-sub': 'Thanks! We got your feedback. Want to add more thoughts — ping us on Discord.',
+        'ultra-rating-auth-title': 'Sign in or sign up',
+        'ultra-rating-auth-sub': 'You need an account to leave a review.',
+        'ultra-rating-auth-login': 'Sign in',
+        'ultra-rating-auth-signup': 'Sign up',
         'ultra-rating-chosen': 'Your rating: ',
         'ultra-rating-placeholder': 'What did you like, what would you improve?',
         'ultra-rating-submit': 'Send feedback',
@@ -13396,6 +13503,10 @@ async function doResetPassword() {
         'reset-toast-ok': 'Пароль оновлено! Увійди з новим паролем 🔐',
         'ultra-rating-already-title': 'Ви вже залишили відгук',
         'ultra-rating-already-sub': 'Дякуємо! Ми отримали твій відгук. Хочеш додати ще думки — напиши нам у Discord.',
+        'ultra-rating-auth-title': 'Увійди або зареєструйся',
+        'ultra-rating-auth-sub': 'Щоб залишити відгук, потрібен акаунт.',
+        'ultra-rating-auth-login': 'Увійти',
+        'ultra-rating-auth-signup': 'Реєстрація',
         'ultra-rating-chosen': 'Твоя оцінка: ',
         'ultra-rating-placeholder': 'Що сподобалось, а що покращити?',
         'ultra-rating-submit': 'Надіслати відгук',
