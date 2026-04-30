@@ -3200,18 +3200,7 @@
   transition: opacity 0.22s ease, transform 0.22s cubic-bezier(.08,1.2,.18,1);
   z-index: 5000;
 }
-.bell-dropdown::before {
-  content: '';
-  position: absolute;
-  top: -7px; left: 50%; transform: translateX(-50%) rotate(45deg);
-  width: 12px; height: 12px;
-  background: rgba(255,255,255,0.22);
-  border-top: 2px solid var(--langBorder, rgba(255,255,255,0.28));
-  border-left: 2px solid var(--langBorder, rgba(255,255,255,0.28));
-  border-top-left-radius: 4px;
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-}
+.bell-dropdown::before { display: none; }
 .bell-wrap:hover .bell-dropdown, .bell-wrap.open .bell-dropdown {
   opacity: 1;
   pointer-events: auto;
@@ -3269,19 +3258,7 @@
     inset 2px 2px 8px rgba(255,255,255,0.2);
   z-index: 5000;
 }
-.profile-dropdown::before {
-  content: '';
-  position: absolute;
-  top: -7px; left: 50%; transform: translateX(-50%) rotate(45deg);
-  width: 12px; height: 12px;
-  background: rgba(255,255,255,0.22);
-  border-top: 2px solid var(--langBorder, rgba(255,255,255,0.28));
-  border-left: 2px solid var(--langBorder, rgba(255,255,255,0.28));
-  border-top-left-radius: 4px;
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  z-index: 1;
-}
+.profile-dropdown::before { display: none; }
 .profile-wrap::after {
   content: '';
   position: absolute;
@@ -3539,6 +3516,23 @@
 }
 .af-input.valid { border-color: rgba(74,222,128,0.45); }
 .af-input.error { border-color: rgba(255,80,80,0.55); }
+/* Переопределение стилей автозаполнения Chrome/WebKit, чтобы поля не становились белыми */
+.af-input:-webkit-autofill,
+.af-input:-webkit-autofill:hover,
+.af-input:-webkit-autofill:focus,
+.af-input:-webkit-autofill:active {
+  -webkit-text-fill-color: #fff !important;
+  -webkit-box-shadow: 0 0 0 1000px rgba(0,0,0,0.4) inset !important;
+  box-shadow: 0 0 0 1000px rgba(0,0,0,0.4) inset !important;
+  caret-color: #fff;
+  border-color: rgba(255,255,255,0.15);
+  transition: background-color 9999s ease-in-out 0s, color 9999s ease-in-out 0s;
+}
+.af-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px rgba(0,0,0,0.5) inset, 0 0 0 4px rgba(255,140,0,0.1), 0 0 20px rgba(255,140,0,0.3) !important;
+  box-shadow: 0 0 0 1000px rgba(0,0,0,0.5) inset, 0 0 0 4px rgba(255,140,0,0.1), 0 0 20px rgba(255,140,0,0.3) !important;
+  border-color: rgba(255,140,0,0.8);
+}
 .af-icon {
   position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
   width: 18px; height: 18px; pointer-events: none; color: rgba(255,255,255,0.3);
