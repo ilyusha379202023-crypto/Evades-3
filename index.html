@@ -3646,7 +3646,9 @@
 }
 .profile-modal-overlay.show { opacity: 1; pointer-events: auto; }
 .profile-modal-box {
-  width: 100%; max-width: 420px;
+  width: 100%; max-width: 480px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
   background: rgba(10,32,22,0.85);
   backdrop-filter: blur(30px);
   border: 1px solid rgba(255,255,255,0.2); border-radius: 28px; padding: 36px 32px;
@@ -3655,6 +3657,10 @@
   transition: transform .4s cubic-bezier(.08,1.3,.18,1);
   position: relative; text-align: center;
 }
+.profile-modal-box::-webkit-scrollbar{ width: 8px; }
+.profile-modal-box::-webkit-scrollbar-track{ background: rgba(255,255,255,0.04); border-radius: 999px; }
+.profile-modal-box::-webkit-scrollbar-thumb{ background: rgba(74,222,128,0.35); border-radius: 999px; }
+.profile-modal-box::-webkit-scrollbar-thumb:hover{ background: rgba(74,222,128,0.55); }
 .profile-modal-overlay.show .profile-modal-box { transform: scale(1) translateY(0); }
 .profile-modal-close {
   position: absolute; top: 14px; right: 16px; width: 30px; height: 30px; border-radius: 50%;
@@ -3775,6 +3781,207 @@
   color: #FFAE9B;
 }
 .ps-btn-danger:hover{ transform: translateY(-2px); background: rgba(224,74,42,0.28); border-color: rgba(255,150,120,0.65); color: #fff; }
+
+/* ── PROFILE: ИГРОВЫЕ КАРТОЧКИ (level / achievements / daily / ref / linked) ── */
+.profile-card{
+  width: 100%;
+  margin: 0 0 16px;
+  padding: 18px 18px 16px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 18px;
+  text-align: left;
+  backdrop-filter: blur(8px);
+}
+.profile-card .pc-head{
+  display: flex; align-items: flex-start; gap: 12px;
+  margin-bottom: 12px;
+}
+.profile-card .pc-icon{
+  width: 38px; height: 38px; flex: 0 0 auto;
+  display: grid; place-items: center;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,215,72,0.20), rgba(255,176,72,0.06));
+  border: 1px solid rgba(255,215,72,0.40);
+  font-size: 18px;
+}
+.profile-card .pc-text{ flex: 1; min-width: 0; }
+.profile-card .pc-title{ font-weight: 900; font-size: 14px; color: #fff; letter-spacing: 0.5px; margin-bottom: 4px; }
+.profile-card .pc-sub{ font-size: 12px; color: rgba(255,255,255,0.62); line-height: 1.45; }
+.profile-card .pc-tag{
+  display: inline-flex; align-items: center; padding: 4px 10px;
+  border-radius: 999px; flex: 0 0 auto;
+  background: rgba(255,176,72,0.12); border: 1px solid rgba(255,176,72,0.35);
+  color: #ffc680; font-size: 10px; font-weight: 800;
+  letter-spacing: 0.6px; text-transform: uppercase;
+}
+.profile-card .pc-rank{
+  background: linear-gradient(180deg, #ffe39a, #ffb84a);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+
+/* XP bar */
+.profile-level .pc-xpbar{
+  height: 10px; border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  overflow: hidden; margin: 6px 0 6px;
+}
+.profile-level .pc-xpfill{
+  height: 100%; width: 0;
+  background: linear-gradient(90deg, #ffd54a 0%, #ff7a18 100%);
+  box-shadow: 0 0 14px rgba(255,176,72,0.55);
+  transition: width .8s cubic-bezier(.2,1,.3,1);
+}
+.profile-level .pc-xptext{
+  font-size: 11px; color: rgba(255,255,255,0.55);
+  margin-bottom: 14px; letter-spacing: 0.4px;
+}
+.profile-level .pc-stats{
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 8px;
+}
+.profile-level .pc-stat{
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 12px;
+  padding: 10px 6px;
+  text-align: center;
+}
+.profile-level .pc-statnum{
+  font-size: 20px; font-weight: 900; color: #ffd54a;
+  line-height: 1.1;
+}
+.profile-level .pc-statlbl{
+  font-size: 10px; color: rgba(255,255,255,0.55);
+  letter-spacing: 0.8px; text-transform: uppercase; margin-top: 2px;
+}
+
+/* Achievements */
+.pc-achievements{
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+}
+.pc-ach{
+  position: relative;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 4px;
+  padding: 12px 6px 10px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.10);
+  transition: transform .2s ease, background .2s ease, border-color .2s ease;
+  cursor: default;
+}
+.pc-ach:hover{ transform: translateY(-2px); background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.18); }
+.pc-ach-ico{ font-size: 24px; line-height: 1; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4)); }
+.pc-ach-name{ font-weight: 800; font-size: 11px; color: #fff; letter-spacing: 0.4px; }
+.pc-ach-desc{ font-size: 10px; color: rgba(255,255,255,0.55); line-height: 1.35; }
+.pc-ach.is-locked{ opacity: 0.55; filter: grayscale(0.65); }
+.pc-ach.is-locked::after{
+  content: '🔒'; position: absolute;
+  top: 6px; right: 6px;
+  font-size: 11px; opacity: 0.85;
+}
+.pc-ach.is-unlocked{
+  background: linear-gradient(145deg, rgba(74,222,128,0.18), rgba(74,222,128,0.04));
+  border-color: rgba(74,222,128,0.45);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 0 18px rgba(74,222,128,0.12);
+}
+.pc-ach.is-unlocked::after{
+  content: '✓'; position: absolute;
+  top: 6px; right: 7px;
+  font-size: 12px; color: #4ade80; font-weight: 900;
+}
+
+/* Daily streak */
+.pc-streak{
+  display: flex; gap: 6px; justify-content: space-between;
+  margin: 4px 0 8px;
+}
+.pc-streak-day{
+  flex: 1; height: 38px;
+  display: grid; place-items: center;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.10);
+  font-size: 13px; font-weight: 800;
+  color: rgba(255,255,255,0.5);
+}
+.pc-streak-day.is-on{
+  background: linear-gradient(145deg, rgba(74,222,128,0.25), rgba(74,222,128,0.08));
+  border-color: rgba(74,222,128,0.55);
+  color: #4ade80;
+  box-shadow: 0 0 14px rgba(74,222,128,0.35);
+}
+.pc-streak-day.pc-streak-bonus{
+  background: linear-gradient(145deg, rgba(255,215,72,0.2), rgba(255,176,72,0.05));
+  border-color: rgba(255,215,72,0.45);
+  color: #ffd54a;
+}
+.pc-streak-text{
+  font-size: 12px; color: rgba(255,255,255,0.6);
+  letter-spacing: 0.4px;
+}
+.pc-streak-text b{ color: #fff; }
+
+/* Ref code */
+.pc-refbox{
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 12px;
+  background: rgba(0,0,0,0.30);
+  border: 1px dashed rgba(255,255,255,0.20);
+  border-radius: 12px;
+}
+.pc-refcode{
+  flex: 1; min-width: 0;
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  font-size: 16px; font-weight: 800;
+  letter-spacing: 2px; color: #ffd54a;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  text-shadow: 0 2px 12px rgba(255,176,72,0.4);
+}
+.pc-refcopy{
+  appearance: none; flex: 0 0 auto;
+  padding: 8px 14px; border-radius: 999px;
+  background: rgba(74,222,128,0.18);
+  border: 1px solid rgba(74,222,128,0.45);
+  color: #4ade80; font-weight: 800; font-size: 11px;
+  letter-spacing: 0.6px; text-transform: uppercase;
+  cursor: pointer; transition: all .15s ease;
+}
+.pc-refcopy:hover{ background: rgba(74,222,128,0.28); color: #fff; transform: translateY(-1px); }
+.pc-refcopy.is-copied{ background: rgba(74,222,128,0.5); color: #fff; }
+
+/* Linked providers */
+.pc-providers{
+  display: flex; flex-direction: column; gap: 8px;
+}
+.pc-prov{
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 12px;
+}
+.pc-prov-ico{ width: 24px; height: 24px; flex: 0 0 auto; display: grid; place-items: center; }
+.pc-prov-ico svg{ width: 100%; height: 100%; }
+.pc-prov-name{ flex: 1; min-width: 0; font-weight: 700; font-size: 13px; color: #fff; }
+.pc-prov-status{
+  flex: 0 0 auto;
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 0.6px; text-transform: uppercase;
+  padding: 4px 9px; border-radius: 999px;
+}
+.pc-prov-status.is-on{
+  background: rgba(74,222,128,0.18);
+  border: 1px solid rgba(74,222,128,0.45);
+  color: #4ade80;
+}
+.pc-prov-status.is-off{
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.14);
+  color: rgba(255,255,255,0.5);
+}
 
 /* ── 2FA MODAL (setup + challenge) ── */
 .tfa-modal-overlay{
@@ -5832,6 +6039,85 @@ svg.ic-svg-login {
   </div>
 </div>
 
+<!-- Player level / XP -->
+<div class="profile-card profile-level">
+  <div class="pc-head">
+    <span class="pc-icon">⚡</span>
+    <div class="pc-text">
+      <div class="pc-title"><span data-i18n="pm-lvl-title">Игрок</span> · <span class="pc-rank" id="pmRank" data-i18n="pm-lvl-rank-rookie">Новичок</span></div>
+      <div class="pc-sub"><span data-i18n="pm-lvl-level">Уровень</span> <span id="pmLevel">1</span></div>
+    </div>
+    <span class="pc-tag" data-i18n="pm-tag-dev">В разработке</span>
+  </div>
+  <div class="pc-xpbar"><div class="pc-xpfill" id="pmXpFill" style="width:5%"></div></div>
+  <div class="pc-xptext"><span id="pmXpCur">5</span> / <span id="pmXpMax">100</span> XP</div>
+  <div class="pc-stats">
+    <div class="pc-stat"><div class="pc-statnum" id="pmGames">0</div><div class="pc-statlbl" data-i18n="pm-stat-games">Игр</div></div>
+    <div class="pc-stat"><div class="pc-statnum" id="pmWins">0</div><div class="pc-statlbl" data-i18n="pm-stat-wins">Побед</div></div>
+    <div class="pc-stat"><div class="pc-statnum" id="pmDays">—</div><div class="pc-statlbl" data-i18n="pm-stat-days">Дней</div></div>
+  </div>
+</div>
+
+<!-- Achievements -->
+<div class="profile-card">
+  <div class="pc-head">
+    <span class="pc-icon">🏆</span>
+    <div class="pc-text">
+      <div class="pc-title" data-i18n="pm-ach-title">Достижения</div>
+      <div class="pc-sub"><span id="pmAchUnlocked">1</span> / <span id="pmAchTotal">6</span> <span data-i18n="pm-ach-unlocked">разблокировано</span></div>
+    </div>
+    <span class="pc-tag" data-i18n="pm-tag-dev">В разработке</span>
+  </div>
+  <div class="pc-achievements" id="pmAchievements"></div>
+</div>
+
+<!-- Daily reward -->
+<div class="profile-card profile-daily">
+  <div class="pc-head">
+    <span class="pc-icon">🎁</span>
+    <div class="pc-text">
+      <div class="pc-title" data-i18n="pm-daily-title">Ежедневный бонус</div>
+      <div class="pc-sub" id="pmDailyText" data-i18n="pm-daily-sub">Заходи каждый день — копи кристаллы EVA. На релизе обменяешь на скины и фишки.</div>
+    </div>
+  </div>
+  <div class="pc-streak" id="pmStreak">
+    <span class="pc-streak-day is-on" title="Пн">1</span>
+    <span class="pc-streak-day" title="Вт">2</span>
+    <span class="pc-streak-day" title="Ср">3</span>
+    <span class="pc-streak-day" title="Чт">4</span>
+    <span class="pc-streak-day" title="Пт">5</span>
+    <span class="pc-streak-day pc-streak-bonus" title="Сб-Вс">★</span>
+  </div>
+  <div class="pc-streak-text"><span data-i18n="pm-daily-streak">Серия:</span> <b id="pmStreakNum">1</b> <span data-i18n="pm-daily-day">день</span></div>
+</div>
+
+<!-- Referral -->
+<div class="profile-card">
+  <div class="pc-head">
+    <span class="pc-icon">🎟️</span>
+    <div class="pc-text">
+      <div class="pc-title" data-i18n="pm-ref-title">Реферальный код</div>
+      <div class="pc-sub" data-i18n="pm-ref-sub">Поделись с другом — оба получите бонус на старте.</div>
+    </div>
+  </div>
+  <div class="pc-refbox">
+    <span class="pc-refcode" id="pmRefCode">EV-•••••</span>
+    <button type="button" class="pc-refcopy" id="pmRefCopy" data-i18n="pm-ref-copy">Копировать</button>
+  </div>
+</div>
+
+<!-- Linked accounts -->
+<div class="profile-card">
+  <div class="pc-head">
+    <span class="pc-icon">🔗</span>
+    <div class="pc-text">
+      <div class="pc-title" data-i18n="pm-linked-title">Способы входа</div>
+      <div class="pc-sub" data-i18n="pm-linked-sub">К аккаунту привязаны:</div>
+    </div>
+  </div>
+  <div class="pc-providers" id="pmProviders"></div>
+</div>
+
 <!-- Security / 2FA card -->
 <div class="profile-security" id="profileSecurity">
   <div class="ps-head">
@@ -6998,6 +7284,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Язык',
                 'profile-field-joined': '📅 В проекте с',
+                'pm-tag-dev': 'В разработке',
+                'pm-lvl-title': 'Игрок',
+                'pm-lvl-level': 'Уровень',
+                'pm-lvl-rank-rookie': 'Новичок',
+                'pm-lvl-rank-fighter': 'Боец',
+                'pm-lvl-rank-pro': 'Профи',
+                'pm-lvl-rank-master': 'Мастер',
+                'pm-lvl-rank-legend': 'Легенда',
+                'pm-stat-games': 'Игр',
+                'pm-stat-wins': 'Побед',
+                'pm-stat-days': 'Дней',
+                'pm-ach-title': 'Достижения',
+                'pm-ach-unlocked': 'разблокировано',
+                'pm-ach-firststeps-name': 'Первые шаги',
+                'pm-ach-firststeps-desc': 'Создан аккаунт',
+                'pm-ach-pioneer-name': 'Пионер',
+                'pm-ach-pioneer-desc': 'Регистрация до релиза',
+                'pm-ach-reviewer-name': 'Критик',
+                'pm-ach-reviewer-desc': 'Оставил отзыв',
+                'pm-ach-firstblood-name': 'Первая кровь',
+                'pm-ach-firstblood-desc': 'Выиграй матч',
+                'pm-ach-streak7-name': 'Огонь!',
+                'pm-ach-streak7-desc': 'Серия 7 дней',
+                'pm-ach-collector-name': 'Коллекционер',
+                'pm-ach-collector-desc': 'Собери 10 скинов',
+                'pm-daily-title': 'Ежедневный бонус',
+                'pm-daily-sub': 'Заходи каждый день — копи кристаллы EVA. На релизе обменяешь на скины и фишки.',
+                'pm-daily-streak': 'Серия:',
+                'pm-daily-day': 'день',
+                'pm-ref-title': 'Реферальный код',
+                'pm-ref-sub': 'Поделись с другом — оба получите бонус на старте.',
+                'pm-ref-copy': 'Копировать',
+                'pm-ref-copied': 'Скопировано!',
+                'pm-linked-title': 'Способы входа',
+                'pm-linked-sub': 'К аккаунту привязаны:',
+                'pm-prov-email': 'Email + пароль',
+                'pm-prov-on': 'Активно',
+                'pm-prov-off': 'Не привязан',
                 'auth-toast-oauth-redirect': 'Перенаправление на {provider}...',
                 'auth-toast-logged-out': 'Вы вышли из аккаунта 👋',
                 'auth-toast-oauth-ok': 'Вы вошли через {provider} 🎉',
@@ -7141,6 +7465,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Language',
                 'profile-field-joined': '📅 Joined',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'Redirecting to {provider}...',
                 'auth-toast-logged-out': 'You are logged out 👋',
                 'auth-toast-oauth-ok': 'Signed in with {provider} 🎉',
@@ -7284,6 +7646,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Мова',
                 'profile-field-joined': '📅 У проекті з',
+                'pm-tag-dev': 'У розробці',
+                'pm-lvl-title': 'Гравець',
+                'pm-lvl-level': 'Рівень',
+                'pm-lvl-rank-rookie': 'Новачок',
+                'pm-lvl-rank-fighter': 'Боєць',
+                'pm-lvl-rank-pro': 'Профі',
+                'pm-lvl-rank-master': 'Майстер',
+                'pm-lvl-rank-legend': 'Легенда',
+                'pm-stat-games': 'Ігор',
+                'pm-stat-wins': 'Перемог',
+                'pm-stat-days': 'Днів',
+                'pm-ach-title': 'Досягнення',
+                'pm-ach-unlocked': 'розблоковано',
+                'pm-ach-firststeps-name': 'Перші кроки',
+                'pm-ach-firststeps-desc': 'Акаунт створено',
+                'pm-ach-pioneer-name': 'Піонер',
+                'pm-ach-pioneer-desc': 'Реєстрація до релізу',
+                'pm-ach-reviewer-name': 'Критик',
+                'pm-ach-reviewer-desc': 'Залишив відгук',
+                'pm-ach-firstblood-name': 'Перша кров',
+                'pm-ach-firstblood-desc': 'Виграй матч',
+                'pm-ach-streak7-name': 'Полум’я!',
+                'pm-ach-streak7-desc': 'Серія 7 днів',
+                'pm-ach-collector-name': 'Колекціонер',
+                'pm-ach-collector-desc': 'Збери 10 скінів',
+                'pm-daily-title': 'Щоденний бонус',
+                'pm-daily-sub': 'Заходь щодня — збирай кристали EVA. На релізі обміняєш на скіни.',
+                'pm-daily-streak': 'Серія:',
+                'pm-daily-day': 'день',
+                'pm-ref-title': 'Реферальний код',
+                'pm-ref-sub': 'Поділись з другом — обидва отримаєте бонус на старті.',
+                'pm-ref-copy': 'Копіювати',
+                'pm-ref-copied': 'Скопійовано!',
+                'pm-linked-title': 'Способи входу',
+                'pm-linked-sub': 'До акаунту прив’язані:',
+                'pm-prov-email': 'Email + пароль',
+                'pm-prov-on': 'Активно',
+                'pm-prov-off': 'Не прив’язаний',
                 'auth-toast-oauth-redirect': 'Перенаправлення на {provider}...',
                 'auth-toast-logged-out': 'Ви вийшли з акаунта 👋',
                 'auth-toast-oauth-ok': 'Ви увійшли через {provider} 🎉',
@@ -7427,6 +7827,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 E-Mail',
                 'profile-field-language': '🌍 Sprache',
                 'profile-field-joined': '📅 Dabei seit',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'Weiterleitung zu {provider}...',
                 'auth-toast-logged-out': 'Du bist abgemeldet 👋',
                 'auth-toast-oauth-ok': 'Angemeldet über {provider} 🎉',
@@ -7570,6 +8008,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Idioma',
                 'profile-field-joined': '📅 Miembro desde',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'Redirigiendo a {provider}...',
                 'auth-toast-logged-out': 'Has cerrado sesión 👋',
                 'auth-toast-oauth-ok': 'Has iniciado sesión con {provider} 🎉',
@@ -7713,6 +8189,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Langue',
                 'profile-field-joined': '📅 Membre depuis',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'Redirection vers {provider}...',
                 'auth-toast-logged-out': 'Vous êtes déconnecté 👋',
                 'auth-toast-oauth-ok': 'Connecté via {provider} 🎉',
@@ -7856,6 +8370,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Lingua',
                 'profile-field-joined': '📅 Membro dal',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'Reindirizzamento a {provider}...',
                 'auth-toast-logged-out': 'Hai effettuato il logout 👋',
                 'auth-toast-oauth-ok': 'Accesso con {provider} 🎉',
@@ -7999,6 +8551,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Idioma',
                 'profile-field-joined': '📅 Membro desde',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'Redirecionando para {provider}...',
                 'auth-toast-logged-out': 'Você saiu da conta 👋',
                 'auth-toast-oauth-ok': 'Conectado com {provider} 🎉',
@@ -8142,6 +8732,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Język',
                 'profile-field-joined': '📅 W projekcie od',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'Przekierowanie do {provider}...',
                 'auth-toast-logged-out': 'Wylogowano 👋',
                 'auth-toast-oauth-ok': 'Zalogowano przez {provider} 🎉',
@@ -8285,6 +8913,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 E-posta',
                 'profile-field-language': '🌍 Dil',
                 'profile-field-joined': '📅 Üyelik tarihi',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': '{provider} sayfasına yönlendiriliyor...',
                 'auth-toast-logged-out': 'Çıkış yapıldı 👋',
                 'auth-toast-oauth-ok': '{provider} ile giriş yapıldı 🎉',
@@ -8428,6 +9094,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 E-mail',
                 'profile-field-language': '🌍 Taal',
                 'profile-field-joined': '📅 Lid sinds',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'Doorverwijzen naar {provider}...',
                 'auth-toast-logged-out': 'Je bent uitgelogd 👋',
                 'auth-toast-oauth-ok': 'Ingelogd via {provider} 🎉',
@@ -8571,6 +9275,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 E-post',
                 'profile-field-language': '🌍 Språk',
                 'profile-field-joined': '📅 Medlem sedan',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'Omdirigerar till {provider}...',
                 'auth-toast-logged-out': 'Du har loggat ut 👋',
                 'auth-toast-oauth-ok': 'Inloggad via {provider} 🎉',
@@ -8714,6 +9456,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 E-post',
                 'profile-field-language': '🌍 Språk',
                 'profile-field-joined': '📅 Medlem siden',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'Omdirigerer til {provider}...',
                 'auth-toast-logged-out': 'Du er logget ut 👋',
                 'auth-toast-oauth-ok': 'Logget inn via {provider} 🎉',
@@ -8857,6 +9637,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Sähköposti',
                 'profile-field-language': '🌍 Kieli',
                 'profile-field-joined': '📅 Jäsenyys alkoi',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'Uudelleenohjataan palveluun {provider}...',
                 'auth-toast-logged-out': 'Olet kirjautunut ulos 👋',
                 'auth-toast-oauth-ok': 'Kirjauduttu palvelulla {provider} 🎉',
@@ -9000,6 +9818,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 E-mail',
                 'profile-field-language': '🌍 Sprog',
                 'profile-field-joined': '📅 Medlem siden',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'Omdirigerer til {provider}...',
                 'auth-toast-logged-out': 'Du er logget ud 👋',
                 'auth-toast-oauth-ok': 'Logget ind via {provider} 🎉',
@@ -9143,6 +9999,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 E-mail',
                 'profile-field-language': '🌍 Jazyk',
                 'profile-field-joined': '📅 V projektu od',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'Přesměrování na {provider}...',
                 'auth-toast-logged-out': 'Byli jste odhlášeni 👋',
                 'auth-toast-oauth-ok': 'Přihlášení přes {provider} 🎉',
@@ -9286,6 +10180,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Limbă',
                 'profile-field-joined': '📅 Membru din',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'Redirecționare către {provider}...',
                 'auth-toast-logged-out': 'Te-ai deconectat 👋',
                 'auth-toast-oauth-ok': 'Conectat prin {provider} 🎉',
@@ -9429,6 +10361,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 E-mail',
                 'profile-field-language': '🌍 Nyelv',
                 'profile-field-joined': '📅 Tag ettől',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'Átirányítás ide: {provider}...',
                 'auth-toast-logged-out': 'Kijelentkeztél 👋',
                 'auth-toast-oauth-ok': 'Belépve {provider} fiókkal 🎉',
@@ -9572,6 +10542,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Γλώσσα',
                 'profile-field-joined': '📅 Μέλος από',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'Ανακατεύθυνση σε {provider}...',
                 'auth-toast-logged-out': 'Αποσυνδεθήκατε 👋',
                 'auth-toast-oauth-ok': 'Συνδεθήκατε μέσω {provider} 🎉',
@@ -9715,6 +10723,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 メール',
                 'profile-field-language': '🌍 言語',
                 'profile-field-joined': '📅 参加日',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': '{provider}にリダイレクト中...',
                 'auth-toast-logged-out': 'ログアウトしました 👋',
                 'auth-toast-oauth-ok': '{provider}でログインしました 🎉',
@@ -9858,6 +10904,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 邮箱',
                 'profile-field-language': '🌍 语言',
                 'profile-field-joined': '📅 加入于',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': '正在跳转到 {provider}...',
                 'auth-toast-logged-out': '已退出登录 👋',
                 'auth-toast-oauth-ok': '已通过 {provider} 登录 🎉',
@@ -10001,6 +11085,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 이메일',
                 'profile-field-language': '🌍 언어',
                 'profile-field-joined': '📅 가입일',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': '{provider}로 리디렉션 중...',
                 'auth-toast-logged-out': '로그아웃되었습니다 👋',
                 'auth-toast-oauth-ok': '{provider}로 로그인됨 🎉',
@@ -10144,6 +11266,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 البريد الإلكتروني',
                 'profile-field-language': '🌍 اللغة',
                 'profile-field-joined': '📅 عضو منذ',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'إعادة التوجيه إلى {provider}...',
                 'auth-toast-logged-out': 'تم تسجيل الخروج 👋',
                 'auth-toast-oauth-ok': 'تم تسجيل الدخول عبر {provider} 🎉',
@@ -10287,6 +11447,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 ईमेल',
                 'profile-field-language': '🌍 भाषा',
                 'profile-field-joined': '📅 सदस्य बने',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': '{provider} पर रीडायरेक्ट हो रहा है...',
                 'auth-toast-logged-out': 'आप लॉग आउट हो गए 👋',
                 'auth-toast-oauth-ok': '{provider} से लॉग इन किया गया 🎉',
@@ -10430,6 +11628,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 อีเมล',
                 'profile-field-language': '🌍 ภาษา',
                 'profile-field-joined': '📅 เข้าร่วมเมื่อ',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'กำลังเปลี่ยนเส้นทางไปยัง {provider}...',
                 'auth-toast-logged-out': 'ออกจากระบบแล้ว 👋',
                 'auth-toast-oauth-ok': 'เข้าสู่ระบบด้วย {provider} 🎉',
@@ -10573,6 +11809,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Ngôn ngữ',
                 'profile-field-joined': '📅 Thành viên từ',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'Đang chuyển hướng đến {provider}...',
                 'auth-toast-logged-out': 'Bạn đã đăng xuất 👋',
                 'auth-toast-oauth-ok': 'Đã đăng nhập qua {provider} 🎉',
@@ -10716,6 +11990,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Bahasa',
                 'profile-field-joined': '📅 Bergabung sejak',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'Mengalihkan ke {provider}...',
                 'auth-toast-logged-out': 'Anda telah keluar 👋',
                 'auth-toast-oauth-ok': 'Masuk melalui {provider} 🎉',
@@ -10859,6 +12171,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 E-mel',
                 'profile-field-language': '🌍 Bahasa',
                 'profile-field-joined': '📅 Ahli sejak',
+                'pm-tag-dev': 'In development',
+                'pm-lvl-title': 'Player',
+                'pm-lvl-level': 'Level',
+                'pm-lvl-rank-rookie': 'Rookie',
+                'pm-lvl-rank-fighter': 'Fighter',
+                'pm-lvl-rank-pro': 'Pro',
+                'pm-lvl-rank-master': 'Master',
+                'pm-lvl-rank-legend': 'Legend',
+                'pm-stat-games': 'Games',
+                'pm-stat-wins': 'Wins',
+                'pm-stat-days': 'Days',
+                'pm-ach-title': 'Achievements',
+                'pm-ach-unlocked': 'unlocked',
+                'pm-ach-firststeps-name': 'First steps',
+                'pm-ach-firststeps-desc': 'Account created',
+                'pm-ach-pioneer-name': 'Pioneer',
+                'pm-ach-pioneer-desc': 'Joined before release',
+                'pm-ach-reviewer-name': 'Critic',
+                'pm-ach-reviewer-desc': 'Left a review',
+                'pm-ach-firstblood-name': 'First blood',
+                'pm-ach-firstblood-desc': 'Win a match',
+                'pm-ach-streak7-name': 'On fire!',
+                'pm-ach-streak7-desc': '7-day login streak',
+                'pm-ach-collector-name': 'Collector',
+                'pm-ach-collector-desc': 'Collect 10 skins',
+                'pm-daily-title': 'Daily reward',
+                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
+                'pm-daily-streak': 'Streak:',
+                'pm-daily-day': 'day',
+                'pm-ref-title': 'Referral code',
+                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
+                'pm-ref-copy': 'Copy',
+                'pm-ref-copied': 'Copied!',
+                'pm-linked-title': 'Sign-in methods',
+                'pm-linked-sub': 'Linked to your account:',
+                'pm-prov-email': 'Email + password',
+                'pm-prov-on': 'Active',
+                'pm-prov-off': 'Not linked',
                 'auth-toast-oauth-redirect': 'Mengalihkan ke {provider}...',
                 'auth-toast-logged-out': 'Anda telah log keluar 👋',
                 'auth-toast-oauth-ok': 'Log masuk melalui {provider} 🎉',
@@ -12320,7 +13670,204 @@ async function doForgotSend() {
 // ===================================================
 // PROFILE MODAL
 // ===================================================
-function openProfileModal() { document.getElementById('profileModalOverlay').classList.add('show'); try { refresh2faStatus(); } catch(_) {} }
+function openProfileModal() {
+  document.getElementById('profileModalOverlay').classList.add('show');
+  try { refresh2faStatus(); } catch(_) {}
+  try { populateProfileExtras(); } catch(_) {}
+}
+
+// ---- Игровые карточки в профиле (level / achievements / daily / ref / linked) ----
+function _ev3HashStr(s) {
+  // Простой детерминистский 32-bit хеш (FNV-ish) — для генерации XP / реф-кодов
+  let h = 2166136261 >>> 0;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+function _ev3DaysSince(iso) {
+  if (!iso) return 0;
+  try {
+    const d = new Date(iso).getTime();
+    if (!d) return 0;
+    return Math.max(0, Math.floor((Date.now() - d) / (1000*60*60*24)));
+  } catch { return 0; }
+}
+function _ev3RefCode(uid) {
+  if (!uid) return 'EV-' + '•'.repeat(6);
+  // Берём детерминистические символы из uuid
+  const clean = String(uid).replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+  const code = (clean.slice(0, 3) + clean.slice(-3));
+  return 'EV-' + (code || 'PLAYER');
+}
+function _ev3RankByLevel(lvl) {
+  // Возвращает i18n-ключ ранга
+  if (lvl >= 30) return 'pm-lvl-rank-legend';
+  if (lvl >= 15) return 'pm-lvl-rank-master';
+  if (lvl >= 7)  return 'pm-lvl-rank-pro';
+  if (lvl >= 3)  return 'pm-lvl-rank-fighter';
+  return 'pm-lvl-rank-rookie';
+}
+function _ev3RankFallback(key) {
+  return ({
+    'pm-lvl-rank-rookie':  'Новичок',
+    'pm-lvl-rank-fighter': 'Боец',
+    'pm-lvl-rank-pro':     'Профи',
+    'pm-lvl-rank-master':  'Мастер',
+    'pm-lvl-rank-legend':  'Легенда'
+  })[key] || 'Новичок';
+}
+
+function _ev3ProviderIcon(name) {
+  const n = String(name||'').toLowerCase();
+  if (n === 'google') {
+    return '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M12 11v3.2h4.5c-.2 1.1-1.4 3.2-4.5 3.2-2.7 0-4.9-2.2-4.9-5s2.2-5 4.9-5c1.5 0 2.6.6 3.2 1.2l2.2-2.1C16.1 5.2 14.3 4.4 12 4.4 7.7 4.4 4.2 7.9 4.2 12.2S7.7 20 12 20c4.4 0 7.4-3.1 7.4-7.5 0-.5 0-.9-.1-1.3z"/></svg>';
+  }
+  if (n === 'discord') {
+    return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="#5865F2"><path d="M20.317 4.369A19.791 19.791 0 0 0 16.558 3a14.3 14.3 0 0 0-.7 1.44 18.27 18.27 0 0 0-5.72 0A13.2 13.2 0 0 0 9.444 3 19.72 19.72 0 0 0 5.68 4.37C2.78 8.88 2 13.27 2.39 17.58a19.96 19.96 0 0 0 6.07 3.08c.49-.67.92-1.39 1.29-2.14-.71-.27-1.39-.6-2.03-1 .17-.12.34-.25.5-.39 3.94 1.82 8.19 1.82 12.08 0 .17.14.33.27.5.39-.64.4-1.32.73-2.03 1 .37.75.8 1.47 1.29 2.14a19.96 19.96 0 0 0 6.07-3.08c.46-5.02-.77-9.36-3.32-13.21Z"/></svg>';
+  }
+  // email
+  return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#ffd54a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
+}
+function _ev3ProviderLabel(name) {
+  const n = String(name||'').toLowerCase();
+  if (n === 'google')  return 'Google';
+  if (n === 'discord') return 'Discord';
+  if (n === 'email')   return tt('pm-prov-email', 'Email + пароль');
+  return n ? (n[0].toUpperCase() + n.slice(1)) : '—';
+}
+
+function populateProfileExtras() {
+  const u = ev3User || {};
+  // Days since joined
+  const days = _ev3DaysSince(u.created_at);
+  // Псевдо-XP, чтобы хоть что-то «жило» в карточке (детерминистический по uid + дням)
+  const seed = _ev3HashStr((u.id || u.email || 'guest') + ':' + days);
+  const xpPool = (seed % 60) + Math.min(40, days * 2); // 0..100
+  const level = 1 + Math.floor(xpPool / 100); // пока всегда 1, готов к будущему
+  const xpCur = xpPool % 100;
+  const xpMax = 100;
+  const rankKey = _ev3RankByLevel(level);
+  // Заполняем DOM
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  set('pmLevel', level);
+  set('pmXpCur', xpCur);
+  set('pmXpMax', xpMax);
+  set('pmDays', days);
+  // Ранг (берём через tt с фолбеком)
+  const rankEl = document.getElementById('pmRank');
+  if (rankEl) {
+    rankEl.setAttribute('data-i18n', rankKey);
+    rankEl.textContent = tt(rankKey, _ev3RankFallback(rankKey));
+  }
+  const fill = document.getElementById('pmXpFill');
+  if (fill) fill.style.width = Math.max(3, xpCur) + '%';
+
+  // Achievements
+  const ACH = [
+    { id: 'first-steps', ico: '🌱', nameKey: 'pm-ach-firststeps-name', descKey: 'pm-ach-firststeps-desc',
+      nameFb: 'Первые шаги', descFb: 'Создан аккаунт', unlocked: !!u.id },
+    { id: 'pioneer',  ico: '🚀', nameKey: 'pm-ach-pioneer-name', descKey: 'pm-ach-pioneer-desc',
+      nameFb: 'Пионер', descFb: 'Зарегистрировался до релиза', unlocked: !!u.id },
+    { id: 'reviewer', ico: '✍️', nameKey: 'pm-ach-reviewer-name', descKey: 'pm-ach-reviewer-desc',
+      nameFb: 'Критик', descFb: 'Оставил отзыв о проекте', unlocked: false /* динамика ниже */ },
+    { id: 'first-blood', ico: '🎯', nameKey: 'pm-ach-firstblood-name', descKey: 'pm-ach-firstblood-desc',
+      nameFb: 'Первая кровь', descFb: 'Выиграй первый матч', unlocked: false },
+    { id: 'streak-7', ico: '🔥', nameKey: 'pm-ach-streak7-name', descKey: 'pm-ach-streak7-desc',
+      nameFb: 'Огонь!', descFb: 'Серия из 7 дней входа', unlocked: false },
+    { id: 'collector', ico: '💎', nameKey: 'pm-ach-collector-name', descKey: 'pm-ach-collector-desc',
+      nameFb: 'Коллекционер', descFb: 'Собери 10 скинов', unlocked: false }
+  ];
+  // Проверим, оставил ли юзер отзыв — асинхронно, потом обновим карточку
+  const achWrap = document.getElementById('pmAchievements');
+  const renderAch = () => {
+    if (!achWrap) return;
+    achWrap.innerHTML = ACH.map(a =>
+      '<div class="pc-ach ' + (a.unlocked ? 'is-unlocked' : 'is-locked') + '" title="' + a.nameFb + '">'
+      + '<div class="pc-ach-ico">' + a.ico + '</div>'
+      + '<div class="pc-ach-name" data-i18n="' + a.nameKey + '">' + tt(a.nameKey, a.nameFb) + '</div>'
+      + '<div class="pc-ach-desc" data-i18n="' + a.descKey + '">' + tt(a.descKey, a.descFb) + '</div>'
+      + '</div>'
+    ).join('');
+    const unlocked = ACH.filter(a => a.unlocked).length;
+    set('pmAchUnlocked', unlocked);
+    set('pmAchTotal', ACH.length);
+  };
+  renderAch();
+  // Async проверка отзыва
+  if (u.id && ev3Session && ev3Session.access_token) {
+    fetch(SUPABASE_URL + '/rest/v1/feedback?select=id&user_id=eq.' + encodeURIComponent(u.id) + '&limit=1', {
+      headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + ev3Session.access_token }
+    }).then(r => r.ok ? r.json() : []).then(arr => {
+      if (Array.isArray(arr) && arr.length > 0) {
+        const a = ACH.find(x => x.id === 'reviewer'); if (a) a.unlocked = true; renderAch();
+      }
+    }).catch(()=>{});
+  }
+
+  // Daily streak — псевдо: считаем количество дней с регистрации mod 7 + 1 (0..6)
+  const streakDays = (days % 7) + 1;
+  set('pmStreakNum', streakDays);
+  const streakWrap = document.getElementById('pmStreak');
+  if (streakWrap) {
+    Array.from(streakWrap.children).forEach((ch, idx) => {
+      ch.classList.toggle('is-on', idx < streakDays);
+    });
+  }
+
+  // Реф-код
+  const refCode = _ev3RefCode(u.id);
+  set('pmRefCode', refCode);
+  const refBtn = document.getElementById('pmRefCopy');
+  if (refBtn && !refBtn._ev3Bound) {
+    refBtn._ev3Bound = true;
+    refBtn.addEventListener('click', () => {
+      const txt = (document.getElementById('pmRefCode') || {}).textContent || '';
+      const orig = refBtn.textContent;
+      const finishOk = () => {
+        refBtn.textContent = tt('pm-ref-copied', 'Скопировано!');
+        refBtn.classList.add('is-copied');
+        setTimeout(() => { refBtn.textContent = orig; refBtn.classList.remove('is-copied'); }, 1600);
+      };
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(txt).then(finishOk).catch(() => {
+            // fallback
+            try { const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); finishOk(); } catch(_) {}
+          });
+        } else {
+          const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); finishOk();
+        }
+      } catch (_) {}
+    });
+  }
+
+  // Связанные провайдеры
+  const provWrap = document.getElementById('pmProviders');
+  if (provWrap) {
+    let providers = [];
+    try {
+      providers = (u.app_metadata && Array.isArray(u.app_metadata.providers))
+        ? u.app_metadata.providers.slice() : [];
+    } catch (_) { providers = []; }
+    if (providers.length === 0 && u.email) providers = ['email'];
+    // нормализуем в Set чтобы избежать дублей
+    providers = Array.from(new Set(providers.map(p => String(p).toLowerCase())));
+    // выводим всегда 3 строки: email / google / discord
+    const all = ['email', 'google', 'discord'];
+    provWrap.innerHTML = all.map(p => {
+      const isOn = providers.indexOf(p) >= 0;
+      return '<div class="pc-prov">'
+        + '<div class="pc-prov-ico">' + _ev3ProviderIcon(p) + '</div>'
+        + '<div class="pc-prov-name">' + _ev3ProviderLabel(p) + '</div>'
+        + '<div class="pc-prov-status ' + (isOn ? 'is-on' : 'is-off') + '">'
+        + (isOn ? tt('pm-prov-on','Активно') : tt('pm-prov-off','Не привязан'))
+        + '</div>'
+        + '</div>';
+    }).join('');
+  }
+}
 function closeProfileModal() { document.getElementById('profileModalOverlay').classList.remove('show'); }
 function closeProfileModalOnBg(e) { if(e.target===e.currentTarget) closeProfileModal(); }
 
