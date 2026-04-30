@@ -15146,10 +15146,10 @@ function _ev3ProviderLabel(name) {
 async function _ev3UpdateUser(body) {
   const sess = (typeof ev3Session !== 'undefined' && ev3Session) || null;
   if (!sess || !sess.access_token) throw new Error('not_authenticated');
-  const r = await fetch(SUPABASE_URL + '/auth/v1/user', {
+  const r = await fetch(SUPA_URL + '/auth/v1/user', {
     method: 'PUT',
     headers: {
-      'apikey': SUPABASE_ANON,
+      'apikey': SUPA_KEY,
       'Authorization': 'Bearer ' + sess.access_token,
       'Content-Type': 'application/json'
     },
@@ -15267,9 +15267,9 @@ function populateProfileExtras() {
       signoutAllBtn.disabled = true;
       signoutAllBtn.textContent = tt('pm-set-signing-out', 'Выходим...');
       try {
-        await fetch(SUPABASE_URL + '/auth/v1/logout?scope=global', {
+        await fetch(SUPA_URL + '/auth/v1/logout?scope=global', {
           method: 'POST',
-          headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + sess.access_token }
+          headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + sess.access_token }
         });
         try { showToast(tt('pm-toast-signedout-all', 'Все сессии закрыты. Войди снова.')); } catch(_) {}
         try { clearSession(); } catch(_) {}
@@ -15703,9 +15703,9 @@ async function doDeleteAccount() {
     });
     // Закрываем все сессии (на всех устройствах)
     try {
-      await fetch(SUPABASE_URL + '/auth/v1/logout?scope=global', {
+      await fetch(SUPA_URL + '/auth/v1/logout?scope=global', {
         method: 'POST',
-        headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + sess.access_token }
+        headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + sess.access_token }
       });
     } catch(_) {}
     try { clearSession(); } catch(_) {}
