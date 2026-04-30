@@ -3957,6 +3957,116 @@
 .pc-refcopy:hover{ background: rgba(74,222,128,0.28); color: #fff; transform: translateY(-1px); }
 .pc-refcopy.is-copied{ background: rgba(74,222,128,0.5); color: #fff; }
 
+/* Settings rows */
+.pc-settings{ display: flex; flex-direction: column; gap: 14px; }
+.pc-setting{ display: flex; flex-direction: column; gap: 6px; }
+.pc-setting-label{
+  font-size: 11px; font-weight: 800; letter-spacing: 0.8px;
+  color: rgba(255,255,255,0.6); text-transform: uppercase;
+}
+.pc-setting-row{ display: flex; gap: 8px; align-items: center; }
+.pc-setting-input{
+  flex: 1; min-width: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.30);
+  border: 1px solid rgba(255,255,255,0.14);
+  color: #fff; font-size: 13px;
+  outline: none; transition: border-color .2s ease, box-shadow .2s ease;
+}
+.pc-setting-input:focus{
+  border-color: rgba(255,176,72,0.6);
+  box-shadow: 0 0 0 3px rgba(255,176,72,0.18);
+}
+.pc-setting-input::placeholder{ color: rgba(255,255,255,0.35); }
+.pc-setting-text{ flex: 1; font-size: 12px; color: rgba(255,255,255,0.62); line-height: 1.4; }
+.pc-setting-btn{
+  appearance: none; flex: 0 0 auto;
+  padding: 9px 14px; border-radius: 10px;
+  background: rgba(255,176,72,0.16);
+  border: 1px solid rgba(255,176,72,0.45);
+  color: #ffd54a; font-weight: 800; font-size: 12px;
+  letter-spacing: 0.4px; text-transform: uppercase;
+  cursor: pointer; transition: all .15s ease;
+  white-space: nowrap;
+}
+.pc-setting-btn:hover{ background: rgba(255,176,72,0.28); color: #fff; transform: translateY(-1px); }
+.pc-setting-btn:disabled{ opacity: 0.5; cursor: not-allowed; transform: none; }
+.pc-setting-hint{ font-size: 11px; color: rgba(255,255,255,0.45); line-height: 1.4; }
+.pc-setting-hint.is-ok{ color: #6fe49a; }
+.pc-setting-hint.is-err{ color: #ff8a7a; }
+
+/* Danger zone */
+.profile-danger{
+  border-color: rgba(224,74,42,0.45);
+  background: linear-gradient(145deg, rgba(224,74,42,0.10), rgba(224,74,42,0.02));
+}
+.pc-icon-danger{
+  background: linear-gradient(180deg, rgba(224,74,42,0.30), rgba(224,74,42,0.06)) !important;
+  border-color: rgba(255,150,120,0.5) !important;
+}
+.pc-danger-btn{
+  appearance: none; width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(224,74,42,0.18);
+  border: 1px solid rgba(224,74,42,0.55);
+  color: #ffae9b; font-weight: 800; font-size: 13px;
+  letter-spacing: 0.6px; text-transform: uppercase;
+  cursor: pointer; transition: all .15s ease;
+}
+.pc-danger-btn:hover{
+  background: rgba(224,74,42,0.32);
+  color: #fff; transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(224,74,42,0.35);
+}
+
+/* Delete account modal extras */
+.confirm-modal-danger .confirm-icon-danger{
+  background: linear-gradient(180deg, rgba(224,74,42,0.40), rgba(224,74,42,0.10)) !important;
+  border-color: rgba(255,150,120,0.55) !important;
+  color: #ffae9b !important;
+}
+.del-acc-input-wrap{ display: flex; flex-direction: column; gap: 8px; margin: 8px 0 16px; }
+.del-acc-prompt{ font-size: 12px; color: rgba(255,255,255,0.65); text-align: left; }
+.del-acc-prompt code{
+  display: inline-block; padding: 2px 8px; margin: 0 2px;
+  border-radius: 6px; background: rgba(224,74,42,0.18);
+  border: 1px solid rgba(224,74,42,0.45);
+  color: #ffae9b; font-weight: 900;
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  letter-spacing: 1px;
+}
+.del-acc-input{
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.40);
+  border: 1px solid rgba(255,150,120,0.40);
+  color: #fff; font-size: 14px; font-weight: 700; letter-spacing: 1px;
+  outline: none; text-align: center; text-transform: uppercase;
+  transition: all .2s ease;
+}
+.del-acc-input:focus{
+  border-color: rgba(255,150,120,0.85);
+  box-shadow: 0 0 0 3px rgba(224,74,42,0.18);
+}
+.confirm-btn-danger{
+  background: rgba(224,74,42,0.30) !important;
+  border: 1px solid rgba(224,74,42,0.65) !important;
+  color: #fff !important;
+}
+.confirm-btn-danger:disabled{
+  background: rgba(224,74,42,0.10) !important;
+  border-color: rgba(224,74,42,0.20) !important;
+  color: rgba(255,174,155,0.45) !important;
+  cursor: not-allowed;
+}
+.confirm-btn-danger:not(:disabled):hover{
+  background: rgba(224,74,42,0.50) !important;
+  box-shadow: 0 8px 22px rgba(224,74,42,0.45);
+}
+
 /* Linked providers */
 .pc-providers{
   display: flex; flex-direction: column; gap: 8px;
@@ -6044,70 +6154,51 @@ svg.ic-svg-login {
   </div>
 </div>
 
-<!-- Player level / XP -->
-<div class="profile-card profile-level">
-  <div class="pc-head">
-    <span class="pc-icon">⚡</span>
-    <div class="pc-text">
-      <div class="pc-title"><span data-i18n="pm-lvl-title">Игрок</span> · <span class="pc-rank" id="pmRank" data-i18n="pm-lvl-rank-rookie">Новичок</span></div>
-      <div class="pc-sub"><span data-i18n="pm-lvl-level">Уровень</span> <span id="pmLevel">1</span></div>
-    </div>
-    <span class="pc-tag" data-i18n="pm-tag-dev">В разработке</span>
-  </div>
-  <div class="pc-xpbar"><div class="pc-xpfill" id="pmXpFill" style="width:5%"></div></div>
-  <div class="pc-xptext"><span id="pmXpCur">5</span> / <span id="pmXpMax">100</span> XP</div>
-  <div class="pc-stats">
-    <div class="pc-stat"><div class="pc-statnum" id="pmGames">0</div><div class="pc-statlbl" data-i18n="pm-stat-games">Игр</div></div>
-    <div class="pc-stat"><div class="pc-statnum" id="pmWins">0</div><div class="pc-statlbl" data-i18n="pm-stat-wins">Побед</div></div>
-    <div class="pc-stat"><div class="pc-statnum" id="pmDays">—</div><div class="pc-statlbl" data-i18n="pm-stat-days">Дней</div></div>
-  </div>
-</div>
-
-<!-- Achievements -->
+<!-- Account settings -->
 <div class="profile-card">
   <div class="pc-head">
-    <span class="pc-icon">🏆</span>
+    <span class="pc-icon">⚙️</span>
     <div class="pc-text">
-      <div class="pc-title" data-i18n="pm-ach-title">Достижения</div>
-      <div class="pc-sub"><span id="pmAchUnlocked">1</span> / <span id="pmAchTotal">6</span> <span data-i18n="pm-ach-unlocked">разблокировано</span></div>
-    </div>
-    <span class="pc-tag pc-tag-early" data-i18n="pm-tag-early">Ранний доступ</span>
-  </div>
-  <div class="pc-achievements" id="pmAchievements"></div>
-</div>
-
-<!-- Daily reward -->
-<div class="profile-card profile-daily">
-  <div class="pc-head">
-    <span class="pc-icon">🎁</span>
-    <div class="pc-text">
-      <div class="pc-title" data-i18n="pm-daily-title">Ежедневный бонус</div>
-      <div class="pc-sub" id="pmDailyText" data-i18n="pm-daily-sub">Заходи каждый день — копи кристаллы EVA. На релизе обменяешь на скины и фишки.</div>
+      <div class="pc-title" data-i18n="pm-set-title">Настройки аккаунта</div>
+      <div class="pc-sub" data-i18n="pm-set-sub">Изменить личные данные и сессии</div>
     </div>
   </div>
-  <div class="pc-streak" id="pmStreak">
-    <span class="pc-streak-day is-on" title="Пн">1</span>
-    <span class="pc-streak-day" title="Вт">2</span>
-    <span class="pc-streak-day" title="Ср">3</span>
-    <span class="pc-streak-day" title="Чт">4</span>
-    <span class="pc-streak-day" title="Пт">5</span>
-    <span class="pc-streak-day pc-streak-bonus" title="Сб-Вс">★</span>
-  </div>
-  <div class="pc-streak-text"><span data-i18n="pm-daily-streak">Серия:</span> <b id="pmStreakNum">1</b> <span data-i18n="pm-daily-day">день</span></div>
-</div>
-
-<!-- Referral -->
-<div class="profile-card">
-  <div class="pc-head">
-    <span class="pc-icon">🎟️</span>
-    <div class="pc-text">
-      <div class="pc-title" data-i18n="pm-ref-title">Реферальный код</div>
-      <div class="pc-sub" data-i18n="pm-ref-sub">Поделись с другом — оба получите бонус на старте.</div>
+  <div class="pc-settings">
+    <!-- Nickname -->
+    <div class="pc-setting">
+      <label class="pc-setting-label" data-i18n="pm-set-nick">Никнейм</label>
+      <div class="pc-setting-row">
+        <input class="pc-setting-input" id="pmEditNick" type="text" maxlength="20" autocomplete="off" />
+        <button type="button" class="pc-setting-btn" id="pmEditNickBtn" data-i18n="pm-set-save">Сохранить</button>
+      </div>
+      <div class="pc-setting-hint" id="pmEditNickHint"></div>
     </div>
-  </div>
-  <div class="pc-refbox">
-    <span class="pc-refcode" id="pmRefCode">EV-•••••</span>
-    <button type="button" class="pc-refcopy" id="pmRefCopy" data-i18n="pm-ref-copy">Копировать</button>
+    <!-- Email -->
+    <div class="pc-setting">
+      <label class="pc-setting-label" data-i18n="pm-set-email">Email</label>
+      <div class="pc-setting-row">
+        <input class="pc-setting-input" id="pmEditEmail" type="email" autocomplete="off" />
+        <button type="button" class="pc-setting-btn" id="pmEditEmailBtn" data-i18n="pm-set-save">Сохранить</button>
+      </div>
+      <div class="pc-setting-hint" id="pmEditEmailHint" data-i18n="pm-set-email-hint">На новый email придёт письмо для подтверждения</div>
+    </div>
+    <!-- Password -->
+    <div class="pc-setting">
+      <label class="pc-setting-label" data-i18n="pm-set-pass">Пароль</label>
+      <div class="pc-setting-row">
+        <input class="pc-setting-input" id="pmEditPass" type="password" autocomplete="new-password" placeholder="••••••••" />
+        <button type="button" class="pc-setting-btn" id="pmEditPassBtn" data-i18n="pm-set-pass-change">Сменить</button>
+      </div>
+      <div class="pc-setting-hint" id="pmEditPassHint" data-i18n="pm-set-pass-hint">Минимум 8 символов</div>
+    </div>
+    <!-- Sign out everywhere -->
+    <div class="pc-setting">
+      <label class="pc-setting-label" data-i18n="pm-set-sessions">Активные сессии</label>
+      <div class="pc-setting-row">
+        <span class="pc-setting-text" data-i18n="pm-set-sessions-desc">Закрыть все сессии на других устройствах</span>
+        <button type="button" class="pc-setting-btn" id="pmSignoutAllBtn" data-i18n="pm-set-signout-all">Выйти везде</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -6121,6 +6212,18 @@ svg.ic-svg-login {
     </div>
   </div>
   <div class="pc-providers" id="pmProviders"></div>
+</div>
+
+<!-- DANGER ZONE -->
+<div class="profile-card profile-danger">
+  <div class="pc-head">
+    <span class="pc-icon pc-icon-danger">⚠️</span>
+    <div class="pc-text">
+      <div class="pc-title" data-i18n="pm-danger-title">Опасная зона</div>
+      <div class="pc-sub" data-i18n="pm-danger-sub">Это действие нельзя отменить. Все данные аккаунта будут удалены.</div>
+    </div>
+  </div>
+  <button type="button" class="pc-danger-btn" id="pmDeleteBtn" data-i18n="pm-danger-delete">Удалить аккаунт</button>
 </div>
 
 <!-- Security / 2FA card -->
@@ -6231,6 +6334,25 @@ svg.ic-svg-login {
     <div class="confirm-btns">
       <button class="confirm-btn-cancel" onclick="closeConfirmModal()" data-i18n="confirm-cancel">Отмена</button>
       <button class="confirm-btn-yes" onclick="doLogout()" data-i18n="confirm-logout-yes">Да, выйти</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MODAL: УДАЛЕНИЕ АККАУНТА ─── -->
+<div class="confirm-modal-overlay" id="deleteAccountOverlay" onclick="closeDeleteAccountOnBg(event)">
+  <div class="confirm-modal-box confirm-modal-danger">
+    <div class="confirm-icon-wrap confirm-icon-danger">
+      <svg viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+    </div>
+    <div class="confirm-title" data-i18n="del-acc-title">Удалить аккаунт?</div>
+    <div class="confirm-text" data-i18n="del-acc-text">Это действие необратимо. Все данные, отзывы и привязки будут удалены навсегда. Чтобы подтвердить — введи слово ниже.</div>
+    <div class="del-acc-input-wrap">
+      <div class="del-acc-prompt"><span data-i18n="del-acc-type">Напиши</span> <code id="delAccWord">УДАЛИТЬ</code> <span data-i18n="del-acc-toconf">для подтверждения:</span></div>
+      <input class="del-acc-input" id="delAccConfirmInp" type="text" autocomplete="off" />
+    </div>
+    <div class="confirm-btns">
+      <button class="confirm-btn-cancel" onclick="closeDeleteAccountModal()" data-i18n="confirm-cancel">Отмена</button>
+      <button class="confirm-btn-yes confirm-btn-danger" id="delAccConfirmBtn" disabled data-i18n="del-acc-yes">Удалить навсегда</button>
     </div>
   </div>
 </div>
@@ -7289,42 +7411,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Язык',
                 'profile-field-joined': '📅 В проекте с',
-                'pm-tag-dev': 'В разработке',
-                'pm-tag-early': 'Ранний доступ',
-                'pm-lvl-title': 'Игрок',
-                'pm-lvl-level': 'Уровень',
-                'pm-lvl-rank-rookie': 'Новичок',
-                'pm-lvl-rank-fighter': 'Боец',
-                'pm-lvl-rank-pro': 'Профи',
-                'pm-lvl-rank-master': 'Мастер',
-                'pm-lvl-rank-legend': 'Легенда',
-                'pm-stat-games': 'Игр',
-                'pm-stat-wins': 'Побед',
-                'pm-stat-days': 'Дней',
-                'pm-ach-title': 'Достижения',
-                'pm-ach-unlocked': 'разблокировано',
-                'pm-ach-firststeps-name': 'Первые шаги',
-                'pm-ach-firststeps-desc': 'Создан аккаунт',
-                'pm-ach-pioneer-name': 'Пионер',
-                'pm-ach-pioneer-desc': 'Регистрация до релиза',
-                'pm-ach-reviewer-name': 'Критик',
-                'pm-ach-reviewer-desc': 'Оставил отзыв',
-                'pm-ach-firstblood-name': 'Первая кровь',
-                'pm-ach-firstblood-desc': 'Выиграй матч',
-                'pm-ach-streak7-name': 'Огонь!',
-                'pm-ach-streak7-desc': 'Серия 7 дней',
-                'pm-ach-collector-name': 'Коллекционер',
-                'pm-ach-collector-desc': 'Собери 10 скинов',
-                'pm-daily-title': 'Ежедневный бонус',
-                'pm-daily-sub': 'Заходи каждый день — копи кристаллы EVA. На релизе обменяешь на скины и фишки.',
-                'pm-daily-streak': 'Серия:',
-                'pm-daily-day': 'день',
-                'pm-ref-title': 'Реферальный код',
-                'pm-ref-sub': 'Поделись с другом — оба получите бонус на старте.',
-                'pm-ref-copy': 'Копировать',
-                'pm-ref-copied': 'Скопировано!',
                 'pm-linked-title': 'Способы входа',
                 'pm-linked-sub': 'К аккаунту привязаны:',
+                'pm-set-title': 'Настройки аккаунта',
+                'pm-set-sub': 'Изменить личные данные и сессии',
+                'pm-set-nick': 'Никнейм',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Пароль',
+                'pm-set-sessions': 'Активные сессии',
+                'pm-set-sessions-desc': 'Закрыть все сессии на других устройствах',
+                'pm-set-save': 'Сохранить',
+                'pm-set-saved': 'Сохранено!',
+                'pm-set-pass-change': 'Сменить',
+                'pm-set-pass-hint': 'Минимум 8 символов',
+                'pm-set-pass-short': 'Минимум 8 символов',
+                'pm-set-pass-ok': 'Пароль обновлён!',
+                'pm-set-email-hint': 'На новый email придёт письмо для подтверждения',
+                'pm-set-email-bad': 'Неверный формат email',
+                'pm-set-email-same': 'Этот email уже привязан',
+                'pm-set-email-sent': 'Письмо отправлено. Подтверди в почте — и email применится.',
+                'pm-set-nick-bad': '3–20 символов: буквы, цифры, _',
+                'pm-set-signout-all': 'Выйти везде',
+                'pm-set-signing-out': 'Выходим...',
+                'pm-set-err': 'Ошибка: ',
+                'pm-toast-nick-ok': 'Ник обновлён',
+                'pm-toast-email-sent': 'Письмо отправлено',
+                'pm-toast-pass-ok': 'Пароль обновлён',
+                'pm-toast-signedout-all': 'Все сессии закрыты. Войди снова.',
+                'pm-danger-title': 'Опасная зона',
+                'pm-danger-sub': 'Это действие нельзя отменить. Все данные аккаунта будут удалены.',
+                'pm-danger-delete': 'Удалить аккаунт',
+                'del-acc-title': 'Удалить аккаунт?',
+                'del-acc-text': 'Это действие необратимо. Все данные, отзывы и привязки будут удалены навсегда. Чтобы подтвердить — введи слово ниже.',
+                'del-acc-type': 'Напиши',
+                'del-acc-toconf': 'для подтверждения:',
+                'del-acc-yes': 'Удалить навсегда',
+                'del-acc-deleting': 'Удаляем...',
+                'del-acc-toast-ok': 'Запрос на удаление отправлен. Аккаунт будет удалён в течение 7 дней. Чтобы отменить — войди снова.',
+                'del-acc-toast-err': 'Не удалось удалить: ',
                 'pm-prov-email': 'Email + пароль',
                 'pm-prov-on': 'Активно',
                 'pm-prov-off': 'Не привязан',
@@ -7471,42 +7595,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Language',
                 'profile-field-joined': '📅 Joined',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -7653,42 +7779,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Мова',
                 'profile-field-joined': '📅 У проекті з',
-                'pm-tag-dev': 'У розробці',
-                'pm-tag-early': 'Ранній доступ',
-                'pm-lvl-title': 'Гравець',
-                'pm-lvl-level': 'Рівень',
-                'pm-lvl-rank-rookie': 'Новачок',
-                'pm-lvl-rank-fighter': 'Боєць',
-                'pm-lvl-rank-pro': 'Профі',
-                'pm-lvl-rank-master': 'Майстер',
-                'pm-lvl-rank-legend': 'Легенда',
-                'pm-stat-games': 'Ігор',
-                'pm-stat-wins': 'Перемог',
-                'pm-stat-days': 'Днів',
-                'pm-ach-title': 'Досягнення',
-                'pm-ach-unlocked': 'розблоковано',
-                'pm-ach-firststeps-name': 'Перші кроки',
-                'pm-ach-firststeps-desc': 'Акаунт створено',
-                'pm-ach-pioneer-name': 'Піонер',
-                'pm-ach-pioneer-desc': 'Реєстрація до релізу',
-                'pm-ach-reviewer-name': 'Критик',
-                'pm-ach-reviewer-desc': 'Залишив відгук',
-                'pm-ach-firstblood-name': 'Перша кров',
-                'pm-ach-firstblood-desc': 'Виграй матч',
-                'pm-ach-streak7-name': 'Полум’я!',
-                'pm-ach-streak7-desc': 'Серія 7 днів',
-                'pm-ach-collector-name': 'Колекціонер',
-                'pm-ach-collector-desc': 'Збери 10 скінів',
-                'pm-daily-title': 'Щоденний бонус',
-                'pm-daily-sub': 'Заходь щодня — збирай кристали EVA. На релізі обміняєш на скіни.',
-                'pm-daily-streak': 'Серія:',
-                'pm-daily-day': 'день',
-                'pm-ref-title': 'Реферальний код',
-                'pm-ref-sub': 'Поділись з другом — обидва отримаєте бонус на старті.',
-                'pm-ref-copy': 'Копіювати',
-                'pm-ref-copied': 'Скопійовано!',
                 'pm-linked-title': 'Способи входу',
                 'pm-linked-sub': 'До акаунту прив’язані:',
+                'pm-set-title': 'Налаштування акаунта',
+                'pm-set-sub': 'Змінити особисті дані та сесії',
+                'pm-set-nick': 'Нік',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Пароль',
+                'pm-set-sessions': 'Активні сесії',
+                'pm-set-sessions-desc': 'Закрити всі сесії на інших пристроях',
+                'pm-set-save': 'Зберегти',
+                'pm-set-saved': 'Збережено!',
+                'pm-set-pass-change': 'Змінити',
+                'pm-set-pass-hint': 'Мінімум 8 символів',
+                'pm-set-pass-short': 'Мінімум 8 символів',
+                'pm-set-pass-ok': 'Пароль оновлено!',
+                'pm-set-email-hint': 'На новий email прийде лист для підтвердження',
+                'pm-set-email-bad': 'Невірний формат email',
+                'pm-set-email-same': 'Цей email вже прив’язаний',
+                'pm-set-email-sent': 'Лист надіслано. Підтверди на пошті — і email застосується.',
+                'pm-set-nick-bad': '3–20 символів: літери, цифри, _',
+                'pm-set-signout-all': 'Вийти всюди',
+                'pm-set-signing-out': 'Виходимо...',
+                'pm-set-err': 'Помилка: ',
+                'pm-toast-nick-ok': 'Нік оновлено',
+                'pm-toast-email-sent': 'Лист надіслано',
+                'pm-toast-pass-ok': 'Пароль оновлено',
+                'pm-toast-signedout-all': 'Усі сесії закрито. Увійди знову.',
+                'pm-danger-title': 'Небезпечна зона',
+                'pm-danger-sub': 'Цю дію не можна скасувати. Усі дані акаунта будуть видалені.',
+                'pm-danger-delete': 'Видалити акаунт',
+                'del-acc-title': 'Видалити акаунт?',
+                'del-acc-text': 'Ця дія необоротна. Усі дані, відгуки та прив’язки будуть видалені. Введи слово нижче для підтвердження.',
+                'del-acc-type': 'Введи',
+                'del-acc-toconf': 'для підтвердження:',
+                'del-acc-yes': 'Видалити назавжди',
+                'del-acc-deleting': 'Видаляємо...',
+                'del-acc-toast-ok': 'Запит на видалення надіслано. Акаунт буде видалено протягом 7 днів. Щоб скасувати — увійди знову.',
+                'del-acc-toast-err': 'Не вдалось видалити: ',
                 'pm-prov-email': 'Email + пароль',
                 'pm-prov-on': 'Активно',
                 'pm-prov-off': 'Не прив’язаний',
@@ -7835,42 +7963,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 E-Mail',
                 'profile-field-language': '🌍 Sprache',
                 'profile-field-joined': '📅 Dabei seit',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -8017,42 +8147,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Idioma',
                 'profile-field-joined': '📅 Miembro desde',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -8199,42 +8331,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Langue',
                 'profile-field-joined': '📅 Membre depuis',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -8381,42 +8515,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Lingua',
                 'profile-field-joined': '📅 Membro dal',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -8563,42 +8699,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Idioma',
                 'profile-field-joined': '📅 Membro desde',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -8745,42 +8883,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Język',
                 'profile-field-joined': '📅 W projekcie od',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -8927,42 +9067,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 E-posta',
                 'profile-field-language': '🌍 Dil',
                 'profile-field-joined': '📅 Üyelik tarihi',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -9109,42 +9251,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 E-mail',
                 'profile-field-language': '🌍 Taal',
                 'profile-field-joined': '📅 Lid sinds',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -9291,42 +9435,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 E-post',
                 'profile-field-language': '🌍 Språk',
                 'profile-field-joined': '📅 Medlem sedan',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -9473,42 +9619,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 E-post',
                 'profile-field-language': '🌍 Språk',
                 'profile-field-joined': '📅 Medlem siden',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -9655,42 +9803,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Sähköposti',
                 'profile-field-language': '🌍 Kieli',
                 'profile-field-joined': '📅 Jäsenyys alkoi',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -9837,42 +9987,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 E-mail',
                 'profile-field-language': '🌍 Sprog',
                 'profile-field-joined': '📅 Medlem siden',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -10019,42 +10171,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 E-mail',
                 'profile-field-language': '🌍 Jazyk',
                 'profile-field-joined': '📅 V projektu od',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -10201,42 +10355,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Limbă',
                 'profile-field-joined': '📅 Membru din',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -10383,42 +10539,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 E-mail',
                 'profile-field-language': '🌍 Nyelv',
                 'profile-field-joined': '📅 Tag ettől',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -10565,42 +10723,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Γλώσσα',
                 'profile-field-joined': '📅 Μέλος από',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -10747,42 +10907,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 メール',
                 'profile-field-language': '🌍 言語',
                 'profile-field-joined': '📅 参加日',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -10929,42 +11091,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 邮箱',
                 'profile-field-language': '🌍 语言',
                 'profile-field-joined': '📅 加入于',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -11111,42 +11275,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 이메일',
                 'profile-field-language': '🌍 언어',
                 'profile-field-joined': '📅 가입일',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -11293,42 +11459,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 البريد الإلكتروني',
                 'profile-field-language': '🌍 اللغة',
                 'profile-field-joined': '📅 عضو منذ',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -11475,42 +11643,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 ईमेल',
                 'profile-field-language': '🌍 भाषा',
                 'profile-field-joined': '📅 सदस्य बने',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -11657,42 +11827,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 อีเมล',
                 'profile-field-language': '🌍 ภาษา',
                 'profile-field-joined': '📅 เข้าร่วมเมื่อ',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -11839,42 +12011,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Ngôn ngữ',
                 'profile-field-joined': '📅 Thành viên từ',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -12021,42 +12195,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 Email',
                 'profile-field-language': '🌍 Bahasa',
                 'profile-field-joined': '📅 Bergabung sejak',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -12203,42 +12379,44 @@ svg.ic-svg-login {
                 'profile-field-email': '📧 E-mel',
                 'profile-field-language': '🌍 Bahasa',
                 'profile-field-joined': '📅 Ahli sejak',
-                'pm-tag-dev': 'In development',
-                'pm-tag-early': 'Early access',
-                'pm-lvl-title': 'Player',
-                'pm-lvl-level': 'Level',
-                'pm-lvl-rank-rookie': 'Rookie',
-                'pm-lvl-rank-fighter': 'Fighter',
-                'pm-lvl-rank-pro': 'Pro',
-                'pm-lvl-rank-master': 'Master',
-                'pm-lvl-rank-legend': 'Legend',
-                'pm-stat-games': 'Games',
-                'pm-stat-wins': 'Wins',
-                'pm-stat-days': 'Days',
-                'pm-ach-title': 'Achievements',
-                'pm-ach-unlocked': 'unlocked',
-                'pm-ach-firststeps-name': 'First steps',
-                'pm-ach-firststeps-desc': 'Account created',
-                'pm-ach-pioneer-name': 'Pioneer',
-                'pm-ach-pioneer-desc': 'Joined before release',
-                'pm-ach-reviewer-name': 'Critic',
-                'pm-ach-reviewer-desc': 'Left a review',
-                'pm-ach-firstblood-name': 'First blood',
-                'pm-ach-firstblood-desc': 'Win a match',
-                'pm-ach-streak7-name': 'On fire!',
-                'pm-ach-streak7-desc': '7-day login streak',
-                'pm-ach-collector-name': 'Collector',
-                'pm-ach-collector-desc': 'Collect 10 skins',
-                'pm-daily-title': 'Daily reward',
-                'pm-daily-sub': 'Drop by daily to stack EVA crystals. Trade them for skins & perks at release.',
-                'pm-daily-streak': 'Streak:',
-                'pm-daily-day': 'day',
-                'pm-ref-title': 'Referral code',
-                'pm-ref-sub': 'Share with a friend — you both get a launch bonus.',
-                'pm-ref-copy': 'Copy',
-                'pm-ref-copied': 'Copied!',
                 'pm-linked-title': 'Sign-in methods',
                 'pm-linked-sub': 'Linked to your account:',
+                'pm-set-title': 'Account settings',
+                'pm-set-sub': 'Edit personal info and sessions',
+                'pm-set-nick': 'Nickname',
+                'pm-set-email': 'Email',
+                'pm-set-pass': 'Password',
+                'pm-set-sessions': 'Active sessions',
+                'pm-set-sessions-desc': 'Sign out from all other devices',
+                'pm-set-save': 'Save',
+                'pm-set-saved': 'Saved!',
+                'pm-set-pass-change': 'Change',
+                'pm-set-pass-hint': 'Minimum 8 characters',
+                'pm-set-pass-short': 'Minimum 8 characters',
+                'pm-set-pass-ok': 'Password updated!',
+                'pm-set-email-hint': 'A confirmation email will be sent to the new address',
+                'pm-set-email-bad': 'Invalid email format',
+                'pm-set-email-same': 'This email is already linked',
+                'pm-set-email-sent': 'Email sent. Confirm via the link to apply.',
+                'pm-set-nick-bad': '3–20 chars: letters, digits, underscores',
+                'pm-set-signout-all': 'Sign out everywhere',
+                'pm-set-signing-out': 'Signing out...',
+                'pm-set-err': 'Error: ',
+                'pm-toast-nick-ok': 'Nickname updated',
+                'pm-toast-email-sent': 'Confirmation email sent',
+                'pm-toast-pass-ok': 'Password updated',
+                'pm-toast-signedout-all': 'All sessions closed. Sign in again.',
+                'pm-danger-title': 'Danger zone',
+                'pm-danger-sub': 'This action cannot be undone. All account data will be deleted.',
+                'pm-danger-delete': 'Delete account',
+                'del-acc-title': 'Delete account?',
+                'del-acc-text': 'This action is permanent. All your data, reviews and links will be erased. Type the word below to confirm.',
+                'del-acc-type': 'Type',
+                'del-acc-toconf': 'to confirm:',
+                'del-acc-yes': 'Delete forever',
+                'del-acc-deleting': 'Deleting...',
+                'del-acc-toast-ok': 'Deletion requested. Account will be removed within 7 days. Sign in again to cancel.',
+                'del-acc-toast-err': 'Could not delete: ',
                 'pm-prov-email': 'Email + password',
                 'pm-prov-on': 'Active',
                 'pm-prov-off': 'Not linked',
@@ -13709,49 +13887,7 @@ function openProfileModal() {
   try { populateProfileExtras(); } catch(_) {}
 }
 
-// ---- Игровые карточки в профиле (level / achievements / daily / ref / linked) ----
-function _ev3HashStr(s) {
-  // Простой детерминистский 32-bit хеш (FNV-ish) — для генерации XP / реф-кодов
-  let h = 2166136261 >>> 0;
-  for (let i = 0; i < s.length; i++) {
-    h ^= s.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return h >>> 0;
-}
-function _ev3DaysSince(iso) {
-  if (!iso) return 0;
-  try {
-    const d = new Date(iso).getTime();
-    if (!d) return 0;
-    return Math.max(0, Math.floor((Date.now() - d) / (1000*60*60*24)));
-  } catch { return 0; }
-}
-function _ev3RefCode(uid) {
-  if (!uid) return 'EV-' + '•'.repeat(6);
-  // Берём детерминистические символы из uuid
-  const clean = String(uid).replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
-  const code = (clean.slice(0, 3) + clean.slice(-3));
-  return 'EV-' + (code || 'PLAYER');
-}
-function _ev3RankByLevel(lvl) {
-  // Возвращает i18n-ключ ранга
-  if (lvl >= 30) return 'pm-lvl-rank-legend';
-  if (lvl >= 15) return 'pm-lvl-rank-master';
-  if (lvl >= 7)  return 'pm-lvl-rank-pro';
-  if (lvl >= 3)  return 'pm-lvl-rank-fighter';
-  return 'pm-lvl-rank-rookie';
-}
-function _ev3RankFallback(key) {
-  return ({
-    'pm-lvl-rank-rookie':  'Новичок',
-    'pm-lvl-rank-fighter': 'Боец',
-    'pm-lvl-rank-pro':     'Профи',
-    'pm-lvl-rank-master':  'Мастер',
-    'pm-lvl-rank-legend':  'Легенда'
-  })[key] || 'Новичок';
-}
-
+// ---- Реальные функции аккаунта ----
 function _ev3ProviderIcon(name) {
   const n = String(name||'').toLowerCase();
   if (n === 'google') {
@@ -13771,112 +13907,153 @@ function _ev3ProviderLabel(name) {
   return n ? (n[0].toUpperCase() + n.slice(1)) : '—';
 }
 
+// Низкоуровневый PUT /auth/v1/user — нормализованная обёртка
+async function _ev3UpdateUser(body) {
+  const sess = (typeof ev3Session !== 'undefined' && ev3Session) || null;
+  if (!sess || !sess.access_token) throw new Error('not_authenticated');
+  const r = await fetch(SUPABASE_URL + '/auth/v1/user', {
+    method: 'PUT',
+    headers: {
+      'apikey': SUPABASE_ANON,
+      'Authorization': 'Bearer ' + sess.access_token,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  });
+  let data = null;
+  try { data = await r.json(); } catch (_) {}
+  if (!r.ok) {
+    const msg = (data && (data.msg || data.message || data.error_description || data.error)) || ('http_' + r.status);
+    const err = new Error(msg); err.status = r.status; err.data = data; throw err;
+  }
+  return data;
+}
+
+function _ev3SetHint(id, text, kind) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = text || '';
+  el.classList.remove('is-ok', 'is-err');
+  if (kind === 'ok')  el.classList.add('is-ok');
+  if (kind === 'err') el.classList.add('is-err');
+}
+
 function populateProfileExtras() {
   const u = ev3User || {};
-  // Days since joined
-  const days = _ev3DaysSince(u.created_at);
-  // Псевдо-XP, чтобы хоть что-то «жило» в карточке (детерминистический по uid + дням)
-  const seed = _ev3HashStr((u.id || u.email || 'guest') + ':' + days);
-  const xpPool = (seed % 60) + Math.min(40, days * 2); // 0..100
-  const level = 1 + Math.floor(xpPool / 100); // пока всегда 1, готов к будущему
-  const xpCur = xpPool % 100;
-  const xpMax = 100;
-  const rankKey = _ev3RankByLevel(level);
-  // Заполняем DOM
-  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-  set('pmLevel', level);
-  set('pmXpCur', xpCur);
-  set('pmXpMax', xpMax);
-  set('pmDays', days);
-  // Ранг (берём через tt с фолбеком)
-  const rankEl = document.getElementById('pmRank');
-  if (rankEl) {
-    rankEl.setAttribute('data-i18n', rankKey);
-    rankEl.textContent = tt(rankKey, _ev3RankFallback(rankKey));
-  }
-  const fill = document.getElementById('pmXpFill');
-  if (fill) fill.style.width = Math.max(3, xpCur) + '%';
 
-  // Achievements
-  const ACH = [
-    { id: 'first-steps', ico: '🌱', nameKey: 'pm-ach-firststeps-name', descKey: 'pm-ach-firststeps-desc',
-      nameFb: 'Первые шаги', descFb: 'Создан аккаунт', unlocked: !!u.id },
-    { id: 'pioneer',  ico: '🚀', nameKey: 'pm-ach-pioneer-name', descKey: 'pm-ach-pioneer-desc',
-      nameFb: 'Пионер', descFb: 'Зарегистрировался до релиза', unlocked: !!u.id },
-    { id: 'reviewer', ico: '✍️', nameKey: 'pm-ach-reviewer-name', descKey: 'pm-ach-reviewer-desc',
-      nameFb: 'Критик', descFb: 'Оставил отзыв о проекте', unlocked: false /* динамика ниже */ },
-    { id: 'first-blood', ico: '🎯', nameKey: 'pm-ach-firstblood-name', descKey: 'pm-ach-firstblood-desc',
-      nameFb: 'Первая кровь', descFb: 'Выиграй первый матч', unlocked: false },
-    { id: 'streak-7', ico: '🔥', nameKey: 'pm-ach-streak7-name', descKey: 'pm-ach-streak7-desc',
-      nameFb: 'Огонь!', descFb: 'Серия из 7 дней входа', unlocked: false },
-    { id: 'collector', ico: '💎', nameKey: 'pm-ach-collector-name', descKey: 'pm-ach-collector-desc',
-      nameFb: 'Коллекционер', descFb: 'Собери 10 скинов', unlocked: false }
-  ];
-  // Проверим, оставил ли юзер отзыв — асинхронно, потом обновим карточку
-  const achWrap = document.getElementById('pmAchievements');
-  const renderAch = () => {
-    if (!achWrap) return;
-    achWrap.innerHTML = ACH.map(a =>
-      '<div class="pc-ach ' + (a.unlocked ? 'is-unlocked' : 'is-locked') + '" title="' + a.nameFb + '">'
-      + '<div class="pc-ach-ico">' + a.ico + '</div>'
-      + '<div class="pc-ach-name" data-i18n="' + a.nameKey + '">' + tt(a.nameKey, a.nameFb) + '</div>'
-      + '<div class="pc-ach-desc" data-i18n="' + a.descKey + '">' + tt(a.descKey, a.descFb) + '</div>'
-      + '</div>'
-    ).join('');
-    const unlocked = ACH.filter(a => a.unlocked).length;
-    set('pmAchUnlocked', unlocked);
-    set('pmAchTotal', ACH.length);
-  };
-  renderAch();
-  // Async проверка отзыва
-  if (u.id && ev3Session && ev3Session.access_token) {
-    fetch(SUPABASE_URL + '/rest/v1/feedback?select=id&user_id=eq.' + encodeURIComponent(u.id) + '&limit=1', {
-      headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + ev3Session.access_token }
-    }).then(r => r.ok ? r.json() : []).then(arr => {
-      if (Array.isArray(arr) && arr.length > 0) {
-        const a = ACH.find(x => x.id === 'reviewer'); if (a) a.unlocked = true; renderAch();
+  // ── Заполняем поля настроек текущими значениями ──
+  const nick = (u.user_metadata && u.user_metadata.username) || (u.email ? u.email.split('@')[0] : '') || '';
+  const nickInp = document.getElementById('pmEditNick');
+  if (nickInp && document.activeElement !== nickInp) nickInp.value = nick;
+  const emailInp = document.getElementById('pmEditEmail');
+  if (emailInp && document.activeElement !== emailInp) emailInp.value = u.email || '';
+  const passInp = document.getElementById('pmEditPass');
+  if (passInp) passInp.value = '';
+  _ev3SetHint('pmEditNickHint', '', '');
+  _ev3SetHint('pmEditEmailHint', tt('pm-set-email-hint', 'На новый email придёт письмо для подтверждения'), '');
+  _ev3SetHint('pmEditPassHint', tt('pm-set-pass-hint', 'Минимум 8 символов'), '');
+
+  // Bind handlers (только один раз)
+  const nickBtn = document.getElementById('pmEditNickBtn');
+  if (nickBtn && !nickBtn._ev3Bound) {
+    nickBtn._ev3Bound = true;
+    nickBtn.addEventListener('click', async () => {
+      const v = (nickInp && nickInp.value || '').trim();
+      if (!/^[a-zA-Zа-яёА-ЯЁ0-9_]{3,20}$/.test(v)) {
+        _ev3SetHint('pmEditNickHint', tt('pm-set-nick-bad', '3–20 символов: буквы, цифры, _'), 'err');
+        return;
       }
-    }).catch(()=>{});
-  }
-
-  // Daily streak — псевдо: считаем количество дней с регистрации mod 7 + 1 (0..6)
-  const streakDays = (days % 7) + 1;
-  set('pmStreakNum', streakDays);
-  const streakWrap = document.getElementById('pmStreak');
-  if (streakWrap) {
-    Array.from(streakWrap.children).forEach((ch, idx) => {
-      ch.classList.toggle('is-on', idx < streakDays);
-    });
-  }
-
-  // Реф-код
-  const refCode = _ev3RefCode(u.id);
-  set('pmRefCode', refCode);
-  const refBtn = document.getElementById('pmRefCopy');
-  if (refBtn && !refBtn._ev3Bound) {
-    refBtn._ev3Bound = true;
-    refBtn.addEventListener('click', () => {
-      const txt = (document.getElementById('pmRefCode') || {}).textContent || '';
-      const orig = refBtn.textContent;
-      const finishOk = () => {
-        refBtn.textContent = tt('pm-ref-copied', 'Скопировано!');
-        refBtn.classList.add('is-copied');
-        setTimeout(() => { refBtn.textContent = orig; refBtn.classList.remove('is-copied'); }, 1600);
-      };
+      nickBtn.disabled = true;
       try {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(txt).then(finishOk).catch(() => {
-            // fallback
-            try { const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); finishOk(); } catch(_) {}
-          });
-        } else {
-          const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); finishOk();
-        }
-      } catch (_) {}
+        const newUser = await _ev3UpdateUser({ data: { username: v } });
+        if (newUser) ev3User = newUser;
+        // освежить шапку и dropdown
+        try { showLoggedIn(); } catch(_) {}
+        _ev3SetHint('pmEditNickHint', tt('pm-set-saved', 'Сохранено!'), 'ok');
+        try { showToast(tt('pm-toast-nick-ok', 'Ник обновлён')); } catch(_) {}
+      } catch (e) {
+        _ev3SetHint('pmEditNickHint', tt('pm-set-err', 'Ошибка: ') + (e.message || ''), 'err');
+      } finally { nickBtn.disabled = false; }
     });
   }
 
-  // Связанные провайдеры
+  const emailBtn = document.getElementById('pmEditEmailBtn');
+  if (emailBtn && !emailBtn._ev3Bound) {
+    emailBtn._ev3Bound = true;
+    emailBtn.addEventListener('click', async () => {
+      const v = (emailInp && emailInp.value || '').trim().toLowerCase();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+        _ev3SetHint('pmEditEmailHint', tt('pm-set-email-bad', 'Неверный формат email'), 'err');
+        return;
+      }
+      if (v === (u.email || '').toLowerCase()) {
+        _ev3SetHint('pmEditEmailHint', tt('pm-set-email-same', 'Этот email уже привязан'), 'err');
+        return;
+      }
+      emailBtn.disabled = true;
+      try {
+        await _ev3UpdateUser({ email: v });
+        _ev3SetHint('pmEditEmailHint', tt('pm-set-email-sent', 'На новый email отправлено письмо. Подтверди — и он применится.'), 'ok');
+        try { showToast(tt('pm-toast-email-sent', 'Письмо отправлено на ' + v)); } catch(_) {}
+      } catch (e) {
+        _ev3SetHint('pmEditEmailHint', tt('pm-set-err', 'Ошибка: ') + (e.message || ''), 'err');
+      } finally { emailBtn.disabled = false; }
+    });
+  }
+
+  const passBtn = document.getElementById('pmEditPassBtn');
+  if (passBtn && !passBtn._ev3Bound) {
+    passBtn._ev3Bound = true;
+    passBtn.addEventListener('click', async () => {
+      const v = (passInp && passInp.value) || '';
+      if (v.length < 8) {
+        _ev3SetHint('pmEditPassHint', tt('pm-set-pass-short', 'Минимум 8 символов'), 'err');
+        return;
+      }
+      passBtn.disabled = true;
+      try {
+        await _ev3UpdateUser({ password: v });
+        if (passInp) passInp.value = '';
+        _ev3SetHint('pmEditPassHint', tt('pm-set-pass-ok', 'Пароль обновлён!'), 'ok');
+        try { showToast(tt('pm-toast-pass-ok', 'Пароль обновлён')); } catch(_) {}
+      } catch (e) {
+        _ev3SetHint('pmEditPassHint', tt('pm-set-err', 'Ошибка: ') + (e.message || ''), 'err');
+      } finally { passBtn.disabled = false; }
+    });
+  }
+
+  const signoutAllBtn = document.getElementById('pmSignoutAllBtn');
+  if (signoutAllBtn && !signoutAllBtn._ev3Bound) {
+    signoutAllBtn._ev3Bound = true;
+    signoutAllBtn.addEventListener('click', async () => {
+      const sess = (typeof ev3Session !== 'undefined' && ev3Session) || null;
+      if (!sess || !sess.access_token) return;
+      const orig = signoutAllBtn.textContent;
+      signoutAllBtn.disabled = true;
+      signoutAllBtn.textContent = tt('pm-set-signing-out', 'Выходим...');
+      try {
+        await fetch(SUPABASE_URL + '/auth/v1/logout?scope=global', {
+          method: 'POST',
+          headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + sess.access_token }
+        });
+        try { showToast(tt('pm-toast-signedout-all', 'Все сессии закрыты. Войди снова.')); } catch(_) {}
+        try { clearSession(); } catch(_) {}
+        try { showLoggedOut(); } catch(_) {}
+        try { closeProfileModal(); } catch(_) {}
+      } catch (_) {
+        signoutAllBtn.textContent = orig; signoutAllBtn.disabled = false;
+      }
+    });
+  }
+
+  // ── Удаление аккаунта ──
+  const delBtn = document.getElementById('pmDeleteBtn');
+  if (delBtn && !delBtn._ev3Bound) {
+    delBtn._ev3Bound = true;
+    delBtn.addEventListener('click', () => openDeleteAccountModal());
+  }
+
+  // ── Связанные провайдеры ──
   const provWrap = document.getElementById('pmProviders');
   if (provWrap) {
     let providers = [];
@@ -13885,9 +14062,7 @@ function populateProfileExtras() {
         ? u.app_metadata.providers.slice() : [];
     } catch (_) { providers = []; }
     if (providers.length === 0 && u.email) providers = ['email'];
-    // нормализуем в Set чтобы избежать дублей
     providers = Array.from(new Set(providers.map(p => String(p).toLowerCase())));
-    // выводим всегда 3 строки: email / google / discord
     const all = ['email', 'google', 'discord'];
     provWrap.innerHTML = all.map(p => {
       const isOn = providers.indexOf(p) >= 0;
@@ -13899,6 +14074,76 @@ function populateProfileExtras() {
         + '</div>'
         + '</div>';
     }).join('');
+  }
+}
+
+// ── DELETE ACCOUNT MODAL ──
+function openDeleteAccountModal() {
+  // Локализуем кодовое слово
+  const words = { ru: 'УДАЛИТЬ', uk: 'ВИДАЛИТИ', en: 'DELETE', be: 'ВЫДАЛІЦЬ' };
+  const lang = (typeof currentLang === 'string' && currentLang) || localStorage.getItem('selectedLanguage') || 'ru';
+  const word = words[lang] || words.en;
+  const wEl = document.getElementById('delAccWord');
+  if (wEl) wEl.textContent = word;
+  const inp = document.getElementById('delAccConfirmInp');
+  const btn = document.getElementById('delAccConfirmBtn');
+  if (inp) {
+    inp.value = '';
+    inp.dataset.required = word;
+    if (!inp._ev3Bound) {
+      inp._ev3Bound = true;
+      inp.addEventListener('input', () => {
+        const target = inp.dataset.required || word;
+        if (btn) btn.disabled = (inp.value.trim().toUpperCase() !== target.toUpperCase());
+      });
+    }
+  }
+  if (btn) {
+    btn.disabled = true;
+    if (!btn._ev3Bound) {
+      btn._ev3Bound = true;
+      btn.addEventListener('click', doDeleteAccount);
+    }
+  }
+  document.getElementById('deleteAccountOverlay').classList.add('show');
+  setTimeout(() => { try { inp && inp.focus(); } catch(_) {} }, 250);
+}
+function closeDeleteAccountModal() {
+  document.getElementById('deleteAccountOverlay').classList.remove('show');
+}
+function closeDeleteAccountOnBg(e) { if (e.target === e.currentTarget) closeDeleteAccountModal(); }
+
+async function doDeleteAccount() {
+  const sess = (typeof ev3Session !== 'undefined' && ev3Session) || null;
+  const u = ev3User || {};
+  if (!sess || !sess.access_token || !u.id) return;
+  const btn = document.getElementById('delAccConfirmBtn');
+  const orig = btn ? btn.textContent : '';
+  if (btn) { btn.disabled = true; btn.textContent = tt('del-acc-deleting', 'Удаляем...'); }
+  try {
+    // Помечаем аккаунт как запрошенный к удалению — реальное удаление выполняет бэк/админ.
+    // Это работает БЕЗ дополнительных таблиц и SQL: пишем флаг в user_metadata.
+    await _ev3UpdateUser({
+      data: {
+        deletion_requested: true,
+        deletion_requested_at: new Date().toISOString()
+      }
+    });
+    // Закрываем все сессии (на всех устройствах)
+    try {
+      await fetch(SUPABASE_URL + '/auth/v1/logout?scope=global', {
+        method: 'POST',
+        headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + sess.access_token }
+      });
+    } catch(_) {}
+    try { clearSession(); } catch(_) {}
+    try { showLoggedOut(); } catch(_) {}
+    try { closeDeleteAccountModal(); } catch(_) {}
+    try { closeProfileModal(); } catch(_) {}
+    try { showToast(tt('del-acc-toast-ok', 'Запрос на удаление отправлен. Аккаунт будет удалён в течение 7 дней. Чтобы отменить — войди снова.')); } catch(_) {}
+  } catch (e) {
+    if (btn) { btn.disabled = false; btn.textContent = orig; }
+    try { showToast(tt('del-acc-toast-err', 'Не удалось удалить аккаунт: ') + (e.message || '')); } catch(_) {}
   }
 }
 function closeProfileModal() { document.getElementById('profileModalOverlay').classList.remove('show'); }
