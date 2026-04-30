@@ -4928,6 +4928,11 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
 }
 .rating-submit:disabled{ opacity: 0.6; cursor: not-allowed; }
 
+/* hidden-атрибут должен побеждать display:flex */
+.rating-done[hidden],
+.rating-authcta[hidden],
+.rating-form[hidden]{ display: none !important; }
+
 /* Панель "вы уже оставили отзыв" */
 .rating-done{
   display: flex; flex-direction: column; align-items: center; gap: 10px;
