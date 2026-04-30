@@ -4746,6 +4746,16 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
   justify-content: center;
   flex-wrap: wrap;
 }
+/* Универсальный жёсткий hide */
+.is-hidden{ display: none !important; }
+/* Имя автора отзыва */
+.review-author{
+  display: block;
+  font-weight: 800; color: rgba(255,255,255,0.92);
+  letter-spacing: 0.4px;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
 .review-card{
   flex: 0 0 320px;
   padding: 22px 22px 18px;
@@ -5898,6 +5908,34 @@ svg.ic-svg-login {
     <div class="forgot-btns">
       <button class="forgot-btn-cancel" onclick="closeForgotModal()" data-i18n="forgot-cancel">Отмена</button>
       <button class="forgot-btn-send" id="forgotSendBtn" onclick="doForgotSend()" data-i18n="forgot-send">Отправить →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MODAL: НОВЫЙ ПАРОЛЬ (после ссылки из письма) ─── -->
+<div class="forgot-modal-overlay" id="resetPasswordOverlay" onclick="closeResetPasswordOnBg(event)">
+  <div class="forgot-modal-box">
+    <button class="forgot-modal-close" onclick="closeResetPasswordModal()">✕</button>
+    <div class="forgot-icon-wrap">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <div class="forgot-title" data-i18n="reset-title">Новый пароль</div>
+    <div class="forgot-desc" data-i18n="reset-desc">Придумай новый пароль для своего аккаунта (минимум 8 символов).</div>
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <div class="af-wrap">
+        <svg class="af-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <input class="af-input has-eye" type="password" id="reset-pass" placeholder="••••••••••" autocomplete="new-password" />
+        <button type="button" class="af-eye" onclick="toggleResetPass(this,'reset-pass')" aria-label="show password"><svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+      </div>
+      <div class="af-wrap">
+        <svg class="af-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <input class="af-input has-eye" type="password" id="reset-pass2" data-i18n-placeholder="reset-pass2-placeholder" placeholder="Повтори новый пароль" autocomplete="new-password" />
+        <button type="button" class="af-eye" onclick="toggleResetPass(this,'reset-pass2')" aria-label="show password"><svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+      </div>
+      <div id="reset-hint" class="af-hint" style="text-align:center; min-height:16px;"></div>
+    </div>
+    <div class="forgot-btns">
+      <button class="forgot-btn-send" id="resetSubmitBtn" onclick="doResetPassword()" data-i18n="reset-submit" style="flex:1;">Сохранить →</button>
     </div>
   </div>
 </div>
@@ -11599,12 +11637,16 @@ if (joinedEl) {
 }
   // Cookie consent banner — shown only for logged-in users who haven't chosen yet
   if (window.e3CookieBanner) window.e3CookieBanner.maybeShow();
+  // Перерисовываем форму отзыва (флаг привязан к email)
+  try { window.ev3RefreshRatingForm && window.ev3RefreshRatingForm(); } catch (_) {}
 }
 function showLoggedOut() {
   document.getElementById('btnLogin').style.display = '';
   document.getElementById('navBell').style.display = 'none';
   document.getElementById('navProfile').style.display = 'none';
   if (window.e3CookieBanner) window.e3CookieBanner.hide();
+  // Перерисовываем форму отзыва
+  try { window.ev3RefreshRatingForm && window.ev3RefreshRatingForm(); } catch (_) {}
 }
 
 // ===================================================
@@ -12201,7 +12243,7 @@ async function doForgotSend() {
   if (!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { ev3Toast(tt('auth-err-invalid-email','Неверный формат email'),'⚠️'); return; }
   const btn = document.getElementById('forgotSendBtn');
   btn.disabled=true; btn.textContent='⏳ '+tt('auth-busy-forgot','Отправка...');
-  const resp = await supaPost('/auth/v1/recover', { email });
+  const resp = await supaPost('/auth/v1/recover', { email, redirect_to: window.location.origin + window.location.pathname });
   if (resp.ok) {
     closeForgotModal();
     ev3Toast(tt('auth-ok-forgot','Письмо для сброса отправлено! Проверь почту 📧'),'📧');
@@ -12263,7 +12305,7 @@ async function doLogout() {
 // ===================================================
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
-  closeAuthModal(); closeProfileModal(); closeConfirmModal(); closeForgotModal();
+  closeAuthModal(); closeProfileModal(); closeConfirmModal(); closeForgotModal(); closeResetPasswordModal();
 });
 
 // ===================================================
@@ -12271,7 +12313,8 @@ document.addEventListener('keydown', e => {
 // ===================================================
 verifySession();
 
-    // Обработка OAuth callback (токен в URL хэше)
+    // Обработка OAuth callback / recovery (токен в URL хэше)
+let ev3RecoveryToken = null;
 (function handleOAuthCallback() {
   const hash = window.location.hash;
   if (!hash.includes('access_token')) return;
@@ -12279,7 +12322,19 @@ verifySession();
   const access_token = params.get('access_token');
   const refresh_token = params.get('refresh_token');
   const expires_at = params.get('expires_at');
+  const flowType = params.get('type'); // 'recovery' для сброса пароля
   if (!access_token) return;
+
+  // Если это сброс пароля — НЕ логиним юзера, а открываем форму "новый пароль"
+  if (flowType === 'recovery') {
+    ev3RecoveryToken = access_token;
+    // Убираем токен из URL сразу, чтобы случайный refresh не запустил ещё раз
+    history.replaceState(null, '', window.location.pathname);
+    // Показываем модалку (если auth модалка открыта — закрываем её)
+    try { closeAuthModal && closeAuthModal(); } catch (_) {}
+    setTimeout(() => openResetPasswordModal(), 60);
+    return;
+  }
 
   // Получаем данные пользователя
   fetch(SUPA_URL + '/auth/v1/user', {
@@ -12313,6 +12368,94 @@ verifySession();
   })
   .catch(() => ev3Toast(tt('auth-toast-oauth-err','Ошибка авторизации'), '❌'));
 })();
+
+// ===================================================
+// RESET PASSWORD (после клика по ссылке из письма)
+// ===================================================
+function openResetPasswordModal() {
+  const ov = document.getElementById('resetPasswordOverlay');
+  if (!ov) return;
+  ov.classList.add('show');
+  setTimeout(() => { try { document.getElementById('reset-pass').focus(); } catch (_) {} }, 250);
+}
+function closeResetPasswordModal() {
+  const ov = document.getElementById('resetPasswordOverlay');
+  if (ov) ov.classList.remove('show');
+}
+function closeResetPasswordOnBg(e) { if (e.target === e.currentTarget) closeResetPasswordModal(); }
+function toggleResetPass(btn, inputId) {
+  const inp = document.getElementById(inputId);
+  if (!inp) return;
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+async function doResetPassword() {
+  const p1 = document.getElementById('reset-pass');
+  const p2 = document.getElementById('reset-pass2');
+  const hint = document.getElementById('reset-hint');
+  const btn = document.getElementById('resetSubmitBtn');
+  const setHint = (text, kind) => {
+    if (!hint) return;
+    hint.textContent = text || '';
+    hint.classList.remove('err','ok');
+    if (kind) hint.classList.add(kind);
+  };
+  const v1 = (p1 && p1.value) || '';
+  const v2 = (p2 && p2.value) || '';
+  if (v1.length < 8) {
+    setHint(tt('reset-err-short','Пароль должен быть минимум 8 символов'), 'err');
+    return;
+  }
+  if (v1 !== v2) {
+    setHint(tt('reset-err-mismatch','Пароли не совпадают'), 'err');
+    return;
+  }
+  if (!ev3RecoveryToken) {
+    setHint(tt('reset-err-token','Ссылка устарела — запроси новую'), 'err');
+    return;
+  }
+  const origLabel = btn ? btn.textContent : '';
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ ' + tt('reset-busy','Сохраняем...'); }
+  try {
+    const r = await fetch(SUPA_URL + '/auth/v1/user', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPA_KEY,
+        'Authorization': 'Bearer ' + ev3RecoveryToken
+      },
+      body: JSON.stringify({ password: v1 })
+    });
+    let data = null; try { data = await r.json(); } catch (_) {}
+    if (!r.ok) {
+      const info = ev3AuthErrorKey({ ok: false, status: r.status, data: data || {} });
+      setHint(tt(info.key, info.fallback), 'err');
+      if (btn) { btn.disabled = false; btn.textContent = origLabel; }
+      return;
+    }
+    // Успех: гасим recovery-токен и просим войти заново
+    try {
+      await fetch(SUPA_URL + '/auth/v1/logout', {
+        method: 'POST',
+        headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + ev3RecoveryToken }
+      });
+    } catch (_) {}
+    ev3RecoveryToken = null;
+    clearSession();
+    showLoggedOut();
+    closeResetPasswordModal();
+    if (p1) p1.value = '';
+    if (p2) p2.value = '';
+    setHint('', null);
+    ev3Toast(tt('reset-toast-ok','Пароль обновлён! Войди с новым паролем 🔐'), '🔐');
+    // Открываем окно входа через короткую паузу, чтобы анимация закрытия модалки прошла
+    setTimeout(() => { try { openAuthModal('login'); } catch (_) {} }, 350);
+  } catch (e) {
+    setHint(tt('auth-err-network','Нет соединения. Проверь интернет'), 'err');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = origLabel; }
+  }
+}
 
 // =====================================================================
 // ============= E3 ULTRA UPGRADE — interactive behaviours =============
@@ -12626,7 +12769,7 @@ verifySession();
       try {
         // Only approved reviews are visible to the public. Approve via Supabase
         // Table Editor → feedback → toggle `approved` = true.
-        const res = await fetch(SUPABASE_URL + '/rest/v1/feedback?select=rating,comment,lang,created_at&approved=eq.true&order=created_at.desc&limit=30', {
+        const res = await fetch(SUPABASE_URL + '/rest/v1/feedback?select=rating,comment,lang,nickname,created_at&approved=eq.true&order=created_at.desc&limit=30', {
           headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + SUPABASE_ANON }
         });
         if (!res.ok) return; // keep empty state
@@ -12645,8 +12788,10 @@ verifySession();
           const stars = '★'.repeat(rat) + '☆'.repeat(5 - rat);
           const date = (() => { try { return new Date(r.created_at).toLocaleDateString(); } catch { return ''; } })();
           const code = (r.lang || 'anon').toUpperCase();
+          const nick = (r.nickname && String(r.nickname).trim()) || tt('ultra-review-anon','Аноним');
           return '<article class="review-card">'
             + '<div class="review-stars" aria-label="' + rat + '/5">' + stars + '</div>'
+            + '<span class="review-author">' + esc(nick) + '</span>'
             + '<p class="review-text">' + esc(r.comment) + '</p>'
             + '<div class="review-meta">' + esc(code) + (date ? ' · ' + esc(date) : '') + '</div>'
             + '</article>';
@@ -12665,16 +12810,46 @@ verifySession();
     const rDone   = document.getElementById('ratingDone');
     if (!rForm || rStars.length === 0) return;
 
-    // Если пользователь уже оставлял отзыв — прячем форму и показываем благодарность
-    const FEEDBACK_FLAG = 'ev3_feedback_submitted';
-    const showAlreadySubmitted = () => {
-      rForm.hidden = true;
-      rForm.style.display = 'none';
-      if (rDone) rDone.hidden = false;
+    // Чистим устаревший глобальный ключ (раньше флаг был общий на браузер,
+    // из-за чего «уже оставил отзыв» вылезал на чужих аккаунтах).
+    try { localStorage.removeItem('ev3_feedback_submitted'); } catch (_) {}
+
+    // Флаг «уже оставил отзыв» теперь привязан к email текущего юзера.
+    // Если юзер не залогинен — флаг не используем (форма видна).
+    const FEEDBACK_KEY_BASE = 'ev3_feedback_submitted';
+    const feedbackKey = () => {
+      try {
+        const e = (typeof ev3User !== 'undefined' && ev3User && ev3User.email) || '';
+        return e ? FEEDBACK_KEY_BASE + ':' + String(e).toLowerCase() : '';
+      } catch { return ''; }
     };
-    try {
-      if (localStorage.getItem(FEEDBACK_FLAG) === '1') showAlreadySubmitted();
-    } catch (_) {}
+    const isAlreadySubmitted = () => {
+      const k = feedbackKey();
+      if (!k) return false;
+      try { return localStorage.getItem(k) === '1'; } catch { return false; }
+    };
+    const markSubmitted = () => {
+      const k = feedbackKey();
+      if (!k) return;
+      try { localStorage.setItem(k, '1'); } catch {}
+    };
+    const refreshRatingForm = () => {
+      if (isAlreadySubmitted()) {
+        rForm.classList.add('is-hidden');
+        rForm.hidden = true;
+        if (rDone) rDone.hidden = false;
+      } else {
+        rForm.classList.remove('is-hidden');
+        rForm.hidden = false;
+        if (rDone) rDone.hidden = true;
+      }
+    };
+    // Делаем доступным извне, чтобы перерисовать после login/logout
+    window.ev3RefreshRatingForm = refreshRatingForm;
+    refreshRatingForm();
+    // Дождёмся завершения verifySession (которая может проставить ev3User)
+    setTimeout(refreshRatingForm, 600);
+    setTimeout(refreshRatingForm, 1500);
 
     let currentRating = 0;
     const paint = (n) => rStars.forEach((s, i) => s.classList.toggle('is-on', i < n));
@@ -12697,10 +12872,21 @@ verifySession();
         toast(tt('ultra-rating-err-no-stars', 'Сначала выбери количество звёзд'), '⭐');
         return;
       }
+      // Требуем логин — чтобы привязать отзыв к нику
+      const userEmail = (typeof ev3User !== 'undefined' && ev3User && ev3User.email) || '';
+      if (!userEmail) {
+        toast(tt('ultra-rating-err-login', 'Войди в аккаунт, чтобы оставить отзыв'), '🔒');
+        try { openAuthModal && openAuthModal('login'); } catch {}
+        return;
+      }
       const submit = rForm.querySelector('.rating-submit');
       if (submit) { submit.disabled = true; submit.dataset._label = submit.textContent; submit.textContent = tt('ultra-rating-sending', 'Отправляем…'); }
       const lang = (typeof currentLang === "string" && currentLang) || 'ru';
       const comment = ((rText && rText.value) || '').trim();
+      // Никнейм: username из метаданных или часть email до @
+      const nickname = (ev3User && ev3User.user_metadata && ev3User.user_metadata.username)
+        || (userEmail.split('@')[0])
+        || '';
       try {
         const res = await fetch(SUPABASE_URL + '/rest/v1/feedback', {
           method: 'POST',
@@ -12710,7 +12896,7 @@ verifySession();
             'Content-Type': 'application/json',
             'Prefer': 'return=minimal'
           },
-          body: JSON.stringify({ rating: currentRating, comment: comment || null, lang: lang })
+          body: JSON.stringify({ rating: currentRating, comment: comment || null, lang: lang, nickname: nickname || null })
         });
         if (res.status === 201 || res.status === 204) {
           toast(tt('ultra-rating-toast-ok', 'Спасибо за отзыв! 🎉'), '🎉');
@@ -12718,8 +12904,8 @@ verifySession();
           currentRating = 0;
           paint(0);
           if (rLabel) rLabel.textContent = tt('ultra-rating-hint', 'Кликни по звезде, чтобы выбрать оценку');
-          try { localStorage.setItem(FEEDBACK_FLAG, '1'); } catch (_) {}
-          showAlreadySubmitted();
+          markSubmitted();
+          refreshRatingForm();
         } else {
           toast(tt('ultra-rating-toast-err', 'Не удалось отправить. Попробуй ещё раз'), '⚠️');
         }
@@ -12825,6 +13011,15 @@ verifySession();
         'ultra-rating-title': 'Как тебе проект?',
         'ultra-rating-sub': 'Поставь оценку и поделись мыслями — это поможет сделать Evades 3 лучше.',
         'ultra-rating-hint': 'Кликни по звезде, чтобы выбрать оценку',
+        'reset-title': 'Новый пароль',
+        'reset-desc': 'Придумай новый пароль для своего аккаунта (минимум 8 символов).',
+        'reset-pass2-placeholder': 'Повтори новый пароль',
+        'reset-submit': 'Сохранить →',
+        'reset-busy': 'Сохраняем...',
+        'reset-err-short': 'Пароль должен быть минимум 8 символов',
+        'reset-err-mismatch': 'Пароли не совпадают',
+        'reset-err-token': 'Ссылка устарела — запроси новую',
+        'reset-toast-ok': 'Пароль обновлён! Войди с новым паролем 🔐',
         'ultra-rating-already-title': 'Вы уже оставили отзыв',
         'ultra-rating-already-sub': 'Спасибо! Мы получили твой отзыв. Хочешь добавить ещё мысли — напиши нам в Discord.',
         'ultra-rating-chosen': 'Твоя оценка: ',
@@ -13003,6 +13198,15 @@ verifySession();
         'ultra-rating-title': 'How do you like the project?',
         'ultra-rating-sub': 'Rate the game and share your thoughts — it helps make Evades 3 better.',
         'ultra-rating-hint': 'Click a star to pick your rating',
+        'reset-title': 'New password',
+        'reset-desc': 'Pick a new password for your account (at least 8 characters).',
+        'reset-pass2-placeholder': 'Repeat new password',
+        'reset-submit': 'Save →',
+        'reset-busy': 'Saving...',
+        'reset-err-short': 'Password must be at least 8 characters',
+        'reset-err-mismatch': 'Passwords do not match',
+        'reset-err-token': 'Link expired — request a new one',
+        'reset-toast-ok': 'Password updated! Sign in with your new password 🔐',
         'ultra-rating-already-title': 'You already left a review',
         'ultra-rating-already-sub': 'Thanks! We got your feedback. Want to add more thoughts — ping us on Discord.',
         'ultra-rating-chosen': 'Your rating: ',
@@ -13181,6 +13385,15 @@ verifySession();
         'ultra-rating-title': 'Як тобі проєкт?',
         'ultra-rating-sub': 'Постав оцінку та поділись думками — це допоможе зробити Evades 3 кращим.',
         'ultra-rating-hint': 'Натисни на зірку, щоб обрати оцінку',
+        'reset-title': 'Новий пароль',
+        'reset-desc': 'Придумай новий пароль для свого акаунта (мінімум 8 символів).',
+        'reset-pass2-placeholder': 'Повтори новий пароль',
+        'reset-submit': 'Зберегти →',
+        'reset-busy': 'Зберігаємо...',
+        'reset-err-short': 'Пароль має бути мінімум 8 символів',
+        'reset-err-mismatch': 'Паролі не збігаються',
+        'reset-err-token': 'Посилання прострочене — запроси нове',
+        'reset-toast-ok': 'Пароль оновлено! Увійди з новим паролем 🔐',
         'ultra-rating-already-title': 'Ви вже залишили відгук',
         'ultra-rating-already-sub': 'Дякуємо! Ми отримали твій відгук. Хочеш додати ще думки — напиши нам у Discord.',
         'ultra-rating-chosen': 'Твоя оцінка: ',
@@ -13344,6 +13557,15 @@ verifySession();
         'ultra-rating-title': 'Wie gefällt dir das Projekt?',
         'ultra-rating-sub': 'Bewerte das Spiel und teile deine Gedanken — so wird Evades 3 besser.',
         'ultra-rating-hint': 'Klicke auf einen Stern, um zu bewerten',
+        'reset-title': 'Neues Passwort',
+        'reset-desc': 'Wähle ein neues Passwort für dein Konto (mindestens 8 Zeichen).',
+        'reset-pass2-placeholder': 'Neues Passwort wiederholen',
+        'reset-submit': 'Speichern →',
+        'reset-busy': 'Speichern...',
+        'reset-err-short': 'Passwort muss mindestens 8 Zeichen haben',
+        'reset-err-mismatch': 'Passwörter stimmen nicht überein',
+        'reset-err-token': 'Link ist abgelaufen — fordere einen neuen an',
+        'reset-toast-ok': 'Passwort aktualisiert! Mit neuem Passwort anmelden 🔐',
         'ultra-rating-already-title': 'Du hast bereits eine Bewertung abgegeben',
         'ultra-rating-already-sub': 'Danke! Wir haben dein Feedback erhalten. Mehr Gedanken? Schreib uns auf Discord.',
         'ultra-rating-chosen': 'Deine Bewertung: ',
@@ -13505,6 +13727,15 @@ verifySession();
         'ultra-rating-title': '¿Qué te parece el proyecto?',
         'ultra-rating-sub': 'Puntúa el juego y comparte tus ideas — ayuda a mejorar Evades 3.',
         'ultra-rating-hint': 'Haz clic en una estrella para puntuar',
+        'reset-title': 'Nueva contraseña',
+        'reset-desc': 'Elige una nueva contraseña para tu cuenta (mínimo 8 caracteres).',
+        'reset-pass2-placeholder': 'Repite la nueva contraseña',
+        'reset-submit': 'Guardar →',
+        'reset-busy': 'Guardando...',
+        'reset-err-short': 'La contraseña debe tener al menos 8 caracteres',
+        'reset-err-mismatch': 'Las contraseñas no coinciden',
+        'reset-err-token': 'El enlace expiró — solicita uno nuevo',
+        'reset-toast-ok': '¡Contraseña actualizada! Inicia sesión con la nueva 🔐',
         'ultra-rating-already-title': 'Ya has dejado una opinión',
         'ultra-rating-already-sub': '¡Gracias! Recibimos tu opinión. ¿Quieres añadir más? Escríbenos en Discord.',
         'ultra-rating-chosen': 'Tu puntuación: ',
@@ -13666,6 +13897,15 @@ verifySession();
         'ultra-rating-title': 'Comment trouves-tu le projet ?',
         'ultra-rating-sub': 'Note le jeu et partage tes idées — ça aide à améliorer Evades 3.',
         'ultra-rating-hint': 'Clique sur une étoile pour noter',
+        'reset-title': 'Nouveau mot de passe',
+        'reset-desc': 'Choisis un nouveau mot de passe pour ton compte (au moins 8 caractères).',
+        'reset-pass2-placeholder': 'Répète le nouveau mot de passe',
+        'reset-submit': 'Enregistrer →',
+        'reset-busy': 'Enregistrement...',
+        'reset-err-short': 'Le mot de passe doit contenir au moins 8 caractères',
+        'reset-err-mismatch': 'Les mots de passe ne correspondent pas',
+        'reset-err-token': 'Lien expiré — demandes-en un nouveau',
+        'reset-toast-ok': 'Mot de passe mis à jour ! Connecte-toi avec le nouveau 🔐',
         'ultra-rating-already-title': 'Tu as déjà laissé un avis',
         'ultra-rating-already-sub': 'Merci ! On a bien reçu ton retour. Plus à dire ? Rejoins-nous sur Discord.',
         'ultra-rating-chosen': 'Ta note : ',
@@ -13827,6 +14067,15 @@ verifySession();
         'ultra-rating-title': 'Come ti sembra il progetto?',
         'ultra-rating-sub': 'Valuta il gioco e condividi i tuoi pensieri — aiuta a migliorare Evades 3.',
         'ultra-rating-hint': 'Clicca una stella per votare',
+        'reset-title': 'Nuova password',
+        'reset-desc': 'Scegli una nuova password per il tuo account (almeno 8 caratteri).',
+        'reset-pass2-placeholder': 'Ripeti la nuova password',
+        'reset-submit': 'Salva →',
+        'reset-busy': 'Salvataggio...',
+        'reset-err-short': 'La password deve avere almeno 8 caratteri',
+        'reset-err-mismatch': 'Le password non corrispondono',
+        'reset-err-token': 'Link scaduto — richiedine uno nuovo',
+        'reset-toast-ok': 'Password aggiornata! Accedi con la nuova password 🔐',
         'ultra-rating-already-title': 'Hai già lasciato una recensione',
         'ultra-rating-already-sub': 'Grazie! Abbiamo ricevuto il tuo feedback. Altro da dire? Scrivici su Discord.',
         'ultra-rating-chosen': 'Il tuo voto: ',
@@ -13988,6 +14237,15 @@ verifySession();
         'ultra-rating-title': 'O que acha do projeto?',
         'ultra-rating-sub': 'Avalie o jogo e compartilhe ideias — ajuda a melhorar Evades 3.',
         'ultra-rating-hint': 'Clique numa estrela para avaliar',
+        'reset-title': 'Nova senha',
+        'reset-desc': 'Escolha uma nova senha para sua conta (mínimo 8 caracteres).',
+        'reset-pass2-placeholder': 'Repita a nova senha',
+        'reset-submit': 'Salvar →',
+        'reset-busy': 'Salvando...',
+        'reset-err-short': 'A senha deve ter pelo menos 8 caracteres',
+        'reset-err-mismatch': 'As senhas não coincidem',
+        'reset-err-token': 'Link expirado — solicite um novo',
+        'reset-toast-ok': 'Senha atualizada! Entre com a nova senha 🔐',
         'ultra-rating-already-title': 'Você já deixou uma avaliação',
         'ultra-rating-already-sub': 'Obrigado! Recebemos seu feedback. Quer adicionar mais? Fale conosco no Discord.',
         'ultra-rating-chosen': 'Sua nota: ',
@@ -14149,6 +14407,15 @@ verifySession();
         'ultra-rating-title': 'Jak Ci się podoba projekt?',
         'ultra-rating-sub': 'Oceń grę i podziel się myślami — pomaga ulepszyć Evades 3.',
         'ultra-rating-hint': 'Kliknij gwiazdkę, aby ocenić',
+        'reset-title': 'Nowe hasło',
+        'reset-desc': 'Wybierz nowe hasło dla swojego konta (co najmniej 8 znaków).',
+        'reset-pass2-placeholder': 'Powtórz nowe hasło',
+        'reset-submit': 'Zapisz →',
+        'reset-busy': 'Zapisywanie...',
+        'reset-err-short': 'Hasło musi mieć co najmniej 8 znaków',
+        'reset-err-mismatch': 'Hasła nie pasują',
+        'reset-err-token': 'Link wygasł — poproś o nowy',
+        'reset-toast-ok': 'Hasło zaktualizowane! Zaloguj się nowym hasłem 🔐',
         'ultra-rating-already-title': 'Już zostawiłeś opinię',
         'ultra-rating-already-sub': 'Dzięki! Otrzymaliśmy Twoją opinię. Chcesz dodać więcej? Napisz na Discordzie.',
         'ultra-rating-chosen': 'Twoja ocena: ',
@@ -14310,6 +14577,15 @@ verifySession();
         'ultra-rating-title': 'Projeyi nasıl buldun?',
         'ultra-rating-sub': 'Oyunu puanla ve düşüncelerini paylaş — Evades 3’ü geliştirmeye yardım eder.',
         'ultra-rating-hint': 'Puanlamak için bir yıldıza tıkla',
+        'reset-title': 'Yeni parola',
+        'reset-desc': 'Hesabın için yeni bir parola seç (en az 8 karakter).',
+        'reset-pass2-placeholder': 'Yeni parolayı tekrarla',
+        'reset-submit': 'Kaydet →',
+        'reset-busy': 'Kaydediliyor...',
+        'reset-err-short': 'Parola en az 8 karakter olmalı',
+        'reset-err-mismatch': 'Parolalar eşleşmiyor',
+        'reset-err-token': 'Bağlantının süresi doldu — yenisini iste',
+        'reset-toast-ok': 'Parola güncellendi! Yeni parolayla giriş yap 🔐',
         'ultra-rating-already-title': 'Yorumunu zaten bıraktın',
         'ultra-rating-already-sub': 'Teşekkürler! Geri bildirimini aldık. Daha fazla mı söylemek istiyorsun? Discord\'dan yaz.',
         'ultra-rating-chosen': 'Senin puanın: ',
@@ -14471,6 +14747,15 @@ verifySession();
         'ultra-rating-title': 'Wat vind je van het project?',
         'ultra-rating-sub': 'Geef een score en deel je gedachten — helpt Evades 3 beter te maken.',
         'ultra-rating-hint': 'Klik op een ster om te beoordelen',
+        'reset-title': 'Nieuw wachtwoord',
+        'reset-desc': 'Kies een nieuw wachtwoord voor je account (minimaal 8 tekens).',
+        'reset-pass2-placeholder': 'Herhaal nieuw wachtwoord',
+        'reset-submit': 'Opslaan →',
+        'reset-busy': 'Opslaan...',
+        'reset-err-short': 'Wachtwoord moet minimaal 8 tekens hebben',
+        'reset-err-mismatch': 'Wachtwoorden komen niet overeen',
+        'reset-err-token': 'Link is verlopen — vraag een nieuwe aan',
+        'reset-toast-ok': 'Wachtwoord bijgewerkt! Log in met het nieuwe wachtwoord 🔐',
         'ultra-rating-already-title': 'Je hebt al een review achtergelaten',
         'ultra-rating-already-sub': 'Bedankt! We hebben je feedback ontvangen. Meer toe te voegen? Stuur ons een bericht op Discord.',
         'ultra-rating-chosen': 'Jouw score: ',
@@ -14632,6 +14917,15 @@ verifySession();
         'ultra-rating-title': 'Vad tycker du om projektet?',
         'ultra-rating-sub': 'Betygsätt spelet och dela dina tankar — hjälper göra Evades 3 bättre.',
         'ultra-rating-hint': 'Klicka på en stjärna för att betygsätta',
+        'reset-title': 'Nytt lösenord',
+        'reset-desc': 'Välj ett nytt lösenord för ditt konto (minst 8 tecken).',
+        'reset-pass2-placeholder': 'Upprepa nytt lösenord',
+        'reset-submit': 'Spara →',
+        'reset-busy': 'Sparar...',
+        'reset-err-short': 'Lösenord måste vara minst 8 tecken',
+        'reset-err-mismatch': 'Lösenorden matchar inte',
+        'reset-err-token': 'Länk har upphört — begär en ny',
+        'reset-toast-ok': 'Lösenord uppdaterat! Logga in med nya lösenordet 🔐',
         'ultra-rating-already-title': 'Du har redan lämnat ett omdöme',
         'ultra-rating-already-sub': 'Tack! Vi fick din feedback. Vill du säga mer? Skriv till oss på Discord.',
         'ultra-rating-chosen': 'Ditt betyg: ',
@@ -14793,6 +15087,15 @@ verifySession();
         'ultra-rating-title': 'Hva synes du om prosjektet?',
         'ultra-rating-sub': 'Gi spillet en karakter og del tankene dine — hjelper å gjøre Evades 3 bedre.',
         'ultra-rating-hint': 'Klikk på en stjerne for å stemme',
+        'reset-title': 'Nytt passord',
+        'reset-desc': 'Velg et nytt passord for kontoen din (minst 8 tegn).',
+        'reset-pass2-placeholder': 'Gjenta nytt passord',
+        'reset-submit': 'Lagre →',
+        'reset-busy': 'Lagrer...',
+        'reset-err-short': 'Passordet må være minst 8 tegn',
+        'reset-err-mismatch': 'Passordene stemmer ikke',
+        'reset-err-token': 'Lenken er utløpt — be om en ny',
+        'reset-toast-ok': 'Passord oppdatert! Logg inn med nytt passord 🔐',
         'ultra-rating-already-title': 'Du har allerede lagt igjen en anmeldelse',
         'ultra-rating-already-sub': 'Takk! Vi mottok tilbakemeldingen din. Mer å si? Skriv til oss på Discord.',
         'ultra-rating-chosen': 'Din karakter: ',
@@ -14954,6 +15257,15 @@ verifySession();
         'ultra-rating-title': 'Mitä pidät projektista?',
         'ultra-rating-sub': 'Anna arvosana ja jaa ajatuksesi — auttaa Evades 3:n parantamisessa.',
         'ultra-rating-hint': 'Klikkaa tähteä antaaksesi arvion',
+        'reset-title': 'Uusi salasana',
+        'reset-desc': 'Valitse uusi salasana tilillesi (vähintään 8 merkkiä).',
+        'reset-pass2-placeholder': 'Toista uusi salasana',
+        'reset-submit': 'Tallenna →',
+        'reset-busy': 'Tallennetaan...',
+        'reset-err-short': 'Salasanan on oltava vähintään 8 merkkiä',
+        'reset-err-mismatch': 'Salasanat eivät täsmää',
+        'reset-err-token': 'Linkki on vanhentunut — pyydä uusi',
+        'reset-toast-ok': 'Salasana päivitetty! Kirjaudu uudella salasanalla 🔐',
         'ultra-rating-already-title': 'Olet jo jättänyt arvostelun',
         'ultra-rating-already-sub': 'Kiitos! Saimme palautteesi. Haluatko lisää? Viesti meille Discordissa.',
         'ultra-rating-chosen': 'Arvosanasi: ',
@@ -15115,6 +15427,15 @@ verifySession();
         'ultra-rating-title': 'Hvad synes du om projektet?',
         'ultra-rating-sub': 'Giv spillet en vurdering og del dine tanker — gør Evades 3 bedre.',
         'ultra-rating-hint': 'Klik på en stjerne for at vurdere',
+        'reset-title': 'Nyt kodeord',
+        'reset-desc': 'Vælg et nyt kodeord til din konto (mindst 8 tegn).',
+        'reset-pass2-placeholder': 'Gentag nyt kodeord',
+        'reset-submit': 'Gem →',
+        'reset-busy': 'Gemmer...',
+        'reset-err-short': 'Kodeord skal være mindst 8 tegn',
+        'reset-err-mismatch': 'Kodeord matcher ikke',
+        'reset-err-token': 'Link udløbet — bed om et nyt',
+        'reset-toast-ok': 'Kodeord opdateret! Log ind med nyt kodeord 🔐',
         'ultra-rating-already-title': 'Du har allerede skrevet en anmeldelse',
         'ultra-rating-already-sub': 'Tak! Vi modtog din feedback. Mere at sige? Skriv til os på Discord.',
         'ultra-rating-chosen': 'Din vurdering: ',
@@ -15276,6 +15597,15 @@ verifySession();
         'ultra-rating-title': 'Jak se ti projekt líbí?',
         'ultra-rating-sub': 'Ohodnoť hru a podělej se o nápady — pomůže vylepšit Evades 3.',
         'ultra-rating-hint': 'Klikni na hvězdičku pro hodnocení',
+        'reset-title': 'Nové heslo',
+        'reset-desc': 'Zvol nové heslo pro svůj účet (alespoň 8 znaků).',
+        'reset-pass2-placeholder': 'Zopakuj nové heslo',
+        'reset-submit': 'Uložit →',
+        'reset-busy': 'Ukládám...',
+        'reset-err-short': 'Heslo musí mít alespoň 8 znaků',
+        'reset-err-mismatch': 'Hesla se neshodují',
+        'reset-err-token': 'Odkaz vypršel — vyžádej si nový',
+        'reset-toast-ok': 'Heslo aktualizováno! Přihlas se novým heslem 🔐',
         'ultra-rating-already-title': 'Recenzi jsi už zanechal',
         'ultra-rating-already-sub': 'Díky! Tvou zpětnou vazbu jsme dostali. Chceš dodat víc? Napiš na Discord.',
         'ultra-rating-chosen': 'Tvoje hodnocení: ',
@@ -15437,6 +15767,15 @@ verifySession();
         'ultra-rating-title': 'Cum ți se pare proiectul?',
         'ultra-rating-sub': 'Dă o notă și împărtășește-ți gândurile — ajută să facem Evades 3 mai bun.',
         'ultra-rating-hint': 'Dă clic pe o stea pentru a evalua',
+        'reset-title': 'Parolă nouă',
+        'reset-desc': 'Alege o parolă nouă pentru contul tău (minim 8 caractere).',
+        'reset-pass2-placeholder': 'Repetă parola nouă',
+        'reset-submit': 'Salvează →',
+        'reset-busy': 'Se salvează...',
+        'reset-err-short': 'Parola trebuie să aibă minim 8 caractere',
+        'reset-err-mismatch': 'Parolele nu coincid',
+        'reset-err-token': 'Link expirat — cere unul nou',
+        'reset-toast-ok': 'Parolă actualizată! Conectează-te cu parola nouă 🔐',
         'ultra-rating-already-title': 'Ai lăsat deja o recenzie',
         'ultra-rating-already-sub': 'Mulțumim! Am primit feedback-ul tău. Vrei să adaugi mai mult? Scrie-ne pe Discord.',
         'ultra-rating-chosen': 'Nota ta: ',
@@ -15598,6 +15937,15 @@ verifySession();
         'ultra-rating-title': 'Hogy tetszik a projekt?',
         'ultra-rating-sub': 'Értékeld a játékot és oszd meg gondolataidat — segít jobbá tenni az Evades 3-at.',
         'ultra-rating-hint': 'Kattints egy csillagra az értékeléshez',
+        'reset-title': 'Új jelszó',
+        'reset-desc': 'Válassz új jelszót a fiókodhoz (legalább 8 karakter).',
+        'reset-pass2-placeholder': 'Ismételd meg az új jelszót',
+        'reset-submit': 'Mentés →',
+        'reset-busy': 'Mentés...',
+        'reset-err-short': 'A jelszónak legalább 8 karakteresnek kell lennie',
+        'reset-err-mismatch': 'A jelszavak nem egyeznek',
+        'reset-err-token': 'A link lejárt — kérj újat',
+        'reset-toast-ok': 'Jelszó frissítve! Lépj be az új jelszóval 🔐',
         'ultra-rating-already-title': 'Már írtál értékelést',
         'ultra-rating-already-sub': 'Köszönjük! Megkaptuk a visszajelzésed. Még valamit? Írj nekünk Discordon.',
         'ultra-rating-chosen': 'A te értékelésed: ',
@@ -15759,6 +16107,15 @@ verifySession();
         'ultra-rating-title': 'Πώς σου φαίνεται το πρότζεκτ;',
         'ultra-rating-sub': 'Βαθμολόγησε το παιχνίδι και μοιράσου σκέψεις — βοηθάει το Evades 3 να γίνει καλύτερο.',
         'ultra-rating-hint': 'Κάνε κλικ σε αστέρι για βαθμολόγηση',
+        'reset-title': 'Νέος κωδικός',
+        'reset-desc': 'Διάλεξε νέο κωδικό για τον λογαριασμό σου (τουλάχιστον 8 χαρακτήρες).',
+        'reset-pass2-placeholder': 'Επανάλαβε τον νέο κωδικό',
+        'reset-submit': 'Αποθήκευση →',
+        'reset-busy': 'Αποθήκευση...',
+        'reset-err-short': 'Ο κωδικός πρέπει να έχει τουλάχιστον 8 χαρακτήρες',
+        'reset-err-mismatch': 'Οι κωδικοί δεν ταιριάζουν',
+        'reset-err-token': 'Ο σύνδεσμος έληξε — ζήτα νέον',
+        'reset-toast-ok': 'Ο κωδικός ενημερώθηκε! Συνδέσου με τον νέο κωδικό 🔐',
         'ultra-rating-already-title': 'Έχεις ήδη αφήσει κριτική',
         'ultra-rating-already-sub': 'Ευχαριστούμε! Λάβαμε τα σχόλιά σου. Θες να πεις κάτι ακόμη; Στείλε μας στο Discord.',
         'ultra-rating-chosen': 'Η βαθμολογία σου: ',
@@ -15920,6 +16277,15 @@ verifySession();
         'ultra-rating-title': 'プロジェクトはどう?',
         'ultra-rating-sub': '評価と感想を教えてください — Evades 3 の改善に役立ちます。',
         'ultra-rating-hint': '星をクリックして評価してね',
+        'reset-title': '新しいパスワード',
+        'reset-desc': 'アカウントの新しいパスワードを設定してください(8文字以上)。',
+        'reset-pass2-placeholder': '新しいパスワードをもう一度',
+        'reset-submit': '保存 →',
+        'reset-busy': '保存中...',
+        'reset-err-short': 'パスワードは8文字以上にしてください',
+        'reset-err-mismatch': 'パスワードが一致しません',
+        'reset-err-token': 'リンクの有効期限が切れました。再リクエストしてください',
+        'reset-toast-ok': 'パスワードを更新しました!新しいパスワードでログインしてください 🔐',
         'ultra-rating-already-title': 'すでにレビューを投稿済みです',
         'ultra-rating-already-sub': 'ありがとう!フィードバックを受け取りました。追加コメントはDiscordへどうぞ。',
         'ultra-rating-chosen': 'あなたの評価: ',
@@ -16081,6 +16447,15 @@ verifySession();
         'ultra-rating-title': '你觉得这个项目怎么样?',
         'ultra-rating-sub': '给游戏打分并分享想法 — 帮助让 Evades 3 更好。',
         'ultra-rating-hint': '点击星星进行评分',
+        'reset-title': '新密码',
+        'reset-desc': '为你的账号设置新密码(至少 8 个字符)。',
+        'reset-pass2-placeholder': '再次输入新密码',
+        'reset-submit': '保存 →',
+        'reset-busy': '保存中...',
+        'reset-err-short': '密码至少需要 8 个字符',
+        'reset-err-mismatch': '两次密码不一致',
+        'reset-err-token': '链接已失效,请重新申请',
+        'reset-toast-ok': '密码已更新!请用新密码登录 🔐',
         'ultra-rating-already-title': '你已经留下了评价',
         'ultra-rating-already-sub': '感谢!我们已收到你的反馈。还想补充吗?在 Discord 联系我们。',
         'ultra-rating-chosen': '你的评分: ',
@@ -16242,6 +16617,15 @@ verifySession();
         'ultra-rating-title': '프로젝트는 어떤가요?',
         'ultra-rating-sub': '게임을 평가하고 생각을 공유해 주세요 — Evades 3 를 개선하는 데 도움이 됩니다.',
         'ultra-rating-hint': '별을 눌러 평점을 선택하세요',
+        'reset-title': '새 비밀번호',
+        'reset-desc': '계정의 새 비밀번호를 설정하세요 (최소 8자).',
+        'reset-pass2-placeholder': '새 비밀번호 다시 입력',
+        'reset-submit': '저장 →',
+        'reset-busy': '저장 중...',
+        'reset-err-short': '비밀번호는 최소 8자 이상이어야 합니다',
+        'reset-err-mismatch': '비밀번호가 일치하지 않습니다',
+        'reset-err-token': '링크가 만료되었습니다. 다시 요청해 주세요',
+        'reset-toast-ok': '비밀번호가 업데이트되었습니다! 새 비밀번호로 로그인하세요 🔐',
         'ultra-rating-already-title': '이미 리뷰를 남겼습니다',
         'ultra-rating-already-sub': '감사합니다! 피드백을 받았어요. 더 하고 싶은 말이 있다면 Discord로 보내주세요.',
         'ultra-rating-chosen': '당신의 평점: ',
@@ -16403,6 +16787,15 @@ verifySession();
         'ultra-rating-title': 'ما رأيك في المشروع؟',
         'ultra-rating-sub': 'قيّم اللعبة وشارك أفكارك — يساعد في تطوير Evades 3.',
         'ultra-rating-hint': 'انقر على نجمة للتقييم',
+        'reset-title': 'كلمة مرور جديدة',
+        'reset-desc': 'اختر كلمة مرور جديدة لحسابك (٨ أحرف على الأقل).',
+        'reset-pass2-placeholder': 'كرّر كلمة المرور الجديدة',
+        'reset-submit': 'حفظ →',
+        'reset-busy': 'جارٍ الحفظ...',
+        'reset-err-short': 'يجب ألا تقل كلمة المرور عن ٨ أحرف',
+        'reset-err-mismatch': 'كلمتا المرور غير متطابقتين',
+        'reset-err-token': 'انتهت صلاحية الرابط — اطلب رابطًا جديدًا',
+        'reset-toast-ok': 'تم تحديث كلمة المرور! سجّل الدخول بكلمة المرور الجديدة 🔐',
         'ultra-rating-already-title': 'لقد تركت مراجعة بالفعل',
         'ultra-rating-already-sub': 'شكراً! تلقّينا ملاحظاتك. تريد أن تضيف المزيد؟ راسلنا على Discord.',
         'ultra-rating-chosen': 'تقييمك: ',
@@ -16564,6 +16957,15 @@ verifySession();
         'ultra-rating-title': 'प्रोजेक्ट कैसा लगा?',
         'ultra-rating-sub': 'गेम को रेट करें और विचार साझा करें — Evades 3 को बेहतर बनाने में मदद मिलती है।',
         'ultra-rating-hint': 'रेटिंग के लिए सितारे पर क्लिक करें',
+        'reset-title': 'नया पासवर्ड',
+        'reset-desc': 'अपने खाते के लिए नया पासवर्ड चुनें (कम से कम 8 अक्षर)।',
+        'reset-pass2-placeholder': 'नया पासवर्ड दोबारा डालें',
+        'reset-submit': 'सेव करें →',
+        'reset-busy': 'सेव हो रहा है...',
+        'reset-err-short': 'पासवर्ड कम से कम 8 अक्षर का होना चाहिए',
+        'reset-err-mismatch': 'पासवर्ड मेल नहीं खाते',
+        'reset-err-token': 'लिंक की समय सीमा समाप्त — नया अनुरोध करें',
+        'reset-toast-ok': 'पासवर्ड अपडेट हो गया! नए पासवर्ड से लॉगिन करें 🔐',
         'ultra-rating-already-title': 'आपने पहले ही समीक्षा दी है',
         'ultra-rating-already-sub': 'धन्यवाद! हमें आपकी प्रतिक्रिया मिल गई। और कहना चाहते हैं? Discord पर लिखें।',
         'ultra-rating-chosen': 'आपकी रेटिंग: ',
@@ -16725,6 +17127,15 @@ verifySession();
         'ultra-rating-title': 'ชอบโปรเจกต์ไหม?',
         'ultra-rating-sub': 'ให้คะแนนและแชร์ความคิด — ช่วยให้ Evades 3 ดีขึ้น.',
         'ultra-rating-hint': 'คลิกดาวเพื่อให้คะแนน',
+        'reset-title': 'รหัสผ่านใหม่',
+        'reset-desc': 'ตั้งรหัสผ่านใหม่สำหรับบัญชีของคุณ (อย่างน้อย 8 ตัวอักษร)',
+        'reset-pass2-placeholder': 'ยืนยันรหัสผ่านใหม่',
+        'reset-submit': 'บันทึก →',
+        'reset-busy': 'กำลังบันทึก...',
+        'reset-err-short': 'รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร',
+        'reset-err-mismatch': 'รหัสผ่านไม่ตรงกัน',
+        'reset-err-token': 'ลิงก์หมดอายุ — กรุณาขอใหม่',
+        'reset-toast-ok': 'อัปเดตรหัสผ่านแล้ว! เข้าสู่ระบบด้วยรหัสผ่านใหม่ 🔐',
         'ultra-rating-already-title': 'คุณได้รีวิวแล้ว',
         'ultra-rating-already-sub': 'ขอบคุณ! เราได้รับฟีดแบ็กของคุณแล้ว อยากเพิ่มเติม? ทักเรามาที่ Discord ได้เลย',
         'ultra-rating-chosen': 'คะแนนของคุณ: ',
@@ -16886,6 +17297,15 @@ verifySession();
         'ultra-rating-title': 'Bạn thấy dự án thế nào?',
         'ultra-rating-sub': 'Đánh giá game và chia sẻ suy nghĩ — giúp Evades 3 tốt hơn.',
         'ultra-rating-hint': 'Nhấn vào một ngôi sao để đánh giá',
+        'reset-title': 'Mật khẩu mới',
+        'reset-desc': 'Chọn mật khẩu mới cho tài khoản của bạn (ít nhất 8 ký tự).',
+        'reset-pass2-placeholder': 'Nhập lại mật khẩu mới',
+        'reset-submit': 'Lưu →',
+        'reset-busy': 'Đang lưu...',
+        'reset-err-short': 'Mật khẩu phải có ít nhất 8 ký tự',
+        'reset-err-mismatch': 'Mật khẩu không khớp',
+        'reset-err-token': 'Liên kết đã hết hạn — yêu cầu liên kết mới',
+        'reset-toast-ok': 'Đã cập nhật mật khẩu! Đăng nhập bằng mật khẩu mới 🔐',
         'ultra-rating-already-title': 'Bạn đã để lại đánh giá rồi',
         'ultra-rating-already-sub': 'Cảm ơn! Bọn mình đã nhận được phản hồi của bạn. Muốn nói thêm? Nhắn bọn mình trên Discord.',
         'ultra-rating-chosen': 'Điểm của bạn: ',
@@ -17047,6 +17467,15 @@ verifySession();
         'ultra-rating-title': 'Bagaimana proyeknya?',
         'ultra-rating-sub': 'Beri rating dan bagikan pemikiran — membantu membuat Evades 3 lebih baik.',
         'ultra-rating-hint': 'Klik bintang untuk menilai',
+        'reset-title': 'Kata sandi baru',
+        'reset-desc': 'Pilih kata sandi baru untuk akunmu (minimal 8 karakter).',
+        'reset-pass2-placeholder': 'Ulangi kata sandi baru',
+        'reset-submit': 'Simpan →',
+        'reset-busy': 'Menyimpan...',
+        'reset-err-short': 'Kata sandi minimal 8 karakter',
+        'reset-err-mismatch': 'Kata sandi tidak cocok',
+        'reset-err-token': 'Tautan kedaluwarsa — minta baru',
+        'reset-toast-ok': 'Kata sandi diperbarui! Masuk dengan kata sandi baru 🔐',
         'ultra-rating-already-title': 'Anda sudah meninggalkan ulasan',
         'ultra-rating-already-sub': 'Terima kasih! Kami sudah menerima masukan Anda. Ingin menambah? Hubungi kami di Discord.',
         'ultra-rating-chosen': 'Rating kamu: ',
@@ -17208,6 +17637,15 @@ verifySession();
         'ultra-rating-title': 'Bagaimana projek ini?',
         'ultra-rating-sub': 'Nilai permainan dan kongsi pemikiran — membantu Evades 3 menjadi lebih baik.',
         'ultra-rating-hint': 'Klik bintang untuk menilai',
+        'reset-title': 'Kata laluan baharu',
+        'reset-desc': 'Pilih kata laluan baharu untuk akaun anda (minimum 8 aksara).',
+        'reset-pass2-placeholder': 'Ulang kata laluan baharu',
+        'reset-submit': 'Simpan →',
+        'reset-busy': 'Menyimpan...',
+        'reset-err-short': 'Kata laluan mestilah sekurang-kurangnya 8 aksara',
+        'reset-err-mismatch': 'Kata laluan tidak sepadan',
+        'reset-err-token': 'Pautan luput — minta yang baharu',
+        'reset-toast-ok': 'Kata laluan dikemaskini! Log masuk dengan kata laluan baharu 🔐',
         'ultra-rating-already-title': 'Anda sudah meninggalkan ulasan',
         'ultra-rating-already-sub': 'Terima kasih! Kami sudah menerima masukan Anda. Ingin menambah? Hubungi kami di Discord.',
         'ultra-rating-chosen': 'Penilaian anda: ',
