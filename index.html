@@ -14447,21 +14447,120 @@ function ev3AuthMsg(resp) {
 // ===================================================
 let ev3Session = null;
 let ev3User = null;
+let _ev3RefreshTimer = null;       // proactive refresh scheduler
+let _ev3RefreshInFlight = null;    // dedupe concurrent refresh requests
 
-function saveSession(s) { if (s?.access_token) { ev3Session = s; try { localStorage.setItem('ev3_session', JSON.stringify(s)); } catch{} } }
-function loadSession() { try { ev3Session = JSON.parse(localStorage.getItem('ev3_session')); } catch { ev3Session = null; } }
-function clearSession() { ev3Session = null; ev3User = null; try { localStorage.removeItem('ev3_session'); } catch {} }
+// Where do we keep the session? Persistent (localStorage) when "Remember me" is on,
+// session-only (sessionStorage) otherwise. We always look in localStorage first so
+// existing users aren't forcibly logged out by this change.
+function _ev3SessionStore() {
+  try { return (localStorage.getItem('ev3_session_persistent') === '0') ? sessionStorage : localStorage; }
+  catch { return localStorage; }
+}
+function _ev3SetPersistentMode(persistent) {
+  try { localStorage.setItem('ev3_session_persistent', persistent ? '1' : '0'); } catch {}
+}
+
+function saveSession(s) {
+  if (!s?.access_token) return;
+  // Supabase returns expires_in (seconds) but not always expires_at — compute it ourselves
+  // so we can proactively refresh before the token dies.
+  if (!s.expires_at && s.expires_in) {
+    s.expires_at = Math.floor(Date.now() / 1000) + Number(s.expires_in);
+  }
+  ev3Session = s;
+  const store = _ev3SessionStore();
+  try { store.setItem('ev3_session', JSON.stringify(s)); } catch {}
+  // Clean up the "other" store so we don't keep a stale copy around
+  try {
+    const other = (store === localStorage) ? sessionStorage : localStorage;
+    other.removeItem('ev3_session');
+  } catch {}
+  _ev3ScheduleRefresh();
+}
+function loadSession() {
+  ev3Session = null;
+  try {
+    const raw = localStorage.getItem('ev3_session') || sessionStorage.getItem('ev3_session');
+    if (raw) ev3Session = JSON.parse(raw);
+  } catch { ev3Session = null; }
+}
+function clearSession() {
+  ev3Session = null; ev3User = null;
+  try { localStorage.removeItem('ev3_session'); } catch {}
+  try { sessionStorage.removeItem('ev3_session'); } catch {}
+  if (_ev3RefreshTimer) { clearTimeout(_ev3RefreshTimer); _ev3RefreshTimer = null; }
+}
+
+// Schedule a proactive refresh ~60s before the current access token expires.
+function _ev3ScheduleRefresh() {
+  if (_ev3RefreshTimer) { clearTimeout(_ev3RefreshTimer); _ev3RefreshTimer = null; }
+  if (!ev3Session?.refresh_token || !ev3Session.expires_at) return;
+  const msUntilExpiry = (Number(ev3Session.expires_at) * 1000) - Date.now();
+  const refreshIn = Math.max(5_000, msUntilExpiry - 60_000); // refresh 1 min before expiry, min 5s
+  _ev3RefreshTimer = setTimeout(() => { ev3RefreshSession().catch(() => {}); }, refreshIn);
+}
+
+// Exchange refresh_token for a new access_token. Returns true on success.
+// Concurrent callers share a single in-flight request so we never fire two refreshes at once.
+async function ev3RefreshSession() {
+  if (!ev3Session?.refresh_token) return false;
+  if (_ev3RefreshInFlight) return _ev3RefreshInFlight;
+  _ev3RefreshInFlight = (async () => {
+    let r, data;
+    try {
+      r = await fetch(SUPA_URL + '/auth/v1/token?grant_type=refresh_token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY },
+        body: JSON.stringify({ refresh_token: ev3Session.refresh_token })
+      });
+    } catch { return false; } // network — keep current session, will retry on next call
+    try { data = await r.json(); } catch { data = null; }
+    if (!r.ok || !data || !data.access_token) {
+      // refresh_token invalid/expired — user must re-authenticate
+      clearSession();
+      try { showLoggedOut(); } catch {}
+      return false;
+    }
+    // Preserve user object if Supabase didn't echo it back
+    if (!data.user && ev3Session.user) data.user = ev3Session.user;
+    saveSession(data);
+    return true;
+  })().finally(() => { _ev3RefreshInFlight = null; });
+  return _ev3RefreshInFlight;
+}
+
+// Returns the current access_token, refreshing it first if it expires within `leewaySec`.
+async function ev3GetFreshAccessToken(leewaySec = 60) {
+  if (!ev3Session?.access_token) return null;
+  const expAt = Number(ev3Session.expires_at) || 0;
+  if (expAt && (Math.floor(Date.now() / 1000) + leewaySec >= expAt)) {
+    await ev3RefreshSession();
+  }
+  return ev3Session?.access_token || null;
+}
 
 async function verifySession() {
   loadSession();
   if (!ev3Session?.access_token) { showLoggedOut(); return; }
+  // Token may have expired while the tab was closed — try to refresh first.
+  await ev3GetFreshAccessToken(60);
+  if (!ev3Session?.access_token) { showLoggedOut(); return; }
   try {
-    const r = await fetch(SUPA_URL + '/auth/v1/user', {
+    let r = await fetch(SUPA_URL + '/auth/v1/user', {
       headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + ev3Session.access_token }
     });
-    if (r.ok) { ev3User = await r.json(); showLoggedIn(); }
+    if (r.status === 401 && ev3Session.refresh_token) {
+      const ok = await ev3RefreshSession();
+      if (ok) {
+        r = await fetch(SUPA_URL + '/auth/v1/user', {
+          headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + ev3Session.access_token }
+        });
+      }
+    }
+    if (r.ok) { ev3User = await r.json(); showLoggedIn(); _ev3ScheduleRefresh(); }
     else { clearSession(); showLoggedOut(); }
-  } catch { showLoggedOut(); }
+  } catch { /* network — keep session, will retry next call */ showLoggedOut(); }
 }
 
 // ===================================================
@@ -14514,12 +14613,19 @@ function showLoggedOut() {
 var _toastTimer;
 function ev3Toast(msg, icon = '✅') {
   const t = document.getElementById('ev3Toast');
-  document.getElementById('ev3ToastMsg').textContent = msg;
-  document.getElementById('ev3ToastIcon').textContent = icon;
+  if (!t) return; // toast container not in DOM yet — fail silently rather than crash
+  const msgEl = document.getElementById('ev3ToastMsg');
+  const iconEl = document.getElementById('ev3ToastIcon');
+  if (msgEl) msgEl.textContent = msg;
+  if (iconEl) iconEl.textContent = icon;
   t.classList.add('show');
   clearTimeout(_toastTimer);
   _toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
 }
+// Alias used throughout the profile UI. Without this, success/error toasts in profile
+// flows (nick/email/password/2FA/crystals/frame/delete) silently fail in their try/catch
+// wrappers and the user gets no feedback that their action succeeded.
+function showToast(msg, icon = '✅') { return ev3Toast(msg, icon); }
 
 // ===================================================
 // AUTH MODAL
@@ -14614,21 +14720,41 @@ let ev3TfaState = {
 };
 
 async function supaAuth(path, opts = {}) {
-  // Authenticated request to /auth/v1/* using current access_token (or provided one)
-  const token = opts.token || (ev3Session && ev3Session.access_token) || (ev3TfaState.pendingLogin && ev3TfaState.pendingLogin.tempSession && ev3TfaState.pendingLogin.tempSession.access_token);
+  // Authenticated request to /auth/v1/* using current access_token (or provided one).
+  // When using the current session token, transparently refresh on 401 and retry once so
+  // long-lived tabs don't lose user state to silent token expiry.
+  const usingSession = !opts.token;
+  if (usingSession) {
+    // Best-effort proactive refresh if the access token is about to expire
+    try { await ev3GetFreshAccessToken(60); } catch {}
+  }
+  const pickToken = () => opts.token
+    || (ev3Session && ev3Session.access_token)
+    || (ev3TfaState.pendingLogin && ev3TfaState.pendingLogin.tempSession && ev3TfaState.pendingLogin.tempSession.access_token);
+  let token = pickToken();
   if (!token) return { ok: false, status: 0, data: null };
+  const doFetch = (t) => fetch(SUPA_URL + path, {
+    method: opts.method || 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPA_KEY,
+      'Authorization': 'Bearer ' + t
+    },
+    body: opts.body ? JSON.stringify(opts.body) : undefined
+  });
   let r, data;
-  try {
-    r = await fetch(SUPA_URL + path, {
-      method: opts.method || 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': SUPA_KEY,
-        'Authorization': 'Bearer ' + token
-      },
-      body: opts.body ? JSON.stringify(opts.body) : undefined
-    });
-  } catch { return { ok:false, status:0, data:null, networkError:true }; }
+  try { r = await doFetch(token); }
+  catch { return { ok:false, status:0, data:null, networkError:true }; }
+  if (r.status === 401 && usingSession && ev3Session?.refresh_token) {
+    const ok = await ev3RefreshSession();
+    if (ok) {
+      token = pickToken();
+      if (token) {
+        try { r = await doFetch(token); }
+        catch { return { ok:false, status:0, data:null, networkError:true }; }
+      }
+    }
+  }
   try { data = await r.json(); } catch { data = null; }
   return { ok: r.ok, status: r.status, data: data || {} };
 }
@@ -14766,6 +14892,17 @@ async function open2faSetupModal() {
 function close2faSetupModal() {
   const overlay = document.getElementById('tfa2faSetupOverlay');
   if (overlay) overlay.classList.remove('show');
+  // If user dismissed setup before verifying the new factor, clean it up so the account
+  // doesn't keep accumulating unverified TOTP factors (Supabase caps at 10 unverified).
+  const step3 = document.getElementById('tfaStep3');
+  const verifiedDone = step3 && !step3.hidden;
+  if (!verifiedDone && ev3TfaState.factorId) {
+    const fid = ev3TfaState.factorId;
+    ev3TfaState.factorId = null;
+    ev3TfaState.secret = null;
+    // fire-and-forget — don't block the close animation
+    supaAuth('/auth/v1/factors/' + fid, { method: 'DELETE' }).catch(() => {});
+  }
 }
 function close2faSetupOnBg(e) { if (e.target === e.currentTarget) close2faSetupModal(); }
 function goto2faStep1Visual() {
@@ -14956,6 +15093,10 @@ async function doLogin() {
   const btn = document.getElementById('li-submit');
   const emailInp = document.getElementById('li-email');
   const passInp  = document.getElementById('li-pass');
+  // "Remember me" controls whether the next saveSession() writes to localStorage (persistent)
+  // or sessionStorage (lives only for this browser tab).
+  const rememberInp = document.getElementById('li-remember');
+  _ev3SetPersistentMode(rememberInp ? !!rememberInp.checked : true);
   let ok = true;
   // clear previous state
   setHint('li-email-hint','',''); setHint('li-pass-hint','','');
@@ -15142,19 +15283,41 @@ function _ev3ProviderLabel(name) {
   return n ? (n[0].toUpperCase() + n.slice(1)) : '—';
 }
 
-// Низкоуровневый PUT /auth/v1/user — нормализованная обёртка
+// Низкоуровневый PUT /auth/v1/user — нормализованная обёртка.
+// Когда `body.data` (user_metadata) задан, мы предварительно тянем свежие user_metadata
+// и мерджим их с патчем, чтобы параллельные апдейты (кристаллы / aim trainer / рамка)
+// не затирали друг друга. Если access_token близок к истечению — обновим его.
 async function _ev3UpdateUser(body) {
-  const sess = (typeof ev3Session !== 'undefined' && ev3Session) || null;
-  if (!sess || !sess.access_token) throw new Error('not_authenticated');
-  const r = await fetch(SUPA_URL + '/auth/v1/user', {
+  if (!ev3Session || !ev3Session.access_token) throw new Error('not_authenticated');
+  await ev3GetFreshAccessToken(60).catch(() => {});
+  // Merge user_metadata to avoid clobbering concurrent writes.
+  if (body && body.data && typeof body.data === 'object') {
+    try {
+      const meR = await fetch(SUPA_URL + '/auth/v1/user', {
+        headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + ev3Session.access_token }
+      });
+      if (meR.ok) {
+        const me = await meR.json();
+        const liveMeta = (me && me.user_metadata && typeof me.user_metadata === 'object') ? me.user_metadata : {};
+        body = Object.assign({}, body, { data: Object.assign({}, liveMeta, body.data) });
+        if (ev3User) ev3User.user_metadata = liveMeta;
+      }
+    } catch (_) { /* fallback: send patch as-is */ }
+  }
+  const doPut = (t) => fetch(SUPA_URL + '/auth/v1/user', {
     method: 'PUT',
     headers: {
       'apikey': SUPA_KEY,
-      'Authorization': 'Bearer ' + sess.access_token,
+      'Authorization': 'Bearer ' + t,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
   });
+  let r = await doPut(ev3Session.access_token);
+  if (r.status === 401 && ev3Session.refresh_token) {
+    const ok = await ev3RefreshSession();
+    if (ok) r = await doPut(ev3Session.access_token);
+  }
   let data = null;
   try { data = await r.json(); } catch (_) {}
   if (!r.ok) {
@@ -15651,8 +15814,16 @@ async function _ev3AimFinish() {
 
 // ── DELETE ACCOUNT MODAL ──
 function openDeleteAccountModal() {
-  // Локализуем кодовое слово
-  const words = { ru: 'УДАЛИТЬ', uk: 'ВИДАЛИТИ', en: 'DELETE', be: 'ВЫДАЛІЦЬ' };
+  // Локализуем кодовое слово на все языки, которые есть в переключателе языков.
+  // Чтобы пользователь подтверждал удаление на родном языке, а не «DELETE» на немецком интерфейсе.
+  const words = {
+    ru: 'УДАЛИТЬ', uk: 'ВИДАЛИТИ', en: 'DELETE',
+    de: 'LÖSCHEN', es: 'ELIMINAR', fr: 'SUPPRIMER', it: 'ELIMINA', pt: 'EXCLUIR',
+    pl: 'USUŃ', tr: 'SİL', nl: 'VERWIJDER', sv: 'RADERA', no: 'SLETT', fi: 'POISTA', da: 'SLET',
+    cs: 'SMAZAT', ro: 'ȘTERGE', hu: 'TÖRÖL', el: 'ΔΙΑΓΡΑΦΗ',
+    ja: '削除', zh: '删除', ko: '삭제',
+    ar: 'حذف', hi: 'हटाएं', th: 'ลบ', vi: 'XÓA', id: 'HAPUS', ms: 'PADAM'
+  };
   const lang = (typeof currentLang === 'string' && currentLang) || localStorage.getItem('selectedLanguage') || 'ru';
   const word = words[lang] || words.en;
   const wEl = document.getElementById('delAccWord');
@@ -21274,12 +21445,14 @@ async function doResetPassword() {
 
     // Translate placeholders + existing data-i18n nodes
     try {
-      const currentLang = (typeof selectedLang === 'string' && selectedLang) ||
-                          localStorage.getItem('selectedLanguage') || 'ru';
-      if (typeof applyTranslations === 'function') applyTranslations(currentLang);
+      // Use the outer `currentLang` if defined, otherwise fall back to localStorage.
+      // Previous code referenced an undefined `selectedLang` here.
+      const activeLang = (typeof currentLang === 'string' && currentLang) ||
+                         localStorage.getItem('selectedLanguage') || 'ru';
+      if (typeof applyTranslations === 'function') applyTranslations(activeLang);
       document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
         const key = el.getAttribute('data-i18n-placeholder');
-        const val = translations[currentLang] && translations[currentLang][key];
+        const val = translations[activeLang] && translations[activeLang][key];
         if (val) el.setAttribute('placeholder', val);
       });
     } catch {}
