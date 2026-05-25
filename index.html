@@ -6058,6 +6058,199 @@ svg.ic-svg-login {
   .cookie-banner-actions { width: 100%; justify-content: stretch; }
   .cookie-banner-btn { flex: 1 1 0; padding: 12px 14px; }
 }
+
+/* =========================================================================
+   ===== EMAIL DISABLED — footer warning =====
+   ========================================================================= */
+.site-footer-mail{
+  position: relative;
+  color: rgba(255,255,255,0.55) !important;
+  text-decoration: line-through !important;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.site-footer-mail-warn{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px auto 0;
+  padding: 9px 16px;
+  background: rgba(245, 158, 11, 0.10);
+  border: 1px solid rgba(245, 158, 11, 0.32);
+  border-radius: 999px;
+  color: #fcd34d;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  width: fit-content;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 18px rgba(245, 158, 11, 0.08);
+  line-height: 1.4;
+}
+.site-footer-mail-warn a{
+  color: #6ee7b7;
+  text-decoration: none;
+  font-weight: 700;
+  border-bottom: 1px dashed rgba(110, 231, 183, 0.6);
+  transition: color 180ms ease, border-color 180ms ease;
+}
+.site-footer-mail-warn a:hover{
+  color: #a7f3d0;
+  border-bottom-color: rgba(167, 243, 208, 0.9);
+}
+
+/* =========================================================================
+   ===== HERO TITLE FIX (EVADES 3) — clean, beautiful, no-bug appearance =====
+   =========================================================================
+   The base file's animation uses:
+     - .main-title::before with attr(data-title) (doubled shadow)
+     - .main-title::after with attr(data-title) titleGoldWave (gold sheen wave)
+     - titleMegaBurst with rotate -2°→1.5°→0°, scale 0.6→1.45→1, brightness 1.8 peak
+     - explodeTitle() particles + screen-shake at 1900ms
+   All of this together created the "doubling / flicker / censorship band" effect.
+   We override below to a clean cinematic materialization. */
+
+/* Kill old gold-wave sheen (was source of "censor band" flicker) */
+.main-title::after{
+  content: none !important;
+  display: none !important;
+  animation: none !important;
+  background: none !important;
+}
+
+/* Keep ::before depth shadow but make it follow the title cleanly,
+   share transform-origin so it scales together — no de-sync. */
+.main-title::before{
+  transform-origin: 50% 60% !important;
+  transition: none !important;
+}
+
+/* New clean reveal: starts large, glowing, blurred → crystallizes to clean gold */
+.hero-anim .main-title{
+  animation: titleCleanReveal 1300ms cubic-bezier(0.22, 0.95, 0.24, 1) forwards !important;
+  animation-delay: 1500ms !important;
+  transform-origin: 50% 60%;
+}
+
+@keyframes titleCleanReveal{
+  0%{
+    opacity: 0;
+    transform: scale(1.20) translateY(0);
+    filter:
+      drop-shadow(0 0 100px rgba(255, 215, 0, 0.95))
+      drop-shadow(0 0 40px rgba(255, 165, 0, 0.7))
+      blur(26px) brightness(1.9);
+  }
+  18%{
+    opacity: 0.45;
+    transform: scale(1.13) translateY(0);
+    filter:
+      drop-shadow(0 0 80px rgba(255, 215, 0, 0.9))
+      blur(14px) brightness(1.5);
+  }
+  45%{
+    opacity: 1;
+    transform: scale(1.04) translateY(0);
+    filter:
+      drop-shadow(0 0 60px rgba(255, 215, 0, 0.85))
+      blur(2.5px) brightness(1.18);
+  }
+  72%{
+    opacity: 1;
+    transform: scale(1.0) translateY(0);
+    filter:
+      drop-shadow(0 0 45px rgba(255, 215, 0, 0.75))
+      blur(0) brightness(1);
+  }
+  100%{
+    opacity: 1;
+    transform: scale(1.0) translateY(0);
+    filter:
+      drop-shadow(0 0 35px rgba(255, 215, 0, 0.6))
+      blur(0) brightness(1);
+  }
+}
+
+/* Disable shockwave / explosion artifacts (we removed JS calls too, but kill CSS for safety) */
+.shockwave,
+.flash-overlay,
+.explosion-particle{
+  display: none !important;
+  animation: none !important;
+}
+
+/* Disable screen-shake visual */
+body.screen-shake{
+  animation: none !important;
+}
+
+/* =========================================================================
+   ===== HERO SUBTITLE «Скорость. Тактика.» — per-char cinematic fall =====
+   =========================================================================
+   JS wrapSubtitleWords() is updated to wrap each char in .ch with --i (index)
+   and --r (rotation). Spaces are non-breaking. */
+
+/* Words become layout containers — chars handle visibility */
+.subtitle .word{
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  animation: none !important;
+}
+
+.subtitle .ch{
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(-70px) rotate(var(--r, -14deg)) scale(0.5);
+  filter: blur(9px);
+  will-change: transform, opacity, filter;
+  transform-origin: 50% 50%;
+}
+
+.hero-anim .subtitle .ch{
+  animation: subCharFall 780ms cubic-bezier(0.34, 1.52, 0.64, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 42ms + 180ms);
+}
+
+@keyframes subCharFall{
+  0%{
+    opacity: 0;
+    transform: translateY(-70px) rotate(var(--r, -14deg)) scale(0.5);
+    filter: blur(9px);
+  }
+  55%{
+    opacity: 1;
+    transform: translateY(10px) rotate(calc(var(--r, -14deg) * -0.18)) scale(1.08);
+    filter: blur(0);
+  }
+  78%{
+    opacity: 1;
+    transform: translateY(-3px) rotate(0deg) scale(1.0);
+    filter: blur(0);
+  }
+  100%{
+    opacity: 1;
+    transform: translateY(0) rotate(0deg) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* When language switches BEFORE hero animation, keep chars visible */
+body:not(.hero-anim) .subtitle .ch{
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .hero-anim .main-title,
+  .hero-anim .subtitle .ch{
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+  }
+}
   </style>
 </head>
 
@@ -7578,8 +7771,8 @@ svg.ic-svg-login {
       </div>
       <!-- Progress bar -->
       <div class="rm-progress-wrap reveal" data-delay="1">
-        <div class="rm-progress-label"><span data-i18n="ultra-roadmap-progress">Прогресс</span> <strong>46%</strong></div>
-        <div class="rm-progress-bar"><i style="--p:46%"></i></div>
+        <div class="rm-progress-label"><span data-i18n="ultra-roadmap-progress">Прогресс</span> <strong>60%</strong></div>
+        <div class="rm-progress-bar"><i style="--p:60%"></i></div>
       </div>
 
       <!-- Current task -->
@@ -7587,7 +7780,7 @@ svg.ic-svg-login {
         <span class="rm-current-icon">⏳</span>
         <div>
           <div class="rm-current-label" data-i18n="ultra-roadmap-now">Сейчас</div>
-          <div class="rm-current-task" data-i18n="ultra-rm-8">Разработка базового персонажа</div>
+          <div class="rm-current-task" data-i18n="ultra-rm-9">Разработка нескольких игровых зон с другими врагами</div>
         </div>
       </div>
 
@@ -7636,27 +7829,23 @@ svg.ic-svg-login {
           <div class="tl-progress"><i style="--p:100%"></i></div>
         </div>
 
-        <!-- ⏳ In progress -->
+        <!-- ✅ Now done (was: in progress) -->
+        <div class="tl-item is-done reveal" data-delay="3">
+          <div class="tl-dot"></div>
+          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-done">Готово</span></div>
+          <div class="tl-title" data-i18n="ultra-rm-8">Разработка базового персонажа</div>
+          <div class="tl-progress"><i style="--p:100%"></i></div>
+        </div>
+
+        <!-- ⏳ Now in progress (shifted forward) -->
         <div class="tl-item is-now reveal" data-delay="3">
           <div class="tl-dot"></div>
           <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-now">Сейчас</span></div>
-          <div class="tl-title" data-i18n="ultra-rm-8">Разработка базового персонажа</div>
-          <div class="tl-progress"><i style="--p:50%"></i></div>
+          <div class="tl-title" data-i18n="ultra-rm-9">Разработка нескольких игровых зон с другими врагами</div>
+          <div class="tl-progress"><i style="--p:15%"></i></div>
         </div>
 
         <!-- ☐ Pending tasks -->
-        <div class="tl-item is-future reveal" data-delay="3">
-          <div class="tl-dot"></div>
-          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-planned">Запланировано</span></div>
-          <div class="tl-title" data-i18n="ultra-rm-9">Разработка нескольких игровых зон с другими врагами</div>
-          <div class="tl-progress"><i style="--p:0%"></i></div>
-        </div>
-        <div class="tl-item is-future reveal" data-delay="4">
-          <div class="tl-dot"></div>
-          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-planned">Запланировано</span></div>
-          <div class="tl-title" data-i18n="ultra-rm-10">Реализация переходов между зонами</div>
-          <div class="tl-progress"><i style="--p:0%"></i></div>
-        </div>
         <div class="tl-item is-future reveal" data-delay="4">
           <div class="tl-dot"></div>
           <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-planned">Запланировано</span></div>
@@ -7889,7 +8078,8 @@ svg.ic-svg-login {
         <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener" data-i18n="footer-support">Поддержка</a>
       </nav>
     </div>
-    <p class="site-footer-contact" data-i18n="footer-contact">Есть вопросы? пишите нам: <a href="mailto:support@evades3.com">support@evades3.com</a></p>
+    <p class="site-footer-contact" data-i18n="footer-contact">Есть вопросы? пишите нам: <a class="site-footer-mail" href="mailto:support@evades3.com">support@evades3.com</a></p>
+    <p class="site-footer-mail-warn" data-i18n="footer-mail-disabled">⚠ Почта временно не работает — пишите нам в <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.</p>
   </footer>
   
 <script>
@@ -7999,6 +8189,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Cookies',
                 'footer-support': 'Поддержка',
                 'footer-contact': 'Есть вопросы? Пишите нам: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ Почта временно не работает — пишите нам в <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'Скачать Evades 3',
                 'follow-dev': 'Следить за разработкой',
 
@@ -8211,6 +8402,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Cookies',
                 'footer-support': 'Support',
                 'footer-contact': 'Have questions? Write to us: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ Email is temporarily unavailable — please write to us on <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'Download Evades 3',
                 'follow-dev': 'Follow development',
 
@@ -8423,6 +8615,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Cookies',
                 'footer-support': 'Підтримка',
                 'footer-contact': 'Є питання? Пишіть нам: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ Пошта тимчасово не працює — пишіть нам у <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'Завантажити Evades 3',
                 'follow-dev': 'Стежити за розробкою',
 
@@ -8635,6 +8828,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Cookies',
                 'footer-support': 'Support',
                 'footer-contact': 'Fragen? Schreib uns: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ E-Mail vorübergehend nicht verfügbar — schreibt uns auf <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'Evades 3 herunterladen',
                 'follow-dev': 'Entwicklung verfolgen',
 
@@ -8847,6 +9041,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Cookies',
                 'footer-support': 'Soporte',
                 'footer-contact': '¿Tienes preguntas? Escríbenos: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ El correo no funciona temporalmente — escríbenos en <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'Descargar Evades 3',
                 'follow-dev': 'Seguir el desarrollo',
 
@@ -9059,6 +9254,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Cookies',
                 'footer-support': 'Support',
                 'footer-contact': 'Des questions ? Écrivez-nous : <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ L\'e-mail est temporairement indisponible — écrivez-nous sur <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'Télécharger Evades 3',
                 'follow-dev': 'Suivre le développement',
 
@@ -9271,6 +9467,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Cookie',
                 'footer-support': 'Assistenza',
                 'footer-contact': 'Hai domande? Scrivici: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ L\'email è temporaneamente non disponibile — scriveteci su <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'Scarica Evades 3',
                 'follow-dev': 'Seguire lo sviluppo',
 
@@ -9483,6 +9680,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Cookies',
                 'footer-support': 'Suporte',
                 'footer-contact': 'Tem dúvidas? Escreva para nós: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ O e-mail está temporariamente indisponível — escreva-nos no <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'Baixar Evades 3',
                 'follow-dev': 'Acompanhar o desenvolvimento',
 
@@ -9695,6 +9893,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Pliki cookie',
                 'footer-support': 'Pomoc',
                 'footer-contact': 'Masz pytania? Napisz do nas: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ E-mail tymczasowo nie działa — piszcie do nas na <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'Pobierz Evades 3',
                 'follow-dev': 'Śledzić rozwój',
 
@@ -9907,6 +10106,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Çerezler',
                 'footer-support': 'Destek',
                 'footer-contact': 'Sorunuz mu var? Bize yazın: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ E-posta geçici olarak çalışmıyor — bize <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>\'dan yazın.',
                 'download-btn': 'Evades 3 İndir',
                 'follow-dev': 'Gelişimi takip et',
 
@@ -10119,6 +10319,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Cookies',
                 'footer-support': 'Ondersteuning',
                 'footer-contact': 'Vragen? Schrijf ons: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ E-mail tijdelijk niet beschikbaar — schrijf ons op <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'Download Evades 3',
                 'follow-dev': 'Volg de ontwikkeling',
 
@@ -10331,6 +10532,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Cookies',
                 'footer-support': 'Support',
                 'footer-contact': 'Har du frågor? Skriv till oss: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ E-post är tillfälligt otillgänglig — skriv till oss på <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'Ladda ner Evades 3',
                 'follow-dev': 'Följ utvecklingen',
 
@@ -10543,6 +10745,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Informasjonskapsler',
                 'footer-support': 'Støtte',
                 'footer-contact': 'Har du spørsmål? Skriv til oss: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ E-post er midlertidig utilgjengelig — skriv til oss på <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'Last ned Evades 3',
                 'follow-dev': 'Følg utviklingen',
 
@@ -10755,6 +10958,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Evästeet',
                 'footer-support': 'Tuki',
                 'footer-contact': 'Onko kysyttävää? Kirjoita meille: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ Sähköposti ei toimi tilapäisesti — kirjoita meille <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>issa.',
                 'download-btn': 'Lataa Evades 3',
                 'follow-dev': 'Seuraa kehitystä',
 
@@ -10967,6 +11171,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Cookies',
                 'footer-support': 'Support',
                 'footer-contact': 'Har du spørgsmål? Skriv til os: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ E-mail er midlertidigt utilgængelig — skriv til os på <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'Download Evades 3',
                 'follow-dev': 'Følg udviklingen',
 
@@ -11179,6 +11384,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Cookies',
                 'footer-support': 'Podpora',
                 'footer-contact': 'Máte dotazy? Napište nám: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ E-mail dočasně nefunguje — pište nám na <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'Stáhnout Evades 3',
                 'follow-dev': 'Sledovat vývoj',
 
@@ -11391,6 +11597,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Cookie-uri',
                 'footer-support': 'Asistență',
                 'footer-contact': 'Ai întrebări? Scrie-ne: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ E-mailul este temporar indisponibil — scrieți-ne pe <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'Descarcă Evades 3',
                 'follow-dev': 'Urmărește dezvoltarea',
 
@@ -11603,6 +11810,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Sütik',
                 'footer-support': 'Támogatás',
                 'footer-contact': 'Kérdésed van? Írj nekünk: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ Az e-mail átmenetileg nem működik — írjatok nekünk a <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>on.',
                 'download-btn': 'Evades 3 letöltése',
                 'follow-dev': 'Kövesd a fejlesztést',
 
@@ -11815,6 +12023,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Cookies',
                 'footer-support': 'Υποστήριξη',
                 'footer-contact': 'Έχεις ερωτήσεις; Γράψε μας: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ Το email δεν λειτουργεί προσωρινά — γράψτε μας στο <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'Λήψη Evades 3',
                 'follow-dev': 'Παρακολούθησε την ανάπτυξη',
 
@@ -12027,6 +12236,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Cookie',
                 'footer-support': 'サポート',
                 'footer-contact': 'ご質問はありますか？ こちらへ: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ メールは一時的に利用できません — <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a> までご連絡ください。',
                 'download-btn': 'Evades 3 をダウンロード',
                 'follow-dev': '開発を追う',
 
@@ -12239,6 +12449,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Cookie',
                 'footer-support': '支持',
                 'footer-contact': '有问题吗？请写信给我们：<a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ 邮件暂时无法使用 — 请通过 <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a> 联系我们。',
                 'download-btn': '下载 Evades 3',
                 'follow-dev': '关注开发进展',
 
@@ -12451,6 +12662,7 @@ svg.ic-svg-login {
                 'footer-cookies': '쿠키',
                 'footer-support': '지원',
                 'footer-contact': '문의가 있으신가요? 메일 주세요: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ 이메일이 일시적으로 사용 불가능합니다 — <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>로 문의해 주세요.',
                 'download-btn': 'Evades 3 다운로드',
                 'follow-dev': '개발 진행 상황 보기',
 
@@ -12663,6 +12875,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'ملفات تعريف الارتباط',
                 'footer-support': 'الدعم',
                 'footer-contact': 'هل لديك أسئلة؟ اكتب لنا: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ البريد الإلكتروني غير متاح مؤقتًا — راسلونا على <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'تحميل Evades 3',
                 'follow-dev': 'تابع التطوير',
 
@@ -12875,6 +13088,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'कुकीज़',
                 'footer-support': 'सहायता',
                 'footer-contact': 'कोई सवाल है? हमें लिखें: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ ईमेल अस्थायी रूप से उपलब्ध नहीं है — हमें <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a> पर लिखें।',
                 'download-btn': 'Evades 3 डाउनलोड करें',
                 'follow-dev': 'विकास पर नज़र रखें',
 
@@ -13087,6 +13301,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'คุกกี้',
                 'footer-support': 'ฝ่ายสนับสนุน',
                 'footer-contact': 'มีคำถามไหม? เขียนหาเราได้ที่: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ อีเมลใช้งานไม่ได้ชั่วคราว — เขียนถึงเราที่ <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>',
                 'download-btn': 'ดาวน์โหลด Evades 3',
                 'follow-dev': 'ติดตามการพัฒนา',
 
@@ -13299,6 +13514,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Cookie',
                 'footer-support': 'Hỗ trợ',
                 'footer-contact': 'Có câu hỏi? Hãy viết cho chúng tôi: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ Email tạm thời không khả dụng — vui lòng nhắn cho chúng tôi trên <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'Tải Evades 3',
                 'follow-dev': 'Theo dõi quá trình phát triển',
 
@@ -13511,6 +13727,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Cookie',
                 'footer-support': 'Dukungan',
                 'footer-contact': 'Punya pertanyaan? Tulis ke kami: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ Email sementara tidak tersedia — hubungi kami di <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'Unduh Evades 3',
                 'follow-dev': 'Ikuti pengembangan',
 
@@ -13723,6 +13940,7 @@ svg.ic-svg-login {
                 'footer-cookies': 'Kuki',
                 'footer-support': 'Sokongan',
                 'footer-contact': 'Ada soalan? Tulis kepada kami: <a href="mailto:support@evades3.com">support@evades3.com</a>',
+                'footer-mail-disabled': '⚠ E-mel tidak tersedia buat sementara waktu — hubungi kami di <a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener">Discord</a>.',
                 'download-btn': 'Muat turun Evades 3',
                 'follow-dev': 'Ikuti pembangunan',
 
@@ -13896,10 +14114,32 @@ svg.ic-svg-login {
       const first = parts.shift() || '';
       const rest = parts.join(' ') || '';
 
-      sub.innerHTML = `
-        <span class="word word1">${first}</span>
-        <span class="word word2">${rest}</span>
-      `;
+      // Per-char wrapping for cinematic fall-in animation.
+      // Each .ch gets --i (index for stagger) and --r (rotation jitter).
+      let idx = 0;
+      function escapeHtml(c){
+        switch(c){
+          case '&': return '&amp;';
+          case '<': return '&lt;';
+          case '>': return '&gt;';
+          case '"': return '&quot;';
+          case "'": return '&#39;';
+          default: return c;
+        }
+      }
+      function makeChars(str){
+        const chars = Array.from(str);
+        return chars.map((c) => {
+          // pseudo-random but deterministic rotation in [-18deg .. +18deg]
+          const r = (((idx * 73 + 11) % 37) - 18);
+          const display = (c === ' ') ? '\u00A0' : escapeHtml(c);
+          const html = `<span class="ch" style="--i:${idx}; --r:${r}deg">${display}</span>`;
+          idx += 1;
+          return html;
+        }).join('');
+      }
+
+      sub.innerHTML = `<span class="word word1">${makeChars(first)}</span><span class="word word2">${makeChars(rest)}</span>`;
     }
 
     // ====== ВЗРЫВНЫЕ ЧАСТИЦЫ ======
@@ -13987,14 +14227,14 @@ svg.ic-svg-login {
           //  1900ms — пик взрыва (вспышка 35% от 1.2s = 420ms после старта)
           //  2700ms — заголовок осел в финальную позицию
           //  2800ms — ui-ready: появляется кнопка
-          setTimeout(() => {
-            explodeTitle();
-            document.body.classList.add('screen-shake');
-
-            setTimeout(() => {
-              document.body.classList.remove('screen-shake');
-            }, 500);
-          }, 1900);
+          // (Удар-волна и screen-shake убраны — давали "цензур-полосу" и моргание)
+          // setTimeout(() => {
+          //   explodeTitle();
+          //   document.body.classList.add('screen-shake');
+          //   setTimeout(() => {
+          //     document.body.classList.remove('screen-shake');
+          //   }, 500);
+          // }, 1900);
 
           setTimeout(() => {
             document.body.classList.add('ui-ready');
