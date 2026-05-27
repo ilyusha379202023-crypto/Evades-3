@@ -3,27 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>404 - Страница не найдена | Evades 3</title>
+  <title>404 — Страница не найдена | Evades 3</title>
   <link rel="icon" href="logo.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;600;700&family=Exo+2:wght@300;600;800;900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;600;700&family=Exo+2:wght@300;600;800;900&family=JetBrains+Mono:wght@400;600&display=swap"
     rel="stylesheet"
   />
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    :root{
+      --green-deep:  #1a4d2e;
+      --green-mid:   #2d7a4f;
+      --green-light: #4a9d6f;
+      --gold:        #FFD84D;
+      --gold-soft:   #ffe66e;
+      --gold-deep:   #B8860B;
+      --discord:     #5865f2;
+    }
+
     body {
       font-family: 'Exo 2', 'Orbitron', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      background: linear-gradient(135deg, #1a4d2e 0%, #2d7a4f 25%, #4a9d6f 50%, #2d7a4f 75%, #1a4d2e 100%);
-      background-size: 400% 400%;
-      animation: gradientShift 15s ease infinite;
-      overflow: hidden;
+      color: white;
+      background:
+        radial-gradient(60% 50% at 20% 25%, rgba(255, 215, 0, 0.10) 0%, transparent 70%),
+        radial-gradient(50% 40% at 80% 75%, rgba(74, 222, 128, 0.18) 0%, transparent 70%),
+        linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 25%, var(--green-light) 50%, var(--green-mid) 75%, var(--green-deep) 100%);
+      background-size: auto, auto, 400% 400%;
+      animation: gradientShift 18s ease infinite;
+      overflow-x: hidden;
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -31,69 +45,130 @@
       position: relative;
     }
 
+    /* Subtle vignette + corner highlights */
     body::before {
       content: '';
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      inset: 0;
       background:
-        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.05) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.03) 0%, transparent 50%);
+        radial-gradient(circle at 15% 25%, rgba(255,255,255,0.05) 0%, transparent 35%),
+        radial-gradient(circle at 85% 75%, rgba(255,255,255,0.04) 0%, transparent 35%),
+        radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.45) 100%);
       pointer-events: none;
       z-index: 1;
     }
 
+    /* Animated grid (very subtle) for depth */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.6;
+      animation: gridDrift 40s linear infinite;
+    }
+
+    @keyframes gridDrift {
+      0%   { transform: translate(0, 0); }
+      100% { transform: translate(60px, 60px); }
+    }
+
     @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      0%   { background-position: 0% 50%, 0% 50%, 0% 50%; }
+      50%  { background-position: 100% 50%, 100% 50%, 100% 50%; }
+      100% { background-position: 0% 50%, 0% 50%, 0% 50%; }
     }
 
     .sparkle {
       position: absolute;
-      width: 4px;
-      height: 4px;
+      width: 3px;
+      height: 3px;
       background: white;
       border-radius: 50%;
-      animation: sparkleFloat 3s ease-in-out infinite;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      animation: sparkleFloat 3.5s ease-in-out infinite;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.85);
       pointer-events: none;
       z-index: 2;
+      will-change: transform, opacity;
     }
 
     @keyframes sparkleFloat {
       0%, 100% { transform: translateY(0) scale(1); opacity: 0; }
-      50% { transform: translateY(-30px) scale(1.5); opacity: 1; }
+      50%      { transform: translateY(-28px) scale(1.5); opacity: 1; }
     }
 
+    /* ============ MAIN ERROR LAYOUT ============ */
     .error-container {
       position: relative;
       z-index: 10;
       text-align: center;
-      padding: 20px;
-      max-width: 800px;
-      animation: fadeInUp 1s ease;
+      padding: 32px 20px;
+      max-width: 880px;
+      width: 100%;
+      animation: containerIn 800ms cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
     }
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes containerIn {
+      from { opacity: 0; transform: translateY(28px); filter: blur(6px); }
+      to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+    }
+
+    /* ============ 4-0-4 NUMBER ============ */
+    .error-code-wrap {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+
+    /* Shockwave ring (pseudo on wrapper, not on the number itself) */
+    .error-code-wrap::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 55%;
+      width: 30px;
+      height: 30px;
+      transform: translate(-50%, -50%) scale(0.6);
+      border: 4px solid rgba(255, 235, 150, 0.85);
+      border-radius: 50%;
+      box-shadow:
+        0 0 60px rgba(255, 215, 0, 0.55),
+        inset 0 0 25px rgba(255, 235, 150, 0.35);
+      mix-blend-mode: screen;
+      pointer-events: none;
+      opacity: 0;
+      animation: codeShockwave 1500ms cubic-bezier(0.15, 0.7, 0.3, 1) 350ms forwards;
+      z-index: -1;
+    }
+
+    @keyframes codeShockwave {
+      0%   { opacity: 0;   transform: translate(-50%, -50%) scale(0.4); border-width: 6px; }
+      10%  { opacity: 1;   transform: translate(-50%, -50%) scale(1.0); border-width: 5px; }
+      60%  { opacity: 0.5; transform: translate(-50%, -50%) scale(14);  border-width: 2px; }
+      100% { opacity: 0;   transform: translate(-50%, -50%) scale(24);  border-width: 1px; }
     }
 
     .error-code {
       position: relative;
       display: inline-block;
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(80px, 15vw, 140px);
+      font-size: clamp(80px, 15vw, 156px);
       font-weight: 900;
       letter-spacing: 10px;
-      color: #FFD84D;
+      color: var(--gold);
       -webkit-text-stroke: 4px #000000;
       text-stroke: 4px #000000;
       paint-order: stroke fill;
       text-shadow:
-        0 1px 0 #B8860B,
-        0 2px 0 #B8860B,
+        0 1px 0 var(--gold-deep),
+        0 2px 0 var(--gold-deep),
         0 3px 0 #9A7209,
         0 4px 0 #9A7209,
         0 5px 0 #7C5E07,
@@ -102,78 +177,210 @@
         0 8px 0 #5E4A05,
         0 12px 25px rgba(0,0,0,0.5),
         0 15px 35px rgba(0,0,0,0.4),
-        0 0 30px rgba(255,215,0,0.8),
-        0 0 50px rgba(255,215,0,0.6),
-        0 0 70px rgba(255,140,0,0.4);
-      filter: drop-shadow(0 0 40px rgba(255,215,0,0.8));
-      animation: errorPulse 3s ease-in-out infinite;
-      margin-bottom: 15px;
+        0 0 30px rgba(255,215,0,0.7),
+        0 0 50px rgba(255,215,0,0.5),
+        0 0 70px rgba(255,140,0,0.3);
+      filter: drop-shadow(0 0 35px rgba(255,215,0,0.8));
+      animation:
+        codeSlamIn 1200ms cubic-bezier(0.16, 1, 0.3, 1) 200ms backwards,
+        codeIdle 4.2s ease-in-out 1800ms infinite;
+      transform-origin: 50% 60%;
     }
 
-    @keyframes errorPulse {
-      0%, 100% {
-        transform: scale(1);
-        filter: drop-shadow(0 0 40px rgba(255,215,0,0.8));
-      }
-      50% {
-        transform: scale(1.03);
-        filter: drop-shadow(0 0 60px rgba(255,215,0,1));
-      }
+    @keyframes codeSlamIn {
+      0%   { opacity: 0; transform: scale(0.55); filter: drop-shadow(0 0 0 transparent) blur(14px) brightness(2.6); }
+      18%  { opacity: 1; transform: scale(1.40); filter: drop-shadow(0 0 140px rgba(255,255,240,1)) drop-shadow(0 0 70px rgba(255,215,0,0.9)) blur(0) brightness(2.2); }
+      40%  { opacity: 1; transform: scale(0.92); filter: drop-shadow(0 0 55px rgba(255,215,0,0.85)) blur(0) brightness(1.2); }
+      62%  { opacity: 1; transform: scale(1.06); filter: drop-shadow(0 0 50px rgba(255,215,0,0.78)) blur(0) brightness(1.05); }
+      80%  { opacity: 1; transform: scale(0.98); }
+      100% { opacity: 1; transform: scale(1.0);  filter: drop-shadow(0 0 35px rgba(255,215,0,0.7)) blur(0) brightness(1); }
     }
 
-    .error-code .floating-zero {
+    @keyframes codeIdle {
+      0%, 100% { transform: scale(1);    filter: drop-shadow(0 0 35px rgba(255,215,0,0.7)); }
+      50%      { transform: scale(1.025); filter: drop-shadow(0 0 55px rgba(255,215,0,0.95)); }
+    }
+
+    .floating-zero {
       display: inline-block;
-      animation: floatingZero 2s ease-in-out infinite;
+      animation: floatingZero 2.4s ease-in-out 2200ms infinite;
     }
 
     @keyframes floatingZero {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      25% { transform: translateY(-10px) rotate(-2deg); }
-      75% { transform: translateY(10px) rotate(2deg); }
+      0%, 100% { transform: translateY(0)   rotate(0deg); }
+      25%      { transform: translateY(-9px) rotate(-3deg); }
+      75%      { transform: translateY(9px)  rotate(3deg); }
     }
 
+    /* ============ TITLE / DESCRIPTION ============ */
     .error-title {
-      font-size: clamp(24px, 4vw, 36px);
-      color: white;
+      font-size: clamp(22px, 4vw, 34px);
       font-weight: 900;
-      margin-bottom: 12px;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
+      margin-bottom: 14px;
       text-shadow: 0 0 30px rgba(255,255,255,0.3);
-      animation: fadeIn 1s ease 0.3s both;
+      animation: fadeIn 1s ease 0.6s both;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     .error-description {
       font-size: clamp(14px, 2vw, 16px);
       color: rgba(255,255,255,0.9);
       line-height: 1.6;
-      margin-bottom: 25px;
-      animation: fadeIn 1s ease 0.5s both;
+      margin: 0 auto 18px;
+      max-width: 580px;
+      animation: fadeIn 1s ease 0.75s both;
     }
 
+    /* Show the URL the user actually tried */
+    .url-tried {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 6px auto 20px;
+      padding: 8px 14px 8px 12px;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 999px;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 13px;
+      color: rgba(255,255,255,0.85);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.1),
+        0 6px 18px rgba(0,0,0,0.25);
+      animation: fadeIn 1s ease 0.85s both;
+      max-width: 90%;
+      overflow: hidden;
+    }
+    .url-tried-icon {
+      display: inline-flex;
+      width: 18px;
+      height: 18px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(244, 63, 94, 0.18);
+      color: #fda4af;
+      font-weight: 900;
+      font-size: 11px;
+      flex: 0 0 auto;
+    }
+    .url-tried-label {
+      color: rgba(255,255,255,0.55);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .url-tried-path {
+      color: #fde68a;
+      font-weight: 600;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* ============ "DID YOU MEAN" SUGGESTION ============ */
+    .did-you-mean {
+      display: none;            /* JS toggles this to flex */
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      margin: 0 auto 24px;
+      padding: 16px 22px;
+      max-width: 560px;
+      width: 100%;
+      background:
+        linear-gradient(180deg, rgba(74, 222, 128, 0.18), rgba(34, 197, 94, 0.10)),
+        rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(110, 231, 183, 0.45);
+      border-radius: 18px;
+      box-shadow:
+        0 20px 50px rgba(22, 163, 74, 0.18),
+        inset 0 1px 0 rgba(255,255,255,0.18);
+      animation: dymIn 700ms cubic-bezier(0.16, 1, 0.3, 1) 1.1s both;
+    }
+    .did-you-mean.is-visible { display: flex; }
+
+    @keyframes dymIn {
+      from { opacity: 0; transform: translateY(10px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0)    scale(1); }
+    }
+
+    .dym-head {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #6ee7b7;
+      font-weight: 700;
+    }
+    .dym-head::before {
+      content: "💡";
+      font-size: 18px;
+    }
+    .dym-body {
+      font-size: clamp(15px, 2.2vw, 18px);
+      color: white;
+      font-weight: 600;
+    }
+    .dym-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px 6px;
+      margin: 0 4px;
+      background: rgba(110, 231, 183, 0.18);
+      border: 1px solid rgba(110, 231, 183, 0.5);
+      border-radius: 999px;
+      color: #6ee7b7;
+      text-decoration: none;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-weight: 700;
+      font-size: 0.92em;
+      transition: background 180ms ease, color 180ms ease, border-color 180ms ease, transform 180ms ease;
+    }
+    .dym-link:hover {
+      background: rgba(110, 231, 183, 0.32);
+      color: white;
+      border-color: rgba(255,255,255,0.6);
+      transform: translateY(-1px);
+    }
+    .dym-link strong { font-weight: 800; }
+    .dym-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,0.65);
+      margin-top: 2px;
+    }
+
+    /* ============ SUGGESTIONS CARD ============ */
     .suggestions-card {
       background: rgba(255,255,255,0.08);
       backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border-radius: 20px;
       border: 1px solid rgba(255,255,255,0.15);
-      padding: 20px;
+      padding: 22px 24px;
       box-shadow:
         0 20px 60px rgba(0,0,0,0.3),
         inset 0 1px 0 rgba(255,255,255,0.2);
-      margin-bottom: 25px;
-      animation: fadeIn 1s ease 0.7s both;
+      margin: 0 auto 28px;
+      max-width: 560px;
+      animation: fadeIn 1s ease 1.0s both;
     }
 
     .suggestions-title {
-      font-size: 20px;
-      color: #ffd700;
-      font-weight: bold;
-      margin-bottom: 15px;
-      text-shadow: 0 0 10px rgba(255,215,0,0.5);
+      font-size: 18px;
+      color: var(--gold);
+      font-weight: 800;
+      margin-bottom: 14px;
+      text-shadow: 0 0 10px rgba(255,215,0,0.4);
+      letter-spacing: 0.5px;
     }
 
     .suggestions-list {
@@ -187,11 +394,13 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      color: rgba(255,255,255,0.85);
+      color: rgba(255,255,255,0.88);
       font-size: 14px;
       margin: 0 0 8px;
       padding: 0;
+      line-height: 1.5;
     }
+    .suggestions-list li:last-child { margin-bottom: 0; }
 
     .suggestions-list li::before {
       content: '→';
@@ -205,13 +414,14 @@
       line-height: 1;
     }
 
+    /* ============ BUTTONS ============ */
     .button-container {
       display: flex;
-      gap: 15px;
+      gap: 16px;
       justify-content: center;
       flex-wrap: wrap;
-      margin-top: 25px;
-      animation: fadeIn 1s ease 0.9s both;
+      margin-top: 8px;
+      animation: fadeIn 1s ease 1.15s both;
     }
 
     .back-button,
@@ -221,7 +431,6 @@
       justify-content: center;
       gap: 10px;
       min-height: 62px;
-      background: linear-gradient(180deg, #4ade80 0%, #22c55e 45%, #16a34a 100%);
       color: white;
       padding: 14px 35px;
       font-size: 17px;
@@ -235,11 +444,6 @@
       transform-origin: center;
       will-change: box-shadow, filter, transform;
       transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
-      box-shadow:
-        0 10px 0 #15803d,
-        0 14px 22px rgba(0,0,0,0.48),
-        inset 0 2px 0 rgba(255,255,255,0.55),
-        inset 0 -7px 12px rgba(0,0,0,0.4);
       text-shadow:
         0 2px 0 rgba(0,0,0,0.6),
         0 8px 20px rgba(0,0,0,0.35);
@@ -265,6 +469,11 @@
 
     .back-button {
       background: linear-gradient(180deg, #4ade80 0%, #22c55e 45%, #16a34a 100%);
+      box-shadow:
+        0 10px 0 #15803d,
+        0 14px 22px rgba(0,0,0,0.48),
+        inset 0 2px 0 rgba(255,255,255,0.55),
+        inset 0 -7px 12px rgba(0,0,0,0.4);
     }
 
     .discord-button {
@@ -276,13 +485,21 @@
         inset 0 -7px 12px rgba(0,0,0,0.4);
     }
 
+    .home-icon {
+      width: 22px;
+      height: 22px;
+      flex: 0 0 auto;
+      filter: drop-shadow(0 2px 0 rgba(0,0,0,0.45));
+    }
+
     .discord-icon {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       flex: 0 0 auto;
       object-fit: contain;
       transform: translateY(0);
       transition: transform 0.2s ease;
+      filter: drop-shadow(0 2px 0 rgba(0,0,0,0.45));
     }
 
     .back-button:hover {
@@ -338,82 +555,216 @@
     }
 
     @keyframes buttonPress {
-      0% { transform: translateY(0) scale(1); }
-      45% { transform: translateY(8px) scale(0.985); }
-      70% { transform: translateY(5px) scale(0.99); }
+      0%   { transform: translateY(0)   scale(1); }
+      45%  { transform: translateY(8px) scale(0.985); }
+      70%  { transform: translateY(5px) scale(0.99); }
       100% { transform: translateY(6px) scale(0.988); }
     }
 
+    /* ============ MOBILE ============ */
     @media (max-width: 768px) {
-      .error-container {
-        padding: 20px;
+      .error-container { padding: 20px 16px; }
+      .suggestions-card { padding: 18px 16px; }
+      .back-button, .discord-button {
+        padding: 16px 28px;
+        font-size: 16px;
+        letter-spacing: 1px;
       }
-
-      .error-code {
-        margin-bottom: 20px;
-      }
-
-      .suggestions-card {
-        padding: 20px;
-      }
-
-      .back-button {
-        padding: 16px 40px;
-        font-size: 18px;
-      }
-
-      .discord-button {
-        padding: 16px 40px;
-        font-size: 18px;
-      }
-
-      .button-container {
-        gap: 15px;
-      }
+      .button-container { gap: 12px; }
+      .did-you-mean { padding: 14px 16px; }
+      .dym-body { font-size: 15px; }
+      .url-tried { font-size: 12px; padding: 7px 12px 7px 10px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      * {
-        animation: none !important;
-        transition: none !important;
+      *,
+      *::before,
+      *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        animation-delay: 0ms !important;
+        transition-duration: 1ms !important;
       }
+      body, body::after, body::before { animation: none !important; }
     }
   </style>
 </head>
 
 <body>
   <div class="error-container">
-    <div class="error-code">
-      4<span class="floating-zero">0</span>4
+    <div class="error-code-wrap">
+      <div class="error-code">
+        4<span class="floating-zero">0</span>4
+      </div>
     </div>
 
-    <h1 class="error-title">Ты увернулся... но не туда 😅</h1>
+    <h1 class="error-title">Ты увернулся… но не туда 😅</h1>
 
     <p class="error-description">
-      Такой страницы нет. Возможно, ссылка устарела или ты ошибся в адресе. Вернись на главную или открой Discord проекта.
+      Такой страницы нет. Возможно, ссылка устарела или ты ошибся в адресе.
     </p>
+
+    <div class="url-tried" id="urlTried" aria-hidden="true">
+      <span class="url-tried-icon">!</span>
+      <span class="url-tried-label">URL:</span>
+      <span class="url-tried-path" id="urlTriedPath">/</span>
+    </div>
+
+    <!-- "Did you mean" suggestion — shown only when a close match exists -->
+    <div class="did-you-mean" id="didYouMean" role="alert" aria-live="polite">
+      <span class="dym-head">Подсказка</span>
+      <div class="dym-body">
+        Возможно, вы имели в виду
+        <a class="dym-link" id="dymLink" href="/"><strong>/</strong></a>
+        <span id="dymSuffix">?</span>
+      </div>
+      <div class="dym-sub" id="dymSub"></div>
+    </div>
 
     <div class="suggestions-card">
       <div class="suggestions-title">Что можно сделать?</div>
       <ul class="suggestions-list">
         <li>Вернуться на главную страницу</li>
         <li>Проверить правильность адреса</li>
-        <li>Открыть Discord проекта</li>
-        <li>Попробовать поиск на сайте</li>
+        <li>Открыть Discord проекта и спросить там</li>
+        <li>Попробовать перезагрузить страницу через минуту</li>
       </ul>
     </div>
 
     <div class="button-container">
-      <a href="https://evades3.pp.ua" class="back-button">Вернуться на главную</a>
+      <a href="https://evades3.pp.ua" class="back-button">
+        <svg class="home-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1v-8.5z" stroke="white" stroke-width="2" stroke-linejoin="round" fill="rgba(255,255,255,0.18)"/>
+        </svg>
+        <span>Вернуться на главную</span>
+      </a>
       <a href="https://discord.gg/kSVnmDRqDs" class="discord-button" target="_blank" rel="noopener">
-        <img src="./dc.png" alt="Discord" class="discord-icon">
+        <img src="./dc.png" alt="Discord" class="discord-icon" onerror="this.style.display='none'">
         <span>Открыть Discord</span>
       </a>
     </div>
   </div>
 
   <script>
-    function createSparkles(count = 30) {
+    /* ===================================================================
+       KNOWN PAGES — used by "Did you mean" suggestion.
+       List ONLY real existing pages on the server, otherwise the suggestion
+       will point to another 404. Add/remove entries as you add/remove
+       real pages. Sections of the home page (FAQ / Roadmap / etc.) can be
+       added as anchors (e.g. /#faq) if you want — strip the # in the URL.
+       =================================================================== */
+    const KNOWN_PAGES = [
+      { path: '/',          label: 'Главная' },
+      { path: '/privacy/',  label: 'Политика конфиденциальности' },
+      { path: '/cookies/',  label: 'Cookies' },
+      { path: '/terms/',    label: 'Условия использования' },
+    ];
+
+    /* ===================================================================
+       Levenshtein distance — classic DP, returns number of single-char
+       edits (insertions, deletions, substitutions) to transform a→b.
+       =================================================================== */
+    function levenshtein(a, b) {
+      a = String(a || '');
+      b = String(b || '');
+      if (a === b) return 0;
+      if (a.length === 0) return b.length;
+      if (b.length === 0) return a.length;
+
+      let prev = new Array(b.length + 1);
+      let curr = new Array(b.length + 1);
+      for (let j = 0; j <= b.length; j++) prev[j] = j;
+
+      for (let i = 1; i <= a.length; i++) {
+        curr[0] = i;
+        for (let j = 1; j <= b.length; j++) {
+          const cost = a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1;
+          curr[j] = Math.min(
+            curr[j - 1] + 1,        // insertion
+            prev[j] + 1,            // deletion
+            prev[j - 1] + cost      // substitution
+          );
+        }
+        [prev, curr] = [curr, prev];
+      }
+      return prev[b.length];
+    }
+
+    /* Extract a normalised slug (lowercase, no slashes, no query/hash) */
+    function slugify(path) {
+      try {
+        const p = (path || '').replace(/[?#].*$/, '');
+        // take first non-empty segment for matching
+        const segments = p.split('/').filter(Boolean);
+        return (segments[0] || '').toLowerCase();
+      } catch (_) {
+        return '';
+      }
+    }
+
+    /* Display the URL the user actually tried */
+    function showTriedUrl() {
+      const el = document.getElementById('urlTriedPath');
+      if (!el) return;
+      let p = (window.location.pathname || '/');
+      const search = window.location.search || '';
+      // truncate very long paths
+      let full = p + search;
+      if (full.length > 80) full = full.slice(0, 77) + '…';
+      el.textContent = full;
+    }
+
+    /* Find the closest matching known page (if any) and show the suggestion */
+    function suggestSimilar() {
+      const slug = slugify(window.location.pathname);
+      if (!slug) return; // root, no suggestion needed
+      // skip suggestion if the slug exactly matches a known page (server config issue?)
+      const exact = KNOWN_PAGES.find(p => slugify(p.path) === slug);
+      if (exact) return;
+
+      let best = null;
+      let bestDist = Infinity;
+      let bestRatio = 0;
+      for (const page of KNOWN_PAGES) {
+        const target = slugify(page.path);
+        if (!target) continue; // skip home
+        const d = levenshtein(slug, target);
+        const ratio = 1 - d / Math.max(slug.length, target.length);
+        // Best candidate = smallest distance, tie-break by ratio
+        if (d < bestDist || (d === bestDist && ratio > bestRatio)) {
+          bestDist = d;
+          bestRatio = ratio;
+          best = page;
+        }
+      }
+
+      // Acceptance thresholds:
+      //  - small absolute distance (≤2) — typo of 1-2 chars
+      //  - OR high ratio (>=0.55) — slug largely overlaps with a real page
+      //  - AND meaningful slug (avoid suggesting "terms" for "x")
+      if (!best || slug.length < 2) return;
+      const accept = bestDist <= 2 || bestRatio >= 0.55;
+      if (!accept) return;
+
+      const link = document.getElementById('dymLink');
+      const sub  = document.getElementById('dymSub');
+      const wrap = document.getElementById('didYouMean');
+      const linkStrong = link ? link.querySelector('strong') : null;
+
+      if (link && linkStrong) {
+        link.setAttribute('href', best.path);
+        linkStrong.textContent = best.path;
+      }
+      if (sub) {
+        sub.textContent = best.label
+          ? `(${best.label}, схожесть ${Math.round(bestRatio * 100)}%)`
+          : `(схожесть ${Math.round(bestRatio * 100)}%)`;
+      }
+      if (wrap) wrap.classList.add('is-visible');
+    }
+
+    /* ============ SPARKLE BACKGROUND ============ */
+    function createSparkles(count) {
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (prefersReducedMotion) return;
 
@@ -421,37 +772,46 @@
         const sparkle = document.createElement('div');
         sparkle.className = 'sparkle';
         sparkle.style.left = Math.random() * 100 + '%';
-        sparkle.style.top = Math.random() * 100 + '%';
-        sparkle.style.animationDelay = Math.random() * 3 + 's';
+        sparkle.style.top  = Math.random() * 100 + '%';
+        sparkle.style.animationDelay = (Math.random() * 3) + 's';
         document.body.appendChild(sparkle);
       }
     }
 
-    document.addEventListener('mousemove', (e) => {
-      const mouseX = e.clientX / window.innerWidth - 0.5;
-      const mouseY = e.clientY / window.innerHeight - 0.5;
-
-      document.querySelectorAll('.sparkle').forEach(el => {
-        const x = mouseX * 20;
-        const y = mouseY * 20;
-        el.style.transform = `translate(${x}px, ${y}px)`;
+    /* Subtle parallax on sparkles */
+    function bindSparkleParallax() {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) return;
+      document.addEventListener('mousemove', (e) => {
+        const mouseX = e.clientX / window.innerWidth  - 0.5;
+        const mouseY = e.clientY / window.innerHeight - 0.5;
+        const tx = mouseX * 20;
+        const ty = mouseY * 20;
+        document.querySelectorAll('.sparkle').forEach(el => {
+          el.style.transform = `translate(${tx}px, ${ty}px)`;
+        });
       });
-    });
+    }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      createSparkles(30);
-
+    /* Button press feedback for touch */
+    function bindButtonPress() {
       const buttons = document.querySelectorAll('.back-button, .discord-button');
       buttons.forEach(button => {
-        button.addEventListener('pointerdown', () => {
-          button.classList.add('is-pressed');
-        });
-
+        button.addEventListener('pointerdown', () => button.classList.add('is-pressed'));
         const release = () => button.classList.remove('is-pressed');
         button.addEventListener('pointerup', release);
         button.addEventListener('pointerleave', release);
         button.addEventListener('blur', release);
       });
+    }
+
+    /* ============ INIT ============ */
+    window.addEventListener('DOMContentLoaded', () => {
+      showTriedUrl();
+      suggestSimilar();
+      createSparkles(34);
+      bindSparkleParallax();
+      bindButtonPress();
     });
   </script>
 </body>
