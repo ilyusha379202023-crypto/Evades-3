@@ -73,35 +73,37 @@
       display: none !important;
     }
     html.perf-mode body {
-      animation: none !important;
+      animation-play-state: paused !important;
       background-attachment: scroll, scroll, scroll, scroll, scroll, scroll !important;
     }
     html.perf-mode body::before {
       display: none !important;
     }
+    /* backdrop-filter (блюр) — самая дорогая по GPU штука на сайте (66 мест),
+       отключаем только её. Тени и анимации не трогаем — они не про лаги
+       и их снятие ломало вид кнопок и витрины. */
     html.perf-mode *,
     html.perf-mode *::before,
     html.perf-mode *::after {
-      animation-duration: 0.001ms !important;
-      animation-delay: 0ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.001ms !important;
-      scroll-behavior: auto !important;
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;
     }
-    html.perf-mode * {
-      box-shadow: none !important;
-      text-shadow: none !important;
-      filter: none !important;
+
+    /* ===== Ленивая пауза витрины анимаций (independent от кнопки Пауза) =====
+       Работает всегда, не только в perf-mode: как только карточка уходит
+       из зоны видимости — её CSS-анимация останавливается (сохранение
+       текущего кадра), при возврате в зону видимости — продолжается. */
+    .showcase-card.e3-offscreen .preview,
+    .showcase-card.e3-offscreen .preview *{
+      animation-play-state: paused !important;
     }
 
     /* Кнопка «Оптимизировать» */
     #perfModeBtn {
       position: fixed;
-      right: 16px;
+      left: 16px;
       bottom: 16px;
-      z-index: 100000;
+      z-index: 3000;
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -125,7 +127,7 @@
       border-color: rgba(255,255,255,0.4);
     }
     @media (max-width: 640px) {
-      #perfModeBtn { right: 10px; bottom: 10px; padding: 9px 13px; font-size: 12px; }
+      #perfModeBtn { left: 10px; bottom: 10px; padding: 9px 13px; font-size: 12px; }
     }
 
     /* Custom cursor disabled — using native cursor for performance */
@@ -16752,6 +16754,21 @@ async function doResetPassword() {
     catch(_) { h.scrollTop = 0; }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+
+  // ----- Ленивая загрузка/пауза витрины анимаций -----
+  // Пока карточка вне экрана — её CSS-анимации стоят на паузе (кадр
+  // сохраняется), это снижает нагрузку при прокрутке страницы. Как только
+  // карточка снова попадает в область видимости (с небольшим запасом),
+  // анимация продолжается с того же места.
+  const showcaseCards = document.querySelectorAll('.showcase-card');
+  if ('IntersectionObserver' in window && showcaseCards.length) {
+    const showcaseIO = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        en.target.classList.toggle('e3-offscreen', !en.isIntersecting);
+      });
+    }, { root: null, rootMargin: '200px 0px', threshold: 0 });
+    showcaseCards.forEach(card => showcaseIO.observe(card));
+  }
 
   // ----- IntersectionObserver scroll-reveal -----
   const revealEls = document.querySelectorAll('.reveal');
