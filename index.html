@@ -62,6 +62,72 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    /* ===================================================================
+       РЕЖИМ ОПТИМИЗАЦИИ (perf-mode) — отключает самые тяжёлые эффекты:
+       фоновый canvas с частицами, размытие (backdrop-filter), тени
+       и большинство CSS-анимаций/переходов.
+    =================================================================== */
+    html.perf-mode #e3-bg-canvas,
+    html.perf-mode #cursor-canvas,
+    html.perf-mode .explosion-layer {
+      display: none !important;
+    }
+    html.perf-mode body {
+      animation: none !important;
+      background-attachment: scroll, scroll, scroll, scroll, scroll, scroll !important;
+    }
+    html.perf-mode body::before {
+      display: none !important;
+    }
+    html.perf-mode *,
+    html.perf-mode *::before,
+    html.perf-mode *::after {
+      animation-duration: 0.001ms !important;
+      animation-delay: 0ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+    html.perf-mode * {
+      box-shadow: none !important;
+      text-shadow: none !important;
+      filter: none !important;
+    }
+
+    /* Кнопка «Оптимизировать» */
+    #perfModeBtn {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 100000;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(10, 20, 35, 0.75);
+      color: #fff;
+      font-family: 'Exo 2', system-ui, sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.2px;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+    #perfModeBtn:hover { background: rgba(20, 35, 55, 0.9); transform: translateY(-1px); }
+    #perfModeBtn:active { transform: translateY(0); }
+    #perfModeBtn[aria-pressed="true"] {
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-color: rgba(255,255,255,0.4);
+    }
+    @media (max-width: 640px) {
+      #perfModeBtn { right: 10px; bottom: 10px; padding: 9px 13px; font-size: 12px; }
+    }
+
     /* Custom cursor disabled — using native cursor for performance */
 
     :root{
@@ -6408,6 +6474,35 @@ body:not(.hero-anim) .subtitle .ch{
 </head>
 
 <body>
+
+  <!-- ===== КНОПКА ОПТИМИЗАЦИИ (снижает лаги, отключая тяжёлые эффекты) ===== -->
+  <button type="button" id="perfModeBtn" aria-pressed="false" title="Отключить фоновые эффекты, размытие и часть анимаций — сайт будет работать быстрее">
+    <span aria-hidden="true">⚡</span><span id="perfModeBtnLabel">Оптимизировать</span>
+  </button>
+  <script>
+  (function(){
+    var KEY = 'e3PerfMode';
+    function isOn(){ return document.documentElement.classList.contains('perf-mode'); }
+    function apply(on){
+      document.documentElement.classList.toggle('perf-mode', !!on);
+      var btn = document.getElementById('perfModeBtn');
+      var label = document.getElementById('perfModeBtnLabel');
+      if (btn) btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      if (label) label.textContent = on ? 'Оптимизация включена' : 'Оптимизировать';
+      try { localStorage.setItem(KEY, on ? '1' : '0'); } catch (_) {}
+      try { window.dispatchEvent(new CustomEvent('e3perfmodechange', { detail: { on: !!on } })); } catch (_) {}
+    }
+    var initial = false;
+    try { initial = localStorage.getItem(KEY) === '1'; } catch (_) {}
+    apply(initial); // применяем сразу, чтобы не мигало
+    document.addEventListener('DOMContentLoaded', function(){
+      apply(isOn());
+      var btn = document.getElementById('perfModeBtn');
+      if (btn) btn.addEventListener('click', function(){ apply(!isOn()); });
+    });
+    window.e3PerfMode = { apply: apply, isOn: isOn };
+  })();
+  </script>
 
   <!-- ===== E3 ULTRA UPGRADE: фоновые слои ===== -->
   <canvas id="e3-bg-canvas" aria-hidden="true"></canvas>
@@ -16596,9 +16691,29 @@ async function doResetPassword() {
           }
         }
       }
-      if (!REDUCED) requestAnimationFrame(frame);
+      if (!REDUCED && !perfOn()) bgRafId = requestAnimationFrame(frame);
+      else bgRafId = null;
     }
-    if (!REDUCED) requestAnimationFrame(frame);
+    function perfOn(){
+      try { return document.documentElement.classList.contains('perf-mode'); }
+      catch (_) { return false; }
+    }
+    var bgRafId = null;
+    function stopBg(){
+      if (bgRafId) { cancelAnimationFrame(bgRafId); bgRafId = null; }
+      ctx.clearRect(0, 0, W, H);
+      bg.style.display = 'none';
+    }
+    function startBg(){
+      bg.style.display = '';
+      if (!bgRafId && !REDUCED) bgRafId = requestAnimationFrame(frame);
+      else if (REDUCED) frame();
+    }
+    window.addEventListener('e3perfmodechange', function(e){
+      if (e && e.detail && e.detail.on) stopBg(); else startBg();
+    });
+    if (perfOn()) stopBg();
+    else if (!REDUCED) bgRafId = requestAnimationFrame(frame);
     else frame();
   }
 
