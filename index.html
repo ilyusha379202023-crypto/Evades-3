@@ -62,74 +62,6 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* ===================================================================
-       РЕЖИМ ОПТИМИЗАЦИИ (perf-mode) — отключает самые тяжёлые эффекты:
-       фоновый canvas с частицами, размытие (backdrop-filter), тени
-       и большинство CSS-анимаций/переходов.
-    =================================================================== */
-    html.perf-mode #e3-bg-canvas,
-    html.perf-mode #cursor-canvas,
-    html.perf-mode .explosion-layer {
-      display: none !important;
-    }
-    html.perf-mode body {
-      animation-play-state: paused !important;
-      background-attachment: scroll, scroll, scroll, scroll, scroll, scroll !important;
-    }
-    html.perf-mode body::before {
-      display: none !important;
-    }
-    /* backdrop-filter (блюр) — самая дорогая по GPU штука на сайте (66 мест),
-       отключаем только её. Тени и анимации не трогаем — они не про лаги
-       и их снятие ломало вид кнопок и витрины. */
-    html.perf-mode *,
-    html.perf-mode *::before,
-    html.perf-mode *::after {
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
-    }
-
-    /* ===== Ленивая пауза витрины анимаций (independent от кнопки Пауза) =====
-       Работает всегда, не только в perf-mode: как только карточка уходит
-       из зоны видимости — её CSS-анимация останавливается (сохранение
-       текущего кадра), при возврате в зону видимости — продолжается. */
-    .showcase-card.e3-offscreen .preview,
-    .showcase-card.e3-offscreen .preview *{
-      animation-play-state: paused !important;
-    }
-
-    /* Кнопка «Оптимизировать» */
-    #perfModeBtn {
-      position: fixed;
-      left: 16px;
-      bottom: 16px;
-      z-index: 3000;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 16px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.25);
-      background: rgba(10, 20, 35, 0.75);
-      color: #fff;
-      font-family: 'Exo 2', system-ui, sans-serif;
-      font-weight: 700;
-      font-size: 13px;
-      letter-spacing: 0.2px;
-      cursor: pointer;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.35);
-      transition: background 0.15s ease, transform 0.15s ease;
-    }
-    #perfModeBtn:hover { background: rgba(20, 35, 55, 0.9); transform: translateY(-1px); }
-    #perfModeBtn:active { transform: translateY(0); }
-    #perfModeBtn[aria-pressed="true"] {
-      background: linear-gradient(135deg, #10b981, #059669);
-      border-color: rgba(255,255,255,0.4);
-    }
-    @media (max-width: 640px) {
-      #perfModeBtn { left: 10px; bottom: 10px; padding: 9px 13px; font-size: 12px; }
-    }
-
     /* Custom cursor disabled — using native cursor for performance */
 
     :root{
@@ -6473,38 +6405,12 @@ body:not(.hero-anim) .subtitle .ch{
   }
 }
   </style>
+  <!-- ============ Firebase SDK (compat, для совместимости с существующим классическим <script>) ============ -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
 </head>
 
 <body>
-
-  <!-- ===== КНОПКА ОПТИМИЗАЦИИ (снижает лаги, отключая тяжёлые эффекты) ===== -->
-  <button type="button" id="perfModeBtn" aria-pressed="false" title="Отключить фоновые эффекты, размытие и часть анимаций — сайт будет работать быстрее">
-    <span aria-hidden="true">⚡</span><span id="perfModeBtnLabel">Оптимизировать</span>
-  </button>
-  <script>
-  (function(){
-    var KEY = 'e3PerfMode';
-    function isOn(){ return document.documentElement.classList.contains('perf-mode'); }
-    function apply(on){
-      document.documentElement.classList.toggle('perf-mode', !!on);
-      var btn = document.getElementById('perfModeBtn');
-      var label = document.getElementById('perfModeBtnLabel');
-      if (btn) btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-      if (label) label.textContent = on ? 'Оптимизация включена' : 'Оптимизировать';
-      try { localStorage.setItem(KEY, on ? '1' : '0'); } catch (_) {}
-      try { window.dispatchEvent(new CustomEvent('e3perfmodechange', { detail: { on: !!on } })); } catch (_) {}
-    }
-    var initial = false;
-    try { initial = localStorage.getItem(KEY) === '1'; } catch (_) {}
-    apply(initial); // применяем сразу, чтобы не мигало
-    document.addEventListener('DOMContentLoaded', function(){
-      apply(isOn());
-      var btn = document.getElementById('perfModeBtn');
-      if (btn) btn.addEventListener('click', function(){ apply(!isOn()); });
-    });
-    window.e3PerfMode = { apply: apply, isOn: isOn };
-  })();
-  </script>
 
   <!-- ===== E3 ULTRA UPGRADE: фоновые слои ===== -->
   <canvas id="e3-bg-canvas" aria-hidden="true"></canvas>
@@ -14902,7 +14808,29 @@ body:not(.hero-anim) .subtitle .ch{
     })();
     // ====== КОНЕЦ КАСТОМНОГО КУРСОРА ======
     // ===================================================
-// SUPABASE CONFIG
+// FIREBASE CONFIG
+// ===================================================
+// Используется пока только для Firestore (рассылка + отзывы).
+// Firebase Auth подключим отдельным этапом — авторизация пока остаётся на Supabase.
+const firebaseConfig = {
+  apiKey: "AIzaSyCSarHtLCCfsFj7XAgjnkDMQtzi44U7mpE",
+  authDomain: "evades-3.firebaseapp.com",
+  projectId: "evades-3",
+  storageBucket: "evades-3.firebasestorage.app",
+  messagingSenderId: "443932571874",
+  appId: "1:443932571874:web:e76f97a865cb0040ae86bb",
+  measurementId: "G-CFJTY7MYKJ"
+};
+let db = null;
+try {
+  const fbApp = firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+} catch (e) {
+  console.error('[FIREBASE] Не удалось инициализировать Firestore', e);
+}
+
+// ===================================================
+// SUPABASE CONFIG (пока используется только для Auth — рассылка и отзывы уже на Firebase)
 // ===================================================
 const SUPA_URL = 'https://twgrguukftwtbnmnqgsd.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3Z3JndXVrZnR3dGJubW5xZ3NkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMzQwMDMsImV4cCI6MjA5MTkxMDAwM30.xJZk61nSpfcIZmH_Srmbo8Eeyvj9Hm2SCFqCL0npP6Y';
@@ -16693,29 +16621,9 @@ async function doResetPassword() {
           }
         }
       }
-      if (!REDUCED && !perfOn()) bgRafId = requestAnimationFrame(frame);
-      else bgRafId = null;
+      if (!REDUCED) requestAnimationFrame(frame);
     }
-    function perfOn(){
-      try { return document.documentElement.classList.contains('perf-mode'); }
-      catch (_) { return false; }
-    }
-    var bgRafId = null;
-    function stopBg(){
-      if (bgRafId) { cancelAnimationFrame(bgRafId); bgRafId = null; }
-      ctx.clearRect(0, 0, W, H);
-      bg.style.display = 'none';
-    }
-    function startBg(){
-      bg.style.display = '';
-      if (!bgRafId && !REDUCED) bgRafId = requestAnimationFrame(frame);
-      else if (REDUCED) frame();
-    }
-    window.addEventListener('e3perfmodechange', function(e){
-      if (e && e.detail && e.detail.on) stopBg(); else startBg();
-    });
-    if (perfOn()) stopBg();
-    else if (!REDUCED) bgRafId = requestAnimationFrame(frame);
+    if (!REDUCED) requestAnimationFrame(frame);
     else frame();
   }
 
@@ -16754,21 +16662,6 @@ async function doResetPassword() {
     catch(_) { h.scrollTop = 0; }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
-
-  // ----- Ленивая загрузка/пауза витрины анимаций -----
-  // Пока карточка вне экрана — её CSS-анимации стоят на паузе (кадр
-  // сохраняется), это снижает нагрузку при прокрутке страницы. Как только
-  // карточка снова попадает в область видимости (с небольшим запасом),
-  // анимация продолжается с того же места.
-  const showcaseCards = document.querySelectorAll('.showcase-card');
-  if ('IntersectionObserver' in window && showcaseCards.length) {
-    const showcaseIO = new IntersectionObserver((entries) => {
-      entries.forEach(en => {
-        en.target.classList.toggle('e3-offscreen', !en.isIntersecting);
-      });
-    }, { root: null, rootMargin: '200px 0px', threshold: 0 });
-    showcaseCards.forEach(card => showcaseIO.observe(card));
-  }
 
   // ----- IntersectionObserver scroll-reveal -----
   const revealEls = document.querySelectorAll('.reveal');
@@ -16881,10 +16774,8 @@ async function doResetPassword() {
     });
   });
 
-  // ----- Newsletter form (Supabase integration) -----
+  // ----- Newsletter form (Firebase Firestore integration) -----
   (function newsletterForm() {
-    const SUPABASE_URL  = 'https://twgrguukftwtbnmnqgsd.supabase.co';
-    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3Z3JndXVrZnR3dGJubW5xZ3NkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMzQwMDMsImV4cCI6MjA5MTkxMDAwM30.xJZk61nSpfcIZmH_Srmbo8Eeyvj9Hm2SCFqCL0npP6Y';
     const reEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     const tt = (k, fb) => {
       try {
@@ -16896,6 +16787,8 @@ async function doResetPassword() {
     const nInput = document.getElementById('newsEmail');
     if (!nForm || !nInput) return;
     const nBtn = nForm.querySelector('.news-btn');
+    // Email используется как ID документа (нормализованный), чтобы избежать дублей.
+    const emailDocId = (email) => email.trim().toLowerCase().replace(/[/#?%\s]/g, '_');
     nForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const v = (nInput.value || '').trim();
@@ -16906,51 +16799,42 @@ async function doResetPassword() {
         nInput.focus();
         return;
       }
+      if (!db) {
+        nInput.classList.add('is-bad');
+        try { ev3Toast && ev3Toast(tt('ultra-news-toast-err', 'Что-то пошло не так, попробуй ещё раз'), '⚠️'); } catch {}
+        return;
+      }
       if (nBtn) { nBtn.disabled = true; nBtn.dataset._label = nBtn.textContent; nBtn.textContent = tt('ultra-news-btn-sending', 'Отправляем…'); }
       try {
         const lang = (typeof currentLang === "string" && currentLang) || 'ru';
-        const res = await fetch(SUPABASE_URL + '/rest/v1/subscribers', {
-          method: 'POST',
-          headers: {
-            'apikey': SUPABASE_ANON,
-            'Authorization': 'Bearer ' + SUPABASE_ANON,
-            'Content-Type': 'application/json',
-            'Prefer': 'return=minimal'
-          },
-          body: JSON.stringify({ email: v, lang })
-        });
-        if (res.status === 201 || res.status === 204) {
-          nInput.classList.add('is-ok');
-          nInput.value = '';
-          try { ev3Toast && ev3Toast(tt('ultra-news-toast-ok', 'Готово! Ты в списке, напишем как откроется альфа 🎉'), '🎉'); } catch {}
-        } else if (res.status === 409) {
+        const docId = emailDocId(v);
+        const ref = db.collection('subscribers').doc(docId);
+        const existing = await ref.get();
+        if (existing.exists) {
           nInput.classList.add('is-ok');
           try { ev3Toast && ev3Toast(tt('ultra-news-toast-dup', 'Этот email уже подписан ✓'), '✅'); } catch {}
         } else {
-          let msg = '';
-          try { msg = (await res.json())?.message || ''; } catch {}
-          if (/duplicate key|already exists|unique/i.test(msg)) {
-            nInput.classList.add('is-ok');
-            try { ev3Toast && ev3Toast(tt('ultra-news-toast-dup', 'Этот email уже подписан ✓'), '✅'); } catch {}
-          } else {
-            nInput.classList.add('is-bad');
-            try { ev3Toast && ev3Toast(tt('ultra-news-toast-err', 'Что-то пошло не так, попробуй ещё раз'), '⚠️'); } catch {}
-            if (typeof console !== 'undefined') console.warn('[NEWSLETTER]', res.status, msg);
-          }
+          await ref.set({
+            email: v,
+            lang,
+            created_at: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          nInput.classList.add('is-ok');
+          nInput.value = '';
+          try { ev3Toast && ev3Toast(tt('ultra-news-toast-ok', 'Готово! Ты в списке, напишем как откроется альфа 🎉'), '🎉'); } catch {}
         }
       } catch (err) {
         nInput.classList.add('is-bad');
         try { ev3Toast && ev3Toast(tt('ultra-news-toast-net', 'Нет соединения. Проверь интернет и попробуй снова'), '⚠️'); } catch {}
+        if (typeof console !== 'undefined') console.warn('[NEWSLETTER]', err);
       } finally {
         if (nBtn) { nBtn.disabled = false; if (nBtn.dataset._label) { nBtn.textContent = nBtn.dataset._label; delete nBtn.dataset._label; } }
       }
     });
   })();
 
-  // ----- Reviews carousel (load from Supabase) + Rating form -----
+  // ----- Reviews carousel (load from Firebase Firestore) + Rating form -----
   (function reviewsAndRating() {
-    const SUPABASE_URL  = 'https://twgrguukftwtbnmnqgsd.supabase.co';
-    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3Z3JndXVrZnR3dGJubW5xZ3NkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMzQwMDMsImV4cCI6MjA5MTkxMDAwM30.xJZk61nSpfcIZmH_Srmbo8Eeyvj9Hm2SCFqCL0npP6Y';
     const tt = (k, fb) => {
       try {
         const lang = (typeof currentLang === "string" && currentLang) || 'ru';
@@ -16959,21 +16843,22 @@ async function doResetPassword() {
     };
     const toast = (msg, icon) => { try { ev3Toast && ev3Toast(msg, icon); } catch {} };
 
-    // --- Load reviews (rating >= 4, non-empty comment). Table may not exist yet. ---
+    // --- Load reviews (rating >= 4, non-empty comment). Collection may not exist yet. ---
     (async function loadReviews() {
       const wrap  = document.getElementById('reviewsWrap');
       const track = document.getElementById('reviewsTrack');
       const empty = document.getElementById('reviewsEmpty');
-      if (!wrap || !track || !empty) return;
+      if (!wrap || !track || !empty || !db) return;
       try {
-        // Only approved reviews are visible to the public. Approve via Supabase
-        // Table Editor → feedback → toggle `approved` = true.
-        const res = await fetch(SUPABASE_URL + '/rest/v1/feedback?select=rating,comment,lang,nickname,created_at&approved=eq.true&order=created_at.desc&limit=30', {
-          headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + SUPABASE_ANON }
-        });
-        if (!res.ok) return; // keep empty state
-        const data = await res.json();
-        const filtered = (Array.isArray(data) ? data : []).filter(r => (r && r.comment && r.comment.trim().length >= 3));
+        // Только одобренные отзывы видны публично. Одобряй их в Firebase Console →
+        // Firestore → feedback → выставь поле `approved` = true.
+        const snap = await db.collection('feedback')
+          .where('approved', '==', true)
+          .orderBy('created_at', 'desc')
+          .limit(30)
+          .get();
+        const data = snap.docs.map(d => d.data());
+        const filtered = data.filter(r => (r && r.comment && String(r.comment).trim().length >= 3));
         if (filtered.length === 0) return;
         // Карусель включается только когда отзывов достаточно (>= 4).
         // Иначе показываем статично, по центру, без дублирования и бегущей строки.
@@ -16985,7 +16870,7 @@ async function doResetPassword() {
         track.innerHTML = list.map(r => {
           const rat = Math.max(1, Math.min(5, (r.rating|0) || 5));
           const stars = '★'.repeat(rat) + '☆'.repeat(5 - rat);
-          const date = (() => { try { return new Date(r.created_at).toLocaleDateString(); } catch { return ''; } })();
+          const date = (() => { try { return (r.created_at && r.created_at.toDate ? r.created_at.toDate() : new Date(r.created_at)).toLocaleDateString(); } catch { return ''; } })();
           const code = (r.lang || 'anon').toUpperCase();
           const nick = (r.nickname && String(r.nickname).trim()) || tt('ultra-review-anon','Аноним');
           return '<article class="review-card">'
@@ -17028,17 +16913,14 @@ async function doResetPassword() {
     };
 
     // Серверная проверка: есть ли отзыв у текущего юзера?
+    // Один отзыв на пользователя = один документ с ID, равным user_id (см. submit ниже).
     const checkServerSubmitted = async () => {
       try {
         const sess = (typeof ev3Session !== 'undefined' && ev3Session) || null;
         const uid = (typeof ev3User !== 'undefined' && ev3User && ev3User.id) || null;
-        if (!sess || !sess.access_token || !uid) return false;
-        const r = await fetch(SUPABASE_URL + '/rest/v1/feedback?select=id&user_id=eq.' + encodeURIComponent(uid) + '&limit=1', {
-          headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + sess.access_token }
-        });
-        if (!r.ok) return false;
-        const arr = await r.json();
-        return Array.isArray(arr) && arr.length > 0;
+        if (!sess || !sess.access_token || !uid || !db) return false;
+        const doc = await db.collection('feedback').doc(String(uid)).get();
+        return doc.exists;
       } catch (_) { return false; }
     };
 
@@ -17112,24 +16994,29 @@ async function doResetPassword() {
       const nickname = (ev3User && ev3User.user_metadata && ev3User.user_metadata.username)
         || (userEmail ? userEmail.split('@')[0] : '')
         || '';
+      if (!db) {
+        toast(tt('ultra-rating-toast-err', 'Не удалось отправить. Попробуй ещё раз'), '⚠️');
+        if (submit) { submit.disabled = false; if (submit.dataset._label) { submit.textContent = submit.dataset._label; delete submit.dataset._label; } }
+        return;
+      }
       try {
-        const res = await fetch(SUPABASE_URL + '/rest/v1/feedback', {
-          method: 'POST',
-          headers: {
-            'apikey': SUPABASE_ANON,
-            'Authorization': 'Bearer ' + sess.access_token,
-            'Content-Type': 'application/json',
-            'Prefer': 'return=minimal'
-          },
-          body: JSON.stringify({
+        // ID документа = user_id → гарантирует максимум один отзыв на пользователя.
+        const ref = db.collection('feedback').doc(String(userId));
+        const existing = await ref.get();
+        if (existing.exists) {
+          _state = 'submitted';
+          renderRatingState();
+          toast(tt('ultra-rating-already-toast','Ты уже оставлял отзыв 👌'), '👌');
+        } else {
+          await ref.set({
             rating: currentRating,
             comment: comment || null,
             lang: lang,
             nickname: nickname || null,
-            user_id: userId
-          })
-        });
-        if (res.status === 201 || res.status === 204) {
+            user_id: userId,
+            approved: false,
+            created_at: firebase.firestore.FieldValue.serverTimestamp()
+          });
           toast(tt('ultra-rating-toast-ok', 'Спасибо за отзыв! 🎉'), '🎉');
           if (rText) rText.value = '';
           currentRating = 0;
@@ -17137,20 +17024,10 @@ async function doResetPassword() {
           if (rLabel) rLabel.textContent = tt('ultra-rating-hint', 'Кликни по звезде, чтобы выбрать оценку');
           _state = 'submitted';
           renderRatingState();
-        } else {
-          let errText = '';
-          try { const d = await res.json(); errText = (d && (d.message || d.error || d.error_description)) || ''; } catch (_) {}
-          if (res.status === 409 || /duplicate|unique|already/i.test(errText)) {
-            // Сервер сказал, что отзыв от этого юзера уже есть
-            _state = 'submitted';
-            renderRatingState();
-            toast(tt('ultra-rating-already-toast','Ты уже оставлял отзыв 👌'), '👌');
-          } else {
-            toast(tt('ultra-rating-toast-err', 'Не удалось отправить. Попробуй ещё раз'), '⚠️');
-          }
         }
-      } catch {
+      } catch (err) {
         toast(tt('ultra-rating-toast-net', 'Нет соединения. Проверь интернет'), '⚠️');
+        if (typeof console !== 'undefined') console.warn('[RATING]', err);
       } finally {
         if (submit) { submit.disabled = false; if (submit.dataset._label) { submit.textContent = submit.dataset._label; delete submit.dataset._label; } }
       }
