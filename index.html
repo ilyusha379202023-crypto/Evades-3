@@ -15744,11 +15744,12 @@ async function doForgotSend() {
 // PROFILE MODAL
 // ===================================================
 function openProfileModal() {
+  document.getElementById('profileModalOverlay').classList.add('show');
+  try { refresh2faStatus(); } catch(_) {}
+  try { populateProfileExtras(); } catch(_) {}
+}
 
 // Низкоуровневый PUT /auth/v1/user — нормализованная обёртка.
-// Когда `body.data` (user_metadata) задан, мы предварительно тянем свежие user_metadata
-// и мерджим их с патчем, чтобы параллельные апдейты (кристаллы / aim trainer / рамка)
-// не затирали друг друга. Если access_token близок к истечению — обновим его.
 async function _ev3UpdateUser(body) {
   if (!ev3Session || !ev3Session.access_token) throw new Error('not_authenticated');
   await ev3GetFreshAccessToken(60).catch(() => {});
