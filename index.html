@@ -15688,14 +15688,23 @@ function oauthSignIn(provider) {
 // ===================================================
 // FORGOT PASSWORD
 // ===================================================
-function openForgotModal(e) { if(e) e.preventDefault(); document.getElementById('forgotModalOverlay').classList.add('show'); setTimeout(()=>document.getElementById('forgot-email-input').focus(),300); }
-function closeForgotModal() { document.getElementById('forgotModalOverlay').classList.remove('show'); }
-function closeForgotOnBg(e) { if(e.target===e.currentTarget) closeForgotModal(); }
+function openForgotModal(e) {
+  if(e) e.preventDefault();
+  document.getElementById('forgotModalOverlay').classList.add('show');
+  setTimeout(() => document.getElementById('forgot-email-input').focus(), 300);
+}
+
+function closeForgotModal() {
+  document.getElementById('forgotModalOverlay').classList.remove('show');
+}
+
+function closeForgotOnBg(e) {
+  if(e.target === e.currentTarget) closeForgotModal();
+}
 
 // ===================================================
 // FORGOT PASSWORD (продолжение)
 // ===================================================
-async function doForgotSend() {
 async function doForgotSend() {
   const email = document.getElementById('forgot-email-input').value.trim();
 
@@ -15721,6 +15730,7 @@ async function doForgotSend() {
     );
   } else {
     ev3Toast(ev3AuthMsg(resp), '⚠️');
+
     if (typeof console !== 'undefined') {
       console.warn('[AUTH recover]', resp.status, resp.data);
     }
@@ -15734,30 +15744,6 @@ async function doForgotSend() {
 // PROFILE MODAL
 // ===================================================
 function openProfileModal() {
-  document.getElementById('profileModalOverlay').classList.add('show');
-  try { refresh2faStatus(); } catch(_) {}
-  try { populateProfileExtras(); } catch(_) {}
-}
-
-// ---- Реальные функции аккаунта ----
-function _ev3ProviderIcon(name) {
-  const n = String(name||'').toLowerCase();
-  if (n === 'google') {
-    return '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M12 11v3.2h4.5c-.2 1.1-1.4 3.2-4.5 3.2-2.7 0-4.9-2.2-4.9-5s2.2-5 4.9-5c1.5 0 2.6.6 3.2 1.2l2.2-2.1C16.1 5.2 14.3 4.4 12 4.4 7.7 4.4 4.2 7.9 4.2 12.2S7.7 20 12 20c4.4 0 7.4-3.1 7.4-7.5 0-.5 0-.9-.1-1.3z"/></svg>';
-  }
-  if (n === 'discord') {
-    return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="#5865F2"><path d="M20.317 4.369A19.791 19.791 0 0 0 16.558 3a14.3 14.3 0 0 0-.7 1.44 18.27 18.27 0 0 0-5.72 0A13.2 13.2 0 0 0 9.444 3 19.72 19.72 0 0 0 5.68 4.37C2.78 8.88 2 13.27 2.39 17.58a19.96 19.96 0 0 0 6.07 3.08c.49-.67.92-1.39 1.29-2.14-.71-.27-1.39-.6-2.03-1 .17-.12.34-.25.5-.39 3.94 1.82 8.19 1.82 12.08 0 .17.14.33.27.5.39-.64.4-1.32.73-2.03 1 .37.75.8 1.47 1.29 2.14a19.96 19.96 0 0 0 6.07-3.08c.46-5.02-.77-9.36-3.32-13.21Z"/></svg>';
-  }
-  // email
-  return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#ffd54a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
-}
-function _ev3ProviderLabel(name) {
-  const n = String(name||'').toLowerCase();
-  if (n === 'google')  return 'Google';
-  if (n === 'discord') return 'Discord';
-  if (n === 'email')   return tt('pm-prov-email', 'Email + пароль');
-  return n ? (n[0].toUpperCase() + n.slice(1)) : '—';
-}
 
 // Низкоуровневый PUT /auth/v1/user — нормализованная обёртка.
 // Когда `body.data` (user_metadata) задан, мы предварительно тянем свежие user_metadata
