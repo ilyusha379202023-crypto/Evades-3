@@ -15696,19 +15696,38 @@ function closeForgotOnBg(e) { if(e.target===e.currentTarget) closeForgotModal();
 // FORGOT PASSWORD (продолжение)
 // ===================================================
 async function doForgotSend() {
+async function doForgotSend() {
   const email = document.getElementById('forgot-email-input').value.trim();
-  if (!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { ev3Toast(tt('auth-err-invalid-email','Неверный формат email'),'⚠️'); return; }
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    ev3Toast(tt('auth-err-invalid-email', 'Неверный формат email'), '⚠️');
+    return;
+  }
+
   const btn = document.getElementById('forgotSendBtn');
-  btn.disabled=true; btn.textContent='⏳ '+tt('auth-busy-forgot','Отправка...');
-  const resp = await supaPost('/auth/v1/recover', { email, redirect_to: window.location.origin + window.location.pathname });
+  btn.disabled = true;
+  btn.textContent = '⏳ ' + tt('auth-busy-forgot', 'Отправка...');
+
+  const resp = await supaPost('/auth/v1/recover', {
+    email,
+    redirect_to: 'https://evades3.com/reset.html'
+  });
+
   if (resp.ok) {
     closeForgotModal();
-    ev3Toast(tt('auth-ok-forgot','Письмо для сброса отправлено! Проверь почту 📧'),'📧');
+    ev3Toast(
+      tt('auth-ok-forgot', 'Письмо для сброса отправлено! Проверь почту 📧'),
+      '📧'
+    );
   } else {
-    ev3Toast(ev3AuthMsg(resp),'⚠️');
-    if (typeof console !== 'undefined') console.warn('[AUTH recover]', resp.status, resp.data);
+    ev3Toast(ev3AuthMsg(resp), '⚠️');
+    if (typeof console !== 'undefined') {
+      console.warn('[AUTH recover]', resp.status, resp.data);
+    }
   }
-  btn.disabled=false; btn.textContent=tt('auth-forgot-submit','Отправить →');
+
+  btn.disabled = false;
+  btn.textContent = tt('auth-forgot-submit', 'Отправить →');
 }
 
 // ===================================================
