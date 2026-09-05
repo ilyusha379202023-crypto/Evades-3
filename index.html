@@ -14839,11 +14839,15 @@ try {
 let _fbAuthMod = null;
 async function _fbAuth() {
   if (!_fbAuthMod) {
-    _fbAuthMod = await import('https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js');
-    // Инициализируем DEFAULT-экземпляр в модульном SDK, если его ещё нет
-    if (_fbAuthMod.getApps().length === 0) {
-      _fbAuthMod.initializeApp(firebaseConfig);
+    const [appMod, authMod] = await Promise.all([
+      import('https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js'),
+      import('https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js')
+    ]);
+    // Инициализируем DEFAULT-экземпляр в модульном SDK
+    if (appMod.getApps().length === 0) {
+      appMod.initializeApp(firebaseConfig);
     }
+    _fbAuthMod = authMod;
   }
   return _fbAuthMod;
 }
