@@ -14864,10 +14864,14 @@ function ev3AuthErrorKey(err) {
 }
 function ev3AuthMsg(err) {
   const { key, fallback } = ev3AuthErrorKey(err);
+  let base;
   try {
     const lang = (typeof currentLang === "string" && currentLang) || 'ru';
-    return (translations && translations[lang] && translations[lang][key]) || fallback;
-  } catch { return fallback; }
+    base = (translations && translations[lang] && translations[lang][key]) || fallback;
+  } catch { base = fallback; }
+  // ВРЕМЕННО (для диагностики): дописываем реальный код/текст ошибки Firebase в скобках.
+  const debugBit = (err && (err.code || err.message)) ? ' [' + (err.code || err.message) + ']' : '';
+  return base + debugBit;
 }
 
 async function _ev3BuildUser(fbUser) {
