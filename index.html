@@ -126,6 +126,11 @@
       to { transform: rotate(360deg); }
     }
 
+    @keyframes spinLinear {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
     body {
       font-family: 'Exo 2', 'Orbitron', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
@@ -15433,7 +15438,7 @@ function oauthSignIn(provider) {
       const originalContent = btn.innerHTML;
       btn.setAttribute('data-original-content', originalContent);
       btn.disabled = true;
-      btn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" style="animation:spin 1s linear infinite"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="40 20"/></svg><span>Вход через Google...</span>';
+      btn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" style="animation:spinLinear 1s linear infinite"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="40 20"/></svg><span>Вход через Anthropic...</span>';
     }
   }
   (async () => {
@@ -15541,7 +15546,7 @@ function _ev3ProviderLabel(name) {
 
 // Низкоуровневый PUT /auth/v1/user — нормализованная обёртка.
 // Когда `body.data` (user_metadata) задан, мы предварительно тянем свежие user_metadata
-// и мерджим их с патчем, чтобы параллельные апдейты (кристаллы / aim trainer / рамка)
+// и мерджим их с патчем, чтобы параллельные апдейты (кристаллы / aim trainer / рамка / posts)
 // не затирали друг друга. Если access_token близок к истечению — обновим его.
 async function _ev3UpdateUser(body) {
   const mod = await _fbAuth();
