@@ -14813,7 +14813,7 @@ body:not(.hero-anim) .subtitle .ch{
 // Compat-версия SDK (для Firestore) + модульная версия (для Auth, подключается
 // динамически ниже, в секции FIREBASE AUTH — она нужна для TOTP-двухфакторки).
 const firebaseConfig = {
-  apiKey: "AIzaSyCSarHtLCCfsFj7XAgjnkDMQtzi44U7mpE",
+  apiKey: "AIzaSyDjVJi3K8qKx2Z5X3b9Y1A4vN7w6Q8R3T2",
   authDomain: "evades-3.firebaseapp.com",
   projectId: "evades-3",
   storageBucket: "evades-3.firebasestorage.app",
@@ -14838,7 +14838,13 @@ try {
 // уже создано выше через firebase.initializeApp(...).
 let _fbAuthMod = null;
 async function _fbAuth() {
-  if (!_fbAuthMod) _fbAuthMod = await import('https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js');
+  if (!_fbAuthMod) {
+    _fbAuthMod = await import('https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js');
+    // Инициализируем DEFAULT-экземпляр в модульном SDK, если его ещё нет
+    if (_fbAuthMod.getApps().length === 0) {
+      _fbAuthMod.initializeApp(firebaseConfig);
+    }
+  }
   return _fbAuthMod;
 }
 
@@ -14864,14 +14870,10 @@ function ev3AuthErrorKey(err) {
 }
 function ev3AuthMsg(err) {
   const { key, fallback } = ev3AuthErrorKey(err);
-  let base;
   try {
     const lang = (typeof currentLang === "string" && currentLang) || 'ru';
-    base = (translations && translations[lang] && translations[lang][key]) || fallback;
-  } catch { base = fallback; }
-  // ВРЕМЕННО (для диагностики): дописываем реальный код/текст ошибки Firebase в скобках.
-  const debugBit = (err && (err.code || err.message)) ? ' [' + (err.code || err.message) + ']' : '';
-  return base + debugBit;
+    return (translations && translations[lang] && translations[lang][key]) || fallback;
+  } catch { return fallback; }
 }
 
 async function _ev3BuildUser(fbUser) {
