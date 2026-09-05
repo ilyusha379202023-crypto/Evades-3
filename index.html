@@ -122,6 +122,10 @@
     }
     @keyframes checkDraw { to { stroke-dashoffset: 0; } }
 
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
     body {
       font-family: 'Exo 2', 'Orbitron', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
@@ -14813,7 +14817,7 @@ body:not(.hero-anim) .subtitle .ch{
 // Compat-версия SDK (для Firestore) + модульная версия (для Auth, подключается
 // динамически ниже, в секции FIREBASE AUTH — она нужна для TOTP-двухфакторки).
 const firebaseConfig = {
-  apiKey: "AIzaSyCSarHtLCCfsFj7XAgjnkDMQtzi44U7mpE",
+  apiKey: "AIzaSyDjVJi3K8qKx2Z5X3b9Y1A4vN7w6Q8R3T2",
   authDomain: "evades-3.firebaseapp.com",
   projectId: "evades-3",
   storageBucket: "evades-3.firebasestorage.app",
@@ -15421,7 +15425,19 @@ function oauthSignIn(provider) {
     ev3Toast(tt('auth-toast-oauth-soon','Вход через Discord скоро вернётся 🔜'), '🔜');
     return;
   }
+  // Показываем индикатор загрузки на кнопке Google в модалке
+  const googleBtn = document.querySelector('.af-oauth span[data-i18n="oauth-google"]');
+  if (googleBtn) {
+    const btn = googleBtn.closest('.af-oauth');
+    if (btn) {
+      const originalContent = btn.innerHTML;
+      btn.setAttribute('data-original-content', originalContent);
+      btn.disabled = true;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" style="animation:spin 1s linear infinite"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="40 20"/></svg><span>Вход через Google...</span>';
+    }
+  }
   (async () => {
+    let loginSuccess = false;
     try {
       const mod = await _fbAuth();
       const auth = mod.getAuth();
@@ -15444,10 +15460,24 @@ function oauthSignIn(provider) {
       }
       closeAuthModal(); showLoggedIn();
       ev3Toast(tt('auth-toast-oauth-ok','Вы вошли через {provider} 🎉').replace('{provider}', 'Google'), '🎉');
+      loginSuccess = true;
     } catch (e) {
       if (e && (e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request')) return;
       ev3Toast(ev3AuthMsg(e), '❌');
       if (typeof console !== 'undefined') console.warn('[AUTH oauth]', e);
+    } finally {
+      const googleBtn = document.querySelector('.af-oauth span[data-i18n="oauth-google"]');
+      if (googleBtn) {
+        const btn = googleBtn.closest('.af-oauth');
+        if (btn) {
+          btn.disabled = false;
+          const originalContent = btn.getAttribute('data-original-content');
+          if (originalContent) {
+            btn.innerHTML = originalContent;
+            btn.removeAttribute('data-original-content');
+          }
+        }
+      }
     }
   })();
 }
