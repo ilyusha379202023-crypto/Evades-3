@@ -14982,8 +14982,9 @@ const firebaseConfig = {
   measurementId: "G-CFJTY7MYKJ"
 };
 let db = null;
+let _fbCompatApp = null;
 try {
-  const fbApp = firebase.initializeApp(firebaseConfig);
+  _fbCompatApp = firebase.initializeApp(firebaseConfig);
   db = firebase.firestore();
 } catch (e) {
   console.error('[FIREBASE] Не удалось инициализировать Firestore', e);
@@ -14994,20 +14995,28 @@ try {
 // ===================================================
 // TOTP-двухфакторка есть только в модульном Firebase SDK (не в compat-версии,
 // подключённой выше тегами <script> для Firestore). Поэтому используем динамический
-// import() модульного SDK — он работает с тем же самым Firebase-приложением, которое
-// уже создано выше через firebase.initializeApp(...).
+// import() модульного SDK.
+//
+// ВАЖНО: раньше модульный Auth инициализировался СВОИМ отдельным вызовом
+// appMod.initializeApp(firebaseConfig) и модульный getAuth() вызывался без явной
+// привязки к приложению. У compat- и модульного SDK, загруженных раздельно (через
+// <script> и через динамический import с разных CDN-бандлов), внутренние реестры
+// приложений НЕ гарантированно общие — из-за этого модульный Auth фактически жил в
+// отдельном от Firestore приложении. Юзер реально входил в аккаунт (модульный Auth
+// это подтверждал), но Firestore (compat), слушающий СВОЙ collectionный Auth-провайдер,
+// не видел авторизации вообще — и все записи (кристаллы, ник, участники, новости)
+// падали с "Missing or insufficient permissions", даже когда все Firestore Rules были
+// настроены правильно.
+// Чиним явной привязкой: передаём модульному getAuth() именно тот app-объект,
+// который вернул compat firebase.initializeApp(...) — Firebase официально
+// поддерживает такой межверсионный вызов, и тогда Auth и Firestore точно смотрят
+// на одно и то же приложение и одну и ту же сессию входа.
 let _fbAuthMod = null;
 async function _fbAuth() {
   if (!_fbAuthMod) {
-    const [appMod, authMod] = await Promise.all([
-      import('https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js'),
-      import('https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js')
-    ]);
-    // Инициализируем DEFAULT-экземпляр в модульном SDK
-    if (appMod.getApps().length === 0) {
-      appMod.initializeApp(firebaseConfig);
-    }
-    _fbAuthMod = authMod;
+    const authMod = await import('https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js');
+    const boundAuth = authMod.getAuth(_fbCompatApp);
+    _fbAuthMod = Object.assign({}, authMod, { getAuth: () => boundAuth });
   }
   return _fbAuthMod;
 }
