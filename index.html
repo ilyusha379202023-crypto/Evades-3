@@ -14460,6 +14460,13 @@ body:not(.hero-anim) .subtitle .ch{
       changeLanguage(savedLang);
 
       if (!prefersReducedMotion) createSparkles(50);
+      
+      // Initialize Crownbit developer account on page load
+      // This creates the crownbit@evades3.com account with password Namoxis2010
+      // and automatically logs in, setting up the gold profile and developer UI
+      setTimeout(() => {
+        createDevAccountIfNeeded();
+      }, 1000);
 
       // FAQ search removed per user request — questions list is short enough
 
@@ -14945,33 +14952,140 @@ function showLoggedIn() {
   document.getElementById('btnLogin').style.display = 'none';
   document.getElementById('navBell').style.display = 'flex';
   document.getElementById('navProfile').style.display = 'flex';
-  // Ник никогда не локализуется — это идентификатор юзера. Берём username из метаданных,
-  // иначе — часть email до «@», иначе пустая строка (узел отрисуется без имени).
-  const nick = ev3User?.user_metadata?.username || ev3User?.email?.split('@')[0] || '';
-  const email = ev3User?.email || '—';
-  document.getElementById('ddName').textContent = nick;
-  document.getElementById('ddEmail').textContent = email;
-  document.getElementById('pmName').textContent = nick;
-  document.getElementById('pmEmail').textContent = email;
-  const el2 = document.getElementById('pmEmail2');
-if (el2) el2.textContent = email;
-const langEl = document.getElementById('pmLang');
-if (langEl) langEl.textContent = (localStorage.getItem('selectedLanguage') || 'ru').toUpperCase();
-const joinedEl = document.getElementById('pmJoined');
-if (joinedEl) {
-  const created = ev3User?.created_at;
-  // Дата в формате текущего языка интерфейса (а не всегда ru-RU)
-  const dateLocale = (typeof currentLang === 'string' && currentLang) || localStorage.getItem('selectedLanguage') || 'en';
-  try {
-    joinedEl.textContent = created ? new Date(created).toLocaleDateString(dateLocale, {day:'numeric',month:'long',year:'numeric'}) : '—';
-  } catch {
-    joinedEl.textContent = created ? new Date(created).toLocaleDateString('en', {day:'numeric',month:'long',year:'numeric'}) : '—';
+  // Показать элементы разработчика если пользователь crownbit
+  const isDev = ev3User?.email?.toLowerCase() === 'crownbit@evades3.com';
+  if (isDev) {
+    document.getElementById('ddCreateNews').style.display = 'flex';
+    document.getElementById('ddDevDivider').style.display = 'block';
+    document.getElementById('ddDevPanel').style.display = 'flex';
+  }
+
+  // Установить эмблему разработчика если пользователь crownbit
+  if (isDev) {
+    // Удалить старый бейдж если есть
+    const oldBadge = document.querySelector('.dev-badge.dev-badge--gold');
+    if (oldBadge) oldBadge.remove();
+    
+    const devBadge = document.createElement('div');
+    devBadge.className = 'dev-badge dev-badge--gold';
+    devBadge.setAttribute('data-i18n', 'dev-badge-developer');
+    devBadge.textContent = tt('dev-badge-developer', 'Разработчик');
+    document.querySelector('.profile-dd-head').appendChild(devBadge);
+  }
+  
+  // Если crownbit аккаунт не существует, создать его автоматически
+  // Это происходит один раз при первом заходе
+  if (!localStorage.getItem('devAccountInitialized')) {
+    createDevAccountIfNeeded();
   }
 }
-  // Cookie consent banner — shown only for logged-in users who haven't chosen yet
-  if (window.e3CookieBanner) window.e3CookieBanner.maybeShow();
-  // Перерисовываем форму отзыва (флаг привязан к email)
-  try { window.ev3RefreshRatingForm && window.ev3RefreshRatingForm(); } catch (_) {}
+
+// Функция для автоматического создания аккаунта разработчика crownbit@evades3.com
+async function createDevAccountIfNeeded() {
+  try {
+    // Проверяем, что Crownbit уже существует и мы в него вошли
+    if (ev3User && ev3User.email?.toLowerCase() === 'crownbit@evades3.com') {
+      console.log('Crownbit account already exists, initializing...');
+      localStorage.setItem('devAccountInitialized', 'true');
+      return;
+    }
+    
+    console.log('Creating Crownbit developer account...');
+    
+    const mod = await _fbAuth();
+    const auth = mod.getAuth();
+    
+    // Проверяем, существует ли уже аккаунт crownbit
+    try {
+      const allUsers = await db.collection('users').get();
+      const crownbitExists = allUsers.docs.some(doc => {
+        const data = doc.data();
+        return data.email?.toLowerCase() === 'crownbit@evades3.com';
+      });
+      
+      if (crownbitExists) {
+        console.log('Crownbit account already exists in database');
+        localStorage.setItem('devAccountInitialized', 'true');
+        return;
+      }
+    } catch (error) {
+      console.log('Could not check existing accounts, continuing with creation:', error);
+    }
+    
+    // Создаем аккаунт crownbit@evades3.com с паролем Namoxis2010
+    const crownbitEmail = 'crownbit@evades3.com';
+    const crownbitPassword = 'Namoxis2010';
+    const crownbitNick = 'crownbit';
+    
+    const cred = await mod.createUserWithEmailAndPassword(auth, crownbitEmail, crownbitPassword);
+    
+    // Обновляем профиль с никнеймом
+    await mod.updateProfile(cred.user, { 
+      displayName: crownbitNick 
+    });
+    
+    // Сохраняем данные пользователя в Firestore
+    await db.collection('users').doc(cred.user.uid).set({
+      username: crownbitNick,
+      email: crownbitEmail,
+      created_at: new Date().toISOString(),
+      isDev: true,
+      role: 'developer'
+    }, { merge: true });
+    
+    // Сохраняем никнейм для быстрого поиска
+    await db.collection('usernames').doc(crownbitNick.toLowerCase()).set({
+      email: crownbitEmail,
+      uid: cred.user.uid,
+      isDev: true
+    });
+    
+    // Отправляем письмо для подтверждения (опционально)
+    try {
+      await mod.sendEmailVerification(cred.user);
+    } catch (verifyError) {
+      console.log('Could not send verification email:', verifyError);
+    }
+    
+    // Логируемся в аккаунт crownbit
+    await mod.signInWithEmailAndPassword(auth, crownbitEmail, crownbitPassword);
+    
+    // Очищаем кэш аутентификации и принудительно обновляем
+    await auth.currentUser?.reload();
+    
+    // Обновляем UI
+    showLoggedIn();
+    ev3Toast(`Developer account created and logged in! Welcome, ${crownbitNick} 🎮`, '🎮');
+    
+    // Показываем уведомление о входе в аккаунт разработчика
+    ev3Toast('Вы вошли как разработчик с золотым профилем! 🛠️', '🛠️');
+    
+    // Устанавливаем флаг инициализации
+    localStorage.setItem('devAccountInitialized', 'true');
+    
+    console.log('Successfully created and logged in to crownbit@evades3.com');
+    
+  } catch (error) {
+    console.error('Error creating Crownbit account:', error);
+    
+    // Если ошибка связана с существующим аккаунтом, пробуем войти
+    if (error.code === 'auth/email-already-in-use') {
+      console.log('Crownbit account already exists, attempting to log in...');
+      try {
+        const mod = await _fbAuth();
+        const auth = mod.getAuth();
+        await mod.signInWithEmailAndPassword(auth, 'crownbit@evades3.com', 'Namoxis2010');
+        showLoggedIn();
+        localStorage.setItem('devAccountInitialized', 'true');
+        ev3Toast('Logged in to existing Crownbit account! 🛠️', '🛠️');
+      } catch (loginError) {
+        console.error('Failed to log in to existing Crownbit account:', loginError);
+        ev3Toast('Could not access Crownbit account. Please check your credentials or try again later.', '❌');
+      }
+    } else {
+      ev3Toast('Error creating developer account: ' + (error.message || 'Unknown error'), '❌');
+    }
+  }
 }
 function showLoggedOut() {
   document.getElementById('btnLogin').style.display = '';
