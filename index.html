@@ -14982,43 +14982,114 @@ const firebaseConfig = {
   measurementId: "G-CFJTY7MYKJ"
 };
 let db = null;
-let _fbCompatApp = null;
+let _fsMod = null;      // модульный Firestore SDK (после загрузки)
+let _fbApp = null;      // единое Firebase-приложение (модульное), общее для Auth и Firestore
 try {
-  _fbCompatApp = firebase.initializeApp(firebaseConfig);
-  db = firebase.firestore();
+  // Оставляем compat-инициализацию только ради статических неймспейсов вроде
+  // firebase.firestore.FieldValue — реальный экземпляр Firestore через неё больше
+  // не создаём (см. пояснение ниже).
+  firebase.initializeApp(firebaseConfig);
 } catch (e) {
-  console.error('[FIREBASE] Не удалось инициализировать Firestore', e);
+  console.error('[FIREBASE] Не удалось инициализировать compat-приложение', e);
 }
 
 // ===================================================
-// FIREBASE AUTH
+// FIREBASE AUTH + FIRESTORE (единое модульное приложение)
 // ===================================================
-// TOTP-двухфакторка есть только в модульном Firebase SDK (не в compat-версии,
-// подключённой выше тегами <script> для Firestore). Поэтому используем динамический
-// import() модульного SDK.
-//
-// ВАЖНО: раньше модульный Auth инициализировался СВОИМ отдельным вызовом
-// appMod.initializeApp(firebaseConfig) и модульный getAuth() вызывался без явной
-// привязки к приложению. У compat- и модульного SDK, загруженных раздельно (через
-// <script> и через динамический import с разных CDN-бандлов), внутренние реестры
-// приложений НЕ гарантированно общие — из-за этого модульный Auth фактически жил в
-// отдельном от Firestore приложении. Юзер реально входил в аккаунт (модульный Auth
-// это подтверждал), но Firestore (compat), слушающий СВОЙ collectionный Auth-провайдер,
-// не видел авторизации вообще — и все записи (кристаллы, ник, участники, новости)
-// падали с "Missing or insufficient permissions", даже когда все Firestore Rules были
-// настроены правильно.
-// Чиним явной привязкой: передаём модульному getAuth() именно тот app-объект,
-// который вернул compat firebase.initializeApp(...) — Firebase официально
-// поддерживает такой межверсионный вызов, и тогда Auth и Firestore точно смотрят
-// на одно и то же приложение и одну и ту же сессию входа.
+// ВАЖНО (история бага): раньше Firestore работал через compat-SDK
+// (firebase.firestore(), из <script>-тега), а вход/регистрация — через отдельно
+// импортированный модульный SDK (import() firebase-auth.js) со своим отдельным
+// вызовом initializeApp(). Это два РАЗНЫХ Firebase-приложения с раздельными
+// внутренними реестрами — юзер реально входил в аккаунт (модульный Auth это
+// подтверждал), но Firestore (compat) не видел эту сессию вообще и все записи
+// (кристаллы, ник, участники, новости) падали с "Missing or insufficient
+// permissions", даже при правильных Firestore Rules.
+// Попытка «просто передать» compat-приложение в модульный getAuth() тоже не
+// сработала — модульный SDK требует, чтобы компонент auth был зарегистрирован
+// именно через его собственный initializeApp(), иначе кидает
+// "Component auth has not been registered yet".
+// Правильное решение — увести ОБА (и Auth, и Firestore) на один и тот же
+// модульный экземпляр приложения. Ниже `db` — это обёртка (шим) с тем же
+// API (`db.collection(...).doc(...).get()/.set()`), которым уже пользуется весь
+// остальной код, но внутри она работает через настоящий модульный Firestore,
+// привязанный к тому же приложению, что и модульный Auth.
 let _fbAuthMod = null;
-async function _fbAuth() {
-  if (!_fbAuthMod) {
-    const authMod = await import('https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js');
-    const boundAuth = authMod.getAuth(_fbCompatApp);
-    _fbAuthMod = Object.assign({}, authMod, { getAuth: () => boundAuth });
+let _fbReadyPromise = null;
+function _fbInit() {
+  if (!_fbReadyPromise) {
+    _fbReadyPromise = (async () => {
+      const [appMod, authMod, fsMod] = await Promise.all([
+        import('https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js'),
+        import('https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js'),
+        import('https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js')
+      ]);
+      _fbApp = appMod.getApps().length ? appMod.getApps()[0] : appMod.initializeApp(firebaseConfig);
+      _fbAuthMod = authMod;
+      _fsMod = fsMod;
+      return fsMod.getFirestore(_fbApp);
+    })();
   }
+  return _fbReadyPromise;
+}
+async function _fbAuth() {
+  await _fbInit();
   return _fbAuthMod;
+}
+
+// Compat-совместимый шим поверх модульного Firestore: остальной код продолжает
+// писать db.collection('x').doc('y').get()/.set(...) как раньше — менять сотни
+// мест по всему файлу не нужно.
+function _wrapDocSnap(d) {
+  return { id: d.id, exists: typeof d.exists === 'function' ? d.exists() : !!d.exists, data: () => d.data() };
+}
+function _wrapQuerySnap(snap) {
+  return {
+    docs: snap.docs.map(_wrapDocSnap),
+    empty: snap.empty,
+    forEach: (cb) => snap.forEach(d => cb(_wrapDocSnap(d)))
+  };
+}
+function _makeQueryShim(getRef) {
+  return {
+    where: (f, op, v) => _makeQueryShim(async () => _fsMod.query(await getRef(), _fsMod.where(f, op, v))),
+    orderBy: (f, dir) => _makeQueryShim(async () => _fsMod.query(await getRef(), _fsMod.orderBy(f, dir))),
+    limit: (n) => _makeQueryShim(async () => _fsMod.query(await getRef(), _fsMod.limit(n))),
+    get: async () => _wrapQuerySnap(await _fsMod.getDocs(await getRef())),
+    onSnapshot: (cb, errCb) => {
+      let unsub = () => {};
+      let cancelled = false;
+      getRef().then(ref => {
+        if (cancelled) return;
+        unsub = _fsMod.onSnapshot(ref, snap => cb(_wrapQuerySnap(snap)), errCb);
+      }).catch(err => { if (errCb) errCb(err); });
+      return () => { cancelled = true; unsub(); };
+    }
+  };
+}
+db = {
+  collection(name) {
+    const getColRef = async () => { const firestoreDb = await _fbInit(); return _fsMod.collection(firestoreDb, name); };
+    const queryShim = _makeQueryShim(getColRef);
+    return Object.assign(queryShim, {
+      doc(id) {
+        const getDocRef = async () => { const firestoreDb = await _fbInit(); return _fsMod.doc(firestoreDb, name, id); };
+        return {
+          get: async () => _wrapDocSnap(await _fsMod.getDoc(await getDocRef())),
+          set: async (data, opts) => _fsMod.setDoc(await getDocRef(), data, opts || {}),
+          delete: async () => _fsMod.deleteDoc(await getDocRef())
+        };
+      },
+      add: async (data) => { const firestoreDb = await _fbInit(); return _fsMod.addDoc(_fsMod.collection(firestoreDb, name), data); }
+    });
+  }
+};
+// Начинаем грузить модульный SDK сразу при загрузке страницы (не дожидаясь первого
+// использования) — к моменту, когда юзер реально нажмёт что-то, всё уже готово.
+_fbInit();
+// Замена firebase.firestore.FieldValue.serverTimestamp() (compat) — используем
+// значение из ТОГО ЖЕ модульного Firestore SDK, что и сама запись, без смешивания версий.
+function _fsServerTimestamp() {
+  return _fsMod ? _fsMod.serverTimestamp() : new Date();
 }
 
 let ev3Session = null; // совместимость со старым кодом: маркер {access_token:'firebase'}, когда юзер залогинен
@@ -15624,7 +15695,7 @@ function oauthSignIn(provider) {
       const originalContent = btn.innerHTML;
       btn.setAttribute('data-original-content', originalContent);
       btn.disabled = true;
-      btn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" style="animation:spinLinear 1s linear infinite"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="40 20"/></svg><span>Вход через Anthropic...</span>';
+      btn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" style="animation:spinLinear 1s linear infinite"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="40 20"/></svg><span>' + _e3Esc(tt('auth-oauth-loading', 'Вход через {provider}...').replace('{provider}', tt('oauth-google','Google'))) + '</span>';
     }
   }
   (async () => {
@@ -16755,7 +16826,7 @@ async function doResetPassword() {
           await ref.set({
             email: v,
             lang,
-            created_at: firebase.firestore.FieldValue.serverTimestamp()
+            created_at: _fsServerTimestamp()
           });
           nInput.classList.add('is-ok');
           nInput.value = '';
@@ -16953,7 +17024,7 @@ async function doResetPassword() {
             nickname: nickname || null,
             user_id: userId,
             approved: false,
-            created_at: firebase.firestore.FieldValue.serverTimestamp()
+            created_at: _fsServerTimestamp()
           });
           toast(tt('ultra-rating-toast-ok', 'Спасибо за отзыв! 🎉'), '🎉');
           if (rText) rText.value = '';
@@ -21818,6 +21889,7 @@ async function doResetPassword() {
     // ============================================================
     const extra2 = {
       ru: {
+        'auth-oauth-loading': 'Вход через {provider}...',
         'dev-role-badge': 'Разработчик',
         'dev-panel-title': 'Панель разработчика',
         'dev-panel-sub': 'Участники проекта и новости для всех игроков',
@@ -21842,6 +21914,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Нет соединения с базой данных. Попробуй ещё раз через пару секунд'
       },
       en: {
+        'auth-oauth-loading': 'Signing in via {provider}...',
         'dev-role-badge': 'Developer',
         'dev-panel-title': 'Developer Panel',
         'dev-panel-sub': 'Project participants and news for all players',
@@ -21866,6 +21939,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'No connection to the database. Try again in a few seconds'
       },
       uk: {
+        'auth-oauth-loading': 'Вхід через {provider}...',
         'dev-role-badge': 'Розробник',
         'dev-panel-title': 'Панель розробника',
         'dev-panel-sub': 'Учасники проєкту та новини для всіх гравців',
@@ -21890,6 +21964,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Немає з’єднання з базою даних. Спробуй ще раз за кілька секунд'
       },
       de: {
+        'auth-oauth-loading': 'Anmeldung über {provider}...',
         'dev-role-badge': 'Entwickler',
         'dev-panel-title': 'Entwickler-Panel',
         'dev-panel-sub': 'Projektteilnehmer und News für alle Spieler',
@@ -21914,6 +21989,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Keine Verbindung zur Datenbank. Versuch es in ein paar Sekunden erneut'
       },
       es: {
+        'auth-oauth-loading': 'Iniciando sesión con {provider}...',
         'dev-role-badge': 'Desarrollador',
         'dev-panel-title': 'Panel de desarrollador',
         'dev-panel-sub': 'Participantes del proyecto y noticias para todos los jugadores',
@@ -21938,6 +22014,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Sin conexión con la base de datos. Inténtalo de nuevo en unos segundos'
       },
       fr: {
+        'auth-oauth-loading': 'Connexion via {provider}...',
         'dev-role-badge': 'Développeur',
         'dev-panel-title': 'Panneau développeur',
         'dev-panel-sub': 'Participants du projet et actualités pour tous les joueurs',
@@ -21962,6 +22039,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Pas de connexion à la base de données. Réessaie dans quelques secondes'
       },
       it: {
+        'auth-oauth-loading': 'Accesso con {provider}...',
         'dev-role-badge': 'Sviluppatore',
         'dev-panel-title': 'Pannello sviluppatore',
         'dev-panel-sub': 'Partecipanti al progetto e novità per tutti i giocatori',
@@ -21986,6 +22064,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Nessuna connessione al database. Riprova tra qualche secondo'
       },
       pt: {
+        'auth-oauth-loading': 'Entrando com {provider}...',
         'dev-role-badge': 'Desenvolvedor',
         'dev-panel-title': 'Painel do desenvolvedor',
         'dev-panel-sub': 'Participantes do projeto e novidades para todos os jogadores',
@@ -22010,6 +22089,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Sem conexão com o banco de dados. Tente novamente em alguns segundos'
       },
       pl: {
+        'auth-oauth-loading': 'Logowanie przez {provider}...',
         'dev-role-badge': 'Deweloper',
         'dev-panel-title': 'Panel dewelopera',
         'dev-panel-sub': 'Uczestnicy projektu i wiadomości dla wszystkich graczy',
@@ -22034,6 +22114,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Brak połączenia z bazą danych. Spróbuj ponownie za kilka sekund'
       },
       tr: {
+        'auth-oauth-loading': '{provider} ile giriş yapılıyor...',
         'dev-role-badge': 'Geliştirici',
         'dev-panel-title': 'Geliştirici Paneli',
         'dev-panel-sub': 'Proje katılımcıları ve tüm oyuncular için haberler',
@@ -22058,6 +22139,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Veritabanına bağlantı yok. Birkaç saniye sonra tekrar dene'
       },
       nl: {
+        'auth-oauth-loading': 'Inloggen via {provider}...',
         'dev-role-badge': 'Ontwikkelaar',
         'dev-panel-title': 'Ontwikkelaarspaneel',
         'dev-panel-sub': 'Projectdeelnemers en nieuws voor alle spelers',
@@ -22082,6 +22164,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Geen verbinding met de database. Probeer het over een paar seconden opnieuw'
       },
       sv: {
+        'auth-oauth-loading': 'Loggar in via {provider}...',
         'dev-role-badge': 'Utvecklare',
         'dev-panel-title': 'Utvecklarpanel',
         'dev-panel-sub': 'Projektdeltagare och nyheter för alla spelare',
@@ -22106,6 +22189,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Ingen anslutning till databasen. Försök igen om några sekunder'
       },
       no: {
+        'auth-oauth-loading': 'Logger inn via {provider}...',
         'dev-role-badge': 'Utvikler',
         'dev-panel-title': 'Utviklerpanel',
         'dev-panel-sub': 'Prosjektdeltakere og nyheter for alle spillere',
@@ -22130,6 +22214,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Ingen tilkobling til databasen. Prøv igjen om noen sekunder'
       },
       fi: {
+        'auth-oauth-loading': 'Kirjaudutaan sisään {provider}:lla...',
         'dev-role-badge': 'Kehittäjä',
         'dev-panel-title': 'Kehittäjäpaneeli',
         'dev-panel-sub': 'Projektin osallistujat ja uutiset kaikille pelaajille',
@@ -22154,6 +22239,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Ei yhteyttä tietokantaan. Yritä uudelleen muutaman sekunnin kuluttua'
       },
       da: {
+        'auth-oauth-loading': 'Logger ind via {provider}...',
         'dev-role-badge': 'Udvikler',
         'dev-panel-title': 'Udviklerpanel',
         'dev-panel-sub': 'Projektdeltagere og nyheder til alle spillere',
@@ -22178,6 +22264,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Ingen forbindelse til databasen. Prøv igen om et par sekunder'
       },
       cs: {
+        'auth-oauth-loading': 'Přihlašování přes {provider}...',
         'dev-role-badge': 'Vývojář',
         'dev-panel-title': 'Panel vývojáře',
         'dev-panel-sub': 'Účastníci projektu a novinky pro všechny hráče',
@@ -22202,6 +22289,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Žádné připojení k databázi. Zkus to znovu za pár sekund'
       },
       ro: {
+        'auth-oauth-loading': 'Autentificare prin {provider}...',
         'dev-role-badge': 'Dezvoltator',
         'dev-panel-title': 'Panou dezvoltator',
         'dev-panel-sub': 'Participanții proiectului și noutăți pentru toți jucătorii',
@@ -22226,6 +22314,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Nicio conexiune la baza de date. Încearcă din nou peste câteva secunde'
       },
       hu: {
+        'auth-oauth-loading': 'Bejelentkezés a(z) {provider} szolgáltatással...',
         'dev-role-badge': 'Fejlesztő',
         'dev-panel-title': 'Fejlesztői panel',
         'dev-panel-sub': 'Projekt résztvevői és hírek minden játékosnak',
@@ -22250,6 +22339,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Nincs kapcsolat az adatbázissal. Próbáld újra pár másodperc múlva'
       },
       el: {
+        'auth-oauth-loading': 'Σύνδεση μέσω {provider}...',
         'dev-role-badge': 'Προγραμματιστής',
         'dev-panel-title': 'Πίνακας προγραμματιστή',
         'dev-panel-sub': 'Συμμετέχοντες του έργου και νέα για όλους τους παίκτες',
@@ -22274,6 +22364,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Δεν υπάρχει σύνδεση με τη βάση δεδομένων. Δοκίμασε ξανά σε λίγα δευτερόλεπτα'
       },
       ja: {
+        'auth-oauth-loading': '{provider} でログイン中...',
         'dev-role-badge': '開発者',
         'dev-panel-title': '開発者パネル',
         'dev-panel-sub': 'プロジェクト参加者と全プレイヤー向けのお知らせ',
@@ -22298,6 +22389,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'データベースに接続できません。数秒後にもう一度お試しください'
       },
       zh: {
+        'auth-oauth-loading': '正在通过 {provider} 登录...',
         'dev-role-badge': '开发者',
         'dev-panel-title': '开发者面板',
         'dev-panel-sub': '项目参与者以及面向所有玩家的新闻',
@@ -22322,6 +22414,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': '无法连接数据库，请几秒后重试'
       },
       ko: {
+        'auth-oauth-loading': '{provider}(으)로 로그인 중...',
         'dev-role-badge': '개발자',
         'dev-panel-title': '개발자 패널',
         'dev-panel-sub': '프로젝트 참가자 및 모든 플레이어를 위한 소식',
@@ -22346,6 +22439,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': '데이터베이스에 연결할 수 없습니다. 잠시 후 다시 시도하세요'
       },
       ar: {
+        'auth-oauth-loading': 'جارٍ تسجيل الدخول عبر {provider}...',
         'dev-role-badge': 'مطوّر',
         'dev-panel-title': 'لوحة المطوّر',
         'dev-panel-sub': 'المشاركون في المشروع وأخبار لجميع اللاعبين',
@@ -22370,6 +22464,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'لا يوجد اتصال بقاعدة البيانات. حاول مرة أخرى خلال ثوانٍ'
       },
       he: {
+        'auth-oauth-loading': 'מתחבר דרך {provider}...',
         'dev-role-badge': 'מפתח',
         'dev-panel-title': 'לוח בקרה למפתח',
         'dev-panel-sub': 'משתתפי הפרויקט וחדשות לכל השחקנים',
@@ -22394,6 +22489,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'אין חיבור למסד הנתונים. נסה שוב בעוד כמה שניות'
       },
       th: {
+        'auth-oauth-loading': 'กำลังเข้าสู่ระบบผ่าน {provider}...',
         'dev-role-badge': 'นักพัฒนา',
         'dev-panel-title': 'แผงควบคุมนักพัฒนา',
         'dev-panel-sub': 'ผู้เข้าร่วมโปรเจกต์และข่าวสารสำหรับผู้เล่นทุกคน',
@@ -22418,6 +22514,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'ไม่มีการเชื่อมต่อกับฐานข้อมูล ลองใหม่อีกครั้งในอีกไม่กี่วินาที'
       },
       vi: {
+        'auth-oauth-loading': 'Đang đăng nhập qua {provider}...',
         'dev-role-badge': 'Nhà phát triển',
         'dev-panel-title': 'Bảng điều khiển nhà phát triển',
         'dev-panel-sub': 'Thành viên dự án và tin tức cho tất cả người chơi',
@@ -22442,6 +22539,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Không có kết nối đến cơ sở dữ liệu. Thử lại sau vài giây'
       },
       id: {
+        'auth-oauth-loading': 'Masuk melalui {provider}...',
         'dev-role-badge': 'Pengembang',
         'dev-panel-title': 'Panel Pengembang',
         'dev-panel-sub': 'Peserta proyek dan berita untuk semua pemain',
@@ -22466,6 +22564,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Tidak ada koneksi ke database. Coba lagi dalam beberapa detik'
       },
       hi: {
+        'auth-oauth-loading': '{provider} के ज़रिए साइन इन हो रहा है...',
         'dev-role-badge': 'डेवलपर',
         'dev-panel-title': 'डेवलपर पैनल',
         'dev-panel-sub': 'प्रोजेक्ट के सदस्य और सभी खिलाड़ियों के लिए समाचार',
@@ -22715,12 +22814,13 @@ async function submitCreateNews() {
   btn.disabled = true;
   try {
     if (!db) throw new Error('no-db');
+    await _fbInit(); // гарантируем, что модульный Firestore уже загружен для serverTimestamp()
     const nick = (ev3User && ev3User.user_metadata && ev3User.user_metadata.username) || 'Dev';
     await db.collection('news').add({
       title, body,
       authorNick: nick,
       authorUid: (ev3User && ev3User.id) || null,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      createdAt: _fsServerTimestamp()
     });
     closeCreateNewsModal();
     showToast(tt('news-sent-toast', 'Новость опубликована!'), '📰');
