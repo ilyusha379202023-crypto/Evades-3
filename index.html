@@ -3718,7 +3718,7 @@
 .profile-modal-name.is-vip { background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 60%, #C49100 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .profile-modal-name-row, .profile-dd-name-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center; }
 .profile-dd-name-row { justify-content: flex-start; }
-.dev-badge {
+.dev-role-badge {
   display: inline-flex; align-items: center; gap: 4px;
   font-family: 'Orbitron', system-ui, sans-serif;
   font-size: 9px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase;
@@ -3727,8 +3727,8 @@
   background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 55%, #C49100 100%);
   box-shadow: 0 0 8px rgba(255,200,58,0.55), inset 0 1px 0 rgba(255,255,255,0.6);
 }
-.dev-badge::before { content: '⚙️'; font-size: 9px; }
-.dev-badge-lg { font-size: 11px; padding: 4px 10px; margin-bottom: 4px; }
+.dev-role-badge::before { content: '⚙️'; font-size: 9px; }
+.dev-role-badge-lg { font-size: 11px; padding: 4px 10px; margin-bottom: 4px; }
 .profile-modal-email { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 24px; }
 .profile-modal-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 24px; }
 .profile-stat {
@@ -6802,9 +6802,7 @@ body:not(.hero-anim) .subtitle .ch{
           <svg class="ic-svg-profile-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex-silver"/></svg>
         </div>
         <div>
-          <div <span class="dev-badge" id="ddDevBadge"
-      style="display:none;"
-      data-i18n="developer-badge">Разработчик</span></div>
+          <div class="profile-dd-name-row"><div class="profile-dd-name" id="ddName"></div><span class="dev-role-badge" id="ddDevBadge" style="display:none;" data-i18n="dev-role-badge">Разработчик</span></div>
           <div class="profile-dd-email" id="ddEmail">—</div>
         </div>
       </div>
@@ -6954,7 +6952,7 @@ body:not(.hero-anim) .subtitle .ch{
     <div class="profile-modal-avatar">
       <svg class="ic-svg-profile-big" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex-silver"/></svg>
     </div>
-    <div class="profile-modal-name-row"><div class="profile-modal-name" id="pmName"></div><span class="dev-badge dev-badge-lg" id="pmDevBadge" style="display:none;" data-i18n="developer-badge">Разработчик</span></div>
+    <div class="profile-modal-name-row"><div class="profile-modal-name" id="pmName"></div><span class="dev-role-badge dev-role-badge-lg" id="pmDevBadge" style="display:none;" data-i18n="dev-role-badge">Разработчик</span></div>
     <div class="profile-modal-email" id="pmEmail">—</div>
 <div class="profile-modal-fields">
   <div class="profile-modal-field">
@@ -21811,7 +21809,7 @@ async function doResetPassword() {
     // ============================================================
     const extra2 = {
       ru: {
-        'developer-badge': 'Разработчик',
+        'dev-role-badge': 'Разработчик',
         'dev-panel-title': 'Панель разработчика',
         'dev-panel-sub': 'Участники проекта и новости для всех игроков',
         'dev-btn-participants': '👥 Участники',
@@ -21835,7 +21833,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Нет соединения с базой данных. Попробуй ещё раз через пару секунд'
       },
       en: {
-        'developer-badge': 'Developer',
+        'dev-role-badge': 'Developer',
         'dev-panel-title': 'Developer Panel',
         'dev-panel-sub': 'Project participants and news for all players',
         'dev-btn-participants': '👥 Participants',
@@ -21859,7 +21857,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'No connection to the database. Try again in a few seconds'
       },
       uk: {
-        'developer-badge': 'Розробник',
+        'dev-role-badge': 'Розробник',
         'dev-panel-title': 'Панель розробника',
         'dev-panel-sub': 'Учасники проєкту та новини для всіх гравців',
         'dev-btn-participants': '👥 Учасники',
@@ -21883,7 +21881,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Немає з’єднання з базою даних. Спробуй ще раз за кілька секунд'
       },
       de: {
-        'developer-badge': 'Entwickler',
+        'dev-role-badge': 'Entwickler',
         'dev-panel-title': 'Entwickler-Panel',
         'dev-panel-sub': 'Projektteilnehmer und News für alle Spieler',
         'dev-btn-participants': '👥 Teilnehmer',
@@ -21907,7 +21905,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Keine Verbindung zur Datenbank. Versuch es in ein paar Sekunden erneut'
       },
       es: {
-        'developer-badge': 'Desarrollador',
+        'dev-role-badge': 'Desarrollador',
         'dev-panel-title': 'Panel de desarrollador',
         'dev-panel-sub': 'Participantes del proyecto y noticias para todos los jugadores',
         'dev-btn-participants': '👥 Participantes',
@@ -21931,7 +21929,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Sin conexión con la base de datos. Inténtalo de nuevo en unos segundos'
       },
       fr: {
-        'developer-badge': 'Développeur',
+        'dev-role-badge': 'Développeur',
         'dev-panel-title': 'Panneau développeur',
         'dev-panel-sub': 'Participants du projet et actualités pour tous les joueurs',
         'dev-btn-participants': '👥 Participants',
@@ -21955,7 +21953,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Pas de connexion à la base de données. Réessaie dans quelques secondes'
       },
       it: {
-        'developer-badge': 'Sviluppatore',
+        'dev-role-badge': 'Sviluppatore',
         'dev-panel-title': 'Pannello sviluppatore',
         'dev-panel-sub': 'Partecipanti al progetto e novità per tutti i giocatori',
         'dev-btn-participants': '👥 Partecipanti',
@@ -21979,7 +21977,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Nessuna connessione al database. Riprova tra qualche secondo'
       },
       pt: {
-        'developer-badge': 'Desenvolvedor',
+        'dev-role-badge': 'Desenvolvedor',
         'dev-panel-title': 'Painel do desenvolvedor',
         'dev-panel-sub': 'Participantes do projeto e novidades para todos os jogadores',
         'dev-btn-participants': '👥 Participantes',
@@ -22003,7 +22001,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Sem conexão com o banco de dados. Tente novamente em alguns segundos'
       },
       pl: {
-        'developer-badge': 'Deweloper',
+        'dev-role-badge': 'Deweloper',
         'dev-panel-title': 'Panel dewelopera',
         'dev-panel-sub': 'Uczestnicy projektu i wiadomości dla wszystkich graczy',
         'dev-btn-participants': '👥 Uczestnicy',
@@ -22027,7 +22025,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Brak połączenia z bazą danych. Spróbuj ponownie za kilka sekund'
       },
       tr: {
-        'developer-badge': 'Geliştirici',
+        'dev-role-badge': 'Geliştirici',
         'dev-panel-title': 'Geliştirici Paneli',
         'dev-panel-sub': 'Proje katılımcıları ve tüm oyuncular için haberler',
         'dev-btn-participants': '👥 Katılımcılar',
@@ -22051,7 +22049,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Veritabanına bağlantı yok. Birkaç saniye sonra tekrar dene'
       },
       nl: {
-        'developer-badge': 'Ontwikkelaar',
+        'dev-role-badge': 'Ontwikkelaar',
         'dev-panel-title': 'Ontwikkelaarspaneel',
         'dev-panel-sub': 'Projectdeelnemers en nieuws voor alle spelers',
         'dev-btn-participants': '👥 Deelnemers',
@@ -22075,7 +22073,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Geen verbinding met de database. Probeer het over een paar seconden opnieuw'
       },
       sv: {
-        'developer-badge': 'Utvecklare',
+        'dev-role-badge': 'Utvecklare',
         'dev-panel-title': 'Utvecklarpanel',
         'dev-panel-sub': 'Projektdeltagare och nyheter för alla spelare',
         'dev-btn-participants': '👥 Deltagare',
@@ -22099,7 +22097,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Ingen anslutning till databasen. Försök igen om några sekunder'
       },
       no: {
-        'developer-badge': 'Utvikler',
+        'dev-role-badge': 'Utvikler',
         'dev-panel-title': 'Utviklerpanel',
         'dev-panel-sub': 'Prosjektdeltakere og nyheter for alle spillere',
         'dev-btn-participants': '👥 Deltakere',
@@ -22123,7 +22121,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Ingen tilkobling til databasen. Prøv igjen om noen sekunder'
       },
       fi: {
-        'developer-badge': 'Kehittäjä',
+        'dev-role-badge': 'Kehittäjä',
         'dev-panel-title': 'Kehittäjäpaneeli',
         'dev-panel-sub': 'Projektin osallistujat ja uutiset kaikille pelaajille',
         'dev-btn-participants': '👥 Osallistujat',
@@ -22147,7 +22145,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Ei yhteyttä tietokantaan. Yritä uudelleen muutaman sekunnin kuluttua'
       },
       da: {
-        'developer-badge': 'Udvikler',
+        'dev-role-badge': 'Udvikler',
         'dev-panel-title': 'Udviklerpanel',
         'dev-panel-sub': 'Projektdeltagere og nyheder til alle spillere',
         'dev-btn-participants': '👥 Deltagere',
@@ -22171,7 +22169,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Ingen forbindelse til databasen. Prøv igen om et par sekunder'
       },
       cs: {
-        'developer-badge': 'Vývojář',
+        'dev-role-badge': 'Vývojář',
         'dev-panel-title': 'Panel vývojáře',
         'dev-panel-sub': 'Účastníci projektu a novinky pro všechny hráče',
         'dev-btn-participants': '👥 Účastníci',
@@ -22195,7 +22193,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Žádné připojení k databázi. Zkus to znovu za pár sekund'
       },
       ro: {
-        'developer-badge': 'Dezvoltator',
+        'dev-role-badge': 'Dezvoltator',
         'dev-panel-title': 'Panou dezvoltator',
         'dev-panel-sub': 'Participanții proiectului și noutăți pentru toți jucătorii',
         'dev-btn-participants': '👥 Participanți',
@@ -22219,7 +22217,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Nicio conexiune la baza de date. Încearcă din nou peste câteva secunde'
       },
       hu: {
-        'developer-badge': 'Fejlesztő',
+        'dev-role-badge': 'Fejlesztő',
         'dev-panel-title': 'Fejlesztői panel',
         'dev-panel-sub': 'Projekt résztvevői és hírek minden játékosnak',
         'dev-btn-participants': '👥 Résztvevők',
@@ -22243,7 +22241,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Nincs kapcsolat az adatbázissal. Próbáld újra pár másodperc múlva'
       },
       el: {
-        'developer-badge': 'Προγραμματιστής',
+        'dev-role-badge': 'Προγραμματιστής',
         'dev-panel-title': 'Πίνακας προγραμματιστή',
         'dev-panel-sub': 'Συμμετέχοντες του έργου και νέα για όλους τους παίκτες',
         'dev-btn-participants': '👥 Συμμετέχοντες',
@@ -22267,7 +22265,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Δεν υπάρχει σύνδεση με τη βάση δεδομένων. Δοκίμασε ξανά σε λίγα δευτερόλεπτα'
       },
       ja: {
-        'developer-badge': '開発者',
+        'dev-role-badge': '開発者',
         'dev-panel-title': '開発者パネル',
         'dev-panel-sub': 'プロジェクト参加者と全プレイヤー向けのお知らせ',
         'dev-btn-participants': '👥 参加者',
@@ -22291,7 +22289,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'データベースに接続できません。数秒後にもう一度お試しください'
       },
       zh: {
-        'developer-badge': '开发者',
+        'dev-role-badge': '开发者',
         'dev-panel-title': '开发者面板',
         'dev-panel-sub': '项目参与者以及面向所有玩家的新闻',
         'dev-btn-participants': '👥 参与者',
@@ -22315,7 +22313,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': '无法连接数据库，请几秒后重试'
       },
       ko: {
-        'developer-badge': '개발자',
+        'dev-role-badge': '개발자',
         'dev-panel-title': '개발자 패널',
         'dev-panel-sub': '프로젝트 참가자 및 모든 플레이어를 위한 소식',
         'dev-btn-participants': '👥 참가자',
@@ -22339,7 +22337,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': '데이터베이스에 연결할 수 없습니다. 잠시 후 다시 시도하세요'
       },
       ar: {
-        'developer-badge': 'مطوّر',
+        'dev-role-badge': 'مطوّر',
         'dev-panel-title': 'لوحة المطوّر',
         'dev-panel-sub': 'المشاركون في المشروع وأخبار لجميع اللاعبين',
         'dev-btn-participants': '👥 المشاركون',
@@ -22363,7 +22361,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'لا يوجد اتصال بقاعدة البيانات. حاول مرة أخرى خلال ثوانٍ'
       },
       he: {
-        'developer-badge': 'מפתח',
+        'dev-role-badge': 'מפתח',
         'dev-panel-title': 'לוח בקרה למפתח',
         'dev-panel-sub': 'משתתפי הפרויקט וחדשות לכל השחקנים',
         'dev-btn-participants': '👥 משתתפים',
@@ -22387,7 +22385,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'אין חיבור למסד הנתונים. נסה שוב בעוד כמה שניות'
       },
       th: {
-        'developer-badge': 'นักพัฒนา',
+        'dev-role-badge': 'นักพัฒนา',
         'dev-panel-title': 'แผงควบคุมนักพัฒนา',
         'dev-panel-sub': 'ผู้เข้าร่วมโปรเจกต์และข่าวสารสำหรับผู้เล่นทุกคน',
         'dev-btn-participants': '👥 ผู้เข้าร่วม',
@@ -22411,7 +22409,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'ไม่มีการเชื่อมต่อกับฐานข้อมูล ลองใหม่อีกครั้งในอีกไม่กี่วินาที'
       },
       vi: {
-        'developer-badge': 'Nhà phát triển',
+        'dev-role-badge': 'Nhà phát triển',
         'dev-panel-title': 'Bảng điều khiển nhà phát triển',
         'dev-panel-sub': 'Thành viên dự án và tin tức cho tất cả người chơi',
         'dev-btn-participants': '👥 Thành viên',
@@ -22435,7 +22433,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Không có kết nối đến cơ sở dữ liệu. Thử lại sau vài giây'
       },
       id: {
-        'developer-badge': 'Pengembang',
+        'dev-role-badge': 'Pengembang',
         'dev-panel-title': 'Panel Pengembang',
         'dev-panel-sub': 'Peserta proyek dan berita untuk semua pemain',
         'dev-btn-participants': '👥 Peserta',
@@ -22459,7 +22457,7 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Tidak ada koneksi ke database. Coba lagi dalam beberapa detik'
       },
       hi: {
-        'developer-badge': 'डेवलपर',
+        'dev-role-badge': 'डेवलपर',
         'dev-panel-title': 'डेवलपर पैनल',
         'dev-panel-sub': 'प्रोजेक्ट के सदस्य और सभी खिलाड़ियों के लिए समाचार',
         'dev-btn-participants': '👥 सदस्य',
@@ -22759,7 +22757,7 @@ async function _e3LoadParticipants() {
         '<div class="participant-item">' +
           '<div class="participant-avatar">' + _e3Esc(initial) + '</div>' +
           '<div class="participant-info">' +
-            '<div class="participant-nick">' + _e3Esc(nick) + (isDevUser ? '<span class="dev-badge">' + _e3Esc(tt('developer-badge','Разработчик')) + '</span>' : '') + '</div>' +
+            '<div class="participant-nick">' + _e3Esc(nick) + (isDevUser ? '<span class="dev-role-badge">' + _e3Esc(tt('dev-role-badge','Разработчик')) + '</span>' : '') + '</div>' +
           '</div>' +
         '</div>'
       );
