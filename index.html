@@ -6727,6 +6727,15 @@ body:not(.hero-anim) .subtitle .ch{
         <svg class="ic-svg-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex-silver"/></svg>
         Профиль
       </button>
+      <button class="profile-dd-item" id="ddCreateNews" onclick="openNewsModal()" data-i18n="dev-create-news" style="display:none;">
+        <svg class="ic-svg-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-news"/></svg>
+        Создать новость
+      </button>
+      <div class="profile-dd-divider" id="ddDevDivider" style="display:none;"></div>
+      <button class="profile-dd-item" id="ddDevPanel" onclick="openDevPanel()" data-i18n="dev-panel" style="display:none;">
+        <svg class="ic-svg-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-dev"/></svg>
+        Панель разработчика
+      </button>
       <div class="profile-dd-divider"></div>
       <button class="profile-dd-item danger" onclick="openConfirmLogout()" data-i18n="auth-logout">
         <svg class="ic-svg-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-logout"/></svg>
@@ -15004,6 +15013,12 @@ function openAuthModal(tab = 'login') {
 function closeAuthModal() {
   document.getElementById('authModalOverlay').classList.remove('show');
   document.body.classList.remove('modal-open');
+}
+
+function closeAuthModalOnSuccess(nick) {
+  closeAuthModal();
+  showLoggedIn();
+  ev3Toast(tt('auth-ok-login-prefix','Добро пожаловать, ') + (nick || '') + '! 🎮', '🎮');
 }
 function closeAuthModalOnBg(e) { if (e.target === e.currentTarget) closeAuthModal(); }
 
