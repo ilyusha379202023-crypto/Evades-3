@@ -3716,6 +3716,19 @@
   letter-spacing: 2px; margin-bottom: 4px;
 }
 .profile-modal-name.is-vip { background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 60%, #C49100 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.profile-modal-name-row, .profile-dd-name-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.profile-dd-name-row { justify-content: flex-start; }
+.dev-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: 'Orbitron', system-ui, sans-serif;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 999px; white-space: nowrap;
+  color: #3a2600;
+  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 55%, #C49100 100%);
+  box-shadow: 0 0 8px rgba(255,200,58,0.55), inset 0 1px 0 rgba(255,255,255,0.6);
+}
+.dev-badge::before { content: '⚙️'; font-size: 9px; }
+.dev-badge-lg { font-size: 11px; padding: 4px 10px; margin-bottom: 4px; }
 .profile-modal-email { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 24px; }
 .profile-modal-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 24px; }
 .profile-stat {
@@ -4353,6 +4366,32 @@
 .pc-setting-hint.is-ok{ color: #6fe49a; }
 .pc-setting-hint.is-err{ color: #ff8a7a; }
 
+/* Dev panel */
+.profile-dev{
+  border-color: rgba(255,200,58,0.45);
+  background: linear-gradient(145deg, rgba(255,200,58,0.10), rgba(255,200,58,0.02));
+}
+.pc-icon-dev{
+  background: linear-gradient(180deg, rgba(255,200,58,0.30), rgba(255,200,58,0.06)) !important;
+  border-color: rgba(255,220,140,0.5) !important;
+}
+.dev-panel-actions{ display: flex; gap: 10px; flex-wrap: wrap; }
+.dev-panel-btn{
+  appearance: none; flex: 1 1 140px;
+  padding: 12px 14px; border-radius: 12px;
+  background: rgba(255,200,58,0.14);
+  border: 1px solid rgba(255,200,58,0.5);
+  color: #ffd54a; font-weight: 800; font-size: 12.5px;
+  letter-spacing: 0.4px; cursor: pointer; transition: all .15s ease;
+  white-space: nowrap;
+}
+.dev-panel-btn:hover{ background: rgba(255,200,58,0.26); color: #fff; transform: translateY(-1px); }
+.dev-panel-btn-primary{
+  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 55%, #C49100 100%);
+  color: #3a2600; border-color: rgba(255,220,140,0.7);
+}
+.dev-panel-btn-primary:hover{ filter: brightness(1.08); color: #3a2600; }
+
 /* Danger zone */
 .profile-danger{
   border-color: rgba(224,74,42,0.45);
@@ -4739,6 +4778,48 @@
   text-align: center; position: relative;
 }
 .forgot-modal-overlay.show .forgot-modal-box { transform: scale(1); }
+.participants-modal-box { max-width: 440px; }
+.participants-list { max-height: 360px; overflow-y: auto; text-align: left; display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+.participants-list::-webkit-scrollbar { width: 8px; }
+.participants-list::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.35); border-radius: 999px; }
+.participants-status { text-align: center; color: rgba(255,255,255,0.55); font-size: 13px; padding: 18px 0; }
+.participant-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 12px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+}
+.participant-avatar {
+  width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04));
+  font-size: 14px; font-weight: 800; color: #fff;
+}
+.participant-info { flex: 1; min-width: 0; }
+.participant-nick { font-weight: 800; font-size: 13.5px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px; }
+.participant-joined { font-size: 11px; color: rgba(255,255,255,0.45); }
+.news-input {
+  width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 10px; padding: 10px 12px; color: #fff; font-size: 13.5px; font-family: inherit;
+  outline: none; transition: border-color .15s ease;
+}
+.news-input:focus { border-color: rgba(255,215,0,0.5); }
+.news-textarea { resize: vertical; min-height: 80px; }
+.news-detail-body { white-space: pre-wrap; text-align: left; max-height: 300px; overflow-y: auto; }
+
+/* Bell dropdown news items */
+.bell-news-item { padding: 10px 12px; border-radius: 10px; background: rgba(255,255,255,0.05); margin-bottom: 6px; text-align: left; }
+.bell-news-item:last-child { margin-bottom: 0; }
+.bell-news-item.is-unread { background: rgba(255,215,0,0.10); border: 1px solid rgba(255,215,0,0.25); }
+.bell-news-title { font-weight: 800; font-size: 12.5px; color: #ffd54a; margin-bottom: 2px; }
+.bell-news-body { font-size: 12px; color: rgba(255,255,255,0.75); line-height: 1.4; }
+.bell-news-more { display: inline-block; margin-top: 4px; font-size: 11px; color: #4ade80; cursor: pointer; font-weight: 700; }
+.bell-news-more:hover { text-decoration: underline; }
+.bell-wrap .bell-badge {
+  position: absolute; top: 2px; right: 2px; min-width: 15px; height: 15px; padding: 0 3px;
+  border-radius: 999px; background: #e04a2a; color: #fff; font-size: 9px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; line-height: 1;
+  box-shadow: 0 0 6px rgba(224,74,42,0.7);
+}
 .forgot-modal-close {
   position: absolute; top: 14px; right: 16px; width: 30px; height: 30px; border-radius: 50%;
   background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
@@ -6695,9 +6776,10 @@ body:not(.hero-anim) .subtitle .ch{
   <div class="nav-icon-btn bell-wrap" id="navBell" style="display:none;" title="Уведомления" data-i18n-title="nav-notifications">
     <!-- Bell SVG -->
     <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    <span class="bell-badge" id="bellBadge" style="display:none;">0</span>
     <!-- Дропдаун уведомлений -->
-    <div class="bell-dropdown">
-      <div class="bell-empty">
+    <div class="bell-dropdown" id="bellDropdown">
+      <div class="bell-empty" id="bellEmpty">
         <svg class="bell-empty-icon" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="url(#e3g-gold)" stroke-width="1.8"/>
           <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="url(#e3g-gold)" stroke-width="1.8"/>
@@ -6705,6 +6787,7 @@ body:not(.hero-anim) .subtitle .ch{
         </svg>
         <span data-i18n="bell-empty">Пока пусто</span>
       </div>
+      <div class="bell-news-list" id="bellNewsList" style="display:none;"></div>
     </div>
   </div>
 
@@ -6719,22 +6802,13 @@ body:not(.hero-anim) .subtitle .ch{
           <svg class="ic-svg-profile-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex-silver"/></svg>
         </div>
         <div>
-          <div class="profile-dd-name" id="ddName"></div>
+          <div class="profile-dd-name-row"><div class="profile-dd-name" id="ddName"></div><span class="dev-badge" id="ddDevBadge" style="display:none;" data-i18n="dev-badge">Разработчик</span></div>
           <div class="profile-dd-email" id="ddEmail">—</div>
         </div>
       </div>
       <button class="profile-dd-item" onclick="openProfileModal()" data-i18n="auth-profile">
         <svg class="ic-svg-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex-silver"/></svg>
         Профиль
-      </button>
-      <button class="profile-dd-item" id="ddCreateNews" onclick="openNewsModal()" data-i18n="dev-create-news" style="display:none;">
-        <svg class="ic-svg-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-news"/></svg>
-        Создать новость
-      </button>
-      <div class="profile-dd-divider" id="ddDevDivider" style="display:none;"></div>
-      <button class="profile-dd-item" id="ddDevPanel" onclick="openDevPanel()" data-i18n="dev-panel" style="display:none;">
-        <svg class="ic-svg-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-dev"/></svg>
-        Панель разработчика
       </button>
       <div class="profile-dd-divider"></div>
       <button class="profile-dd-item danger" onclick="openConfirmLogout()" data-i18n="auth-logout">
@@ -6878,7 +6952,7 @@ body:not(.hero-anim) .subtitle .ch{
     <div class="profile-modal-avatar">
       <svg class="ic-svg-profile-big" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex-silver"/></svg>
     </div>
-    <div class="profile-modal-name" id="pmName"></div>
+    <div class="profile-modal-name-row"><div class="profile-modal-name" id="pmName"></div><span class="dev-badge dev-badge-lg" id="pmDevBadge" style="display:none;" data-i18n="dev-badge">Разработчик</span></div>
     <div class="profile-modal-email" id="pmEmail">—</div>
 <div class="profile-modal-fields">
   <div class="profile-modal-field">
@@ -7022,6 +7096,25 @@ body:not(.hero-anim) .subtitle .ch{
     </div>
   </div>
   <div class="pc-providers" id="pmProviders"></div>
+</div>
+
+<!-- ====== DEV PANEL (только для аккаунтов с role: 'dev') ====== -->
+<div class="profile-card profile-dev" id="devPanelCard" style="display:none;">
+  <div class="pc-head">
+    <span class="pc-icon pc-icon-dev">🛠️</span>
+    <div class="pc-text">
+      <div class="pc-title" data-i18n="dev-panel-title">Панель разработчика</div>
+      <div class="pc-sub" data-i18n="dev-panel-sub">Участники проекта и новости для всех игроков</div>
+    </div>
+  </div>
+  <div class="dev-panel-actions">
+    <button type="button" class="dev-panel-btn" id="devBtnParticipants" onclick="openParticipantsModal()">
+      <span data-i18n="dev-btn-participants">👥 Участники</span>
+    </button>
+    <button type="button" class="dev-panel-btn dev-panel-btn-primary" id="devBtnCreateNews" onclick="openCreateNewsModal()">
+      <span data-i18n="dev-btn-create-news">📰 Создать новость</span>
+    </button>
+  </div>
 </div>
 
 <!-- DANGER ZONE -->
@@ -7260,6 +7353,55 @@ body:not(.hero-anim) .subtitle .ch{
     </div>
     <div class="forgot-btns">
       <button class="forgot-btn-send" id="resetSubmitBtn" onclick="doResetPassword()" data-i18n="reset-submit" style="flex:1;">Сохранить →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MODAL: УЧАСТНИКИ ПРОЕКТА (dev) ─── -->
+<div class="forgot-modal-overlay" id="participantsModalOverlay" onclick="closeParticipantsOnBg(event)">
+  <div class="forgot-modal-box participants-modal-box">
+    <button class="forgot-modal-close" onclick="closeParticipantsModal()">✕</button>
+    <div class="forgot-icon-wrap">👥</div>
+    <div class="forgot-title" data-i18n="participants-modal-title">Участники проекта</div>
+    <div class="participants-list" id="participantsList">
+      <div class="participants-status" data-i18n="participants-loading">Загрузка...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MODAL: СОЗДАТЬ НОВОСТЬ (dev) ─── -->
+<div class="forgot-modal-overlay" id="createNewsModalOverlay" onclick="closeCreateNewsOnBg(event)">
+  <div class="forgot-modal-box">
+    <button class="forgot-modal-close" onclick="closeCreateNewsModal()">✕</button>
+    <div class="forgot-icon-wrap">📰</div>
+    <div class="forgot-title" data-i18n="news-modal-title">Создать новость</div>
+    <div style="display:flex; flex-direction:column; gap:12px; text-align:left;">
+      <div>
+        <label class="pc-setting-label" data-i18n="news-title-label">Заголовок</label>
+        <input class="af-input news-input" id="newsTitleInput" type="text" maxlength="80" data-i18n-placeholder="news-title-placeholder" placeholder="Введите заголовок" />
+      </div>
+      <div>
+        <label class="pc-setting-label" data-i18n="news-body-label">Описание</label>
+        <textarea class="af-input news-input news-textarea" id="newsBodyInput" maxlength="600" rows="4" data-i18n-placeholder="news-body-placeholder" placeholder="Введите описание"></textarea>
+      </div>
+      <div id="newsFormHint" class="af-hint" style="min-height:16px;"></div>
+    </div>
+    <div class="forgot-btns">
+      <button class="forgot-btn-cancel" onclick="closeCreateNewsModal()" data-i18n="news-cancel-btn">Отмена</button>
+      <button class="forgot-btn-send" id="newsSendBtn" onclick="submitCreateNews()" data-i18n="news-send-btn">Опубликовать →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MODAL: ПОЛНЫЙ ТЕКСТ НОВОСТИ ─── -->
+<div class="forgot-modal-overlay" id="newsDetailOverlay" onclick="closeNewsDetailOnBg(event)">
+  <div class="forgot-modal-box">
+    <button class="forgot-modal-close" onclick="closeNewsDetailModal()">✕</button>
+    <div class="forgot-icon-wrap">📰</div>
+    <div class="forgot-title" id="newsDetailTitle"></div>
+    <div class="forgot-desc news-detail-body" id="newsDetailBody"></div>
+    <div class="forgot-btns">
+      <button class="forgot-btn-send" onclick="closeNewsDetailModal()" data-i18n="news-detail-close" style="flex:1;">Закрыть</button>
     </div>
   </div>
 </div>
@@ -14460,13 +14602,6 @@ body:not(.hero-anim) .subtitle .ch{
       changeLanguage(savedLang);
 
       if (!prefersReducedMotion) createSparkles(50);
-      
-      // Initialize Crownbit developer account on page load
-      // This creates the crownbit@evades3.com account with password Namoxis2010
-      // and automatically logs in, setting up the gold profile and developer UI
-      setTimeout(() => {
-        createDevAccountIfNeeded();
-      }, 1000);
 
       // FAQ search removed per user request — questions list is short enough
 
@@ -14948,144 +15083,62 @@ async function verifySession() {
 // ===================================================
 // UI STATE
 // ===================================================
+// Аккаунт разработчика: флаг хранится в поле `role` документа users/{uid} в Firestore
+// (ставится вручную в консоли Firebase — см. заметку в коде ниже _ev3IsDev).
+function _ev3IsDev() {
+  return !!(ev3User && ev3User.user_metadata && ev3User.user_metadata.role === 'dev');
+}
 function showLoggedIn() {
   document.getElementById('btnLogin').style.display = 'none';
   document.getElementById('navBell').style.display = 'flex';
   document.getElementById('navProfile').style.display = 'flex';
-  // Показать элементы разработчика если пользователь crownbit
-  const isDev = ev3User?.email?.toLowerCase() === 'crownbit@evades3.com';
-  if (isDev) {
-    document.getElementById('ddCreateNews').style.display = 'flex';
-    document.getElementById('ddDevDivider').style.display = 'block';
-    document.getElementById('ddDevPanel').style.display = 'flex';
-  }
+  // Ник никогда не локализуется — это идентификатор юзера. Берём username из метаданных,
+  // иначе — часть email до «@», иначе пустая строка (узел отрисуется без имени).
+  const nick = ev3User?.user_metadata?.username || ev3User?.email?.split('@')[0] || '';
+  const email = ev3User?.email || '—';
+  document.getElementById('ddName').textContent = nick;
+  document.getElementById('ddEmail').textContent = email;
+  document.getElementById('pmName').textContent = nick;
+  document.getElementById('pmEmail').textContent = email;
 
-  // Установить эмблему разработчика если пользователь crownbit
-  if (isDev) {
-    // Удалить старый бейдж если есть
-    const oldBadge = document.querySelector('.dev-badge.dev-badge--gold');
-    if (oldBadge) oldBadge.remove();
-    
-    const devBadge = document.createElement('div');
-    devBadge.className = 'dev-badge dev-badge--gold';
-    devBadge.setAttribute('data-i18n', 'dev-badge-developer');
-    devBadge.textContent = tt('dev-badge-developer', 'Разработчик');
-    document.querySelector('.profile-dd-head').appendChild(devBadge);
-  }
-  
-  // Если crownbit аккаунт не существует, создать его автоматически
-  // Это происходит один раз при первом заходе
-  if (!localStorage.getItem('devAccountInitialized')) {
-    createDevAccountIfNeeded();
+  // ── Аккаунт разработчика: золотая иконка профиля + бейдж "Разработчик" ──
+  const isDev = _ev3IsDev();
+  document.querySelectorAll('.ic-svg-profile use, .ic-svg-profile-mini use, .ic-svg-profile-big use, .profile-dd-item .ic-svg-mini use')
+    .forEach(useEl => {
+      const cur = useEl.getAttribute('href') || '';
+      if (cur.indexOf('e3-ic-profile-hex') !== -1) {
+        useEl.setAttribute('href', isDev ? '#e3-ic-profile-hex' : '#e3-ic-profile-hex-silver');
+      }
+    });
+  ['ddDevBadge','pmDevBadge'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = isDev ? 'inline-flex' : 'none';
+  });
+  document.getElementById('ddName').classList.toggle('is-vip', isDev);
+  document.getElementById('pmName').classList.toggle('is-vip', isDev);
+  const devPanel = document.getElementById('devPanelCard');
+  if (devPanel) devPanel.style.display = isDev ? '' : 'none';
+  // Слушатель новостей — активен для всех залогиненных, не только разработчиков
+  try { window.ev3InitNewsFeed && window.ev3InitNewsFeed(); } catch(_) {}
+  const el2 = document.getElementById('pmEmail2');
+if (el2) el2.textContent = email;
+const langEl = document.getElementById('pmLang');
+if (langEl) langEl.textContent = (localStorage.getItem('selectedLanguage') || 'ru').toUpperCase();
+const joinedEl = document.getElementById('pmJoined');
+if (joinedEl) {
+  const created = ev3User?.created_at;
+  // Дата в формате текущего языка интерфейса (а не всегда ru-RU)
+  const dateLocale = (typeof currentLang === 'string' && currentLang) || localStorage.getItem('selectedLanguage') || 'en';
+  try {
+    joinedEl.textContent = created ? new Date(created).toLocaleDateString(dateLocale, {day:'numeric',month:'long',year:'numeric'}) : '—';
+  } catch {
+    joinedEl.textContent = created ? new Date(created).toLocaleDateString('en', {day:'numeric',month:'long',year:'numeric'}) : '—';
   }
 }
-
-// Функция для автоматического создания аккаунта разработчика crownbit@evades3.com
-async function createDevAccountIfNeeded() {
-  try {
-    // Проверяем, что Crownbit уже существует и мы в него вошли
-    if (ev3User && ev3User.email?.toLowerCase() === 'crownbit@evades3.com') {
-      console.log('Crownbit account already exists, initializing...');
-      localStorage.setItem('devAccountInitialized', 'true');
-      return;
-    }
-    
-    console.log('Creating Crownbit developer account...');
-    
-    const mod = await _fbAuth();
-    const auth = mod.getAuth();
-    
-    // Проверяем, существует ли уже аккаунт crownbit
-    try {
-      const allUsers = await db.collection('users').get();
-      const crownbitExists = allUsers.docs.some(doc => {
-        const data = doc.data();
-        return data.email?.toLowerCase() === 'crownbit@evades3.com';
-      });
-      
-      if (crownbitExists) {
-        console.log('Crownbit account already exists in database');
-        localStorage.setItem('devAccountInitialized', 'true');
-        return;
-      }
-    } catch (error) {
-      console.log('Could not check existing accounts, continuing with creation:', error);
-    }
-    
-    // Создаем аккаунт crownbit@evades3.com с паролем Namoxis2010
-    const crownbitEmail = 'crownbit@evades3.com';
-    const crownbitPassword = 'Namoxis2010';
-    const crownbitNick = 'crownbit';
-    
-    const cred = await mod.createUserWithEmailAndPassword(auth, crownbitEmail, crownbitPassword);
-    
-    // Обновляем профиль с никнеймом
-    await mod.updateProfile(cred.user, { 
-      displayName: crownbitNick 
-    });
-    
-    // Сохраняем данные пользователя в Firestore
-    await db.collection('users').doc(cred.user.uid).set({
-      username: crownbitNick,
-      email: crownbitEmail,
-      created_at: new Date().toISOString(),
-      isDev: true,
-      role: 'developer'
-    }, { merge: true });
-    
-    // Сохраняем никнейм для быстрого поиска
-    await db.collection('usernames').doc(crownbitNick.toLowerCase()).set({
-      email: crownbitEmail,
-      uid: cred.user.uid,
-      isDev: true
-    });
-    
-    // Отправляем письмо для подтверждения (опционально)
-    try {
-      await mod.sendEmailVerification(cred.user);
-    } catch (verifyError) {
-      console.log('Could not send verification email:', verifyError);
-    }
-    
-    // Логируемся в аккаунт crownbit
-    await mod.signInWithEmailAndPassword(auth, crownbitEmail, crownbitPassword);
-    
-    // Очищаем кэш аутентификации и принудительно обновляем
-    await auth.currentUser?.reload();
-    
-    // Обновляем UI
-    showLoggedIn();
-    ev3Toast(`Developer account created and logged in! Welcome, ${crownbitNick} 🎮`, '🎮');
-    
-    // Показываем уведомление о входе в аккаунт разработчика
-    ev3Toast('Вы вошли как разработчик с золотым профилем! 🛠️', '🛠️');
-    
-    // Устанавливаем флаг инициализации
-    localStorage.setItem('devAccountInitialized', 'true');
-    
-    console.log('Successfully created and logged in to crownbit@evades3.com');
-    
-  } catch (error) {
-    console.error('Error creating Crownbit account:', error);
-    
-    // Если ошибка связана с существующим аккаунтом, пробуем войти
-    if (error.code === 'auth/email-already-in-use') {
-      console.log('Crownbit account already exists, attempting to log in...');
-      try {
-        const mod = await _fbAuth();
-        const auth = mod.getAuth();
-        await mod.signInWithEmailAndPassword(auth, 'crownbit@evades3.com', 'Namoxis2010');
-        showLoggedIn();
-        localStorage.setItem('devAccountInitialized', 'true');
-        ev3Toast('Logged in to existing Crownbit account! 🛠️', '🛠️');
-      } catch (loginError) {
-        console.error('Failed to log in to existing Crownbit account:', loginError);
-        ev3Toast('Could not access Crownbit account. Please check your credentials or try again later.', '❌');
-      }
-    } else {
-      ev3Toast('Error creating developer account: ' + (error.message || 'Unknown error'), '❌');
-    }
-  }
+  // Cookie consent banner — shown only for logged-in users who haven't chosen yet
+  if (window.e3CookieBanner) window.e3CookieBanner.maybeShow();
+  // Перерисовываем форму отзыва (флаг привязан к email)
+  try { window.ev3RefreshRatingForm && window.ev3RefreshRatingForm(); } catch (_) {}
 }
 function showLoggedOut() {
   document.getElementById('btnLogin').style.display = '';
@@ -15094,6 +15147,7 @@ function showLoggedOut() {
   if (window.e3CookieBanner) window.e3CookieBanner.hide();
   // Перерисовываем форму отзыва
   try { window.ev3RefreshRatingForm && window.ev3RefreshRatingForm(); } catch (_) {}
+  try { window.ev3StopNewsFeed && window.ev3StopNewsFeed(); } catch (_) {}
 }
 
 // ===================================================
@@ -15127,12 +15181,6 @@ function openAuthModal(tab = 'login') {
 function closeAuthModal() {
   document.getElementById('authModalOverlay').classList.remove('show');
   document.body.classList.remove('modal-open');
-}
-
-function closeAuthModalOnSuccess(nick) {
-  closeAuthModal();
-  showLoggedIn();
-  ev3Toast(tt('auth-ok-login-prefix','Добро пожаловать, ') + (nick || '') + '! 🎮', '🎮');
 }
 function closeAuthModalOnBg(e) { if (e.target === e.currentTarget) closeAuthModal(); }
 
@@ -15578,23 +15626,33 @@ function oauthSignIn(provider) {
       const googleProvider = new mod.GoogleAuthProvider();
       const cred = await mod.signInWithPopup(auth, googleProvider);
       const user = cred.user;
-      if (db) {
-        const existing = await db.collection('users').doc(user.uid).get();
-        if (!existing.exists) {
-          const baseNick = ((user.email ? user.email.split('@')[0] : 'player').replace(/[^a-zA-Zа-яёА-ЯЁ0-9_]/g,'').slice(0,16)) || 'player';
-          let nick = baseNick, attempt = 0;
-          while (attempt < 5) {
-            const taken = await db.collection('usernames').doc(nick.toLowerCase()).get();
-            if (!taken.exists) break;
-            attempt++; nick = baseNick + Math.floor(Math.random()*10000);
-          }
-          await db.collection('users').doc(user.uid).set({ username: nick }, { merge: true });
-          await db.collection('usernames').doc(nick.toLowerCase()).set({ email: user.email, uid: user.uid });
-        }
-      }
+      // Firebase Auth уже успешно вошёл на этом шаге — дальнейшие Firestore-операции
+      // (создание ника при первом входе) второстепенны и НЕ должны мешать закрытию
+      // модалки/показу успеха. Раньше эти шаги были ДО closeAuthModal()/showLoggedIn(),
+      // поэтому если Firestore-запись падала (правила доступа, оффлайн и т.п.), юзер
+      // видел ошибку и открытую модалку, хотя вход уже состоялся.
       closeAuthModal(); showLoggedIn();
       ev3Toast(tt('auth-toast-oauth-ok','Вы вошли через {provider} 🎉').replace('{provider}', 'Google'), '🎉');
       loginSuccess = true;
+      try {
+        if (db) {
+          const existing = await db.collection('users').doc(user.uid).get();
+          if (!existing.exists) {
+            const baseNick = ((user.email ? user.email.split('@')[0] : 'player').replace(/[^a-zA-Zа-яёА-ЯЁ0-9_]/g,'').slice(0,16)) || 'player';
+            let nick = baseNick, attempt = 0;
+            while (attempt < 5) {
+              const taken = await db.collection('usernames').doc(nick.toLowerCase()).get();
+              if (!taken.exists) break;
+              attempt++; nick = baseNick + Math.floor(Math.random()*10000);
+            }
+            await db.collection('users').doc(user.uid).set({ username: nick }, { merge: true });
+            await db.collection('usernames').doc(nick.toLowerCase()).set({ email: user.email, uid: user.uid });
+          }
+        }
+      } catch (nickErr) {
+        // Ник не создался — вход всё равно успешен, просто тихо логируем.
+        if (typeof console !== 'undefined') console.warn('[AUTH oauth nick setup]', nickErr);
+      }
     } catch (e) {
       if (e && (e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request')) return;
       ev3Toast(ev3AuthMsg(e), '❌');
@@ -15682,8 +15740,16 @@ async function _ev3UpdateUser(body) {
   const user = mod.getAuth().currentUser;
   if (!user) throw new Error('not_authenticated');
   if (body && body.data && typeof body.data === 'object') {
+    // ВАЖНО: раньше при отсутствующем/не готовом db (Firestore) запись молча
+    // пропускалась ("if (db) ..."), но локальное состояние (ev3User, счётчики
+    // на экране) всё равно обновлялось — юзер видел "успех" и анимацию, а на
+    // сервере ничего не сохранялось. После обновления страницы/повторного входа
+    // изменения (например, кристаллы) исчезали. Теперь при недоступной базе
+    // бросаем понятную ошибку — вызывающий код (например, _ev3ClaimCrystals)
+    // покажет тост с ошибкой и НЕ обновит счётчик, вместо ложного успеха.
+    if (!db) throw new Error(tt('pm-set-err-nodb','Нет соединения с базой данных. Попробуй ещё раз через пару секунд'));
     const patch = Object.assign({}, body.data);
-    if (typeof patch.username === 'string' && db) {
+    if (typeof patch.username === 'string') {
       const newNickLower = patch.username.toLowerCase();
       const uref = db.collection('users').doc(user.uid);
       const prevSnap = await uref.get();
@@ -15697,7 +15763,9 @@ async function _ev3UpdateUser(body) {
         if (prevNick) { try { await db.collection('usernames').doc(prevNick.toLowerCase()).delete(); } catch(_) {} }
       }
     }
-    if (db) await db.collection('users').doc(user.uid).set(patch, { merge: true });
+    // Пишем на сервер и только ПОСЛЕ успешной записи обновляем локальное состояние —
+    // иначе UI показывает результат, которого на самом деле не было.
+    await db.collection('users').doc(user.uid).set(patch, { merge: true });
     if (ev3User) ev3User.user_metadata = Object.assign({}, ev3User.user_metadata, patch);
   }
   if (body && typeof body.email === 'string') {
@@ -21735,10 +21803,694 @@ async function doResetPassword() {
     }
     };
 
+    // ============================================================
+    // extra2 — новые строки (аккаунт разработчика, участники, новости).
+    // Полный перевод на все 28 языков сайта — БЕЗ подмены английским фолбэком.
+    // ============================================================
+    const extra2 = {
+      ru: {
+        'dev-badge': 'Разработчик',
+        'dev-panel-title': 'Панель разработчика',
+        'dev-panel-sub': 'Участники проекта и новости для всех игроков',
+        'dev-btn-participants': '👥 Участники',
+        'dev-btn-create-news': '📰 Создать новость',
+        'participants-modal-title': 'Участники проекта',
+        'participants-loading': 'Загрузка...',
+        'participants-empty': 'Пока никто не зарегистрирован',
+        'participants-error': 'Не удалось загрузить список (нет доступа)',
+        'news-modal-title': 'Создать новость',
+        'news-title-label': 'Заголовок',
+        'news-title-placeholder': 'Введите заголовок',
+        'news-body-label': 'Описание',
+        'news-body-placeholder': 'Введите описание',
+        'news-send-btn': 'Опубликовать →',
+        'news-cancel-btn': 'Отмена',
+        'news-sent-toast': 'Новость опубликована!',
+        'news-err-required': 'Заполни заголовок и описание',
+        'news-err-send': 'Не удалось отправить новость',
+        'news-read-more': 'Подробнее',
+        'news-detail-close': 'Закрыть',
+        'pm-set-err-nodb': 'Нет соединения с базой данных. Попробуй ещё раз через пару секунд'
+      },
+      en: {
+        'dev-badge': 'Developer',
+        'dev-panel-title': 'Developer Panel',
+        'dev-panel-sub': 'Project participants and news for all players',
+        'dev-btn-participants': '👥 Participants',
+        'dev-btn-create-news': '📰 Create News',
+        'participants-modal-title': 'Project Participants',
+        'participants-loading': 'Loading...',
+        'participants-empty': 'No one has registered yet',
+        'participants-error': 'Could not load the list (no access)',
+        'news-modal-title': 'Create News',
+        'news-title-label': 'Title',
+        'news-title-placeholder': 'Enter a title',
+        'news-body-label': 'Description',
+        'news-body-placeholder': 'Enter a description',
+        'news-send-btn': 'Publish →',
+        'news-cancel-btn': 'Cancel',
+        'news-sent-toast': 'News published!',
+        'news-err-required': 'Fill in the title and description',
+        'news-err-send': 'Failed to send the news',
+        'news-read-more': 'Read more',
+        'news-detail-close': 'Close',
+        'pm-set-err-nodb': 'No connection to the database. Try again in a few seconds'
+      },
+      uk: {
+        'dev-badge': 'Розробник',
+        'dev-panel-title': 'Панель розробника',
+        'dev-panel-sub': 'Учасники проєкту та новини для всіх гравців',
+        'dev-btn-participants': '👥 Учасники',
+        'dev-btn-create-news': '📰 Створити новину',
+        'participants-modal-title': 'Учасники проєкту',
+        'participants-loading': 'Завантаження...',
+        'participants-empty': 'Поки що ніхто не зареєстрований',
+        'participants-error': 'Не вдалося завантажити список (немає доступу)',
+        'news-modal-title': 'Створити новину',
+        'news-title-label': 'Заголовок',
+        'news-title-placeholder': 'Введіть заголовок',
+        'news-body-label': 'Опис',
+        'news-body-placeholder': 'Введіть опис',
+        'news-send-btn': 'Опублікувати →',
+        'news-cancel-btn': 'Скасувати',
+        'news-sent-toast': 'Новину опубліковано!',
+        'news-err-required': 'Заповни заголовок і опис',
+        'news-err-send': 'Не вдалося надіслати новину',
+        'news-read-more': 'Детальніше',
+        'news-detail-close': 'Закрити',
+        'pm-set-err-nodb': 'Немає з’єднання з базою даних. Спробуй ще раз за кілька секунд'
+      },
+      de: {
+        'dev-badge': 'Entwickler',
+        'dev-panel-title': 'Entwickler-Panel',
+        'dev-panel-sub': 'Projektteilnehmer und News für alle Spieler',
+        'dev-btn-participants': '👥 Teilnehmer',
+        'dev-btn-create-news': '📰 News erstellen',
+        'participants-modal-title': 'Projektteilnehmer',
+        'participants-loading': 'Wird geladen...',
+        'participants-empty': 'Noch niemand registriert',
+        'participants-error': 'Liste konnte nicht geladen werden (kein Zugriff)',
+        'news-modal-title': 'News erstellen',
+        'news-title-label': 'Titel',
+        'news-title-placeholder': 'Titel eingeben',
+        'news-body-label': 'Beschreibung',
+        'news-body-placeholder': 'Beschreibung eingeben',
+        'news-send-btn': 'Veröffentlichen →',
+        'news-cancel-btn': 'Abbrechen',
+        'news-sent-toast': 'News veröffentlicht!',
+        'news-err-required': 'Titel und Beschreibung ausfüllen',
+        'news-err-send': 'News konnte nicht gesendet werden',
+        'news-read-more': 'Mehr erfahren',
+        'news-detail-close': 'Schließen',
+        'pm-set-err-nodb': 'Keine Verbindung zur Datenbank. Versuch es in ein paar Sekunden erneut'
+      },
+      es: {
+        'dev-badge': 'Desarrollador',
+        'dev-panel-title': 'Panel de desarrollador',
+        'dev-panel-sub': 'Participantes del proyecto y noticias para todos los jugadores',
+        'dev-btn-participants': '👥 Participantes',
+        'dev-btn-create-news': '📰 Crear noticia',
+        'participants-modal-title': 'Participantes del proyecto',
+        'participants-loading': 'Cargando...',
+        'participants-empty': 'Todavía nadie se ha registrado',
+        'participants-error': 'No se pudo cargar la lista (sin acceso)',
+        'news-modal-title': 'Crear noticia',
+        'news-title-label': 'Título',
+        'news-title-placeholder': 'Escribe un título',
+        'news-body-label': 'Descripción',
+        'news-body-placeholder': 'Escribe una descripción',
+        'news-send-btn': 'Publicar →',
+        'news-cancel-btn': 'Cancelar',
+        'news-sent-toast': '¡Noticia publicada!',
+        'news-err-required': 'Completa el título y la descripción',
+        'news-err-send': 'No se pudo enviar la noticia',
+        'news-read-more': 'Leer más',
+        'news-detail-close': 'Cerrar',
+        'pm-set-err-nodb': 'Sin conexión con la base de datos. Inténtalo de nuevo en unos segundos'
+      },
+      fr: {
+        'dev-badge': 'Développeur',
+        'dev-panel-title': 'Panneau développeur',
+        'dev-panel-sub': 'Participants du projet et actualités pour tous les joueurs',
+        'dev-btn-participants': '👥 Participants',
+        'dev-btn-create-news': '📰 Créer une actualité',
+        'participants-modal-title': 'Participants du projet',
+        'participants-loading': 'Chargement...',
+        'participants-empty': "Personne n'est encore inscrit",
+        'participants-error': "Impossible de charger la liste (accès refusé)",
+        'news-modal-title': 'Créer une actualité',
+        'news-title-label': 'Titre',
+        'news-title-placeholder': 'Saisis un titre',
+        'news-body-label': 'Description',
+        'news-body-placeholder': 'Saisis une description',
+        'news-send-btn': 'Publier →',
+        'news-cancel-btn': 'Annuler',
+        'news-sent-toast': 'Actualité publiée !',
+        'news-err-required': 'Remplis le titre et la description',
+        'news-err-send': "Impossible d'envoyer l'actualité",
+        'news-read-more': 'En savoir plus',
+        'news-detail-close': 'Fermer',
+        'pm-set-err-nodb': 'Pas de connexion à la base de données. Réessaie dans quelques secondes'
+      },
+      it: {
+        'dev-badge': 'Sviluppatore',
+        'dev-panel-title': 'Pannello sviluppatore',
+        'dev-panel-sub': 'Partecipanti al progetto e novità per tutti i giocatori',
+        'dev-btn-participants': '👥 Partecipanti',
+        'dev-btn-create-news': '📰 Crea notizia',
+        'participants-modal-title': 'Partecipanti al progetto',
+        'participants-loading': 'Caricamento...',
+        'participants-empty': 'Nessuno si è ancora registrato',
+        'participants-error': "Impossibile caricare l'elenco (accesso negato)",
+        'news-modal-title': 'Crea notizia',
+        'news-title-label': 'Titolo',
+        'news-title-placeholder': 'Inserisci un titolo',
+        'news-body-label': 'Descrizione',
+        'news-body-placeholder': 'Inserisci una descrizione',
+        'news-send-btn': 'Pubblica →',
+        'news-cancel-btn': 'Annulla',
+        'news-sent-toast': 'Notizia pubblicata!',
+        'news-err-required': 'Compila titolo e descrizione',
+        'news-err-send': 'Impossibile inviare la notizia',
+        'news-read-more': 'Scopri di più',
+        'news-detail-close': 'Chiudi',
+        'pm-set-err-nodb': 'Nessuna connessione al database. Riprova tra qualche secondo'
+      },
+      pt: {
+        'dev-badge': 'Desenvolvedor',
+        'dev-panel-title': 'Painel do desenvolvedor',
+        'dev-panel-sub': 'Participantes do projeto e novidades para todos os jogadores',
+        'dev-btn-participants': '👥 Participantes',
+        'dev-btn-create-news': '📰 Criar novidade',
+        'participants-modal-title': 'Participantes do projeto',
+        'participants-loading': 'Carregando...',
+        'participants-empty': 'Ainda ninguém se registrou',
+        'participants-error': 'Não foi possível carregar a lista (sem acesso)',
+        'news-modal-title': 'Criar novidade',
+        'news-title-label': 'Título',
+        'news-title-placeholder': 'Digite um título',
+        'news-body-label': 'Descrição',
+        'news-body-placeholder': 'Digite uma descrição',
+        'news-send-btn': 'Publicar →',
+        'news-cancel-btn': 'Cancelar',
+        'news-sent-toast': 'Novidade publicada!',
+        'news-err-required': 'Preencha o título e a descrição',
+        'news-err-send': 'Não foi possível enviar a novidade',
+        'news-read-more': 'Saiba mais',
+        'news-detail-close': 'Fechar',
+        'pm-set-err-nodb': 'Sem conexão com o banco de dados. Tente novamente em alguns segundos'
+      },
+      pl: {
+        'dev-badge': 'Deweloper',
+        'dev-panel-title': 'Panel dewelopera',
+        'dev-panel-sub': 'Uczestnicy projektu i wiadomości dla wszystkich graczy',
+        'dev-btn-participants': '👥 Uczestnicy',
+        'dev-btn-create-news': '📰 Utwórz wiadomość',
+        'participants-modal-title': 'Uczestnicy projektu',
+        'participants-loading': 'Ładowanie...',
+        'participants-empty': 'Nikt jeszcze się nie zarejestrował',
+        'participants-error': 'Nie udało się wczytać listy (brak dostępu)',
+        'news-modal-title': 'Utwórz wiadomość',
+        'news-title-label': 'Tytuł',
+        'news-title-placeholder': 'Wpisz tytuł',
+        'news-body-label': 'Opis',
+        'news-body-placeholder': 'Wpisz opis',
+        'news-send-btn': 'Opublikuj →',
+        'news-cancel-btn': 'Anuluj',
+        'news-sent-toast': 'Wiadomość opublikowana!',
+        'news-err-required': 'Uzupełnij tytuł i opis',
+        'news-err-send': 'Nie udało się wysłać wiadomości',
+        'news-read-more': 'Więcej',
+        'news-detail-close': 'Zamknij',
+        'pm-set-err-nodb': 'Brak połączenia z bazą danych. Spróbuj ponownie za kilka sekund'
+      },
+      tr: {
+        'dev-badge': 'Geliştirici',
+        'dev-panel-title': 'Geliştirici Paneli',
+        'dev-panel-sub': 'Proje katılımcıları ve tüm oyuncular için haberler',
+        'dev-btn-participants': '👥 Katılımcılar',
+        'dev-btn-create-news': '📰 Haber Oluştur',
+        'participants-modal-title': 'Proje Katılımcıları',
+        'participants-loading': 'Yükleniyor...',
+        'participants-empty': 'Henüz kimse kayıt olmadı',
+        'participants-error': 'Liste yüklenemedi (erişim yok)',
+        'news-modal-title': 'Haber Oluştur',
+        'news-title-label': 'Başlık',
+        'news-title-placeholder': 'Bir başlık gir',
+        'news-body-label': 'Açıklama',
+        'news-body-placeholder': 'Bir açıklama gir',
+        'news-send-btn': 'Yayınla →',
+        'news-cancel-btn': 'İptal',
+        'news-sent-toast': 'Haber yayınlandı!',
+        'news-err-required': 'Başlığı ve açıklamayı doldur',
+        'news-err-send': 'Haber gönderilemedi',
+        'news-read-more': 'Devamını oku',
+        'news-detail-close': 'Kapat',
+        'pm-set-err-nodb': 'Veritabanına bağlantı yok. Birkaç saniye sonra tekrar dene'
+      },
+      nl: {
+        'dev-badge': 'Ontwikkelaar',
+        'dev-panel-title': 'Ontwikkelaarspaneel',
+        'dev-panel-sub': 'Projectdeelnemers en nieuws voor alle spelers',
+        'dev-btn-participants': '👥 Deelnemers',
+        'dev-btn-create-news': '📰 Nieuws maken',
+        'participants-modal-title': 'Projectdeelnemers',
+        'participants-loading': 'Laden...',
+        'participants-empty': 'Nog niemand geregistreerd',
+        'participants-error': 'Kon de lijst niet laden (geen toegang)',
+        'news-modal-title': 'Nieuws maken',
+        'news-title-label': 'Titel',
+        'news-title-placeholder': 'Voer een titel in',
+        'news-body-label': 'Beschrijving',
+        'news-body-placeholder': 'Voer een beschrijving in',
+        'news-send-btn': 'Publiceren →',
+        'news-cancel-btn': 'Annuleren',
+        'news-sent-toast': 'Nieuws gepubliceerd!',
+        'news-err-required': 'Vul de titel en beschrijving in',
+        'news-err-send': 'Nieuws verzenden mislukt',
+        'news-read-more': 'Meer lezen',
+        'news-detail-close': 'Sluiten',
+        'pm-set-err-nodb': 'Geen verbinding met de database. Probeer het over een paar seconden opnieuw'
+      },
+      sv: {
+        'dev-badge': 'Utvecklare',
+        'dev-panel-title': 'Utvecklarpanel',
+        'dev-panel-sub': 'Projektdeltagare och nyheter för alla spelare',
+        'dev-btn-participants': '👥 Deltagare',
+        'dev-btn-create-news': '📰 Skapa nyhet',
+        'participants-modal-title': 'Projektdeltagare',
+        'participants-loading': 'Laddar...',
+        'participants-empty': 'Ingen har registrerat sig än',
+        'participants-error': 'Kunde inte läsa in listan (ingen åtkomst)',
+        'news-modal-title': 'Skapa nyhet',
+        'news-title-label': 'Rubrik',
+        'news-title-placeholder': 'Ange en rubrik',
+        'news-body-label': 'Beskrivning',
+        'news-body-placeholder': 'Ange en beskrivning',
+        'news-send-btn': 'Publicera →',
+        'news-cancel-btn': 'Avbryt',
+        'news-sent-toast': 'Nyheten publicerad!',
+        'news-err-required': 'Fyll i rubrik och beskrivning',
+        'news-err-send': 'Det gick inte att skicka nyheten',
+        'news-read-more': 'Läs mer',
+        'news-detail-close': 'Stäng',
+        'pm-set-err-nodb': 'Ingen anslutning till databasen. Försök igen om några sekunder'
+      },
+      no: {
+        'dev-badge': 'Utvikler',
+        'dev-panel-title': 'Utviklerpanel',
+        'dev-panel-sub': 'Prosjektdeltakere og nyheter for alle spillere',
+        'dev-btn-participants': '👥 Deltakere',
+        'dev-btn-create-news': '📰 Opprett nyhet',
+        'participants-modal-title': 'Prosjektdeltakere',
+        'participants-loading': 'Laster...',
+        'participants-empty': 'Ingen har registrert seg ennå',
+        'participants-error': 'Kunne ikke laste listen (ingen tilgang)',
+        'news-modal-title': 'Opprett nyhet',
+        'news-title-label': 'Tittel',
+        'news-title-placeholder': 'Skriv inn en tittel',
+        'news-body-label': 'Beskrivelse',
+        'news-body-placeholder': 'Skriv inn en beskrivelse',
+        'news-send-btn': 'Publiser →',
+        'news-cancel-btn': 'Avbryt',
+        'news-sent-toast': 'Nyhet publisert!',
+        'news-err-required': 'Fyll ut tittel og beskrivelse',
+        'news-err-send': 'Kunne ikke sende nyheten',
+        'news-read-more': 'Les mer',
+        'news-detail-close': 'Lukk',
+        'pm-set-err-nodb': 'Ingen tilkobling til databasen. Prøv igjen om noen sekunder'
+      },
+      fi: {
+        'dev-badge': 'Kehittäjä',
+        'dev-panel-title': 'Kehittäjäpaneeli',
+        'dev-panel-sub': 'Projektin osallistujat ja uutiset kaikille pelaajille',
+        'dev-btn-participants': '👥 Osallistujat',
+        'dev-btn-create-news': '📰 Luo uutinen',
+        'participants-modal-title': 'Projektin osallistujat',
+        'participants-loading': 'Ladataan...',
+        'participants-empty': 'Kukaan ei ole vielä rekisteröitynyt',
+        'participants-error': 'Luetteloa ei voitu ladata (ei käyttöoikeutta)',
+        'news-modal-title': 'Luo uutinen',
+        'news-title-label': 'Otsikko',
+        'news-title-placeholder': 'Kirjoita otsikko',
+        'news-body-label': 'Kuvaus',
+        'news-body-placeholder': 'Kirjoita kuvaus',
+        'news-send-btn': 'Julkaise →',
+        'news-cancel-btn': 'Peruuta',
+        'news-sent-toast': 'Uutinen julkaistu!',
+        'news-err-required': 'Täytä otsikko ja kuvaus',
+        'news-err-send': 'Uutisen lähettäminen epäonnistui',
+        'news-read-more': 'Lue lisää',
+        'news-detail-close': 'Sulje',
+        'pm-set-err-nodb': 'Ei yhteyttä tietokantaan. Yritä uudelleen muutaman sekunnin kuluttua'
+      },
+      da: {
+        'dev-badge': 'Udvikler',
+        'dev-panel-title': 'Udviklerpanel',
+        'dev-panel-sub': 'Projektdeltagere og nyheder til alle spillere',
+        'dev-btn-participants': '👥 Deltagere',
+        'dev-btn-create-news': '📰 Opret nyhed',
+        'participants-modal-title': 'Projektdeltagere',
+        'participants-loading': 'Indlæser...',
+        'participants-empty': 'Ingen har registreret sig endnu',
+        'participants-error': 'Listen kunne ikke indlæses (ingen adgang)',
+        'news-modal-title': 'Opret nyhed',
+        'news-title-label': 'Titel',
+        'news-title-placeholder': 'Indtast en titel',
+        'news-body-label': 'Beskrivelse',
+        'news-body-placeholder': 'Indtast en beskrivelse',
+        'news-send-btn': 'Udgiv →',
+        'news-cancel-btn': 'Annuller',
+        'news-sent-toast': 'Nyhed udgivet!',
+        'news-err-required': 'Udfyld titel og beskrivelse',
+        'news-err-send': 'Nyheden kunne ikke sendes',
+        'news-read-more': 'Læs mere',
+        'news-detail-close': 'Luk',
+        'pm-set-err-nodb': 'Ingen forbindelse til databasen. Prøv igen om et par sekunder'
+      },
+      cs: {
+        'dev-badge': 'Vývojář',
+        'dev-panel-title': 'Panel vývojáře',
+        'dev-panel-sub': 'Účastníci projektu a novinky pro všechny hráče',
+        'dev-btn-participants': '👥 Účastníci',
+        'dev-btn-create-news': '📰 Vytvořit novinku',
+        'participants-modal-title': 'Účastníci projektu',
+        'participants-loading': 'Načítání...',
+        'participants-empty': 'Zatím se nikdo nezaregistroval',
+        'participants-error': 'Seznam se nepodařilo načíst (chybí přístup)',
+        'news-modal-title': 'Vytvořit novinku',
+        'news-title-label': 'Nadpis',
+        'news-title-placeholder': 'Zadej nadpis',
+        'news-body-label': 'Popis',
+        'news-body-placeholder': 'Zadej popis',
+        'news-send-btn': 'Publikovat →',
+        'news-cancel-btn': 'Zrušit',
+        'news-sent-toast': 'Novinka byla publikována!',
+        'news-err-required': 'Vyplň nadpis a popis',
+        'news-err-send': 'Novinku se nepodařilo odeslat',
+        'news-read-more': 'Zjistit více',
+        'news-detail-close': 'Zavřít',
+        'pm-set-err-nodb': 'Žádné připojení k databázi. Zkus to znovu za pár sekund'
+      },
+      ro: {
+        'dev-badge': 'Dezvoltator',
+        'dev-panel-title': 'Panou dezvoltator',
+        'dev-panel-sub': 'Participanții proiectului și noutăți pentru toți jucătorii',
+        'dev-btn-participants': '👥 Participanți',
+        'dev-btn-create-news': '📰 Creează o noutate',
+        'participants-modal-title': 'Participanții proiectului',
+        'participants-loading': 'Se încarcă...',
+        'participants-empty': 'Nimeni nu s-a înregistrat încă',
+        'participants-error': 'Lista nu a putut fi încărcată (fără acces)',
+        'news-modal-title': 'Creează o noutate',
+        'news-title-label': 'Titlu',
+        'news-title-placeholder': 'Introdu un titlu',
+        'news-body-label': 'Descriere',
+        'news-body-placeholder': 'Introdu o descriere',
+        'news-send-btn': 'Publică →',
+        'news-cancel-btn': 'Anulează',
+        'news-sent-toast': 'Noutate publicată!',
+        'news-err-required': 'Completează titlul și descrierea',
+        'news-err-send': 'Noutatea nu a putut fi trimisă',
+        'news-read-more': 'Află mai multe',
+        'news-detail-close': 'Închide',
+        'pm-set-err-nodb': 'Nicio conexiune la baza de date. Încearcă din nou peste câteva secunde'
+      },
+      hu: {
+        'dev-badge': 'Fejlesztő',
+        'dev-panel-title': 'Fejlesztői panel',
+        'dev-panel-sub': 'Projekt résztvevői és hírek minden játékosnak',
+        'dev-btn-participants': '👥 Résztvevők',
+        'dev-btn-create-news': '📰 Hír létrehozása',
+        'participants-modal-title': 'Projekt résztvevői',
+        'participants-loading': 'Betöltés...',
+        'participants-empty': 'Még senki sem regisztrált',
+        'participants-error': 'A lista betöltése sikertelen (nincs hozzáférés)',
+        'news-modal-title': 'Hír létrehozása',
+        'news-title-label': 'Cím',
+        'news-title-placeholder': 'Adj meg egy címet',
+        'news-body-label': 'Leírás',
+        'news-body-placeholder': 'Adj meg egy leírást',
+        'news-send-btn': 'Közzététel →',
+        'news-cancel-btn': 'Mégse',
+        'news-sent-toast': 'A hír közzétéve!',
+        'news-err-required': 'Töltsd ki a címet és a leírást',
+        'news-err-send': 'A hírt nem sikerült elküldeni',
+        'news-read-more': 'Tovább olvasom',
+        'news-detail-close': 'Bezárás',
+        'pm-set-err-nodb': 'Nincs kapcsolat az adatbázissal. Próbáld újra pár másodperc múlva'
+      },
+      el: {
+        'dev-badge': 'Προγραμματιστής',
+        'dev-panel-title': 'Πίνακας προγραμματιστή',
+        'dev-panel-sub': 'Συμμετέχοντες του έργου και νέα για όλους τους παίκτες',
+        'dev-btn-participants': '👥 Συμμετέχοντες',
+        'dev-btn-create-news': '📰 Δημιουργία νέων',
+        'participants-modal-title': 'Συμμετέχοντες του έργου',
+        'participants-loading': 'Φόρτωση...',
+        'participants-empty': 'Δεν έχει εγγραφεί ακόμη κανείς',
+        'participants-error': 'Δεν ήταν δυνατή η φόρτωση της λίστας (χωρίς πρόσβαση)',
+        'news-modal-title': 'Δημιουργία νέων',
+        'news-title-label': 'Τίτλος',
+        'news-title-placeholder': 'Εισάγετε έναν τίτλο',
+        'news-body-label': 'Περιγραφή',
+        'news-body-placeholder': 'Εισάγετε μια περιγραφή',
+        'news-send-btn': 'Δημοσίευση →',
+        'news-cancel-btn': 'Ακύρωση',
+        'news-sent-toast': 'Τα νέα δημοσιεύτηκαν!',
+        'news-err-required': 'Συμπλήρωσε τον τίτλο και την περιγραφή',
+        'news-err-send': 'Η αποστολή των νέων απέτυχε',
+        'news-read-more': 'Περισσότερα',
+        'news-detail-close': 'Κλείσιμο',
+        'pm-set-err-nodb': 'Δεν υπάρχει σύνδεση με τη βάση δεδομένων. Δοκίμασε ξανά σε λίγα δευτερόλεπτα'
+      },
+      ja: {
+        'dev-badge': '開発者',
+        'dev-panel-title': '開発者パネル',
+        'dev-panel-sub': 'プロジェクト参加者と全プレイヤー向けのお知らせ',
+        'dev-btn-participants': '👥 参加者',
+        'dev-btn-create-news': '📰 お知らせを作成',
+        'participants-modal-title': 'プロジェクト参加者',
+        'participants-loading': '読み込み中...',
+        'participants-empty': 'まだ誰も登録していません',
+        'participants-error': 'リストを読み込めませんでした（アクセス権がありません）',
+        'news-modal-title': 'お知らせを作成',
+        'news-title-label': 'タイトル',
+        'news-title-placeholder': 'タイトルを入力',
+        'news-body-label': '説明',
+        'news-body-placeholder': '説明を入力',
+        'news-send-btn': '公開する →',
+        'news-cancel-btn': 'キャンセル',
+        'news-sent-toast': 'お知らせを公開しました！',
+        'news-err-required': 'タイトルと説明を入力してください',
+        'news-err-send': 'お知らせの送信に失敗しました',
+        'news-read-more': '続きを読む',
+        'news-detail-close': '閉じる',
+        'pm-set-err-nodb': 'データベースに接続できません。数秒後にもう一度お試しください'
+      },
+      zh: {
+        'dev-badge': '开发者',
+        'dev-panel-title': '开发者面板',
+        'dev-panel-sub': '项目参与者以及面向所有玩家的新闻',
+        'dev-btn-participants': '👥 参与者',
+        'dev-btn-create-news': '📰 创建新闻',
+        'participants-modal-title': '项目参与者',
+        'participants-loading': '加载中...',
+        'participants-empty': '还没有人注册',
+        'participants-error': '无法加载列表（无权限）',
+        'news-modal-title': '创建新闻',
+        'news-title-label': '标题',
+        'news-title-placeholder': '输入标题',
+        'news-body-label': '描述',
+        'news-body-placeholder': '输入描述',
+        'news-send-btn': '发布 →',
+        'news-cancel-btn': '取消',
+        'news-sent-toast': '新闻已发布！',
+        'news-err-required': '请填写标题和描述',
+        'news-err-send': '新闻发送失败',
+        'news-read-more': '查看更多',
+        'news-detail-close': '关闭',
+        'pm-set-err-nodb': '无法连接数据库，请几秒后重试'
+      },
+      ko: {
+        'dev-badge': '개발자',
+        'dev-panel-title': '개발자 패널',
+        'dev-panel-sub': '프로젝트 참가자 및 모든 플레이어를 위한 소식',
+        'dev-btn-participants': '👥 참가자',
+        'dev-btn-create-news': '📰 소식 작성',
+        'participants-modal-title': '프로젝트 참가자',
+        'participants-loading': '로딩 중...',
+        'participants-empty': '아직 등록된 사용자가 없습니다',
+        'participants-error': '목록을 불러오지 못했습니다 (접근 권한 없음)',
+        'news-modal-title': '소식 작성',
+        'news-title-label': '제목',
+        'news-title-placeholder': '제목을 입력하세요',
+        'news-body-label': '설명',
+        'news-body-placeholder': '설명을 입력하세요',
+        'news-send-btn': '게시하기 →',
+        'news-cancel-btn': '취소',
+        'news-sent-toast': '소식이 게시되었습니다!',
+        'news-err-required': '제목과 설명을 입력하세요',
+        'news-err-send': '소식을 보내지 못했습니다',
+        'news-read-more': '더 보기',
+        'news-detail-close': '닫기',
+        'pm-set-err-nodb': '데이터베이스에 연결할 수 없습니다. 잠시 후 다시 시도하세요'
+      },
+      ar: {
+        'dev-badge': 'مطوّر',
+        'dev-panel-title': 'لوحة المطوّر',
+        'dev-panel-sub': 'المشاركون في المشروع وأخبار لجميع اللاعبين',
+        'dev-btn-participants': '👥 المشاركون',
+        'dev-btn-create-news': '📰 إنشاء خبر',
+        'participants-modal-title': 'المشاركون في المشروع',
+        'participants-loading': 'جارٍ التحميل...',
+        'participants-empty': 'لم يسجّل أحد بعد',
+        'participants-error': 'تعذّر تحميل القائمة (لا توجد صلاحية وصول)',
+        'news-modal-title': 'إنشاء خبر',
+        'news-title-label': 'العنوان',
+        'news-title-placeholder': 'أدخل عنوانًا',
+        'news-body-label': 'الوصف',
+        'news-body-placeholder': 'أدخل وصفًا',
+        'news-send-btn': 'نشر ←',
+        'news-cancel-btn': 'إلغاء',
+        'news-sent-toast': 'تم نشر الخبر!',
+        'news-err-required': 'املأ العنوان والوصف',
+        'news-err-send': 'تعذّر إرسال الخبر',
+        'news-read-more': 'قراءة المزيد',
+        'news-detail-close': 'إغلاق',
+        'pm-set-err-nodb': 'لا يوجد اتصال بقاعدة البيانات. حاول مرة أخرى خلال ثوانٍ'
+      },
+      he: {
+        'dev-badge': 'מפתח',
+        'dev-panel-title': 'לוח בקרה למפתח',
+        'dev-panel-sub': 'משתתפי הפרויקט וחדשות לכל השחקנים',
+        'dev-btn-participants': '👥 משתתפים',
+        'dev-btn-create-news': '📰 צור חדשות',
+        'participants-modal-title': 'משתתפי הפרויקט',
+        'participants-loading': 'טוען...',
+        'participants-empty': 'עדיין אף אחד לא נרשם',
+        'participants-error': 'טעינת הרשימה נכשלה (אין הרשאה)',
+        'news-modal-title': 'צור חדשות',
+        'news-title-label': 'כותרת',
+        'news-title-placeholder': 'הזן כותרת',
+        'news-body-label': 'תיאור',
+        'news-body-placeholder': 'הזן תיאור',
+        'news-send-btn': 'פרסם ←',
+        'news-cancel-btn': 'ביטול',
+        'news-sent-toast': 'החדשות פורסמו!',
+        'news-err-required': 'מלא כותרת ותיאור',
+        'news-err-send': 'שליחת החדשות נכשלה',
+        'news-read-more': 'קרא עוד',
+        'news-detail-close': 'סגור',
+        'pm-set-err-nodb': 'אין חיבור למסד הנתונים. נסה שוב בעוד כמה שניות'
+      },
+      th: {
+        'dev-badge': 'นักพัฒนา',
+        'dev-panel-title': 'แผงควบคุมนักพัฒนา',
+        'dev-panel-sub': 'ผู้เข้าร่วมโปรเจกต์และข่าวสารสำหรับผู้เล่นทุกคน',
+        'dev-btn-participants': '👥 ผู้เข้าร่วม',
+        'dev-btn-create-news': '📰 สร้างข่าวสาร',
+        'participants-modal-title': 'ผู้เข้าร่วมโปรเจกต์',
+        'participants-loading': 'กำลังโหลด...',
+        'participants-empty': 'ยังไม่มีใครลงทะเบียน',
+        'participants-error': 'ไม่สามารถโหลดรายการได้ (ไม่มีสิทธิ์เข้าถึง)',
+        'news-modal-title': 'สร้างข่าวสาร',
+        'news-title-label': 'หัวข้อ',
+        'news-title-placeholder': 'ใส่หัวข้อ',
+        'news-body-label': 'รายละเอียด',
+        'news-body-placeholder': 'ใส่รายละเอียด',
+        'news-send-btn': 'เผยแพร่ →',
+        'news-cancel-btn': 'ยกเลิก',
+        'news-sent-toast': 'เผยแพร่ข่าวสารแล้ว!',
+        'news-err-required': 'กรอกหัวข้อและรายละเอียด',
+        'news-err-send': 'ส่งข่าวสารไม่สำเร็จ',
+        'news-read-more': 'อ่านเพิ่มเติม',
+        'news-detail-close': 'ปิด',
+        'pm-set-err-nodb': 'ไม่มีการเชื่อมต่อกับฐานข้อมูล ลองใหม่อีกครั้งในอีกไม่กี่วินาที'
+      },
+      vi: {
+        'dev-badge': 'Nhà phát triển',
+        'dev-panel-title': 'Bảng điều khiển nhà phát triển',
+        'dev-panel-sub': 'Thành viên dự án và tin tức cho tất cả người chơi',
+        'dev-btn-participants': '👥 Thành viên',
+        'dev-btn-create-news': '📰 Tạo tin tức',
+        'participants-modal-title': 'Thành viên dự án',
+        'participants-loading': 'Đang tải...',
+        'participants-empty': 'Chưa có ai đăng ký',
+        'participants-error': 'Không thể tải danh sách (không có quyền truy cập)',
+        'news-modal-title': 'Tạo tin tức',
+        'news-title-label': 'Tiêu đề',
+        'news-title-placeholder': 'Nhập tiêu đề',
+        'news-body-label': 'Mô tả',
+        'news-body-placeholder': 'Nhập mô tả',
+        'news-send-btn': 'Đăng →',
+        'news-cancel-btn': 'Hủy',
+        'news-sent-toast': 'Đã đăng tin tức!',
+        'news-err-required': 'Điền tiêu đề và mô tả',
+        'news-err-send': 'Không thể gửi tin tức',
+        'news-read-more': 'Xem thêm',
+        'news-detail-close': 'Đóng',
+        'pm-set-err-nodb': 'Không có kết nối đến cơ sở dữ liệu. Thử lại sau vài giây'
+      },
+      id: {
+        'dev-badge': 'Pengembang',
+        'dev-panel-title': 'Panel Pengembang',
+        'dev-panel-sub': 'Peserta proyek dan berita untuk semua pemain',
+        'dev-btn-participants': '👥 Peserta',
+        'dev-btn-create-news': '📰 Buat Berita',
+        'participants-modal-title': 'Peserta Proyek',
+        'participants-loading': 'Memuat...',
+        'participants-empty': 'Belum ada yang mendaftar',
+        'participants-error': 'Gagal memuat daftar (tidak ada akses)',
+        'news-modal-title': 'Buat Berita',
+        'news-title-label': 'Judul',
+        'news-title-placeholder': 'Masukkan judul',
+        'news-body-label': 'Deskripsi',
+        'news-body-placeholder': 'Masukkan deskripsi',
+        'news-send-btn': 'Publikasikan →',
+        'news-cancel-btn': 'Batal',
+        'news-sent-toast': 'Berita diterbitkan!',
+        'news-err-required': 'Isi judul dan deskripsi',
+        'news-err-send': 'Gagal mengirim berita',
+        'news-read-more': 'Baca selengkapnya',
+        'news-detail-close': 'Tutup',
+        'pm-set-err-nodb': 'Tidak ada koneksi ke database. Coba lagi dalam beberapa detik'
+      },
+      hi: {
+        'dev-badge': 'डेवलपर',
+        'dev-panel-title': 'डेवलपर पैनल',
+        'dev-panel-sub': 'प्रोजेक्ट के सदस्य और सभी खिलाड़ियों के लिए समाचार',
+        'dev-btn-participants': '👥 सदस्य',
+        'dev-btn-create-news': '📰 समाचार बनाएं',
+        'participants-modal-title': 'प्रोजेक्ट के सदस्य',
+        'participants-loading': 'लोड हो रहा है...',
+        'participants-empty': 'अभी तक कोई पंजीकृत नहीं है',
+        'participants-error': 'सूची लोड नहीं हो सकी (पहुंच नहीं है)',
+        'news-modal-title': 'समाचार बनाएं',
+        'news-title-label': 'शीर्षक',
+        'news-title-placeholder': 'शीर्षक दर्ज करें',
+        'news-body-label': 'विवरण',
+        'news-body-placeholder': 'विवरण दर्ज करें',
+        'news-send-btn': 'प्रकाशित करें →',
+        'news-cancel-btn': 'रद्द करें',
+        'news-sent-toast': 'समाचार प्रकाशित हुआ!',
+        'news-err-required': 'शीर्षक और विवरण भरें',
+        'news-err-send': 'समाचार भेजा नहीं जा सका',
+        'news-read-more': 'और पढ़ें',
+        'news-detail-close': 'बंद करें',
+        'pm-set-err-nodb': 'डेटाबेस से कनेक्शन नहीं है। कुछ सेकंड में फिर कोशिश करें'
+      }
+    };
+
     // Merge extras into existing translations
     for (const lang in extra) {
       if (!translations[lang]) translations[lang] = {};
       Object.assign(translations[lang], extra[lang]);
+    }
+    // extra2: полный набор для всех 28 языков — сливаем так же, без фолбэка на EN
+    for (const lang in extra2) {
+      if (!translations[lang]) translations[lang] = {};
+      Object.assign(translations[lang], extra2[lang]);
     }
     // For other languages, fall back to EN for new keys so they aren't blank
     const fallback = extra.en;
@@ -21814,6 +22566,208 @@ async function doResetPassword() {
     reset(){ try { localStorage.removeItem(KEY); localStorage.removeItem(KEY+'Time'); } catch {} },
   };
 })();
+</script>
+<script>
+// ===================================================
+// NEWS FEED — новости от разработчика всем игрокам (колокольчик)
+// Хранение: коллекция `news` в Firestore, общая для всех — один документ на новость,
+// а не запись каждому пользователю отдельно. Прочитанность отмечается локально
+// (localStorage), поэтому у каждого игрока свой счётчик непрочитанных.
+// ===================================================
+let _e3NewsUnsub = null;
+let _e3NewsItems = [];
+
+function _e3Esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function _e3ReadNewsKey() {
+  const uid = (ev3User && ev3User.id) || 'anon';
+  return 'e3ReadNews_' + uid;
+}
+function _e3GetReadNewsSet() {
+  try { return new Set(JSON.parse(localStorage.getItem(_e3ReadNewsKey()) || '[]')); }
+  catch (_) { return new Set(); }
+}
+function _e3SaveReadNewsSet(set) {
+  try { localStorage.setItem(_e3ReadNewsKey(), JSON.stringify(Array.from(set))); } catch (_) {}
+}
+
+function _e3RenderNews() {
+  const listEl = document.getElementById('bellNewsList');
+  const emptyEl = document.getElementById('bellEmpty');
+  const badgeEl = document.getElementById('bellBadge');
+  if (!listEl || !emptyEl) return;
+  const readSet = _e3GetReadNewsSet();
+  const unreadCount = _e3NewsItems.filter(n => !readSet.has(n.id)).length;
+  if (badgeEl) {
+    if (unreadCount > 0) { badgeEl.textContent = unreadCount > 9 ? '9+' : String(unreadCount); badgeEl.style.display = 'flex'; }
+    else { badgeEl.style.display = 'none'; }
+  }
+  if (!_e3NewsItems.length) {
+    listEl.style.display = 'none'; listEl.innerHTML = '';
+    emptyEl.style.display = '';
+    return;
+  }
+  emptyEl.style.display = 'none';
+  listEl.style.display = 'block';
+  const LIMIT = 90; // символов до обрезки, дальше — кнопка "Подробнее"
+  listEl.innerHTML = _e3NewsItems.map(n => {
+    const isLong = (n.body || '').length > LIMIT;
+    const shortBody = isLong ? (n.body.slice(0, LIMIT).trim() + '…') : (n.body || '');
+    const unread = !readSet.has(n.id) ? ' is-unread' : '';
+    return '<div class="bell-news-item' + unread + '">'
+      + '<div class="bell-news-title">' + _e3Esc(n.title) + '</div>'
+      + '<div class="bell-news-body">' + _e3Esc(shortBody) + '</div>'
+      + (isLong ? '<span class="bell-news-more" onclick="openNewsDetail(\'' + n.id + '\')">' + _e3Esc(tt('news-read-more','Подробнее')) + '</span>' : '')
+      + '</div>';
+  }).join('');
+}
+
+function openNewsDetail(id) {
+  const n = _e3NewsItems.find(x => x.id === id);
+  if (!n) return;
+  document.getElementById('newsDetailTitle').textContent = n.title;
+  document.getElementById('newsDetailBody').textContent = n.body;
+  document.getElementById('newsDetailOverlay').classList.add('show');
+  const readSet = _e3GetReadNewsSet();
+  readSet.add(id);
+  _e3SaveReadNewsSet(readSet);
+  _e3RenderNews();
+}
+function closeNewsDetailModal() { document.getElementById('newsDetailOverlay').classList.remove('show'); }
+function closeNewsDetailOnBg(e) { if (e.target === e.currentTarget) closeNewsDetailModal(); }
+
+function _e3MarkAllNewsRead() {
+  if (!_e3NewsItems.length) return;
+  const readSet = _e3GetReadNewsSet();
+  let changed = false;
+  _e3NewsItems.forEach(n => { if (!readSet.has(n.id)) { readSet.add(n.id); changed = true; } });
+  if (changed) { _e3SaveReadNewsSet(readSet); setTimeout(_e3RenderNews, 1200); }
+}
+
+window.ev3InitNewsFeed = function () {
+  if (_e3NewsUnsub || !db) return;
+  try {
+    _e3NewsUnsub = db.collection('news').orderBy('createdAt', 'desc').limit(20)
+      .onSnapshot(snap => {
+        _e3NewsItems = snap.docs.map(d => {
+          const data = d.data() || {};
+          return { id: d.id, title: data.title || '', body: data.body || '' };
+        });
+        _e3RenderNews();
+      }, err => { if (typeof console !== 'undefined') console.warn('[NEWS feed]', err); });
+  } catch (e) { if (typeof console !== 'undefined') console.warn('[NEWS feed init]', e); }
+  const bell = document.getElementById('navBell');
+  if (bell && !bell._e3ReadBound) {
+    bell._e3ReadBound = true;
+    bell.addEventListener('mouseenter', _e3MarkAllNewsRead);
+    bell.addEventListener('click', _e3MarkAllNewsRead);
+  }
+};
+window.ev3StopNewsFeed = function () {
+  if (_e3NewsUnsub) { try { _e3NewsUnsub(); } catch (_) {} _e3NewsUnsub = null; }
+  _e3NewsItems = [];
+  const badgeEl = document.getElementById('bellBadge');
+  if (badgeEl) badgeEl.style.display = 'none';
+  const listEl = document.getElementById('bellNewsList');
+  const emptyEl = document.getElementById('bellEmpty');
+  if (listEl) { listEl.style.display = 'none'; listEl.innerHTML = ''; }
+  if (emptyEl) emptyEl.style.display = '';
+};
+
+// ===================================================
+// СОЗДАТЬ НОВОСТЬ (только dev-аккаунт)
+// ===================================================
+function openCreateNewsModal() {
+  if (!_ev3IsDev()) return;
+  document.getElementById('newsTitleInput').value = '';
+  document.getElementById('newsBodyInput').value = '';
+  const hint = document.getElementById('newsFormHint');
+  hint.textContent = ''; hint.classList.remove('is-err');
+  document.getElementById('createNewsModalOverlay').classList.add('show');
+}
+function closeCreateNewsModal() { document.getElementById('createNewsModalOverlay').classList.remove('show'); }
+function closeCreateNewsOnBg(e) { if (e.target === e.currentTarget) closeCreateNewsModal(); }
+
+async function submitCreateNews() {
+  if (!_ev3IsDev()) return;
+  const titleInp = document.getElementById('newsTitleInput');
+  const bodyInp = document.getElementById('newsBodyInput');
+  const hint = document.getElementById('newsFormHint');
+  const btn = document.getElementById('newsSendBtn');
+  const title = (titleInp.value || '').trim();
+  const body = (bodyInp.value || '').trim();
+  if (!title || !body) {
+    hint.textContent = tt('news-err-required', 'Заполни заголовок и описание');
+    hint.classList.add('is-err');
+    return;
+  }
+  hint.textContent = ''; hint.classList.remove('is-err');
+  btn.disabled = true;
+  try {
+    if (!db) throw new Error('no-db');
+    const nick = (ev3User && ev3User.user_metadata && ev3User.user_metadata.username) || 'Dev';
+    await db.collection('news').add({
+      title, body,
+      authorNick: nick,
+      authorUid: (ev3User && ev3User.id) || null,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    closeCreateNewsModal();
+    showToast(tt('news-sent-toast', 'Новость опубликована!'), '📰');
+  } catch (e) {
+    hint.textContent = tt('news-err-send', 'Не удалось отправить новость');
+    hint.classList.add('is-err');
+    if (typeof console !== 'undefined') console.warn('[NEWS create]', e);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// ===================================================
+// УЧАСТНИКИ ПРОЕКТА (только dev-аккаунт)
+// Требует Firestore-правило, разрешающее dev-роли читать всю коллекцию `users` —
+// см. инструкцию, переданную вместе с файлом.
+// ===================================================
+function openParticipantsModal() {
+  if (!_ev3IsDev()) return;
+  document.getElementById('participantsModalOverlay').classList.add('show');
+  _e3LoadParticipants();
+}
+function closeParticipantsModal() { document.getElementById('participantsModalOverlay').classList.remove('show'); }
+function closeParticipantsOnBg(e) { if (e.target === e.currentTarget) closeParticipantsModal(); }
+
+async function _e3LoadParticipants() {
+  const listEl = document.getElementById('participantsList');
+  listEl.innerHTML = '<div class="participants-status">' + _e3Esc(tt('participants-loading', 'Загрузка...')) + '</div>';
+  try {
+    if (!db) throw new Error('no-db');
+    const snap = await db.collection('users').get();
+    if (snap.empty) {
+      listEl.innerHTML = '<div class="participants-status">' + _e3Esc(tt('participants-empty', 'Пока никто не зарегистрирован')) + '</div>';
+      return;
+    }
+    const rows = [];
+    snap.forEach(doc => {
+      const data = doc.data() || {};
+      const nick = data.username || doc.id.slice(0, 8);
+      const initial = (nick[0] || '?').toUpperCase();
+      const isDevUser = data.role === 'dev';
+      rows.push(
+        '<div class="participant-item">' +
+          '<div class="participant-avatar">' + _e3Esc(initial) + '</div>' +
+          '<div class="participant-info">' +
+            '<div class="participant-nick">' + _e3Esc(nick) + (isDevUser ? '<span class="dev-badge">' + _e3Esc(tt('dev-badge','Разработчик')) + '</span>' : '') + '</div>' +
+          '</div>' +
+        '</div>'
+      );
+    });
+    listEl.innerHTML = rows.join('');
+  } catch (e) {
+    listEl.innerHTML = '<div class="participants-status">' + _e3Esc(tt('participants-error', 'Не удалось загрузить список (нет доступа)')) + '</div>';
+    if (typeof console !== 'undefined') console.warn('[PARTICIPANTS load]', e);
+  }
+}
 </script>
 </body>
 </html>
