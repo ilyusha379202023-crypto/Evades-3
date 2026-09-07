@@ -4370,16 +4370,17 @@
 .dev-topnav-news-btn{
   position: fixed;
   top: 20px;
-  right: 230px;
+  right: 260px;
   z-index: 1001;
-  padding: 13px 24px;
+  padding: 15px 30px;
   border-radius: 50px;
   border: 2px solid rgba(255,220,140,0.7);
   background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 55%, #C49100 100%);
   color: #3a2600;
-  font-weight: 800;
-  font-size: 14px;
-  letter-spacing: 0.4px;
+  font-weight: 900;
+  font-size: 15px;
+  font-family: 'Exo 2', sans-serif;
+  letter-spacing: 0.6px;
   cursor: pointer;
   box-shadow:
     6px 6px 16px rgba(0,0,0,0.3),
@@ -6677,19 +6678,21 @@ body:not(.hero-anim) .subtitle .ch{
               stroke="rgba(255,255,255,0.7)" stroke-width="0.55" fill="none" stroke-linecap="round"/>
       </symbol>
 
-      <!-- Профиль (разработчик): тот же гекс-щит, но с гаечным ключом вместо силуэта —
-           чтобы значок реально означал "разработчик", а не просто "золотой юзер" -->
+      <!-- Профиль (разработчик): точная копия обычной иконки, но целиком золотая
+           (не просто золотая обводка на зелёном корпусе, а весь корпус золотой) -->
       <symbol id="e3-ic-profile-hex-dev" viewBox="0 0 32 32">
         <circle cx="16" cy="16" r="15" fill="url(#e3g-glow-gold)"/>
         <path d="M16 2.6 L28.4 9.7 L28.4 22.3 L16 29.4 L3.6 22.3 L3.6 9.7 Z"
-              fill="url(#e3g-emerald)" stroke="url(#e3g-gold)" stroke-width="1.8" stroke-linejoin="round"/>
+              fill="url(#e3g-gold)" stroke="url(#e3g-gold)" stroke-width="1.8" stroke-linejoin="round"/>
         <path d="M16 4.8 L26.4 10.8 L26.4 21.2 L16 27.2 L5.6 21.2 L5.6 10.8 Z"
-              fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.6"/>
-        <g transform="translate(16,16) rotate(-45)">
-          <path d="M-9 0 a3.4 3.4 0 0 1 5.2 -2.9 l6.6 -6.6 a1.6 1.6 0 0 1 2.3 0 l1.4 1.4 a1.6 1.6 0 0 1 0 2.3 l-6.6 6.6 A3.4 3.4 0 1 1 -9 0 Z"
-                fill="url(#e3g-gold-soft)" stroke="rgba(255,255,255,0.6)" stroke-width="0.5" stroke-linejoin="round"/>
-          <circle cx="-5.4" cy="0" r="1.7" fill="url(#e3g-emerald)"/>
-        </g>
+              fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="0.6"/>
+        <circle cx="16" cy="13.3" r="3.7"
+                fill="url(#e3g-gold-soft)" stroke="rgba(122,74,0,0.6)" stroke-width="0.4"/>
+        <ellipse cx="14.55" cy="11.85" rx="1.25" ry="0.65" fill="#FFFFFF" opacity="0.85"/>
+        <path d="M9 24.2 C9 19.5, 11.5 17.7, 16 17.7 C20.5 17.7, 23 19.5, 23 24.2 L23 24.7 C23 25.0, 22.7 25.3, 22.4 25.3 L9.6 25.3 C9.3 25.3, 9 25.0, 9 24.7 Z"
+              fill="url(#e3g-gold-soft)" stroke="rgba(122,74,0,0.6)" stroke-width="0.4"/>
+        <path d="M11 21.4 C12.5 19.3, 14.8 18.9, 16 19"
+              stroke="rgba(122,74,0,0.7)" stroke-width="0.55" fill="none" stroke-linecap="round"/>
       </symbol>
 
       <!-- Профиль (обычный пользователь): СЕРЕБРЯНЫЙ гекс-бэйдж -->
@@ -6841,7 +6844,7 @@ body:not(.hero-anim) .subtitle .ch{
 
 <!-- Кнопка "Создать новость" — отдельно в шапке, слева от кнопки языков, видна только dev -->
 <button class="dev-topnav-news-btn" id="devTopNewsBtn" style="display:none;" onclick="openCreateNewsModal()">
-  <span data-i18n="dev-btn-create-news">📰 Создать новость</span>
+  <span data-i18n="dev-btn-create-news">Создать новость</span>
 </button>
 
 <!-- ─── AUTH MODAL ─── -->
@@ -15204,7 +15207,7 @@ function showLoggedIn() {
     .forEach(useEl => {
       const cur = useEl.getAttribute('href') || '';
       if (cur.indexOf('e3-ic-profile-hex') !== -1) {
-        useEl.setAttribute('href', isDev ? '#e3-ic-profile-hex' : '#e3-ic-profile-hex-silver');
+        useEl.setAttribute('href', isDev ? '#e3-ic-profile-hex-dev' : '#e3-ic-profile-hex-silver');
       }
     });
   ['ddDevBadge','pmDevBadge'].forEach(id => {
@@ -21918,8 +21921,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Разработчик',
         'dev-panel-title': 'Панель разработчика',
         'dev-panel-sub': 'Участники проекта и новости для всех игроков',
-        'dev-btn-participants': '👥 Участники',
-        'dev-btn-create-news': '📰 Создать новость',
+        'dev-btn-participants': 'Участники',
+        'dev-btn-create-news': 'Создать новость',
         'participants-modal-title': 'Участники проекта',
         'participants-loading': 'Загрузка...',
         'participants-empty': 'Пока никто не зарегистрирован',
@@ -21943,8 +21946,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Developer',
         'dev-panel-title': 'Developer Panel',
         'dev-panel-sub': 'Project participants and news for all players',
-        'dev-btn-participants': '👥 Participants',
-        'dev-btn-create-news': '📰 Create News',
+        'dev-btn-participants': 'Participants',
+        'dev-btn-create-news': 'Create News',
         'participants-modal-title': 'Project Participants',
         'participants-loading': 'Loading...',
         'participants-empty': 'No one has registered yet',
@@ -21968,8 +21971,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Розробник',
         'dev-panel-title': 'Панель розробника',
         'dev-panel-sub': 'Учасники проєкту та новини для всіх гравців',
-        'dev-btn-participants': '👥 Учасники',
-        'dev-btn-create-news': '📰 Створити новину',
+        'dev-btn-participants': 'Учасники',
+        'dev-btn-create-news': 'Створити новину',
         'participants-modal-title': 'Учасники проєкту',
         'participants-loading': 'Завантаження...',
         'participants-empty': 'Поки що ніхто не зареєстрований',
@@ -21993,8 +21996,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Entwickler',
         'dev-panel-title': 'Entwickler-Panel',
         'dev-panel-sub': 'Projektteilnehmer und News für alle Spieler',
-        'dev-btn-participants': '👥 Teilnehmer',
-        'dev-btn-create-news': '📰 News erstellen',
+        'dev-btn-participants': 'Teilnehmer',
+        'dev-btn-create-news': 'News erstellen',
         'participants-modal-title': 'Projektteilnehmer',
         'participants-loading': 'Wird geladen...',
         'participants-empty': 'Noch niemand registriert',
@@ -22018,8 +22021,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Desarrollador',
         'dev-panel-title': 'Panel de desarrollador',
         'dev-panel-sub': 'Participantes del proyecto y noticias para todos los jugadores',
-        'dev-btn-participants': '👥 Participantes',
-        'dev-btn-create-news': '📰 Crear noticia',
+        'dev-btn-participants': 'Participantes',
+        'dev-btn-create-news': 'Crear noticia',
         'participants-modal-title': 'Participantes del proyecto',
         'participants-loading': 'Cargando...',
         'participants-empty': 'Todavía nadie se ha registrado',
@@ -22043,8 +22046,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Développeur',
         'dev-panel-title': 'Panneau développeur',
         'dev-panel-sub': 'Participants du projet et actualités pour tous les joueurs',
-        'dev-btn-participants': '👥 Participants',
-        'dev-btn-create-news': '📰 Créer une actualité',
+        'dev-btn-participants': 'Participants',
+        'dev-btn-create-news': 'Créer une actualité',
         'participants-modal-title': 'Participants du projet',
         'participants-loading': 'Chargement...',
         'participants-empty': "Personne n'est encore inscrit",
@@ -22068,8 +22071,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Sviluppatore',
         'dev-panel-title': 'Pannello sviluppatore',
         'dev-panel-sub': 'Partecipanti al progetto e novità per tutti i giocatori',
-        'dev-btn-participants': '👥 Partecipanti',
-        'dev-btn-create-news': '📰 Crea notizia',
+        'dev-btn-participants': 'Partecipanti',
+        'dev-btn-create-news': 'Crea notizia',
         'participants-modal-title': 'Partecipanti al progetto',
         'participants-loading': 'Caricamento...',
         'participants-empty': 'Nessuno si è ancora registrato',
@@ -22093,8 +22096,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Desenvolvedor',
         'dev-panel-title': 'Painel do desenvolvedor',
         'dev-panel-sub': 'Participantes do projeto e novidades para todos os jogadores',
-        'dev-btn-participants': '👥 Participantes',
-        'dev-btn-create-news': '📰 Criar novidade',
+        'dev-btn-participants': 'Participantes',
+        'dev-btn-create-news': 'Criar novidade',
         'participants-modal-title': 'Participantes do projeto',
         'participants-loading': 'Carregando...',
         'participants-empty': 'Ainda ninguém se registrou',
@@ -22118,8 +22121,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Deweloper',
         'dev-panel-title': 'Panel dewelopera',
         'dev-panel-sub': 'Uczestnicy projektu i wiadomości dla wszystkich graczy',
-        'dev-btn-participants': '👥 Uczestnicy',
-        'dev-btn-create-news': '📰 Utwórz wiadomość',
+        'dev-btn-participants': 'Uczestnicy',
+        'dev-btn-create-news': 'Utwórz wiadomość',
         'participants-modal-title': 'Uczestnicy projektu',
         'participants-loading': 'Ładowanie...',
         'participants-empty': 'Nikt jeszcze się nie zarejestrował',
@@ -22143,8 +22146,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Geliştirici',
         'dev-panel-title': 'Geliştirici Paneli',
         'dev-panel-sub': 'Proje katılımcıları ve tüm oyuncular için haberler',
-        'dev-btn-participants': '👥 Katılımcılar',
-        'dev-btn-create-news': '📰 Haber Oluştur',
+        'dev-btn-participants': 'Katılımcılar',
+        'dev-btn-create-news': 'Haber Oluştur',
         'participants-modal-title': 'Proje Katılımcıları',
         'participants-loading': 'Yükleniyor...',
         'participants-empty': 'Henüz kimse kayıt olmadı',
@@ -22168,8 +22171,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Ontwikkelaar',
         'dev-panel-title': 'Ontwikkelaarspaneel',
         'dev-panel-sub': 'Projectdeelnemers en nieuws voor alle spelers',
-        'dev-btn-participants': '👥 Deelnemers',
-        'dev-btn-create-news': '📰 Nieuws maken',
+        'dev-btn-participants': 'Deelnemers',
+        'dev-btn-create-news': 'Nieuws maken',
         'participants-modal-title': 'Projectdeelnemers',
         'participants-loading': 'Laden...',
         'participants-empty': 'Nog niemand geregistreerd',
@@ -22193,8 +22196,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Utvecklare',
         'dev-panel-title': 'Utvecklarpanel',
         'dev-panel-sub': 'Projektdeltagare och nyheter för alla spelare',
-        'dev-btn-participants': '👥 Deltagare',
-        'dev-btn-create-news': '📰 Skapa nyhet',
+        'dev-btn-participants': 'Deltagare',
+        'dev-btn-create-news': 'Skapa nyhet',
         'participants-modal-title': 'Projektdeltagare',
         'participants-loading': 'Laddar...',
         'participants-empty': 'Ingen har registrerat sig än',
@@ -22218,8 +22221,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Utvikler',
         'dev-panel-title': 'Utviklerpanel',
         'dev-panel-sub': 'Prosjektdeltakere og nyheter for alle spillere',
-        'dev-btn-participants': '👥 Deltakere',
-        'dev-btn-create-news': '📰 Opprett nyhet',
+        'dev-btn-participants': 'Deltakere',
+        'dev-btn-create-news': 'Opprett nyhet',
         'participants-modal-title': 'Prosjektdeltakere',
         'participants-loading': 'Laster...',
         'participants-empty': 'Ingen har registrert seg ennå',
@@ -22243,8 +22246,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Kehittäjä',
         'dev-panel-title': 'Kehittäjäpaneeli',
         'dev-panel-sub': 'Projektin osallistujat ja uutiset kaikille pelaajille',
-        'dev-btn-participants': '👥 Osallistujat',
-        'dev-btn-create-news': '📰 Luo uutinen',
+        'dev-btn-participants': 'Osallistujat',
+        'dev-btn-create-news': 'Luo uutinen',
         'participants-modal-title': 'Projektin osallistujat',
         'participants-loading': 'Ladataan...',
         'participants-empty': 'Kukaan ei ole vielä rekisteröitynyt',
@@ -22268,8 +22271,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Udvikler',
         'dev-panel-title': 'Udviklerpanel',
         'dev-panel-sub': 'Projektdeltagere og nyheder til alle spillere',
-        'dev-btn-participants': '👥 Deltagere',
-        'dev-btn-create-news': '📰 Opret nyhed',
+        'dev-btn-participants': 'Deltagere',
+        'dev-btn-create-news': 'Opret nyhed',
         'participants-modal-title': 'Projektdeltagere',
         'participants-loading': 'Indlæser...',
         'participants-empty': 'Ingen har registreret sig endnu',
@@ -22293,8 +22296,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Vývojář',
         'dev-panel-title': 'Panel vývojáře',
         'dev-panel-sub': 'Účastníci projektu a novinky pro všechny hráče',
-        'dev-btn-participants': '👥 Účastníci',
-        'dev-btn-create-news': '📰 Vytvořit novinku',
+        'dev-btn-participants': 'Účastníci',
+        'dev-btn-create-news': 'Vytvořit novinku',
         'participants-modal-title': 'Účastníci projektu',
         'participants-loading': 'Načítání...',
         'participants-empty': 'Zatím se nikdo nezaregistroval',
@@ -22318,8 +22321,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Dezvoltator',
         'dev-panel-title': 'Panou dezvoltator',
         'dev-panel-sub': 'Participanții proiectului și noutăți pentru toți jucătorii',
-        'dev-btn-participants': '👥 Participanți',
-        'dev-btn-create-news': '📰 Creează o noutate',
+        'dev-btn-participants': 'Participanți',
+        'dev-btn-create-news': 'Creează o noutate',
         'participants-modal-title': 'Participanții proiectului',
         'participants-loading': 'Se încarcă...',
         'participants-empty': 'Nimeni nu s-a înregistrat încă',
@@ -22343,8 +22346,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Fejlesztő',
         'dev-panel-title': 'Fejlesztői panel',
         'dev-panel-sub': 'Projekt résztvevői és hírek minden játékosnak',
-        'dev-btn-participants': '👥 Résztvevők',
-        'dev-btn-create-news': '📰 Hír létrehozása',
+        'dev-btn-participants': 'Résztvevők',
+        'dev-btn-create-news': 'Hír létrehozása',
         'participants-modal-title': 'Projekt résztvevői',
         'participants-loading': 'Betöltés...',
         'participants-empty': 'Még senki sem regisztrált',
@@ -22368,8 +22371,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Προγραμματιστής',
         'dev-panel-title': 'Πίνακας προγραμματιστή',
         'dev-panel-sub': 'Συμμετέχοντες του έργου και νέα για όλους τους παίκτες',
-        'dev-btn-participants': '👥 Συμμετέχοντες',
-        'dev-btn-create-news': '📰 Δημιουργία νέων',
+        'dev-btn-participants': 'Συμμετέχοντες',
+        'dev-btn-create-news': 'Δημιουργία νέων',
         'participants-modal-title': 'Συμμετέχοντες του έργου',
         'participants-loading': 'Φόρτωση...',
         'participants-empty': 'Δεν έχει εγγραφεί ακόμη κανείς',
@@ -22393,8 +22396,8 @@ async function doResetPassword() {
         'dev-role-badge': '開発者',
         'dev-panel-title': '開発者パネル',
         'dev-panel-sub': 'プロジェクト参加者と全プレイヤー向けのお知らせ',
-        'dev-btn-participants': '👥 参加者',
-        'dev-btn-create-news': '📰 お知らせを作成',
+        'dev-btn-participants': '参加者',
+        'dev-btn-create-news': 'お知らせを作成',
         'participants-modal-title': 'プロジェクト参加者',
         'participants-loading': '読み込み中...',
         'participants-empty': 'まだ誰も登録していません',
@@ -22418,8 +22421,8 @@ async function doResetPassword() {
         'dev-role-badge': '开发者',
         'dev-panel-title': '开发者面板',
         'dev-panel-sub': '项目参与者以及面向所有玩家的新闻',
-        'dev-btn-participants': '👥 参与者',
-        'dev-btn-create-news': '📰 创建新闻',
+        'dev-btn-participants': '参与者',
+        'dev-btn-create-news': '创建新闻',
         'participants-modal-title': '项目参与者',
         'participants-loading': '加载中...',
         'participants-empty': '还没有人注册',
@@ -22443,8 +22446,8 @@ async function doResetPassword() {
         'dev-role-badge': '개발자',
         'dev-panel-title': '개발자 패널',
         'dev-panel-sub': '프로젝트 참가자 및 모든 플레이어를 위한 소식',
-        'dev-btn-participants': '👥 참가자',
-        'dev-btn-create-news': '📰 소식 작성',
+        'dev-btn-participants': '참가자',
+        'dev-btn-create-news': '소식 작성',
         'participants-modal-title': '프로젝트 참가자',
         'participants-loading': '로딩 중...',
         'participants-empty': '아직 등록된 사용자가 없습니다',
@@ -22468,8 +22471,8 @@ async function doResetPassword() {
         'dev-role-badge': 'مطوّر',
         'dev-panel-title': 'لوحة المطوّر',
         'dev-panel-sub': 'المشاركون في المشروع وأخبار لجميع اللاعبين',
-        'dev-btn-participants': '👥 المشاركون',
-        'dev-btn-create-news': '📰 إنشاء خبر',
+        'dev-btn-participants': 'المشاركون',
+        'dev-btn-create-news': 'إنشاء خبر',
         'participants-modal-title': 'المشاركون في المشروع',
         'participants-loading': 'جارٍ التحميل...',
         'participants-empty': 'لم يسجّل أحد بعد',
@@ -22493,8 +22496,8 @@ async function doResetPassword() {
         'dev-role-badge': 'מפתח',
         'dev-panel-title': 'לוח בקרה למפתח',
         'dev-panel-sub': 'משתתפי הפרויקט וחדשות לכל השחקנים',
-        'dev-btn-participants': '👥 משתתפים',
-        'dev-btn-create-news': '📰 צור חדשות',
+        'dev-btn-participants': 'משתתפים',
+        'dev-btn-create-news': 'צור חדשות',
         'participants-modal-title': 'משתתפי הפרויקט',
         'participants-loading': 'טוען...',
         'participants-empty': 'עדיין אף אחד לא נרשם',
@@ -22518,8 +22521,8 @@ async function doResetPassword() {
         'dev-role-badge': 'นักพัฒนา',
         'dev-panel-title': 'แผงควบคุมนักพัฒนา',
         'dev-panel-sub': 'ผู้เข้าร่วมโปรเจกต์และข่าวสารสำหรับผู้เล่นทุกคน',
-        'dev-btn-participants': '👥 ผู้เข้าร่วม',
-        'dev-btn-create-news': '📰 สร้างข่าวสาร',
+        'dev-btn-participants': 'ผู้เข้าร่วม',
+        'dev-btn-create-news': 'สร้างข่าวสาร',
         'participants-modal-title': 'ผู้เข้าร่วมโปรเจกต์',
         'participants-loading': 'กำลังโหลด...',
         'participants-empty': 'ยังไม่มีใครลงทะเบียน',
@@ -22543,8 +22546,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Nhà phát triển',
         'dev-panel-title': 'Bảng điều khiển nhà phát triển',
         'dev-panel-sub': 'Thành viên dự án và tin tức cho tất cả người chơi',
-        'dev-btn-participants': '👥 Thành viên',
-        'dev-btn-create-news': '📰 Tạo tin tức',
+        'dev-btn-participants': 'Thành viên',
+        'dev-btn-create-news': 'Tạo tin tức',
         'participants-modal-title': 'Thành viên dự án',
         'participants-loading': 'Đang tải...',
         'participants-empty': 'Chưa có ai đăng ký',
@@ -22568,8 +22571,8 @@ async function doResetPassword() {
         'dev-role-badge': 'Pengembang',
         'dev-panel-title': 'Panel Pengembang',
         'dev-panel-sub': 'Peserta proyek dan berita untuk semua pemain',
-        'dev-btn-participants': '👥 Peserta',
-        'dev-btn-create-news': '📰 Buat Berita',
+        'dev-btn-participants': 'Peserta',
+        'dev-btn-create-news': 'Buat Berita',
         'participants-modal-title': 'Peserta Proyek',
         'participants-loading': 'Memuat...',
         'participants-empty': 'Belum ada yang mendaftar',
@@ -22593,8 +22596,8 @@ async function doResetPassword() {
         'dev-role-badge': 'डेवलपर',
         'dev-panel-title': 'डेवलपर पैनल',
         'dev-panel-sub': 'प्रोजेक्ट के सदस्य और सभी खिलाड़ियों के लिए समाचार',
-        'dev-btn-participants': '👥 सदस्य',
-        'dev-btn-create-news': '📰 समाचार बनाएं',
+        'dev-btn-participants': 'सदस्य',
+        'dev-btn-create-news': 'समाचार बनाएं',
         'participants-modal-title': 'प्रोजेक्ट के सदस्य',
         'participants-loading': 'लोड हो रहा है...',
         'participants-empty': 'अभी तक कोई पंजीकृत नहीं है',
