@@ -3180,6 +3180,30 @@
     0 0 32px rgba(74,222,128,0.35);
   color: #fff;
 }
+/* Круглая кнопка профиля у dev-аккаунта — фон самого круга золотой, не только значок внутри */
+.nav-icon-btn.is-dev-btn {
+  border: 2px solid rgba(255,220,140,0.85);
+  background:
+    radial-gradient(circle at 30% 28%, rgba(255,255,255,0.55), rgba(255,200,58,0.35) 60%, rgba(196,145,0,0.35) 100%),
+    linear-gradient(145deg, #FFEFA8 0%, #FFC83A 55%, #C49100 100%);
+  box-shadow:
+    0 6px 18px rgba(0,0,0,0.45),
+    0 0 0 1px rgba(0,0,0,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.6),
+    inset 0 -2px 6px rgba(122,74,0,0.35),
+    0 0 16px rgba(255,200,58,0.55);
+}
+.nav-icon-btn.is-dev-btn::before{
+  border-color: rgba(255,220,140,0.75);
+}
+.nav-icon-btn.is-dev-btn:hover{
+  box-shadow:
+    0 12px 28px rgba(0,0,0,0.55),
+    0 0 0 1px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.7),
+    inset 0 -2px 6px rgba(122,74,0,0.35),
+    0 0 32px rgba(255,200,58,0.6);
+}
 .nav-icon-btn:hover::before{
   opacity: 1;
   transform: scale(1.04);
@@ -15216,6 +15240,7 @@ function showLoggedIn() {
   });
   document.getElementById('ddName').classList.toggle('is-vip', isDev);
   document.getElementById('pmName').classList.toggle('is-vip', isDev);
+  document.getElementById('navProfile').classList.toggle('is-dev-btn', isDev);
   const devTopBtn = document.getElementById('devTopNewsBtn');
   if (devTopBtn) devTopBtn.style.display = isDev ? '' : 'none';
   const devParticipantsItem = document.getElementById('devParticipantsDdItem');
