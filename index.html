@@ -4366,31 +4366,32 @@
 .pc-setting-hint.is-ok{ color: #6fe49a; }
 .pc-setting-hint.is-err{ color: #ff8a7a; }
 
-/* Dev panel */
-.profile-dev{
-  border-color: rgba(255,200,58,0.45);
-  background: linear-gradient(145deg, rgba(255,200,58,0.10), rgba(255,200,58,0.02));
-}
-.pc-icon-dev{
-  background: linear-gradient(180deg, rgba(255,200,58,0.30), rgba(255,200,58,0.06)) !important;
-  border-color: rgba(255,220,140,0.5) !important;
-}
-.dev-panel-actions{ display: flex; gap: 10px; flex-wrap: wrap; }
-.dev-panel-btn{
-  appearance: none; flex: 1 1 140px;
-  padding: 12px 14px; border-radius: 12px;
-  background: rgba(255,200,58,0.14);
-  border: 1px solid rgba(255,200,58,0.5);
-  color: #ffd54a; font-weight: 800; font-size: 12.5px;
-  letter-spacing: 0.4px; cursor: pointer; transition: all .15s ease;
+/* Кнопка "Создать новость" в шапке (только dev), слева от кнопки языков */
+.dev-topnav-news-btn{
+  position: fixed;
+  top: 20px;
+  right: 230px;
+  z-index: 1001;
+  padding: 13px 24px;
+  border-radius: 50px;
+  border: 2px solid rgba(255,220,140,0.7);
+  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 55%, #C49100 100%);
+  color: #3a2600;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  box-shadow:
+    6px 6px 16px rgba(0,0,0,0.3),
+    0 0 10px rgba(255,200,58,0.5),
+    inset 2px 2px 6px rgba(255,255,255,0.25);
+  transition: all 0.2s ease;
   white-space: nowrap;
 }
-.dev-panel-btn:hover{ background: rgba(255,200,58,0.26); color: #fff; transform: translateY(-1px); }
-.dev-panel-btn-primary{
-  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 55%, #C49100 100%);
-  color: #3a2600; border-color: rgba(255,220,140,0.7);
+.dev-topnav-news-btn:hover{ filter: brightness(1.08); transform: translateY(-2px); }
+@media (max-width: 900px) {
+  .dev-topnav-news-btn{ position: static; margin: 8px auto; }
 }
-.dev-panel-btn-primary:hover{ filter: brightness(1.08); color: #3a2600; }
 
 /* Danger zone */
 .profile-danger{
@@ -6787,7 +6788,7 @@ body:not(.hero-anim) .subtitle .ch{
   <!-- Кнопка "Войти" (скрыта когда залогинен) -->
   <button class="btn-login" id="btnLogin" onclick="openAuthModal('login')"><svg class="ic-svg-login" aria-hidden="true" focusable="false"><use href="#e3-ic-login"/></svg><span class="lg-text" data-i18n="btn-login">Войти / Регистрация</span></button>
 
-  <!-- Колокольчик (показывается только залогиненным) -->
+  <!-- Колокольчик (показывается только залогиненным; у dev-аккаунта скрыт, см. showLoggedIn) -->
   <div class="nav-icon-btn bell-wrap" id="navBell" style="display:none;" title="Уведомления" data-i18n-title="nav-notifications">
     <!-- Bell SVG -->
     <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
@@ -6825,6 +6826,10 @@ body:not(.hero-anim) .subtitle .ch{
         <svg class="ic-svg-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex-silver"/></svg>
         Профиль
       </button>
+      <button class="profile-dd-item" id="devParticipantsDdItem" style="display:none;" onclick="openParticipantsModal()">
+        <svg class="ic-svg-mini" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span data-i18n="dev-btn-participants">Участники</span>
+      </button>
       <div class="profile-dd-divider"></div>
       <button class="profile-dd-item danger" onclick="openConfirmLogout()" data-i18n="auth-logout">
         <svg class="ic-svg-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-logout"/></svg>
@@ -6833,6 +6838,11 @@ body:not(.hero-anim) .subtitle .ch{
     </div>
   </div>
 </div>
+
+<!-- Кнопка "Создать новость" — отдельно в шапке, слева от кнопки языков, видна только dev -->
+<button class="dev-topnav-news-btn" id="devTopNewsBtn" style="display:none;" onclick="openCreateNewsModal()">
+  <span data-i18n="dev-btn-create-news">📰 Создать новость</span>
+</button>
 
 <!-- ─── AUTH MODAL ─── -->
 <div class="auth-modal-overlay" id="authModalOverlay" onclick="closeAuthModalOnBg(event)">
@@ -7111,25 +7121,6 @@ body:not(.hero-anim) .subtitle .ch{
     </div>
   </div>
   <div class="pc-providers" id="pmProviders"></div>
-</div>
-
-<!-- ====== DEV PANEL (только для аккаунтов с role: 'dev') ====== -->
-<div class="profile-card profile-dev" id="devPanelCard" style="display:none;">
-  <div class="pc-head">
-    <span class="pc-icon pc-icon-dev">🛠️</span>
-    <div class="pc-text">
-      <div class="pc-title" data-i18n="dev-panel-title">Панель разработчика</div>
-      <div class="pc-sub" data-i18n="dev-panel-sub">Участники проекта и новости для всех игроков</div>
-    </div>
-  </div>
-  <div class="dev-panel-actions">
-    <button type="button" class="dev-panel-btn" id="devBtnParticipants" onclick="openParticipantsModal()">
-      <span data-i18n="dev-btn-participants">👥 Участники</span>
-    </button>
-    <button type="button" class="dev-panel-btn dev-panel-btn-primary" id="devBtnCreateNews" onclick="openCreateNewsModal()">
-      <span data-i18n="dev-btn-create-news">📰 Создать новость</span>
-    </button>
-  </div>
 </div>
 
 <!-- DANGER ZONE -->
@@ -15144,6 +15135,18 @@ async function _ev3BuildUser(fbUser) {
       if (snap.exists) meta = snap.data() || {};
     }
   } catch (_) {}
+  // Самовосстановление ника: аккаунты, созданные ДО появления Firestore-базы (или до
+  // фикса авторизации), могли ни разу не записать поле username в документ — тогда
+  // список участников и любые места, читающие базу напрямую, видели голый UID вместо
+  // ника. Раз в этот раз ника в базе нет — генерируем и молча дописываем его сейчас,
+  // чтобы дальше всё показывалось правильно.
+  if (!meta.username && db) {
+    const fallbackNick = (fbUser.email ? fbUser.email.split('@')[0] : 'player').replace(/[^a-zA-Zа-яёА-ЯЁ0-9_]/g, '').slice(0, 16) || 'player';
+    try {
+      await db.collection('users').doc(fbUser.uid).set({ username: fallbackNick }, { merge: true });
+      meta.username = fallbackNick;
+    } catch (_) {}
+  }
   const providers = (fbUser.providerData || []).map(p => {
     if (p.providerId === 'google.com') return 'google';
     if (p.providerId === 'password')   return 'email';
@@ -15185,7 +15188,6 @@ function _ev3IsDev() {
 }
 function showLoggedIn() {
   document.getElementById('btnLogin').style.display = 'none';
-  document.getElementById('navBell').style.display = 'flex';
   document.getElementById('navProfile').style.display = 'flex';
   // Ник никогда не локализуется — это идентификатор юзера. Берём username из метаданных,
   // иначе — часть email до «@», иначе пустая строка (узел отрисуется без имени).
@@ -15202,7 +15204,7 @@ function showLoggedIn() {
     .forEach(useEl => {
       const cur = useEl.getAttribute('href') || '';
       if (cur.indexOf('e3-ic-profile-hex') !== -1) {
-        useEl.setAttribute('href', isDev ? '#e3-ic-profile-hex-dev' : '#e3-ic-profile-hex-silver');
+        useEl.setAttribute('href', isDev ? '#e3-ic-profile-hex' : '#e3-ic-profile-hex-silver');
       }
     });
   ['ddDevBadge','pmDevBadge'].forEach(id => {
@@ -15211,10 +15213,15 @@ function showLoggedIn() {
   });
   document.getElementById('ddName').classList.toggle('is-vip', isDev);
   document.getElementById('pmName').classList.toggle('is-vip', isDev);
-  const devPanel = document.getElementById('devPanelCard');
-  if (devPanel) devPanel.style.display = isDev ? '' : 'none';
-  // Слушатель новостей — активен для всех залогиненных, не только разработчиков
-  try { window.ev3InitNewsFeed && window.ev3InitNewsFeed(); } catch(_) {}
+  const devTopBtn = document.getElementById('devTopNewsBtn');
+  if (devTopBtn) devTopBtn.style.display = isDev ? '' : 'none';
+  const devParticipantsItem = document.getElementById('devParticipantsDdItem');
+  if (devParticipantsItem) devParticipantsItem.style.display = isDev ? '' : 'none';
+  // Колокольчик с новостями — виден всем ОБЫЧНЫМ игрокам; у dev-аккаунта скрыт
+  // (у него вместо этого своя кнопка "Создать новость" в шапке).
+  const bellEl = document.getElementById('navBell');
+  if (bellEl) bellEl.style.display = isDev ? 'none' : 'flex';
+  if (!isDev) { try { window.ev3InitNewsFeed && window.ev3InitNewsFeed(); } catch(_) {} }
   const el2 = document.getElementById('pmEmail2');
 if (el2) el2.textContent = email;
 const langEl = document.getElementById('pmLang');
@@ -15237,8 +15244,11 @@ if (joinedEl) {
 }
 function showLoggedOut() {
   document.getElementById('btnLogin').style.display = '';
-  document.getElementById('navBell').style.display = 'none';
   document.getElementById('navProfile').style.display = 'none';
+  const bellEl = document.getElementById('navBell');
+  if (bellEl) bellEl.style.display = 'none';
+  const devTopBtn = document.getElementById('devTopNewsBtn');
+  if (devTopBtn) devTopBtn.style.display = 'none';
   if (window.e3CookieBanner) window.e3CookieBanner.hide();
   // Перерисовываем форму отзыва
   try { window.ev3RefreshRatingForm && window.ev3RefreshRatingForm(); } catch (_) {}
