@@ -5241,6 +5241,219 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
   font-size: 12px; color: #b0e4c3; font-weight: 700; margin-top: 4px;
 }
 
+/* ============ EVADES ARCADE ============ */
+.arcade-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 36px;
+}
+.arcade-card{
+  position: relative; overflow: hidden;
+  padding: 32px 28px;
+  border-radius: 22px;
+  background: linear-gradient(160deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03));
+  border: 1px solid var(--e3-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--e3-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.09);
+  transition: transform .35s var(--e3-ease), border-color .35s ease, box-shadow .35s ease;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+}
+.arcade-card:hover{
+  transform: translateY(-6px);
+  border-color: var(--e3-border-lit);
+  box-shadow: var(--e3-shadow-xl);
+}
+.arcade-card-glow{
+  position: absolute; inset: -1px; border-radius: inherit; padding: 1px;
+  background: linear-gradient(135deg, rgba(74,222,128,0.6), transparent 45%, rgba(255,216,77,0.5));
+  -webkit-mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+          mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0.4; pointer-events: none; transition: opacity .3s ease;
+}
+.arcade-card:hover .arcade-card-glow{ opacity: 1; }
+.arcade-card-icon{
+  width: 56px; height: 56px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(74,222,128,0.14);
+  border: 1px solid rgba(74,222,128,0.4);
+  color: var(--e3-emerald);
+  margin-bottom: 6px;
+}
+.arcade-card-icon svg{ width: 28px; height: 28px; }
+.arcade-card-title{
+  font-family: 'Exo 2','Orbitron',sans-serif;
+  font-size: 22px; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase;
+  color: #fff;
+}
+.arcade-card-sub{
+  font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.5;
+  margin-bottom: 10px;
+}
+.arcade-card-best{
+  font-size: 12px; color: rgba(255,255,255,0.55); letter-spacing: 0.5px;
+  margin-bottom: 18px;
+}
+.arcade-card-best strong{ color: #ffd84d; font-weight: 800; }
+.arcade-play-btn{
+  appearance: none; width: 100%; padding: 15px; border-radius: 14px; border: none; cursor: pointer;
+  font-family: 'Exo 2', sans-serif; font-size: 15px; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase;
+  transition: transform .18s cubic-bezier(.4,0,.2,1), box-shadow .18s cubic-bezier(.4,0,.2,1), filter .18s ease;
+}
+.arcade-play-btn-emerald{
+  color: #05200f;
+  background: linear-gradient(135deg, #86efac 0%, #22c55e 100%);
+  box-shadow: 0 7px 0 #146c34, 0 12px 24px rgba(0,0,0,0.4), 0 0 26px rgba(74,222,128,0.35), inset 0 2px 0 rgba(255,255,255,0.5);
+}
+.arcade-play-btn-emerald:hover{ transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 9px 0 #146c34, 0 16px 32px rgba(0,0,0,0.45), 0 0 36px rgba(74,222,128,0.5); }
+.arcade-play-btn-emerald:active{ transform: translateY(5px); box-shadow: 0 2px 0 #146c34, 0 6px 14px rgba(0,0,0,0.3); }
+.arcade-play-btn-violet{
+  color: #14082e;
+  background: linear-gradient(135deg, #c4b5fd 0%, #8b5cf6 100%);
+  box-shadow: 0 7px 0 #4c2f96, 0 12px 24px rgba(0,0,0,0.4), 0 0 26px rgba(167,139,250,0.35), inset 0 2px 0 rgba(255,255,255,0.5);
+}
+.arcade-play-btn-violet:hover{ transform: translateY(-2px); filter: brightness(1.08); }
+.arcade-play-btn-violet:active{ transform: translateY(5px); box-shadow: 0 2px 0 #4c2f96, 0 6px 14px rgba(0,0,0,0.3); }
+.arcade-play-btn:disabled{ opacity: .55; filter: saturate(.5); cursor: not-allowed; transform: none !important; }
+.arcade-card-soon .arcade-card-icon{ background: rgba(167,139,250,0.14); border-color: rgba(167,139,250,0.4); color: var(--e3-violet); }
+.arcade-card-soon .arcade-card-glow{ background: linear-gradient(135deg, rgba(167,139,250,0.6), transparent 45%, rgba(255,216,77,0.5)); }
+
+/* Игровой экран (полноэкранный оверлей) */
+.arcade-stage-overlay{
+  position: fixed; inset: 0; z-index: 5000;
+  display: none; flex-direction: column;
+  background: radial-gradient(ellipse at 50% 0%, rgba(20,45,30,0.97), rgba(6,14,10,0.99));
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.arcade-stage-overlay.show{ display: flex; }
+.arcade-stage-topbar{
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 24px; flex-shrink: 0;
+}
+.arcade-hud-timer{
+  display: flex; align-items: baseline; gap: 10px;
+  font-family: 'Orbitron', sans-serif;
+}
+.arcade-hud-timer span{
+  font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.55); font-weight: 700;
+}
+.arcade-hud-timer strong{
+  font-size: 26px; font-weight: 900; color: #fff;
+  text-shadow: 0 0 14px rgba(74,222,128,0.5);
+}
+.arcade-stage-close{
+  width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--e3-border-lit);
+  background: rgba(255,255,255,0.08); color: #fff; font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s ease;
+}
+.arcade-stage-close:hover{ background: rgba(255,77,109,0.25); border-color: rgba(255,77,109,0.5); transform: rotate(90deg); }
+.arcade-stage-wrap{
+  position: relative; flex: 1; min-height: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 16px 16px;
+}
+#arcadeDodgeCanvas{
+  width: 100%; height: 100%; max-width: 1000px; max-height: 700px;
+  border-radius: 18px; border: 1px solid var(--e3-border-lit);
+  background: #0a1811;
+  box-shadow: var(--e3-shadow-xl), inset 0 0 60px rgba(0,0,0,0.5);
+  touch-action: none;
+}
+.arcade-combo-badge{
+  position: absolute; top: 18px; left: 50%; transform: translateX(-50%) scale(0.8);
+  font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 20px;
+  color: #ffd84d; text-shadow: 0 0 16px rgba(255,216,77,0.8);
+  opacity: 0; pointer-events: none;
+  transition: transform .25s cubic-bezier(.34,1.56,.64,1), opacity .25s ease;
+}
+.arcade-combo-badge.show{ opacity: 1; transform: translateX(-50%) scale(1); }
+.arcade-nearmiss-layer{ position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.arcade-nearmiss-pop{
+  position: absolute;
+  font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 14px;
+  color: #4ade80; text-shadow: 0 0 10px rgba(74,222,128,0.8);
+  animation: arcadeNearMissFloat 0.9s ease-out forwards;
+}
+@keyframes arcadeNearMissFloat{
+  0%{ opacity: 0; transform: translateY(0) scale(0.6); }
+  15%{ opacity: 1; transform: translateY(-6px) scale(1.1); }
+  100%{ opacity: 0; transform: translateY(-46px) scale(1); }
+}
+.arcade-death-screen{
+  position: absolute; inset: 0; z-index: 10;
+  display: none; align-items: center; justify-content: center;
+  background: rgba(4,10,7,0.72); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-radius: 18px;
+  animation: arcadeFadeIn .3s ease;
+}
+@keyframes arcadeFadeIn{ from{ opacity: 0; } to{ opacity: 1; } }
+.arcade-death-box{
+  width: min(440px, 92%);
+  padding: 36px 30px;
+  border-radius: 22px;
+  background: linear-gradient(160deg, rgba(255,255,255,0.1), rgba(255,255,255,0.04));
+  border: 1px solid var(--e3-border-lit);
+  box-shadow: var(--e3-shadow-xl);
+  text-align: center;
+  animation: arcadeDeathPop .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes arcadeDeathPop{ from{ transform: scale(0.85); opacity: 0; } to{ transform: scale(1); opacity: 1; } }
+.arcade-death-title{
+  font-family: 'Exo 2','Orbitron',sans-serif;
+  font-size: 24px; font-weight: 900; letter-spacing: 1.5px;
+  color: var(--e3-crimson); text-shadow: 0 0 18px rgba(255,77,109,0.5);
+  margin-bottom: 6px;
+}
+.arcade-record-banner{
+  font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 15px; letter-spacing: 2px;
+  color: #ffd84d; text-shadow: 0 0 16px rgba(255,216,77,0.8);
+  margin-bottom: 10px;
+  animation: arcadeRecordPulse 1s ease-in-out infinite;
+}
+@keyframes arcadeRecordPulse{ 0%,100%{ transform: scale(1); } 50%{ transform: scale(1.08); } }
+.arcade-death-stats{
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin: 20px 0 26px;
+}
+.arcade-death-stat{
+  display: flex; flex-direction: column; gap: 3px;
+  padding: 12px 10px; border-radius: 12px;
+  background: rgba(255,255,255,0.05); border: 1px solid var(--e3-border);
+}
+.arcade-death-stat span{ font-size: 10.5px; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.55); font-weight: 700; }
+.arcade-death-stat strong{ font-family: 'Orbitron', sans-serif; font-size: 18px; color: #fff; }
+.arcade-death-btns{ display: flex; flex-direction: column; gap: 10px; }
+.arcade-death-close-btn{
+  appearance: none; background: transparent; border: none; cursor: pointer;
+  color: rgba(255,255,255,0.55); font-size: 13px; font-weight: 700; letter-spacing: 0.5px;
+  padding: 8px; transition: color .2s ease;
+}
+.arcade-death-close-btn:hover{ color: #fff; }
+.arcade-joystick{
+  position: absolute; left: 24px; bottom: 24px; z-index: 6;
+  width: 110px; height: 110px;
+}
+.arcade-joystick-base{
+  width: 100%; height: 100%; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.25);
+  position: relative;
+}
+.arcade-joystick-knob{
+  position: absolute; top: 50%; left: 50%; width: 46px; height: 46px; border-radius: 50%;
+  background: rgba(74,222,128,0.55); border: 2px solid rgba(255,255,255,0.5);
+  transform: translate(-50%, -50%);
+  transition: transform .05s linear;
+}
+@media (max-width: 720px){
+  #arcadeDodgeCanvas{ max-width: 100%; max-height: 100%; border-radius: 12px; }
+  .arcade-death-stats{ grid-template-columns: 1fr 1fr; }
+  .arcade-hud-timer strong{ font-size: 20px; }
+}
+
 /* Roadmap progress bar + current task */
 .rm-progress-wrap{
   max-width: 900px; margin: 0 auto 22px;
@@ -8118,6 +8331,82 @@ body:not(.hero-anim) .subtitle .ch{
     </section>
 
     <!-- Heroes & Modes removed — game is in development, content TBD -->
+
+    <!-- ============ EVADES ARCADE ============ -->
+    <section class="e3-section reveal" id="arcade" aria-labelledby="arcade-title">
+      <div class="e3-section-head">
+        <div class="e3-eyebrow"><span class="dot"></span><span data-i18n="arcade-eyebrow">Пока ждёшь релиз</span></div>
+        <h2 id="arcade-title" class="e3-title"><span data-i18n="arcade-title-a">EVADES</span> <span class="accent" data-i18n="arcade-title-b">ARCADE</span></h2>
+        <p class="e3-lead" data-i18n="arcade-lead">Игры ещё нет. Но твои навыки — уже могут быть.</p>
+      </div>
+      <div class="arcade-grid">
+        <div class="arcade-card reveal" data-delay="1">
+          <div class="arcade-card-glow"></div>
+          <div class="arcade-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="19" stroke="currentColor" stroke-width="2.4"/><circle cx="24" cy="24" r="7" fill="currentColor"/></svg>
+          </div>
+          <div class="arcade-card-title" data-i18n="arcade-dodge-title">Dodge Survival</div>
+          <div class="arcade-card-sub" data-i18n="arcade-dodge-sub">Сколько ты продержишься, не столкнувшись с врагами?</div>
+          <div class="arcade-card-best"><span data-i18n="arcade-best-label">Рекорд:</span> <strong id="arcadeDodgeBestLabel">—</strong></div>
+          <button type="button" class="arcade-play-btn arcade-play-btn-emerald" onclick="arcadeOpenDodge()">
+            <span data-i18n="arcade-play-btn">Играть</span>
+          </button>
+        </div>
+        <div class="arcade-card arcade-card-soon reveal" data-delay="2">
+          <div class="arcade-card-glow"></div>
+          <div class="arcade-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none"><path d="M24 5 L29.5 17.5 L43 19.4 L33.5 28.6 L35.8 42 L24 35.8 L12.2 42 L14.5 28.6 L5 19.4 L18.5 17.5 Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="arcade-card-title" data-i18n="arcade-reaction-title">Reaction Rush</div>
+          <div class="arcade-card-sub" data-i18n="arcade-reaction-sub">10 целей подряд. Никаких раздумий.</div>
+          <div class="arcade-card-best"><span data-i18n="arcade-best-label">Рекорд:</span> <strong id="arcadeReactionBestLabel">—</strong></div>
+          <button type="button" class="arcade-play-btn arcade-play-btn-violet" disabled>
+            <span data-i18n="arcade-soon-btn">Скоро</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ARCADE: DODGE SURVIVAL — игровой экран ============ -->
+    <div class="arcade-stage-overlay" id="arcadeDodgeOverlay">
+      <div class="arcade-stage-topbar">
+        <div class="arcade-hud-timer">
+          <span data-i18n="arcade-survival-label">Survival Time</span>
+          <strong id="arcadeDodgeTimer">0.00s</strong>
+        </div>
+        <button type="button" class="arcade-stage-close" onclick="arcadeCloseDodge()" aria-label="Close">✕</button>
+      </div>
+      <div class="arcade-stage-wrap">
+        <canvas id="arcadeDodgeCanvas"></canvas>
+        <div class="arcade-combo-badge" id="arcadeComboBadge"></div>
+        <div class="arcade-nearmiss-layer" id="arcadeNearMissLayer"></div>
+        <div class="arcade-joystick" id="arcadeJoystick" style="display:none;">
+          <div class="arcade-joystick-base">
+            <div class="arcade-joystick-knob" id="arcadeJoystickKnob"></div>
+          </div>
+        </div>
+        <!-- Экран смерти -->
+        <div class="arcade-death-screen" id="arcadeDeathScreen">
+          <div class="arcade-death-box">
+            <div class="arcade-death-title" data-i18n="arcade-caught-title">You were caught</div>
+            <div class="arcade-record-banner" id="arcadeRecordBanner" style="display:none;" data-i18n="arcade-new-record">New record!</div>
+            <div class="arcade-death-stats">
+              <div class="arcade-death-stat"><span data-i18n="arcade-survived-label">Survived</span><strong id="arcadeDeathSurvived">0.00s</strong></div>
+              <div class="arcade-death-stat"><span data-i18n="arcade-best-label-2">Personal best</span><strong id="arcadeDeathBest">0.00s</strong></div>
+              <div class="arcade-death-stat"><span data-i18n="arcade-nearmiss-label">Near misses</span><strong id="arcadeDeathNearMiss">0</strong></div>
+              <div class="arcade-death-stat"><span data-i18n="arcade-bestcombo-label">Best combo</span><strong id="arcadeDeathCombo">x0</strong></div>
+              <div class="arcade-death-stat" style="grid-column: 1 / -1;"><span data-i18n="arcade-score-label">Score</span><strong id="arcadeDeathScore">0</strong></div>
+            </div>
+            <div class="arcade-death-btns">
+              <button type="button" class="arcade-play-btn arcade-play-btn-emerald" onclick="arcadeStartDodge()">
+                <span data-i18n="arcade-tryagain-btn">Try again</span>
+              </button>
+              <button type="button" class="arcade-death-close-btn" onclick="arcadeCloseDodge()" data-i18n="arcade-exit-btn">Выйти</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- ============ E3 ULTRA UPGRADE: ROADMAP ============ -->
     <section class="e3-section reveal" id="roadmap" aria-labelledby="rm-title">
@@ -21950,6 +22239,27 @@ async function doResetPassword() {
     // ============================================================
     const extra2 = {
       ru: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'Пока ждёшь релиз',
+        'arcade-lead': 'Игры ещё нет. Но твои навыки — уже могут быть.',
+        'arcade-dodge-sub': 'Сколько ты продержишься, не столкнувшись с врагами?',
+        'arcade-best-label': 'Рекорд:',
+        'arcade-play-btn': 'Играть',
+        'arcade-reaction-sub': '10 целей подряд. Никаких раздумий.',
+        'arcade-soon-btn': 'Скоро',
+        'arcade-survival-label': 'Время выживания',
+        'arcade-caught-title': 'Тебя поймали',
+        'arcade-new-record': 'Новый рекорд!',
+        'arcade-survived-label': 'Продержался',
+        'arcade-best-label-2': 'Личный рекорд',
+        'arcade-nearmiss-label': 'Уклонения',
+        'arcade-bestcombo-label': 'Лучшее комбо',
+        'arcade-score-label': 'Очки',
+        'arcade-tryagain-btn': 'Играть снова',
+        'arcade-exit-btn': 'Выйти',
         'auth-oauth-loading': 'Вход через {provider}...',
         'dev-role-badge': 'Разработчик',
         'dev-panel-title': 'Панель разработчика',
@@ -21975,6 +22285,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Нет соединения с базой данных. Попробуй ещё раз через пару секунд'
       },
       en: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'While you wait for release',
+        'arcade-lead': 'The game isn\'t here yet. Your skills can be.',
+        'arcade-dodge-sub': 'How long can you survive without touching an enemy?',
+        'arcade-best-label': 'Best:',
+        'arcade-play-btn': 'Play',
+        'arcade-reaction-sub': '10 targets in a row. No hesitation.',
+        'arcade-soon-btn': 'Soon',
+        'arcade-survival-label': 'Survival Time',
+        'arcade-caught-title': 'You were caught',
+        'arcade-new-record': 'New record!',
+        'arcade-survived-label': 'Survived',
+        'arcade-best-label-2': 'Personal Best',
+        'arcade-nearmiss-label': 'Near Misses',
+        'arcade-bestcombo-label': 'Best Combo',
+        'arcade-score-label': 'Score',
+        'arcade-tryagain-btn': 'Try Again',
+        'arcade-exit-btn': 'Exit',
         'auth-oauth-loading': 'Signing in via {provider}...',
         'dev-role-badge': 'Developer',
         'dev-panel-title': 'Developer Panel',
@@ -22000,6 +22331,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'No connection to the database. Try again in a few seconds'
       },
       uk: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'Поки чекаєш реліз',
+        'arcade-lead': 'Гри ще немає. Але твої навички — вже можуть бути.',
+        'arcade-dodge-sub': 'Скільки ти протримаєшся, не торкнувшись ворога?',
+        'arcade-best-label': 'Рекорд:',
+        'arcade-play-btn': 'Грати',
+        'arcade-reaction-sub': '10 цілей поспіль. Жодних роздумів.',
+        'arcade-soon-btn': 'Скоро',
+        'arcade-survival-label': 'Час виживання',
+        'arcade-caught-title': 'Тебе спіймали',
+        'arcade-new-record': 'Новий рекорд!',
+        'arcade-survived-label': 'Протримався',
+        'arcade-best-label-2': 'Особистий рекорд',
+        'arcade-nearmiss-label': 'Ухилення',
+        'arcade-bestcombo-label': 'Найкраще комбо',
+        'arcade-score-label': 'Очки',
+        'arcade-tryagain-btn': 'Спробувати знову',
+        'arcade-exit-btn': 'Вийти',
         'auth-oauth-loading': 'Вхід через {provider}...',
         'dev-role-badge': 'Розробник',
         'dev-panel-title': 'Панель розробника',
@@ -22025,6 +22377,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Немає з’єднання з базою даних. Спробуй ще раз за кілька секунд'
       },
       de: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'Während du auf den Release wartest',
+        'arcade-lead': 'Das Spiel gibt es noch nicht. Dein Können schon.',
+        'arcade-dodge-sub': 'Wie lange überlebst du, ohne einen Gegner zu berühren?',
+        'arcade-best-label': 'Bestwert:',
+        'arcade-play-btn': 'Spielen',
+        'arcade-reaction-sub': '10 Ziele hintereinander. Kein Zögern.',
+        'arcade-soon-btn': 'Bald',
+        'arcade-survival-label': 'Überlebenszeit',
+        'arcade-caught-title': 'Du wurdest erwischt',
+        'arcade-new-record': 'Neuer Rekord!',
+        'arcade-survived-label': 'Überlebt',
+        'arcade-best-label-2': 'Persönlicher Rekord',
+        'arcade-nearmiss-label': 'Fast-Treffer',
+        'arcade-bestcombo-label': 'Bestes Combo',
+        'arcade-score-label': 'Punkte',
+        'arcade-tryagain-btn': 'Nochmal versuchen',
+        'arcade-exit-btn': 'Verlassen',
         'auth-oauth-loading': 'Anmeldung über {provider}...',
         'dev-role-badge': 'Entwickler',
         'dev-panel-title': 'Entwickler-Panel',
@@ -22050,6 +22423,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Keine Verbindung zur Datenbank. Versuch es in ein paar Sekunden erneut'
       },
       es: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'Mientras esperas el lanzamiento',
+        'arcade-lead': 'El juego aún no existe. Tu habilidad, sí.',
+        'arcade-dodge-sub': '¿Cuánto puedes sobrevivir sin tocar a un enemigo?',
+        'arcade-best-label': 'Récord:',
+        'arcade-play-btn': 'Jugar',
+        'arcade-reaction-sub': '10 objetivos seguidos. Sin dudar.',
+        'arcade-soon-btn': 'Pronto',
+        'arcade-survival-label': 'Tiempo de supervivencia',
+        'arcade-caught-title': 'Te atraparon',
+        'arcade-new-record': '¡Nuevo récord!',
+        'arcade-survived-label': 'Sobreviviste',
+        'arcade-best-label-2': 'Récord personal',
+        'arcade-nearmiss-label': 'Casi atrapado',
+        'arcade-bestcombo-label': 'Mejor combo',
+        'arcade-score-label': 'Puntuación',
+        'arcade-tryagain-btn': 'Intentar de nuevo',
+        'arcade-exit-btn': 'Salir',
         'auth-oauth-loading': 'Iniciando sesión con {provider}...',
         'dev-role-badge': 'Desarrollador',
         'dev-panel-title': 'Panel de desarrollador',
@@ -22075,6 +22469,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Sin conexión con la base de datos. Inténtalo de nuevo en unos segundos'
       },
       fr: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'En attendant la sortie',
+        'arcade-lead': 'Le jeu n\'existe pas encore. Tes compétences, si.',
+        'arcade-dodge-sub': 'Combien de temps peux-tu survivre sans toucher un ennemi ?',
+        'arcade-best-label': 'Record :',
+        'arcade-play-btn': 'Jouer',
+        'arcade-reaction-sub': '10 cibles d\'affilée. Aucune hésitation.',
+        'arcade-soon-btn': 'Bientôt',
+        'arcade-survival-label': 'Temps de survie',
+        'arcade-caught-title': 'Tu as été attrapé',
+        'arcade-new-record': 'Nouveau record !',
+        'arcade-survived-label': 'Survécu',
+        'arcade-best-label-2': 'Record personnel',
+        'arcade-nearmiss-label': 'Évitements de justesse',
+        'arcade-bestcombo-label': 'Meilleur combo',
+        'arcade-score-label': 'Score',
+        'arcade-tryagain-btn': 'Réessayer',
+        'arcade-exit-btn': 'Quitter',
         'auth-oauth-loading': 'Connexion via {provider}...',
         'dev-role-badge': 'Développeur',
         'dev-panel-title': 'Panneau développeur',
@@ -22100,6 +22515,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Pas de connexion à la base de données. Réessaie dans quelques secondes'
       },
       it: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'In attesa dell\'uscita',
+        'arcade-lead': 'Il gioco non c\'è ancora. Le tue abilità sì.',
+        'arcade-dodge-sub': 'Quanto puoi sopravvivere senza toccare un nemico?',
+        'arcade-best-label': 'Record:',
+        'arcade-play-btn': 'Gioca',
+        'arcade-reaction-sub': '10 bersagli di fila. Nessuna esitazione.',
+        'arcade-soon-btn': 'Presto',
+        'arcade-survival-label': 'Tempo di sopravvivenza',
+        'arcade-caught-title': 'Sei stato catturato',
+        'arcade-new-record': 'Nuovo record!',
+        'arcade-survived-label': 'Sopravvissuto',
+        'arcade-best-label-2': 'Record personale',
+        'arcade-nearmiss-label': 'Schivate mancate',
+        'arcade-bestcombo-label': 'Miglior combo',
+        'arcade-score-label': 'Punteggio',
+        'arcade-tryagain-btn': 'Riprova',
+        'arcade-exit-btn': 'Esci',
         'auth-oauth-loading': 'Accesso con {provider}...',
         'dev-role-badge': 'Sviluppatore',
         'dev-panel-title': 'Pannello sviluppatore',
@@ -22125,6 +22561,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Nessuna connessione al database. Riprova tra qualche secondo'
       },
       pt: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'Enquanto espera o lançamento',
+        'arcade-lead': 'O jogo ainda não existe. Sua habilidade, sim.',
+        'arcade-dodge-sub': 'Quanto tempo você sobrevive sem tocar em um inimigo?',
+        'arcade-best-label': 'Recorde:',
+        'arcade-play-btn': 'Jogar',
+        'arcade-reaction-sub': '10 alvos seguidos. Sem hesitação.',
+        'arcade-soon-btn': 'Em breve',
+        'arcade-survival-label': 'Tempo de sobrevivência',
+        'arcade-caught-title': 'Você foi pego',
+        'arcade-new-record': 'Novo recorde!',
+        'arcade-survived-label': 'Sobreviveu',
+        'arcade-best-label-2': 'Recorde pessoal',
+        'arcade-nearmiss-label': 'Quase pego',
+        'arcade-bestcombo-label': 'Melhor combo',
+        'arcade-score-label': 'Pontuação',
+        'arcade-tryagain-btn': 'Tentar novamente',
+        'arcade-exit-btn': 'Sair',
         'auth-oauth-loading': 'Entrando com {provider}...',
         'dev-role-badge': 'Desenvolvedor',
         'dev-panel-title': 'Painel do desenvolvedor',
@@ -22150,6 +22607,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Sem conexão com o banco de dados. Tente novamente em alguns segundos'
       },
       pl: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'W oczekiwaniu na premierę',
+        'arcade-lead': 'Gry jeszcze nie ma. Twoje umiejętności już mogą być.',
+        'arcade-dodge-sub': 'Jak długo przetrwasz, nie dotykając wroga?',
+        'arcade-best-label': 'Rekord:',
+        'arcade-play-btn': 'Graj',
+        'arcade-reaction-sub': '10 celów z rzędu. Żadnego wahania.',
+        'arcade-soon-btn': 'Wkrótce',
+        'arcade-survival-label': 'Czas przetrwania',
+        'arcade-caught-title': 'Zostałeś złapany',
+        'arcade-new-record': 'Nowy rekord!',
+        'arcade-survived-label': 'Przetrwałeś',
+        'arcade-best-label-2': 'Rekord osobisty',
+        'arcade-nearmiss-label': 'Uniki o włos',
+        'arcade-bestcombo-label': 'Najlepsze combo',
+        'arcade-score-label': 'Wynik',
+        'arcade-tryagain-btn': 'Spróbuj ponownie',
+        'arcade-exit-btn': 'Wyjdź',
         'auth-oauth-loading': 'Logowanie przez {provider}...',
         'dev-role-badge': 'Deweloper',
         'dev-panel-title': 'Panel dewelopera',
@@ -22175,6 +22653,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Brak połączenia z bazą danych. Spróbuj ponownie za kilka sekund'
       },
       tr: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'Çıkışı beklerken',
+        'arcade-lead': 'Oyun henüz yok. Ama becerin şimdiden olabilir.',
+        'arcade-dodge-sub': 'Bir düşmana değmeden ne kadar hayatta kalabilirsin?',
+        'arcade-best-label': 'Rekor:',
+        'arcade-play-btn': 'Oyna',
+        'arcade-reaction-sub': 'Arka arkaya 10 hedef. Tereddüt yok.',
+        'arcade-soon-btn': 'Yakında',
+        'arcade-survival-label': 'Hayatta Kalma Süresi',
+        'arcade-caught-title': 'Yakalandın',
+        'arcade-new-record': 'Yeni rekor!',
+        'arcade-survived-label': 'Hayatta kaldın',
+        'arcade-best-label-2': 'Kişisel rekor',
+        'arcade-nearmiss-label': 'Ucuz kurtuluşlar',
+        'arcade-bestcombo-label': 'En iyi kombo',
+        'arcade-score-label': 'Skor',
+        'arcade-tryagain-btn': 'Tekrar dene',
+        'arcade-exit-btn': 'Çıkış',
         'auth-oauth-loading': '{provider} ile giriş yapılıyor...',
         'dev-role-badge': 'Geliştirici',
         'dev-panel-title': 'Geliştirici Paneli',
@@ -22200,6 +22699,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Veritabanına bağlantı yok. Birkaç saniye sonra tekrar dene'
       },
       nl: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'Terwijl je op de release wacht',
+        'arcade-lead': 'Het spel is er nog niet. Jouw skills wel.',
+        'arcade-dodge-sub': 'Hoelang overleef je zonder een vijand te raken?',
+        'arcade-best-label': 'Record:',
+        'arcade-play-btn': 'Spelen',
+        'arcade-reaction-sub': '10 doelen op rij. Geen aarzeling.',
+        'arcade-soon-btn': 'Binnenkort',
+        'arcade-survival-label': 'Overlevingstijd',
+        'arcade-caught-title': 'Je bent gepakt',
+        'arcade-new-record': 'Nieuw record!',
+        'arcade-survived-label': 'Overleefd',
+        'arcade-best-label-2': 'Persoonlijk record',
+        'arcade-nearmiss-label': 'Op het nippertje',
+        'arcade-bestcombo-label': 'Beste combo',
+        'arcade-score-label': 'Score',
+        'arcade-tryagain-btn': 'Opnieuw proberen',
+        'arcade-exit-btn': 'Afsluiten',
         'auth-oauth-loading': 'Inloggen via {provider}...',
         'dev-role-badge': 'Ontwikkelaar',
         'dev-panel-title': 'Ontwikkelaarspaneel',
@@ -22225,6 +22745,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Geen verbinding met de database. Probeer het over een paar seconden opnieuw'
       },
       sv: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'Medan du väntar på releasen',
+        'arcade-lead': 'Spelet finns inte än. Din skicklighet kan det.',
+        'arcade-dodge-sub': 'Hur länge överlever du utan att röra en fiende?',
+        'arcade-best-label': 'Rekord:',
+        'arcade-play-btn': 'Spela',
+        'arcade-reaction-sub': '10 mål i rad. Inget tvekande.',
+        'arcade-soon-btn': 'Snart',
+        'arcade-survival-label': 'Överlevnadstid',
+        'arcade-caught-title': 'Du blev fångad',
+        'arcade-new-record': 'Nytt rekord!',
+        'arcade-survived-label': 'Överlevde',
+        'arcade-best-label-2': 'Personligt rekord',
+        'arcade-nearmiss-label': 'Nära ögat',
+        'arcade-bestcombo-label': 'Bästa combo',
+        'arcade-score-label': 'Poäng',
+        'arcade-tryagain-btn': 'Försök igen',
+        'arcade-exit-btn': 'Avsluta',
         'auth-oauth-loading': 'Loggar in via {provider}...',
         'dev-role-badge': 'Utvecklare',
         'dev-panel-title': 'Utvecklarpanel',
@@ -22250,6 +22791,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Ingen anslutning till databasen. Försök igen om några sekunder'
       },
       no: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'Mens du venter på lanseringen',
+        'arcade-lead': 'Spillet finnes ikke ennå. Ferdighetene dine kan det.',
+        'arcade-dodge-sub': 'Hvor lenge overlever du uten å røre en fiende?',
+        'arcade-best-label': 'Rekord:',
+        'arcade-play-btn': 'Spill',
+        'arcade-reaction-sub': '10 mål på rad. Ingen nøling.',
+        'arcade-soon-btn': 'Snart',
+        'arcade-survival-label': 'Overlevelsestid',
+        'arcade-caught-title': 'Du ble tatt',
+        'arcade-new-record': 'Ny rekord!',
+        'arcade-survived-label': 'Overlevde',
+        'arcade-best-label-2': 'Personlig rekord',
+        'arcade-nearmiss-label': 'Nære unnvikelser',
+        'arcade-bestcombo-label': 'Beste combo',
+        'arcade-score-label': 'Poeng',
+        'arcade-tryagain-btn': 'Prøv igjen',
+        'arcade-exit-btn': 'Avslutt',
         'auth-oauth-loading': 'Logger inn via {provider}...',
         'dev-role-badge': 'Utvikler',
         'dev-panel-title': 'Utviklerpanel',
@@ -22275,6 +22837,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Ingen tilkobling til databasen. Prøv igjen om noen sekunder'
       },
       fi: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'Odottaessasi julkaisua',
+        'arcade-lead': 'Peliä ei ole vielä. Taitosi voivat olla.',
+        'arcade-dodge-sub': 'Kuinka pitkään selviät koskematta viholliseen?',
+        'arcade-best-label': 'Ennätys:',
+        'arcade-play-btn': 'Pelaa',
+        'arcade-reaction-sub': '10 kohdetta peräkkäin. Ei epäröintiä.',
+        'arcade-soon-btn': 'Pian',
+        'arcade-survival-label': 'Selviytymisaika',
+        'arcade-caught-title': 'Sinut nappattiin',
+        'arcade-new-record': 'Uusi ennätys!',
+        'arcade-survived-label': 'Selvisit',
+        'arcade-best-label-2': 'Henkilökohtainen ennätys',
+        'arcade-nearmiss-label': 'Läheltä piti -tilanteet',
+        'arcade-bestcombo-label': 'Paras combo',
+        'arcade-score-label': 'Pisteet',
+        'arcade-tryagain-btn': 'Yritä uudelleen',
+        'arcade-exit-btn': 'Poistu',
         'auth-oauth-loading': 'Kirjaudutaan sisään {provider}:lla...',
         'dev-role-badge': 'Kehittäjä',
         'dev-panel-title': 'Kehittäjäpaneeli',
@@ -22300,6 +22883,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Ei yhteyttä tietokantaan. Yritä uudelleen muutaman sekunnin kuluttua'
       },
       da: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'Mens du venter på udgivelsen',
+        'arcade-lead': 'Spillet findes ikke endnu. Dine evner kan.',
+        'arcade-dodge-sub': 'Hvor længe overlever du uden at røre en fjende?',
+        'arcade-best-label': 'Rekord:',
+        'arcade-play-btn': 'Spil',
+        'arcade-reaction-sub': '10 mål i træk. Ingen tøven.',
+        'arcade-soon-btn': 'Snart',
+        'arcade-survival-label': 'Overlevelsestid',
+        'arcade-caught-title': 'Du blev fanget',
+        'arcade-new-record': 'Ny rekord!',
+        'arcade-survived-label': 'Overlevede',
+        'arcade-best-label-2': 'Personlig rekord',
+        'arcade-nearmiss-label': 'Nærved-situationer',
+        'arcade-bestcombo-label': 'Bedste combo',
+        'arcade-score-label': 'Point',
+        'arcade-tryagain-btn': 'Prøv igen',
+        'arcade-exit-btn': 'Afslut',
         'auth-oauth-loading': 'Logger ind via {provider}...',
         'dev-role-badge': 'Udvikler',
         'dev-panel-title': 'Udviklerpanel',
@@ -22325,6 +22929,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Ingen forbindelse til databasen. Prøv igen om et par sekunder'
       },
       cs: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'Zatímco čekáš na vydání',
+        'arcade-lead': 'Hra ještě neexistuje. Tvé dovednosti už můžou.',
+        'arcade-dodge-sub': 'Jak dlouho přežiješ, aniž by ses dotkl nepřítele?',
+        'arcade-best-label': 'Rekord:',
+        'arcade-play-btn': 'Hrát',
+        'arcade-reaction-sub': '10 cílů za sebou. Žádné váhání.',
+        'arcade-soon-btn': 'Brzy',
+        'arcade-survival-label': 'Doba přežití',
+        'arcade-caught-title': 'Byl jsi chycen',
+        'arcade-new-record': 'Nový rekord!',
+        'arcade-survived-label': 'Přežil jsi',
+        'arcade-best-label-2': 'Osobní rekord',
+        'arcade-nearmiss-label': 'Těsné úniky',
+        'arcade-bestcombo-label': 'Nejlepší combo',
+        'arcade-score-label': 'Skóre',
+        'arcade-tryagain-btn': 'Zkusit znovu',
+        'arcade-exit-btn': 'Odejít',
         'auth-oauth-loading': 'Přihlašování přes {provider}...',
         'dev-role-badge': 'Vývojář',
         'dev-panel-title': 'Panel vývojáře',
@@ -22350,6 +22975,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Žádné připojení k databázi. Zkus to znovu za pár sekund'
       },
       ro: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'În timp ce aștepți lansarea',
+        'arcade-lead': 'Jocul încă nu există. Abilitățile tale, deja pot.',
+        'arcade-dodge-sub': 'Cât timp poți supraviețui fără să atingi un inamic?',
+        'arcade-best-label': 'Record:',
+        'arcade-play-btn': 'Joacă',
+        'arcade-reaction-sub': '10 ținte la rând. Fără ezitare.',
+        'arcade-soon-btn': 'În curând',
+        'arcade-survival-label': 'Timp de supraviețuire',
+        'arcade-caught-title': 'Ai fost prins',
+        'arcade-new-record': 'Record nou!',
+        'arcade-survived-label': 'Ai supraviețuit',
+        'arcade-best-label-2': 'Record personal',
+        'arcade-nearmiss-label': 'Evitări la limită',
+        'arcade-bestcombo-label': 'Cel mai bun combo',
+        'arcade-score-label': 'Scor',
+        'arcade-tryagain-btn': 'Încearcă din nou',
+        'arcade-exit-btn': 'Ieși',
         'auth-oauth-loading': 'Autentificare prin {provider}...',
         'dev-role-badge': 'Dezvoltator',
         'dev-panel-title': 'Panou dezvoltator',
@@ -22375,6 +23021,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Nicio conexiune la baza de date. Încearcă din nou peste câteva secunde'
       },
       hu: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'Amíg a megjelenésre vársz',
+        'arcade-lead': 'A játék még nincs itt. A tudásod viszont már lehet.',
+        'arcade-dodge-sub': 'Meddig maradsz életben anélkül, hogy hozzáérnél egy ellenséghez?',
+        'arcade-best-label': 'Rekord:',
+        'arcade-play-btn': 'Játék',
+        'arcade-reaction-sub': '10 célpont egymás után. Semmi habozás.',
+        'arcade-soon-btn': 'Hamarosan',
+        'arcade-survival-label': 'Túlélési idő',
+        'arcade-caught-title': 'Elkaptak',
+        'arcade-new-record': 'Új rekord!',
+        'arcade-survived-label': 'Túlélted',
+        'arcade-best-label-2': 'Személyes rekord',
+        'arcade-nearmiss-label': 'Hajszál híján',
+        'arcade-bestcombo-label': 'Legjobb kombó',
+        'arcade-score-label': 'Pontszám',
+        'arcade-tryagain-btn': 'Próbáld újra',
+        'arcade-exit-btn': 'Kilépés',
         'auth-oauth-loading': 'Bejelentkezés a(z) {provider} szolgáltatással...',
         'dev-role-badge': 'Fejlesztő',
         'dev-panel-title': 'Fejlesztői panel',
@@ -22400,6 +23067,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Nincs kapcsolat az adatbázissal. Próbáld újra pár másodperc múlva'
       },
       el: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'Όσο περιμένεις την κυκλοφορία',
+        'arcade-lead': 'Το παιχνίδι δεν υπάρχει ακόμα. Οι δεξιότητές σου, ναι.',
+        'arcade-dodge-sub': 'Πόσο καιρό μπορείς να επιβιώσεις χωρίς να αγγίξεις εχθρό;',
+        'arcade-best-label': 'Ρεκόρ:',
+        'arcade-play-btn': 'Παίξε',
+        'arcade-reaction-sub': '10 στόχοι στη σειρά. Χωρίς δισταγμό.',
+        'arcade-soon-btn': 'Σύντομα',
+        'arcade-survival-label': 'Χρόνος επιβίωσης',
+        'arcade-caught-title': 'Σε έπιασαν',
+        'arcade-new-record': 'Νέο ρεκόρ!',
+        'arcade-survived-label': 'Επιβίωσες',
+        'arcade-best-label-2': 'Προσωπικό ρεκόρ',
+        'arcade-nearmiss-label': 'Παρ\' ολίγον συγκρούσεις',
+        'arcade-bestcombo-label': 'Καλύτερο κόμπο',
+        'arcade-score-label': 'Βαθμολογία',
+        'arcade-tryagain-btn': 'Ξαναπροσπάθησε',
+        'arcade-exit-btn': 'Έξοδος',
         'auth-oauth-loading': 'Σύνδεση μέσω {provider}...',
         'dev-role-badge': 'Προγραμματιστής',
         'dev-panel-title': 'Πίνακας προγραμματιστή',
@@ -22425,6 +23113,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Δεν υπάρχει σύνδεση με τη βάση δεδομένων. Δοκίμασε ξανά σε λίγα δευτερόλεπτα'
       },
       ja: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'リリースを待つ間に',
+        'arcade-lead': 'ゲームはまだない。でも君の腕前はもうある。',
+        'arcade-dodge-sub': '敵に触れずにどれくらい生き残れる?',
+        'arcade-best-label': 'ベスト:',
+        'arcade-play-btn': 'プレイ',
+        'arcade-reaction-sub': '10個の的を連続で。迷っている暇はない。',
+        'arcade-soon-btn': '近日公開',
+        'arcade-survival-label': '生存時間',
+        'arcade-caught-title': '捕まった',
+        'arcade-new-record': '新記録!',
+        'arcade-survived-label': '生存時間',
+        'arcade-best-label-2': '自己ベスト',
+        'arcade-nearmiss-label': 'ニアミス',
+        'arcade-bestcombo-label': 'ベストコンボ',
+        'arcade-score-label': 'スコア',
+        'arcade-tryagain-btn': 'もう一度挑戦',
+        'arcade-exit-btn': '終了',
         'auth-oauth-loading': '{provider} でログイン中...',
         'dev-role-badge': '開発者',
         'dev-panel-title': '開発者パネル',
@@ -22450,6 +23159,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'データベースに接続できません。数秒後にもう一度お試しください'
       },
       zh: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': '在等待正式发布的同时',
+        'arcade-lead': '游戏还没做好,但你的技术已经可以了。',
+        'arcade-dodge-sub': '不碰到敌人,你能坚持多久?',
+        'arcade-best-label': '最佳记录:',
+        'arcade-play-btn': '开始游戏',
+        'arcade-reaction-sub': '连续10个目标,不容犹豫。',
+        'arcade-soon-btn': '即将推出',
+        'arcade-survival-label': '生存时间',
+        'arcade-caught-title': '你被抓住了',
+        'arcade-new-record': '新纪录!',
+        'arcade-survived-label': '生存时间',
+        'arcade-best-label-2': '个人最佳',
+        'arcade-nearmiss-label': '险些被抓',
+        'arcade-bestcombo-label': '最佳连击',
+        'arcade-score-label': '得分',
+        'arcade-tryagain-btn': '再试一次',
+        'arcade-exit-btn': '退出',
         'auth-oauth-loading': '正在通过 {provider} 登录...',
         'dev-role-badge': '开发者',
         'dev-panel-title': '开发者面板',
@@ -22475,6 +23205,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': '无法连接数据库，请几秒后重试'
       },
       ko: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': '출시를 기다리는 동안',
+        'arcade-lead': '게임은 아직 없지만, 당신의 실력은 이미 준비됐을지도.',
+        'arcade-dodge-sub': '적에게 닿지 않고 얼마나 오래 버틸 수 있나요?',
+        'arcade-best-label': '최고 기록:',
+        'arcade-play-btn': '플레이',
+        'arcade-reaction-sub': '연속 10개 타겟. 망설임은 없다.',
+        'arcade-soon-btn': '곧 출시',
+        'arcade-survival-label': '생존 시간',
+        'arcade-caught-title': '잡혔습니다',
+        'arcade-new-record': '신기록!',
+        'arcade-survived-label': '생존 시간',
+        'arcade-best-label-2': '개인 최고 기록',
+        'arcade-nearmiss-label': '아슬아슬한 회피',
+        'arcade-bestcombo-label': '최고 콤보',
+        'arcade-score-label': '점수',
+        'arcade-tryagain-btn': '다시 시도',
+        'arcade-exit-btn': '나가기',
         'auth-oauth-loading': '{provider}(으)로 로그인 중...',
         'dev-role-badge': '개발자',
         'dev-panel-title': '개발자 패널',
@@ -22500,6 +23251,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': '데이터베이스에 연결할 수 없습니다. 잠시 후 다시 시도하세요'
       },
       ar: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'بينما تنتظر الإصدار',
+        'arcade-lead': 'اللعبة لم تصدر بعد. لكن مهاراتك يمكن أن تكون جاهزة.',
+        'arcade-dodge-sub': 'كم من الوقت يمكنك البقاء دون لمس عدو؟',
+        'arcade-best-label': 'الرقم القياسي:',
+        'arcade-play-btn': 'العب',
+        'arcade-reaction-sub': '10 أهداف متتالية. بلا تردد.',
+        'arcade-soon-btn': 'قريبًا',
+        'arcade-survival-label': 'وقت البقاء',
+        'arcade-caught-title': 'تم الإمساك بك',
+        'arcade-new-record': 'رقم قياسي جديد!',
+        'arcade-survived-label': 'صمدت',
+        'arcade-best-label-2': 'الرقم القياسي الشخصي',
+        'arcade-nearmiss-label': 'نجاة بالكاد',
+        'arcade-bestcombo-label': 'أفضل سلسلة',
+        'arcade-score-label': 'النتيجة',
+        'arcade-tryagain-btn': 'حاول مرة أخرى',
+        'arcade-exit-btn': 'خروج',
         'auth-oauth-loading': 'جارٍ تسجيل الدخول عبر {provider}...',
         'dev-role-badge': 'مطوّر',
         'dev-panel-title': 'لوحة المطوّر',
@@ -22525,6 +23297,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'لا يوجد اتصال بقاعدة البيانات. حاول مرة أخرى خلال ثوانٍ'
       },
       he: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'בזמן שאתה מחכה להשקה',
+        'arcade-lead': 'המשחק עדיין לא כאן. הכישורים שלך כבר יכולים להיות.',
+        'arcade-dodge-sub': 'כמה זמן תוכל לשרוד בלי לגעת באויב?',
+        'arcade-best-label': 'שיא:',
+        'arcade-play-btn': 'שחק',
+        'arcade-reaction-sub': '10 מטרות ברצף. בלי היסוס.',
+        'arcade-soon-btn': 'בקרוב',
+        'arcade-survival-label': 'זמן הישרדות',
+        'arcade-caught-title': 'נתפסת',
+        'arcade-new-record': 'שיא חדש!',
+        'arcade-survived-label': 'שרדת',
+        'arcade-best-label-2': 'שיא אישי',
+        'arcade-nearmiss-label': 'חמקנות בשערה',
+        'arcade-bestcombo-label': 'הקומבו הכי טוב',
+        'arcade-score-label': 'ניקוד',
+        'arcade-tryagain-btn': 'נסה שוב',
+        'arcade-exit-btn': 'יציאה',
         'auth-oauth-loading': 'מתחבר דרך {provider}...',
         'dev-role-badge': 'מפתח',
         'dev-panel-title': 'לוח בקרה למפתח',
@@ -22550,6 +23343,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'אין חיבור למסד הנתונים. נסה שוב בעוד כמה שניות'
       },
       th: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'ระหว่างรอเปิดตัวเกม',
+        'arcade-lead': 'เกมยังไม่มา แต่ฝีมือของคุณพร้อมได้แล้ว',
+        'arcade-dodge-sub': 'คุณจะอยู่รอดได้นานแค่ไหนโดยไม่โดนศัตรูแตะ?',
+        'arcade-best-label': 'สถิติ:',
+        'arcade-play-btn': 'เล่น',
+        'arcade-reaction-sub': '10 เป้าหมายติดต่อกัน ห้ามลังเล',
+        'arcade-soon-btn': 'เร็วๆ นี้',
+        'arcade-survival-label': 'เวลาที่รอดชีวิต',
+        'arcade-caught-title': 'คุณถูกจับได้',
+        'arcade-new-record': 'สถิติใหม่!',
+        'arcade-survived-label': 'รอดชีวิต',
+        'arcade-best-label-2': 'สถิติส่วนตัว',
+        'arcade-nearmiss-label': 'รอดหวุดหวิด',
+        'arcade-bestcombo-label': 'คอมโบที่ดีที่สุด',
+        'arcade-score-label': 'คะแนน',
+        'arcade-tryagain-btn': 'ลองอีกครั้ง',
+        'arcade-exit-btn': 'ออก',
         'auth-oauth-loading': 'กำลังเข้าสู่ระบบผ่าน {provider}...',
         'dev-role-badge': 'นักพัฒนา',
         'dev-panel-title': 'แผงควบคุมนักพัฒนา',
@@ -22575,6 +23389,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'ไม่มีการเชื่อมต่อกับฐานข้อมูล ลองใหม่อีกครั้งในอีกไม่กี่วินาที'
       },
       vi: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'Trong khi chờ ra mắt',
+        'arcade-lead': 'Trò chơi chưa có. Nhưng kỹ năng của bạn thì có thể đã sẵn sàng.',
+        'arcade-dodge-sub': 'Bạn sống sót được bao lâu mà không chạm vào kẻ địch?',
+        'arcade-best-label': 'Kỷ lục:',
+        'arcade-play-btn': 'Chơi',
+        'arcade-reaction-sub': '10 mục tiêu liên tiếp. Không do dự.',
+        'arcade-soon-btn': 'Sắp ra mắt',
+        'arcade-survival-label': 'Thời gian sống sót',
+        'arcade-caught-title': 'Bạn đã bị bắt',
+        'arcade-new-record': 'Kỷ lục mới!',
+        'arcade-survived-label': 'Đã sống sót',
+        'arcade-best-label-2': 'Kỷ lục cá nhân',
+        'arcade-nearmiss-label': 'Né suýt trúng',
+        'arcade-bestcombo-label': 'Combo tốt nhất',
+        'arcade-score-label': 'Điểm số',
+        'arcade-tryagain-btn': 'Thử lại',
+        'arcade-exit-btn': 'Thoát',
         'auth-oauth-loading': 'Đang đăng nhập qua {provider}...',
         'dev-role-badge': 'Nhà phát triển',
         'dev-panel-title': 'Bảng điều khiển nhà phát triển',
@@ -22600,6 +23435,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Không có kết nối đến cơ sở dữ liệu. Thử lại sau vài giây'
       },
       id: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'Sambil menunggu rilis',
+        'arcade-lead': 'Gamenya belum ada. Tapi kemampuanmu, mungkin sudah.',
+        'arcade-dodge-sub': 'Berapa lama kamu bisa bertahan tanpa menyentuh musuh?',
+        'arcade-best-label': 'Rekor:',
+        'arcade-play-btn': 'Main',
+        'arcade-reaction-sub': '10 target berturut-turut. Tanpa ragu.',
+        'arcade-soon-btn': 'Segera',
+        'arcade-survival-label': 'Waktu Bertahan',
+        'arcade-caught-title': 'Kamu tertangkap',
+        'arcade-new-record': 'Rekor baru!',
+        'arcade-survived-label': 'Bertahan',
+        'arcade-best-label-2': 'Rekor Pribadi',
+        'arcade-nearmiss-label': 'Nyaris kena',
+        'arcade-bestcombo-label': 'Combo terbaik',
+        'arcade-score-label': 'Skor',
+        'arcade-tryagain-btn': 'Coba lagi',
+        'arcade-exit-btn': 'Keluar',
         'auth-oauth-loading': 'Masuk melalui {provider}...',
         'dev-role-badge': 'Pengembang',
         'dev-panel-title': 'Panel Pengembang',
@@ -22625,6 +23481,27 @@ async function doResetPassword() {
         'pm-set-err-nodb': 'Tidak ada koneksi ke database. Coba lagi dalam beberapa detik'
       },
       hi: {
+        'arcade-title-a': 'EVADES',
+        'arcade-title-b': 'ARCADE',
+        'arcade-dodge-title': 'Dodge Survival',
+        'arcade-reaction-title': 'Reaction Rush',
+        'arcade-eyebrow': 'रिलीज़ का इंतज़ार करते हुए',
+        'arcade-lead': 'गेम अभी नहीं आया। पर तुम्हारा हुनर अभी से आ सकता है।',
+        'arcade-dodge-sub': 'किसी दुश्मन को छुए बिना तुम कितनी देर बच सकते हो?',
+        'arcade-best-label': 'रिकॉर्ड:',
+        'arcade-play-btn': 'खेलें',
+        'arcade-reaction-sub': 'लगातार 10 लक्ष्य। बिना झिझक।',
+        'arcade-soon-btn': 'जल्द आ रहा है',
+        'arcade-survival-label': 'जीवित रहने का समय',
+        'arcade-caught-title': 'तुम पकड़े गए',
+        'arcade-new-record': 'नया रिकॉर्ड!',
+        'arcade-survived-label': 'बचे रहे',
+        'arcade-best-label-2': 'व्यक्तिगत रिकॉर्ड',
+        'arcade-nearmiss-label': 'बाल-बाल बचना',
+        'arcade-bestcombo-label': 'सबसे अच्छा कॉम्बो',
+        'arcade-score-label': 'स्कोर',
+        'arcade-tryagain-btn': 'फिर से कोशिश करें',
+        'arcade-exit-btn': 'बाहर निकलें',
         'auth-oauth-loading': '{provider} के ज़रिए साइन इन हो रहा है...',
         'dev-role-badge': 'डेवलपर',
         'dev-panel-title': 'डेवलपर पैनल',
@@ -22938,6 +23815,473 @@ async function _e3LoadParticipants() {
     if (typeof console !== 'undefined') console.warn('[PARTICIPANTS load]', e);
   }
 }
+</script>
+<script>
+// ===================================================
+// EVADES ARCADE — Dodge Survival
+// Архитектура рассчитана на будущее расширение: единая функция сохранения
+// результата (_arcadeSaveBest) и чтения (_arcadeGetBest) по ключу игры/метрики,
+// чтобы позже было легко добавить Reaction Rush, глобальный leaderboard,
+// Daily Challenge и награды в кристаллах без переделки этого кода.
+// ===================================================
+(function () {
+  'use strict';
+
+  // ---------- Сохранение результатов (аккаунт, если залогинен; иначе localStorage) ----------
+  function _arcadeLocalKey(gameId, metric) { return 'e3arcade_' + gameId + '_' + metric; }
+
+  function _arcadeGetBest(gameId, metric) {
+    try {
+      if (typeof ev3User !== 'undefined' && ev3User && ev3User.user_metadata) {
+        const v = ev3User.user_metadata['arcade_' + gameId + '_' + metric];
+        if (v != null) return v;
+      }
+    } catch (_) {}
+    try {
+      const v = localStorage.getItem(_arcadeLocalKey(gameId, metric));
+      return v != null ? parseFloat(v) : 0;
+    } catch (_) { return 0; }
+  }
+
+  async function _arcadeSaveBest(gameId, metric, value) {
+    try { localStorage.setItem(_arcadeLocalKey(gameId, metric), String(value)); } catch (_) {}
+    try {
+      if (typeof ev3User !== 'undefined' && ev3User && typeof db !== 'undefined' && db) {
+        const field = 'arcade_' + gameId + '_' + metric;
+        await db.collection('users').doc(ev3User.id).set({ [field]: value }, { merge: true });
+        ev3User.user_metadata = Object.assign({}, ev3User.user_metadata, { [field]: value });
+      }
+    } catch (_) {}
+  }
+
+  function _arcadeFmtTime(s) { return s.toFixed(2) + 's'; }
+
+  function _arcadeRefreshCardBests() {
+    const dodgeBest = _arcadeGetBest('dodge', 'best_time') || 0;
+    const el = document.getElementById('arcadeDodgeBestLabel');
+    if (el) el.textContent = dodgeBest > 0 ? _arcadeFmtTime(dodgeBest) : '—';
+  }
+
+  // ===================================================
+  // DODGE SURVIVAL
+  // ===================================================
+  const DODGE_ID = 'dodge';
+  let dg = null; // весь стейт текущего забега лежит здесь, чтобы легко полностью сбрасывать между попытками
+
+  function _arcadeResizeCanvas() {
+    const canvas = document.getElementById('arcadeDodgeCanvas');
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.max(280, Math.round(rect.width * dpr));
+    canvas.height = Math.max(200, Math.round(rect.height * dpr));
+    if (dg) { dg.w = canvas.width; dg.h = canvas.height; dg.scale = dpr; }
+  }
+
+  function _arcadeIsTouchDevice() {
+    return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  }
+
+  window.arcadeOpenDodge = function () {
+    const overlay = document.getElementById('arcadeDodgeOverlay');
+    if (!overlay) return;
+    overlay.classList.add('show');
+    document.body.style.overflow = 'hidden';
+    _arcadeResizeCanvas();
+    const joy = document.getElementById('arcadeJoystick');
+    if (joy) joy.style.display = _arcadeIsTouchDevice() ? 'block' : 'none';
+    window.arcadeStartDodge();
+  };
+
+  window.arcadeCloseDodge = function () {
+    const overlay = document.getElementById('arcadeDodgeOverlay');
+    if (overlay) overlay.classList.remove('show');
+    document.body.style.overflow = '';
+    if (dg && dg.rafId) cancelAnimationFrame(dg.rafId);
+    dg = null;
+  };
+
+  // ---- Управление: клавиатура ----
+  const _dgKeys = Object.create(null);
+  window.addEventListener('keydown', (e) => {
+    if (!dg) return;
+    const k = e.key.toLowerCase();
+    if (['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)) {
+      _dgKeys[k] = true;
+      e.preventDefault();
+    }
+  });
+  window.addEventListener('keyup', (e) => {
+    const k = e.key.toLowerCase();
+    if (_dgKeys[k]) _dgKeys[k] = false;
+  });
+
+  function _dgInputVector() {
+    let x = 0, y = 0;
+    if (_dgKeys['w'] || _dgKeys['arrowup']) y -= 1;
+    if (_dgKeys['s'] || _dgKeys['arrowdown']) y += 1;
+    if (_dgKeys['a'] || _dgKeys['arrowleft']) x -= 1;
+    if (_dgKeys['d'] || _dgKeys['arrowright']) x += 1;
+    if (dg && dg.touchVector) { x += dg.touchVector.x; y += dg.touchVector.y; }
+    const len = Math.hypot(x, y);
+    if (len > 1) { x /= len; y /= len; }
+    return { x, y };
+  }
+
+  // ---- Джойстик (мобильные) ----
+  (function initJoystick() {
+    const base = document.getElementById('arcadeJoystick');
+    const knob = document.getElementById('arcadeJoystickKnob');
+    if (!base || !knob) return;
+    let activeId = null;
+    const RADIUS = 42;
+    function setKnob(dx, dy) {
+      const len = Math.hypot(dx, dy);
+      const clampedLen = Math.min(len, RADIUS);
+      const angle = Math.atan2(dy, dx);
+      const kx = Math.cos(angle) * clampedLen;
+      const ky = Math.sin(angle) * clampedLen;
+      knob.style.transform = 'translate(calc(-50% + ' + kx + 'px), calc(-50% + ' + ky + 'px))';
+      if (dg) dg.touchVector = { x: kx / RADIUS, y: ky / RADIUS };
+    }
+    function reset() {
+      knob.style.transform = 'translate(-50%, -50%)';
+      if (dg) dg.touchVector = { x: 0, y: 0 };
+    }
+    base.addEventListener('touchstart', (e) => {
+      const t = e.changedTouches[0];
+      activeId = t.identifier;
+      e.preventDefault();
+    }, { passive: false });
+    base.addEventListener('touchmove', (e) => {
+      for (const t of e.changedTouches) {
+        if (t.identifier !== activeId) continue;
+        const rect = base.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2;
+        setKnob(t.clientX - cx, t.clientY - cy);
+      }
+      e.preventDefault();
+    }, { passive: false });
+    base.addEventListener('touchend', (e) => {
+      for (const t of e.changedTouches) { if (t.identifier === activeId) { activeId = null; reset(); } }
+    });
+  })();
+
+  // ---- Параметры сложности (плавный рост, без резких скачков) ----
+  function _dgDifficulty(t) {
+    // t — время с начала забега, сек
+    const ramp = Math.min(t / 55, 1); // за ~55 сек выходим на «плато» сложности
+    return {
+      spawnInterval: 1.5 - ramp * 0.95,          // с 1.5с до 0.55с между спавнами
+      speedMult: 1 + ramp * 0.85,                 // враги постепенно быстрее, но не более чем в ~1.85 раза
+      chaserUnlocked: t > 7,
+      dasherUnlocked: t > 16,
+      maxEnemies: Math.floor(5 + ramp * 10)       // от 5 до 15 одновременно
+    };
+  }
+
+  function _dgSpawnEnemy() {
+    const w = dg.logicalW, h = dg.logicalH;
+    const diff = _dgDifficulty(dg.t);
+    // Спавн по краю арены, на безопасном расстоянии от игрока
+    let x, y, tries = 0;
+    do {
+      const edge = Math.floor(Math.random() * 4);
+      if (edge === 0) { x = Math.random() * w; y = 20; }
+      else if (edge === 1) { x = Math.random() * w; y = h - 20; }
+      else if (edge === 2) { x = 20; y = Math.random() * h; }
+      else { x = w - 20; y = Math.random() * h; }
+      tries++;
+    } while (Math.hypot(x - dg.player.x, y - dg.player.y) < 140 && tries < 12);
+
+    const roll = Math.random();
+    let type = 'normal';
+    if (diff.dasherUnlocked && roll < 0.28) type = 'dasher';
+    else if (diff.chaserUnlocked && roll < 0.58) type = 'chaser';
+
+    const baseSpeed = (type === 'chaser' ? 55 : type === 'dasher' ? 40 : 90) * diff.speedMult;
+    const angle = Math.random() * Math.PI * 2;
+    dg.enemies.push({
+      type, x, y, r: type === 'dasher' ? 13 : 11,
+      vx: Math.cos(angle) * baseSpeed, vy: Math.sin(angle) * baseSpeed,
+      speed: baseSpeed,
+      state: type === 'dasher' ? 'idle' : 'move',
+      stateTimer: type === 'dasher' ? (0.9 + Math.random() * 0.8) : 0,
+      nearMissArmed: true
+    });
+  }
+
+  function _dgSpawnParticles(x, y, color, count) {
+    for (let i = 0; i < count; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const speed = 60 + Math.random() * 180;
+      dg.particles.push({
+        x, y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed,
+        life: 0.5 + Math.random() * 0.5, age: 0,
+        r: 2 + Math.random() * 3, color
+      });
+    }
+  }
+
+  window.arcadeStartDodge = function () {
+    const canvas = document.getElementById('arcadeDodgeCanvas');
+    if (!canvas) return;
+    _arcadeResizeCanvas();
+    const deathScreen = document.getElementById('arcadeDeathScreen');
+    if (deathScreen) deathScreen.style.display = 'none';
+    const recordBanner = document.getElementById('arcadeRecordBanner');
+    if (recordBanner) recordBanner.style.display = 'none';
+    const comboBadge = document.getElementById('arcadeComboBadge');
+    if (comboBadge) comboBadge.classList.remove('show');
+    const nmLayer = document.getElementById('arcadeNearMissLayer');
+    if (nmLayer) nmLayer.innerHTML = '';
+
+    dg = {
+      canvas, ctx: canvas.getContext('2d'),
+      w: canvas.width, h: canvas.height,
+      logicalW: 900, logicalH: 600, // фиксированная логическая арена — физика не зависит от размера экрана
+      player: { x: 450, y: 300, r: 12, speed: 230 },
+      enemies: [],
+      particles: [],
+      touchVector: { x: 0, y: 0 },
+      t: 0, spawnTimer: 0,
+      nearMissCount: 0, combo: 0, bestCombo: 0, comboTimer: 0,
+      shake: 0,
+      alive: true,
+      lastFrame: performance.now(),
+      rafId: null
+    };
+    dg.rafId = requestAnimationFrame(_dgLoop);
+  };
+
+  function _dgTriggerNearMiss(enemy) {
+    dg.nearMissCount++;
+    dg.combo++;
+    dg.comboTimer = 3.2;
+    if (dg.combo > dg.bestCombo) dg.bestCombo = dg.combo;
+    const badge = document.getElementById('arcadeComboBadge');
+    if (badge) {
+      if (dg.combo >= 2) {
+        badge.textContent = 'x' + dg.combo;
+        badge.classList.add('show');
+      }
+    }
+    // Плавающая подсказка "+1" рядом с врагом
+    const nmLayer = document.getElementById('arcadeNearMissLayer');
+    if (nmLayer && dg.canvas) {
+      const rect = dg.canvas.getBoundingClientRect();
+      const wrapRect = nmLayer.getBoundingClientRect();
+      const px = (enemy.x / dg.logicalW) * rect.width + (rect.left - wrapRect.left);
+      const py = (enemy.y / dg.logicalH) * rect.height + (rect.top - wrapRect.top);
+      const el = document.createElement('div');
+      el.className = 'arcade-nearmiss-pop';
+      el.textContent = '+1';
+      el.style.left = px + 'px';
+      el.style.top = py + 'px';
+      nmLayer.appendChild(el);
+      setTimeout(() => el.remove(), 950);
+    }
+  }
+
+  function _dgUpdate(dt) {
+    dg.t += dt;
+    const el = document.getElementById('arcadeDodgeTimer');
+    if (el) el.textContent = _arcadeFmtTime(dg.t);
+
+    // Комбо угасает, если давно не было near miss — держит напряжение
+    if (dg.comboTimer > 0) {
+      dg.comboTimer -= dt;
+      if (dg.comboTimer <= 0) {
+        dg.combo = 0;
+        const badge = document.getElementById('arcadeComboBadge');
+        if (badge) badge.classList.remove('show');
+      }
+    }
+
+    // Игрок
+    const inp = _dgInputVector();
+    dg.player.x += inp.x * dg.player.speed * dt;
+    dg.player.y += inp.y * dg.player.speed * dt;
+    dg.player.x = Math.max(dg.player.r, Math.min(dg.logicalW - dg.player.r, dg.player.x));
+    dg.player.y = Math.max(dg.player.r, Math.min(dg.logicalH - dg.player.r, dg.player.y));
+
+    // Спавн врагов
+    const diff = _dgDifficulty(dg.t);
+    dg.spawnTimer -= dt;
+    if (dg.spawnTimer <= 0 && dg.enemies.length < diff.maxEnemies) {
+      _dgSpawnEnemy();
+      dg.spawnTimer = diff.spawnInterval * (0.7 + Math.random() * 0.6);
+    }
+
+    // Враги
+    for (const en of dg.enemies) {
+      if (en.type === 'normal') {
+        en.x += en.vx * dt; en.y += en.vy * dt;
+        if (en.x < en.r || en.x > dg.logicalW - en.r) { en.vx *= -1; en.x = Math.max(en.r, Math.min(dg.logicalW - en.r, en.x)); }
+        if (en.y < en.r || en.y > dg.logicalH - en.r) { en.vy *= -1; en.y = Math.max(en.r, Math.min(dg.logicalH - en.r, en.y)); }
+      } else if (en.type === 'chaser') {
+        const dx = dg.player.x - en.x, dy = dg.player.y - en.y;
+        const len = Math.hypot(dx, dy) || 1;
+        en.vx = (dx / len) * en.speed; en.vy = (dy / len) * en.speed;
+        en.x += en.vx * dt; en.y += en.vy * dt;
+      } else if (en.type === 'dasher') {
+        en.stateTimer -= dt;
+        if (en.state === 'idle') {
+          en.x += Math.sin(dg.t * 2 + en.x) * 6 * dt;
+          if (en.stateTimer <= 0) { en.state = 'telegraph'; en.stateTimer = 0.45; }
+        } else if (en.state === 'telegraph') {
+          if (en.stateTimer <= 0) {
+            const dx = dg.player.x - en.x, dy = dg.player.y - en.y;
+            const len = Math.hypot(dx, dy) || 1;
+            en.vx = (dx / len) * en.speed * 4.2;
+            en.vy = (dy / len) * en.speed * 4.2;
+            en.state = 'dash'; en.stateTimer = 0.35;
+          }
+        } else if (en.state === 'dash') {
+          en.x += en.vx * dt; en.y += en.vy * dt;
+          if (en.stateTimer <= 0) { en.state = 'idle'; en.stateTimer = 1.2 + Math.random() * 1.0; en.vx = 0; en.vy = 0; }
+        }
+        en.x = Math.max(en.r, Math.min(dg.logicalW - en.r, en.x));
+        en.y = Math.max(en.r, Math.min(dg.logicalH - en.r, en.y));
+      }
+
+      // Столкновение / near miss
+      const dist = Math.hypot(en.x - dg.player.x, en.y - dg.player.y);
+      const hitDist = en.r + dg.player.r;
+      if (dist < hitDist) {
+        _dgDie();
+        return;
+      }
+      const nearDist = hitDist + 16;
+      if (dist < nearDist) {
+        if (en.nearMissArmed) { en.nearMissArmed = false; _dgTriggerNearMiss(en); }
+      } else if (dist > nearDist + 24) {
+        en.nearMissArmed = true;
+      }
+    }
+
+    // Частицы
+    for (let i = dg.particles.length - 1; i >= 0; i--) {
+      const p = dg.particles[i];
+      p.age += dt;
+      if (p.age >= p.life) { dg.particles.splice(i, 1); continue; }
+      p.x += p.vx * dt; p.y += p.vy * dt;
+      p.vx *= 0.94; p.vy *= 0.94;
+    }
+
+    if (dg.shake > 0) dg.shake = Math.max(0, dg.shake - dt * 3.2);
+  }
+
+  function _dgDraw() {
+    const ctx = dg.ctx;
+    const sx = dg.w / dg.logicalW, sy = dg.h / dg.logicalH;
+    ctx.save();
+    ctx.clearRect(0, 0, dg.w, dg.h);
+    ctx.fillStyle = '#0a1811';
+    ctx.fillRect(0, 0, dg.w, dg.h);
+
+    // Лёгкая сетка фона
+    ctx.strokeStyle = 'rgba(74,222,128,0.06)';
+    ctx.lineWidth = 1;
+    const gridStep = 60 * sx;
+    for (let gx = 0; gx < dg.w; gx += gridStep) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, dg.h); ctx.stroke(); }
+    for (let gy = 0; gy < dg.h; gy += gridStep) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(dg.w, gy); ctx.stroke(); }
+
+    if (dg.shake > 0) {
+      const s = dg.shake * 8;
+      ctx.translate((Math.random() - 0.5) * s, (Math.random() - 0.5) * s);
+    }
+
+    // Игрок
+    ctx.beginPath();
+    ctx.arc(dg.player.x * sx, dg.player.y * sy, dg.player.r * sx, 0, Math.PI * 2);
+    ctx.fillStyle = '#4ade80';
+    ctx.shadowColor = 'rgba(74,222,128,0.8)'; ctx.shadowBlur = 14;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Враги
+    for (const en of dg.enemies) {
+      ctx.beginPath();
+      let color = '#ff4d6d', glow = 'rgba(255,77,109,0.7)';
+      let r = en.r;
+      if (en.type === 'chaser') { color = '#ff8c42'; glow = 'rgba(255,140,66,0.7)'; }
+      if (en.type === 'dasher') {
+        color = '#a78bfa'; glow = 'rgba(167,139,250,0.7)';
+        if (en.state === 'telegraph') { r = en.r * (1 + (0.45 - en.stateTimer) * 1.2); color = '#fff'; glow = 'rgba(255,255,255,0.9)'; }
+      }
+      ctx.arc(en.x * sx, en.y * sy, r * sx, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.shadowColor = glow; ctx.shadowBlur = 10;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+    // Частицы
+    for (const p of dg.particles) {
+      const alpha = 1 - p.age / p.life;
+      ctx.beginPath();
+      ctx.arc(p.x * sx, p.y * sy, p.r * sx, 0, Math.PI * 2);
+      ctx.fillStyle = p.color; ctx.globalAlpha = alpha;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+    ctx.restore();
+  }
+
+  function _dgLoop(now) {
+    if (!dg || !dg.alive) return;
+    let dt = (now - dg.lastFrame) / 1000;
+    dg.lastFrame = now;
+    dt = Math.min(dt, 0.05); // защита от скачков при смене вкладки
+    _dgUpdate(dt);
+    if (!dg || !dg.alive) return; // могло измениться внутри _dgUpdate (смерть)
+    _dgDraw();
+    dg.rafId = requestAnimationFrame(_dgLoop);
+  }
+
+  async function _dgDie() {
+    dg.alive = false;
+    dg.shake = 1;
+    _dgSpawnParticles(dg.player.x, dg.player.y, '#4ade80', 28);
+    _dgDraw();
+
+    const survived = dg.t;
+    const nearMiss = dg.nearMissCount;
+    const bestCombo = dg.bestCombo;
+    const score = Math.round(survived * 12 + nearMiss * 40 + bestCombo * 90);
+
+    const prevBestTime = _arcadeGetBest(DODGE_ID, 'best_time') || 0;
+    const isRecord = survived > prevBestTime;
+    if (isRecord) await _arcadeSaveBest(DODGE_ID, 'best_time', survived);
+    const prevBestScore = _arcadeGetBest(DODGE_ID, 'best_score') || 0;
+    if (score > prevBestScore) await _arcadeSaveBest(DODGE_ID, 'best_score', score);
+
+    setTimeout(() => {
+      const survivedEl = document.getElementById('arcadeDeathSurvived');
+      const bestEl = document.getElementById('arcadeDeathBest');
+      const nmEl = document.getElementById('arcadeDeathNearMiss');
+      const comboEl = document.getElementById('arcadeDeathCombo');
+      const scoreEl = document.getElementById('arcadeDeathScore');
+      const recordBanner = document.getElementById('arcadeRecordBanner');
+      const deathScreen = document.getElementById('arcadeDeathScreen');
+      if (survivedEl) survivedEl.textContent = _arcadeFmtTime(survived);
+      if (bestEl) bestEl.textContent = _arcadeFmtTime(Math.max(survived, prevBestTime));
+      if (nmEl) nmEl.textContent = String(nearMiss);
+      if (comboEl) comboEl.textContent = 'x' + bestCombo;
+      if (scoreEl) scoreEl.textContent = score.toLocaleString();
+      if (recordBanner) recordBanner.style.display = isRecord ? '' : 'none';
+      if (deathScreen) deathScreen.style.display = 'flex';
+      _arcadeRefreshCardBests();
+    }, 260);
+  }
+
+  window.addEventListener('resize', () => { if (dg) _arcadeResizeCanvas(); });
+
+  // Инициализация значений «Рекорд» на карточках при загрузке страницы
+  document.addEventListener('DOMContentLoaded', _arcadeRefreshCardBests);
+  if (document.readyState !== 'loading') _arcadeRefreshCardBests();
+})();
 </script>
 </body>
 </html>
