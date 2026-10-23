@@ -6735,6 +6735,237 @@ body:not(.hero-anim) .subtitle .ch{
     animation-delay: 0ms !important;
   }
 }
+  
+/* ============ ПОДПИСКИ: VIP / PRO ============ */
+.sub-grid{
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px; max-width: 1160px; margin: 0 auto; align-items: stretch;
+}
+.sub-card{
+  --sub-a: var(--e3-gold); --sub-b: #ff8c00; --sub-rgb: 255,216,77;
+  position: relative; overflow: hidden; isolation: isolate;
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 36px 32px 32px; border-radius: 26px;
+  background:
+    radial-gradient(120% 70% at 100% 0%, rgba(var(--sub-rgb),0.16), transparent 60%),
+    linear-gradient(160deg, rgba(255,255,255,0.10), rgba(255,255,255,0.03));
+  border: 1px solid rgba(var(--sub-rgb),0.38);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--e3-shadow-lg), 0 0 40px rgba(var(--sub-rgb),0.10), inset 0 1px 0 rgba(255,255,255,0.10);
+  transition: transform .35s var(--e3-ease), border-color .35s ease, box-shadow .35s ease;
+}
+.sub-card--pro{ --sub-a: var(--e3-violet); --sub-b: #7c5cf0; --sub-rgb: 167,139,250; }
+.sub-card:hover{
+  transform: translateY(-8px); border-color: rgba(var(--sub-rgb),0.7);
+  box-shadow: var(--e3-shadow-xl), 0 0 60px rgba(var(--sub-rgb),0.22), inset 0 1px 0 rgba(255,255,255,0.14);
+}
+.sub-card-glow{
+  position: absolute; inset: -1px; border-radius: inherit; padding: 1px; z-index: -1;
+  background: linear-gradient(135deg, rgba(var(--sub-rgb),0.9), transparent 45%, rgba(74,222,128,0.5));
+  -webkit-mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+          mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: .55; pointer-events: none; transition: opacity .3s ease;
+}
+.sub-card:hover .sub-card-glow{ opacity: 1; }
+.sub-card::after{
+  content: ""; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; z-index: -1;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.10), transparent);
+  transform: skewX(-18deg); transition: left .9s var(--e3-ease); pointer-events: none;
+}
+.sub-card:hover::after{ left: 130%; }
+.sub-card-top{ display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.sub-card-icon{
+  width: 62px; height: 62px; border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(var(--sub-rgb),0.15); border: 1px solid rgba(var(--sub-rgb),0.5);
+  color: var(--sub-a); box-shadow: 0 0 24px rgba(var(--sub-rgb),0.28), inset 0 1px 0 rgba(255,255,255,0.12);
+}
+.sub-card-icon svg{ width: 32px; height: 32px; }
+.sub-soon{
+  display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px;
+  font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+  color: #fff; background: linear-gradient(135deg, rgba(var(--sub-rgb),0.30), rgba(var(--sub-rgb),0.08));
+  border: 1px solid rgba(var(--sub-rgb),0.55);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25), 0 0 16px rgba(var(--sub-rgb),0.25), inset 0 1px 0 rgba(255,255,255,0.12);
+}
+.sub-soon .dot{
+  width: 6px; height: 6px; border-radius: 50%; background: var(--sub-a);
+  box-shadow: 0 0 8px var(--sub-a); animation: dotPulse 1.6s ease-in-out infinite;
+}
+.sub-card-name{
+  margin-top: 10px; font-family: 'Exo 2','Orbitron',sans-serif; font-weight: 900;
+  font-size: clamp(34px, 4.2vw, 46px); letter-spacing: 4px; line-height: 1; text-transform: uppercase;
+  background: linear-gradient(135deg, #fff 0%, var(--sub-a) 55%, var(--sub-b) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.sub-card-desc{ color: rgba(255,255,255,0.82); font-size: 16px; line-height: 1.5; margin-bottom: 8px; }
+.sub-card-sep{ height: 1px; margin: 6px 0 10px; background: linear-gradient(90deg, rgba(var(--sub-rgb),0.6), rgba(255,255,255,0.06), transparent); }
+.sub-list{ list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.sub-list li{ display: flex; align-items: flex-start; gap: 12px; color: rgba(255,255,255,0.9); font-size: 15px; line-height: 1.5; }
+.sub-check{
+  flex: 0 0 22px; width: 22px; height: 22px; margin-top: 1px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(var(--sub-rgb),0.18); border: 1px solid rgba(var(--sub-rgb),0.55); color: var(--sub-a);
+}
+.sub-check svg{ width: 12px; height: 12px; }
+@media (max-width: 860px){
+  .sub-grid{ grid-template-columns: 1fr; gap: 22px; max-width: 560px; }
+}
+@media (max-width: 560px){
+  .sub-card{ padding: 28px 22px 24px; border-radius: 22px; }
+  .sub-card-icon{ width: 54px; height: 54px; }
+  .sub-card:hover{ transform: none; }
+}
+
+.sub-group{ display: flex; flex-direction: column; gap: 12px; }
+.sub-group + .sub-group{ margin-top: 20px; }
+.sub-group-title{
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--sub-a);
+}
+.sub-group-title::before{
+  content: ""; width: 7px; height: 7px; flex: 0 0 7px; transform: rotate(45deg);
+  background: var(--sub-a); box-shadow: 0 0 10px var(--sub-a);
+}
+.sub-group-title::after{ content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(var(--sub-rgb),0.45), transparent); }
+.sub-list{ gap: 11px; }
+.sub-list li{ font-size: 14.5px; line-height: 1.45; }
+.sub-count{ font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing: 2px; color: rgba(255,255,255,0.55); text-transform: uppercase; }
+
+.sub-grid{ align-items: start; }
+.sub-group-title{ gap: 9px; }
+.sub-group-title::before{ display: none; }
+.sub-group-ic{ width: 18px; height: 18px; flex: 0 0 18px; filter: drop-shadow(0 0 6px rgba(var(--sub-rgb),0.6)); }
+.sub-note{ max-width: 720px; margin: 28px auto 0; text-align: center; color: rgba(255,255,255,0.6); font-size: 13.5px; line-height: 1.55; }
+
+/* --- сравнение --- */
+.cmp-wrap{
+  max-width: 1040px; margin: 0 auto; border-radius: 24px; overflow: hidden;
+  background: linear-gradient(160deg, rgba(255,255,255,0.08), rgba(255,255,255,0.025));
+  border: 1px solid var(--e3-border);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--e3-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.09);
+}
+.cmp-table{ width: 100%; border-collapse: collapse; }
+.cmp-table th, .cmp-table td{ padding: 18px 22px; text-align: left; vertical-align: middle; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.cmp-table tbody tr:last-child th, .cmp-table tbody tr:last-child td{ border-bottom: 0; }
+.cmp-table thead th{
+  font-family: 'Orbitron', sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; font-weight: 700;
+  color: rgba(255,255,255,0.7); background: rgba(0,0,0,0.18);
+}
+.cmp-table thead th.cmp-h-v{ color: var(--e3-gold); background: linear-gradient(180deg, rgba(255,216,77,0.16), rgba(255,216,77,0.04)); font-size: 15px; }
+.cmp-table thead th.cmp-h-p{ color: var(--e3-violet); background: linear-gradient(180deg, rgba(167,139,250,0.2), rgba(167,139,250,0.05)); font-size: 15px; }
+.cmp-table tbody th{ width: 26%; font-family: 'Exo 2','Orbitron',sans-serif; font-weight: 800; font-size: 15px; letter-spacing: .5px; color: #fff; }
+.cmp-table tbody td{ width: 37%; font-size: 14px; line-height: 1.45; color: rgba(255,255,255,0.88); }
+.cmp-table tbody td.cmp-p{ background: rgba(167,139,250,0.06); }
+.cmp-table tbody tr{ transition: background .25s ease; }
+.cmp-table tbody tr:hover{ background: rgba(255,255,255,0.04); }
+.cmp-table td{ display: table-cell; }
+.cmp-v .cmp-mark{ --c: 255,216,77; } .cmp-p .cmp-mark{ --c: 167,139,250; }
+.cmp-mark{
+  --c: 255,255,255; display: inline-flex; align-items: center; justify-content: center; vertical-align: middle;
+  width: 22px; height: 22px; margin-right: 10px; border-radius: 50%;
+  color: rgb(var(--c)); background: rgba(var(--c),0.16); border: 1px solid rgba(var(--c),0.5);
+}
+.cmp-mark svg{ width: 12px; height: 12px; }
+.cmp-plus .cmp-mark{ background: rgba(var(--c),0.3); box-shadow: 0 0 12px rgba(var(--c),0.5); }
+.cmp-plus .cmp-mark svg{ width: 14px; height: 14px; }
+.cmp-no{ color: rgba(255,255,255,0.45) !important; }
+.cmp-no .cmp-mark{ --c: 255,255,255; opacity: .55; }
+.cmp-tag{ display: none; }
+.cmp-legend{ display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 26px; margin-top: 20px; color: rgba(255,255,255,0.65); font-size: 13px; }
+.cmp-legend-i{ display: inline-flex; align-items: center; }
+.cmp-legend-i .cmp-mark{ --c: 74,222,128; margin-right: 8px; }
+.cmp-legend-i.cmp-plus .cmp-mark{ --c: 255,216,77; }
+.cmp-legend-i.cmp-no{ color: rgba(255,255,255,0.65) !important; }
+@media (max-width: 720px){
+  .cmp-wrap{ background: none; border: 0; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; border-radius: 0; overflow: visible; }
+  .cmp-table, .cmp-table tbody{ display: block; }
+  .cmp-table thead{ display: none; }
+  .cmp-table tbody tr{
+    display: block; margin-bottom: 14px; border-radius: 18px; overflow: hidden;
+    background: linear-gradient(160deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03));
+    border: 1px solid var(--e3-border); box-shadow: var(--e3-shadow-lg);
+  }
+  .cmp-table tbody th{ display: block; width: auto; padding: 14px 18px; background: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .cmp-table tbody td{ display: flex; align-items: center; width: auto; padding: 12px 18px; gap: 0; }
+  .cmp-table tbody tr:last-child th, .cmp-table tbody tr:last-child td{ border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .cmp-table tbody td:last-child{ border-bottom: 0 !important; }
+  .cmp-tag{
+    display: inline-block; flex: 0 0 48px; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  }
+  .cmp-v .cmp-tag{ color: var(--e3-gold); } .cmp-p .cmp-tag{ color: var(--e3-violet); }
+  .cmp-mark{ flex: 0 0 22px; }
+}
+
+/* --- главные особенности --- */
+.sub-feat-grid{ display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 26px; max-width: 1040px; margin: 0 auto; }
+.sub-feat{
+  position: relative; overflow: hidden; isolation: isolate; display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+  padding: 34px 30px 28px; border-radius: 24px; --sub-rgb: 255,216,77;
+  background: radial-gradient(110% 80% at 0% 0%, rgba(var(--sub-rgb),0.15), transparent 60%), linear-gradient(160deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03));
+  border: 1px solid rgba(var(--sub-rgb),0.3);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--e3-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.09);
+  transition: transform .35s var(--e3-ease), border-color .35s ease, box-shadow .35s ease;
+}
+.sub-feat--pro{ --sub-a: var(--e3-violet); }
+.sub-feat:hover{ transform: translateY(-6px); border-color: rgba(var(--sub-rgb),0.65); box-shadow: var(--e3-shadow-xl), 0 0 44px rgba(var(--sub-rgb),0.18), inset 0 1px 0 rgba(255,255,255,0.12); }
+.sub-feat-glow{
+  position: absolute; inset: -1px; border-radius: inherit; padding: 1px; z-index: -1;
+  background: linear-gradient(135deg, rgba(var(--sub-rgb),0.7), transparent 45%, rgba(74,222,128,0.4));
+  -webkit-mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+          mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+  -webkit-mask-composite: xor; mask-composite: exclude; opacity: .4; pointer-events: none; transition: opacity .3s ease;
+}
+.sub-feat:hover .sub-feat-glow{ opacity: 1; }
+.sub-feat-top{ width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.sub-feat-icon{
+  width: 66px; height: 66px; border-radius: 20px; display: flex; align-items: center; justify-content: center;
+  color: rgb(var(--sub-rgb)); background: rgba(var(--sub-rgb),0.14); border: 1px solid rgba(var(--sub-rgb),0.5);
+  box-shadow: 0 0 26px rgba(var(--sub-rgb),0.28), inset 0 1px 0 rgba(255,255,255,0.12);
+}
+.sub-feat-icon svg{ width: 36px; height: 36px; }
+.sub-feat-tag{
+  padding: 5px 12px; border-radius: 999px; font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  color: rgb(var(--sub-rgb)); background: rgba(var(--sub-rgb),0.12); border: 1px solid rgba(var(--sub-rgb),0.4);
+}
+.sub-feat-name{ font-family: 'Orbitron', sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+.sub-feat-title{ font-family: 'Exo 2','Orbitron',sans-serif; font-weight: 900; font-size: clamp(22px, 2.6vw, 28px); letter-spacing: 1px; line-height: 1.15; color: #fff; }
+.sub-feat-desc{ color: rgba(255,255,255,0.8); font-size: 15px; line-height: 1.6; flex: 1; }
+.sub-feat-soon{
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; font-family: 'Orbitron', sans-serif;
+  font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.75);
+}
+.sub-feat-soon .dot{ width: 6px; height: 6px; border-radius: 50%; background: rgb(var(--sub-rgb)); box-shadow: 0 0 8px rgb(var(--sub-rgb)); animation: dotPulse 1.6s ease-in-out infinite; }
+@media (max-width: 760px){
+  .sub-feat-grid{ grid-template-columns: 1fr; gap: 20px; max-width: 560px; }
+  .sub-feat{ padding: 28px 22px 24px; border-radius: 22px; }
+  .sub-feat:hover{ transform: none; }
+}
+
+.cmp-table tbody th{ width: 24%; }
+.cmp-table tbody td{ width: 25.3%; }
+.cmp-table thead th.cmp-h-f{ color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.05); font-size: 15px; }
+.cmp-table tbody td.cmp-f{ background: rgba(255,255,255,0.02); color: rgba(255,255,255,0.4); }
+.cmp-f .cmp-mark{ --c: 160,170,165; opacity: .6; }
+.cmp-ltd .cmp-mark{ --c: 255,140,0; }
+.cmp-v.cmp-no, .cmp-p.cmp-no{ color: rgba(255,255,255,0.5) !important; }
+.cmp-v.cmp-no .cmp-mark{ --c: 255,77,109; opacity: .85; }
+.cmp-v.cmp-ltd{ color: rgba(255,255,255,0.8); }
+.cmp-legend-i.cmp-ltd .cmp-mark{ --c: 255,140,0; }
+.cmp-legend-i.cmp-no .cmp-mark{ --c: 255,77,109; opacity: .85; }
+@media (max-width: 960px){
+  .cmp-table th, .cmp-table td{ padding: 14px 14px; }
+  .cmp-table tbody td{ font-size: 13px; }
+}
+@media (max-width: 720px){
+  .cmp-table tbody td{ width: auto; }
+  .cmp-tag{ flex: 0 0 54px; }
+  .cmp-f .cmp-tag{ color: rgba(255,255,255,0.45); }
+}
   </style>
   <!-- ============ Firebase SDK (compat, для совместимости с существующим классическим <script>) ============ -->
   <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
@@ -8522,6 +8753,258 @@ body:not(.hero-anim) .subtitle .ch{
           <div class="tl-title" data-i18n="ultra-rm-15">Добавление загрузки альфа-версии на сайт</div>
           <div class="tl-progress"><i style="--p:0%"></i></div>
         </div>
+      </div>
+    </section>
+
+    <!-- ============ ПОДПИСКИ: VIP / PRO ============ -->
+    <section class="e3-section reveal" id="subscriptions" aria-labelledby="sub-title">
+      <div class="e3-section-head">
+        <div class="e3-eyebrow"><span class="dot"></span><span data-i18n="sub-eyebrow">Больше возможностей</span></div>
+        <h2 id="sub-title" class="e3-title"><span class="accent" data-i18n="sub-title">Подписки</span></h2>
+        <p class="e3-lead" data-i18n="sub-lead">Игра остаётся бесплатной. Подписки добавят эксклюзивный контент и свободу творчества.</p>
+      </div>
+      <div class="sub-grid">
+        <article class="sub-card reveal" data-delay="1">
+          <div class="sub-card-glow"></div>
+          <div class="sub-card-top">
+            <div class="sub-card-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M6 15l9 9 9-14 9 14 9-9-3 21H9L6 15z" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><circle cx="24" cy="10" r="2" fill="currentColor"/></svg></div>
+            <span class="sub-soon"><span class="dot"></span><span data-i18n="arcade-soon-btn">Скоро</span></span>
+          </div>
+          <h3 class="sub-card-name">VIP</h3>
+          <p class="sub-card-desc" data-i18n="sub-vip-desc">Открой больше возможностей в Evades 3</p>
+          <div class="sub-card-sep"></div>
+          <div class="sub-group">
+            <div class="sub-group-title"><svg class="sub-group-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h12a3 3 0 013 3v3a3 3 0 01-5 2.2L14.5 15h-5L8 16.2A3 3 0 013 14v-3a3 3 0 013-3z"/><path d="M8.5 10.5v3M7 12h3"/><circle cx="15.5" cy="11" r=".9" fill="currentColor"/><circle cx="17.5" cy="13" r=".9" fill="currentColor"/></svg><span data-i18n="sub-vip-g1">Игровой контент</span></div>
+            <ul class="sub-list">
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-vip-g1-1">Эксклюзивные VIP-зоны с уникальными мини-играми, правилами и испытаниями.</span></li>
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-vip-g1-2">VIP-герои, открываемые за прохождение соответствующих зон.</span></li>
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-vip-g1-3">Особые VIP-испытания и дополнительные достижения.</span></li>
+            </ul>
+          </div>
+          <div class="sub-group">
+            <div class="sub-group-title"><svg class="sub-group-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4L16.5 4.5a2.1 2.1 0 013 3L8 19l-4 1z"/><path d="M14 7l3 3"/></svg><span data-i18n="sub-vip-g2">Создание и редакторы</span></div>
+            <ul class="sub-list">
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-vip-g2-1">Доступ к Versus с ограниченным количеством использований.</span></li>
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-vip-g2-2">Доступ к Maps с ограниченным количеством использований.</span></li>
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-vip-g2-3">Доступ к Heroes Creator с ограниченным количеством использований.</span></li>
+            </ul>
+          </div>
+          <div class="sub-group">
+            <div class="sub-group-title"><svg class="sub-group-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg><span data-i18n="sub-vip-g3">Персонализация</span></div>
+            <ul class="sub-list">
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-vip-g3-1">Дополнительные готовые темы оформления интерфейса, если они вписываются в существующую систему персонализации.</span></li>
+            </ul>
+          </div>
+          <div class="sub-group">
+            <div class="sub-group-title"><svg class="sub-group-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5"/><path d="M8.5 13.5L7 21l5-3 5 3-1.5-7.5"/></svg><span data-i18n="sub-vip-g4">Профиль и награды</span></div>
+            <ul class="sub-list">
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-vip-g4-1">VIP-значок в профиле и таблице лидеров.</span></li>
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-vip-g4-2">Эксклюзивные рамки профиля, значки и косметические элементы.</span></li>
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-vip-g4-3">Уникальные титулы и визуальные награды за прохождение испытаний.</span></li>
+            </ul>
+          </div>
+        </article>
+        <article class="sub-card sub-card--pro reveal" data-delay="2">
+          <div class="sub-card-glow"></div>
+          <div class="sub-card-top">
+            <div class="sub-card-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M13 7h22l8 12-19 22L5 19l8-12z" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M5 19h38M17 19l7 22 7-22M17 19l-4-12M31 19l4-12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div>
+            <span class="sub-soon"><span class="dot"></span><span data-i18n="arcade-soon-btn">Скоро</span></span>
+          </div>
+          <h3 class="sub-card-name">PRO</h3>
+          <p class="sub-card-desc" data-i18n="sub-pro-desc">Максимум возможностей и свободы в Evades 3</p>
+          <div class="sub-card-sep"></div>
+          <div class="sub-group">
+            <div class="sub-group-title"><svg class="sub-group-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h12a3 3 0 013 3v3a3 3 0 01-5 2.2L14.5 15h-5L8 16.2A3 3 0 013 14v-3a3 3 0 013-3z"/><path d="M8.5 10.5v3M7 12h3"/><circle cx="15.5" cy="11" r=".9" fill="currentColor"/><circle cx="17.5" cy="13" r=".9" fill="currentColor"/></svg><span data-i18n="sub-pro-g1">Игровой контент</span></div>
+            <ul class="sub-list">
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-pro-g1-1">Более сложные PRO-зоны с экспериментальными механиками и уникальными режимами.</span></li>
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-pro-g1-2">PRO-герои, открываемые за прохождение PRO-зон.</span></li>
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-pro-g1-3">Доступ к некоторым экспериментальным режимам до их общего выхода.</span></li>
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-pro-g1-4">Эксклюзивные PRO-испытания с косметическими наградами.</span></li>
+            </ul>
+          </div>
+          <div class="sub-group">
+            <div class="sub-group-title"><svg class="sub-group-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4L16.5 4.5a2.1 2.1 0 013 3L8 19l-4 1z"/><path d="M14 7l3 3"/></svg><span data-i18n="sub-pro-g2">Создание и редакторы</span></div>
+            <ul class="sub-list">
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-pro-g2-1">Безлимитное использование Versus.</span></li>
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-pro-g2-2">Безлимитное использование Maps.</span></li>
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-pro-g2-3">Безлимитное использование Heroes Creator.</span></li>
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-pro-g2-4">Расширенные возможности Heroes Creator: дополнительные настройки, сохранение и оформление собственных героев.</span></li>
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-pro-g2-5">Возможность отправлять собственные арены на рассмотрение для добавления в официальную игру после проверки.</span></li>
+            </ul>
+          </div>
+          <div class="sub-group">
+            <div class="sub-group-title"><svg class="sub-group-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg><span data-i18n="sub-pro-g3">Персонализация</span></div>
+            <ul class="sub-list">
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-pro-g3-1">Interface Studio — глубокая персонализация интерфейса игры.</span></li>
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-pro-g3-2">Редактор HUD — изменение расположения, размеров и внешнего вида кнопок и панелей.</span></li>
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-pro-g3-3">Создание, сохранение и переключение между собственными темами интерфейса.</span></li>
+            </ul>
+          </div>
+          <div class="sub-group">
+            <div class="sub-group-title"><svg class="sub-group-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5"/><path d="M8.5 13.5L7 21l5-3 5 3-1.5-7.5"/></svg><span data-i18n="sub-pro-g4">Профиль и достижения</span></div>
+            <ul class="sub-list">
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-pro-g4-1">PRO-значок и премиальное оформление профиля.</span></li>
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-pro-g4-2">Расширенная игровая статистика, рекорды и история прохождений.</span></li>
+              <li><span class="sub-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="sub-pro-g4-3">Дополнительные титулы за игровые достижения.</span></li>
+            </ul>
+          </div>
+        </article>
+      </div>
+      <p class="sub-note" data-i18n="sub-note">Подписки находятся в разработке: описанные возможности планируются и могут измениться. Сейчас они недоступны.</p>
+    </section>
+
+    <!-- ============ ПОДПИСКИ: СРАВНЕНИЕ ============ -->
+    <section class="e3-section reveal" id="subscriptions-compare" aria-labelledby="cmp-title">
+      <div class="e3-section-head">
+        <div class="e3-eyebrow"><span class="dot"></span><span data-i18n="cmp-eyebrow">Free · VIP · PRO</span></div>
+        <h2 id="cmp-title" class="e3-title"><span data-i18n="cmp-title-a">Сравнение</span> <span class="accent" data-i18n="cmp-title-b">подписок</span></h2>
+        <p class="e3-lead" data-i18n="cmp-lead">Что входит в Free, VIP и PRO — и где PRO даёт больше всего.</p>
+      </div>
+      <div class="cmp-wrap reveal" data-delay="1">
+        <table class="cmp-table">
+          <thead><tr><th scope="col" data-i18n="cmp-col-feature">Возможность</th><th scope="col" class="cmp-h-f">Free</th><th scope="col" class="cmp-h-v">VIP</th><th scope="col" class="cmp-h-p">PRO</th></tr></thead>
+          <tbody>
+            <tr>
+              <th scope="row" data-i18n="cmp-r1">Эксклюзивные зоны</th>
+              <td class="cmp-f cmp-no"><span class="cmp-tag">FREE</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-none">Не входит</span></td>
+              <td class="cmp-v cmp-yes"><span class="cmp-tag">VIP</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-r1-v">VIP-зоны с мини-играми, правилами и испытаниями</span></td>
+              <td class="cmp-p cmp-plus"><span class="cmp-tag">PRO</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4l2.4 5.2 5.6.7-4.1 3.9 1.1 5.6L12 16.6 7 19.4l1.1-5.6L4 9.9l5.6-.7L12 4z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" fill="currentColor" fill-opacity=".25"/></svg></span><span class="cmp-txt" data-i18n="cmp-r1-p">Более сложные PRO-зоны с экспериментальными механиками</span></td>
+            </tr>
+            <tr>
+              <th scope="row" data-i18n="cmp-r2">Особые герои</th>
+              <td class="cmp-f cmp-no"><span class="cmp-tag">FREE</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-none">Не входит</span></td>
+              <td class="cmp-v cmp-yes"><span class="cmp-tag">VIP</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-r2-v">VIP-герои за прохождение VIP-зон</span></td>
+              <td class="cmp-p cmp-yes"><span class="cmp-tag">PRO</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-r2-p">PRO-герои за прохождение PRO-зон</span></td>
+            </tr>
+            <tr>
+              <th scope="row" data-i18n="cmp-r3">Испытания и достижения</th>
+              <td class="cmp-f cmp-no"><span class="cmp-tag">FREE</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-none">Не входит</span></td>
+              <td class="cmp-v cmp-yes"><span class="cmp-tag">VIP</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-r3-v">VIP-испытания и дополнительные достижения</span></td>
+              <td class="cmp-p cmp-plus"><span class="cmp-tag">PRO</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4l2.4 5.2 5.6.7-4.1 3.9 1.1 5.6L12 16.6 7 19.4l1.1-5.6L4 9.9l5.6-.7L12 4z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" fill="currentColor" fill-opacity=".25"/></svg></span><span class="cmp-txt" data-i18n="cmp-r3-p">PRO-испытания с косметическими наградами и доп. титулы</span></td>
+            </tr>
+            <tr>
+              <th scope="row" data-i18n="cmp-r4">Профиль и косметика</th>
+              <td class="cmp-f cmp-no"><span class="cmp-tag">FREE</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-none">Не входит</span></td>
+              <td class="cmp-v cmp-yes"><span class="cmp-tag">VIP</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-r4-v">VIP-значок, рамки, титулы и визуальные награды</span></td>
+              <td class="cmp-p cmp-plus"><span class="cmp-tag">PRO</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4l2.4 5.2 5.6.7-4.1 3.9 1.1 5.6L12 16.6 7 19.4l1.1-5.6L4 9.9l5.6-.7L12 4z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" fill="currentColor" fill-opacity=".25"/></svg></span><span class="cmp-txt" data-i18n="cmp-r4-p">PRO-значок и премиальное оформление профиля</span></td>
+            </tr>
+            <tr>
+              <th scope="row" data-i18n="cmp-r5">Versus</th>
+              <td class="cmp-f cmp-no"><span class="cmp-tag">FREE</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-none">Не входит</span></td>
+              <td class="cmp-v cmp-ltd"><span class="cmp-tag">VIP</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7.5" stroke="currentColor" stroke-width="2.6"/><path d="M12 4.5a7.5 7.5 0 010 15z" fill="currentColor"/></svg></span><span class="cmp-txt" data-i18n="cmp-r5-v">Ограниченное использование</span></td>
+              <td class="cmp-p cmp-plus"><span class="cmp-tag">PRO</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4l2.4 5.2 5.6.7-4.1 3.9 1.1 5.6L12 16.6 7 19.4l1.1-5.6L4 9.9l5.6-.7L12 4z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" fill="currentColor" fill-opacity=".25"/></svg></span><span class="cmp-txt" data-i18n="cmp-r5-p">Безлимитное использование</span></td>
+            </tr>
+            <tr>
+              <th scope="row" data-i18n="cmp-r6">Maps</th>
+              <td class="cmp-f cmp-no"><span class="cmp-tag">FREE</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-none">Не входит</span></td>
+              <td class="cmp-v cmp-ltd"><span class="cmp-tag">VIP</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7.5" stroke="currentColor" stroke-width="2.6"/><path d="M12 4.5a7.5 7.5 0 010 15z" fill="currentColor"/></svg></span><span class="cmp-txt" data-i18n="cmp-r6-v">Ограниченное использование</span></td>
+              <td class="cmp-p cmp-plus"><span class="cmp-tag">PRO</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4l2.4 5.2 5.6.7-4.1 3.9 1.1 5.6L12 16.6 7 19.4l1.1-5.6L4 9.9l5.6-.7L12 4z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" fill="currentColor" fill-opacity=".25"/></svg></span><span class="cmp-txt" data-i18n="cmp-r6-p">Безлимитное использование</span></td>
+            </tr>
+            <tr>
+              <th scope="row" data-i18n="cmp-r7">Heroes Creator</th>
+              <td class="cmp-f cmp-no"><span class="cmp-tag">FREE</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-none">Не входит</span></td>
+              <td class="cmp-v cmp-ltd"><span class="cmp-tag">VIP</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7.5" stroke="currentColor" stroke-width="2.6"/><path d="M12 4.5a7.5 7.5 0 010 15z" fill="currentColor"/></svg></span><span class="cmp-txt" data-i18n="cmp-r7-v">Ограниченное использование</span></td>
+              <td class="cmp-p cmp-plus"><span class="cmp-tag">PRO</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4l2.4 5.2 5.6.7-4.1 3.9 1.1 5.6L12 16.6 7 19.4l1.1-5.6L4 9.9l5.6-.7L12 4z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" fill="currentColor" fill-opacity=".25"/></svg></span><span class="cmp-txt" data-i18n="cmp-r7-p">Безлимитное использование</span></td>
+            </tr>
+            <tr>
+              <th scope="row" data-i18n="cmp-r8">Темы интерфейса</th>
+              <td class="cmp-f cmp-no"><span class="cmp-tag">FREE</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-none">Не входит</span></td>
+              <td class="cmp-v cmp-ltd"><span class="cmp-tag">VIP</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7.5" stroke="currentColor" stroke-width="2.6"/><path d="M12 4.5a7.5 7.5 0 010 15z" fill="currentColor"/></svg></span><span class="cmp-txt" data-i18n="cmp-r8-v">Только дополнительные готовые темы</span></td>
+              <td class="cmp-p cmp-plus"><span class="cmp-tag">PRO</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4l2.4 5.2 5.6.7-4.1 3.9 1.1 5.6L12 16.6 7 19.4l1.1-5.6L4 9.9l5.6-.7L12 4z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" fill="currentColor" fill-opacity=".25"/></svg></span><span class="cmp-txt" data-i18n="cmp-r8-p">Создание, сохранение и переключение собственных тем</span></td>
+            </tr>
+            <tr>
+              <th scope="row" data-i18n="cmp-r9">Экспериментальные режимы</th>
+              <td class="cmp-f cmp-no"><span class="cmp-tag">FREE</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-none">Не входит</span></td>
+              <td class="cmp-v cmp-no"><span class="cmp-tag">VIP</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-r9-v">Не входит</span></td>
+              <td class="cmp-p cmp-plus"><span class="cmp-tag">PRO</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4l2.4 5.2 5.6.7-4.1 3.9 1.1 5.6L12 16.6 7 19.4l1.1-5.6L4 9.9l5.6-.7L12 4z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" fill="currentColor" fill-opacity=".25"/></svg></span><span class="cmp-txt" data-i18n="cmp-r9-p">Ранний доступ к некоторым режимам до общего выхода</span></td>
+            </tr>
+            <tr>
+              <th scope="row" data-i18n="cmp-r10">Расширенные возможности Heroes Creator</th>
+              <td class="cmp-f cmp-no"><span class="cmp-tag">FREE</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-none">Не входит</span></td>
+              <td class="cmp-v cmp-no"><span class="cmp-tag">VIP</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-r10-v">Не входит</span></td>
+              <td class="cmp-p cmp-yes"><span class="cmp-tag">PRO</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-r10-p">Дополнительные настройки, сохранение и оформление героев</span></td>
+            </tr>
+            <tr>
+              <th scope="row" data-i18n="cmp-r11">Interface Studio и редактор HUD</th>
+              <td class="cmp-f cmp-no"><span class="cmp-tag">FREE</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-none">Не входит</span></td>
+              <td class="cmp-v cmp-no"><span class="cmp-tag">VIP</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-r11-v">Не входит</span></td>
+              <td class="cmp-p cmp-plus"><span class="cmp-tag">PRO</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4l2.4 5.2 5.6.7-4.1 3.9 1.1 5.6L12 16.6 7 19.4l1.1-5.6L4 9.9l5.6-.7L12 4z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" fill="currentColor" fill-opacity=".25"/></svg></span><span class="cmp-txt" data-i18n="cmp-r11-p">Глубокая настройка интерфейса, кнопок и панелей</span></td>
+            </tr>
+            <tr>
+              <th scope="row" data-i18n="cmp-r12">Публикация собственных арен</th>
+              <td class="cmp-f cmp-no"><span class="cmp-tag">FREE</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-none">Не входит</span></td>
+              <td class="cmp-v cmp-no"><span class="cmp-tag">VIP</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-r12-v">Не входит</span></td>
+              <td class="cmp-p cmp-plus"><span class="cmp-tag">PRO</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4l2.4 5.2 5.6.7-4.1 3.9 1.1 5.6L12 16.6 7 19.4l1.1-5.6L4 9.9l5.6-.7L12 4z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" fill="currentColor" fill-opacity=".25"/></svg></span><span class="cmp-txt" data-i18n="cmp-r12-p">Отправка арен на рассмотрение для официальной игры</span></td>
+            </tr>
+            <tr>
+              <th scope="row" data-i18n="cmp-r13">Статистика и история</th>
+              <td class="cmp-f cmp-no"><span class="cmp-tag">FREE</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-none">Не входит</span></td>
+              <td class="cmp-v cmp-no"><span class="cmp-tag">VIP</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-r13-v">Не входит</span></td>
+              <td class="cmp-p cmp-yes"><span class="cmp-tag">PRO</span><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cmp-txt" data-i18n="cmp-r13-p">Расширенная статистика, рекорды и история прохождений</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cmp-legend">
+        <span class="cmp-legend-i cmp-yes"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span data-i18n="cmp-legend-yes">Входит</span></span>
+        <span class="cmp-legend-i cmp-ltd"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7.5" stroke="currentColor" stroke-width="2.6"/><path d="M12 4.5a7.5 7.5 0 010 15z" fill="currentColor"/></svg></span><span data-i18n="cmp-legend-ltd">Ограниченно</span></span>
+        <span class="cmp-legend-i cmp-plus"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4l2.4 5.2 5.6.7-4.1 3.9 1.1 5.6L12 16.6 7 19.4l1.1-5.6L4 9.9l5.6-.7L12 4z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" fill="currentColor" fill-opacity=".25"/></svg></span><span data-i18n="cmp-legend-plus">Расширенные возможности</span></span>
+        <span class="cmp-legend-i cmp-no"><span class="cmp-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span data-i18n="cmp-legend-no">Не входит</span></span>
+      </div>
+    </section>
+
+    <!-- ============ ПОДПИСКИ: ГЛАВНЫЕ ОСОБЕННОСТИ ============ -->
+    <section class="e3-section reveal" id="subscriptions-highlights" aria-labelledby="feat-title">
+      <div class="e3-section-head">
+        <div class="e3-eyebrow"><span class="dot"></span><span data-i18n="feat-eyebrow">Что ждёт в подписках</span></div>
+        <h2 id="feat-title" class="e3-title"><span data-i18n="feat-title-a">Главные</span> <span class="accent" data-i18n="feat-title-b">особенности</span></h2>
+        <p class="e3-lead" data-i18n="feat-lead">Четыре направления, ради которых VIP и PRO стоит ждать.</p>
+      </div>
+      <div class="sub-feat-grid">
+        <article class="sub-feat reveal" data-delay="1" style="--sub-rgb:255,216,77;">
+          <div class="sub-feat-glow"></div>
+          <div class="sub-feat-top">
+            <div class="sub-feat-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2.4"/><circle cx="24" cy="24" r="11" stroke="currentColor" stroke-width="2.2" opacity=".7"/><circle cx="24" cy="24" r="4" fill="currentColor"/></svg></div>
+            <span class="sub-feat-tag">VIP · PRO</span>
+          </div>
+          <div class="sub-feat-name">Evades 3</div>
+          <h3 class="sub-feat-title" data-i18n="feat-1-t">Необычные зоны и режимы</h3>
+          <p class="sub-feat-desc" data-i18n="feat-1-d">Зоны со своими правилами, мини-играми и экспериментальными механиками — отдельный вызов для тех, кому тесно в обычной игре.</p>
+          <span class="sub-feat-soon"><span class="dot"></span><span data-i18n="arcade-soon-btn">Скоро</span></span>
+        </article>
+        <article class="sub-feat sub-feat--pro reveal" data-delay="2" style="--sub-rgb:167,139,250;">
+          <div class="sub-feat-glow"></div>
+          <div class="sub-feat-top">
+            <div class="sub-feat-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M8 12h14M30 12h10M8 24h6M22 24h18M8 36h16M32 36h8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><circle cx="26" cy="12" r="4" stroke="currentColor" stroke-width="2.4"/><circle cx="18" cy="24" r="4" stroke="currentColor" stroke-width="2.4"/><circle cx="28" cy="36" r="4" stroke="currentColor" stroke-width="2.4"/></svg></div>
+            <span class="sub-feat-tag">PRO</span>
+          </div>
+          <div class="sub-feat-name">Interface Studio</div>
+          <h3 class="sub-feat-title" data-i18n="feat-2-t">Интерфейс под тебя</h3>
+          <p class="sub-feat-desc" data-i18n="feat-2-d">Меняй цвета, стили и расположение элементов, собирай собственные темы и переключайся между ними в один клик.</p>
+          <span class="sub-feat-soon"><span class="dot"></span><span data-i18n="arcade-soon-btn">Скоро</span></span>
+        </article>
+        <article class="sub-feat reveal" data-delay="3" style="--sub-rgb:255,216,77;">
+          <div class="sub-feat-glow"></div>
+          <div class="sub-feat-top">
+            <div class="sub-feat-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><circle cx="21" cy="15" r="7" stroke="currentColor" stroke-width="2.4"/><path d="M7 41c0-8 6-13 14-13s14 5 14 13" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M38 12v12M32 18h12" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></div>
+            <span class="sub-feat-tag">VIP · PRO</span>
+          </div>
+          <div class="sub-feat-name">Heroes Creator</div>
+          <h3 class="sub-feat-title" data-i18n="feat-3-t">Свои герои</h3>
+          <p class="sub-feat-desc" data-i18n="feat-3-d">Создавай собственных героев, настраивай их и оформляй так, как видишь сам.</p>
+          <span class="sub-feat-soon"><span class="dot"></span><span data-i18n="arcade-soon-btn">Скоро</span></span>
+        </article>
+        <article class="sub-feat sub-feat--pro reveal" data-delay="4" style="--sub-rgb:167,139,250;">
+          <div class="sub-feat-glow"></div>
+          <div class="sub-feat-top">
+            <div class="sub-feat-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><rect x="6" y="6" width="36" height="36" rx="6" stroke="currentColor" stroke-width="2.4"/><path d="M6 18h36M6 30h36M18 6v36M30 6v36" stroke="currentColor" stroke-width="1.8" opacity=".6"/><path d="M24 14l2.6 5.6 6 .8-4.4 4.2 1.1 6L24 27.7 18.7 30.6l1.1-6-4.4-4.2 6-.8L24 14z" fill="currentColor" opacity=".9"/></svg></div>
+            <span class="sub-feat-tag">PRO</span>
+          </div>
+          <div class="sub-feat-name">Arena Submissions</div>
+          <h3 class="sub-feat-title" data-i18n="feat-4-t">Твоя арена в игре</h3>
+          <p class="sub-feat-desc" data-i18n="feat-4-d">Собери собственную карту и предложи её на рассмотрение — после проверки она может попасть в официальную игру.</p>
+          <span class="sub-feat-soon"><span class="dot"></span><span data-i18n="arcade-soon-btn">Скоро</span></span>
+        </article>
       </div>
     </section>
 
@@ -23564,6 +24047,329 @@ async function doResetPassword() {
 })();
 
   </script>
+
+<script>
+/* Переводы раздела «Подписки». Нет перевода для языка → показывается английский */
+(function(){
+  if (typeof translations !== 'object' || !translations) return;
+  const sub = {
+ "ru": {
+  "sub-eyebrow": "Больше возможностей",
+  "sub-title": "Подписки",
+  "sub-lead": "Игра остаётся бесплатной. Подписки добавят эксклюзивный контент и свободу творчества.",
+  "sub-note": "Подписки находятся в разработке: описанные возможности планируются и могут измениться. Сейчас они недоступны.",
+  "sub-vip-desc": "Открой больше возможностей в Evades 3",
+  "sub-pro-desc": "Максимум возможностей и свободы в Evades 3",
+  "cmp-eyebrow": "Free · VIP · PRO",
+  "cmp-title-a": "Сравнение",
+  "cmp-title-b": "подписок",
+  "cmp-lead": "Что входит в Free, VIP и PRO — и где PRO даёт больше всего.",
+  "cmp-col-feature": "Возможность",
+  "cmp-none": "Не входит",
+  "cmp-legend-yes": "Входит",
+  "cmp-legend-ltd": "Ограниченно",
+  "cmp-legend-plus": "Расширенные возможности",
+  "cmp-legend-no": "Не входит",
+  "cmp-r1": "Эксклюзивные зоны",
+  "cmp-r1-v": "VIP-зоны с мини-играми, правилами и испытаниями",
+  "cmp-r1-p": "Более сложные PRO-зоны с экспериментальными механиками",
+  "cmp-r2": "Особые герои",
+  "cmp-r2-v": "VIP-герои за прохождение VIP-зон",
+  "cmp-r2-p": "PRO-герои за прохождение PRO-зон",
+  "cmp-r3": "Испытания и достижения",
+  "cmp-r3-v": "VIP-испытания и дополнительные достижения",
+  "cmp-r3-p": "PRO-испытания с косметическими наградами и доп. титулы",
+  "cmp-r4": "Профиль и косметика",
+  "cmp-r4-v": "VIP-значок, рамки, титулы и визуальные награды",
+  "cmp-r4-p": "PRO-значок и премиальное оформление профиля",
+  "cmp-r5": "Versus",
+  "cmp-r5-v": "Ограниченное использование",
+  "cmp-r5-p": "Безлимитное использование",
+  "cmp-r6": "Maps",
+  "cmp-r6-v": "Ограниченное использование",
+  "cmp-r6-p": "Безлимитное использование",
+  "cmp-r7": "Heroes Creator",
+  "cmp-r7-v": "Ограниченное использование",
+  "cmp-r7-p": "Безлимитное использование",
+  "cmp-r8": "Темы интерфейса",
+  "cmp-r8-v": "Только дополнительные готовые темы",
+  "cmp-r8-p": "Создание, сохранение и переключение собственных тем",
+  "cmp-r9": "Экспериментальные режимы",
+  "cmp-r9-v": "Не входит",
+  "cmp-r9-p": "Ранний доступ к некоторым режимам до общего выхода",
+  "cmp-r10": "Расширенные возможности Heroes Creator",
+  "cmp-r10-v": "Не входит",
+  "cmp-r10-p": "Дополнительные настройки, сохранение и оформление героев",
+  "cmp-r11": "Interface Studio и редактор HUD",
+  "cmp-r11-v": "Не входит",
+  "cmp-r11-p": "Глубокая настройка интерфейса, кнопок и панелей",
+  "cmp-r12": "Публикация собственных арен",
+  "cmp-r12-v": "Не входит",
+  "cmp-r12-p": "Отправка арен на рассмотрение для официальной игры",
+  "cmp-r13": "Статистика и история",
+  "cmp-r13-v": "Не входит",
+  "cmp-r13-p": "Расширенная статистика, рекорды и история прохождений",
+  "feat-eyebrow": "Что ждёт в подписках",
+  "feat-title-a": "Главные",
+  "feat-title-b": "особенности",
+  "feat-lead": "Четыре направления, ради которых VIP и PRO стоит ждать.",
+  "feat-1-t": "Необычные зоны и режимы",
+  "feat-1-d": "Зоны со своими правилами, мини-играми и экспериментальными механиками — отдельный вызов для тех, кому тесно в обычной игре.",
+  "feat-2-t": "Интерфейс под тебя",
+  "feat-2-d": "Меняй цвета, стили и расположение элементов, собирай собственные темы и переключайся между ними в один клик.",
+  "feat-3-t": "Свои герои",
+  "feat-3-d": "Создавай собственных героев, настраивай их и оформляй так, как видишь сам.",
+  "feat-4-t": "Твоя арена в игре",
+  "feat-4-d": "Собери собственную карту и предложи её на рассмотрение — после проверки она может попасть в официальную игру.",
+  "sub-vip-g1": "Игровой контент",
+  "sub-vip-g1-1": "Эксклюзивные VIP-зоны с уникальными мини-играми, правилами и испытаниями.",
+  "sub-vip-g1-2": "VIP-герои, открываемые за прохождение соответствующих зон.",
+  "sub-vip-g1-3": "Особые VIP-испытания и дополнительные достижения.",
+  "sub-vip-g2": "Создание и редакторы",
+  "sub-vip-g2-1": "Доступ к Versus с ограниченным количеством использований.",
+  "sub-vip-g2-2": "Доступ к Maps с ограниченным количеством использований.",
+  "sub-vip-g2-3": "Доступ к Heroes Creator с ограниченным количеством использований.",
+  "sub-vip-g3": "Персонализация",
+  "sub-vip-g3-1": "Дополнительные готовые темы оформления интерфейса, если они вписываются в существующую систему персонализации.",
+  "sub-vip-g4": "Профиль и награды",
+  "sub-vip-g4-1": "VIP-значок в профиле и таблице лидеров.",
+  "sub-vip-g4-2": "Эксклюзивные рамки профиля, значки и косметические элементы.",
+  "sub-vip-g4-3": "Уникальные титулы и визуальные награды за прохождение испытаний.",
+  "sub-pro-g1": "Игровой контент",
+  "sub-pro-g1-1": "Более сложные PRO-зоны с экспериментальными механиками и уникальными режимами.",
+  "sub-pro-g1-2": "PRO-герои, открываемые за прохождение PRO-зон.",
+  "sub-pro-g1-3": "Доступ к некоторым экспериментальным режимам до их общего выхода.",
+  "sub-pro-g1-4": "Эксклюзивные PRO-испытания с косметическими наградами.",
+  "sub-pro-g2": "Создание и редакторы",
+  "sub-pro-g2-1": "Безлимитное использование Versus.",
+  "sub-pro-g2-2": "Безлимитное использование Maps.",
+  "sub-pro-g2-3": "Безлимитное использование Heroes Creator.",
+  "sub-pro-g2-4": "Расширенные возможности Heroes Creator: дополнительные настройки, сохранение и оформление собственных героев.",
+  "sub-pro-g2-5": "Возможность отправлять собственные арены на рассмотрение для добавления в официальную игру после проверки.",
+  "sub-pro-g3": "Персонализация",
+  "sub-pro-g3-1": "Interface Studio — глубокая персонализация интерфейса игры.",
+  "sub-pro-g3-2": "Редактор HUD — изменение расположения, размеров и внешнего вида кнопок и панелей.",
+  "sub-pro-g3-3": "Создание, сохранение и переключение между собственными темами интерфейса.",
+  "sub-pro-g4": "Профиль и достижения",
+  "sub-pro-g4-1": "PRO-значок и премиальное оформление профиля.",
+  "sub-pro-g4-2": "Расширенная игровая статистика, рекорды и история прохождений.",
+  "sub-pro-g4-3": "Дополнительные титулы за игровые достижения."
+ },
+ "en": {
+  "sub-eyebrow": "More possibilities",
+  "sub-title": "Subscriptions",
+  "sub-lead": "The game stays free. Subscriptions add exclusive content and creative freedom.",
+  "sub-note": "Subscriptions are in development: the features described are planned and may change. They are not available yet.",
+  "sub-vip-desc": "Unlock more possibilities in Evades 3",
+  "sub-pro-desc": "Maximum possibilities and freedom in Evades 3",
+  "cmp-eyebrow": "Free · VIP · PRO",
+  "cmp-title-a": "Comparison",
+  "cmp-title-b": "of subscriptions",
+  "cmp-lead": "What Free, VIP and PRO include — and where PRO gives you the most.",
+  "cmp-col-feature": "Feature",
+  "cmp-none": "Not included",
+  "cmp-legend-yes": "Included",
+  "cmp-legend-ltd": "Limited",
+  "cmp-legend-plus": "Extended",
+  "cmp-legend-no": "Not included",
+  "cmp-r1": "Exclusive zones",
+  "cmp-r1-v": "VIP zones with mini-games, rules and challenges",
+  "cmp-r1-p": "Harder PRO zones with experimental mechanics",
+  "cmp-r2": "Special heroes",
+  "cmp-r2-v": "VIP heroes for clearing VIP zones",
+  "cmp-r2-p": "PRO heroes for clearing PRO zones",
+  "cmp-r3": "Challenges & achievements",
+  "cmp-r3-v": "VIP challenges and extra achievements",
+  "cmp-r3-p": "PRO challenges with cosmetic rewards and extra titles",
+  "cmp-r4": "Profile & cosmetics",
+  "cmp-r4-v": "VIP badge, frames, titles and visual rewards",
+  "cmp-r4-p": "PRO badge and premium profile styling",
+  "cmp-r5": "Versus",
+  "cmp-r5-v": "Limited use",
+  "cmp-r5-p": "Unlimited use",
+  "cmp-r6": "Maps",
+  "cmp-r6-v": "Limited use",
+  "cmp-r6-p": "Unlimited use",
+  "cmp-r7": "Heroes Creator",
+  "cmp-r7-v": "Limited use",
+  "cmp-r7-p": "Unlimited use",
+  "cmp-r8": "Interface themes",
+  "cmp-r8-v": "Only additional ready-made themes",
+  "cmp-r8-p": "Create, save and switch your own themes",
+  "cmp-r9": "Experimental modes",
+  "cmp-r9-v": "Not included",
+  "cmp-r9-p": "Early access to some modes before general release",
+  "cmp-r10": "Extended Heroes Creator features",
+  "cmp-r10-v": "Not included",
+  "cmp-r10-p": "Extra settings, saving and styling of heroes",
+  "cmp-r11": "Interface Studio & HUD editor",
+  "cmp-r11-v": "Not included",
+  "cmp-r11-p": "Deep customization of the interface, buttons and panels",
+  "cmp-r12": "Submitting your own arenas",
+  "cmp-r12-v": "Not included",
+  "cmp-r12-p": "Submit arenas for review for the official game",
+  "cmp-r13": "Statistics & history",
+  "cmp-r13-v": "Not included",
+  "cmp-r13-p": "Extended stats, records and run history",
+  "feat-eyebrow": "What the subscriptions bring",
+  "feat-title-a": "Key",
+  "feat-title-b": "highlights",
+  "feat-lead": "Four directions that make VIP and PRO worth waiting for.",
+  "feat-1-t": "Unusual zones and modes",
+  "feat-1-d": "Zones with their own rules, mini-games and experimental mechanics — a separate challenge for those who want more than the regular game.",
+  "feat-2-t": "An interface made for you",
+  "feat-2-d": "Change colors, styles and element layout, build your own themes and switch between them in a click.",
+  "feat-3-t": "Heroes of your own",
+  "feat-3-d": "Create your own heroes, tune them and style them the way you envision.",
+  "feat-4-t": "Your arena in the game",
+  "feat-4-d": "Build your own map and submit it for review — after approval it may be added to the official game.",
+  "sub-vip-g1": "Game content",
+  "sub-vip-g1-1": "Exclusive VIP zones with unique mini-games, rules and challenges.",
+  "sub-vip-g1-2": "VIP heroes unlocked by completing the matching zones.",
+  "sub-vip-g1-3": "Special VIP challenges and extra achievements.",
+  "sub-vip-g2": "Creation & editors",
+  "sub-vip-g2-1": "Access to Versus with a limited number of uses.",
+  "sub-vip-g2-2": "Access to Maps with a limited number of uses.",
+  "sub-vip-g2-3": "Access to Heroes Creator with a limited number of uses.",
+  "sub-vip-g3": "Personalization",
+  "sub-vip-g3-1": "Additional ready-made interface themes, where they fit the existing personalization system.",
+  "sub-vip-g4": "Profile & rewards",
+  "sub-vip-g4-1": "VIP badge on your profile and the leaderboard.",
+  "sub-vip-g4-2": "Exclusive profile frames, badges and cosmetic items.",
+  "sub-vip-g4-3": "Unique titles and visual rewards for completing challenges.",
+  "sub-pro-g1": "Game content",
+  "sub-pro-g1-1": "Harder PRO zones with experimental mechanics and unique modes.",
+  "sub-pro-g1-2": "PRO heroes unlocked by completing PRO zones.",
+  "sub-pro-g1-3": "Access to selected experimental modes before their general release.",
+  "sub-pro-g1-4": "Exclusive PRO challenges with cosmetic rewards.",
+  "sub-pro-g2": "Creation & editors",
+  "sub-pro-g2-1": "Unlimited use of Versus.",
+  "sub-pro-g2-2": "Unlimited use of Maps.",
+  "sub-pro-g2-3": "Unlimited use of Heroes Creator.",
+  "sub-pro-g2-4": "Extended Heroes Creator features: extra settings, saving and styling of your own heroes.",
+  "sub-pro-g2-5": "Submit your own arenas for review to be added to the official game after approval.",
+  "sub-pro-g3": "Personalization",
+  "sub-pro-g3-1": "Interface Studio — deep personalization of the game interface.",
+  "sub-pro-g3-2": "HUD editor — change the position, size and look of buttons and panels.",
+  "sub-pro-g3-3": "Create, save and switch between your own interface themes.",
+  "sub-pro-g4": "Profile & achievements",
+  "sub-pro-g4-1": "PRO badge and premium profile styling.",
+  "sub-pro-g4-2": "Extended game statistics, records and run history.",
+  "sub-pro-g4-3": "Additional titles for in-game achievements."
+ },
+ "uk": {
+  "sub-eyebrow": "Більше можливостей",
+  "sub-title": "Підписки",
+  "sub-lead": "Гра залишається безкоштовною. Підписки додадуть ексклюзивний контент і свободу творчості.",
+  "sub-note": "Підписки перебувають у розробці: описані можливості плануються й можуть змінитися. Наразі вони недоступні.",
+  "sub-vip-desc": "Відкрий більше можливостей в Evades 3",
+  "sub-pro-desc": "Максимум можливостей і свободи в Evades 3",
+  "cmp-eyebrow": "Free · VIP · PRO",
+  "cmp-title-a": "Порівняння",
+  "cmp-title-b": "підписок",
+  "cmp-lead": "Що входить у Free, VIP і PRO — і де PRO дає найбільше.",
+  "cmp-col-feature": "Можливість",
+  "cmp-none": "Не входить",
+  "cmp-legend-yes": "Входить",
+  "cmp-legend-ltd": "Обмежено",
+  "cmp-legend-plus": "Розширені можливості",
+  "cmp-legend-no": "Не входить",
+  "cmp-r1": "Ексклюзивні зони",
+  "cmp-r1-v": "VIP-зони з міні-іграми, правилами та випробуваннями",
+  "cmp-r1-p": "Складніші PRO-зони з експериментальними механіками",
+  "cmp-r2": "Особливі герої",
+  "cmp-r2-v": "VIP-герої за проходження VIP-зон",
+  "cmp-r2-p": "PRO-герої за проходження PRO-зон",
+  "cmp-r3": "Випробування та досягнення",
+  "cmp-r3-v": "VIP-випробування та додаткові досягнення",
+  "cmp-r3-p": "PRO-випробування з косметичними нагородами та дод. титули",
+  "cmp-r4": "Профіль і косметика",
+  "cmp-r4-v": "VIP-значок, рамки, титули та візуальні нагороди",
+  "cmp-r4-p": "PRO-значок і преміальне оформлення профілю",
+  "cmp-r5": "Versus",
+  "cmp-r5-v": "Обмежене використання",
+  "cmp-r5-p": "Безлімітне використання",
+  "cmp-r6": "Maps",
+  "cmp-r6-v": "Обмежене використання",
+  "cmp-r6-p": "Безлімітне використання",
+  "cmp-r7": "Heroes Creator",
+  "cmp-r7-v": "Обмежене використання",
+  "cmp-r7-p": "Безлімітне використання",
+  "cmp-r8": "Теми інтерфейсу",
+  "cmp-r8-v": "Лише додаткові готові теми",
+  "cmp-r8-p": "Створення, збереження та перемикання власних тем",
+  "cmp-r9": "Експериментальні режими",
+  "cmp-r9-v": "Не входить",
+  "cmp-r9-p": "Ранній доступ до деяких режимів до загального виходу",
+  "cmp-r10": "Розширені можливості Heroes Creator",
+  "cmp-r10-v": "Не входить",
+  "cmp-r10-p": "Додаткові налаштування, збереження та оформлення героїв",
+  "cmp-r11": "Interface Studio та редактор HUD",
+  "cmp-r11-v": "Не входить",
+  "cmp-r11-p": "Глибоке налаштування інтерфейсу, кнопок і панелей",
+  "cmp-r12": "Публікація власних арен",
+  "cmp-r12-v": "Не входить",
+  "cmp-r12-p": "Надсилання арен на розгляд для офіційної гри",
+  "cmp-r13": "Статистика та історія",
+  "cmp-r13-v": "Не входить",
+  "cmp-r13-p": "Розширена статистика, рекорди та історія проходжень",
+  "feat-eyebrow": "Що чекає в підписках",
+  "feat-title-a": "Головні",
+  "feat-title-b": "особливості",
+  "feat-lead": "Чотири напрямки, заради яких варто чекати на VIP і PRO.",
+  "feat-1-t": "Незвичайні зони та режими",
+  "feat-1-d": "Зони зі своїми правилами, міні-іграми та експериментальними механіками — окремий виклик для тих, кому тісно у звичайній грі.",
+  "feat-2-t": "Інтерфейс під тебе",
+  "feat-2-d": "Змінюй кольори, стилі та розташування елементів, збирай власні теми й перемикайся між ними в один клік.",
+  "feat-3-t": "Власні герої",
+  "feat-3-d": "Створюй власних героїв, налаштовуй їх і оформлюй так, як бачиш сам.",
+  "feat-4-t": "Твоя арена в грі",
+  "feat-4-d": "Збери власну мапу й запропонуй її на розгляд — після перевірки вона може потрапити в офіційну гру.",
+  "sub-vip-g1": "Ігровий контент",
+  "sub-vip-g1-1": "Ексклюзивні VIP-зони з унікальними міні-іграми, правилами та випробуваннями.",
+  "sub-vip-g1-2": "VIP-герої, що відкриваються за проходження відповідних зон.",
+  "sub-vip-g1-3": "Особливі VIP-випробування та додаткові досягнення.",
+  "sub-vip-g2": "Створення та редактори",
+  "sub-vip-g2-1": "Доступ до Versus з обмеженою кількістю використань.",
+  "sub-vip-g2-2": "Доступ до Maps з обмеженою кількістю використань.",
+  "sub-vip-g2-3": "Доступ до Heroes Creator з обмеженою кількістю використань.",
+  "sub-vip-g3": "Персоналізація",
+  "sub-vip-g3-1": "Додаткові готові теми оформлення інтерфейсу, якщо вони вписуються в наявну систему персоналізації.",
+  "sub-vip-g4": "Профіль і нагороди",
+  "sub-vip-g4-1": "VIP-значок у профілі та таблиці лідерів.",
+  "sub-vip-g4-2": "Ексклюзивні рамки профілю, значки та косметичні елементи.",
+  "sub-vip-g4-3": "Унікальні титули та візуальні нагороди за проходження випробувань.",
+  "sub-pro-g1": "Ігровий контент",
+  "sub-pro-g1-1": "Складніші PRO-зони з експериментальними механіками та унікальними режимами.",
+  "sub-pro-g1-2": "PRO-герої, що відкриваються за проходження PRO-зон.",
+  "sub-pro-g1-3": "Доступ до деяких експериментальних режимів до їх загального виходу.",
+  "sub-pro-g1-4": "Ексклюзивні PRO-випробування з косметичними нагородами.",
+  "sub-pro-g2": "Створення та редактори",
+  "sub-pro-g2-1": "Безлімітне використання Versus.",
+  "sub-pro-g2-2": "Безлімітне використання Maps.",
+  "sub-pro-g2-3": "Безлімітне використання Heroes Creator.",
+  "sub-pro-g2-4": "Розширені можливості Heroes Creator: додаткові налаштування, збереження та оформлення власних героїв.",
+  "sub-pro-g2-5": "Можливість надсилати власні арени на розгляд для додавання в офіційну гру після перевірки.",
+  "sub-pro-g3": "Персоналізація",
+  "sub-pro-g3-1": "Interface Studio — глибока персоналізація інтерфейсу гри.",
+  "sub-pro-g3-2": "Редактор HUD — зміна розташування, розмірів і вигляду кнопок та панелей.",
+  "sub-pro-g3-3": "Створення, збереження та перемикання між власними темами інтерфейсу.",
+  "sub-pro-g4": "Профіль і досягнення",
+  "sub-pro-g4-1": "PRO-значок і преміальне оформлення профілю.",
+  "sub-pro-g4-2": "Розширена ігрова статистика, рекорди та історія проходжень.",
+  "sub-pro-g4-3": "Додаткові титули за ігрові досягнення."
+ }
+};
+  for (const lang in translations) {
+    const src = sub[lang] || sub.en;
+    for (const k in src) { if (sub[lang] || translations[lang][k] == null) translations[lang][k] = src[k]; }
+  }
+  try {
+    const active = (typeof currentLang === 'string' && currentLang) || localStorage.getItem('selectedLanguage') || 'ru';
+    if (typeof applyTranslations === 'function') applyTranslations(active);
+  } catch (e) {}
+})();
+</script>
 
 <!-- ─── COOKIE CONSENT BANNER ─── -->
 <div class="cookie-banner" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie consent">
