@@ -3456,6 +3456,61 @@
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
 }
 
+
+/* ── CROWNBIT: переработанный дропдаун профиля ── */
+.profile-dropdown {
+  width: 272px;
+  border-radius: 22px;
+  background:
+    linear-gradient(160deg, rgba(255,255,255,0.14), rgba(255,255,255,0.03) 40%),
+    linear-gradient(180deg, rgba(14,34,24,0.78), rgba(7,18,13,0.86));
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  border: 1px solid rgba(255,255,255,0.16);
+  box-shadow: 0 24px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.22);
+}
+.profile-wrap.is-dev-btn .profile-dropdown {
+  border-color: rgba(255,205,110,0.32);
+  box-shadow: 0 24px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,225,150,0.35), 0 0 36px rgba(255,190,60,0.12);
+}
+.profile-dd-head { padding: 18px 18px 16px; gap: 14px; background: none; }
+.profile-dd-head::after { left: 18px; right: 18px; background: linear-gradient(90deg, rgba(255,255,255,0.0), rgba(255,255,255,0.22), rgba(255,255,255,0.0)); }
+.profile-wrap.is-dev-btn .profile-dd-head::after { background: linear-gradient(90deg, transparent, rgba(255,205,110,0.5), transparent); }
+.profile-dropdown .profile-dd-avatar { width: 46px; height: 46px; }
+.profile-dropdown .profile-dd-avatar svg.ic-svg-profile-mini { width: 46px; height: 46px; }
+.profile-dd-name { font-size: 15px; letter-spacing: 0.4px; }
+.profile-dd-name-row { gap: 6px; }
+.profile-dd-email { font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 4px; max-width: 168px; }
+.profile-dropdown .profile-dd-item { padding: 9px 14px; margin: 3px 8px; width: calc(100% - 16px); border-radius: 14px; gap: 12px; font-weight: 600; font-size: 14px; letter-spacing: 0.3px; }
+.profile-dropdown .profile-dd-item:first-of-type { margin-top: 8px; }
+.profile-dropdown .profile-dd-item::before { display: none; }
+.profile-dropdown .profile-dd-item::after { background: rgba(255,255,255,0.08); transform: translateX(0); opacity: 0; transition: opacity 0.2s ease; }
+.profile-dropdown .profile-dd-item:hover::after { opacity: 1; }
+.profile-dropdown .profile-dd-item.danger::after { background: rgba(224,74,42,0.14); }
+.profile-dropdown .profile-dd-item svg.dd-ic {
+  width: 32px; height: 32px; padding: 7px; box-sizing: border-box; flex: none;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.85);
+  filter: none;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.25s ease;
+}
+.profile-dropdown .profile-dd-item:hover svg.dd-ic { color: #7CF0A8; background: rgba(74,222,128,0.14); border-color: rgba(74,222,128,0.4); transform: scale(1.06); }
+.profile-wrap.is-dev-btn .profile-dd-item:not(.danger):hover svg.dd-ic { color: #FFD66B; background: rgba(255,200,58,0.14); border-color: rgba(255,200,58,0.45); }
+.profile-dropdown .profile-dd-item.danger svg.dd-ic { color: #ff8f7a; background: rgba(224,74,42,0.10); border-color: rgba(224,74,42,0.28); }
+.profile-dropdown .profile-dd-item.danger:hover svg.dd-ic { color: #ffb3a3; background: rgba(224,74,42,0.2); border-color: rgba(224,74,42,0.5); }
+.profile-dropdown .profile-dd-divider { margin: 6px 18px; }
+
+/* Кнопка профиля у dev: тёмный обсидиан + золотое кольцо, корона не «налеплена» */
+.nav-icon-btn.is-dev-btn {
+  border: 2px solid rgba(255,205,110,0.7);
+  background: radial-gradient(circle at 30% 25%, rgba(60,110,80,0.85), rgba(10,30,20,0.95) 70%);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,235,170,0.4), inset 0 -3px 8px rgba(0,0,0,0.4), 0 0 18px rgba(255,190,60,0.35);
+}
+.nav-icon-btn.is-dev-btn svg.ic-svg-profile { filter: drop-shadow(0 2px 3px rgba(0,0,0,0.6)) drop-shadow(0 0 8px rgba(255,200,70,0.45)); }
+.nav-icon-btn.is-dev-btn:hover svg.ic-svg-profile { transform: scale(1.08); filter: drop-shadow(0 2px 4px rgba(0,0,0,0.7)) drop-shadow(0 0 16px rgba(255,210,90,0.85)); }
+
 /* ── МОДАЛЬНОЕ ОКНО AUTH ── */
 .auth-modal-overlay {
   position: fixed;
@@ -3745,15 +3800,22 @@
 .profile-modal-name-row, .profile-dd-name-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center; }
 .profile-dd-name-row { justify-content: flex-start; }
 .dev-role-badge {
-  display: inline-flex; align-items: center; gap: 4px;
+  display: inline-flex; align-items: center; gap: 5px;
   font-family: 'Orbitron', system-ui, sans-serif;
-  font-size: 9px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase;
-  padding: 3px 8px; border-radius: 999px; white-space: nowrap;
-  color: #3a2600;
-  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 55%, #C49100 100%);
-  box-shadow: 0 0 8px rgba(255,200,58,0.55), inset 0 1px 0 rgba(255,255,255,0.6);
+  font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  padding: 3px 9px 3px 7px; border-radius: 999px; white-space: nowrap;
+  color: #FFDF8A;
+  background: linear-gradient(180deg, rgba(255,200,58,0.20), rgba(255,200,58,0.07));
+  border: 1px solid rgba(255,200,58,0.5);
+  box-shadow: 0 0 12px rgba(255,200,58,0.18), inset 0 1px 0 rgba(255,255,255,0.18);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
 }
-.dev-role-badge::before { content: '⚙️'; font-size: 9px; }
+.dev-role-badge::before {
+  content: ''; width: 11px; height: 9px; flex: none;
+  background: linear-gradient(180deg, #FFF3B8, #FFC83A 60%, #C98F00);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 20'%3E%3Cpath d='M2 14.5 1 4l6 4.6L12 1l5 7.6L23 4l-1 10.5z'/%3E%3Crect x='2' y='16' width='20' height='3' rx='1'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 20'%3E%3Cpath d='M2 14.5 1 4l6 4.6L12 1l5 7.6L23 4l-1 10.5z'/%3E%3Crect x='2' y='16' width='20' height='3' rx='1'/%3E%3C/svg%3E") center / contain no-repeat;
+}
 .dev-role-badge-lg { font-size: 11px; padding: 4px 10px; margin-bottom: 4px; }
 .profile-modal-email { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 24px; }
 .profile-modal-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 24px; }
@@ -4392,33 +4454,237 @@
 .pc-setting-hint.is-ok{ color: #6fe49a; }
 .pc-setting-hint.is-err{ color: #ff8a7a; }
 
-/* Кнопка "Создать новость" в шапке (только dev), слева от кнопки языков */
+/* Кнопка "Создать новость" в шапке (только dev), слева от кнопки языков.
+   Стеклянная золотая пилюля в том же стиле, что круглая dev-кнопка профиля; иконка — SVG, без эмодзи. */
 .dev-topnav-news-btn{
   position: fixed;
   top: 20px;
   right: 260px;
   z-index: 1001;
-  padding: 15px 30px;
-  border-radius: 50px;
-  border: 2px solid rgba(255,220,140,0.7);
-  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 55%, #C49100 100%);
-  color: #3a2600;
-  font-weight: 900;
-  font-size: 15px;
+  height: 52px;
+  padding: 0 24px 0 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 999px;
+  border: 2px solid rgba(255,205,110,0.6);
+  background:
+    radial-gradient(circle at 20% 25%, rgba(255,220,150,0.38), rgba(200,140,20,0.22) 60%, rgba(120,80,10,0.14) 100%),
+    linear-gradient(145deg, rgba(90,60,10,0.6), rgba(55,36,5,0.7));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #ffe9b0;
   font-family: 'Exo 2', sans-serif;
-  letter-spacing: 0.6px;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
   cursor: pointer;
+  overflow: hidden;
   box-shadow:
-    6px 6px 16px rgba(0,0,0,0.3),
-    0 0 10px rgba(255,200,58,0.5),
-    inset 2px 2px 6px rgba(255,255,255,0.25);
-  transition: all 0.2s ease;
+    0 6px 18px rgba(0,0,0,0.45),
+    0 0 0 1px rgba(0,0,0,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    inset 0 -2px 6px rgba(0,0,0,0.25),
+    0 0 14px rgba(255,190,60,0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
 }
-.dev-topnav-news-btn:hover{ filter: brightness(1.08); transform: translateY(-2px); }
+.dev-topnav-news-btn::after{
+  /* блик, пробегающий по кнопке при наведении */
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0; left: -60%;
+  width: 40%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.28), transparent);
+  transform: skewX(-18deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+.dev-topnav-news-btn .dtn-icon{
+  width: 36px; height: 36px; flex: 0 0 36px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 55%, #C49100 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), inset 0 -2px 4px rgba(120,80,0,0.35), 0 2px 6px rgba(0,0,0,0.4);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.dev-topnav-news-btn .dtn-icon svg{
+  width: 18px; height: 18px;
+  stroke: #3a2600; fill: none;
+  stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
+}
+.dev-topnav-news-btn:hover{
+  transform: translateY(-2px);
+  border-color: rgba(255,220,140,0.85);
+  box-shadow:
+    0 12px 28px rgba(0,0,0,0.55),
+    0 0 0 1px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.45),
+    inset 0 -2px 6px rgba(0,0,0,0.3),
+    0 0 26px rgba(255,190,60,0.45);
+}
+.dev-topnav-news-btn:hover::after{ left: 120%; }
+.dev-topnav-news-btn:hover .dtn-icon{ transform: rotate(90deg); }
+.dev-topnav-news-btn:active{ transform: translateY(-1px) scale(0.98); transition-duration: 0.1s; }
+.dev-topnav-news-btn:focus-visible{ outline: 2px solid #ffd76a; outline-offset: 3px; }
 @media (max-width: 900px) {
   .dev-topnav-news-btn{ position: static; margin: 8px auto; }
 }
+
+
+/* ───────── СОЗДАТЬ НОВОСТЬ: окно разработчика (cn-*) ───────── */
+.cn-box{
+  position: relative; width: 100%; max-width: 620px;
+  max-height: calc(100vh - 40px); overflow-y: auto; overflow-x: hidden;
+  background:
+    radial-gradient(120% 70% at 50% -10%, rgba(255,200,58,0.16), transparent 60%),
+    linear-gradient(160deg, rgba(14,40,28,0.96), rgba(7,22,15,0.97));
+  backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255,205,110,0.35);
+  border-radius: 28px; padding: 0; text-align: left;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 60px rgba(255,190,60,0.14), inset 0 1px 0 rgba(255,255,255,0.12);
+  transform: scale(0.9) translateY(10px); transition: transform .35s cubic-bezier(.08,1.3,.18,1);
+  scrollbar-width: thin; scrollbar-color: rgba(255,205,110,0.35) transparent;
+}
+.forgot-modal-overlay.show .cn-box{ transform: scale(1) translateY(0); }
+.cn-head{
+  display: flex; align-items: center; gap: 18px;
+  padding: 28px 32px 22px;
+  border-bottom: 1px solid rgba(255,205,110,0.16);
+  background: linear-gradient(180deg, rgba(255,200,58,0.08), transparent);
+}
+.cn-head-icon{
+  flex: 0 0 64px; width: 64px; height: 64px; border-radius: 20px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 55%, #C49100 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.65), inset 0 -3px 6px rgba(120,80,0,0.4), 0 8px 22px rgba(0,0,0,0.45), 0 0 26px rgba(255,190,60,0.4);
+}
+.cn-head-icon svg{ width: 32px; height: 32px; stroke: #3a2600; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.cn-title{
+  margin: 0; font-family: 'Orbitron','Exo 2',sans-serif; font-size: 26px; font-weight: 900; letter-spacing: 1.5px;
+  color: #ffd54a; text-shadow: 0 2px 0 #8a5a00, 0 4px 12px rgba(0,0,0,0.55), 0 0 18px rgba(255,200,58,0.35);
+}
+.cn-sub{ margin-top: 6px; font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.4; }
+.cn-close{
+  position: absolute; top: 18px; right: 18px; width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2);
+  transition: all .3s cubic-bezier(0.4,0,0.2,1);
+}
+.cn-close svg{ width: 18px; height: 18px; stroke: rgba(255,255,255,0.75); fill: none; stroke-width: 2.4; stroke-linecap: round; }
+.cn-close:hover{ background: rgba(255,255,255,0.18); transform: rotate(90deg); box-shadow: 0 0 20px rgba(255,205,110,0.4); }
+.cn-close:hover svg{ stroke: #fff; }
+.cn-body{ padding: 24px 32px 8px; display: flex; flex-direction: column; gap: 22px; }
+.cn-field{ display: flex; flex-direction: column; gap: 9px; }
+.cn-label-row{ display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.cn-label{ font-size: 12px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255,225,160,0.85); }
+.cn-count{ font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.4); font-variant-numeric: tabular-nums; transition: color .2s; }
+.cn-count.is-near{ color: #ffb347; }
+.cn-input{
+  width: 100%; box-sizing: border-box; padding: 15px 18px; border-radius: 16px;
+  background: rgba(0,0,0,0.38); border: 1.5px solid rgba(255,255,255,0.14);
+  color: #fff; font-family: 'Exo 2',sans-serif; font-size: 16px; font-weight: 600; line-height: 1.5; outline: none;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.35); transition: border-color .2s, box-shadow .2s;
+}
+.cn-input::placeholder{ color: rgba(255,255,255,0.32); font-weight: 500; }
+.cn-input:focus{ border-color: rgba(255,205,110,0.75); box-shadow: inset 0 2px 8px rgba(0,0,0,0.35), 0 0 0 4px rgba(255,190,60,0.16); }
+textarea.cn-input{ resize: vertical; min-height: 130px; max-height: 320px; }
+.cn-tags{ display: flex; flex-wrap: wrap; gap: 10px; }
+.cn-tag{
+  --c: #ffd54a;
+  appearance: none; display: inline-flex; align-items: center; gap: 9px;
+  padding: 10px 16px 10px 12px; border-radius: 999px; cursor: pointer;
+  font-family: 'Exo 2',sans-serif; font-size: 14px; font-weight: 800; letter-spacing: .3px;
+  color: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.16);
+  transition: all .22s cubic-bezier(0.4,0,0.2,1);
+}
+.cn-tag svg{ width: 18px; height: 18px; stroke: var(--c); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: stroke .2s; }
+.cn-tag:hover{ transform: translateY(-2px); border-color: var(--c); color: #fff; }
+.cn-tag.is-active{
+  color: #1a1204; border-color: var(--c);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--c) 100%, #fff 35%), var(--c));
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4), 0 0 18px color-mix(in srgb, var(--c) 55%, transparent), inset 0 1px 0 rgba(255,255,255,0.55);
+}
+.cn-tag.is-active svg{ stroke: #1a1204; }
+.cn-tag:focus-visible{ outline: 2px solid #ffd76a; outline-offset: 3px; }
+.cn-switch{
+  display: flex; align-items: center; gap: 16px; cursor: pointer; user-select: none;
+  padding: 14px 18px; border-radius: 16px;
+  background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.12); transition: all .2s;
+}
+.cn-switch:hover{ border-color: rgba(255,205,110,0.45); background: rgba(255,200,58,0.07); }
+.cn-switch input{ position: absolute; opacity: 0; pointer-events: none; }
+.cn-switch-track{
+  position: relative; flex: 0 0 52px; width: 52px; height: 30px; border-radius: 999px;
+  background: rgba(0,0,0,0.5); border: 1.5px solid rgba(255,255,255,0.2); transition: all .25s;
+}
+.cn-switch-track::after{
+  content: ''; position: absolute; top: 3px; left: 3px; width: 21px; height: 21px; border-radius: 50%;
+  background: linear-gradient(180deg,#fff,#cfcfcf); box-shadow: 0 2px 6px rgba(0,0,0,0.5); transition: transform .25s cubic-bezier(.3,1.4,.5,1), background .25s;
+}
+.cn-switch input:checked + .cn-switch-track{ background: linear-gradient(180deg,#FFC83A,#C49100); border-color: rgba(255,225,150,0.8); box-shadow: 0 0 16px rgba(255,190,60,0.45); }
+.cn-switch input:checked + .cn-switch-track::after{ transform: translateX(22px); background: linear-gradient(180deg,#fff,#ffe9b0); }
+.cn-switch input:focus-visible + .cn-switch-track{ outline: 2px solid #ffd76a; outline-offset: 3px; }
+.cn-switch-text{ display: flex; flex-direction: column; gap: 2px; }
+.cn-switch-title{ font-size: 15px; font-weight: 800; color: #fff; }
+.cn-switch-desc{ font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.35; }
+.cn-preview{
+  padding: 16px 18px; border-radius: 16px;
+  background: rgba(255,255,255,0.05); border: 1.5px dashed rgba(255,205,110,0.35);
+}
+.cn-preview.is-pinned{ border-style: solid; background: rgba(255,200,58,0.09); }
+.cn-preview-top{ display: flex; align-items: center; gap: 8px; margin-bottom: 8px; min-height: 22px; }
+.cn-preview-title{ font-weight: 800; font-size: 16px; color: #ffd54a; margin-bottom: 4px; word-break: break-word; }
+.cn-preview-body{ font-size: 14px; color: rgba(255,255,255,0.78); line-height: 1.5; word-break: break-word;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.cn-preview .is-ph{ opacity: .45; font-weight: 600; }
+.cn-hint{ min-height: 18px; font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.4); }
+.cn-hint.is-err{ color: #ff8a7a; }
+.cn-foot{ display: flex; gap: 14px; padding: 18px 32px 28px; }
+.cn-btn{
+  flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  height: 54px; border-radius: 16px; cursor: pointer;
+  font-family: 'Exo 2',sans-serif; font-size: 15px; font-weight: 900; letter-spacing: .8px; text-transform: uppercase;
+  transition: all .25s cubic-bezier(0.4,0,0.2,1);
+}
+.cn-btn svg{ width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s; }
+.cn-btn-cancel{ flex: 0 0 34%; color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.18); }
+.cn-btn-cancel:hover{ background: rgba(255,255,255,0.14); color: #fff; }
+.cn-btn-send{
+  color: #3a2600; border: 2px solid rgba(255,225,150,0.75);
+  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 55%, #C49100 100%);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.45), 0 0 20px rgba(255,190,60,0.4), inset 0 1px 0 rgba(255,255,255,0.65), inset 0 -3px 6px rgba(120,80,0,0.35);
+}
+.cn-btn-send:hover{ transform: translateY(-2px); filter: brightness(1.07); box-shadow: 0 14px 30px rgba(0,0,0,0.5), 0 0 30px rgba(255,190,60,0.55), inset 0 1px 0 rgba(255,255,255,0.65), inset 0 -3px 6px rgba(120,80,0,0.35); }
+.cn-btn-send:hover svg{ transform: translateX(4px); }
+.cn-btn-send:active{ transform: translateY(0) scale(.98); }
+.cn-btn:disabled{ opacity: .55; cursor: wait; transform: none; filter: none; }
+.cn-btn:focus-visible{ outline: 2px solid #ffd76a; outline-offset: 3px; }
+@media (max-width: 560px){
+  .cn-head{ padding: 22px 20px 18px; gap: 14px; }
+  .cn-head-icon{ flex-basis: 52px; width: 52px; height: 52px; border-radius: 16px; }
+  .cn-title{ font-size: 20px; padding-right: 36px; }
+  .cn-body{ padding: 20px 20px 6px; }
+  .cn-foot{ padding: 14px 20px 22px; flex-direction: column-reverse; }
+  .cn-btn-cancel{ flex: 1 1 auto; }
+}
+
+/* Метки новостей — в колокольчике, превью и окне «Подробнее» */
+.news-tag-badge{
+  --c: #ffd54a;
+  display: inline-flex; align-items: center; gap: 5px; padding: 2px 9px 2px 7px; border-radius: 999px;
+  font-size: 10.5px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; line-height: 1.5;
+  color: var(--c); background: color-mix(in srgb, var(--c) 16%, transparent); border: 1px solid color-mix(in srgb, var(--c) 55%, transparent);
+}
+.news-tag-badge svg{ width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.news-pin-mark{ display: inline-flex; color: rgba(255,225,160,0.85); }
+.news-pin-mark svg{ width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.bell-news-top{ display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+.news-detail-tagrow{ display: flex; justify-content: center; margin: 0 0 10px; }
+.news-detail-tagrow:empty{ display: none; }
 
 /* Danger zone */
 .profile-danger{
@@ -6966,6 +7232,151 @@ body:not(.hero-anim) .subtitle .ch{
   .cmp-tag{ flex: 0 0 54px; }
   .cmp-f .cmp-tag{ color: rgba(255,255,255,0.45); }
 }
+  
+/* ============ ARCADE: обновлённый вид игрового экрана ============ */
+.arcade-stage-overlay{
+  background:
+    radial-gradient(ellipse at 50% -10%, rgba(40,90,60,0.55), transparent 60%),
+    radial-gradient(ellipse at 90% 100%, rgba(167,139,250,0.10), transparent 55%),
+    linear-gradient(180deg, #07130d, #040a07);
+}
+.arcade-hud-row{ display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+.arcade-hud-score strong{ color: var(--e3-gold); text-shadow: 0 0 14px rgba(255,216,77,0.45); }
+#arcadeDodgeCanvas{
+  max-width: none !important; max-height: none !important; flex: 0 0 auto;
+  border: 1px solid rgba(74,222,128,0.35); border-radius: 18px; cursor: crosshair; background: #06100b;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.6), 0 0 50px rgba(74,222,128,0.12), var(--e3-shadow-xl);
+}
+.arcade-follow-chip{
+  position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%); z-index: 6; pointer-events: none;
+  display: inline-flex; align-items: center; gap: 9px; padding: 8px 16px; border-radius: 999px; white-space: nowrap;
+  font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: rgba(255,255,255,0.78);
+  background: rgba(4,12,8,0.62); border: 1px solid rgba(255,255,255,0.16);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: border-color .25s ease, color .25s ease;
+}
+.arcade-follow-chip .dot{ width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.45); transition: all .25s ease; }
+.arcade-follow-chip .is-follow{ display: none; }
+.arcade-follow-chip.following{ border-color: rgba(74,222,128,0.6); color: #eafff2; }
+.arcade-follow-chip.following .dot{ background: #4ade80; box-shadow: 0 0 10px #4ade80; animation: dotPulse 1.2s ease-in-out infinite; }
+.arcade-follow-chip.following .is-idle{ display: none; }
+.arcade-follow-chip.following .is-follow{ display: inline; }
+.arcade-stage-overlay.is-touch .arcade-follow-chip{ display: none; }
+@media (max-width: 720px){ #arcadeDodgeCanvas{ border-radius: 12px; } .arcade-hud-row{ gap: 16px; } }
+
+/* ============ ПРОФИЛЬ: компактная шапка и вкладки ============ */
+.pm-meta{ display: flex; justify-content: center; align-items: center; gap: 8px; margin: -8px 0 18px; font-size: 13px; color: rgba(255,255,255,0.55); }
+.pm-meta b{ color: #fff; font-weight: 700; }
+.pm-tabs{
+  display: flex; gap: 6px; padding: 5px; margin: 0 0 18px; border-radius: 14px;
+  background: rgba(255,255,255,0.05); border: 1px solid var(--e3-border);
+}
+.pm-tab{
+  flex: 1; padding: 10px 14px; border-radius: 10px; border: 1px solid transparent; cursor: pointer;
+  background: transparent; color: rgba(255,255,255,0.6); font: inherit; font-weight: 800; font-size: 13px; letter-spacing: .5px;
+  transition: all .2s ease;
+}
+.pm-tab:hover{ color: #fff; background: rgba(255,255,255,0.06); }
+.pm-tab.is-active{ color: #fff; background: rgba(74,222,128,0.16); border-color: rgba(74,222,128,0.45); box-shadow: 0 0 18px rgba(74,222,128,0.12); }
+.pm-pane{ display: none; }
+.pm-pane.is-active{ display: block; animation: arcadeFadeIn .25s ease; }
+  
+/* ============ ROADMAP v2 ============ */
+.rm2-top{ display: grid; grid-template-columns: minmax(260px, 330px) 1fr; gap: 24px; max-width: 1160px; margin: 0 auto 44px; align-items: stretch; }
+.rm2-ring-card, .rm2-now, .rm2-stage{
+  position: relative; border-radius: 24px; border: 1px solid var(--e3-border);
+  background: linear-gradient(160deg, rgba(255,255,255,0.09), rgba(255,255,255,0.025));
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--e3-shadow-lg), inset 0 1px 0 rgba(255,255,255,0.09);
+}
+.rm2-ring-card{ display: flex; align-items: center; gap: 22px; padding: 24px; }
+.rm2-ring{ position: relative; width: 132px; height: 132px; flex: 0 0 132px; }
+.rm2-ring svg{ width: 100%; height: 100%; }
+.rm2-ring-bg{ fill: none; stroke: rgba(255,255,255,0.09); stroke-width: 10; }
+.rm2-ring-fg{
+  fill: none; stroke: url(#rm2Grad); stroke-width: 10; stroke-linecap: round;
+  stroke-dasharray: var(--c); stroke-dashoffset: var(--c);
+  filter: drop-shadow(0 0 8px rgba(74,222,128,0.55)); transition: stroke-dashoffset 1.8s var(--e3-ease) .2s;
+}
+.in .rm2-ring-fg, .rm2-ring-card.in .rm2-ring-fg{ stroke-dashoffset: var(--off); }
+.rm2-ring-num{ position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.rm2-ring-num strong{ font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 900; color: #fff; text-shadow: 0 0 16px rgba(74,222,128,0.5); }
+.rm2-ring-num span{ font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); font-weight: 700; margin-top: 2px; }
+.rm2-legend{ display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.rm2-legend-i{ display: flex; align-items: center; gap: 9px; font-size: 13px; color: rgba(255,255,255,0.8); }
+.rm2-legend-i i{ width: 10px; height: 10px; border-radius: 50%; flex: 0 0 10px; }
+.rm2-legend-i b{ margin-left: auto; font-family: 'Orbitron', sans-serif; color: #fff; }
+.rm2-legend-i.is-done i{ background: #2dd4bf; box-shadow: 0 0 10px rgba(45,212,191,0.8); }
+.rm2-legend-i.is-now i{ background: var(--e3-gold); box-shadow: 0 0 10px rgba(255,216,77,0.8); }
+.rm2-legend-i.is-future i{ background: #9ca3af; }
+
+.rm2-now{ display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 28px 30px; overflow: hidden; isolation: isolate; border-color: rgba(255,216,77,0.4); background: radial-gradient(120% 90% at 100% 0%, rgba(255,216,77,0.14), transparent 60%), linear-gradient(160deg, rgba(255,255,255,0.09), rgba(255,255,255,0.025)); }
+.rm2-now-glow{ position: absolute; inset: -1px; border-radius: inherit; padding: 1px; z-index: -1; background: linear-gradient(135deg, rgba(255,216,77,0.85), transparent 50%, rgba(74,222,128,0.5)); -webkit-mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000); mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000); -webkit-mask-composite: xor; mask-composite: exclude; opacity: .6; pointer-events: none; }
+.rm2-now-label{ display: inline-flex; align-items: center; gap: 10px; font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--e3-gold); }
+.rm2-now-pulse{ width: 9px; height: 9px; border-radius: 50%; background: var(--e3-gold); box-shadow: 0 0 12px var(--e3-gold); animation: dotPulse 1.5s ease-in-out infinite; }
+.rm2-now-task{ font-family: 'Exo 2','Orbitron',sans-serif; font-weight: 800; font-size: clamp(20px, 2.4vw, 28px); line-height: 1.25; color: #fff; }
+
+.rm2-bar-row{ display: flex; align-items: center; gap: 12px; }
+.rm2-bar-row b{ font-family: 'Orbitron', sans-serif; font-size: 12px; color: rgba(255,255,255,0.8); min-width: 38px; text-align: right; }
+.rm2-bar{ flex: 1; height: 8px; border-radius: 999px; background: rgba(255,255,255,0.09); overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.35); }
+.rm2-bar > i{ display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, #4ade80, #ffd84d); box-shadow: 0 0 12px rgba(74,222,128,0.5); transition: width 1.4s var(--e3-ease) .3s; }
+.in .rm2-bar > i{ width: var(--p, 0%); }
+
+.rm2-stages{ display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; max-width: 1160px; margin: 0 auto; padding-top: 22px; }
+.rm2-stage{ padding: 34px 22px 22px; display: flex; flex-direction: column; gap: 12px; transition: transform .35s var(--e3-ease), border-color .35s ease, box-shadow .35s ease; }
+.rm2-stage:hover{ transform: translateY(-6px); box-shadow: var(--e3-shadow-xl), inset 0 1px 0 rgba(255,255,255,0.12); }
+.rm2-stage.is-done{ border-color: rgba(45,212,191,0.4); }
+.rm2-stage.is-now{ border-color: rgba(255,216,77,0.5); box-shadow: var(--e3-shadow-lg), 0 0 40px rgba(255,216,77,0.10), inset 0 1px 0 rgba(255,255,255,0.09); }
+.rm2-stage.is-future{ border-style: dashed; border-color: rgba(255,255,255,0.2); }
+.rm2-stage.is-future .rm2-stage-name{ color: rgba(255,255,255,0.78); }
+.rm2-node{
+  position: absolute; top: -20px; left: 22px; width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 15px; color: #06100b;
+  background: radial-gradient(circle at 30% 30%, #fff, #2dd4bf 65%, #0e5d57); box-shadow: 0 0 0 5px rgba(45,212,191,0.16), 0 0 20px rgba(45,212,191,0.6); z-index: 2;
+}
+.rm2-node svg{ width: 18px; height: 18px; }
+.rm2-stage.is-now .rm2-node{ background: radial-gradient(circle at 30% 30%, #fff, #ffd84d 60%, #b98400); box-shadow: 0 0 0 5px rgba(255,216,77,0.18), 0 0 22px rgba(255,216,77,0.7); animation: tlNowPulse 1.5s ease-in-out infinite; }
+.rm2-stage.is-future .rm2-node{ background: #1a2a22; color: rgba(255,255,255,0.7); border: 2px dashed rgba(255,255,255,0.35); box-shadow: none; }
+@media (min-width: 1100px){
+  .rm2-stage:not(:last-child)::after{
+    content: ""; position: absolute; top: -2px; left: 66px; width: calc(100% - 22px); height: 4px; border-radius: 2px; z-index: 1; pointer-events: none;
+    background: linear-gradient(90deg, #2dd4bf, #2dd4bf);
+  }
+  .rm2-stage.is-now:not(:last-child)::after{ background: repeating-linear-gradient(90deg, rgba(255,216,77,0.85) 0 10px, transparent 10px 18px); }
+  .rm2-stage.is-future:not(:last-child)::after{ background: repeating-linear-gradient(90deg, rgba(255,255,255,0.3) 0 8px, transparent 8px 16px); height: 3px; }
+}
+.rm2-stage-head{ display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.rm2-stage-kicker{ font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.55); font-weight: 700; }
+.rm2-chip{ padding: 4px 11px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: .5px; border: 1px solid; }
+.is-done > .rm2-stage-head .rm2-chip{ background: rgba(45,212,191,0.15); border-color: rgba(45,212,191,0.5); color: #bff1ea; }
+.is-now > .rm2-stage-head .rm2-chip{ background: rgba(255,216,77,0.16); border-color: rgba(255,216,77,0.5); color: #ffe995; }
+.is-future > .rm2-stage-head .rm2-chip{ background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); color: #e5e7eb; }
+.rm2-stage-name{ font-family: 'Exo 2','Orbitron',sans-serif; font-weight: 900; font-size: 20px; letter-spacing: .5px; line-height: 1.2; color: #fff; }
+.rm2-tasks{ list-style: none; display: flex; flex-direction: column; gap: 11px; margin-top: 4px; }
+.rm2-task{ display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.45; color: rgba(255,255,255,0.85); }
+.rm2-task-ic{ flex: 0 0 20px; width: 20px; height: 20px; margin-top: 1px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1.5px solid rgba(255,255,255,0.28); color: #06100b; }
+.rm2-task-ic svg{ width: 11px; height: 11px; }
+.rm2-task.is-done .rm2-task-ic{ background: #2dd4bf; border-color: #2dd4bf; box-shadow: 0 0 10px rgba(45,212,191,0.5); }
+.rm2-task.is-done .rm2-task-txt{ color: rgba(255,255,255,0.7); }
+.rm2-task.is-now{ color: #fff; font-weight: 700; }
+.rm2-task.is-now .rm2-task-ic{ border-color: rgba(255,216,77,0.9); border-top-color: transparent; animation: rm2Spin 1s linear infinite; }
+.rm2-task.is-future{ color: rgba(255,255,255,0.6); }
+.rm2-task-pct{ margin-left: auto; font-style: normal; font-family: 'Orbitron', sans-serif; font-size: 11px; color: var(--e3-gold); padding-top: 3px; }
+@keyframes rm2Spin{ to{ transform: rotate(360deg); } }
+
+.rm2-stage, .rm2-now, .rm2-ring-card{ text-align: left; }
+.rm2-ring{ width: 118px; height: 118px; flex-basis: 118px; }
+.rm2-ring-card{ gap: 18px; padding: 22px; }
+.rm2-legend-i{ font-size: 12.5px; gap: 8px; }
+.rm2-legend-i b{ padding-left: 8px; }
+@media (max-width: 1099px){ .rm2-stages{ grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 34px 22px; padding-top: 22px; } }
+@media (max-width: 860px){ .rm2-top{ grid-template-columns: 1fr; } }
+@media (max-width: 640px){
+  .rm2-stages{ grid-template-columns: 1fr; gap: 34px; max-width: 560px; }
+  .rm2-ring-card{ padding: 20px; gap: 18px; }
+  .rm2-ring{ width: 112px; height: 112px; flex-basis: 112px; }
+  .rm2-now{ padding: 22px 20px; }
+  .rm2-stage:hover{ transform: none; }
+}
   </style>
   <!-- ============ Firebase SDK (compat, для совместимости с существующим классическим <script>) ============ -->
   <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
@@ -7156,19 +7567,43 @@ body:not(.hero-anim) .subtitle .ch{
 
       <!-- Профиль (разработчик): точная копия обычной иконки, но целиком золотая
            (не просто золотая обводка на зелёном корпусе, а весь корпус золотой) -->
-      <symbol id="e3-ic-profile-hex-dev" viewBox="0 0 32 32">
-        <circle cx="16" cy="16" r="15" fill="url(#e3g-glow-gold)"/>
+      <linearGradient id="e3g-dv-rim" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#FFF3B8"/>
+        <stop offset="35%" stop-color="#F5B72E"/>
+        <stop offset="65%" stop-color="#9A6400"/>
+        <stop offset="100%" stop-color="#FFD866"/>
+      </linearGradient>
+      <radialGradient id="e3g-dv-body" cx="35%" cy="25%" r="85%">
+        <stop offset="0%" stop-color="#2f6a4c"/>
+        <stop offset="55%" stop-color="#123a28"/>
+        <stop offset="100%" stop-color="#06150e"/>
+      </radialGradient>
+      <linearGradient id="e3g-dv-gold" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#FFF6C9"/>
+        <stop offset="50%" stop-color="#FFC93C"/>
+        <stop offset="100%" stop-color="#B27800"/>
+      </linearGradient>
+      <symbol id="e3-ic-profile-hex-dev" viewBox="0 -7 32 39">
+        <circle cx="16" cy="16" r="15" fill="url(#e3g-glow-gold)" opacity="0.7"/>
         <path d="M16 2.6 L28.4 9.7 L28.4 22.3 L16 29.4 L3.6 22.3 L3.6 9.7 Z"
-              fill="url(#e3g-gold-dev)" stroke="url(#e3g-gold)" stroke-width="1.8" stroke-linejoin="round"/>
-        <path d="M16 4.8 L26.4 10.8 L26.4 21.2 L16 27.2 L5.6 21.2 L5.6 10.8 Z"
-              fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="0.6"/>
-        <circle cx="16" cy="13.3" r="3.7"
-                fill="url(#e3g-gold-soft)" stroke="rgba(122,74,0,0.6)" stroke-width="0.4"/>
-        <ellipse cx="14.55" cy="11.85" rx="1.25" ry="0.65" fill="#FFFFFF" opacity="0.85"/>
-        <path d="M9 24.2 C9 19.5, 11.5 17.7, 16 17.7 C20.5 17.7, 23 19.5, 23 24.2 L23 24.7 C23 25.0, 22.7 25.3, 22.4 25.3 L9.6 25.3 C9.3 25.3, 9 25.0, 9 24.7 Z"
-              fill="url(#e3g-gold-soft)" stroke="rgba(122,74,0,0.6)" stroke-width="0.4"/>
-        <path d="M11 21.4 C12.5 19.3, 14.8 18.9, 16 19"
-              stroke="rgba(122,74,0,0.7)" stroke-width="0.55" fill="none" stroke-linecap="round"/>
+              fill="url(#e3g-dv-body)" stroke="url(#e3g-dv-rim)" stroke-width="1.7" stroke-linejoin="round"/>
+        <path d="M16 5 L26.3 10.9 L26.3 21.1 L16 27 L5.7 21.1 L5.7 10.9 Z"
+              fill="none" stroke="rgba(255,210,100,0.28)" stroke-width="0.5"/>
+        <path d="M16 3.4 L27.7 10.1 L27.7 14.2 Q16 18.6 4.3 14.2 L4.3 10.1 Z" fill="#fff" opacity="0.07"/>
+        <circle cx="16" cy="14.2" r="3.3" fill="url(#e3g-dv-gold)"/>
+        <path d="M9.4 24.6 C9.4 20.4, 12 18.6, 16 18.6 C20 18.6, 22.6 20.4, 22.6 24.6 L22.6 25 C22.6 25.3, 22.3 25.6, 22 25.6 L10 25.6 C9.7 25.6, 9.4 25.3, 9.4 25 Z"
+              fill="url(#e3g-dv-gold)"/>
+        <path d="M8.5 6.3 L7.4 -0.6 L11.6 2.8 L16 -3.8 L20.4 2.8 L24.6 -0.6 L23.5 6.3 Z"
+              fill="rgba(0,0,0,0.4)" transform="translate(0.5,0.9)"/>
+        <path d="M8.5 5.6 L7.4 -1.2 L11.6 2.2 L16 -4.6 L20.4 2.2 L24.6 -1.2 L23.5 5.6 Z"
+              fill="url(#e3g-dv-gold)" stroke="#4a2c00" stroke-width="0.55" stroke-linejoin="round"/>
+        <rect x="8.2" y="4.5" width="15.6" height="2.5" rx="0.7" fill="url(#e3g-dv-gold)" stroke="#4a2c00" stroke-width="0.5"/>
+        <circle cx="16" cy="1.6" r="1.05" fill="#ff4d63" stroke="#5a0b18" stroke-width="0.3"/>
+        <circle cx="15.65" cy="1.25" r="0.35" fill="#ffd3da"/>
+        <circle cx="7.4" cy="-1.4" r="0.85" fill="#FFF3B8" stroke="#4a2c00" stroke-width="0.3"/>
+        <circle cx="16" cy="-4.8" r="0.95" fill="#FFF3B8" stroke="#4a2c00" stroke-width="0.3"/>
+        <circle cx="24.6" cy="-1.4" r="0.85" fill="#FFF3B8" stroke="#4a2c00" stroke-width="0.3"/>
+        <path d="M9.6 4 L11 1.6" stroke="rgba(255,255,255,0.75)" stroke-width="0.5" stroke-linecap="round"/>
       </symbol>
 
       <!-- Профиль (обычный пользователь): СЕРЕБРЯНЫЙ гекс-бэйдж -->
@@ -7302,17 +7737,17 @@ body:not(.hero-anim) .subtitle .ch{
         </div>
       </div>
       <button class="profile-dd-item" onclick="openProfileModal()" data-i18n="auth-profile">
-        <svg class="ic-svg-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-profile-hex-silver"/></svg>
-        Профиль
+        <svg class="dd-ic" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+        <span class="dd-label">Профиль</span>
       </button>
       <button class="profile-dd-item" id="devParticipantsDdItem" style="display:none;" onclick="openParticipantsModal()">
-        <svg class="ic-svg-mini" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <svg class="dd-ic" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.6"/><path d="M2.5 20c0-3.6 3-5.4 6.5-5.4s6.5 1.8 6.5 5.4"/><path d="M16 4.6a3.6 3.6 0 0 1 0 6.8"/><path d="M18.5 14.8c1.9.7 3 2.2 3 5.2"/></svg>
         <span data-i18n="dev-btn-participants">Участники</span>
       </button>
       <div class="profile-dd-divider"></div>
       <button class="profile-dd-item danger" onclick="openConfirmLogout()" data-i18n="auth-logout">
-        <svg class="ic-svg-mini" aria-hidden="true" focusable="false"><use href="#e3-ic-logout"/></svg>
-        Выйти
+        <svg class="dd-ic" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4H5.5A1.5 1.5 0 0 0 4 5.5v13A1.5 1.5 0 0 0 5.5 20H10"/><path d="M15 8l4 4-4 4"/><path d="M19 12H9.5"/></svg>
+        <span class="dd-label">Выйти</span>
       </button>
     </div>
   </div>
@@ -7320,6 +7755,7 @@ body:not(.hero-anim) .subtitle .ch{
 
 <!-- Кнопка "Создать новость" — отдельно в шапке, слева от кнопки языков, видна только dev -->
 <button class="dev-topnav-news-btn" id="devTopNewsBtn" style="display:none;" onclick="openCreateNewsModal()">
+  <span class="dtn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
   <span data-i18n="dev-btn-create-news">Создать новость</span>
 </button>
 
@@ -7458,21 +7894,14 @@ body:not(.hero-anim) .subtitle .ch{
     </div>
     <div class="profile-modal-name-row"><div class="profile-modal-name" id="pmName"></div><span class="dev-role-badge dev-role-badge-lg" id="pmDevBadge" style="display:none;" data-i18n="dev-role-badge">Разработчик</span></div>
     <div class="profile-modal-email" id="pmEmail">—</div>
-<div class="profile-modal-fields">
-  <div class="profile-modal-field">
-    <span class="pmf-label" data-i18n="profile-field-email">📧 Email</span>
-    <span class="pmf-value" id="pmEmail2">—</span>
-  </div>
-  <div class="profile-modal-field">
-    <span class="pmf-label" data-i18n="profile-field-language">🌍 Язык</span>
-    <span class="pmf-value" id="pmLang">—</span>
-  </div>
-  <div class="profile-modal-field">
-    <span class="pmf-label" data-i18n="profile-field-joined">📅 В проекте с</span>
-    <span class="pmf-value" id="pmJoined">—</span>
-  </div>
+<div class="pm-meta"><span data-i18n="profile-field-joined">📅 В проекте с</span><b id="pmJoined">—</b></div>
+
+<div class="pm-tabs" role="tablist">
+  <button type="button" class="pm-tab is-active" role="tab" aria-selected="true" data-pm-tab="overview" data-i18n="pm-tab-profile">Профиль</button>
+  <button type="button" class="pm-tab" role="tab" aria-selected="false" data-pm-tab="security" data-i18n="pm-tab-security">Безопасность</button>
 </div>
 
+<div class="pm-pane is-active" data-pm-pane="overview">
 <!-- ====== EVADES CRYSTALS (daily reward) ====== -->
 <div class="profile-card profile-crystals">
   <div class="pc-head">
@@ -7501,29 +7930,6 @@ body:not(.hero-anim) .subtitle .ch{
   <div class="pc-crystals-tip" id="pmCrystalsTip" data-i18n="pm-crystals-tip">Серия повышает награду до +100 💎</div>
 </div>
 
-<!-- ====== AIM TRAINER (mini-game) ====== -->
-<div class="profile-card profile-aim">
-  <div class="pc-head">
-    <span class="pc-icon pc-icon-aim">🎯</span>
-    <div class="pc-text">
-      <div class="pc-title" data-i18n="pm-aim-title">Тренировка реакции</div>
-      <div class="pc-sub" data-i18n="pm-aim-sub">Кликни 10 целей как можно быстрее. Лучшее время — твоё навсегда.</div>
-    </div>
-    <span class="pc-tag pc-tag-mini" data-i18n="pm-aim-tag">Мини-игра</span>
-  </div>
-  <div class="pc-aim-stats">
-    <div class="pc-aim-stat">
-      <div class="pc-aim-stat-lbl" data-i18n="pm-aim-best">Лучшее</div>
-      <div class="pc-aim-stat-val" id="pmAimBest">—</div>
-    </div>
-    <div class="pc-aim-stat">
-      <div class="pc-aim-stat-lbl" data-i18n="pm-aim-plays">Игр</div>
-      <div class="pc-aim-stat-val" id="pmAimPlays">0</div>
-    </div>
-  </div>
-  <button type="button" class="pc-aim-btn" id="pmAimPlayBtn" data-i18n="pm-aim-play">Играть</button>
-</div>
-
 <!-- ====== AVATAR FRAME PICKER ====== -->
 <div class="profile-card">
   <div class="pc-head">
@@ -7539,6 +7945,33 @@ body:not(.hero-anim) .subtitle .ch{
     <button type="button" class="pc-frame"            data-frame="emerald" title="Emerald" style="--f1:#7fffc8;--f2:#1f9b6a"></button>
     <button type="button" class="pc-frame"            data-frame="ruby"    title="Ruby"    style="--f1:#ff9bb0;--f2:#cf2f4a"></button>
     <button type="button" class="pc-frame"            data-frame="cosmic"  title="Cosmic"  style="--f1:#b78bff;--f2:#3a25ff"></button>
+  </div>
+</div>
+
+</div>
+<div class="pm-pane" data-pm-pane="security">
+<!-- Security / 2FA card -->
+<div class="profile-security" id="profileSecurity">
+  <div class="ps-head">
+    <span class="ps-shield" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </span>
+    <div class="ps-text">
+      <div class="ps-title" data-i18n="security-2fa-title">Двухфакторная аутентификация</div>
+      <div class="ps-sub" data-i18n="security-2fa-sub">Дополнительная защита аккаунта через приложение-аутентификатор</div>
+    </div>
+    <span class="ps-status" id="ps2faStatus" data-state="off">
+      <span class="ps-status-dot"></span>
+      <span class="ps-status-label" data-i18n="security-2fa-status-off">Выключено</span>
+    </span>
+  </div>
+  <div class="ps-actions">
+    <button type="button" class="ps-btn ps-btn-primary" id="ps2faEnableBtn" onclick="open2faSetupModal()">
+      <span data-i18n="security-2fa-enable">Включить 2FA</span>
+    </button>
+    <button type="button" class="ps-btn ps-btn-danger" id="ps2faDisableBtn" onclick="confirm2faDisable()" hidden>
+      <span data-i18n="security-2fa-disable">Отключить 2FA</span>
+    </button>
   </div>
 </div>
 
@@ -7614,35 +8047,8 @@ body:not(.hero-anim) .subtitle .ch{
   <button type="button" class="pc-danger-btn" id="pmDeleteBtn" data-i18n="pm-danger-delete">Удалить аккаунт</button>
 </div>
 
-<!-- Security / 2FA card -->
-<div class="profile-security" id="profileSecurity">
-  <div class="ps-head">
-    <span class="ps-shield" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-    </span>
-    <div class="ps-text">
-      <div class="ps-title" data-i18n="security-2fa-title">Двухфакторная аутентификация</div>
-      <div class="ps-sub" data-i18n="security-2fa-sub">Дополнительная защита аккаунта через приложение-аутентификатор</div>
-    </div>
-    <span class="ps-status" id="ps2faStatus" data-state="off">
-      <span class="ps-status-dot"></span>
-      <span class="ps-status-label" data-i18n="security-2fa-status-off">Выключено</span>
-    </span>
-  </div>
-  <div class="ps-actions">
-    <button type="button" class="ps-btn ps-btn-primary" id="ps2faEnableBtn" onclick="open2faSetupModal()">
-      <span data-i18n="security-2fa-enable">Включить 2FA</span>
-    </button>
-    <button type="button" class="ps-btn ps-btn-danger" id="ps2faDisableBtn" onclick="confirm2faDisable()" hidden>
-      <span data-i18n="security-2fa-disable">Отключить 2FA</span>
-    </button>
-  </div>
 </div>
 
-    <div class="profile-modal-badge">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-      В системе
-    </div>
   </div>
 </div>
 
@@ -7856,24 +8262,61 @@ body:not(.hero-anim) .subtitle .ch{
 
 <!-- ─── MODAL: СОЗДАТЬ НОВОСТЬ (dev) ─── -->
 <div class="forgot-modal-overlay" id="createNewsModalOverlay" onclick="closeCreateNewsOnBg(event)">
-  <div class="forgot-modal-box">
-    <button class="forgot-modal-close" onclick="closeCreateNewsModal()">✕</button>
-    <div class="forgot-icon-wrap">📰</div>
-    <div class="forgot-title" data-i18n="news-modal-title">Создать новость</div>
-    <div style="display:flex; flex-direction:column; gap:12px; text-align:left;">
+  <div class="cn-box" role="dialog" aria-modal="true" aria-labelledby="cnTitle">
+    <button class="cn-close" type="button" onclick="closeCreateNewsModal()" aria-label="Закрыть"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="cn-head">
+      <div class="cn-head-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg></div>
       <div>
-        <label class="pc-setting-label" data-i18n="news-title-label">Заголовок</label>
-        <input class="af-input news-input" id="newsTitleInput" type="text" maxlength="80" data-i18n-placeholder="news-title-placeholder" placeholder="Введите заголовок" />
+        <h2 class="cn-title" id="cnTitle" data-i18n="news-modal-title">Создать новость</h2>
+        <div class="cn-sub" data-i18n="news-modal-sub">Её увидят все игроки в колокольчике</div>
       </div>
-      <div>
-        <label class="pc-setting-label" data-i18n="news-body-label">Описание</label>
-        <textarea class="af-input news-input news-textarea" id="newsBodyInput" maxlength="600" rows="4" data-i18n-placeholder="news-body-placeholder" placeholder="Введите описание"></textarea>
-      </div>
-      <div id="newsFormHint" class="af-hint" style="min-height:16px;"></div>
     </div>
-    <div class="forgot-btns">
-      <button class="forgot-btn-cancel" onclick="closeCreateNewsModal()" data-i18n="news-cancel-btn">Отмена</button>
-      <button class="forgot-btn-send" id="newsSendBtn" onclick="submitCreateNews()" data-i18n="news-send-btn">Опубликовать →</button>
+    <div class="cn-body">
+      <div class="cn-field">
+        <div class="cn-label-row"><span class="cn-label" data-i18n="news-tag-label">Метка</span></div>
+        <div class="cn-tags" id="cnTags">
+        <button type="button" class="cn-tag is-active" data-tag="news" style="--c:#ffd54a" onclick="cnSelectTag('news')" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><span data-i18n="news-tag-news">Новость</span></button>
+        <button type="button" class="cn-tag" data-tag="update" style="--c:#4ade80" onclick="cnSelectTag('update')" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg><span data-i18n="news-tag-update">Обновление</span></button>
+        <button type="button" class="cn-tag" data-tag="event" style="--c:#c49bff" onclick="cnSelectTag('event')" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/></svg><span data-i18n="news-tag-event">Событие</span></button>
+        <button type="button" class="cn-tag" data-tag="fix" style="--c:#6cb6ff" onclick="cnSelectTag('fix')" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg><span data-i18n="news-tag-fix">Исправление</span></button>
+        <button type="button" class="cn-tag" data-tag="important" style="--c:#ff8a6b" onclick="cnSelectTag('important')" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l10 18H2L12 3z"/><path d="M12 10v5M12 18h.01"/></svg><span data-i18n="news-tag-important">Важное</span></button>
+        </div>
+      </div>
+      <div class="cn-field">
+        <div class="cn-label-row">
+          <label class="cn-label" for="newsTitleInput" data-i18n="news-title-label">Заголовок</label>
+          <span class="cn-count" id="cnTitleCount">0/80</span>
+        </div>
+        <input class="cn-input" id="newsTitleInput" type="text" maxlength="80" autocomplete="off" oninput="cnUpdatePreview()" data-i18n-placeholder="news-title-placeholder" placeholder="Введите заголовок" />
+      </div>
+      <div class="cn-field">
+        <div class="cn-label-row">
+          <label class="cn-label" for="newsBodyInput" data-i18n="news-body-label">Описание</label>
+          <span class="cn-count" id="cnBodyCount">0/600</span>
+        </div>
+        <textarea class="cn-input" id="newsBodyInput" maxlength="600" rows="5" oninput="cnUpdatePreview()" data-i18n-placeholder="news-body-placeholder" placeholder="Введите описание"></textarea>
+      </div>
+      <label class="cn-switch">
+        <input type="checkbox" id="cnPinned" onchange="cnUpdatePreview()" />
+        <span class="cn-switch-track" aria-hidden="true"></span>
+        <span class="cn-switch-text">
+          <span class="cn-switch-title" data-i18n="news-pin-label">Закрепить вверху</span>
+          <span class="cn-switch-desc" data-i18n="news-pin-hint">Новость будет выше остальных в списке</span>
+        </span>
+      </label>
+      <div class="cn-field">
+        <div class="cn-label-row"><span class="cn-label" data-i18n="news-preview-label">Так увидят игроки</span></div>
+        <div class="cn-preview" id="cnPreview">
+          <div class="cn-preview-top" id="cnPreviewTop"></div>
+          <div class="cn-preview-title" id="cnPreviewTitle"></div>
+          <div class="cn-preview-body" id="cnPreviewBody"></div>
+        </div>
+      </div>
+      <div id="newsFormHint" class="cn-hint"></div>
+    </div>
+    <div class="cn-foot">
+      <button type="button" class="cn-btn cn-btn-cancel" onclick="closeCreateNewsModal()" data-i18n="news-cancel-btn">Отмена</button>
+      <button type="button" class="cn-btn cn-btn-send" id="newsSendBtn" onclick="submitCreateNews()"><span data-i18n="news-publish-btn">Опубликовать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
     </div>
   </div>
 </div>
@@ -7881,8 +8324,9 @@ body:not(.hero-anim) .subtitle .ch{
 <!-- ─── MODAL: ПОЛНЫЙ ТЕКСТ НОВОСТИ ─── -->
 <div class="forgot-modal-overlay" id="newsDetailOverlay" onclick="closeNewsDetailOnBg(event)">
   <div class="forgot-modal-box">
-    <button class="forgot-modal-close" onclick="closeNewsDetailModal()">✕</button>
-    <div class="forgot-icon-wrap">📰</div>
+    <button class="forgot-modal-close" onclick="closeNewsDetailModal()" aria-label="Закрыть"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="forgot-icon-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></div>
+    <div class="news-detail-tagrow" id="newsDetailTag"></div>
     <div class="forgot-title" id="newsDetailTitle"></div>
     <div class="forgot-desc news-detail-body" id="newsDetailBody"></div>
     <div class="forgot-btns">
@@ -8601,9 +9045,15 @@ body:not(.hero-anim) .subtitle .ch{
     <!-- ============ ARCADE: DODGE SURVIVAL — игровой экран ============ -->
     <div class="arcade-stage-overlay" id="arcadeDodgeOverlay">
       <div class="arcade-stage-topbar">
-        <div class="arcade-hud-timer">
-          <span data-i18n="arcade-survival-label">Survival Time</span>
-          <strong id="arcadeDodgeTimer">0.00s</strong>
+        <div class="arcade-hud-row">
+          <div class="arcade-hud-timer">
+            <span data-i18n="arcade-survival-label">Survival Time</span>
+            <strong id="arcadeDodgeTimer">0.00s</strong>
+          </div>
+          <div class="arcade-hud-timer arcade-hud-score">
+            <span data-i18n="arcade-score-label">Score</span>
+            <strong id="arcadeDodgeScoreLive">0</strong>
+          </div>
         </div>
         <button type="button" class="arcade-stage-close" onclick="arcadeCloseDodge()" aria-label="Close">✕</button>
       </div>
@@ -8611,6 +9061,7 @@ body:not(.hero-anim) .subtitle .ch{
         <canvas id="arcadeDodgeCanvas"></canvas>
         <div class="arcade-combo-badge" id="arcadeComboBadge"></div>
         <div class="arcade-nearmiss-layer" id="arcadeNearMissLayer"></div>
+        <div class="arcade-follow-chip" id="arcadeFollowChip"><i class="dot"></i><span class="is-idle" data-i18n="arcade-hint-idle">Клик — шар идёт за курсором · WASD</span><span class="is-follow" data-i18n="arcade-hint-follow">Идём за курсором · клик — стоп</span></div>
         <div class="arcade-joystick" id="arcadeJoystick" style="display:none;">
           <div class="arcade-joystick-base">
             <div class="arcade-joystick-knob" id="arcadeJoystickKnob"></div>
@@ -8646,113 +9097,89 @@ body:not(.hero-anim) .subtitle .ch{
         <h2 id="rm-title" class="e3-title"><span data-i18n="ultra-roadmap-title-a">Путь</span> <span class="accent" data-i18n="ultra-roadmap-title-b">к релизу</span></h2>
         <p class="e3-lead" data-i18n="ultra-roadmap-lead">Игра в активной разработке. Вот основные вехи — даты и состав могут меняться.</p>
       </div>
-      <!-- Progress bar -->
-      <div class="rm-progress-wrap reveal" data-delay="1">
-        <div class="rm-progress-label"><span data-i18n="ultra-roadmap-progress">Прогресс</span> <strong>60%</strong></div>
-        <div class="rm-progress-bar"><i style="--p:60%"></i></div>
-      </div>
-
-      <!-- Current task -->
-      <div class="rm-current reveal" data-delay="1">
-        <span class="rm-current-icon">⏳</span>
-        <div>
-          <div class="rm-current-label" data-i18n="ultra-roadmap-now">Сейчас</div>
-          <div class="rm-current-task" data-i18n="ultra-rm-9">Разработка нескольких игровых зон с другими врагами</div>
+      <!-- Roadmap v2: панель прогресса + этапы -->
+      <div class="rm2-top">
+        <div class="rm2-ring-card reveal" data-delay="1">
+          <div class="rm2-ring" style="--off:130.7;--c:326.7;">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <defs><linearGradient id="rm2Grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4ade80"/><stop offset="0.55" stop-color="#ffd84d"/><stop offset="1" stop-color="#ff8c00"/></linearGradient></defs>
+              <circle class="rm2-ring-bg" cx="60" cy="60" r="52"/>
+              <circle class="rm2-ring-fg" cx="60" cy="60" r="52" transform="rotate(-90 60 60)"/>
+            </svg>
+            <div class="rm2-ring-num"><strong>60%</strong><span data-i18n="ultra-roadmap-progress">Прогресс</span></div>
+          </div>
+          <div class="rm2-legend">
+            <div class="rm2-legend-i is-done"><i></i><span data-i18n="ultra-roadmap-done">Готово</span><b>8</b></div>
+            <div class="rm2-legend-i is-now"><i></i><span data-i18n="ultra-roadmap-now">Сейчас</span><b>1</b></div>
+            <div class="rm2-legend-i is-future"><i></i><span data-i18n="ultra-roadmap-planned">Запланировано</span><b>5</b></div>
+          </div>
+        </div>
+        <div class="rm2-now reveal" data-delay="2">
+          <div class="rm2-now-glow"></div>
+          <div class="rm2-now-label"><span class="rm2-now-pulse"></span><span data-i18n="ultra-roadmap-now">Сейчас</span></div>
+          <div class="rm2-now-task" data-i18n="ultra-rm-9">Разработка нескольких игровых зон с другими врагами</div>
+          <div class="rm2-bar-row"><div class="rm2-bar" style="--p:15%;"><i></i></div><b>15%</b></div>
         </div>
       </div>
-
-      <div class="e3-timeline">
-        <!-- ✅ Done tasks -->
-        <div class="tl-item is-done reveal" data-delay="1">
-          <div class="tl-dot"></div>
-          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-done">Готово</span></div>
-          <div class="tl-title" data-i18n="ultra-rm-1">Создание системы движения персонажа</div>
-          <div class="tl-progress"><i style="--p:100%"></i></div>
-        </div>
-        <div class="tl-item is-done reveal" data-delay="1">
-          <div class="tl-dot"></div>
-          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-done">Готово</span></div>
-          <div class="tl-title" data-i18n="ultra-rm-2">Создание системы движения врагов</div>
-          <div class="tl-progress"><i style="--p:100%"></i></div>
-        </div>
-        <div class="tl-item is-done reveal" data-delay="1">
-          <div class="tl-dot"></div>
-          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-done">Готово</span></div>
-          <div class="tl-title" data-i18n="ultra-rm-3">Реализация механики «таймер» при касании врага</div>
-          <div class="tl-progress"><i style="--p:100%"></i></div>
-        </div>
-        <div class="tl-item is-done reveal" data-delay="2">
-          <div class="tl-dot"></div>
-          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-done">Готово</span></div>
-          <div class="tl-title" data-i18n="ultra-rm-4">Создание экрана поражения</div>
-          <div class="tl-progress"><i style="--p:100%"></i></div>
-        </div>
-        <div class="tl-item is-done reveal" data-delay="2">
-          <div class="tl-dot"></div>
-          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-done">Готово</span></div>
-          <div class="tl-title" data-i18n="ultra-rm-5">Разработка текстур игровой зоны</div>
-          <div class="tl-progress"><i style="--p:100%"></i></div>
-        </div>
-        <div class="tl-item is-done reveal" data-delay="2">
-          <div class="tl-dot"></div>
-          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-done">Готово</span></div>
-          <div class="tl-title" data-i18n="ultra-rm-6">Создание зоны с 10 аренами</div>
-          <div class="tl-progress"><i style="--p:100%"></i></div>
-        </div>
-        <div class="tl-item is-done reveal" data-delay="3">
-          <div class="tl-dot"></div>
-          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-done">Готово</span></div>
-          <div class="tl-title" data-i18n="ultra-rm-7">Создание главного меню</div>
-          <div class="tl-progress"><i style="--p:100%"></i></div>
-        </div>
-
-        <!-- ✅ Now done (was: in progress) -->
-        <div class="tl-item is-done reveal" data-delay="3">
-          <div class="tl-dot"></div>
-          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-done">Готово</span></div>
-          <div class="tl-title" data-i18n="ultra-rm-8">Разработка базового персонажа</div>
-          <div class="tl-progress"><i style="--p:100%"></i></div>
-        </div>
-
-        <!-- ⏳ Now in progress (shifted forward) -->
-        <div class="tl-item is-now reveal" data-delay="3">
-          <div class="tl-dot"></div>
-          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-now">Сейчас</span></div>
-          <div class="tl-title" data-i18n="ultra-rm-9">Разработка нескольких игровых зон с другими врагами</div>
-          <div class="tl-progress"><i style="--p:15%"></i></div>
-        </div>
-
-        <!-- ☐ Pending tasks -->
-        <div class="tl-item is-future reveal" data-delay="4">
-          <div class="tl-dot"></div>
-          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-planned">Запланировано</span></div>
-          <div class="tl-title" data-i18n="ultra-rm-11">Добавление нескольких персонажей</div>
-          <div class="tl-progress"><i style="--p:0%"></i></div>
-        </div>
-        <div class="tl-item is-future reveal" data-delay="4">
-          <div class="tl-dot"></div>
-          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-planned">Запланировано</span></div>
-          <div class="tl-title" data-i18n="ultra-rm-12">Добавление аксессуаров</div>
-          <div class="tl-progress"><i style="--p:0%"></i></div>
-        </div>
-        <div class="tl-item is-future reveal" data-delay="5">
-          <div class="tl-dot"></div>
-          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-planned">Запланировано</span></div>
-          <div class="tl-title" data-i18n="ultra-rm-13">Добавление остальных функций</div>
-          <div class="tl-progress"><i style="--p:0%"></i></div>
-        </div>
-        <div class="tl-item is-future reveal" data-delay="5">
-          <div class="tl-dot"></div>
-          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-planned">Запланировано</span></div>
-          <div class="tl-title" data-i18n="ultra-rm-14">Исправление багов и подготовка альфа-версии</div>
-          <div class="tl-progress"><i style="--p:0%"></i></div>
-        </div>
-        <div class="tl-item is-future reveal" data-delay="5">
-          <div class="tl-dot"></div>
-          <div class="tl-meta"><span class="tl-chip" data-i18n="ultra-roadmap-planned">Запланировано</span></div>
-          <div class="tl-title" data-i18n="ultra-rm-15">Добавление загрузки альфа-версии на сайт</div>
-          <div class="tl-progress"><i style="--p:0%"></i></div>
-        </div>
+      <div class="rm2-stages">
+        <article class="rm2-stage is-done reveal" data-delay="1" style="--p:100%;">
+          <span class="rm2-node" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <div class="rm2-stage-head">
+            <div class="rm2-stage-kicker"><span data-i18n="rm2-stage-word">Этап</span> 1</div>
+            <span class="rm2-chip" data-i18n="ultra-roadmap-done">Готово</span>
+          </div>
+          <h3 class="rm2-stage-name" data-i18n="rm2-stage-1">Основа игры</h3>
+          <div class="rm2-bar-row"><div class="rm2-bar"><i></i></div><b>100%</b></div>
+          <ul class="rm2-tasks">
+            <li class="rm2-task is-done"><span class="rm2-task-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="rm2-task-txt" data-i18n="ultra-rm-1">Создание системы движения персонажа</span></li>
+            <li class="rm2-task is-done"><span class="rm2-task-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="rm2-task-txt" data-i18n="ultra-rm-2">Создание системы движения врагов</span></li>
+            <li class="rm2-task is-done"><span class="rm2-task-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="rm2-task-txt" data-i18n="ultra-rm-3">Реализация механики «таймер» при касании врага</span></li>
+            <li class="rm2-task is-done"><span class="rm2-task-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="rm2-task-txt" data-i18n="ultra-rm-4">Создание экрана поражения</span></li>
+            <li class="rm2-task is-done"><span class="rm2-task-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="rm2-task-txt" data-i18n="ultra-rm-8">Разработка базового персонажа</span></li>
+          </ul>
+        </article>
+        <article class="rm2-stage is-now reveal" data-delay="2" style="--p:79%;">
+          <span class="rm2-node" aria-hidden="true">2</span>
+          <div class="rm2-stage-head">
+            <div class="rm2-stage-kicker"><span data-i18n="rm2-stage-word">Этап</span> 2</div>
+            <span class="rm2-chip" data-i18n="ultra-roadmap-now">Сейчас</span>
+          </div>
+          <h3 class="rm2-stage-name" data-i18n="rm2-stage-2">Контент и зоны</h3>
+          <div class="rm2-bar-row"><div class="rm2-bar"><i></i></div><b>79%</b></div>
+          <ul class="rm2-tasks">
+            <li class="rm2-task is-done"><span class="rm2-task-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="rm2-task-txt" data-i18n="ultra-rm-5">Разработка текстур игровой зоны</span></li>
+            <li class="rm2-task is-done"><span class="rm2-task-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="rm2-task-txt" data-i18n="ultra-rm-6">Создание зоны с 10 аренами</span></li>
+            <li class="rm2-task is-done"><span class="rm2-task-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="rm2-task-txt" data-i18n="ultra-rm-7">Создание главного меню</span></li>
+            <li class="rm2-task is-now"><span class="rm2-task-ic" aria-hidden="true"></span><span class="rm2-task-txt" data-i18n="ultra-rm-9">Разработка нескольких игровых зон с другими врагами</span><em class="rm2-task-pct">15%</em></li>
+          </ul>
+        </article>
+        <article class="rm2-stage is-future reveal" data-delay="3" style="--p:0%;">
+          <span class="rm2-node" aria-hidden="true">3</span>
+          <div class="rm2-stage-head">
+            <div class="rm2-stage-kicker"><span data-i18n="rm2-stage-word">Этап</span> 3</div>
+            <span class="rm2-chip" data-i18n="ultra-roadmap-planned">Запланировано</span>
+          </div>
+          <h3 class="rm2-stage-name" data-i18n="rm2-stage-3">Персонажи и функции</h3>
+          <div class="rm2-bar-row"><div class="rm2-bar"><i></i></div><b>0%</b></div>
+          <ul class="rm2-tasks">
+            <li class="rm2-task is-future"><span class="rm2-task-ic" aria-hidden="true"></span><span class="rm2-task-txt" data-i18n="ultra-rm-11">Добавление нескольких персонажей</span></li>
+            <li class="rm2-task is-future"><span class="rm2-task-ic" aria-hidden="true"></span><span class="rm2-task-txt" data-i18n="ultra-rm-12">Добавление аксессуаров</span></li>
+            <li class="rm2-task is-future"><span class="rm2-task-ic" aria-hidden="true"></span><span class="rm2-task-txt" data-i18n="ultra-rm-13">Добавление остальных функций</span></li>
+          </ul>
+        </article>
+        <article class="rm2-stage is-future reveal" data-delay="4" style="--p:0%;">
+          <span class="rm2-node" aria-hidden="true">4</span>
+          <div class="rm2-stage-head">
+            <div class="rm2-stage-kicker"><span data-i18n="rm2-stage-word">Этап</span> 4</div>
+            <span class="rm2-chip" data-i18n="ultra-roadmap-planned">Запланировано</span>
+          </div>
+          <h3 class="rm2-stage-name" data-i18n="rm2-stage-4">Альфа-версия</h3>
+          <div class="rm2-bar-row"><div class="rm2-bar"><i></i></div><b>0%</b></div>
+          <ul class="rm2-tasks">
+            <li class="rm2-task is-future"><span class="rm2-task-ic" aria-hidden="true"></span><span class="rm2-task-txt" data-i18n="ultra-rm-14">Исправление багов и подготовка альфа-версии</span></li>
+            <li class="rm2-task is-future"><span class="rm2-task-ic" aria-hidden="true"></span><span class="rm2-task-txt" data-i18n="ultra-rm-15">Добавление загрузки альфа-версии на сайт</span></li>
+          </ul>
+        </article>
       </div>
     </section>
 
@@ -22765,6 +23192,19 @@ async function doResetPassword() {
         'news-err-send': 'Не удалось отправить новость',
         'news-read-more': 'Подробнее',
         'news-detail-close': 'Закрыть',
+        'news-modal-sub': 'Её увидят все игроки в колокольчике',
+        'news-tag-label': 'Метка',
+        'news-tag-news': 'Новость',
+        'news-tag-update': 'Обновление',
+        'news-tag-event': 'Событие',
+        'news-tag-fix': 'Исправление',
+        'news-tag-important': 'Важное',
+        'news-pin-label': 'Закрепить вверху',
+        'news-pin-hint': 'Новость будет выше остальных в списке',
+        'news-preview-label': 'Так увидят игроки',
+        'news-preview-title-ph': 'Заголовок новости',
+        'news-preview-body-ph': 'Здесь появится текст новости…',
+        'news-publish-btn': 'Опубликовать',
         'pm-set-err-nodb': 'Нет соединения с базой данных. Попробуй ещё раз через пару секунд'
       },
       en: {
@@ -22811,6 +23251,19 @@ async function doResetPassword() {
         'news-err-send': 'Failed to send the news',
         'news-read-more': 'Read more',
         'news-detail-close': 'Close',
+        'news-modal-sub': 'All players will see it in the bell',
+        'news-tag-label': 'Tag',
+        'news-tag-news': 'News',
+        'news-tag-update': 'Update',
+        'news-tag-event': 'Event',
+        'news-tag-fix': 'Fix',
+        'news-tag-important': 'Important',
+        'news-pin-label': 'Pin to top',
+        'news-pin-hint': 'The post stays above the others in the list',
+        'news-preview-label': 'How players will see it',
+        'news-preview-title-ph': 'News title',
+        'news-preview-body-ph': 'The news text will appear here…',
+        'news-publish-btn': 'Publish',
         'pm-set-err-nodb': 'No connection to the database. Try again in a few seconds'
       },
       uk: {
@@ -24371,6 +24824,50 @@ async function doResetPassword() {
 })();
 </script>
 
+<script>
+/* Переводы Arcade-подсказки и вкладок профиля + логика вкладок. Нет перевода → английский */
+(function(){
+  if (typeof translations === 'object' && translations) {
+    const extra = {"ru": {"pm-tab-profile": "Профиль", "pm-tab-security": "Безопасность", "arcade-hint-idle": "Клик — шар идёт за курсором · WASD", "arcade-hint-follow": "Идём за курсором · клик — стоп"}, "en": {"pm-tab-profile": "Profile", "pm-tab-security": "Security", "arcade-hint-idle": "Click — ball follows the cursor · WASD", "arcade-hint-follow": "Following cursor · click to stop"}, "uk": {"pm-tab-profile": "Профіль", "pm-tab-security": "Безпека", "arcade-hint-idle": "Клік — куля йде за курсором · WASD", "arcade-hint-follow": "Йдемо за курсором · клік — стоп"}};
+    for (const lang in translations) {
+      const src = extra[lang] || extra.en;
+      for (const k in src) { if (extra[lang] || translations[lang][k] == null) translations[lang][k] = src[k]; }
+    }
+    try {
+      const active = (typeof currentLang === 'string' && currentLang) || localStorage.getItem('selectedLanguage') || 'ru';
+      if (typeof applyTranslations === 'function') applyTranslations(active);
+    } catch (e) {}
+  }
+  function showTab(key) {
+    document.querySelectorAll('.pm-tab').forEach(b => { const on = b.dataset.pmTab === key; b.classList.toggle('is-active', on); b.setAttribute('aria-selected', on ? 'true' : 'false'); });
+    document.querySelectorAll('.pm-pane').forEach(p => p.classList.toggle('is-active', p.dataset.pmPane === key));
+    const box = document.querySelector('.profile-modal-box'); if (box) box.scrollTop = 0;
+  }
+  document.addEventListener('click', (e) => { const b = e.target.closest && e.target.closest('.pm-tab'); if (b) showTab(b.dataset.pmTab); });
+  const ov = document.getElementById('profileModalOverlay');
+  if (ov && window.MutationObserver) {
+    let was = ov.classList.contains('show');
+    new MutationObserver(() => { const now = ov.classList.contains('show'); if (now && !was) showTab('overview'); was = now; }).observe(ov, { attributes: true, attributeFilter: ['class'] });
+  }
+})();
+</script>
+
+<script>
+/* Переводы названий этапов роадмапа. Нет перевода → английский */
+(function(){
+  if (typeof translations !== 'object' || !translations) return;
+  const extra = {"ru": {"rm2-stage-word": "Этап", "rm2-stage-1": "Основа игры", "rm2-stage-2": "Контент и зоны", "rm2-stage-3": "Персонажи и функции", "rm2-stage-4": "Альфа-версия"}, "en": {"rm2-stage-word": "Stage", "rm2-stage-1": "Game foundation", "rm2-stage-2": "Content & zones", "rm2-stage-3": "Characters & features", "rm2-stage-4": "Alpha release"}, "uk": {"rm2-stage-word": "Етап", "rm2-stage-1": "Основа гри", "rm2-stage-2": "Контент і зони", "rm2-stage-3": "Персонажі та функції", "rm2-stage-4": "Альфа-версія"}};
+  for (const lang in translations) {
+    const src = extra[lang] || extra.en;
+    for (const k in src) { if (extra[lang] || translations[lang][k] == null) translations[lang][k] = src[k]; }
+  }
+  try {
+    const active = (typeof currentLang === 'string' && currentLang) || localStorage.getItem('selectedLanguage') || 'ru';
+    if (typeof applyTranslations === 'function') applyTranslations(active);
+  } catch (e) {}
+})();
+</script>
+
 <!-- ─── COOKIE CONSENT BANNER ─── -->
 <div class="cookie-banner" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie consent">
   <div class="cookie-banner-icon" aria-hidden="true">🍪</div>
@@ -24444,6 +24941,24 @@ function _e3SaveReadNewsSet(set) {
   try { localStorage.setItem(_e3ReadNewsKey(), JSON.stringify(Array.from(set))); } catch (_) {}
 }
 
+// Метки новостей (id хранится в Firestore в поле `tag`; подписи берутся из переводов)
+const _E3_PIN_SVG = '<svg viewBox="0 0 24 24"><path d="M12 17v5M8 3h8l-1 6 3 4H6l3-4-1-6z"/></svg>';
+function _e3NewsTagInfo(id) {
+  const T = {
+    news:      { c: '#ffd54a', k: 'news-tag-news',      fb: 'Новость',     ico: '<path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h8M8 17h5"/>' },
+    update:    { c: '#4ade80', k: 'news-tag-update',    fb: 'Обновление',  ico: '<path d="M12 19V5M5 12l7-7 7 7"/>' },
+    event:     { c: '#c49bff', k: 'news-tag-event',     fb: 'Событие',     ico: '<polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/>' },
+    fix:       { c: '#6cb6ff', k: 'news-tag-fix',       fb: 'Исправление', ico: '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/>' },
+    important: { c: '#ff8a6b', k: 'news-tag-important', fb: 'Важное',      ico: '<path d="M12 3l10 18H2L12 3z"/><path d="M12 10v5M12 18h.01"/>' }
+  };
+  return T[id] || null;
+}
+function _e3NewsTagBadge(id) {
+  const t = _e3NewsTagInfo(id);
+  if (!t) return '';
+  return '<span class="news-tag-badge" style="--c:' + t.c + '"><svg viewBox="0 0 24 24" aria-hidden="true">' + t.ico + '</svg>' + _e3Esc(tt(t.k, t.fb)) + '</span>';
+}
+
 function _e3RenderNews() {
   const listEl = document.getElementById('bellNewsList');
   const emptyEl = document.getElementById('bellEmpty');
@@ -24467,7 +24982,11 @@ function _e3RenderNews() {
     const isLong = (n.body || '').length > LIMIT;
     const shortBody = isLong ? (n.body.slice(0, LIMIT).trim() + '…') : (n.body || '');
     const unread = !readSet.has(n.id) ? ' is-unread' : '';
+    const topRow = (n.tag || n.pinned)
+      ? '<div class="bell-news-top">' + _e3NewsTagBadge(n.tag) + (n.pinned ? '<span class="news-pin-mark" title="' + _e3Esc(tt('news-pin-label','Закрепить вверху')) + '">' + _E3_PIN_SVG + '</span>' : '') + '</div>'
+      : '';
     return '<div class="bell-news-item' + unread + '">'
+      + topRow
       + '<div class="bell-news-title">' + _e3Esc(n.title) + '</div>'
       + '<div class="bell-news-body">' + _e3Esc(shortBody) + '</div>'
       + (isLong ? '<span class="bell-news-more" onclick="openNewsDetail(\'' + n.id + '\')">' + _e3Esc(tt('news-read-more','Подробнее')) + '</span>' : '')
@@ -24480,6 +24999,7 @@ function openNewsDetail(id) {
   if (!n) return;
   document.getElementById('newsDetailTitle').textContent = n.title;
   document.getElementById('newsDetailBody').textContent = n.body;
+  document.getElementById('newsDetailTag').innerHTML = n.tag ? _e3NewsTagBadge(n.tag) : '';
   document.getElementById('newsDetailOverlay').classList.add('show');
   const readSet = _e3GetReadNewsSet();
   readSet.add(id);
@@ -24504,8 +25024,10 @@ window.ev3InitNewsFeed = function () {
       .onSnapshot(snap => {
         _e3NewsItems = snap.docs.map(d => {
           const data = d.data() || {};
-          return { id: d.id, title: data.title || '', body: data.body || '' };
+          return { id: d.id, title: data.title || '', body: data.body || '', tag: data.tag || '', pinned: !!data.pinned };
         });
+        // закреплённые — выше (sort стабилен, внутри групп порядок по дате сохраняется)
+        _e3NewsItems.sort((x, y) => (y.pinned ? 1 : 0) - (x.pinned ? 1 : 0));
         _e3RenderNews();
       }, err => { if (typeof console !== 'undefined') console.warn('[NEWS feed]', err); });
   } catch (e) { if (typeof console !== 'undefined') console.warn('[NEWS feed init]', e); }
@@ -24530,13 +25052,42 @@ window.ev3StopNewsFeed = function () {
 // ===================================================
 // СОЗДАТЬ НОВОСТЬ (только dev-аккаунт)
 // ===================================================
+let _cnTag = 'news';
+function cnSelectTag(id) {
+  _cnTag = id;
+  document.querySelectorAll('#cnTags .cn-tag').forEach(b => {
+    const on = b.getAttribute('data-tag') === id;
+    b.classList.toggle('is-active', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  cnUpdatePreview();
+}
+function cnUpdatePreview() {
+  const t = document.getElementById('newsTitleInput'), b = document.getElementById('newsBodyInput');
+  if (!t || !b) return;
+  const tc = document.getElementById('cnTitleCount'), bc = document.getElementById('cnBodyCount');
+  tc.textContent = t.value.length + '/' + t.maxLength; tc.classList.toggle('is-near', t.value.length >= t.maxLength * 0.9);
+  bc.textContent = b.value.length + '/' + b.maxLength; bc.classList.toggle('is-near', b.value.length >= b.maxLength * 0.9);
+  const pinned = document.getElementById('cnPinned').checked;
+  document.getElementById('cnPreview').classList.toggle('is-pinned', pinned);
+  document.getElementById('cnPreviewTop').innerHTML = _e3NewsTagBadge(_cnTag)
+    + (pinned ? '<span class="news-pin-mark">' + _E3_PIN_SVG + '</span>' : '');
+  const pt = document.getElementById('cnPreviewTitle'), pb = document.getElementById('cnPreviewBody');
+  const tv = t.value.trim(), bv = b.value.trim();
+  pt.textContent = tv || tt('news-preview-title-ph', 'Заголовок новости');
+  pb.textContent = bv || tt('news-preview-body-ph', 'Здесь появится текст новости…');
+  pt.classList.toggle('is-ph', !tv); pb.classList.toggle('is-ph', !bv);
+}
 function openCreateNewsModal() {
   if (!_ev3IsDev()) return;
   document.getElementById('newsTitleInput').value = '';
   document.getElementById('newsBodyInput').value = '';
+  document.getElementById('cnPinned').checked = false;
   const hint = document.getElementById('newsFormHint');
   hint.textContent = ''; hint.classList.remove('is-err');
+  cnSelectTag('news');
   document.getElementById('createNewsModalOverlay').classList.add('show');
+  setTimeout(() => { try { document.getElementById('newsTitleInput').focus(); } catch (_) {} }, 120);
 }
 function closeCreateNewsModal() { document.getElementById('createNewsModalOverlay').classList.remove('show'); }
 function closeCreateNewsOnBg(e) { if (e.target === e.currentTarget) closeCreateNewsModal(); }
@@ -24562,12 +25113,14 @@ async function submitCreateNews() {
     const nick = (ev3User && ev3User.user_metadata && ev3User.user_metadata.username) || 'Dev';
     await db.collection('news').add({
       title, body,
+      tag: _cnTag,
+      pinned: !!document.getElementById('cnPinned').checked,
       authorNick: nick,
       authorUid: (ev3User && ev3User.id) || null,
       createdAt: _fsServerTimestamp()
     });
     closeCreateNewsModal();
-    showToast(tt('news-sent-toast', 'Новость опубликована!'), '📰');
+    showToast(tt('news-sent-toast', 'Новость опубликована!'), '✓');
   } catch (e) {
     hint.textContent = tt('news-err-send', 'Не удалось отправить новость');
     hint.classList.add('is-err');
@@ -24674,13 +25227,24 @@ async function _e3LoadParticipants() {
   const DODGE_ID = 'dodge';
   let dg = null; // весь стейт текущего забега лежит здесь, чтобы легко полностью сбрасывать между попытками
 
+  function _arcadeAvail(canvas) {
+    const wrap = canvas.parentElement, cs = getComputedStyle(wrap);
+    return {
+      w: Math.max(200, wrap.clientWidth - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0)),
+      h: Math.max(160, wrap.clientHeight - (parseFloat(cs.paddingTop) || 0) - (parseFloat(cs.paddingBottom) || 0))
+    };
+  }
+
   function _arcadeResizeCanvas() {
     const canvas = document.getElementById('arcadeDodgeCanvas');
     if (!canvas) return;
-    const rect = canvas.getBoundingClientRect();
+    const av = _arcadeAvail(canvas);
+    const aspect = dg ? dg.logicalW / dg.logicalH : 1.5;
+    const w = Math.floor(Math.min(av.w, av.h * aspect, 1200)), h = Math.floor(w / aspect);
+    canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.max(280, Math.round(rect.width * dpr));
-    canvas.height = Math.max(200, Math.round(rect.height * dpr));
+    canvas.width = Math.max(280, Math.round(w * dpr));
+    canvas.height = Math.max(180, Math.round(canvas.width / aspect));
     if (dg) { dg.w = canvas.width; dg.h = canvas.height; dg.scale = dpr; }
   }
 
@@ -24696,6 +25260,7 @@ async function _e3LoadParticipants() {
     _arcadeResizeCanvas();
     const joy = document.getElementById('arcadeJoystick');
     if (joy) joy.style.display = _arcadeIsTouchDevice() ? 'block' : 'none';
+    overlay.classList.toggle('is-touch', _arcadeIsTouchDevice());
     window.arcadeStartDodge();
   };
 
@@ -24721,6 +25286,32 @@ async function _e3LoadParticipants() {
     const k = e.key.toLowerCase();
     if (_dgKeys[k]) _dgKeys[k] = false;
   });
+
+  // ---- Управление: мышь (клик — шар идёт за курсором, повторный клик — остановка) ----
+  function _dgSetFollow(v) {
+    if (!dg) return;
+    dg.follow = !!v;
+    const chip = document.getElementById('arcadeFollowChip');
+    if (chip) chip.classList.toggle('following', dg.follow);
+  }
+  function _dgPointerPos(e) {
+    const r = dg.canvas.getBoundingClientRect();
+    return { x: (e.clientX - r.left) / r.width * dg.logicalW, y: (e.clientY - r.top) / r.height * dg.logicalH };
+  }
+  (function initMouse() {
+    const canvas = document.getElementById('arcadeDodgeCanvas');
+    if (!canvas) return;
+    canvas.addEventListener('pointermove', (e) => {
+      if (!dg || e.pointerType === 'touch') return;
+      dg.mouse = _dgPointerPos(e);
+    });
+    canvas.addEventListener('pointerdown', (e) => {
+      if (!dg || !dg.alive || e.pointerType === 'touch') return;
+      dg.mouse = _dgPointerPos(e);
+      _dgSetFollow(!dg.follow);
+      e.preventDefault();
+    });
+  })();
 
   function _dgInputVector() {
     let x = 0, y = 0;
@@ -24813,7 +25404,7 @@ async function _e3LoadParticipants() {
       speed: baseSpeed,
       state: type === 'dasher' ? 'idle' : 'move',
       stateTimer: type === 'dasher' ? (0.9 + Math.random() * 0.8) : 0,
-      nearMissArmed: true
+      nearMissArmed: true, spawnT: 0.8, hist: [], rot: Math.random() * 6.28
     });
   }
 
@@ -24842,13 +25433,21 @@ async function _e3LoadParticipants() {
     const nmLayer = document.getElementById('arcadeNearMissLayer');
     if (nmLayer) nmLayer.innerHTML = '';
 
+    // Арена подстраивается под экран (телефон/ПК), но высота логики фиксирована — физика не зависит от размера
+    const av = _arcadeAvail(canvas);
+    const aspect = Math.max(0.75, Math.min(1.8, av.w / av.h));
+    const lh = 600, lw = Math.round(lh * aspect);
+    const motes = [];
+    for (let i = 0; i < 36; i++) motes.push({ x: Math.random() * lw, y: Math.random() * lh, vx: (Math.random() - 0.5) * 10, vy: -(4 + Math.random() * 10), r: 0.8 + Math.random() * 1.6, tw: 1 + Math.random() * 2, ph: Math.random() * 6.28 });
     dg = {
       canvas, ctx: canvas.getContext('2d'),
       w: canvas.width, h: canvas.height,
-      logicalW: 900, logicalH: 600, // фиксированная логическая арена — физика не зависит от размера экрана
-      player: { x: 450, y: 300, r: 12, speed: 230 },
+      logicalW: lw, logicalH: lh,
+      player: { x: lw / 2, y: lh / 2, r: 12, speed: 230 },
       enemies: [],
-      particles: [],
+      particles: [], rings: [], shards: [], trail: [], motes, bonus: 0, flash: 0, shardTimer: 3,
+      follow: false, mouse: { x: lw / 2, y: lh / 2 },
+      lastScore: -1,
       touchVector: { x: 0, y: 0 },
       t: 0, spawnTimer: 0,
       nearMissCount: 0, combo: 0, bestCombo: 0, comboTimer: 0,
@@ -24857,13 +25456,34 @@ async function _e3LoadParticipants() {
       lastFrame: performance.now(),
       rafId: null
     };
+    _arcadeResizeCanvas();
+    dg.mouse = { x: dg.logicalW / 2, y: dg.logicalH / 2 };
+    _dgSetFollow(false);
+    const live = document.getElementById('arcadeDodgeScoreLive');
+    if (live) live.textContent = '0';
     dg.rafId = requestAnimationFrame(_dgLoop);
   };
+
+  function _dgPopText(x, y, text, color) {
+    const nmLayer = document.getElementById('arcadeNearMissLayer');
+    if (!nmLayer || !dg || !dg.canvas) return;
+    const rect = dg.canvas.getBoundingClientRect(), wrapRect = nmLayer.getBoundingClientRect();
+    const el = document.createElement('div');
+    el.className = 'arcade-nearmiss-pop';
+    el.textContent = text;
+    if (color) el.style.color = color;
+    el.style.left = ((x / dg.logicalW) * rect.width + (rect.left - wrapRect.left)) + 'px';
+    el.style.top = ((y / dg.logicalH) * rect.height + (rect.top - wrapRect.top)) + 'px';
+    nmLayer.appendChild(el);
+    setTimeout(() => el.remove(), 950);
+  }
 
   function _dgTriggerNearMiss(enemy) {
     dg.nearMissCount++;
     dg.combo++;
     dg.comboTimer = 3.2;
+    dg.rings.push({ x: enemy.x, y: enemy.y, age: 0, life: 0.45, r0: enemy.r, r1: enemy.r + 38, color: '255,216,77' });
+    _dgSpawnParticles(dg.player.x, dg.player.y, '#ffd84d', 5);
     if (dg.combo > dg.bestCombo) dg.bestCombo = dg.combo;
     const badge = document.getElementById('arcadeComboBadge');
     if (badge) {
@@ -24904,12 +25524,53 @@ async function _e3LoadParticipants() {
       }
     }
 
-    // Игрок
+    // Игрок: клавиатура/джойстик имеют приоритет; иначе — следование за курсором (если включено кликом)
     const inp = _dgInputVector();
-    dg.player.x += inp.x * dg.player.speed * dt;
-    dg.player.y += inp.y * dg.player.speed * dt;
+    if (inp.x || inp.y) {
+      if (dg.follow) _dgSetFollow(false);
+      dg.player.x += inp.x * dg.player.speed * dt;
+      dg.player.y += inp.y * dg.player.speed * dt;
+    } else if (dg.follow && dg.mouse) {
+      const dx = dg.mouse.x - dg.player.x, dy = dg.mouse.y - dg.player.y;
+      const dist = Math.hypot(dx, dy);
+      if (dist > 3) {
+        const step = Math.min(dg.player.speed, dist * 9) * dt; // плавное торможение у курсора, скорость не выше обычной
+        dg.player.x += dx / dist * Math.min(step, dist);
+        dg.player.y += dy / dist * Math.min(step, dist);
+      }
+    }
     dg.player.x = Math.max(dg.player.r, Math.min(dg.logicalW - dg.player.r, dg.player.x));
     dg.player.y = Math.max(dg.player.r, Math.min(dg.logicalH - dg.player.r, dg.player.y));
+    dg.trail.push({ x: dg.player.x, y: dg.player.y });
+    if (dg.trail.length > 16) dg.trail.shift();
+
+    // Кристаллы-бонусы: +очки, безопасного «читерства» нет — лежат на арене и исчезают
+    dg.shardTimer -= dt;
+    if (dg.shardTimer <= 0 && dg.shards.length < 2) {
+      let sx, sy, tries = 0;
+      do { sx = 40 + Math.random() * (dg.logicalW - 80); sy = 40 + Math.random() * (dg.logicalH - 80); tries++; }
+      while (Math.hypot(sx - dg.player.x, sy - dg.player.y) < 130 && tries < 12);
+      dg.shards.push({ x: sx, y: sy, r: 11, age: 0, life: 9, rot: 0 });
+      dg.shardTimer = 4 + Math.random() * 3;
+    }
+    for (let i = dg.shards.length - 1; i >= 0; i--) {
+      const s = dg.shards[i];
+      s.age += dt; s.rot += dt * 2;
+      if (s.age >= s.life) { dg.shards.splice(i, 1); continue; }
+      if (Math.hypot(s.x - dg.player.x, s.y - dg.player.y) < s.r + dg.player.r + 4) {
+        dg.bonus += 50;
+        dg.rings.push({ x: s.x, y: s.y, age: 0, life: 0.5, r0: 8, r1: 46, color: '255,216,77' });
+        _dgSpawnParticles(s.x, s.y, '#ffd84d', 12);
+        _dgPopText(s.x, s.y, '+50', '#ffd84d');
+        dg.shards.splice(i, 1);
+      }
+    }
+    const liveScore = Math.round(dg.t * 12 + dg.nearMissCount * 40 + dg.bestCombo * 90 + dg.bonus);
+    if (liveScore !== dg.lastScore) {
+      dg.lastScore = liveScore;
+      const sEl = document.getElementById('arcadeDodgeScoreLive');
+      if (sEl) sEl.textContent = liveScore.toLocaleString();
+    }
 
     // Спавн врагов
     const diff = _dgDifficulty(dg.t);
@@ -24921,6 +25582,9 @@ async function _e3LoadParticipants() {
 
     // Враги
     for (const en of dg.enemies) {
+      if (en.spawnT > 0) { en.spawnT -= dt; continue; } // враг «появляется»: виден предупреждающий круг, столкновения нет
+      en.hist.push({ x: en.x, y: en.y }); if (en.hist.length > 7) en.hist.shift();
+      en.rot += dt * (en.type === 'dasher' ? 2.2 : 1.4);
       if (en.type === 'normal') {
         en.x += en.vx * dt; en.y += en.vy * dt;
         if (en.x < en.r || en.x > dg.logicalW - en.r) { en.vx *= -1; en.x = Math.max(en.r, Math.min(dg.logicalW - en.r, en.x)); }
@@ -24975,64 +25639,188 @@ async function _e3LoadParticipants() {
       p.vx *= 0.94; p.vy *= 0.94;
     }
 
+    for (let i = dg.rings.length - 1; i >= 0; i--) { dg.rings[i].age += dt; if (dg.rings[i].age >= dg.rings[i].life) dg.rings.splice(i, 1); }
+    if (dg.flash > 0) dg.flash = Math.max(0, dg.flash - dt * 2.2);
     if (dg.shake > 0) dg.shake = Math.max(0, dg.shake - dt * 3.2);
   }
 
-  function _dgDraw() {
-    const ctx = dg.ctx;
-    const sx = dg.w / dg.logicalW, sy = dg.h / dg.logicalH;
-    ctx.save();
-    ctx.clearRect(0, 0, dg.w, dg.h);
-    ctx.fillStyle = '#0a1811';
-    ctx.fillRect(0, 0, dg.w, dg.h);
-
-    // Лёгкая сетка фона
-    ctx.strokeStyle = 'rgba(74,222,128,0.06)';
-    ctx.lineWidth = 1;
-    const gridStep = 60 * sx;
-    for (let gx = 0; gx < dg.w; gx += gridStep) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, dg.h); ctx.stroke(); }
-    for (let gy = 0; gy < dg.h; gy += gridStep) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(dg.w, gy); ctx.stroke(); }
-
-    if (dg.shake > 0) {
-      const s = dg.shake * 8;
-      ctx.translate((Math.random() - 0.5) * s, (Math.random() - 0.5) * s);
-    }
-
-    // Игрок
+  function _dgRR(ctx, x, y, w, h, r) {
     ctx.beginPath();
-    ctx.arc(dg.player.x * sx, dg.player.y * sy, dg.player.r * sx, 0, Math.PI * 2);
-    ctx.fillStyle = '#4ade80';
-    ctx.shadowColor = 'rgba(74,222,128,0.8)'; ctx.shadowBlur = 14;
-    ctx.fill();
+    ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+  }
+
+  function _dgOrb(ctx, x, y, r, c1, c2, c3, glow, blur) {
+    const g = ctx.createRadialGradient(x - r * 0.35, y - r * 0.4, r * 0.1, x, y, r);
+    g.addColorStop(0, c1); g.addColorStop(0.55, c2); g.addColorStop(1, c3);
+    ctx.beginPath(); ctx.arc(x, y, r, 0, 6.2832);
+    ctx.fillStyle = g; ctx.shadowColor = glow; ctx.shadowBlur = blur; ctx.fill(); ctx.shadowBlur = 0;
+    ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = Math.max(1, r * 0.08); ctx.stroke();
+  }
+
+  function _dgDraw() {
+    const ctx = dg.ctx, S = dg.w / dg.logicalW, W = dg.w, H = dg.h, t = dg.t;
+    const ramp = Math.min(t / 55, 1);
+    ctx.save();
+    ctx.clearRect(0, 0, W, H);
+
+    // --- фон: глубина, туманности ---
+    const bg = ctx.createRadialGradient(W * 0.5, H * 0.45, H * 0.1, W * 0.5, H * 0.5, Math.max(W, H) * 0.78);
+    bg.addColorStop(0, '#10301f'); bg.addColorStop(0.6, '#08170f'); bg.addColorStop(1, '#040a07');
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+    const neb = (x, y, r, c) => { const q = ctx.createRadialGradient(x, y, 0, x, y, r); q.addColorStop(0, c); q.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = q; ctx.fillRect(0, 0, W, H); };
+    neb(W * 0.1, H * 0.12, W * 0.5, 'rgba(167,139,250,0.11)');
+    neb(W * 0.92, H * 0.92, W * 0.5, 'rgba(255,216,77,0.06)');
+
+    if (dg.shake > 0) { const s = dg.shake * 8 * S; ctx.translate((Math.random() - 0.5) * s, (Math.random() - 0.5) * s); }
+
+    // --- двойная сетка с медленным дрейфом ---
+    const drift = t * 10 * S;
+    const grid = (step, alpha, off) => {
+      ctx.strokeStyle = 'rgba(74,222,128,' + alpha + ')'; ctx.lineWidth = 1; ctx.beginPath();
+      for (let x = -step + (off % step); x < W; x += step) { ctx.moveTo(x, 0); ctx.lineTo(x, H); }
+      for (let y = -step + (off % step); y < H; y += step) { ctx.moveTo(0, y); ctx.lineTo(W, y); }
+      ctx.stroke();
+    };
+    grid(30 * S, 0.03, drift * 0.5); grid(120 * S, 0.07, drift);
+
+    // --- мерцающая пыль ---
+    for (const m of dg.motes) {
+      const mx = ((m.x + t * m.vx) % dg.logicalW + dg.logicalW) % dg.logicalW;
+      const my = ((m.y + t * m.vy) % dg.logicalH + dg.logicalH) % dg.logicalH;
+      ctx.globalAlpha = 0.22 + 0.22 * Math.sin(t * m.tw + m.ph);
+      ctx.fillStyle = '#bfffd8'; ctx.beginPath(); ctx.arc(mx * S, my * S, m.r * S, 0, 6.2832); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // --- рамка арены: зелёная → тёплая по мере роста сложности ---
+    const bc = Math.round(74 + ramp * 181) + ',' + Math.round(222 - ramp * 110) + ',' + Math.round(128 - ramp * 40);
+    ctx.shadowColor = 'rgba(' + bc + ',0.7)'; ctx.shadowBlur = 16 * S;
+    ctx.strokeStyle = 'rgba(' + bc + ',0.55)'; ctx.lineWidth = 2 * S;
+    _dgRR(ctx, 5 * S, 5 * S, W - 10 * S, H - 10 * S, 16 * S); ctx.stroke();
     ctx.shadowBlur = 0;
+    ctx.strokeStyle = 'rgba(' + bc + ',0.9)'; ctx.lineWidth = 3 * S; ctx.lineCap = 'round';
+    const cl = 26 * S, o = 5 * S;
+    ctx.beginPath();
+    ctx.moveTo(o, o + cl); ctx.lineTo(o, o); ctx.lineTo(o + cl, o);
+    ctx.moveTo(W - o - cl, o); ctx.lineTo(W - o, o); ctx.lineTo(W - o, o + cl);
+    ctx.moveTo(o, H - o - cl); ctx.lineTo(o, H - o); ctx.lineTo(o + cl, H - o);
+    ctx.moveTo(W - o - cl, H - o); ctx.lineTo(W - o, H - o); ctx.lineTo(W - o, H - o - cl);
+    ctx.stroke();
 
-    // Враги
+    // --- маркер цели курсора ---
+    if (dg.follow && dg.mouse && dg.alive) {
+      const mx = dg.mouse.x * S, my = dg.mouse.y * S, pr = 10 + 2 * Math.sin(t * 6);
+      ctx.strokeStyle = 'rgba(74,222,128,0.14)'; ctx.lineWidth = 1.5 * S;
+      ctx.beginPath(); ctx.moveTo(dg.player.x * S, dg.player.y * S); ctx.lineTo(mx, my); ctx.stroke();
+      ctx.setLineDash([5 * S, 5 * S]); ctx.lineDashOffset = -t * 24 * S;
+      ctx.strokeStyle = 'rgba(74,222,128,0.75)'; ctx.lineWidth = 2 * S;
+      ctx.beginPath(); ctx.arc(mx, my, pr * S, 0, 6.2832); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(74,222,128,0.9)'; ctx.beginPath(); ctx.arc(mx, my, 2.5 * S, 0, 6.2832); ctx.fill();
+    }
+
+    // --- кристаллы ---
+    for (const s of dg.shards) {
+      if (s.life - s.age < 2 && Math.floor(s.age * 8) % 2 === 0) continue; // мигают перед исчезновением
+      const x = s.x * S, y = s.y * S, r = s.r * S * (1 + 0.08 * Math.sin(t * 5 + s.rot));
+      ctx.save(); ctx.translate(x, y); ctx.rotate(s.rot * 0.6);
+      ctx.beginPath(); ctx.moveTo(0, -r * 1.25); ctx.lineTo(r, 0); ctx.lineTo(0, r * 1.25); ctx.lineTo(-r, 0); ctx.closePath();
+      const g = ctx.createLinearGradient(-r, -r, r, r);
+      g.addColorStop(0, '#fff3b0'); g.addColorStop(0.5, '#ffd84d'); g.addColorStop(1, '#ff9f1c');
+      ctx.fillStyle = g; ctx.shadowColor = 'rgba(255,216,77,0.9)'; ctx.shadowBlur = 16 * S; ctx.fill(); ctx.shadowBlur = 0;
+      ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 1.2 * S; ctx.stroke();
+      ctx.restore();
+    }
+
+    // --- враги ---
     for (const en of dg.enemies) {
-      ctx.beginPath();
-      let color = '#ff4d6d', glow = 'rgba(255,77,109,0.7)';
-      let r = en.r;
-      if (en.type === 'chaser') { color = '#ff8c42'; glow = 'rgba(255,140,66,0.7)'; }
-      if (en.type === 'dasher') {
-        color = '#a78bfa'; glow = 'rgba(167,139,250,0.7)';
-        if (en.state === 'telegraph') { r = en.r * (1 + (0.45 - en.stateTimer) * 1.2); color = '#fff'; glow = 'rgba(255,255,255,0.9)'; }
+      const x = en.x * S, y = en.y * S, r = en.r * S;
+      const pal = en.type === 'chaser' ? ['255,140,66', '#ffd0a8', '#ff8c42', '#a8470f'] :
+                  en.type === 'dasher' ? ['167,139,250', '#e4d9ff', '#a78bfa', '#4c2f96'] :
+                                         ['255,77,109', '#ffb3c0', '#ff4d6d', '#8a0f2e'];
+      if (en.spawnT > 0) { // предупреждение о появлении
+        const p = 1 - en.spawnT / 0.8;
+        ctx.setLineDash([4 * S, 4 * S]); ctx.lineDashOffset = -t * 20 * S;
+        ctx.strokeStyle = 'rgba(' + pal[0] + ',' + (0.35 + 0.5 * p) + ')'; ctx.lineWidth = 2 * S;
+        ctx.beginPath(); ctx.arc(x, y, r * (2.4 - 1.4 * p), 0, 6.2832); ctx.stroke(); ctx.setLineDash([]);
+        ctx.fillStyle = 'rgba(' + pal[0] + ',' + (0.2 + 0.5 * p) + ')'; ctx.beginPath(); ctx.arc(x, y, r * 0.5 * p, 0, 6.2832); ctx.fill();
+        continue;
       }
-      ctx.arc(en.x * sx, en.y * sy, r * sx, 0, Math.PI * 2);
-      ctx.fillStyle = color;
-      ctx.shadowColor = glow; ctx.shadowBlur = 10;
-      ctx.fill();
-      ctx.shadowBlur = 0;
+      // шлейф
+      for (let i = 0; i < en.hist.length; i++) {
+        const k = (i + 1) / en.hist.length;
+        ctx.fillStyle = 'rgba(' + pal[0] + ',' + (0.05 + k * 0.16) + ')';
+        ctx.beginPath(); ctx.arc(en.hist[i].x * S, en.hist[i].y * S, r * (0.45 + 0.5 * k), 0, 6.2832); ctx.fill();
+      }
+      if (en.type === 'normal') {
+        _dgOrb(ctx, x, y, r, pal[1], pal[2], pal[3], 'rgba(' + pal[0] + ',0.8)', 14 * S);
+      } else if (en.type === 'chaser') {
+        _dgOrb(ctx, x, y, r, pal[1], pal[2], pal[3], 'rgba(' + pal[0] + ',0.8)', 14 * S);
+        ctx.save(); ctx.translate(x, y); ctx.rotate(en.rot);
+        ctx.setLineDash([5 * S, 6 * S]); ctx.strokeStyle = 'rgba(255,170,110,0.7)'; ctx.lineWidth = 1.6 * S;
+        ctx.beginPath(); ctx.arc(0, 0, r * 1.55, 0, 6.2832); ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+        const ang = Math.atan2(dg.player.y - en.y, dg.player.x - en.x);
+        ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x, y, r * 0.46, 0, 6.2832); ctx.fill();
+        ctx.fillStyle = '#2a0f00'; ctx.beginPath(); ctx.arc(x + Math.cos(ang) * r * 0.2, y + Math.sin(ang) * r * 0.2, r * 0.22, 0, 6.2832); ctx.fill();
+      } else {
+        const tele = en.state === 'telegraph';
+        if (tele) { // линия прицеливания перед рывком
+          const ang = Math.atan2(dg.player.y - en.y, dg.player.x - en.x);
+          ctx.setLineDash([6 * S, 6 * S]); ctx.strokeStyle = 'rgba(255,255,255,' + (0.25 + 0.3 * Math.sin(t * 30)) + ')'; ctx.lineWidth = 1.6 * S;
+          ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + Math.cos(ang) * 260 * S, y + Math.sin(ang) * 260 * S); ctx.stroke(); ctx.setLineDash([]);
+        }
+        const rr = tele ? r * (1 + (0.45 - en.stateTimer) * 1.1) : r;
+        ctx.save(); ctx.translate(x, y); ctx.rotate(en.rot);
+        ctx.beginPath(); ctx.moveTo(0, -rr * 1.35); ctx.lineTo(rr * 1.35, 0); ctx.lineTo(0, rr * 1.35); ctx.lineTo(-rr * 1.35, 0); ctx.closePath();
+        const g = ctx.createLinearGradient(-rr, -rr, rr, rr);
+        if (tele) { g.addColorStop(0, '#fff'); g.addColorStop(1, '#e4d9ff'); } else { g.addColorStop(0, pal[1]); g.addColorStop(0.5, pal[2]); g.addColorStop(1, pal[3]); }
+        ctx.fillStyle = g; ctx.shadowColor = tele ? 'rgba(255,255,255,0.95)' : 'rgba(167,139,250,0.85)'; ctx.shadowBlur = 16 * S; ctx.fill(); ctx.shadowBlur = 0;
+        ctx.strokeStyle = 'rgba(255,255,255,0.5)'; ctx.lineWidth = 1.4 * S; ctx.stroke();
+        ctx.restore();
+      }
     }
 
-    // Частицы
-    for (const p of dg.particles) {
-      const alpha = 1 - p.age / p.life;
-      ctx.beginPath();
-      ctx.arc(p.x * sx, p.y * sy, p.r * sx, 0, Math.PI * 2);
-      ctx.fillStyle = p.color; ctx.globalAlpha = alpha;
-      ctx.fill();
-      ctx.globalAlpha = 1;
+    // --- игрок ---
+    if (dg.alive) {
+      const px = dg.player.x * S, py = dg.player.y * S, pr = dg.player.r * S;
+      for (let i = 0; i < dg.trail.length; i++) {
+        const k = (i + 1) / dg.trail.length;
+        ctx.fillStyle = 'rgba(74,222,128,' + (k * 0.28) + ')';
+        ctx.beginPath(); ctx.arc(dg.trail[i].x * S, dg.trail[i].y * S, pr * (0.35 + 0.6 * k), 0, 6.2832); ctx.fill();
+      }
+      const halo = ctx.createRadialGradient(px, py, pr * 0.5, px, py, pr * 3.4);
+      halo.addColorStop(0, 'rgba(74,222,128,0.35)'); halo.addColorStop(1, 'rgba(74,222,128,0)');
+      ctx.fillStyle = halo; ctx.beginPath(); ctx.arc(px, py, pr * 3.4, 0, 6.2832); ctx.fill();
+      ctx.strokeStyle = 'rgba(255,216,77,0.13)'; ctx.lineWidth = 1.2 * S; // радиус «на волосок»
+      ctx.beginPath(); ctx.arc(px, py, (dg.player.r + 27) * S, 0, 6.2832); ctx.stroke();
+      ctx.strokeStyle = 'rgba(74,222,128,' + (0.3 + 0.15 * Math.sin(t * 5)) + ')'; ctx.lineWidth = 1.5 * S;
+      ctx.beginPath(); ctx.arc(px, py, pr * (1.65 + 0.12 * Math.sin(t * 5)), 0, 6.2832); ctx.stroke();
+      if (t < 1.5 && Math.floor(t * 8) % 2 === 0) { // короткий старт-щит
+        ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.lineWidth = 2 * S;
+        ctx.beginPath(); ctx.arc(px, py, pr * 2.1, 0, 6.2832); ctx.stroke();
+      }
+      _dgOrb(ctx, px, py, pr, '#eafff2', '#4ade80', '#15803d', 'rgba(74,222,128,0.9)', 18 * S);
     }
+
+    // --- ударные кольца и частицы ---
+    for (const rg of dg.rings) {
+      const p = rg.age / rg.life, r = (rg.r0 + (rg.r1 - rg.r0) * p) * S;
+      ctx.strokeStyle = 'rgba(' + rg.color + ',' + (0.85 * (1 - p)) + ')'; ctx.lineWidth = (1 + 3 * (1 - p)) * S;
+      ctx.beginPath(); ctx.arc(rg.x * S, rg.y * S, r, 0, 6.2832); ctx.stroke();
+    }
+    for (const p of dg.particles) {
+      ctx.globalAlpha = 1 - p.age / p.life;
+      ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x * S, p.y * S, p.r * S, 0, 6.2832); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
     ctx.restore();
+
+    // --- виньетка и вспышка ---
+    const vg = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.35, W / 2, H / 2, Math.max(W, H) * 0.75);
+    vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,0.5)');
+    ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
+    if (dg.flash > 0) { ctx.fillStyle = 'rgba(255,70,90,' + (dg.flash * 0.35) + ')'; ctx.fillRect(0, 0, W, H); }
   }
 
   function _dgLoop(now) {
@@ -25049,13 +25837,17 @@ async function _e3LoadParticipants() {
   async function _dgDie() {
     dg.alive = false;
     dg.shake = 1;
-    _dgSpawnParticles(dg.player.x, dg.player.y, '#4ade80', 28);
+    _dgSpawnParticles(dg.player.x, dg.player.y, '#4ade80', 34);
+    dg.rings.push({ x: dg.player.x, y: dg.player.y, age: 0, life: 0.7, r0: 12, r1: 120, color: '74,222,128' });
+    dg.flash = 1;
     _dgDraw();
+    const _deadDg = dg;
+    (function fx(){ if (dg !== _deadDg) return; _deadDg.particles.forEach(p=>{p.age+=0.016;p.x+=p.vx*0.016;p.y+=p.vy*0.016;p.vx*=0.94;p.vy*=0.94;}); _deadDg.particles=_deadDg.particles.filter(p=>p.age<p.life); _deadDg.rings.forEach(r=>r.age+=0.016); _deadDg.rings=_deadDg.rings.filter(r=>r.age<r.life); _deadDg.flash=Math.max(0,_deadDg.flash-0.035); _deadDg.shake=Math.max(0,_deadDg.shake-0.05); _dgDraw(); if (_deadDg.particles.length||_deadDg.rings.length||_deadDg.flash>0) requestAnimationFrame(fx); })();
 
     const survived = dg.t;
     const nearMiss = dg.nearMissCount;
     const bestCombo = dg.bestCombo;
-    const score = Math.round(survived * 12 + nearMiss * 40 + bestCombo * 90);
+    const score = Math.round(survived * 12 + nearMiss * 40 + bestCombo * 90 + dg.bonus);
 
     const prevBestTime = _arcadeGetBest(DODGE_ID, 'best_time') || 0;
     const isRecord = survived > prevBestTime;
