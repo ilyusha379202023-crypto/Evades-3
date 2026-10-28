@@ -7723,6 +7723,71 @@ body:not(.hero-anim) .subtitle .ch{
   .profile-modal-overlay .profile-modal-box .profile-modal-avatar, .profile-modal-overlay .profile-modal-box .profile-modal-avatar svg.ic-svg-profile-big{ width: 66px; height: 66px; }
 }
 
+/* ── Окно профиля, часть 2: карточки, кристаллы, серия, кнопки, безопасность ── */
+.profile-modal-overlay .profile-modal-box .profile-card, .profile-modal-overlay .profile-modal-box .profile-security{
+  padding: 20px; border-radius: 20px; margin-bottom: 16px;
+  background: linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.11); box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 22px rgba(0,0,0,0.18);
+}
+.profile-modal-overlay .profile-modal-box .profile-card .pc-icon{ width: 42px; height: 42px; border-radius: 13px; }
+.profile-modal-overlay .profile-modal-box .profile-card .pc-sub{ font-size: 13px; line-height: 1.45; }
+
+/* кристаллы */
+.profile-modal-overlay .profile-modal-box .profile-crystals{
+  background: radial-gradient(120% 90% at 0% 0%, rgba(80,200,255,0.14), transparent 60%), linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border-color: rgba(80,200,255,0.28);
+}
+.profile-modal-overlay .profile-modal-box .pc-icon-crystals{ box-shadow: 0 0 18px rgba(80,200,255,0.35); }
+.profile-modal-overlay .profile-modal-box .pc-crystals-balance{
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px; border-radius: 16px;
+  background: linear-gradient(135deg, rgba(0,0,0,0.38), rgba(0,0,0,0.2)); border: 1px solid rgba(80,200,255,0.22);
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.3);
+}
+.profile-modal-overlay .profile-modal-box .pc-crystals-balance-num{ color: #eafaff; text-shadow: 0 0 18px rgba(80,200,255,0.55), 0 2px 0 rgba(0,0,0,0.4); }
+.profile-modal-overlay .profile-modal-box .pc-crystals-balance-num .pc-gem{ width: 28px; height: 28px; }
+.profile-modal-overlay .profile-modal-box .pc-crystals-balance-lbl{ font-size: 12px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+.profile-modal-overlay .profile-modal-box .pc-crystals-balance-lbl b{ font-family: 'Orbitron', sans-serif; color: #ffd54a; font-size: 14px; }
+.profile-modal-overlay .profile-modal-box .pc-streak{ gap: 7px; }
+.profile-modal-overlay .profile-modal-box .pc-streak-day{
+  height: 42px; border-radius: 12px; font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 800;
+  background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.1); transition: all .2s;
+}
+.profile-modal-overlay .profile-modal-box .pc-streak-day.is-on{
+  background: linear-gradient(180deg, rgba(94,234,146,0.3), rgba(40,199,106,0.16)); border-color: rgba(94,234,146,0.7); color: #d6ffe6;
+  box-shadow: 0 0 14px rgba(74,222,128,0.25);
+}
+.profile-modal-overlay .profile-modal-box .pc-streak-day.is-today{ border-color: #5eea92; box-shadow: 0 0 0 3px rgba(74,222,128,0.2), 0 0 16px rgba(74,222,128,0.3); }
+.profile-modal-overlay .profile-modal-box .pc-streak-day.pc-streak-bonus{ border-color: rgba(255,200,58,0.55); background: linear-gradient(180deg, rgba(255,200,58,0.2), rgba(255,200,58,0.06)); box-shadow: 0 0 14px rgba(255,200,58,0.2); }
+.profile-modal-overlay .profile-modal-box .pc-streak-rewards span{ font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.5); }
+.profile-modal-overlay .profile-modal-box .pc-streak-rewards span.is-bonus{ color: #ffd54a; text-shadow: 0 0 10px rgba(255,200,58,0.5); }
+.profile-modal-overlay .profile-modal-box .pc-crystals-btn{
+  height: 54px; border-radius: 16px; font-family: 'Exo 2', sans-serif; font-size: 15px; font-weight: 900; letter-spacing: .8px; text-transform: uppercase;
+  color: #3a2600; border: 2px solid rgba(255,225,150,0.75);
+  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 55%, #C49100 100%);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.45), 0 0 20px rgba(255,190,60,0.35), inset 0 1px 0 rgba(255,255,255,0.65), inset 0 -3px 6px rgba(120,80,0,0.35);
+}
+.profile-modal-overlay .profile-modal-box .pc-crystals-btn:hover{ transform: translateY(-2px); filter: brightness(1.07); box-shadow: 0 14px 30px rgba(0,0,0,0.5), 0 0 30px rgba(255,190,60,0.5), inset 0 1px 0 rgba(255,255,255,0.65), inset 0 -3px 6px rgba(120,80,0,0.35); }
+.profile-modal-overlay .profile-modal-box .pc-crystals-btn:active{ transform: translateY(0) scale(.98); }
+.profile-modal-overlay .profile-modal-box .pc-crystals-btn:disabled{ color: rgba(255,255,255,0.45); background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.12); box-shadow: none; transform: none; filter: none; }
+.profile-modal-overlay .profile-modal-box .pc-crystals-btn .pc-gem{ width: 20px; height: 20px; }
+.profile-modal-overlay .profile-modal-box .pc-crystals-tip{ text-align: center; font-size: 12.5px; }
+
+/* информация об аккаунте */
+.profile-modal-overlay .profile-modal-box .pm-info-row{ padding: 15px 0; }
+.profile-modal-overlay .profile-modal-box .pm-info-k{ font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,225,160,0.75); }
+.profile-modal-overlay .profile-modal-box .pm-info-v{ font-size: 14px; font-weight: 700; }
+
+/* безопасность */
+.profile-modal-overlay .profile-modal-box .ps-shield{ width: 44px; height: 44px; border-radius: 13px; box-shadow: 0 0 18px rgba(74,222,128,0.3); }
+.profile-modal-overlay .profile-modal-box .ps-title{ font-size: 15px; font-weight: 800; letter-spacing: .4px; }
+.profile-modal-overlay .profile-modal-box .ps-btn{ height: 44px; padding: 0 20px; border-radius: 12px; font-family: 'Exo 2', sans-serif; font-size: 13px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; transition: all .2s; }
+.profile-modal-overlay .profile-modal-box .ps-btn-primary{ box-shadow: 0 6px 16px rgba(34,197,94,0.25), inset 0 1px 0 rgba(255,255,255,0.35); }
+.profile-modal-overlay .profile-modal-box .ps-btn:hover{ transform: translateY(-1px); filter: brightness(1.08); }
+.profile-modal-overlay .profile-modal-box .pc-setting-label{ font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,225,160,0.8); }
+.profile-modal-overlay .profile-modal-box .pc-setting-input{ height: 44px; border-radius: 12px; font-size: 15px; font-weight: 600; background: rgba(0,0,0,0.35); border: 1.5px solid rgba(255,255,255,0.14); }
+.profile-modal-overlay .profile-modal-box .pc-setting-input:focus{ border-color: rgba(255,205,110,0.75); box-shadow: 0 0 0 4px rgba(255,190,60,0.16); }
+.profile-modal-overlay .profile-modal-box .pc-setting-btn{ height: 44px; border-radius: 12px; font-weight: 800; }
+
 /* вкладки: подчёркивание вместо зелёной таблетки */
 .profile-modal-box .pm-tabs { gap: 24px; padding: 0; margin: 0 0 20px; border: 0; border-bottom: 1px solid rgba(255,255,255,0.10); border-radius: 0; background: none; }
 .profile-modal-box .pm-tab {
