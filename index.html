@@ -3639,16 +3639,23 @@
 .af-input:-webkit-autofill:focus,
 .af-input:-webkit-autofill:active {
   -webkit-text-fill-color: #fff !important;
-  -webkit-box-shadow: 0 0 0 1000px rgba(0,0,0,0.4) inset !important;
-  box-shadow: 0 0 0 1000px rgba(0,0,0,0.4) inset !important;
+  /* ВАЖНО: цвет тени непрозрачный. С rgba(0,0,0,.4) светлый фон автозаполнения просвечивал и поля становились серыми */
+  -webkit-box-shadow: 0 0 0 1000px #06130d inset !important;
+  box-shadow: 0 0 0 1000px #06130d inset !important;
   caret-color: #fff;
   border-color: rgba(255,255,255,0.15);
   transition: background-color 9999s ease-in-out 0s, color 9999s ease-in-out 0s;
 }
 .af-input:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0 1000px rgba(0,0,0,0.5) inset, 0 0 0 4px rgba(255,140,0,0.1), 0 0 20px rgba(255,140,0,0.3) !important;
-  box-shadow: 0 0 0 1000px rgba(0,0,0,0.5) inset, 0 0 0 4px rgba(255,140,0,0.1), 0 0 20px rgba(255,140,0,0.3) !important;
+  -webkit-box-shadow: 0 0 0 1000px #05100b inset, 0 0 0 4px rgba(255,140,0,0.1), 0 0 20px rgba(255,140,0,0.3) !important;
+  box-shadow: 0 0 0 1000px #05100b inset, 0 0 0 4px rgba(255,140,0,0.1), 0 0 20px rgba(255,140,0,0.3) !important;
   border-color: rgba(255,140,0,0.8);
+}
+/* Firefox / стандартный псевдокласс (отдельным правилом, чтобы старые браузеры не отбросили остальные) */
+.af-input:autofill{
+  -webkit-text-fill-color: #fff !important;
+  box-shadow: 0 0 0 1000px #06130d inset !important;
+  caret-color: #fff;
 }
 .af-icon {
   position: absolute; left: 14px; top: 50%; transform: translateY(-50%); z-index: 2;
@@ -4685,6 +4692,169 @@ textarea.cn-input{ resize: vertical; min-height: 130px; max-height: 320px; }
   .cn-body{ padding: 20px 20px 6px; }
   .cn-foot{ padding: 14px 20px 22px; flex-direction: column-reverse; }
   .cn-btn-cancel{ flex: 1 1 auto; }
+}
+
+/* ───────── РЕДАКТОР ДОРОЖНОЙ КАРТЫ (только dev) ───────── */
+.rme-head-actions{ display: flex; justify-content: center; margin-top: 20px; }
+.rme-open-btn{
+  position: relative; display: inline-flex; align-items: center; gap: 12px;
+  height: 50px; padding: 0 24px 0 8px; border-radius: 999px; cursor: pointer; overflow: hidden;
+  border: 2px solid rgba(255,205,110,0.6);
+  background:
+    radial-gradient(circle at 20% 25%, rgba(255,220,150,0.38), rgba(200,140,20,0.22) 60%, rgba(120,80,10,0.14) 100%),
+    linear-gradient(145deg, rgba(90,60,10,0.6), rgba(55,36,5,0.7));
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  color: #ffe9b0; font-family: 'Exo 2', sans-serif; font-weight: 800; font-size: 14px; letter-spacing: 1px; text-transform: uppercase;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -2px 6px rgba(0,0,0,0.25), 0 0 14px rgba(255,190,60,0.3);
+  transition: all .3s cubic-bezier(0.4,0,0.2,1);
+}
+.rme-open-btn:hover{ transform: translateY(-2px); border-color: rgba(255,220,140,0.85); box-shadow: 0 12px 28px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.45), 0 0 26px rgba(255,190,60,0.45); }
+.rme-open-btn:active{ transform: translateY(-1px) scale(0.98); }
+.rme-open-btn:focus-visible{ outline: 2px solid #ffd76a; outline-offset: 3px; }
+.rme-open-ic{
+  width: 34px; height: 34px; flex: 0 0 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 55%, #C49100 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), inset 0 -2px 4px rgba(120,80,0,0.35), 0 2px 6px rgba(0,0,0,0.4);
+}
+.rme-open-ic svg{ width: 17px; height: 17px; stroke: #3a2600; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+.rme-box{
+  position: relative; width: 100%; max-width: 780px; max-height: calc(100vh - 40px);
+  display: flex; flex-direction: column; overflow: hidden; text-align: left;
+  background:
+    radial-gradient(120% 60% at 50% -10%, rgba(255,200,58,0.16), transparent 60%),
+    linear-gradient(160deg, rgba(14,40,28,0.97), rgba(7,22,15,0.98));
+  backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255,205,110,0.35); border-radius: 28px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 60px rgba(255,190,60,0.14), inset 0 1px 0 rgba(255,255,255,0.12);
+  transform: scale(0.9) translateY(10px); transition: transform .35s cubic-bezier(.08,1.3,.18,1);
+}
+.forgot-modal-overlay.show .rme-box{ transform: scale(1) translateY(0); }
+.rme-box .cn-head{ flex: 0 0 auto; }
+.rme-body{
+  flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 22px 32px 10px;
+  display: flex; flex-direction: column; gap: 20px;
+  scrollbar-width: thin; scrollbar-color: rgba(255,205,110,0.35) transparent;
+}
+.rme-summary{ display: flex; align-items: center; gap: 22px; padding: 16px 22px; border-radius: 18px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); }
+.rme-sum-num{ min-width: 96px; font-family: 'Orbitron', sans-serif; font-size: 34px; font-weight: 900; color: #fff; text-shadow: 0 0 16px rgba(74,222,128,0.5); font-variant-numeric: tabular-nums; }
+.rme-sum-main{ flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 9px; }
+.rme-label{ font-size: 12px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255,225,160,0.85); }
+.rme-bar{ height: 10px; border-radius: 999px; background: rgba(255,255,255,0.09); overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.35); }
+.rme-bar > i{ display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, #4ade80, #ffd84d); box-shadow: 0 0 12px rgba(74,222,128,0.5); transition: width .35s ease; }
+.rme-sum-meta{ font-size: 13px; color: rgba(255,255,255,0.6); }
+
+.rme-current{
+  position: relative; padding: 22px 24px; border-radius: 22px; border: 1.5px solid rgba(255,216,77,0.5);
+  background: radial-gradient(120% 90% at 0% 0%, rgba(255,216,77,0.14), transparent 60%), rgba(255,255,255,0.04);
+  box-shadow: 0 0 40px rgba(255,216,77,0.08), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.rme-cur-kick{ display: flex; align-items: center; gap: 10px; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: #ffd84d; }
+.rme-cur-kick .pulse{ width: 9px; height: 9px; border-radius: 50%; background: #ffd84d; box-shadow: 0 0 12px #ffd84d; animation: dotPulse 1.5s ease-in-out infinite; }
+.rme-cur-name{ margin: 10px 0 18px; font-family: 'Exo 2','Orbitron',sans-serif; font-weight: 800; font-size: 21px; line-height: 1.3; color: #fff; word-break: break-word; }
+.rme-ctrl-top{ display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 14px; }
+.rme-pct-box{ display: inline-flex; align-items: baseline; gap: 4px; padding: 6px 14px 6px 16px; border-radius: 14px; background: rgba(0,0,0,0.38); border: 1.5px solid rgba(255,255,255,0.16); transition: border-color .2s, box-shadow .2s; }
+.rme-pct-box:focus-within{ border-color: rgba(255,205,110,0.8); box-shadow: 0 0 0 4px rgba(255,190,60,0.16); }
+.rme-pct-input{ width: 3.2ch; border: 0; outline: 0; background: transparent; color: #fff; text-align: right; font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 900; -moz-appearance: textfield; appearance: textfield; }
+.rme-pct-input::-webkit-outer-spin-button, .rme-pct-input::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
+.rme-pct-sign{ font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 800; color: rgba(255,255,255,0.55); }
+.rme-slider{
+  -webkit-appearance: none; appearance: none; width: 100%; height: 12px; margin: 6px 0 16px; border-radius: 999px; outline: none; cursor: pointer;
+  background: linear-gradient(90deg, #4ade80, #ffd84d) left center / var(--v, 0%) 100% no-repeat, rgba(255,255,255,0.13);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+}
+.rme-slider::-webkit-slider-thumb{
+  -webkit-appearance: none; width: 28px; height: 28px; border-radius: 50%; cursor: grab;
+  background: linear-gradient(180deg, #FFEFA8, #FFC83A 55%, #C49100); border: 2px solid #fff6d2;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.5), 0 0 14px rgba(255,190,60,0.55); transition: transform .15s;
+}
+.rme-slider::-webkit-slider-thumb:hover{ transform: scale(1.12); }
+.rme-slider::-moz-range-thumb{ width: 24px; height: 24px; border-radius: 50%; cursor: grab; background: linear-gradient(180deg, #FFEFA8, #FFC83A 55%, #C49100); border: 2px solid #fff6d2; box-shadow: 0 3px 10px rgba(0,0,0,0.5), 0 0 14px rgba(255,190,60,0.55); }
+.rme-slider::-moz-range-track{ background: transparent; }
+.rme-slider:focus-visible{ outline: 2px solid #ffd76a; outline-offset: 5px; }
+.rme-quick{ display: flex; flex-wrap: wrap; gap: 8px; }
+.rme-q{
+  appearance: none; min-width: 52px; height: 36px; padding: 0 14px; border-radius: 999px; cursor: pointer;
+  font-family: 'Exo 2', sans-serif; font-size: 14px; font-weight: 800; color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.16); transition: all .2s;
+}
+.rme-q:hover{ border-color: rgba(255,205,110,0.8); color: #fff; transform: translateY(-1px); background: rgba(255,200,58,0.12); }
+.rme-q:active{ transform: translateY(0) scale(.96); }
+.rme-actions{ display: flex; gap: 12px; margin-top: 20px; }
+.rme-btn-prev{
+  flex: 0 0 auto; display: inline-flex; align-items: center; gap: 8px; height: 56px; padding: 0 20px; border-radius: 16px; cursor: pointer;
+  font-family: 'Exo 2', sans-serif; font-size: 14px; font-weight: 900; letter-spacing: .6px; text-transform: uppercase; color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.18); transition: all .2s;
+}
+.rme-btn-prev:hover:not(:disabled){ background: rgba(255,255,255,0.14); color: #fff; }
+.rme-btn-prev:disabled{ opacity: .4; cursor: not-allowed; }
+.rme-btn-next{
+  flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; gap: 12px; height: 56px; padding: 0 20px; border-radius: 16px; cursor: pointer;
+  font-family: 'Exo 2', sans-serif; color: #3a2600; border: 2px solid rgba(255,225,150,0.75);
+  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 55%, #C49100 100%);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.45), 0 0 20px rgba(255,190,60,0.4), inset 0 1px 0 rgba(255,255,255,0.65), inset 0 -3px 6px rgba(120,80,0,0.35);
+  transition: all .25s cubic-bezier(0.4,0,0.2,1); text-align: left;
+}
+.rme-btn-next:hover{ transform: translateY(-2px); filter: brightness(1.07); }
+.rme-btn-next:active{ transform: translateY(0) scale(.98); }
+.rme-btn-next svg, .rme-btn-prev svg{ width: 20px; height: 20px; flex: 0 0 20px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s; }
+.rme-btn-next:hover svg{ transform: translateX(4px); }
+.rme-next-txt{ min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.rme-next-main{ font-size: 14px; font-weight: 900; letter-spacing: .6px; text-transform: uppercase; line-height: 1.2; }
+.rme-next-sub{ font-size: 12px; font-weight: 700; opacity: .75; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rme-complete{ display: none; align-items: center; gap: 14px; font-size: 18px; font-weight: 800; color: #bff1ea; }
+.rme-complete svg{ width: 34px; height: 34px; flex: 0 0 34px; padding: 6px; border-radius: 50%; box-sizing: border-box; color: #06100b; background: #2dd4bf; box-shadow: 0 0 16px rgba(45,212,191,0.6); }
+.rme-current.is-complete{ border-color: rgba(45,212,191,0.5); background: radial-gradient(120% 90% at 0% 0%, rgba(45,212,191,0.14), transparent 60%), rgba(255,255,255,0.04); }
+.rme-current.is-complete .rme-ctrl, .rme-current.is-complete .rme-cur-name, .rme-current.is-complete .rme-btn-next, .rme-current.is-complete .rme-cur-kick{ display: none; }
+.rme-current.is-complete .rme-complete{ display: flex; }
+.rme-current.is-complete .rme-actions{ margin-top: 16px; }
+
+.rme-list{ display: flex; flex-direction: column; gap: 16px; }
+.rme-stage-head{ display: flex; align-items: baseline; gap: 10px; padding: 0 4px 8px; }
+.rme-stage-k{ font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+.rme-stage-n{ flex: 1; min-width: 0; font-weight: 800; font-size: 15px; color: #fff; }
+.rme-stage-p{ font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.7); }
+.rme-task{
+  appearance: none; width: 100%; display: flex; align-items: center; gap: 12px; padding: 11px 14px; margin-bottom: 6px; border-radius: 14px; cursor: pointer; text-align: left;
+  font-family: 'Exo 2', sans-serif; font-size: 14px; line-height: 1.4; color: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.1); transition: all .2s;
+}
+.rme-task:hover{ background: rgba(255,255,255,0.09); border-color: rgba(255,205,110,0.5); color: #fff; }
+.rme-task:focus-visible{ outline: 2px solid #ffd76a; outline-offset: 2px; }
+.rme-task-ic{ flex: 0 0 22px; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1.5px solid rgba(255,255,255,0.3); color: #06100b; }
+.rme-task-ic svg{ width: 12px; height: 12px; }
+.rme-task-txt{ flex: 1; min-width: 0; word-break: break-word; }
+.rme-task-badge{ flex: 0 0 auto; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: .4px; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.65); background: rgba(255,255,255,0.05); }
+.rme-task.is-done .rme-task-ic{ background: #2dd4bf; border-color: #2dd4bf; box-shadow: 0 0 10px rgba(45,212,191,0.5); }
+.rme-task.is-done .rme-task-badge{ color: #bff1ea; border-color: rgba(45,212,191,0.5); background: rgba(45,212,191,0.14); }
+.rme-task.is-now{ color: #fff; font-weight: 800; border-color: rgba(255,216,77,0.7); background: rgba(255,216,77,0.1); box-shadow: 0 0 22px rgba(255,216,77,0.12); }
+.rme-task.is-now .rme-task-ic{ border-color: rgba(255,216,77,0.95); border-top-color: transparent; animation: rm2Spin 1s linear infinite; }
+.rme-task.is-now .rme-task-badge{ color: #ffe995; border-color: rgba(255,216,77,0.6); background: rgba(255,216,77,0.16); font-family: 'Orbitron', sans-serif; }
+
+.rme-foot{ flex: 0 0 auto; display: flex; align-items: center; gap: 12px; padding: 16px 32px 24px; border-top: 1px solid rgba(255,205,110,0.16); background: rgba(0,0,0,0.18); }
+.rme-status{ flex: 1; min-width: 0; display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.5); }
+.rme-status::before{ content: ''; width: 9px; height: 9px; flex: 0 0 9px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 10px rgba(74,222,128,0.7); }
+.rme-status.is-dirty{ color: #ffd54a; }
+.rme-status.is-dirty::before{ background: #ffd54a; box-shadow: 0 0 10px rgba(255,216,77,0.8); animation: dotPulse 1.5s ease-in-out infinite; }
+.rme-status.is-err{ color: #ff8a7a; }
+.rme-status.is-err::before{ background: #ff6b6b; box-shadow: 0 0 10px rgba(255,107,107,0.8); }
+.rme-foot .cn-btn{ flex: 0 0 auto; height: 50px; padding: 0 26px; }
+.rme-foot .cn-btn-cancel{ flex: 0 0 auto; }
+.rme-foot .cn-btn:disabled{ opacity: .45; cursor: not-allowed; filter: none; transform: none; }
+@media (max-width: 600px){
+  .rme-body{ padding: 18px 18px 8px; }
+  .rme-summary{ gap: 14px; padding: 14px 16px; }
+  .rme-sum-num{ font-size: 26px; min-width: 76px; }
+  .rme-current{ padding: 18px 16px; }
+  .rme-cur-name{ font-size: 18px; }
+  .rme-actions{ flex-direction: column-reverse; }
+  .rme-btn-prev{ justify-content: center; height: 48px; }
+  .rme-foot{ flex-wrap: wrap; padding: 14px 18px 20px; }
+  .rme-status{ flex: 1 0 100%; }
+  .rme-foot .cn-btn{ flex: 1; }
+  .rme-task-badge{ display: none; }
+  .rme-task.is-now .rme-task-badge{ display: inline-block; }
 }
 
 /* Метки новостей — в колокольчике, превью и окне «Подробнее» */
@@ -7315,6 +7485,36 @@ body:not(.hero-anim) .subtitle .ch{
 .pm-pane{ display: none; }
 .pm-pane.is-active{ display: block; animation: arcadeFadeIn .25s ease; }
 
+/* ============ ARCADE: REACTION RUSH ============ */
+.arcade-card-violet .arcade-card-icon{ background: rgba(167,139,250,0.14); border-color: rgba(167,139,250,0.4); color: var(--e3-violet); }
+.arcade-card-violet .arcade-card-glow{ background: linear-gradient(135deg, rgba(167,139,250,0.6), transparent 45%, rgba(255,216,77,0.5)); }
+.arcade-rx{ background: radial-gradient(ellipse at 50% -10%, rgba(90,60,170,0.5), transparent 60%), radial-gradient(ellipse at 90% 100%, rgba(255,216,77,0.07), transparent 55%), linear-gradient(180deg, #0a0716, #05030b); }
+.arcade-rx .arcade-hud-timer strong{ text-shadow: 0 0 14px rgba(167,139,250,0.55); }
+.arcade-rx .arcade-hud-score strong{ color: var(--e3-gold); text-shadow: 0 0 14px rgba(255,216,77,0.45); }
+#arcadeReactionCanvas{
+  flex: 0 0 auto; touch-action: none; cursor: crosshair; background: #07050f;
+  border: 1px solid rgba(167,139,250,0.38); border-radius: 18px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.6), 0 0 50px rgba(167,139,250,0.14), var(--e3-shadow-xl);
+}
+.arcade-rx .arcade-follow-chip{ transition: opacity .3s ease; }
+.arcade-rx .arcade-follow-chip.is-hidden{ opacity: 0; }
+.arcade-rx .arcade-follow-chip .dot{ background: #a78bfa; box-shadow: 0 0 10px #a78bfa; }
+.arcade-rx-title{ color: #d8ccff; text-shadow: 0 0 18px rgba(167,139,250,0.55); }
+.arcade-rx-bars{ display: flex; align-items: flex-end; gap: 6px; height: 54px; margin: -6px 0 22px; padding: 0 4px; }
+.arcade-rx-bars i{ flex: 1; min-width: 0; border-radius: 4px 4px 2px 2px; opacity: .92; }
+@media (max-width: 720px){ #arcadeReactionCanvas{ border-radius: 12px; } }
+
+
+/* ── Карточки: один механизм движения (наклон + подъём в JS), без конфликта с :hover ── */
+.feature-card:hover, .showcase-card:hover { transform: none; }
+.feature-card.tilt-3d, .showcase-card.tilt-3d {
+  transition: transform .5s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease, border-color .3s ease;
+}
+.feature-card.tilt-3d.is-hover, .showcase-card.tilt-3d.is-hover {
+  transition: transform .14s ease-out, box-shadow .3s ease, border-color .3s ease;
+}
+
+
 /* ======================================================================
    CROWNBIT · ПУЛЬС РАЗРАБОТКИ — карточки со значком, акцентом и ссылкой
    ====================================================================== */
@@ -8276,6 +8476,10 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
         <svg class="dd-ic" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.6"/><path d="M2.5 20c0-3.6 3-5.4 6.5-5.4s6.5 1.8 6.5 5.4"/><path d="M16 4.6a3.6 3.6 0 0 1 0 6.8"/><path d="M18.5 14.8c1.9.7 3 2.2 3 5.2"/></svg>
         <span data-i18n="dev-btn-participants">Участники</span>
       </button>
+      <button class="profile-dd-item" id="devRoadmapDdItem" style="display:none;" onclick="openRoadmapEditor()">
+        <svg class="dd-ic" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H15a3.5 3.5 0 0 0 0-7H9a3.5 3.5 0 0 1 0-7h6.5"/></svg>
+        <span data-i18n="nav-roadmap">Дорожная карта</span>
+      </button>
       <div class="profile-dd-divider"></div>
       <button class="profile-dd-item danger" onclick="openConfirmLogout()" data-i18n="auth-logout">
         <svg class="dd-ic" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4H5.5A1.5 1.5 0 0 0 4 5.5v13A1.5 1.5 0 0 0 5.5 20H10"/><path d="M15 8l4 4-4 4"/><path d="M19 12H9.5"/></svg>
@@ -9091,6 +9295,69 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
   </div>
 </div>
 
+<!-- ─── MODAL: РЕДАКТОР ДОРОЖНОЙ КАРТЫ (только dev) ─── -->
+<div class="forgot-modal-overlay" id="rmEditorOverlay" onclick="rmeCloseOnBg(event)">
+  <div class="rme-box" role="dialog" aria-modal="true" aria-labelledby="rmeTitle">
+    <button class="cn-close" type="button" onclick="rmeRequestClose()" aria-label="Закрыть"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="cn-head">
+      <div class="cn-head-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H15a3.5 3.5 0 0 0 0-7H9a3.5 3.5 0 0 1 0-7h6.5"/></svg></div>
+      <div>
+        <h2 class="cn-title" id="rmeTitle" data-i18n="rme-title">Редактор дорожной карты</h2>
+        <div class="cn-sub" data-i18n="rme-sub">Изменения сразу увидят все игроки</div>
+      </div>
+    </div>
+    <div class="rme-body">
+      <div class="rme-summary">
+        <div class="rme-sum-num" id="rmeSumNum">0%</div>
+        <div class="rme-sum-main">
+          <div class="rme-label" data-i18n="rme-total">Общий прогресс</div>
+          <div class="rme-bar"><i id="rmeSumBar"></i></div>
+          <div class="rme-sum-meta" id="rmeSumMeta"></div>
+        </div>
+      </div>
+
+      <div class="rme-current" id="rmeCurrent">
+        <div class="rme-cur-kick"><span class="pulse"></span><span id="rmeStageKick"></span></div>
+        <div class="rme-cur-name" id="rmeTaskName"></div>
+        <div class="rme-ctrl">
+          <div class="rme-ctrl-top">
+            <span class="rme-label" data-i18n="rme-progress">Прогресс пункта</span>
+            <span class="rme-pct-box"><input class="rme-pct-input" id="rmePctInput" type="number" min="0" max="100" step="1" inputmode="numeric" aria-label="Процент выполнения" oninput="rmeTypePct(this.value)" onblur="rmeRender()" /><span class="rme-pct-sign">%</span></span>
+          </div>
+          <input class="rme-slider" id="rmeSlider" type="range" min="0" max="100" step="1" value="0" aria-label="Процент выполнения" oninput="rmeSetPct(this.value)" />
+          <div class="rme-quick">
+            <button type="button" class="rme-q" onclick="rmeSetPct(0)">0</button>
+            <button type="button" class="rme-q" onclick="rmeNudge(-10)">−10</button>
+            <button type="button" class="rme-q" onclick="rmeNudge(-5)">−5</button>
+            <button type="button" class="rme-q" onclick="rmeNudge(5)">+5</button>
+            <button type="button" class="rme-q" onclick="rmeNudge(10)">+10</button>
+            <button type="button" class="rme-q" onclick="rmeSetPct(50)">50</button>
+            <button type="button" class="rme-q" onclick="rmeSetPct(100)">100</button>
+          </div>
+        </div>
+        <div class="rme-complete"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="rme-complete">Все пункты выполнены</span></div>
+        <div class="rme-actions">
+          <button type="button" class="rme-btn-prev" id="rmePrevBtn" onclick="rmePrev()"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span data-i18n="rme-prev-btn">Назад</span></button>
+          <button type="button" class="rme-btn-next" id="rmeNextBtn" onclick="rmeNext()">
+            <span class="rme-next-txt"><span class="rme-next-main" id="rmeNextMain"></span><span class="rme-next-sub" id="rmeNextSub"></span></span>
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <div class="rme-label" style="margin-bottom:12px;" data-i18n="rme-all-title">Все пункты</div>
+        <div class="rme-list" id="rmeList"></div>
+      </div>
+    </div>
+    <div class="rme-foot">
+      <div class="rme-status" id="rmeStatus"></div>
+      <button type="button" class="cn-btn cn-btn-cancel" id="rmeResetBtn" onclick="rmeReset()" data-i18n="rme-reset">Сбросить</button>
+      <button type="button" class="cn-btn cn-btn-send" id="rmeSaveBtn" onclick="rmeSave()"><span data-i18n="rme-save">Сохранить</span></button>
+    </div>
+  </div>
+</div>
+
 <!-- ─── MODAL: ПОЛНЫЙ ТЕКСТ НОВОСТИ ─── -->
 <div class="forgot-modal-overlay" id="newsDetailOverlay" onclick="closeNewsDetailOnBg(event)">
   <div class="forgot-modal-box">
@@ -9573,7 +9840,7 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
             <span data-i18n="arcade-play-btn">Играть</span>
           </button>
         </div>
-        <div class="arcade-card arcade-card-soon reveal" data-delay="2">
+        <div class="arcade-card arcade-card-violet reveal" data-delay="2">
           <div class="arcade-card-glow"></div>
           <div class="arcade-card-icon" aria-hidden="true">
             <svg viewBox="0 0 48 48" fill="none"><path d="M24 5 L29.5 17.5 L43 19.4 L33.5 28.6 L35.8 42 L24 35.8 L12.2 42 L14.5 28.6 L5 19.4 L18.5 17.5 Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>
@@ -9581,10 +9848,9 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
           <div class="arcade-card-title" data-i18n="arcade-reaction-title">Reaction Rush</div>
           <div class="arcade-card-sub" data-i18n="arcade-reaction-sub">10 целей подряд. Никаких раздумий.</div>
           <div class="arcade-card-best"><span data-i18n="arcade-best-label">Рекорд:</span> <strong id="arcadeReactionBestLabel">—</strong></div>
-          <button type="button" class="arcade-play-btn arcade-play-btn-violet" disabled aria-disabled="true">
-            <svg class="arcade-lock-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8 11V8a4 4 0 018 0v3"/></svg><span data-i18n="arcade-soon-btn">Скоро</span>
+          <button type="button" class="arcade-play-btn arcade-play-btn-violet" onclick="arcadeOpenReaction()">
+            <span data-i18n="arcade-play-btn">Играть</span>
           </button>
-          <span class="arcade-lock-badge" aria-hidden="true"><svg class="arcade-lock-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8 11V8a4 4 0 018 0v3"/></svg></span>
         </div>
         <div class="arcade-card arcade-card-soon arcade-card-soon-gold reveal" data-delay="3">
           <div class="arcade-card-glow"></div>
@@ -9650,12 +9916,59 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
       </div>
     </div>
 
+    <!-- ============ ARCADE: REACTION RUSH — игровой экран ============ -->
+    <div class="arcade-stage-overlay arcade-rx" id="arcadeReactionOverlay">
+      <div class="arcade-stage-topbar">
+        <div class="arcade-hud-row">
+          <div class="arcade-hud-timer">
+            <span data-i18n="arcade-rx-target-label">Цель</span>
+            <strong id="arcadeRxTarget">0/10</strong>
+          </div>
+          <div class="arcade-hud-timer arcade-hud-score">
+            <span data-i18n="arcade-rx-time-label">Время</span>
+            <strong id="arcadeRxTimer">0.00s</strong>
+          </div>
+        </div>
+        <button type="button" class="arcade-stage-close" onclick="arcadeCloseReaction()" aria-label="Close">✕</button>
+      </div>
+      <div class="arcade-stage-wrap">
+        <canvas id="arcadeReactionCanvas"></canvas>
+        <div class="arcade-follow-chip" id="arcadeRxHint"><i class="dot"></i><span data-i18n="arcade-rx-hint">Жми на цели как можно быстрее</span></div>
+        <div class="arcade-death-screen" id="arcadeReactionResult">
+          <div class="arcade-death-box">
+            <div class="arcade-death-title arcade-rx-title" data-i18n="arcade-rx-done-title">Готово!</div>
+            <div class="arcade-record-banner" id="arcadeRxRecord" style="display:none;" data-i18n="arcade-new-record">Новый рекорд!</div>
+            <div class="arcade-death-stats">
+              <div class="arcade-death-stat" style="grid-column: 1 / -1;"><span data-i18n="arcade-rx-total">Итоговое время</span><strong id="arcadeRxTotal">0.00s</strong></div>
+              <div class="arcade-death-stat"><span data-i18n="arcade-rx-avg">Средняя реакция</span><strong id="arcadeRxAvg">—</strong></div>
+              <div class="arcade-death-stat"><span data-i18n="arcade-rx-fastest">Лучшая цель</span><strong id="arcadeRxFastest">—</strong></div>
+              <div class="arcade-death-stat"><span data-i18n="arcade-best-label-2">Личный рекорд</span><strong id="arcadeRxBest">—</strong></div>
+              <div class="arcade-death-stat"><span data-i18n="arcade-rx-misses">Промахи</span><strong id="arcadeRxMisses">0</strong></div>
+            </div>
+            <div class="arcade-rx-bars" id="arcadeRxBars"></div>
+            <div class="arcade-death-btns">
+              <button type="button" class="arcade-play-btn arcade-play-btn-violet" onclick="arcadeStartReaction()">
+                <span data-i18n="arcade-tryagain-btn">Играть снова</span>
+              </button>
+              <button type="button" class="arcade-death-close-btn" onclick="arcadeCloseReaction()" data-i18n="arcade-exit-btn">Выйти</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ============ E3 ULTRA UPGRADE: ROADMAP ============ -->
     <section class="e3-section reveal" id="roadmap" aria-labelledby="rm-title">
       <div class="e3-section-head">
         <div class="e3-eyebrow"><span class="dot"></span><span data-i18n="ultra-roadmap-eyebrow">Дорожная карта</span></div>
         <h2 id="rm-title" class="e3-title"><span data-i18n="ultra-roadmap-title-a">Путь</span> <span class="accent" data-i18n="ultra-roadmap-title-b">к релизу</span></h2>
         <p class="e3-lead" data-i18n="ultra-roadmap-lead">Игра в активной разработке. Вот основные вехи — даты и состав могут меняться.</p>
+        <div class="rme-head-actions">
+          <button type="button" class="rme-open-btn" id="rmEditBtn" style="display:none;" onclick="openRoadmapEditor()">
+            <span class="rme-open-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span>
+            <span data-i18n="rme-open-btn">Редактировать дорожную карту</span>
+          </button>
+        </div>
       </div>
       <!-- Roadmap v2: панель прогресса + этапы -->
       <div class="rm2-top">
@@ -10100,10 +10413,6 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
         <a class="social-btn" style="--sb-color:#ff0033; --sb-glow:rgba(255,0,51,0.4);" href="https://www.youtube.com/@crownbit-u5o" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3.01 3.01 0 0 0-2.12-2.13C19.52 3.5 12 3.5 12 3.5s-7.52 0-9.38.57A3.01 3.01 0 0 0 .5 6.2C0 8.08 0 12 0 12s0 3.92.5 5.8a3.01 3.01 0 0 0 2.12 2.13c1.86.57 9.38.57 9.38.57s7.52 0 9.38-.57a3.01 3.01 0 0 0 2.12-2.13C24 15.92 24 12 24 12s0-3.92-.5-5.8ZM9.6 15.6V8.4l6.24 3.6-6.24 3.6Z"/></svg>
           YouTube
-        </a>
-        <a class="social-btn social-btn-sponsor" id="socialBtnSponsor" style="--sb-color:#f15f2c; --sb-glow:rgba(241,95,44,0.5);" href="https://boosty.to/illya37920_crownbit" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-          <span data-i18n="sponsor-btn">Поддержать</span>
         </a>
       </div>
 
@@ -17012,6 +17321,9 @@ function showLoggedIn() {
   if (devTopBtn) devTopBtn.style.display = isDev ? '' : 'none';
   const devParticipantsItem = document.getElementById('devParticipantsDdItem');
   if (devParticipantsItem) devParticipantsItem.style.display = isDev ? '' : 'none';
+  ['devRoadmapDdItem'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = isDev ? '' : 'none'; });
+  const rmEditBtn = document.getElementById('rmEditBtn');
+  if (rmEditBtn) rmEditBtn.style.display = isDev ? '' : 'none';
   // Колокольчик с новостями — виден всем ОБЫЧНЫМ игрокам; у dev-аккаунта скрыт
   // (у него вместо этого своя кнопка "Создать новость" в шапке).
   const bellEl = document.getElementById('navBell');
@@ -17044,6 +17356,8 @@ function showLoggedOut() {
   if (bellEl) bellEl.style.display = 'none';
   const devTopBtn = document.getElementById('devTopNewsBtn');
   if (devTopBtn) devTopBtn.style.display = 'none';
+  ['devRoadmapDdItem', 'rmEditBtn'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
+  try { if (typeof rmeRequestClose === 'function' && document.getElementById('rmEditorOverlay').classList.contains('show')) document.getElementById('rmEditorOverlay').classList.remove('show'); } catch (_) {}
   if (window.e3CookieBanner) window.e3CookieBanner.hide();
   // Перерисовываем форму отзыва
   try { window.ev3RefreshRatingForm && window.ev3RefreshRatingForm(); } catch (_) {}
@@ -18551,15 +18865,19 @@ async function doResetPassword() {
 
   // ----- 3D tilt on .tilt-3d (heroes + feature cards) -----
   const tiltTargets = document.querySelectorAll('.tilt-3d, .feature-card, .showcase-card');
+  const canHover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
   tiltTargets.forEach(card => {
     card.classList.add('tilt-3d');
+    if (!canHover) return;
+    // подъём карточки теперь часть самого transform — CSS :hover больше не конфликтует с наклоном
+    const lift = card.matches('.feature-card, .showcase-card') ? -6 : 0;
     card.addEventListener('mousemove', e => {
       const r = card.getBoundingClientRect();
       const cx = e.clientX - r.left, cy = e.clientY - r.top;
       const px = (cx / r.width) - 0.5, py = (cy / r.height) - 0.5;
       const rx = (-py * 8).toFixed(2);
       const ry = (px * 10).toFixed(2);
-      card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
+      card.style.transform = `perspective(900px) translateY(${lift}px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
       card.style.setProperty('--tx', (cx / r.width * 100) + '%');
       card.style.setProperty('--ty', (cy / r.height * 100) + '%');
       card.classList.add('is-hover');
@@ -23720,11 +24038,41 @@ async function doResetPassword() {
         'arcade-score-label': 'Очки',
         'arcade-tryagain-btn': 'Играть снова',
         'arcade-exit-btn': 'Выйти',
+'arcade-rx-target-label': 'Цель',
+        'arcade-rx-time-label': 'Время',
+        'arcade-rx-done-title': 'Готово!',
+        'arcade-rx-total': 'Итоговое время',
+        'arcade-rx-avg': 'Средняя реакция',
+        'arcade-rx-fastest': 'Лучшая цель',
+        'arcade-rx-misses': 'Промахи',
+        'arcade-rx-hint': 'Жми на цели как можно быстрее',
+        'arcade-rx-ms': 'мс',
         'auth-oauth-loading': 'Вход через {provider}...',
         'dev-role-badge': 'Разработчик',
         'dev-panel-title': 'Панель разработчика',
         'dev-panel-sub': 'Участники проекта и новости для всех игроков',
         'dev-btn-participants': 'Участники',
+        'rme-open-btn': 'Редактировать дорожную карту',
+        'rme-title': 'Редактор дорожной карты',
+        'rme-sub': 'Изменения сразу увидят все игроки',
+        'rme-total': 'Общий прогресс',
+        'rme-meta': 'Выполнено {a} из {b} пунктов',
+        'rme-progress': 'Прогресс пункта',
+        'rme-next-btn': 'Завершить и перейти к следующему',
+        'rme-next-last': 'Завершить дорожную карту',
+        'rme-next-up': 'Далее:',
+        'rme-prev-btn': 'Назад',
+        'rme-all-title': 'Все пункты',
+        'rme-complete': 'Все пункты выполнены',
+        'rme-save': 'Сохранить',
+        'rme-reset': 'Сбросить',
+        'rme-unsaved': 'Есть несохранённые изменения',
+        'rme-saved': 'Все изменения сохранены',
+        'rme-close-warn': 'Есть несохранённые изменения — нажми ещё раз, чтобы закрыть',
+        'rme-saved-toast': 'Дорожная карта обновлена',
+        'rme-err-save': 'Не удалось сохранить. Проверь правила Firestore для roadmap',
+        'rme-make-current': 'Сделать текущим',
+        'rm-all-done': 'Все пункты дорожной карты выполнены',
         'dev-btn-create-news': 'Создать новость',
         'participants-modal-title': 'Участники проекта',
         'participants-loading': 'Загрузка...',
@@ -23779,11 +24127,41 @@ async function doResetPassword() {
         'arcade-score-label': 'Score',
         'arcade-tryagain-btn': 'Try Again',
         'arcade-exit-btn': 'Exit',
+        'arcade-rx-target-label': 'Target',
+        'arcade-rx-time-label': 'Time',
+        'arcade-rx-done-title': 'Done!',
+        'arcade-rx-total': 'Total time',
+        'arcade-rx-avg': 'Avg reaction',
+        'arcade-rx-fastest': 'Fastest hit',
+        'arcade-rx-misses': 'Misses',
+        'arcade-rx-hint': 'Hit each target as fast as you can',
+        'arcade-rx-ms': 'ms',
         'auth-oauth-loading': 'Signing in via {provider}...',
         'dev-role-badge': 'Developer',
         'dev-panel-title': 'Developer Panel',
         'dev-panel-sub': 'Project participants and news for all players',
         'dev-btn-participants': 'Participants',
+        'rme-open-btn': 'Edit roadmap',
+        'rme-title': 'Roadmap editor',
+        'rme-sub': 'All players will see the changes right away',
+        'rme-total': 'Overall progress',
+        'rme-meta': '{a} of {b} items done',
+        'rme-progress': 'Item progress',
+        'rme-next-btn': 'Finish and move to next',
+        'rme-next-last': 'Complete the roadmap',
+        'rme-next-up': 'Up next:',
+        'rme-prev-btn': 'Back',
+        'rme-all-title': 'All items',
+        'rme-complete': 'All items are complete',
+        'rme-save': 'Save',
+        'rme-reset': 'Reset',
+        'rme-unsaved': 'Unsaved changes',
+        'rme-saved': 'All changes saved',
+        'rme-close-warn': 'Unsaved changes — press again to close',
+        'rme-saved-toast': 'Roadmap updated',
+        'rme-err-save': 'Could not save. Check the Firestore rules for roadmap',
+        'rme-make-current': 'Make current',
+        'rm-all-done': 'All roadmap items are complete',
         'dev-btn-create-news': 'Create News',
         'participants-modal-title': 'Project Participants',
         'participants-loading': 'Loading...',
@@ -25831,6 +26209,9 @@ async function _e3LoadParticipants() {
     const dodgeBest = _arcadeGetBest('dodge', 'best_time') || 0;
     const el = document.getElementById('arcadeDodgeBestLabel');
     if (el) el.textContent = dodgeBest > 0 ? _arcadeFmtTime(dodgeBest) : '—';
+    const rxBest = _arcadeGetBest('reaction', 'best_time') || 0;
+    const rel = document.getElementById('arcadeReactionBestLabel');
+    if (rel) rel.textContent = rxBest > 0 ? _arcadeFmtTime(rxBest) : '—';
   }
 
   // ===================================================
@@ -26487,6 +26868,296 @@ async function _e3LoadParticipants() {
     }, 260);
   }
 
+
+  // ===================================================
+  // REACTION RUSH — 10 целей подряд, считаем итоговое время (меньше = лучше)
+  // ===================================================
+  const RX_ID = 'reaction', RX_N = 10, RX_W = 960, RX_H = 600, RX_R = 40;
+  let rx = null; window.__rx = () => rx;
+
+  function _rxResize() {
+    const canvas = document.getElementById('arcadeReactionCanvas');
+    if (!canvas) return;
+    const av = _arcadeAvail(canvas), aspect = RX_W / RX_H;
+    const w = Math.floor(Math.min(av.w, av.h * aspect, 1200)), h = Math.floor(w / aspect);
+    canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.max(320, Math.round(w * dpr));
+    canvas.height = Math.round(canvas.width / aspect);
+    if (rx) rx.S = canvas.width / RX_W;
+  }
+
+  window.arcadeOpenReaction = function () {
+    const overlay = document.getElementById('arcadeReactionOverlay');
+    if (!overlay) return;
+    if (overlay.parentNode !== document.body) document.body.appendChild(overlay);
+    overlay.classList.add('show');
+    document.body.style.overflow = 'hidden';
+    overlay.classList.toggle('is-touch', _arcadeIsTouchDevice());
+    _rxResize();
+    window.arcadeStartReaction();
+  };
+
+  window.arcadeCloseReaction = function () {
+    const overlay = document.getElementById('arcadeReactionOverlay');
+    if (overlay) overlay.classList.remove('show');
+    document.body.style.overflow = '';
+    if (rx && rx.raf) cancelAnimationFrame(rx.raf);
+    rx = null;
+  };
+
+  window.arcadeStartReaction = function () {
+    const canvas = document.getElementById('arcadeReactionCanvas');
+    if (!canvas) return;
+    if (rx && rx.raf) cancelAnimationFrame(rx.raf);
+    const res = document.getElementById('arcadeReactionResult');
+    if (res) res.style.display = 'none';
+    const hint = document.getElementById('arcadeRxHint');
+    if (hint) hint.classList.remove('is-hidden');
+    rx = {
+      canvas, ctx: canvas.getContext('2d'), S: 1,
+      phase: 'count', pt: 0, idx: 0, target: null, gapLeft: 0, prev: null,
+      results: [], penalty: 0, misses: 0,
+      particles: [], rings: [], texts: [], flash: 0, flashColor: '255,70,90', shake: 0,
+      last: performance.now(), raf: 0, done: false
+    };
+    _rxResize();
+    rx.S = canvas.width / RX_W;
+    _rxHud();
+    rx.raf = requestAnimationFrame(_rxLoop);
+  };
+
+  function _rxSum() { let t = rx.penalty; for (const r of rx.results) t += r.time; return t; }
+
+  function _rxHud() {
+    if (!rx) return;
+    const tEl = document.getElementById('arcadeRxTarget'), mEl = document.getElementById('arcadeRxTimer');
+    const n = Math.min(RX_N, rx.idx + (rx.phase === 'target' ? 1 : 0));
+    if (tEl) tEl.textContent = n + '/' + RX_N;
+    let t = _rxSum();
+    if (rx.phase === 'target' && rx.target) t += rx.target.age;
+    if (mEl) mEl.textContent = _arcadeFmtTime(t);
+  }
+
+  function _rxSpawn() {
+    const m = RX_R + 34, top = RX_R + 40;
+    let x = 0, y = 0;
+    for (let k = 0; k < 24; k++) {
+      x = m + Math.random() * (RX_W - 2 * m);
+      y = top + Math.random() * (RX_H - top - m);
+      if (!rx.prev || Math.hypot(x - rx.prev.x, y - rx.prev.y) > 240) break;
+    }
+    rx.target = { x, y, age: 0, life: 1.9 - 0.08 * rx.idx };
+    rx.prev = { x, y };
+    rx.phase = 'target';
+  }
+
+  function _rxBurst(x, y, colors, n) {
+    for (let i = 0; i < n; i++) {
+      const a = Math.random() * 6.2832, sp = 90 + Math.random() * 260;
+      rx.particles.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, age: 0, life: 0.45 + Math.random() * 0.35, r: 2 + Math.random() * 3.2, color: colors[(Math.random() * colors.length) | 0] });
+    }
+  }
+
+  function _rxMsColor(sec) { return sec < 0.35 ? '#4ade80' : sec < 0.55 ? '#ffd84d' : '#ff9a3c'; }
+
+  function _rxNext() {
+    rx.target = null;
+    if (rx.idx >= RX_N) { _rxFinish(); return; }
+    rx.phase = 'gap';
+    rx.gapLeft = 0.35 + Math.random() * 0.55;
+  }
+
+  function _rxPointer(e) {
+    if (!rx || e.button > 0) return;
+    e.preventDefault();
+    const r = rx.canvas.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width * RX_W, py = (e.clientY - r.top) / r.height * RX_H;
+    const hint = document.getElementById('arcadeRxHint');
+    if (hint) hint.classList.add('is-hidden');
+    if (rx.phase === 'target' && rx.target) {
+      const tg = rx.target;
+      if (Math.hypot(px - tg.x, py - tg.y) <= RX_R * 1.2) {
+        const time = tg.age;
+        rx.results.push({ time, hit: true });
+        const col = _rxMsColor(time);
+        _rxBurst(tg.x, tg.y, ['#ffffff', '#c4b5fd', '#ffd84d', col], 26);
+        rx.rings.push({ x: tg.x, y: tg.y, age: 0, life: 0.5, r0: RX_R * 0.8, r1: RX_R * 2.6, color: '196,181,253' });
+        rx.texts.push({ x: tg.x, y: tg.y - RX_R - 8, age: 0, life: 0.8, text: Math.round(time * 1000) + ' ' + tt('arcade-rx-ms', 'мс'), color: col });
+        rx.idx++;
+        _rxNext();
+        _rxHud();
+        return;
+      }
+    }
+    if (rx.phase === 'target' || rx.phase === 'gap') { // промах мимо цели / фальстарт
+      rx.penalty += 0.25; rx.misses++;
+      rx.flash = 0.6; rx.flashColor = '255,70,90'; rx.shake = 0.35;
+      rx.texts.push({ x: px, y: py - 10, age: 0, life: 0.7, text: '+0.25s', color: '#ff6b85' });
+      _rxHud();
+    }
+  }
+  (function initRxPointer() {
+    const canvas = document.getElementById('arcadeReactionCanvas');
+    if (canvas) canvas.addEventListener('pointerdown', _rxPointer);
+  })();
+  window.addEventListener('keydown', (e) => { if (rx && e.key === 'Escape') window.arcadeCloseReaction(); });
+  window.addEventListener('resize', () => { if (rx) _rxResize(); });
+
+  function _rxUpdate(dt) {
+    rx.pt += dt;
+    if (rx.phase === 'count') {
+      if (rx.pt >= 2.25) { rx.phase = 'gap'; rx.gapLeft = 0.45; rx.pt = 0; }
+    } else if (rx.phase === 'gap') {
+      rx.gapLeft -= dt;
+      if (rx.gapLeft <= 0) _rxSpawn();
+    } else if (rx.phase === 'target' && rx.target) {
+      rx.target.age += dt;
+      if (rx.target.age >= rx.target.life) { // не успел — штраф
+        const tg = rx.target;
+        rx.results.push({ time: tg.life + 0.5, hit: false });
+        rx.misses++;
+        rx.rings.push({ x: tg.x, y: tg.y, age: 0, life: 0.45, r0: RX_R, r1: RX_R * 1.7, color: '255,90,110' });
+        rx.texts.push({ x: tg.x, y: tg.y, age: 0, life: 0.8, text: '+0.5s', color: '#ff6b85' });
+        rx.flash = 0.45; rx.flashColor = '255,70,90';
+        rx.idx++;
+        _rxNext();
+      }
+    }
+    for (const p of rx.particles) { p.age += dt; p.x += p.vx * dt; p.y += p.vy * dt; p.vx *= 0.93; p.vy *= 0.93; }
+    rx.particles = rx.particles.filter(p => p.age < p.life);
+    for (const r of rx.rings) r.age += dt;
+    rx.rings = rx.rings.filter(r => r.age < r.life);
+    for (const t of rx.texts) t.age += dt;
+    rx.texts = rx.texts.filter(t => t.age < t.life);
+    if (rx.flash > 0) rx.flash = Math.max(0, rx.flash - dt * 2.2);
+    if (rx.shake > 0) rx.shake = Math.max(0, rx.shake - dt * 2.5);
+    _rxHud();
+  }
+
+  function _rxDraw() {
+    const { ctx, canvas, S } = rx, W = canvas.width, H = canvas.height, t = performance.now() / 1000;
+    ctx.save();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    if (rx.shake > 0) ctx.translate((Math.random() - 0.5) * 10 * S * rx.shake, (Math.random() - 0.5) * 10 * S * rx.shake);
+    const bg = ctx.createRadialGradient(W / 2, H * 0.4, 0, W / 2, H / 2, Math.max(W, H) * 0.8);
+    bg.addColorStop(0, '#171232'); bg.addColorStop(1, '#07050f');
+    ctx.fillStyle = bg; ctx.fillRect(-20, -20, W + 40, H + 40);
+    ctx.strokeStyle = 'rgba(167,139,250,0.07)'; ctx.lineWidth = 1;
+    const step = 60 * S;
+    ctx.beginPath();
+    for (let x = 0; x <= W; x += step) { ctx.moveTo(x, 0); ctx.lineTo(x, H); }
+    for (let y = 0; y <= H; y += step) { ctx.moveTo(0, y); ctx.lineTo(W, y); }
+    ctx.stroke();
+
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    if (rx.phase === 'count') {
+      const n = 3 - Math.floor(rx.pt / 0.75), f = (rx.pt % 0.75) / 0.75;
+      if (n >= 1) {
+        ctx.save();
+        ctx.globalAlpha = 1 - f * f * 0.7;
+        const sc = 1.25 - 0.25 * Math.min(1, f * 3);
+        ctx.font = '900 ' + (150 * S * sc) + "px Orbitron, 'Exo 2', sans-serif";
+        ctx.shadowColor = 'rgba(167,139,250,0.9)'; ctx.shadowBlur = 36 * S;
+        ctx.fillStyle = '#fff'; ctx.fillText(String(n), W / 2, H / 2);
+        ctx.restore();
+      }
+    }
+
+    if (rx.phase === 'target' && rx.target) {
+      const tg = rx.target, x = tg.x * S, y = tg.y * S, R = RX_R * S;
+      const p = Math.min(1, tg.age / 0.14), k = 1 + 2.70158 * Math.pow(p - 1, 3) + 1.70158 * Math.pow(p - 1, 2);
+      const left = 1 - tg.age / tg.life;
+      const pulse = 1 + 0.04 * Math.sin(t * 14);
+      ctx.save();
+      ctx.translate(x, y); ctx.scale(k * pulse, k * pulse);
+      const halo = ctx.createRadialGradient(0, 0, R * 0.4, 0, 0, R * 2.4);
+      halo.addColorStop(0, 'rgba(167,139,250,0.45)'); halo.addColorStop(1, 'rgba(167,139,250,0)');
+      ctx.fillStyle = halo; ctx.beginPath(); ctx.arc(0, 0, R * 2.4, 0, 6.2832); ctx.fill();
+      ctx.lineWidth = 5 * S; ctx.lineCap = 'round';
+      ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.beginPath(); ctx.arc(0, 0, R * 1.3, 0, 6.2832); ctx.stroke();
+      ctx.strokeStyle = left > 0.45 ? '#c4b5fd' : left > 0.22 ? '#ffd84d' : '#ff6b85';
+      ctx.beginPath(); ctx.arc(0, 0, R * 1.3, -Math.PI / 2, -Math.PI / 2 + 6.2832 * left); ctx.stroke();
+      const orb = ctx.createRadialGradient(-R * 0.3, -R * 0.35, R * 0.1, 0, 0, R);
+      orb.addColorStop(0, '#ffffff'); orb.addColorStop(0.35, '#d8ccff'); orb.addColorStop(1, '#7c4dff');
+      ctx.shadowColor = 'rgba(167,139,250,0.95)'; ctx.shadowBlur = 26 * S;
+      ctx.fillStyle = orb; ctx.beginPath(); ctx.arc(0, 0, R, 0, 6.2832); ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = 'rgba(255,255,255,0.85)'; ctx.lineWidth = 2.5 * S;
+      ctx.beginPath(); ctx.arc(0, 0, R * 0.55, 0, 6.2832); ctx.stroke();
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(0, 0, R * 0.16, 0, 6.2832); ctx.fill();
+      ctx.restore();
+    }
+
+    for (const rg of rx.rings) {
+      const p = rg.age / rg.life, r = (rg.r0 + (rg.r1 - rg.r0) * p) * S;
+      ctx.strokeStyle = 'rgba(' + rg.color + ',' + (0.85 * (1 - p)) + ')'; ctx.lineWidth = (1 + 3 * (1 - p)) * S;
+      ctx.beginPath(); ctx.arc(rg.x * S, rg.y * S, r, 0, 6.2832); ctx.stroke();
+    }
+    for (const p of rx.particles) {
+      ctx.globalAlpha = 1 - p.age / p.life;
+      ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x * S, p.y * S, p.r * S, 0, 6.2832); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    for (const tx of rx.texts) {
+      const p = tx.age / tx.life;
+      ctx.globalAlpha = 1 - p * p;
+      ctx.font = '800 ' + (22 * S) + "px Orbitron, 'Exo 2', sans-serif";
+      ctx.fillStyle = tx.color; ctx.shadowColor = tx.color; ctx.shadowBlur = 12 * S;
+      ctx.fillText(tx.text, tx.x * S, (tx.y - 34 * p) * S);
+    }
+    ctx.restore();
+    const vg = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.4, W / 2, H / 2, Math.max(W, H) * 0.78);
+    vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,0.5)');
+    ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
+    if (rx.flash > 0) { ctx.fillStyle = 'rgba(' + rx.flashColor + ',' + (rx.flash * 0.28) + ')'; ctx.fillRect(0, 0, W, H); }
+  }
+
+  function _rxLoop(now) {
+    if (!rx) return;
+    let dt = (now - rx.last) / 1000; rx.last = now;
+    dt = Math.min(dt, 0.25); // после сворачивания вкладки таймер не прыгает и не даёт штраф
+    _rxUpdate(dt);
+    if (!rx) return;
+    _rxDraw();
+    if (!rx.done) rx.raf = requestAnimationFrame(_rxLoop);
+  }
+
+  async function _rxFinish() {
+    const me = rx;
+    me.done = true; me.phase = 'done';
+    const total = _rxSum();
+    const hits = me.results.filter(r => r.hit).map(r => r.time);
+    const avg = hits.length ? hits.reduce((a, b) => a + b, 0) / hits.length : 0;
+    const fastest = hits.length ? Math.min.apply(null, hits) : 0;
+    const prev = _arcadeGetBest(RX_ID, 'best_time') || 0;
+    const isRecord = prev === 0 || total < prev;
+    if (isRecord) await _arcadeSaveBest(RX_ID, 'best_time', total);
+    // ещё несколько кадров, чтобы доиграли частицы последнего попадания
+    (function tail() { if (rx !== me) return; _rxUpdate(0.016); _rxDraw(); if (me.particles.length || me.rings.length || me.texts.length) requestAnimationFrame(tail); })();
+    setTimeout(() => {
+      if (rx !== me) return;
+      const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+      const ms = tt('arcade-rx-ms', 'мс');
+      set('arcadeRxTotal', _arcadeFmtTime(total));
+      set('arcadeRxAvg', hits.length ? Math.round(avg * 1000) + ' ' + ms : '—');
+      set('arcadeRxFastest', hits.length ? Math.round(fastest * 1000) + ' ' + ms : '—');
+      set('arcadeRxBest', _arcadeFmtTime(isRecord ? total : prev));
+      set('arcadeRxMisses', String(me.misses));
+      const bars = document.getElementById('arcadeRxBars');
+      if (bars) bars.innerHTML = me.results.map(r => {
+        const h = Math.max(14, Math.min(100, (r.time / 1.9) * 100));
+        const c = r.hit ? _rxMsColor(r.time) : '#ff6b85';
+        return '<i style="height:' + h + '%;background:' + c + '" title="' + Math.round(r.time * 1000) + ' ' + ms + '"></i>';
+      }).join('');
+      const banner = document.getElementById('arcadeRxRecord');
+      if (banner) banner.style.display = isRecord ? '' : 'none';
+      const res = document.getElementById('arcadeReactionResult');
+      if (res) res.style.display = 'flex';
+      _arcadeRefreshCardBests();
+    }, 650);
+  }
+
   window.addEventListener('resize', () => { if (dg) _arcadeResizeCanvas(); });
 
   // Инициализация значений «Рекорд» на карточках при загрузке страницы
@@ -26569,5 +27240,257 @@ async function _e3LoadParticipants() {
   update();
 })();
 </script>
+<script>
+/* ===================================================
+   ДОРОЖНАЯ КАРТА: состояние хранится в Firestore (roadmap/main), а страница рисуется из него.
+   Состояние = { idx, pct }: idx — номер текущего пункта (все, что раньше, — выполнены),
+   pct — процент выполнения текущего пункта. Проценты этапов и общий прогресс считаются из них.
+   Редактировать может только dev (кнопка в разделе + пункт в меню профиля); запись защищают Firestore Rules.
+   Если Firestore недоступен или документа нет — остаётся то, что написано в HTML.
+   =================================================== */
+(function () {
+  'use strict';
+  var DOC = 'main', CACHE_KEY = 'e3RoadmapState', RING_C = 326.7;
+  var CHECK = '<svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var model = null, saved = null, draft = null, closeArmed = false, saving = false, saveErr = false;
+
+  function $(id) { return document.getElementById(id); }
+  function tr(k, fb) { try { return (typeof tt === 'function') ? tt(k, fb) : fb; } catch (_) { return fb; } }
+  function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); }
+  function isDev() { try { return typeof _ev3IsDev === 'function' && _ev3IsDev(); } catch (_) { return false; } }
+
+  /* ---------- модель страницы ---------- */
+  function buildModel() {
+    var sec = $('roadmap');
+    if (!sec) return null;
+    var stages = [], tasks = [];
+    sec.querySelectorAll('.rm2-stages > .rm2-stage').forEach(function (el, si) {
+      var st = { el: el, index: si, tasks: [] };
+      el.querySelectorAll('.rm2-tasks > .rm2-task').forEach(function (li) {
+        var txt = li.querySelector('.rm2-task-txt');
+        var t = { li: li, txt: txt, key: (txt && txt.getAttribute('data-i18n')) || '', stage: st, i: tasks.length };
+        st.tasks.push(t); tasks.push(t);
+      });
+      stages.push(st);
+    });
+    if (!tasks.length) return null;
+    return { sec: sec, stages: stages, tasks: tasks, N: tasks.length };
+  }
+  function staticState() { // то, что написано в HTML — запасной вариант
+    var idx = 0, pct = 0;
+    model.tasks.forEach(function (t) { if (t.li.classList.contains('is-done')) idx++; });
+    var now = model.sec.querySelector('.rm2-task.is-now .rm2-task-pct');
+    if (now) pct = parseInt(now.textContent, 10) || 0;
+    return norm({ idx: idx, pct: pct });
+  }
+  function norm(st) {
+    var N = model.N, idx = Math.round(Number(st && st.idx)), pct = Math.round(Number(st && st.pct));
+    if (!isFinite(idx)) idx = 0;
+    if (!isFinite(pct)) pct = 0;
+    idx = clamp(idx, 0, N); pct = clamp(pct, 0, 100);
+    if (idx >= N) pct = 100;
+    return { idx: idx, pct: pct };
+  }
+  function compute(st) {
+    var N = model.N, idx = st.idx, pct = st.pct;
+    var frac = model.tasks.map(function (t, i) { return i < idx ? 1 : (i === idx ? pct / 100 : 0); });
+    var stages = model.stages.map(function (s) {
+      var sum = 0; s.tasks.forEach(function (t) { sum += frac[t.i]; });
+      var first = s.tasks[0].i, last = s.tasks[s.tasks.length - 1].i;
+      return { p: Math.round(sum / s.tasks.length * 100), status: last < idx ? 'done' : (first <= idx ? 'now' : 'future') };
+    });
+    var overall = Math.round(((idx >= N ? N : idx) + (idx < N ? pct / 100 : 0)) / N * 100);
+    return { stages: stages, overall: overall, done: Math.min(idx, N), now: idx < N ? 1 : 0, future: Math.max(0, N - idx - (idx < N ? 1 : 0)) };
+  }
+  function taskName(t) { return (t.txt && t.txt.textContent || '').trim(); }
+  function stageName(s) { var n = s.el.querySelector('.rm2-stage-name'); return n ? n.textContent.trim() : ''; }
+
+  /* ---------- отрисовка страницы ---------- */
+  function setChip(stageEl, status) {
+    var chip = stageEl.querySelector('.rm2-stage-head .rm2-chip'); if (!chip) return;
+    var key = status === 'done' ? 'ultra-roadmap-done' : status === 'now' ? 'ultra-roadmap-now' : 'ultra-roadmap-planned';
+    var fb = status === 'done' ? 'Готово' : status === 'now' ? 'Сейчас' : 'Запланировано';
+    chip.setAttribute('data-i18n', key); chip.textContent = tr(key, fb);
+  }
+  function applyState(st) {
+    if (!model) return;
+    var c = compute(st), N = model.N, sec = model.sec;
+    model.stages.forEach(function (s, si) {
+      var sc = c.stages[si], el = s.el;
+      el.classList.remove('is-done', 'is-now', 'is-future'); el.classList.add('is-' + sc.status);
+      el.style.setProperty('--p', sc.p + '%');
+      var b = el.querySelector('.rm2-bar-row > b'); if (b) b.textContent = sc.p + '%';
+      var node = el.querySelector('.rm2-node'); if (node) node.innerHTML = sc.status === 'done' ? CHECK : String(si + 1);
+      setChip(el, sc.status);
+    });
+    model.tasks.forEach(function (t) {
+      var state = t.i < st.idx ? 'done' : (t.i === st.idx ? 'now' : 'future');
+      t.li.classList.remove('is-done', 'is-now', 'is-future'); t.li.classList.add('is-' + state);
+      var ic = t.li.querySelector('.rm2-task-ic'); if (ic) ic.innerHTML = state === 'done' ? CHECK : '';
+      var old = t.li.querySelector('.rm2-task-pct'); if (old) old.remove();
+      if (state === 'now') { var em = document.createElement('em'); em.className = 'rm2-task-pct'; em.textContent = st.pct + '%'; t.li.appendChild(em); }
+    });
+    // кольцо и легенда
+    var ring = sec.querySelector('.rm2-ring');
+    if (ring) ring.style.setProperty('--off', (RING_C * (1 - c.overall / 100)).toFixed(1));
+    var num = sec.querySelector('.rm2-ring-num strong'); if (num) num.textContent = c.overall + '%';
+    var lg = sec.querySelectorAll('.rm2-legend-i b');
+    if (lg.length >= 3) { lg[0].textContent = c.done; lg[1].textContent = c.now; lg[2].textContent = c.future; }
+    // карточка «Сейчас»
+    var nowCard = sec.querySelector('.rm2-now');
+    if (nowCard) {
+      var lab = nowCard.querySelector('.rm2-now-label span[data-i18n]');
+      var taskEl = nowCard.querySelector('.rm2-now-task');
+      var bar = nowCard.querySelector('.rm2-bar'), bv = nowCard.querySelector('.rm2-bar-row > b');
+      var done = st.idx >= N;
+      if (lab) { var lk = done ? 'ultra-roadmap-done' : 'ultra-roadmap-now'; lab.setAttribute('data-i18n', lk); lab.textContent = tr(lk, done ? 'Готово' : 'Сейчас'); }
+      if (taskEl) {
+        if (done) { taskEl.setAttribute('data-i18n', 'rm-all-done'); taskEl.textContent = tr('rm-all-done', 'Все пункты дорожной карты выполнены'); }
+        else { var t0 = model.tasks[st.idx]; taskEl.setAttribute('data-i18n', t0.key); taskEl.textContent = taskName(t0); }
+      }
+      var p = done ? 100 : st.pct;
+      if (bar) bar.style.setProperty('--p', p + '%');
+      if (bv) bv.textContent = p + '%';
+    }
+  }
+
+  /* ---------- Firestore ---------- */
+  function readCache() { try { var v = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null'); return v ? norm(v) : null; } catch (_) { return null; } }
+  function writeCache(st) { try { localStorage.setItem(CACHE_KEY, JSON.stringify(st)); } catch (_) {} }
+  function same(a, b) { return a && b && a.idx === b.idx && a.pct === b.pct; }
+  function onRemote(st) {
+    var wasDirty = draft && !same(draft, saved);
+    saved = st; writeCache(st); applyState(st);
+    if (isOpen() && !wasDirty) { draft = { idx: st.idx, pct: st.pct }; rmeRender(); }
+    else if (isOpen()) rmeRender();
+  }
+  function listen() {
+    try {
+      if (typeof db === 'undefined' || !db) return;
+      db.collection('roadmap').onSnapshot(function (snap) {
+        var doc = null; snap.docs.forEach(function (d) { if (d.id === DOC) doc = d; });
+        if (!doc) return;
+        var d = doc.data() || {};
+        onRemote(norm({ idx: d.idx, pct: d.pct }));
+      }, function (err) { if (window.console) console.warn('[ROADMAP] чтение недоступно (нужны правила Firestore):', err && err.code || err); });
+    } catch (e) { if (window.console) console.warn('[ROADMAP listen]', e); }
+  }
+
+  /* ---------- редактор ---------- */
+  function isOpen() { var o = $('rmEditorOverlay'); return !!(o && o.classList.contains('show')); }
+  function dirty() { return !!(draft && saved && !same(draft, saved)); }
+
+  window.openRoadmapEditor = function () {
+    if (!isDev() || !model) return;
+    if (!saved) saved = staticState();
+    draft = { idx: saved.idx, pct: saved.pct };
+    closeArmed = false; saveErr = false;
+    rmeRender();
+    $('rmEditorOverlay').classList.add('show');
+    var body = document.querySelector('#rmEditorOverlay .rme-body'); if (body) body.scrollTop = 0;
+  };
+  function closeEditor() { var o = $('rmEditorOverlay'); if (o) o.classList.remove('show'); closeArmed = false; }
+  window.rmeRequestClose = function () {
+    if (dirty() && !closeArmed) { closeArmed = true; rmeRender(); return; }
+    closeEditor();
+  };
+  window.rmeCloseOnBg = function (e) { if (e.target === e.currentTarget) window.rmeRequestClose(); };
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && isOpen()) window.rmeRequestClose(); });
+
+  function touch() { closeArmed = false; saveErr = false; rmeRender(); }
+  window.rmeSetPct = function (v) { if (!draft || draft.idx >= model.N) return; draft.pct = clamp(Math.round(Number(v) || 0), 0, 100); touch(); };
+  window.rmeTypePct = function (v) { // ввод с клавиатуры: не перерисовываем само поле, пока человек печатает
+    if (!draft || draft.idx >= model.N) return;
+    if (v === '') return;
+    draft.pct = clamp(Math.round(Number(v) || 0), 0, 100); closeArmed = false; saveErr = false; rmeRender();
+  };
+  window.rmeNudge = function (d) { if (!draft || draft.idx >= model.N) return; draft.pct = clamp(draft.pct + d, 0, 100); touch(); };
+  window.rmeNext = function () { if (!draft || draft.idx >= model.N) return; draft.idx += 1; draft.pct = draft.idx >= model.N ? 100 : 0; touch(); };
+  window.rmePrev = function () { if (!draft || draft.idx <= 0) return; draft.idx -= 1; draft.pct = 100; touch(); };
+  window.rmeJump = function (i) {
+    if (!draft || i === draft.idx) return;
+    var back = i < draft.idx; draft.idx = clamp(i, 0, model.N - 1); draft.pct = back ? 100 : 0; touch();
+  };
+  window.rmeReset = function () { if (!saved) return; draft = { idx: saved.idx, pct: saved.pct }; touch(); };
+
+  window.rmeRender = function () {
+    if (!draft || !model) return;
+    var N = model.N, idx = draft.idx, pct = draft.pct, c = compute(draft);
+    $('rmeSumNum').textContent = c.overall + '%';
+    $('rmeSumBar').style.width = c.overall + '%';
+    $('rmeSumMeta').textContent = tr('rme-meta', 'Выполнено {a} из {b} пунктов').replace('{a}', c.done).replace('{b}', N);
+    var card = $('rmeCurrent'), complete = idx >= N;
+    card.classList.toggle('is-complete', complete);
+    if (!complete) {
+      var t = model.tasks[idx];
+      $('rmeStageKick').textContent = tr('rm2-stage-word', 'Этап') + ' ' + (t.stage.index + 1) + ' · ' + stageName(t.stage);
+      $('rmeTaskName').textContent = taskName(t);
+      var sl = $('rmeSlider'); sl.value = pct; sl.style.setProperty('--v', pct + '%');
+      var inp = $('rmePctInput'); if (document.activeElement !== inp) inp.value = pct;
+      var last = idx === N - 1;
+      $('rmeNextMain').textContent = last ? tr('rme-next-last', 'Завершить дорожную карту') : tr('rme-next-btn', 'Завершить и перейти к следующему');
+      $('rmeNextSub').textContent = last ? '' : tr('rme-next-up', 'Далее:') + ' ' + taskName(model.tasks[idx + 1]);
+      $('rmeNextSub').style.display = last ? 'none' : '';
+    }
+    $('rmePrevBtn').disabled = idx <= 0;
+    // список всех пунктов
+    var html = '';
+    model.stages.forEach(function (s, si) {
+      html += '<div class="rme-stage"><div class="rme-stage-head"><span class="rme-stage-k">' + esc(tr('rm2-stage-word', 'Этап')) + ' ' + (si + 1) + '</span><span class="rme-stage-n">' + esc(stageName(s)) + '</span><span class="rme-stage-p">' + c.stages[si].p + '%</span></div>';
+      s.tasks.forEach(function (t) {
+        var st = t.i < idx ? 'done' : (t.i === idx ? 'now' : 'future');
+        var badge = st === 'now' ? pct + '%' : (st === 'done' ? tr('ultra-roadmap-done', 'Готово') : tr('ultra-roadmap-planned', 'Запланировано'));
+        html += '<button type="button" class="rme-task is-' + st + '" onclick="rmeJump(' + t.i + ')" title="' + esc(tr('rme-make-current', 'Сделать текущим')) + '"><span class="rme-task-ic">' + (st === 'done' ? CHECK : '') + '</span><span class="rme-task-txt">' + esc(taskName(t)) + '</span><span class="rme-task-badge">' + esc(badge) + '</span></button>';
+      });
+      html += '</div>';
+    });
+    $('rmeList').innerHTML = html;
+    // статус и кнопки
+    var d = dirty(), stEl = $('rmeStatus');
+    stEl.classList.toggle('is-dirty', d && !saveErr); stEl.classList.toggle('is-err', !!saveErr);
+    stEl.textContent = saveErr ? tr('rme-err-save', 'Не удалось сохранить. Проверь правила Firestore для roadmap')
+      : closeArmed ? tr('rme-close-warn', 'Есть несохранённые изменения — нажми ещё раз, чтобы закрыть')
+      : d ? tr('rme-unsaved', 'Есть несохранённые изменения') : tr('rme-saved', 'Все изменения сохранены');
+    $('rmeSaveBtn').disabled = !d || saving;
+    $('rmeResetBtn').disabled = !d || saving;
+  };
+
+  window.rmeSave = async function () {
+    if (!isDev() || !draft || !dirty() || saving) return;
+    saving = true; saveErr = false; rmeRender();
+    var snapshotDraft = { idx: draft.idx, pct: draft.pct };
+    try {
+      if (typeof db === 'undefined' || !db) throw new Error('no-db');
+      await _fbInit(); // нужен загруженный модульный Firestore, чтобы взять serverTimestamp
+      var nick = (ev3User && ev3User.user_metadata && ev3User.user_metadata.username) || 'Dev';
+      var write = db.collection('roadmap').doc(DOC).set({
+        idx: snapshotDraft.idx, pct: snapshotDraft.pct, total: model.N,
+        updatedAt: _fsServerTimestamp(), updatedBy: nick, updatedByUid: (ev3User && ev3User.id) || null
+      });
+      await Promise.race([write, new Promise(function (_, rej) { setTimeout(function () { rej(new Error('timeout')); }, 15000); })]);
+      saved = snapshotDraft; writeCache(saved); applyState(saved);
+      try { showToast(tr('rme-saved-toast', 'Дорожная карта обновлена'), 'ok'); } catch (_) {}
+    } catch (e) {
+      saveErr = true;
+      if (window.console) console.warn('[ROADMAP save]', e);
+      try { showToast(tr('rme-err-save', 'Не удалось сохранить. Проверь правила Firestore для roadmap'), 'err'); } catch (_) {}
+    } finally {
+      saving = false; rmeRender();
+    }
+  };
+
+  function init() {
+    model = buildModel();
+    if (!model) return;
+    saved = staticState();
+    var cached = readCache();
+    if (cached) { saved = cached; applyState(saved); } // без «мигания» старыми цифрами до ответа Firestore
+    listen();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+</script>
+
 </body>
 </html>
