@@ -8531,6 +8531,152 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
 .pc-streak-rewards span.is-on{ color: rgba(111,223,255,0.9); }
 .pc-streak-rewards span.is-today{ color: #fff; }
 .pc-streak-rewards span.is-bonus{ color: rgba(255,213,74,0.85); }
+
+    /* ===== PROFILE MODAL · v3 (профессиональный вид) ===== */
+
+/* Рамка: не скроллится, режет всё по скруглению */
+body .profile-modal-overlay .profile-modal-box{
+  display:flex; flex-direction:column; padding:0; overflow:hidden;
+  width:100%; max-width:520px; max-height:min(780px, calc(100vh - 40px));
+  border-radius:24px; text-align:left;
+  font-family:'Exo 2',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  background:linear-gradient(180deg,#12281c 0%,#0a1710 100%);
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow:0 30px 80px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.07);
+}
+
+/* Шапка: закреплена, крестик внутри неё */
+body .profile-modal-overlay .pm-head{
+  flex:none; margin:0; gap:16px; align-items:center;
+  padding:22px 70px 18px 26px;
+  border:0; border-bottom:1px solid rgba(255,255,255,.08); border-radius:0;
+  background:linear-gradient(180deg,rgba(255,255,255,.05),transparent);
+  box-shadow:none;
+}
+body .profile-modal-overlay .profile-modal-box .profile-modal-avatar,
+body .profile-modal-overlay .profile-modal-box .profile-modal-avatar svg.ic-svg-profile-big{ width:58px; height:58px; }
+body .profile-modal-overlay .profile-modal-box .profile-modal-avatar::before{ inset:-6px; }
+body .profile-modal-overlay .profile-modal-box .profile-modal-name{
+  font-family:'Exo 2',sans-serif; font-size:22px; font-weight:800; letter-spacing:.2px;
+  text-shadow:none; overflow-wrap:anywhere;
+}
+body .profile-modal-overlay .profile-modal-box .profile-modal-email{
+  margin-top:6px; padding:3px 10px; font-size:12.5px; font-weight:600;
+}
+body .profile-modal-overlay .profile-modal-box .profile-modal-close{
+  position:absolute; top:18px; right:18px; z-index:5;
+  width:36px; height:36px; border-radius:11px;
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
+}
+body .profile-modal-overlay .profile-modal-box .profile-modal-close:hover{
+  background:rgba(255,255,255,.13); transform:none; box-shadow:none;
+}
+
+/* Вкладки: подчёркивание, без капслока */
+body .profile-modal-overlay .profile-modal-box .pm-tabs{
+  flex:none; margin:0; padding:0 26px; gap:24px;
+  border:0; border-bottom:1px solid rgba(255,255,255,.08); border-radius:0; background:none;
+}
+body .profile-modal-overlay .profile-modal-box .pm-tab{
+  font-family:'Exo 2',sans-serif; font-size:14.5px; font-weight:700; letter-spacing:.2px;
+  text-transform:none; padding:14px 2px; margin-bottom:-1px;
+  color:rgba(255,255,255,.5); border-bottom:2px solid transparent;
+}
+body .profile-modal-overlay .profile-modal-box .pm-tab:hover{ color:rgba(255,255,255,.85); }
+body .profile-modal-overlay .profile-modal-box .pm-tab.is-active{
+  color:#fff; text-shadow:none; border-bottom:2px solid #4ade80;
+}
+
+/* Содержимое: единственный скролл-контейнер, полоса с отступом от края */
+body .profile-modal-overlay .profile-modal-box .pm-pane.is-active{
+  display:block; flex:1 1 auto; min-height:0; overflow-y:auto; overscroll-behavior:contain;
+  padding:20px 12px 24px 26px; scrollbar-gutter:stable;
+  scrollbar-width:thin; scrollbar-color:rgba(214,190,120,.35) transparent;
+}
+body .profile-modal-overlay .pm-pane::-webkit-scrollbar{ width:10px; }
+body .profile-modal-overlay .pm-pane::-webkit-scrollbar-button{ display:none; width:0; height:0; }
+body .profile-modal-overlay .pm-pane::-webkit-scrollbar-track{ background:transparent; margin:6px 0; }
+body .profile-modal-overlay .pm-pane::-webkit-scrollbar-thumb{
+  background:rgba(214,190,120,.28); background-clip:content-box;
+  border:3px solid transparent; border-radius:10px; box-shadow:none; min-height:40px;
+}
+body .profile-modal-overlay .pm-pane::-webkit-scrollbar-thumb:hover{ background:rgba(214,190,120,.5); background-clip:content-box; }
+
+/* Карточки */
+body .profile-modal-overlay .profile-modal-box .profile-card,
+body .profile-modal-overlay .profile-modal-box .profile-security{
+  margin:0 0 14px; padding:18px; border-radius:16px;
+  background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.08); box-shadow:none;
+}
+body .profile-modal-overlay .profile-modal-box .profile-card .pc-title,
+body .profile-modal-overlay .profile-modal-box .ps-title{
+  font-family:'Exo 2',sans-serif; font-size:15px; font-weight:800; letter-spacing:.2px;
+}
+body .profile-modal-overlay .profile-modal-box .pc-sub,
+body .profile-modal-overlay .profile-modal-box .ps-sub{
+  font-size:13px; line-height:1.45; color:rgba(255,255,255,.58);
+}
+body .profile-modal-overlay .profile-modal-box .ps-status{ white-space:nowrap; font-size:11.5px; letter-spacing:.3px; }
+
+/* Поля и кнопки: наследуем шрифт (раньше был системный Arial) */
+body .profile-modal-overlay .profile-modal-box .pc-setting{ padding:14px 0; }
+body .profile-modal-overlay .profile-modal-box .pc-setting-label{
+  font-family:'Exo 2',sans-serif; font-size:12.5px; font-weight:700; letter-spacing:.3px;
+  text-transform:none; color:rgba(240,215,150,.85);
+}
+body .profile-modal-overlay .profile-modal-box .pc-setting-input{
+  height:44px; padding:0 14px; border-radius:12px;
+  font-family:'Exo 2',sans-serif; font-size:15px; font-weight:600; color:#f1f5f2;
+  background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.10);
+}
+body .profile-modal-overlay .profile-modal-box .pc-setting-input::placeholder{ color:rgba(255,255,255,.3); }
+body .profile-modal-overlay .profile-modal-box .pc-setting-input:focus{
+  border-color:rgba(214,190,120,.6); box-shadow:0 0 0 3px rgba(214,190,120,.14); outline:none;
+}
+body .profile-modal-overlay .profile-modal-box .pc-setting-btn{
+  height:44px; padding:0 18px; border-radius:12px; flex:none;
+  font-family:'Exo 2',sans-serif; font-size:14px; font-weight:700; letter-spacing:.2px; text-transform:none;
+  color:#fff; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
+}
+body .profile-modal-overlay .profile-modal-box .pc-setting-btn:hover{
+  background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.22); transform:none;
+}
+
+/* Главная кнопка (Включить 2FA и т.п.): спокойный градиент вместо «пластика» */
+body .profile-modal-overlay .profile-modal-box .ps-btn{
+  height:46px; padding:0 20px; border-radius:12px;
+  font-family:'Exo 2',sans-serif; font-size:14.5px; font-weight:800; letter-spacing:.2px; text-transform:none;
+  transition:transform .15s ease, filter .15s ease, box-shadow .15s ease, background .15s ease;
+}
+body .profile-modal-overlay .profile-modal-box .ps-btn-primary{
+  color:#04170c; border:0;
+  background:linear-gradient(180deg,#5eea92 0%,#25bd63 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4), 0 8px 20px rgba(34,197,94,.25);
+}
+body .profile-modal-overlay .profile-modal-box .ps-btn-primary:hover{
+  transform:translateY(-1px); filter:brightness(1.06);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45), 0 12px 26px rgba(34,197,94,.34);
+}
+body .profile-modal-overlay .profile-modal-box .ps-btn:active{ transform:translateY(0); filter:none; }
+body .profile-modal-overlay .profile-modal-box .ps-btn-danger{
+  background:rgba(224,74,42,.10); border:1px solid rgba(224,74,42,.42); color:#ff9c88;
+}
+body .profile-modal-overlay .profile-modal-box .ps-btn-danger:hover{ background:rgba(224,74,42,.2); }
+
+/* Кнопка «Удалить аккаунт» и фокус с клавиатуры */
+body .profile-modal-overlay .profile-modal-box .pc-danger-btn{
+  height:44px; border-radius:12px; font-family:'Exo 2',sans-serif; font-weight:700; text-transform:none;
+}
+body .profile-modal-overlay .profile-modal-box button:focus-visible,
+body .profile-modal-overlay .profile-modal-box .pm-tab:focus-visible{ outline:2px solid #d6be78; outline-offset:2px; }
+
+@media (max-width:520px){
+  body .profile-modal-overlay .pm-head{ padding:18px 62px 16px 18px; }
+  body .profile-modal-overlay .profile-modal-box .pm-tabs{ padding:0 18px; }
+  body .profile-modal-overlay .profile-modal-box .pm-pane.is-active{ padding:16px 8px 20px 18px; }
+  body .profile-modal-overlay .profile-modal-box .profile-modal-name{ font-size:19px; }
+}
+    
 </style>
 <header class="topbar" id="topbar">
   <div class="topbar-brand">
