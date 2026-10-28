@@ -17663,10 +17663,16 @@ async function submit2faChallenge() {
     const mod = await _fbAuth();
     const hint = resolver.hints[0];
     const assertion = mod.TotpMultiFactorGenerator.assertionForSignIn(hint.uid, code);
-    await resolver.resolveSignIn(assertion);
+    const cred2fa = await resolver.resolveSignIn(assertion);
     ev3TfaState.pendingResolver = null;
+    let nick2fa = ev3TfaState.pendingNick || '';
+    try { // актуальный ник из профиля, а не из начала email
+      ev3Session = { access_token: 'firebase' };
+      ev3User = await _ev3BuildUser(cred2fa && cred2fa.user);
+      nick2fa = (ev3User && ev3User.user_metadata && ev3User.user_metadata.username) || nick2fa;
+    } catch (_) {}
     close2faChallenge(); closeAuthModal(); showLoggedIn();
-    ev3Toast(tt('auth-ok-login-prefix','Добро пожаловать, ') + (ev3TfaState.pendingNick || '') + '!', 'ok');
+    ev3Toast(tt('auth-ok-login-prefix','Добро пожаловать, ') + nick2fa + '!', 'ok');
   } catch (e) {
     input.classList.add('is-error'); errEl.textContent = tt('tfa-err-wrong-code','Неверный код. Попробуй ещё раз.'); errEl.hidden = false;
     btn.disabled = false; btn.textContent = tt('tfa-challenge-submit','Войти');
@@ -17734,7 +17740,10 @@ async function doLogin() {
     const auth = mod.getAuth();
     await mod.setPersistence(auth, (rememberInp && !rememberInp.checked) ? mod.browserSessionPersistence : mod.browserLocalPersistence);
     const cred = await mod.signInWithEmailAndPassword(auth, email, pass);
-    const nick = (cred.user.email || email).split('@')[0];
+    // Ник берём из профиля в базе (users/{uid}.username), а не из начала email: после смены ника они различаются
+    ev3Session = { access_token: 'firebase' };
+    ev3User = await _ev3BuildUser(cred.user);
+    const nick = (ev3User && ev3User.user_metadata && ev3User.user_metadata.username) || (cred.user.email || email).split('@')[0];
     closeAuthModal();
     showLoggedIn();
     ev3Toast(tt('auth-ok-login-prefix','Добро пожаловать, ') + nick + '!', 'ok');
