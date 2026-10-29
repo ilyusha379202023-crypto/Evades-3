@@ -8168,6 +8168,7 @@ html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover{ backgr
   <!-- ============ Firebase SDK (compat, для совместимости с существующим классическим <script>) ============ -->
   <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 
 <body>
@@ -17379,7 +17380,7 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
 // динамически ниже, в секции FIREBASE AUTH — она нужна для TOTP-двухфакторки).
 const firebaseConfig = {
   apiKey: "AIzaSyCSarHtLCCfsFj7XAgjnkDMQtzi44U7mpE",
-  authDomain: "evades3.com",
+  authDomain: "evades-3.firebaseapp.com",
   projectId: "evades-3",
   storageBucket: "evades-3.firebasestorage.app",
   messagingSenderId: "443932571874",
@@ -18128,78 +18129,86 @@ async function doRegister() {
 }
 
 // ===================================================
-// OAUTH
+// OAUTH — вход через Google Identity Services (без окна firebaseapp.com)
 // ===================================================
+const GOOGLE_CLIENT_ID = 'ВСТАВЬ_СЮДА_WEB_CLIENT_ID.apps.googleusercontent.com';
+let _gisClient = null;
+
+function _googleBtns() {
+  return Array.from(document.querySelectorAll('.af-oauth')).filter(b => b.querySelector('[data-i18n="oauth-google"]'));
+}
+function _googleBusy(on) {
+  _googleBtns().forEach(btn => {
+    if (on) {
+      if (!btn.hasAttribute('data-original-content')) btn.setAttribute('data-original-content', btn.innerHTML);
+      btn.disabled = true;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" style="animation:spinLinear 1s linear infinite"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="40 20"/></svg><span>' + _e3Esc(tt('auth-oauth-loading', 'Вход через {provider}...').replace('{provider}', tt('oauth-google','Google'))) + '</span>';
+    } else {
+      btn.disabled = false;
+      const orig = btn.getAttribute('data-original-content');
+      if (orig) { btn.innerHTML = orig; btn.removeAttribute('data-original-content'); }
+    }
+  });
+}
+
+async function _googleFinishLogin(accessToken) {
+  try {
+    const mod = await _fbAuth();
+    const auth = mod.getAuth();
+    const cred = mod.GoogleAuthProvider.credential(null, accessToken);
+    const result = await mod.signInWithCredential(auth, cred);
+    const user = result.user;
+    closeAuthModal(); showLoggedIn();
+    ev3Toast(tt('auth-toast-oauth-ok','Вы вошли через {provider}').replace('{provider}', 'Google'), 'ok');
+    // ник при первом входе — второстепенно, ошибки не мешают входу
+    try {
+      if (db) {
+        const existing = await db.collection('users').doc(user.uid).get();
+        if (!existing.exists) {
+          const baseNick = ((user.email ? user.email.split('@')[0] : 'player').replace(/[^a-zA-Zа-яёА-ЯЁ0-9_]/g,'').slice(0,16)) || 'player';
+          let nick = baseNick, attempt = 0;
+          while (attempt < 5) {
+            const taken = await db.collection('usernames').doc(nick.toLowerCase()).get();
+            if (!taken.exists) break;
+            attempt++; nick = baseNick + Math.floor(Math.random()*10000);
+          }
+          await db.collection('users').doc(user.uid).set({ username: nick }, { merge: true });
+          await db.collection('usernames').doc(nick.toLowerCase()).set({ email: user.email, uid: user.uid });
+        }
+      }
+    } catch (nickErr) { console.warn('[AUTH oauth nick setup]', nickErr); }
+  } catch (e) {
+    ev3Toast(ev3AuthMsg(e), 'err');
+    console.warn('[AUTH oauth]', e);
+  } finally {
+    _googleBusy(false);
+  }
+}
+
+function _googleGetClient() {
+  if (_gisClient) return _gisClient;
+  if (!(window.google && google.accounts && google.accounts.oauth2)) return null;
+  _gisClient = google.accounts.oauth2.initTokenClient({
+    client_id: GOOGLE_CLIENT_ID,
+    scope: 'openid email profile',
+    callback: (resp) => {
+      if (!resp || resp.error || !resp.access_token) { _googleBusy(false); return; }
+      _googleFinishLogin(resp.access_token);
+    },
+    error_callback: () => { _googleBusy(false); } // окно закрыто/заблокировано — просто снимаем «загрузку»
+  });
+  return _gisClient;
+}
+
 function oauthSignIn(provider) {
   if (provider !== 'google') {
     ev3Toast(tt('auth-toast-oauth-soon','Вход через Discord скоро вернётся'), 'info');
     return;
   }
-  // Показываем индикатор загрузки на кнопке Google в модалке
-  const googleBtn = document.querySelector('.af-oauth span[data-i18n="oauth-google"]');
-  if (googleBtn) {
-    const btn = googleBtn.closest('.af-oauth');
-    if (btn) {
-      const originalContent = btn.innerHTML;
-      btn.setAttribute('data-original-content', originalContent);
-      btn.disabled = true;
-      btn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" style="animation:spinLinear 1s linear infinite"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="40 20"/></svg><span>' + _e3Esc(tt('auth-oauth-loading', 'Вход через {provider}...').replace('{provider}', tt('oauth-google','Google'))) + '</span>';
-    }
-  }
-  (async () => {
-    let loginSuccess = false;
-    try {
-      const mod = await _fbAuth();
-      const auth = mod.getAuth();
-      const googleProvider = new mod.GoogleAuthProvider();
-      const cred = await mod.signInWithPopup(auth, googleProvider);
-      const user = cred.user;
-      // Firebase Auth уже успешно вошёл на этом шаге — дальнейшие Firestore-операции
-      // (создание ника при первом входе) второстепенны и НЕ должны мешать закрытию
-      // модалки/показу успеха. Раньше эти шаги были ДО closeAuthModal()/showLoggedIn(),
-      // поэтому если Firestore-запись падала (правила доступа, оффлайн и т.п.), юзер
-      // видел ошибку и открытую модалку, хотя вход уже состоялся.
-      closeAuthModal(); showLoggedIn();
-      ev3Toast(tt('auth-toast-oauth-ok','Вы вошли через {provider}').replace('{provider}', 'Google'), 'ok');
-      loginSuccess = true;
-      try {
-        if (db) {
-          const existing = await db.collection('users').doc(user.uid).get();
-          if (!existing.exists) {
-            const baseNick = ((user.email ? user.email.split('@')[0] : 'player').replace(/[^a-zA-Zа-яёА-ЯЁ0-9_]/g,'').slice(0,16)) || 'player';
-            let nick = baseNick, attempt = 0;
-            while (attempt < 5) {
-              const taken = await db.collection('usernames').doc(nick.toLowerCase()).get();
-              if (!taken.exists) break;
-              attempt++; nick = baseNick + Math.floor(Math.random()*10000);
-            }
-            await db.collection('users').doc(user.uid).set({ username: nick }, { merge: true });
-            await db.collection('usernames').doc(nick.toLowerCase()).set({ email: user.email, uid: user.uid });
-          }
-        }
-      } catch (nickErr) {
-        // Ник не создался — вход всё равно успешен, просто тихо логируем.
-        if (typeof console !== 'undefined') console.warn('[AUTH oauth nick setup]', nickErr);
-      }
-    } catch (e) {
-      if (e && (e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request')) return;
-      ev3Toast(ev3AuthMsg(e), 'err');
-      if (typeof console !== 'undefined') console.warn('[AUTH oauth]', e);
-    } finally {
-      const googleBtn = document.querySelector('.af-oauth span[data-i18n="oauth-google"]');
-      if (googleBtn) {
-        const btn = googleBtn.closest('.af-oauth');
-        if (btn) {
-          btn.disabled = false;
-          const originalContent = btn.getAttribute('data-original-content');
-          if (originalContent) {
-            btn.innerHTML = originalContent;
-            btn.removeAttribute('data-original-content');
-          }
-        }
-      }
-    }
-  })();
+  const client = _googleGetClient();
+  if (!client) { ev3Toast(tt('auth-err-network','Нет соединения. Проверь интернет'), 'err'); return; }
+  _googleBusy(true);
+  client.requestAccessToken({ prompt: 'select_account' }); // вызывается прямо из клика — окно не блокируется
 }
 
 // ===================================================
