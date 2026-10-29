@@ -18151,13 +18151,13 @@ function _googleBusy(on) {
   });
 }
 
-async function _googleFinishLogin(idToken) {
+async function _googleFinishLogin(accessToken) {
   try {
     const mod = await _fbAuth();
     const auth = mod.getAuth();
-    
-    // Передаем idToken от Google напрямую в Firebase
-    const cred = mod.GoogleAuthProvider.credential(idToken);
+
+    // Авторизуем в Firebase по accessToken
+    const cred = mod.GoogleAuthProvider.credential(null, accessToken);
     const result = await mod.signInWithCredential(auth, cred);
     const user = result.user;
 
@@ -18165,7 +18165,7 @@ async function _googleFinishLogin(idToken) {
     showLoggedIn();
     ev3Toast(tt('auth-toast-oauth-ok','Вы вошли через {provider}').replace('{provider}', 'Google'), 'ok');
 
-    // Создание ника при первом входе
+    // Логика ника при первом входе
     try {
       if (db) {
         const existing = await db.collection('users').doc(user.uid).get();
@@ -18196,31 +18196,32 @@ function oauthSignIn(provider) {
     ev3Toast(tt('auth-toast-oauth-soon','Вход через Discord скоро вернётся'), 'info');
     return;
   }
-  
-  if (!(window.google && google.accounts && google.accounts.id)) {
+
+  if (!(window.google && google.accounts && google.accounts.oauth2)) {
     ev3Toast(tt('auth-err-network','Ошибка загрузки Google SDK. Обновите страницу'), 'err');
     return;
   }
 
   _googleBusy(true);
 
-  google.accounts.id.initialize({
+  const client = google.accounts.oauth2.initTokenClient({
     client_id: GOOGLE_CLIENT_ID,
+    scope: 'email profile openid',
     callback: (resp) => {
-      if (resp && resp.credential) {
-        _googleFinishLogin(resp.credential);
+      if (resp && resp.access_token) {
+        _googleFinishLogin(resp.access_token);
       } else {
         _googleBusy(false);
       }
-    }
-  });
-
-  google.accounts.id.prompt((notification) => {
-    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+    },
+    error_callback: () => {
       _googleBusy(false);
     }
   });
+
+  client.requestAccessToken({ prompt: 'select_account' });
 }
+  
 // ===================================================
 // FORGOT PASSWORD
 // ===================================================
