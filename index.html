@@ -18129,14 +18129,14 @@ async function doRegister() {
 }
 
 // ===================================================
-// OAUTH — вход через Google Identity Services (без окна firebaseapp.com)
+// OAUTH — вход через Google Identity Services
 // ===================================================
 const GOOGLE_CLIENT_ID = '1015687496073-0kmv7q13fmc0gaegg7coe1aghigi7228.apps.googleusercontent.com';
-let _gisClient = null;
 
 function _googleBtns() {
   return Array.from(document.querySelectorAll('.af-oauth')).filter(b => b.querySelector('[data-i18n="oauth-google"]'));
 }
+
 function _googleBusy(on) {
   _googleBtns().forEach(btn => {
     if (on) {
@@ -18151,17 +18151,21 @@ function _googleBusy(on) {
   });
 }
 
-async function _googleFinishLogin(accessToken) {
+async function _googleFinishLogin(idToken) {
   try {
     const mod = await _fbAuth();
     const auth = mod.getAuth();
-    // Передаем accessToken вторым параметром, а первый аргумент оставляем для idToken
-    const cred = mod.GoogleAuthProvider.credential(accessToken);
+    
+    // Передаем idToken от Google напрямую в Firebase
+    const cred = mod.GoogleAuthProvider.credential(idToken);
     const result = await mod.signInWithCredential(auth, cred);
     const user = result.user;
-    closeAuthModal(); showLoggedIn();
+
+    closeAuthModal(); 
+    showLoggedIn();
     ev3Toast(tt('auth-toast-oauth-ok','Вы вошли через {provider}').replace('{provider}', 'Google'), 'ok');
-    // ник при первом входе — второстепенно, ошибки не мешают входу
+
+    // Создание ника при первом входе
     try {
       if (db) {
         const existing = await db.collection('users').doc(user.uid).get();
@@ -18178,6 +18182,7 @@ async function _googleFinishLogin(accessToken) {
         }
       }
     } catch (nickErr) { console.warn('[AUTH oauth nick setup]', nickErr); }
+
   } catch (e) {
     ev3Toast(ev3AuthMsg(e), 'err');
     console.warn('[AUTH oauth]', e);
@@ -18186,32 +18191,36 @@ async function _googleFinishLogin(accessToken) {
   }
 }
 
-function _googleGetClient() {
-  if (_gisClient) return _gisClient;
-  if (!(window.google && google.accounts && google.accounts.oauth2)) return null;
-  _gisClient = google.accounts.oauth2.initTokenClient({
-    client_id: GOOGLE_CLIENT_ID,
-    scope: 'openid email profile',
-    callback: (resp) => {
-      if (!resp || resp.error || !resp.access_token) { _googleBusy(false); return; }
-      _googleFinishLogin(resp.access_token);
-    },
-    error_callback: () => { _googleBusy(false); } // окно закрыто/заблокировано — просто снимаем «загрузку»
-  });
-  return _gisClient;
-}
-
 function oauthSignIn(provider) {
   if (provider !== 'google') {
     ev3Toast(tt('auth-toast-oauth-soon','Вход через Discord скоро вернётся'), 'info');
     return;
   }
-  const client = _googleGetClient();
-  if (!client) { ev3Toast(tt('auth-err-network','Нет соединения. Проверь интернет'), 'err'); return; }
-  _googleBusy(true);
-  client.requestAccessToken({ prompt: 'select_account' }); // вызывается прямо из клика — окно не блокируется
-}
+  
+  if (!(window.google && google.accounts && google.accounts.id)) {
+    ev3Toast(tt('auth-err-network','Ошибка загрузки Google SDK. Обновите страницу'), 'err');
+    return;
+  }
 
+  _googleBusy(true);
+
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: (resp) => {
+      if (resp && resp.credential) {
+        _googleFinishLogin(resp.credential);
+      } else {
+        _googleBusy(false);
+      }
+    }
+  });
+
+  google.accounts.id.prompt((notification) => {
+    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+      _googleBusy(false);
+    }
+  });
+}
 // ===================================================
 // FORGOT PASSWORD
 // ===================================================
