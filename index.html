@@ -18155,7 +18155,8 @@ async function _googleFinishLogin(accessToken) {
   try {
     const mod = await _fbAuth();
     const auth = mod.getAuth();
-    const cred = mod.GoogleAuthProvider.credential(null, accessToken);
+    // Передаем accessToken вторым параметром, а первый аргумент оставляем для idToken
+    const cred = mod.GoogleAuthProvider.credential(accessToken);
     const result = await mod.signInWithCredential(auth, cred);
     const user = result.user;
     closeAuthModal(); showLoggedIn();
