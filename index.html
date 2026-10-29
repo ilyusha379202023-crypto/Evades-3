@@ -7799,6 +7799,140 @@ body:not(.hero-anim) .subtitle .ch{
 .profile-modal-overlay .profile-modal-box .pc-prov-name{ font-size: 15px; font-weight: 800; letter-spacing: .3px; }
 .profile-modal-overlay .profile-modal-box .pc-prov-status{ font-size: 11px; padding: 5px 12px; }
 
+/* ── Выпадающее меню профиля ── */
+.profile-dropdown{
+  min-width: 270px; border-radius: 22px; overflow: hidden;
+  background: radial-gradient(120% 70% at 50% -10%, rgba(74,222,128,0.14), transparent 62%), linear-gradient(180deg, rgba(16,40,29,0.98), rgba(8,22,16,0.99));
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.profile-dropdown .profile-dd-head{ padding: 20px 20px 16px; gap: 14px; }
+.profile-dropdown .profile-dd-avatar, .profile-dropdown .profile-dd-avatar svg.ic-svg-profile-mini{ width: 52px; height: 52px; }
+.profile-dropdown .profile-dd-avatar{ filter: drop-shadow(0 0 12px rgba(216,222,230,0.3)); }
+.profile-dropdown .profile-dd-name{ font-family: 'Orbitron','Exo 2',sans-serif; font-size: 15px; font-weight: 900; letter-spacing: .8px; }
+.profile-dropdown .profile-dd-name.is-vip{ text-shadow: 0 2px 0 #8a5a00, 0 0 14px rgba(255,200,58,0.35); }
+.profile-dropdown .profile-dd-email{ font-size: 12px; font-weight: 600; max-width: 190px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profile-dropdown .profile-dd-item{ font-family: 'Exo 2',sans-serif; font-size: 14.5px; font-weight: 700; letter-spacing: .3px; padding: 10px 14px; }
+.profile-dropdown .profile-dd-item svg.dd-ic{ width: 32px; height: 32px; padding: 7px; border-radius: 10px; box-sizing: border-box; }
+
+/* ── Мелкие окна (подробности новости, восстановление пароля и т.п.) ── */
+.forgot-modal-overlay .forgot-modal-box{
+  max-width: 460px; padding: 36px 32px 28px; border-radius: 26px; font-family: 'Exo 2', sans-serif;
+  background: radial-gradient(110% 60% at 50% -10%, rgba(255,200,58,0.14), transparent 62%), linear-gradient(180deg, rgba(16,40,29,0.98), rgba(8,22,16,0.99));
+  border: 1px solid rgba(255,205,110,0.3); box-shadow: 0 30px 80px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.forgot-modal-overlay .forgot-modal-box .forgot-icon-wrap{
+  width: 68px; height: 68px; margin: 0 auto 14px; border-radius: 22px; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 55%, #C49100 100%); color: #3a2600;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.65), inset 0 -3px 6px rgba(120,80,0,0.4), 0 8px 22px rgba(0,0,0,0.45), 0 0 26px rgba(255,190,60,0.35);
+}
+.forgot-modal-overlay .forgot-modal-box .forgot-icon-wrap svg{ width: 32px; height: 32px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.forgot-modal-overlay .forgot-modal-box .forgot-title{ font-family: 'Orbitron','Exo 2',sans-serif; font-size: 22px; font-weight: 900; letter-spacing: 1px; color: #ffd54a; text-shadow: 0 2px 0 #8a5a00, 0 4px 12px rgba(0,0,0,0.5), 0 0 18px rgba(255,200,58,0.3); }
+.forgot-modal-overlay .forgot-modal-box .forgot-btns{ gap: 12px; margin-top: 22px; }
+.forgot-modal-overlay .forgot-modal-box .forgot-btn-send{
+  height: 50px; border-radius: 15px; font-family: 'Exo 2',sans-serif; font-size: 14px; font-weight: 900; letter-spacing: .8px; text-transform: uppercase;
+  color: #3a2600; border: 2px solid rgba(255,225,150,0.75); background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 55%, #C49100 100%);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.45), 0 0 18px rgba(255,190,60,0.35), inset 0 1px 0 rgba(255,255,255,0.65), inset 0 -3px 6px rgba(120,80,0,0.35);
+}
+.forgot-modal-overlay .forgot-modal-box .forgot-btn-send:hover{ transform: translateY(-2px); filter: brightness(1.07); }
+.forgot-modal-overlay .forgot-modal-box .forgot-btn-cancel{ height: 50px; border-radius: 15px; font-family: 'Exo 2',sans-serif; font-size: 14px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; }
+
+/* ── Профиль: крестик внутри карточки, скролл без стрелок ── */
+.profile-modal-box::-webkit-scrollbar-button, .pmem-list::-webkit-scrollbar-button{ display: none; width: 0; height: 0; }
+.profile-modal-box::-webkit-scrollbar-track, .pmem-list::-webkit-scrollbar-track{ background: transparent; }
+.profile-modal-box::-webkit-scrollbar-corner{ background: transparent; }
+.profile-modal-overlay .profile-modal-box .profile-modal-close{ top: 40px; right: 40px; }
+.profile-modal-overlay .pm-head{ padding-right: 66px; }
+@media (max-width: 520px){
+  .profile-modal-overlay .profile-modal-box .profile-modal-close{ top: 32px; right: 30px; }
+  .profile-modal-overlay .pm-head{ padding-right: 58px; }
+}
+
+/* ── Окно подтверждения личности (пароль) ── */
+.reauth-text{ margin: 0 0 18px; font-size: 14px; line-height: 1.5; color: rgba(255,255,255,0.72); text-align: center; }
+.reauth-hint{ min-height: 18px; margin-top: 10px; font-size: 13.5px; font-weight: 700; color: #ff8a7a; text-align: left; }
+
+/* ── Скролл без стрелок ──
+   В Chrome на Windows стандартные scrollbar-width/scrollbar-color рисуют стрелки, поэтому для этих блоков отключаем их
+   и используем только ::-webkit-scrollbar (там стрелки скрываются полностью). Firefox — запасной вариант в конце. */
+.profile-modal-box, .pmem-list, .cn-box, .rme-body, .forgot-modal-box, .tfa-modal-box, .profile-dropdown, .auth-modal-box{ scrollbar-width: auto !important; scrollbar-color: auto !important; }
+.profile-modal-box::-webkit-scrollbar{ width: 8px; height: 8px; }
+.profile-modal-box::-webkit-scrollbar-button{ display: none !important; width: 0 !important; height: 0 !important; }
+.profile-modal-box::-webkit-scrollbar-track{ background: transparent; margin: 18px 0; }
+.profile-modal-box::-webkit-scrollbar-thumb{ background: rgba(255,205,110,0.32); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+.profile-modal-box::-webkit-scrollbar-thumb:hover{ background: rgba(255,205,110,0.55); background-clip: padding-box; border: 2px solid transparent; }
+.pmem-list::-webkit-scrollbar{ width: 8px; height: 8px; }
+.pmem-list::-webkit-scrollbar-button{ display: none !important; width: 0 !important; height: 0 !important; }
+.pmem-list::-webkit-scrollbar-track{ background: transparent; margin: 18px 0; }
+.pmem-list::-webkit-scrollbar-thumb{ background: rgba(255,205,110,0.32); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+.pmem-list::-webkit-scrollbar-thumb:hover{ background: rgba(255,205,110,0.55); background-clip: padding-box; border: 2px solid transparent; }
+.cn-box::-webkit-scrollbar{ width: 8px; height: 8px; }
+.cn-box::-webkit-scrollbar-button{ display: none !important; width: 0 !important; height: 0 !important; }
+.cn-box::-webkit-scrollbar-track{ background: transparent; margin: 18px 0; }
+.cn-box::-webkit-scrollbar-thumb{ background: rgba(255,205,110,0.32); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+.cn-box::-webkit-scrollbar-thumb:hover{ background: rgba(255,205,110,0.55); background-clip: padding-box; border: 2px solid transparent; }
+.rme-body::-webkit-scrollbar{ width: 8px; height: 8px; }
+.rme-body::-webkit-scrollbar-button{ display: none !important; width: 0 !important; height: 0 !important; }
+.rme-body::-webkit-scrollbar-track{ background: transparent; margin: 18px 0; }
+.rme-body::-webkit-scrollbar-thumb{ background: rgba(255,205,110,0.32); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+.rme-body::-webkit-scrollbar-thumb:hover{ background: rgba(255,205,110,0.55); background-clip: padding-box; border: 2px solid transparent; }
+.forgot-modal-box::-webkit-scrollbar{ width: 8px; height: 8px; }
+.forgot-modal-box::-webkit-scrollbar-button{ display: none !important; width: 0 !important; height: 0 !important; }
+.forgot-modal-box::-webkit-scrollbar-track{ background: transparent; margin: 18px 0; }
+.forgot-modal-box::-webkit-scrollbar-thumb{ background: rgba(255,205,110,0.32); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+.forgot-modal-box::-webkit-scrollbar-thumb:hover{ background: rgba(255,205,110,0.55); background-clip: padding-box; border: 2px solid transparent; }
+.tfa-modal-box::-webkit-scrollbar{ width: 8px; height: 8px; }
+.tfa-modal-box::-webkit-scrollbar-button{ display: none !important; width: 0 !important; height: 0 !important; }
+.tfa-modal-box::-webkit-scrollbar-track{ background: transparent; margin: 18px 0; }
+.tfa-modal-box::-webkit-scrollbar-thumb{ background: rgba(255,205,110,0.32); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+.tfa-modal-box::-webkit-scrollbar-thumb:hover{ background: rgba(255,205,110,0.55); background-clip: padding-box; border: 2px solid transparent; }
+.profile-dropdown::-webkit-scrollbar{ width: 8px; height: 8px; }
+.profile-dropdown::-webkit-scrollbar-button{ display: none !important; width: 0 !important; height: 0 !important; }
+.profile-dropdown::-webkit-scrollbar-track{ background: transparent; margin: 18px 0; }
+.profile-dropdown::-webkit-scrollbar-thumb{ background: rgba(255,205,110,0.32); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+.profile-dropdown::-webkit-scrollbar-thumb:hover{ background: rgba(255,205,110,0.55); background-clip: padding-box; border: 2px solid transparent; }
+.auth-modal-box::-webkit-scrollbar{ width: 8px; height: 8px; }
+.auth-modal-box::-webkit-scrollbar-button{ display: none !important; width: 0 !important; height: 0 !important; }
+.auth-modal-box::-webkit-scrollbar-track{ background: transparent; margin: 18px 0; }
+.auth-modal-box::-webkit-scrollbar-thumb{ background: rgba(255,205,110,0.32); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+.auth-modal-box::-webkit-scrollbar-thumb:hover{ background: rgba(255,205,110,0.55); background-clip: padding-box; border: 2px solid transparent; }
+@supports not selector(::-webkit-scrollbar){
+  .profile-modal-box, .pmem-list, .cn-box, .rme-body, .forgot-modal-box, .tfa-modal-box, .profile-dropdown, .auth-modal-box{ scrollbar-width: thin !important; scrollbar-color: rgba(255,205,110,0.4) transparent !important; }
+}
+
+/* ── Кнопка «Включить / Отключить 2FA» ── */
+.profile-modal-overlay .profile-modal-box .ps-actions{ margin-top: 18px; gap: 12px; }
+.profile-modal-overlay .profile-modal-box .ps-btn{
+  display: inline-flex; align-items: center; justify-content: center; gap: 12px; height: 56px; padding: 0 22px; border-radius: 16px;
+  font-size: 14px; font-weight: 900; letter-spacing: .9px; transition: all .25s cubic-bezier(0.4,0,0.2,1);
+}
+.profile-modal-overlay .profile-modal-box .ps-btn[hidden]{ display: none !important; } /* без этого display:inline-flex перебивал атрибут hidden */
+.profile-modal-overlay .profile-modal-box .ps-btn svg{ width: 22px; height: 22px; flex: 0 0 22px; fill: none; stroke: currentColor; stroke-width: 2.3; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s; }
+.profile-modal-overlay .profile-modal-box .ps-btn:hover svg{ transform: scale(1.12) rotate(-4deg); }
+.profile-modal-overlay .profile-modal-box .ps-btn-primary{
+  color: #3a2600 !important; border: 2px solid rgba(255,225,150,0.75) !important;
+  background: linear-gradient(180deg, #FFEFA8 0%, #FFC83A 55%, #C49100 100%) !important;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.45), 0 0 22px rgba(255,190,60,0.4), inset 0 1px 0 rgba(255,255,255,0.65), inset 0 -3px 6px rgba(120,80,0,0.35) !important;
+}
+.profile-modal-overlay .profile-modal-box .ps-btn-primary:hover{ transform: translateY(-2px); filter: brightness(1.07); box-shadow: 0 14px 30px rgba(0,0,0,0.5), 0 0 32px rgba(255,190,60,0.55), inset 0 1px 0 rgba(255,255,255,0.65), inset 0 -3px 6px rgba(120,80,0,0.35) !important; }
+.profile-modal-overlay .profile-modal-box .ps-btn-primary:active{ transform: translateY(0) scale(.98); }
+.profile-modal-overlay .profile-modal-box .ps-btn-danger{
+  color: #ffb4a3; background: linear-gradient(180deg, rgba(224,74,42,0.22), rgba(224,74,42,0.1)); border: 2px solid rgba(224,74,42,0.55);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.12);
+}
+.profile-modal-overlay .profile-modal-box .ps-btn-danger:hover{ transform: translateY(-2px); color: #ffd0c4; border-color: rgba(255,120,90,0.85); box-shadow: 0 10px 24px rgba(224,74,42,0.3), inset 0 1px 0 rgba(255,255,255,0.15); }
+
+/* ── Скролл самой страницы: тоже без стрелок ── */
+html, body{ scrollbar-width: auto !important; scrollbar-color: auto !important; }
+html::-webkit-scrollbar, body::-webkit-scrollbar{ width: 10px; height: 10px; }
+html::-webkit-scrollbar-button, body::-webkit-scrollbar-button{ display: none !important; width: 0 !important; height: 0 !important; }
+html::-webkit-scrollbar-track, body::-webkit-scrollbar-track{ background: rgba(0,0,0,0.25); }
+html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.3); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover{ background: rgba(255,255,255,0.5); background-clip: padding-box; border: 2px solid transparent; }
+@supports not selector(::-webkit-scrollbar){
+  html, body{ scrollbar-width: thin !important; scrollbar-color: rgba(255,255,255,0.35) transparent !important; }
+}
+
 /* вкладки: подчёркивание вместо зелёной таблетки */
 .profile-modal-box .pm-tabs { gap: 24px; padding: 0; margin: 0 0 20px; border: 0; border-bottom: 1px solid rgba(255,255,255,0.10); border-radius: 0; background: none; }
 .profile-modal-box .pm-tab {
@@ -8542,150 +8676,6 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
 .pc-streak-rewards span.is-on{ color: rgba(111,223,255,0.9); }
 .pc-streak-rewards span.is-today{ color: #fff; }
 .pc-streak-rewards span.is-bonus{ color: rgba(255,213,74,0.85); }
-    /* ===== PROFILE MODAL · v3 (профессиональный вид) ===== */
-
-/* Рамка: не скроллится, режет всё по скруглению */
-body .profile-modal-overlay .profile-modal-box{
-  display:flex; flex-direction:column; padding:0; overflow:hidden;
-  width:100%; max-width:520px; max-height:min(780px, calc(100vh - 40px));
-  border-radius:24px; text-align:left;
-  font-family:'Exo 2',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
-  background:linear-gradient(180deg,#12281c 0%,#0a1710 100%);
-  border:1px solid rgba(255,255,255,.10);
-  box-shadow:0 30px 80px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.07);
-}
-
-/* Шапка: закреплена, крестик внутри неё */
-body .profile-modal-overlay .pm-head{
-  flex:none; margin:0; gap:16px; align-items:center;
-  padding:22px 70px 18px 26px;
-  border:0; border-bottom:1px solid rgba(255,255,255,.08); border-radius:0;
-  background:linear-gradient(180deg,rgba(255,255,255,.05),transparent);
-  box-shadow:none;
-}
-body .profile-modal-overlay .profile-modal-box .profile-modal-avatar,
-body .profile-modal-overlay .profile-modal-box .profile-modal-avatar svg.ic-svg-profile-big{ width:58px; height:58px; }
-body .profile-modal-overlay .profile-modal-box .profile-modal-avatar::before{ inset:-6px; }
-body .profile-modal-overlay .profile-modal-box .profile-modal-name{
-  font-family:'Exo 2',sans-serif; font-size:22px; font-weight:800; letter-spacing:.2px;
-  text-shadow:none; overflow-wrap:anywhere;
-}
-body .profile-modal-overlay .profile-modal-box .profile-modal-email{
-  margin-top:6px; padding:3px 10px; font-size:12.5px; font-weight:600;
-}
-body .profile-modal-overlay .profile-modal-box .profile-modal-close{
-  position:absolute; top:18px; right:18px; z-index:5;
-  width:36px; height:36px; border-radius:11px;
-  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
-}
-body .profile-modal-overlay .profile-modal-box .profile-modal-close:hover{
-  background:rgba(255,255,255,.13); transform:none; box-shadow:none;
-}
-
-/* Вкладки: подчёркивание, без капслока */
-body .profile-modal-overlay .profile-modal-box .pm-tabs{
-  flex:none; margin:0; padding:0 26px; gap:24px;
-  border:0; border-bottom:1px solid rgba(255,255,255,.08); border-radius:0; background:none;
-}
-body .profile-modal-overlay .profile-modal-box .pm-tab{
-  font-family:'Exo 2',sans-serif; font-size:14.5px; font-weight:700; letter-spacing:.2px;
-  text-transform:none; padding:14px 2px; margin-bottom:-1px;
-  color:rgba(255,255,255,.5); border-bottom:2px solid transparent;
-}
-body .profile-modal-overlay .profile-modal-box .pm-tab:hover{ color:rgba(255,255,255,.85); }
-body .profile-modal-overlay .profile-modal-box .pm-tab.is-active{
-  color:#fff; text-shadow:none; border-bottom:2px solid #4ade80;
-}
-
-/* Содержимое: единственный скролл-контейнер, полоса с отступом от края */
-body .profile-modal-overlay .profile-modal-box .pm-pane.is-active{
-  display:block; flex:1 1 auto; min-height:0; overflow-y:auto; overscroll-behavior:contain;
-  padding:20px 12px 24px 26px; scrollbar-gutter:stable;
-  scrollbar-width:thin; scrollbar-color:rgba(214,190,120,.35) transparent;
-}
-body .profile-modal-overlay .pm-pane::-webkit-scrollbar{ width:10px; }
-body .profile-modal-overlay .pm-pane::-webkit-scrollbar-button{ display:none; width:0; height:0; }
-body .profile-modal-overlay .pm-pane::-webkit-scrollbar-track{ background:transparent; margin:6px 0; }
-body .profile-modal-overlay .pm-pane::-webkit-scrollbar-thumb{
-  background:rgba(214,190,120,.28); background-clip:content-box;
-  border:3px solid transparent; border-radius:10px; box-shadow:none; min-height:40px;
-}
-body .profile-modal-overlay .pm-pane::-webkit-scrollbar-thumb:hover{ background:rgba(214,190,120,.5); background-clip:content-box; }
-
-/* Карточки */
-body .profile-modal-overlay .profile-modal-box .profile-card,
-body .profile-modal-overlay .profile-modal-box .profile-security{
-  margin:0 0 14px; padding:18px; border-radius:16px;
-  background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.08); box-shadow:none;
-}
-body .profile-modal-overlay .profile-modal-box .profile-card .pc-title,
-body .profile-modal-overlay .profile-modal-box .ps-title{
-  font-family:'Exo 2',sans-serif; font-size:15px; font-weight:800; letter-spacing:.2px;
-}
-body .profile-modal-overlay .profile-modal-box .pc-sub,
-body .profile-modal-overlay .profile-modal-box .ps-sub{
-  font-size:13px; line-height:1.45; color:rgba(255,255,255,.58);
-}
-body .profile-modal-overlay .profile-modal-box .ps-status{ white-space:nowrap; font-size:11.5px; letter-spacing:.3px; }
-
-/* Поля и кнопки: наследуем шрифт (раньше был системный Arial) */
-body .profile-modal-overlay .profile-modal-box .pc-setting{ padding:14px 0; }
-body .profile-modal-overlay .profile-modal-box .pc-setting-label{
-  font-family:'Exo 2',sans-serif; font-size:12.5px; font-weight:700; letter-spacing:.3px;
-  text-transform:none; color:rgba(240,215,150,.85);
-}
-body .profile-modal-overlay .profile-modal-box .pc-setting-input{
-  height:44px; padding:0 14px; border-radius:12px;
-  font-family:'Exo 2',sans-serif; font-size:15px; font-weight:600; color:#f1f5f2;
-  background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.10);
-}
-body .profile-modal-overlay .profile-modal-box .pc-setting-input::placeholder{ color:rgba(255,255,255,.3); }
-body .profile-modal-overlay .profile-modal-box .pc-setting-input:focus{
-  border-color:rgba(214,190,120,.6); box-shadow:0 0 0 3px rgba(214,190,120,.14); outline:none;
-}
-body .profile-modal-overlay .profile-modal-box .pc-setting-btn{
-  height:44px; padding:0 18px; border-radius:12px; flex:none;
-  font-family:'Exo 2',sans-serif; font-size:14px; font-weight:700; letter-spacing:.2px; text-transform:none;
-  color:#fff; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
-}
-body .profile-modal-overlay .profile-modal-box .pc-setting-btn:hover{
-  background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.22); transform:none;
-}
-
-/* Главная кнопка (Включить 2FA и т.п.): спокойный градиент вместо «пластика» */
-body .profile-modal-overlay .profile-modal-box .ps-btn{
-  height:46px; padding:0 20px; border-radius:12px;
-  font-family:'Exo 2',sans-serif; font-size:14.5px; font-weight:800; letter-spacing:.2px; text-transform:none;
-  transition:transform .15s ease, filter .15s ease, box-shadow .15s ease, background .15s ease;
-}
-body .profile-modal-overlay .profile-modal-box .ps-btn-primary{
-  color:#04170c; border:0;
-  background:linear-gradient(180deg,#5eea92 0%,#25bd63 100%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.4), 0 8px 20px rgba(34,197,94,.25);
-}
-body .profile-modal-overlay .profile-modal-box .ps-btn-primary:hover{
-  transform:translateY(-1px); filter:brightness(1.06);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.45), 0 12px 26px rgba(34,197,94,.34);
-}
-body .profile-modal-overlay .profile-modal-box .ps-btn:active{ transform:translateY(0); filter:none; }
-body .profile-modal-overlay .profile-modal-box .ps-btn-danger{
-  background:rgba(224,74,42,.10); border:1px solid rgba(224,74,42,.42); color:#ff9c88;
-}
-body .profile-modal-overlay .profile-modal-box .ps-btn-danger:hover{ background:rgba(224,74,42,.2); }
-
-/* Кнопка «Удалить аккаунт» и фокус с клавиатуры */
-body .profile-modal-overlay .profile-modal-box .pc-danger-btn{
-  height:44px; border-radius:12px; font-family:'Exo 2',sans-serif; font-weight:700; text-transform:none;
-}
-body .profile-modal-overlay .profile-modal-box button:focus-visible,
-body .profile-modal-overlay .profile-modal-box .pm-tab:focus-visible{ outline:2px solid #d6be78; outline-offset:2px; }
-
-@media (max-width:520px){
-  body .profile-modal-overlay .pm-head{ padding:18px 62px 16px 18px; }
-  body .profile-modal-overlay .profile-modal-box .pm-tabs{ padding:0 18px; }
-  body .profile-modal-overlay .profile-modal-box .pm-pane.is-active{ padding:16px 8px 20px 18px; }
-  body .profile-modal-overlay .profile-modal-box .profile-modal-name{ font-size:19px; }
-}
 </style>
 <header class="topbar" id="topbar">
   <div class="topbar-brand">
@@ -9212,9 +9202,11 @@ body .profile-modal-overlay .profile-modal-box .pm-tab:focus-visible{ outline:2p
   </div>
   <div class="ps-actions">
     <button type="button" class="ps-btn ps-btn-primary" id="ps2faEnableBtn" onclick="open2faSetupModal()">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
       <span data-i18n="security-2fa-enable">Включить 2FA</span>
     </button>
     <button type="button" class="ps-btn ps-btn-danger" id="ps2faDisableBtn" onclick="confirm2faDisable()" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 7.4-2"/></svg>
       <span data-i18n="security-2fa-disable">Отключить 2FA</span>
     </button>
   </div>
@@ -9571,6 +9563,22 @@ body .profile-modal-overlay .profile-modal-box .pm-tab:focus-visible{ outline:2p
     <div class="cn-foot">
       <button type="button" class="cn-btn cn-btn-cancel" onclick="closeCreateNewsModal()" data-i18n="news-cancel-btn">Отмена</button>
       <button type="button" class="cn-btn cn-btn-send" id="newsSendBtn" onclick="submitCreateNews()"><span data-i18n="news-publish-btn">Опубликовать</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MODAL: ПОДТВЕРЖДЕНИЕ ПАРОЛЕМ (смена email / пароля) ─── -->
+<div class="forgot-modal-overlay" id="reauthOverlay" onclick="reauthCloseOnBg(event)">
+  <div class="forgot-modal-box" role="dialog" aria-modal="true" aria-labelledby="reauthTitle">
+    <button class="forgot-modal-close" type="button" onclick="reauthClose()" aria-label="Закрыть"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="forgot-icon-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+    <div class="forgot-title" id="reauthTitle" data-i18n="reauth-title">Подтверди, что это ты</div>
+    <p class="reauth-text" id="reauthText"></p>
+    <input class="cn-input" id="reauthPass" type="password" autocomplete="current-password" data-i18n-placeholder="reauth-placeholder" placeholder="Текущий пароль" onkeydown="if(event.key==='Enter'){reauthSubmit();}" />
+    <div class="reauth-hint" id="reauthHint"></div>
+    <div class="forgot-btns">
+      <button type="button" class="forgot-btn-cancel" onclick="reauthClose()" data-i18n="news-cancel-btn">Отмена</button>
+      <button type="button" class="forgot-btn-send" id="reauthSendBtn" onclick="reauthSubmit()" data-i18n="reauth-confirm">Подтвердить</button>
     </div>
   </div>
 </div>
@@ -10628,7 +10636,7 @@ body .profile-modal-overlay .profile-modal-box .pm-tab:focus-visible{ outline:2p
             <span data-i18n="ultra-faq-2-q">На каких платформах будет игра?</span>
             <span class="faq-caret">+</span>
           </button>
-          <div class="faq-a"><div class="faq-a-inner" data-i18n="ultra-faq-2-a">Сначала игра выйдет на Windows. Её можно будет скачать и установить на компьютер. Позже планируется версия для macOS. Мобильная версия тоже рассматривается, но управление на сенсорном экране уступает клавиатуре и мыши, поэтому она будет дополнительной.</div></div>
+          <div class="faq-a"><div class="faq-a-inner" data-i18n="ultra-faq-2-a">Сначала игра выйдет на Windows: её нужно будет скачать и установить на компьютер, как обычную программу. Следом планируем версию для macOS. Мобильная версия тоже в планах, но управление на сенсорном экране заметно уступает клавиатуре и мыши, поэтому это будет адаптированный вариант, а не основной.</div></div>
         </div>
         <div class="faq-item reveal" data-delay="3">
           <button class="faq-q" type="button" aria-expanded="false">
@@ -10644,7 +10652,7 @@ body .profile-modal-overlay .profile-modal-box .pm-tab:focus-visible{ outline:2p
             <span data-i18n="ultra-faq-4-q">Какие системные требования?</span>
             <span class="faq-caret">+</span>
           </button>
-          <div class="faq-a"><div class="faq-a-inner" data-i18n="ultra-faq-4-a">Цель — стабильные 60 FPS на большинстве устройств последних 5 лет. Игра поставляется как нативный клиент на Unity для Windows, без зависимости от браузера.</div></div>
+          <div class="faq-a"><div class="faq-a-inner" data-i18n="ultra-faq-4-a">Цель — стабильные 60 кадров в секунду на большинстве компьютеров последних 5 лет. Игра выйдет на Windows.</div></div>
         </div>
         <div class="faq-item reveal" data-delay="5">
           <button class="faq-q" type="button" aria-expanded="false">
@@ -18353,11 +18361,12 @@ function populateProfileExtras() {
       }
       emailBtn.disabled = true;
       try {
+        if (!(await _ev3ReauthPrompt('email'))) return; // нужен текущий пароль
         await _ev3UpdateUser({ email: v });
         _ev3SetHint('pmEditEmailHint', tt('pm-set-email-sent', 'На новый email отправлено письмо. Подтверди — и он применится.'), 'ok');
         try { showToast(tt('pm-toast-email-sent', 'Письмо отправлено на ' + v)); } catch(_) {}
       } catch (e) {
-        _ev3SetHint('pmEditEmailHint', tt('pm-set-err', 'Ошибка: ') + (e.message || ''), 'err');
+        _ev3SetHint('pmEditEmailHint', tt('pm-set-err', 'Ошибка: ') + _ev3FriendlyAuthErr(e), 'err');
       } finally { emailBtn.disabled = false; }
     });
   }
@@ -18373,12 +18382,13 @@ function populateProfileExtras() {
       }
       passBtn.disabled = true;
       try {
+        if (!(await _ev3ReauthPrompt('pass'))) return; // нужен текущий пароль
         await _ev3UpdateUser({ password: v });
         if (passInp) passInp.value = '';
         _ev3SetHint('pmEditPassHint', tt('pm-set-pass-ok', 'Пароль обновлён!'), 'ok');
         try { showToast(tt('pm-toast-pass-ok', 'Пароль обновлён')); } catch(_) {}
       } catch (e) {
-        _ev3SetHint('pmEditPassHint', tt('pm-set-err', 'Ошибка: ') + (e.message || ''), 'err');
+        _ev3SetHint('pmEditPassHint', tt('pm-set-err', 'Ошибка: ') + _ev3FriendlyAuthErr(e), 'err');
       } finally { passBtn.disabled = false; }
     });
   }
@@ -19522,11 +19532,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'Когда релиз и где можно поиграть?',
         'ultra-faq-1-a': 'Сейчас идёт закрытая разработка. Сначала выйдет альфа-версия, затем релиз. Планы — 2026–2027. Следи за Discord и подпишись на апдейты ниже.',
         'ultra-faq-2-q': 'На каких платформах будет игра?',
-        'ultra-faq-2-a': 'Сначала игра выйдет на Windows. Её можно будет скачать и установить на компьютер. Позже планируется версия для macOS. Мобильная версия тоже рассматривается, но управление на сенсорном экране уступает клавиатуре и мыши, поэтому она будет дополнительной.',
+        'ultra-faq-2-a': 'Сначала игра выйдет на Windows: её нужно будет скачать и установить на компьютер, как обычную программу. Следом планируем версию для macOS. Мобильная версия тоже в планах, но управление на сенсорном экране заметно уступает клавиатуре и мыши, поэтому это будет адаптированный вариант, а не основной.',
         'ultra-faq-3-q': 'Игра будет платной?',
         'ultra-faq-3-a': 'Сама игра остаётся бесплатной — план Free доступен и в релизе, и в нём можно полноценно играть. Сверх него будут две платные подписки: VIP и Pro, где Pro — расширенный тариф со всеми возможностями VIP и сверх того. На этапах альфы и беты подписок нет вовсе: все участники играют как Free, с полным доступом к тесту и контенту.',
         'ultra-faq-4-q': 'Какие системные требования?',
-        'ultra-faq-4-a': 'Цель — стабильные 60 FPS на большинстве устройств последних 5 лет. Игра поставляется как нативный клиент на Unity для Windows, без зависимости от браузера.',
+        'ultra-faq-4-a': 'Цель — стабильные 60 кадров в секунду на большинстве компьютеров последних 5 лет. Игра выйдет на Windows.',
         'ultra-faq-5-q': 'Как попасть в закрытый тест?',
         'ultra-faq-5-a': 'Зайди в наш Discord и подпишись на рассылку ниже — как только откроется набор на альфа-тест, подписчики узнают первыми.',
 
@@ -19713,11 +19723,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'When is the release and where can I play?',
         'ultra-faq-1-a': 'The game is in closed development. Alpha version comes first, then the full release. Timeline — 2026–2027. Follow Discord and subscribe for updates below.',
         'ultra-faq-2-q': 'Which platforms will the game support?',
-        'ultra-faq-2-a': 'The game will launch on Windows first and can be downloaded and installed on your computer. A macOS version is planned next. A mobile version is also being considered, but touch controls are less precise than a keyboard and mouse, so it will be an adapted alternative.',
+        'ultra-faq-2-a': 'The game will launch on Windows first: you’ll download and install it on your computer like a regular program. A macOS version is planned next. A mobile version is also planned, but touch controls are noticeably worse than keyboard and mouse, so it will be an adapted version rather than the main one.',
         'ultra-faq-3-q': 'Will the game be paid?',
         'ultra-faq-3-a': 'The game itself stays free — the Free plan is available at release and lets you play fully. On top of it there will be two paid subscriptions: VIP and Pro, where Pro is the higher tier and includes everything VIP has plus more. During alpha and beta there are no subscriptions at all — every participant plays as Free with full access to the test and its content.',
         'ultra-faq-4-q': 'What are the system requirements?',
-        'ultra-faq-4-a': 'Target is a steady 60 FPS on most devices from the last 5 years. The game ships as a native Unity client for Windows — no browser dependency.',
+        'ultra-faq-4-a': 'The goal is a stable 60 frames per second on most computers from the last 5 years. The game launches on Windows.',
         'ultra-faq-5-q': 'How can I join the closed test?',
         'ultra-faq-5-a': 'Join our Discord and subscribe to the newsletter below — when alpha test signups open, subscribers will know first.',
 
@@ -19876,7 +19886,7 @@ async function doResetPassword() {
         'ultra-live-soon': 'SOON',
         'ultra-live-release-d': 'відкрита альфа',
 
-        'ultra-roadmap-eyebrow': 'План розробки',
+        'ultra-roadmap-eyebrow': 'Дорожня карта',
         'ultra-roadmap-title-a': 'Шлях',
         'ultra-roadmap-title-b': 'до релізу',
         'ultra-roadmap-lead': 'Гра в активній розробці. Ось завдання та їхній статус.',
@@ -19904,11 +19914,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'Коли реліз і де можна зіграти?',
         'ultra-faq-1-a': 'Зараз йде закрита розробка. Спочатку вийде альфа-версія, потім реліз. Плани — 2026–2027. Слідкуй за Discord і підписуйся нижче.',
         'ultra-faq-2-q': 'На яких платформах буде гра?',
-        'ultra-faq-2-a': 'Спочатку гра вийде для Windows. Її можна буде завантажити та встановити на комп’ютер. Пізніше планується версія для macOS. Мобільна версія також розглядається, але керування на сенсорному екрані менш точне, ніж клавіатурою та мишею, тому вона буде додатковою.',
+        'ultra-faq-2-a': 'Спочатку гра вийде на Windows: її потрібно буде завантажити й встановити на комп’ютер, як звичайну програму. Далі плануємо версію для macOS. Мобільна версія теж у планах, але керування на сенсорному екрані помітно поступається клавіатурі та мишці, тож це буде адаптований варіант, а не основний.',
         'ultra-faq-3-q': 'Гра буде платною?',
         'ultra-faq-3-a': 'Сама гра залишається безкоштовною — план Free доступний і в релізі, і в ньому можна повноцінно грати. Понад нього будуть дві платні підписки: VIP і Pro, де Pro — вищий тариф з усіма можливостями VIP та зверху того. На етапах альфи й бети підписок взагалі немає — всі учасники грають як Free з повним доступом до тесту й контенту.',
         'ultra-faq-4-q': 'Які системні вимоги?',
-        'ultra-faq-4-a': 'Ціль — стабільні 60 FPS на більшості пристроїв останніх 5 років. Гра постачається як нативний клієнт на Unity для Windows, без залежності від браузера.',
+        'ultra-faq-4-a': 'Ціль — стабільні 60 кадрів на секунду на більшості комп’ютерів останніх 5 років. Гра вийде на Windows.',
         'ultra-faq-5-q': 'Як потрапити в закритий тест?',
         'ultra-faq-5-a': 'Зайди в наш Discord і підпишись на розсилку нижче — коли відкриється набір на альфа-тест, підписники дізнаються першими.',
 
@@ -20084,11 +20094,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'Wann ist der Release und wo kann man spielen?',
         'ultra-faq-1-a': 'Das Spiel befindet sich in der geschlossenen Entwicklung. Zuerst kommt die Alpha, dann der vollständige Release. Zeitraum: 2026–2027. Folge dem Discord und abonniere unten.',
         'ultra-faq-2-q': 'Auf welchen Plattformen erscheint das Spiel?',
-        'ultra-faq-2-a': 'Zuerst erscheint Windows als vollwertiger Standalone-Unity-Client — lokal heruntergeladen und gestartet, ohne Browser. Danach folgt eine macOS-Portierung. Eine Mobilversion ist geplant, doch Touch-Steuerung ist Tastatur und Maus ehrlich gesagt unterlegen — daher wird es eine angepasste, nicht die primäre Variante.',
+        'ultra-faq-2-a': 'Zuerst erscheint das Spiel für Windows: Du lädst es herunter und installierst es auf dem Computer wie ein normales Programm. Danach ist eine Version für macOS geplant. Eine mobile Version ist ebenfalls geplant, aber die Touch-Steuerung ist spürbar schlechter als Tastatur und Maus – daher wird es eine angepasste Variante und nicht die Hauptversion.',
         'ultra-faq-3-q': 'Ist das Spiel kostenpflichtig?',
         'ultra-faq-3-a': 'Das Spiel selbst bleibt kostenlos — der Free-Plan ist auch zum Release verfügbar und erlaubt vollwertiges Spielen. Darüber hinaus wird es zwei kostenpflichtige Abos geben: VIP und Pro, wobei Pro die höhere Stufe ist und alles aus VIP plus zusätzliche Inhalte enthält. In Alpha und Beta gibt es keinerlei Abos — alle Teilnehmer spielen als Free mit vollem Zugang zum Test und seinen Inhalten.',
         'ultra-faq-4-q': 'Welche Systemanforderungen gibt es?',
-        'ultra-faq-4-a': 'Ziel: stabile 60 FPS auf den meisten Geräten der letzten 5 Jahre. Das Spiel wird als nativer Unity-Client für Windows ausgeliefert — keine Browser-Abhängigkeit.',
+        'ultra-faq-4-a': 'Das Ziel sind stabile 60 Bilder pro Sekunde auf den meisten Computern der letzten 5 Jahre. Das Spiel erscheint für Windows.',
         'ultra-faq-5-q': 'Wie komme ich in den geschlossenen Test?',
         'ultra-faq-5-a': 'Tritt unserem Discord bei und abonniere den Newsletter unten — sobald die Alpha-Anmeldung öffnet, erfahren Abonnenten es zuerst.',
         'ultra-news-eyebrow': 'Früher Zugang',
@@ -20254,11 +20264,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': '¿Cuándo es el lanzamiento y dónde puedo jugar?',
         'ultra-faq-1-a': 'El juego está en desarrollo cerrado. Primero sale la alfa, luego el lanzamiento completo. Plazos: 2026–2027. Sigue nuestro Discord y suscríbete abajo.',
         'ultra-faq-2-q': '¿En qué plataformas estará el juego?',
-        'ultra-faq-2-a': 'Windows llega primero como un cliente Unity standalone completo — se descarga y se ejecuta localmente, sin navegador. A continuación se prevé un port para macOS. Una versión móvil está en planes, aunque los controles táctiles son sinceramente inferiores al teclado y ratón, por lo que será una adaptación, no la plataforma principal.',
+        'ultra-faq-2-a': 'El juego saldrá primero en Windows: lo descargarás e instalarás en tu ordenador como cualquier programa. Después está planeada una versión para macOS. También hay una versión móvil en los planes, pero el control táctil es claramente peor que el teclado y el ratón, así que será una versión adaptada y no la principal.',
         'ultra-faq-3-q': '¿Será de pago?',
         'ultra-faq-3-a': 'El juego en sí sigue siendo gratuito — el plan Free está disponible en el lanzamiento y permite jugar plenamente. Por encima habrá dos suscripciones de pago: VIP y Pro, donde Pro es el nivel superior e incluye todo lo de VIP y más. Durante alfa y beta no existen suscripciones — todos los participantes juegan como Free con acceso completo al test y al contenido.',
         'ultra-faq-4-q': '¿Cuáles son los requisitos del sistema?',
-        'ultra-faq-4-a': 'Objetivo: 60 FPS estables en la mayoría de dispositivos de los últimos 5 años. El juego se entrega como cliente Unity nativo para Windows, sin depender del navegador.',
+        'ultra-faq-4-a': 'El objetivo son 60 fotogramas por segundo estables en la mayoría de los ordenadores de los últimos 5 años. El juego saldrá para Windows.',
         'ultra-faq-5-q': '¿Cómo entrar en la prueba cerrada?',
         'ultra-faq-5-a': 'Únete a nuestro Discord y suscríbete al boletín abajo — cuando abra la inscripción a la alfa, los suscriptores serán los primeros en saberlo.',
         'ultra-news-eyebrow': 'Acceso anticipado',
@@ -20424,11 +20434,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'Quand la sortie et où jouer ?',
         'ultra-faq-1-a': 'Le jeu est en développement fermé. D\u2019abord l\u2019alpha, puis la sortie complète. Planning : 2026–2027. Suis notre Discord et abonne-toi ci-dessous.',
         'ultra-faq-2-q': 'Sur quelles plateformes ?',
-        'ultra-faq-2-a': 'Windows arrive en premier sous forme de client Unity standalone complet — téléchargé et lancé localement, sans navigateur. Un portage macOS suivra. Une version mobile est envisagée, mais les commandes tactiles restent honnêtement en retrait par rapport au clavier et à la souris, ce sera donc une adaptation et non la plateforme principale.',
+        'ultra-faq-2-a': 'Le jeu sortira d’abord sur Windows : tu le téléchargeras et l’installeras sur ton ordinateur comme un programme classique. Une version macOS est prévue ensuite. Une version mobile est aussi envisagée, mais les commandes tactiles sont nettement moins précises que le clavier et la souris : ce sera une version adaptée, pas la version principale.',
         'ultra-faq-3-q': 'Le jeu sera-t-il payant ?',
         'ultra-faq-3-a': 'Le jeu lui-même reste gratuit — le plan Free est disponible au lancement et permet de jouer pleinement. Au-dessus, deux abonnements payants : VIP et Pro, où Pro est le palier supérieur et inclut tout le contenu VIP et davantage. Pendant l’alpha et la bêta, aucun abonnement n’existe — tous les participants jouent en Free avec un accès complet au test et à son contenu.',
         'ultra-faq-4-q': 'Configuration requise ?',
-        'ultra-faq-4-a': 'Objectif : 60 FPS stables sur la plupart des appareils des 5 dernières années. Le jeu est livré comme un client Unity natif pour Windows, sans dépendance au navigateur.',
+        'ultra-faq-4-a': 'L’objectif est d’atteindre 60 images par seconde stables sur la plupart des ordinateurs de moins de 5 ans. Le jeu sortira sur Windows.',
         'ultra-faq-5-q': 'Comment rejoindre le test fermé ?',
         'ultra-faq-5-a': 'Rejoins notre Discord et abonne-toi à la newsletter — dès l\u2019ouverture des inscriptions alpha, les abonnés seront prévenus en premier.',
         'ultra-news-eyebrow': 'Accès anticipé',
@@ -20594,11 +20604,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'Quando esce e dove si gioca?',
         'ultra-faq-1-a': 'Il gioco è in sviluppo chiuso. Prima la versione alpha, poi il rilascio completo. Tempistiche: 2026–2027. Segui il Discord e iscriviti qui sotto.',
         'ultra-faq-2-q': 'Su quali piattaforme?',
-        'ultra-faq-2-a': 'Windows arriva per primo come client Unity standalone — scaricato ed eseguito in locale, senza browser. Seguirà un port per macOS. Una versione mobile è in programma, ma i controlli touch restano onestamente inferiori a tastiera e mouse: sarà un adattamento, non la piattaforma principale.',
+        'ultra-faq-2-a': 'Il gioco uscirà prima su Windows: lo scaricherai e lo installerai sul computer come un normale programma. Poi è prevista una versione per macOS. Anche la versione mobile è nei piani, ma i comandi touch sono decisamente inferiori a tastiera e mouse, quindi sarà una versione adattata e non quella principale.',
         'ultra-faq-3-q': 'Sarà a pagamento?',
         'ultra-faq-3-a': 'Il gioco in sé resta gratuito — il piano Free è disponibile al lancio e consente di giocare in pieno. Oltre a esso ci saranno due abbonamenti a pagamento: VIP e Pro, dove Pro è il livello superiore e include tutto ciò che offre VIP e altro ancora. Durante alpha e beta non esistono abbonamenti — tutti i partecipanti giocano come Free con accesso completo al test e ai contenuti.',
         'ultra-faq-4-q': 'Requisiti di sistema?',
-        'ultra-faq-4-a': 'Obiettivo: 60 FPS stabili sulla maggior parte dei dispositivi degli ultimi 5 anni. Il gioco viene distribuito come client Unity nativo per Windows, senza dipendenze dal browser.',
+        'ultra-faq-4-a': 'L’obiettivo sono 60 fotogrammi al secondo stabili sulla maggior parte dei computer degli ultimi 5 anni. Il gioco uscirà su Windows.',
         'ultra-faq-5-q': 'Come entrare nella beta chiusa?',
         'ultra-faq-5-a': 'Entra nel nostro Discord e iscriviti alla newsletter qui sotto — all\u2019apertura delle iscrizioni alpha, gli iscritti saranno avvisati per primi.',
         'ultra-news-eyebrow': 'Accesso anticipato',
@@ -20764,11 +20774,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'Quando é o lançamento e onde posso jogar?',
         'ultra-faq-1-a': 'O jogo está em desenvolvimento fechado. Primeiro sai o alfa, depois o lançamento completo. Prazo: 2026–2027. Siga o Discord e inscreva-se abaixo.',
         'ultra-faq-2-q': 'Em quais plataformas?',
-        'ultra-faq-2-a': 'Windows vem primeiro como um cliente Unity standalone completo — baixado e executado localmente, sem navegador. Em seguida, um port para macOS. Uma versão móvel está nos planos, mas os controles por toque são honestamente inferiores ao teclado e mouse, então será uma adaptação, não a plataforma principal.',
+        'ultra-faq-2-a': 'O jogo será lançado primeiro no Windows: você vai baixá-lo e instalá-lo no computador como um programa comum. Depois, uma versão para macOS está planejada. A versão para celular também está nos planos, mas o controle por toque é bem pior que teclado e mouse, então será uma versão adaptada, não a principal.',
         'ultra-faq-3-q': 'O jogo será pago?',
         'ultra-faq-3-a': 'O jogo em si continua gratuito — o plano Free está disponível no lançamento e permite jogar plenamente. Acima dele haverá duas assinaturas pagas: VIP e Pro, sendo Pro o nível superior e incluindo tudo o que o VIP tem e mais. Durante alfa e beta não há nenhuma assinatura — todos os participantes jogam como Free com acesso completo ao teste e ao conteúdo.',
         'ultra-faq-4-q': 'Quais os requisitos?',
-        'ultra-faq-4-a': 'Meta: 60 FPS estáveis na maioria dos dispositivos dos últimos 5 anos. O jogo é entregue como cliente Unity nativo para Windows, sem dependência de navegador.',
+        'ultra-faq-4-a': 'O objetivo são 60 quadros por segundo estáveis na maioria dos computadores dos últimos 5 anos. O jogo será lançado para Windows.',
         'ultra-faq-5-q': 'Como entrar no teste fechado?',
         'ultra-faq-5-a': 'Entre no nosso Discord e inscreva-se na newsletter abaixo — quando abrir a inscrição para o alfa, os inscritos saberão primeiro.',
         'ultra-news-eyebrow': 'Acesso antecipado',
@@ -20934,11 +20944,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'Kiedy premiera i gdzie zagram?',
         'ultra-faq-1-a': 'Gra jest w zamkniętym rozwoju. Najpierw alfa, potem pełna premiera. Plany: 2026–2027. Śledź Discord i zapisz się niżej.',
         'ultra-faq-2-q': 'Na jakich platformach?',
-        'ultra-faq-2-a': 'Najpierw Windows — pełny samodzielny klient Unity, pobierany i uruchamiany lokalnie, bez przeglądarki. Następnie zaplanowany port na macOS. Wersja mobilna jest w planach, ale sterowanie dotykowe szczerze ustępuje klawiaturze i myszy, więc będzie to wersja adaptowana, nie główna platforma.',
+        'ultra-faq-2-a': 'Gra ukaże się najpierw na Windows: pobierzesz ją i zainstalujesz na komputerze jak zwykły program. Potem planujemy wersję na macOS. Wersja mobilna też jest w planach, ale sterowanie dotykowe wyraźnie ustępuje klawiaturze i myszce, więc będzie to wersja dostosowana, a nie główna.',
         'ultra-faq-3-q': 'Gra będzie płatna?',
         'ultra-faq-3-a': 'Sama gra pozostaje darmowa — plan Free jest dostępny także w wersji finalnej i pozwala na pełnoprawną grę. Ponad nim będą dwie płatne subskrypcje: VIP i Pro, gdzie Pro to wyższy poziom obejmujący wszystko z VIP i więcej. W fazach alfa i beta nie ma żadnych subskrypcji — wszyscy uczestnicy grają jako Free z pełnym dostępem do testów i zawartości.',
         'ultra-faq-4-q': 'Wymagania sprzętowe?',
-        'ultra-faq-4-a': 'Cel: stabilne 60 FPS na większości urządzeń z ostatnich 5 lat. Gra dostarczana jest jako natywny klient Unity dla Windows, bez zależności od przeglądarki.',
+        'ultra-faq-4-a': 'Celem jest stabilne 60 klatek na sekundę na większości komputerów z ostatnich 5 lat. Gra ukaże się na Windows.',
         'ultra-faq-5-q': 'Jak wejść do zamkniętego testu?',
         'ultra-faq-5-a': 'Dołącz do naszego Discorda i zapisz się do newslettera — kiedy otworzymy zapisy na alfę, subskrybenci dowiedzą się pierwsi.',
         'ultra-news-eyebrow': 'Wczesny dostęp',
@@ -21104,11 +21114,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'Ne zaman çıkacak ve nerede oynayabilirim?',
         'ultra-faq-1-a': 'Oyun kapalı geliştirmede. Önce alfa, sonra tam sürüm. Takvim: 2026–2027. Discord\u2019u takip et ve aşağıdan abone ol.',
         'ultra-faq-2-q': 'Hangi platformlarda olacak?',
-        'ultra-faq-2-a': 'İlk olarak Windows — tarayıcısız, yerel olarak indirilip çalıştırılan tam bir bağımsız Unity istemcisi olarak çıkıyor. Ardından macOS sürümü planlanıyor. Mobil sürüm de planlarda, ancak dokunmatik kontroller klavye ve fareye göre açıkçası geride kalıyor; bu nedenle ana platform değil, uyarlanmış bir sürüm olacak.',
+        'ultra-faq-2-a': 'Oyun önce Windows için çıkacak: bilgisayarına normal bir program gibi indirip kuracaksın. Ardından macOS sürümü planlanıyor. Mobil sürüm de planlarda, ancak dokunmatik kontrol klavye ve fareye göre belirgin şekilde geride kalıyor; bu yüzden ana sürüm değil, uyarlanmış bir sürüm olacak.',
         'ultra-faq-3-q': 'Ücretli mi olacak?',
         'ultra-faq-3-a': 'Oyunun kendisi ücretsiz kalmaya devam ediyor — Free plan sürümde de mevcut ve onunla oyunu tam olarak oynayabilirsiniz. Bunun üstünde iki ücretli abonelik bulunacak: VIP ve Pro; Pro üst kademedir ve VIP’in tüm içeriğini ve fazlasını kapsar. Alfa ve beta aşamalarında hiçbir abonelik yoktur — tüm katılımcılar Free olarak oynar ve teste ve içeriğe tam erişime sahip olur.',
         'ultra-faq-4-q': 'Sistem gereksinimleri?',
-        'ultra-faq-4-a': 'Hedef: son 5 yılın çoğu cihazında kararlı 60 FPS. Oyun, Windows için yerel bir Unity istemcisi olarak dağıtılır — tarayıcı bağımlılığı yoktur.',
+        'ultra-faq-4-a': 'Hedef, son 5 yılın çoğu bilgisayarında saniyede sabit 60 kare. Oyun Windows için çıkacak.',
         'ultra-faq-5-q': 'Kapalı teste nasıl girerim?',
         'ultra-faq-5-a': 'Discord\u2019umuza katıl ve aşağıdaki bültene abone ol — alfa kayıtları açıldığında aboneler ilk bilenler olacak.',
         'ultra-news-eyebrow': 'Erken erişim',
@@ -21274,11 +21284,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'Wanneer is de release en waar kan ik spelen?',
         'ultra-faq-1-a': 'Het spel is in gesloten ontwikkeling. Eerst de alpha, daarna de volledige release. Planning: 2026–2027. Volg Discord en abonneer je hieronder.',
         'ultra-faq-2-q': 'Op welke platformen?',
-        'ultra-faq-2-a': 'Windows komt eerst als volwaardige standalone Unity-client — lokaal gedownload en uitgevoerd, zonder browser. Daarna volgt een macOS-versie. Een mobiele versie staat op de planning, maar aanraakbediening blijft eerlijk gezegd onderdoen voor toetsenbord en muis, dus het wordt een aangepaste versie, niet het hoofdplatform.',
+        'ultra-faq-2-a': 'De game verschijnt eerst op Windows: je downloadt en installeert hem op je computer, zoals een gewoon programma. Daarna staat een macOS-versie gepland. Een mobiele versie staat ook in de planning, maar touchbediening is merkbaar minder goed dan toetsenbord en muis, dus dat wordt een aangepaste versie en niet de hoofdversie.',
         'ultra-faq-3-q': 'Is het spel betaald?',
         'ultra-faq-3-a': 'Het spel zelf blijft gratis — het Free-plan is ook bij de release beschikbaar en je kunt er volwaardig mee spelen. Daarbovenop komen er twee betaalde abonnementen: VIP en Pro, waarbij Pro de hogere variant is en alles uit VIP en meer omvat. Tijdens alpha en bèta zijn er geen abonnementen — alle deelnemers spelen als Free met volledige toegang tot de tests en de content.',
         'ultra-faq-4-q': 'Wat zijn de systeemeisen?',
-        'ultra-faq-4-a': 'Doel: stabiele 60 FPS op de meeste apparaten van de laatste 5 jaar. Het spel wordt geleverd als native Unity-client voor Windows, zonder browserafhankelijkheid.',
+        'ultra-faq-4-a': 'Het doel is een stabiele 60 beelden per seconde op de meeste computers van de afgelopen 5 jaar. De game verschijnt op Windows.',
         'ultra-faq-5-q': 'Hoe kom ik in de gesloten test?',
         'ultra-faq-5-a': 'Doe mee op onze Discord en abonneer je hieronder — zodra de alpha-aanmelding opent, horen abonnees het als eerste.',
         'ultra-news-eyebrow': 'Vroege toegang',
@@ -21444,11 +21454,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'När är release och var kan jag spela?',
         'ultra-faq-1-a': 'Spelet är i sluten utveckling. Först alfa, sedan fullständig release. Tidsplan: 2026–2027. Följ Discord och prenumerera nedan.',
         'ultra-faq-2-q': 'På vilka plattformar?',
-        'ultra-faq-2-a': 'Windows kommer först som en fullständig fristående Unity-klient — laddas ner och körs lokalt, utan webbläsare. Därefter planeras en macOS-port. En mobilversion finns i planerna, men pekkontroller är ärligt talat sämre än tangentbord och mus, så det blir en anpassad version, inte huvudplattformen.',
+        'ultra-faq-2-a': 'Spelet släpps först på Windows: du laddar ner och installerar det på datorn som ett vanligt program. Därefter planeras en version för macOS. En mobilversion finns också i planerna, men pekstyrning är märkbart sämre än tangentbord och mus, så det blir en anpassad version och inte huvudversionen.',
         'ultra-faq-3-q': 'Kostar spelet?',
         'ultra-faq-3-a': 'Själva spelet förblir gratis — Free-planen finns även vid lanseringen och låter dig spela fullt ut. Ovanpå det kommer två betalda prenumerationer: VIP och Pro, där Pro är den högre nivån och innehåller allt VIP har och mer därtill. Under alfa och beta finns inga prenumerationer — alla deltagare spelar som Free med full tillgång till testet och innehållet.',
         'ultra-faq-4-q': 'Systemkrav?',
-        'ultra-faq-4-a': 'Mål: stabila 60 FPS på de flesta enheter från de senaste 5 åren. Spelet levereras som en native Unity-klient för Windows — inget webbläsarberoende.',
+        'ultra-faq-4-a': 'Målet är stabila 60 bilder per sekund på de flesta datorer från de senaste 5 åren. Spelet släpps på Windows.',
         'ultra-faq-5-q': 'Hur kommer jag med i det slutna testet?',
         'ultra-faq-5-a': 'Gå med i vår Discord och prenumerera på nyhetsbrevet — när alfa-registreringen öppnar får prenumeranter veta först.',
         'ultra-news-eyebrow': 'Tidig åtkomst',
@@ -21614,11 +21624,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'Når kommer spillet og hvor kan jeg spille?',
         'ultra-faq-1-a': 'Spillet er i lukket utvikling. Først alfa, så full lansering. Tidsplan: 2026–2027. Følg Discord og abonner nedenfor.',
         'ultra-faq-2-q': 'Hvilke plattformer?',
-        'ultra-faq-2-a': 'Windows kommer først som en fullverdig frittstående Unity-klient — lastet ned og kjørt lokalt, uten nettleser. Deretter planlegges en macOS-port. En mobilversjon er i planene, men berøringskontroller er ærlig talt dårligere enn tastatur og mus, så det blir en tilpasset versjon, ikke hovedplattformen.',
+        'ultra-faq-2-a': 'Spillet kommer først til Windows: du laster det ned og installerer det på datamaskinen som et vanlig program. Deretter er en versjon for macOS planlagt. En mobilversjon er også i planene, men berøringsstyring er merkbart dårligere enn tastatur og mus, så det blir en tilpasset versjon og ikke hovedversjonen.',
         'ultra-faq-3-q': 'Er spillet betalt?',
         'ultra-faq-3-a': 'Spillet i seg selv forblir gratis — Free-planen er tilgjengelig også ved lansering og lar deg spille fullverdig. I tillegg kommer to betalte abonnementer: VIP og Pro, der Pro er det høyere nivået og inkluderer alt i VIP og mer. Under alfa og beta finnes ingen abonnementer — alle deltakere spiller som Free med full tilgang til testen og innholdet.',
         'ultra-faq-4-q': 'Systemkrav?',
-        'ultra-faq-4-a': 'Mål: stabile 60 FPS på de fleste enheter fra de siste 5 årene. Spillet leveres som en native Unity-klient for Windows — ingen nettleseravhengighet.',
+        'ultra-faq-4-a': 'Målet er stabile 60 bilder per sekund på de fleste datamaskiner fra de siste 5 årene. Spillet kommer til Windows.',
         'ultra-faq-5-q': 'Hvordan bli med i lukket test?',
         'ultra-faq-5-a': 'Bli med på vår Discord og abonner på nyhetsbrevet — når alfa-registrering åpner, får abonnenter vite det først.',
         'ultra-news-eyebrow': 'Tidlig tilgang',
@@ -21784,11 +21794,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'Milloin julkaisu ja missä voi pelata?',
         'ultra-faq-1-a': 'Peli on suljetussa kehityksessä. Ensin alpha, sitten täysi julkaisu. Aikataulu: 2026–2027. Seuraa Discordia ja tilaa alta.',
         'ultra-faq-2-q': 'Millä alustoilla?',
-        'ultra-faq-2-a': 'Windows tulee ensin täysiverisenä itsenäisenä Unity-asiakkaana — ladataan ja suoritetaan paikallisesti ilman selainta. Sen jälkeen on suunnitteilla macOS-portti. Mobiiliversio on suunnitelmissa, mutta kosketusohjaus jää rehellisesti sanottuna jälkeen näppäimistöstä ja hiirestä, joten siitä tulee mukautettu versio, ei pääalusta.',
+        'ultra-faq-2-a': 'Peli julkaistaan ensin Windowsille: lataat ja asennat sen tietokoneelle kuten tavallisen ohjelman. Sen jälkeen suunnitteilla on macOS-versio. Mobiiliversio on myös suunnitelmissa, mutta kosketusohjaus on selvästi huonompi kuin näppäimistö ja hiiri, joten siitä tulee mukautettu versio eikä pääversio.',
         'ultra-faq-3-q': 'Onko peli maksullinen?',
         'ultra-faq-3-a': 'Itse peli pysyy ilmaisena — Free-tila on saatavilla myös julkaisussa ja sillä voi pelata täysipainoisesti. Sen lisäksi tarjolla on kaksi maksullista tilausta: VIP ja Pro, joista Pro on korkeampi taso ja sisältää kaiken VIP:stä ja vielä enemmän. Alpha- ja beta-vaiheissa ei ole minkäänlaisia tilauksia — kaikki osallistujat pelaavat Free-tilassa täydellä pääsyllä testiin ja sisältöön.',
         'ultra-faq-4-q': 'Järjestelmävaatimukset?',
-        'ultra-faq-4-a': 'Tavoite: vakaat 60 FPS useimmilla viimeisen 5 vuoden laitteilla. Peli toimitetaan natiivina Unity-asiakkaana Windowsille — ei selainriippuvuutta.',
+        'ultra-faq-4-a': 'Tavoitteena on vakaa 60 kuvaa sekunnissa useimmilla viimeisen 5 vuoden tietokoneilla. Peli julkaistaan Windowsille.',
         'ultra-faq-5-q': 'Miten pääsen suljettuun testiin?',
         'ultra-faq-5-a': 'Liity Discordiin ja tilaa uutiskirje — kun alpha-ilmoittautuminen aukeaa, tilaajat saavat tiedon ensimmäisinä.',
         'ultra-news-eyebrow': 'Varhainen pääsy',
@@ -21954,11 +21964,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'Hvornår er udgivelsen og hvor kan jeg spille?',
         'ultra-faq-1-a': 'Spillet er i lukket udvikling. Først alfa, så fuld udgivelse. Tidsplan: 2026–2027. Følg Discord og tilmeld dig nedenfor.',
         'ultra-faq-2-q': 'Hvilke platforme?',
-        'ultra-faq-2-a': 'Windows kommer først som en fuldgyldig selvstændig Unity-klient — downloades og køres lokalt uden browser. Derefter planlægges en macOS-port. En mobilversion er i planerne, men berøringskontroller er ærligt talt dårligere end tastatur og mus, så det bliver en tilpasset version, ikke hovedplatformen.',
+        'ultra-faq-2-a': 'Spillet udkommer først til Windows: du downloader og installerer det på din computer som et almindeligt program. Derefter er en version til macOS planlagt. En mobilversion er også i planerne, men touch-styring er mærkbart dårligere end tastatur og mus, så det bliver en tilpasset version og ikke hovedversionen.',
         'ultra-faq-3-q': 'Koster spillet?',
         'ultra-faq-3-a': 'Selve spillet forbliver gratis — Free-planen er tilgængelig også ved udgivelsen og giver fuld spilbarhed. Oven på det kommer to betalte abonnementer: VIP og Pro, hvor Pro er det højere niveau og indeholder alt i VIP og mere. Under alfa og beta findes ingen abonnementer — alle deltagere spiller som Free med fuld adgang til testen og indholdet.',
         'ultra-faq-4-q': 'Systemkrav?',
-        'ultra-faq-4-a': 'Mål: stabile 60 FPS på de fleste enheder fra de seneste 5 år. Spillet leveres som en native Unity-klient til Windows — ingen browserafhængighed.',
+        'ultra-faq-4-a': 'Målet er stabile 60 billeder i sekundet på de fleste computere fra de seneste 5 år. Spillet udkommer til Windows.',
         'ultra-faq-5-q': 'Hvordan kommer jeg med i den lukkede test?',
         'ultra-faq-5-a': 'Kom ind på vores Discord og tilmeld dig nyhedsbrevet — når alfa-tilmelding åbner, får abonnenter besked først.',
         'ultra-news-eyebrow': 'Tidlig adgang',
@@ -22124,11 +22134,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'Kdy vyjde a kde si zahraji?',
         'ultra-faq-1-a': 'Hra je v uzavřeném vývoji. Nejprve alfa, pak plné vydání. Plány: 2026–2027. Sleduj Discord a přihlas se níže.',
         'ultra-faq-2-q': 'Na jakých platformách?',
-        'ultra-faq-2-a': 'Nejdřív vychází Windows jako plnohodnotný samostatný Unity klient — stahuje se a běží lokálně, bez prohlížeče. Dále je v plánu port pro macOS. Mobilní verze je v plánu, ale dotykové ovládání je upřímně horší než klávesnice a myš, takže půjde o přizpůsobenou verzi, ne hlavní platformu.',
+        'ultra-faq-2-a': 'Hra vyjde nejdřív na Windows: stáhneš si ji a nainstaluješ do počítače jako běžný program. Poté plánujeme verzi pro macOS. Mobilní verze je také v plánu, ale dotykové ovládání je znatelně horší než klávesnice a myš, takže to bude upravená verze, ne hlavní.',
         'ultra-faq-3-q': 'Bude hra placená?',
         'ultra-faq-3-a': 'Samotná hra zůstává zdarma — plán Free je dostupný i ve finální verzi a umožňuje plnohodnotné hraní. Nad ním budou dvě placená předplatná: VIP a Pro, kde Pro je vyšší úroveň a zahrnuje vše z VIP a více. V alfa a beta fázích nejsou žádná předplatná — všichni účastníci hrají jako Free s plným přístupem k testům a obsahu.',
         'ultra-faq-4-q': 'Systémové požadavky?',
-        'ultra-faq-4-a': 'Cíl: stabilních 60 FPS na většině zařízení z posledních 5 let. Hra je dodávána jako nativní Unity klient pro Windows — bez závislosti na prohlížeči.',
+        'ultra-faq-4-a': 'Cílem je stabilních 60 snímků za sekundu na většině počítačů z posledních 5 let. Hra vyjde na Windows.',
         'ultra-faq-5-q': 'Jak se dostat do uzavřeného testu?',
         'ultra-faq-5-a': 'Přidej se na Discord a odebírej newsletter — jakmile se otevře registrace do alfy, odběratelé se dozví jako první.',
         'ultra-news-eyebrow': 'Předběžný přístup',
@@ -22294,11 +22304,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'Când lansați și unde pot juca?',
         'ultra-faq-1-a': 'Jocul este în dezvoltare închisă. Mai întâi alfa, apoi lansarea completă. Termen: 2026–2027. Urmărește Discord și abonează-te mai jos.',
         'ultra-faq-2-q': 'Pe ce platforme?',
-        'ultra-faq-2-a': 'Windows vine primul ca un client Unity de sine stătător — descărcat și rulat local, fără browser. Apoi este planificat un port pentru macOS. O versiune mobilă este în planuri, însă controalele tactile sunt sincer mai slabe decât tastatura și mouse-ul, deci va fi o adaptare, nu platforma principală.',
+        'ultra-faq-2-a': 'Jocul va apărea mai întâi pe Windows: îl vei descărca și instala pe computer ca pe orice program obișnuit. Apoi este planificată o versiune pentru macOS. O versiune mobilă este de asemenea în planuri, dar controlul prin atingere este mult mai slab decât tastatura și mouse-ul, așa că va fi o variantă adaptată, nu cea principală.',
         'ultra-faq-3-q': 'Jocul va fi cu plată?',
         'ultra-faq-3-a': 'Jocul în sine rămâne gratuit — planul Free este disponibil și la lansare și îți permite să joci complet. Pe lângă el vor exista două abonamente plătite: VIP și Pro, unde Pro este nivelul superior și include tot ce e în VIP și mai mult. În alfa și beta nu există niciun abonament — toți participanții joacă în Free cu acces complet la teste și conținut.',
         'ultra-faq-4-q': 'Cerințe de sistem?',
-        'ultra-faq-4-a': 'Țintă: 60 FPS stabili pe majoritatea dispozitivelor din ultimii 5 ani. Jocul este livrat ca un client Unity nativ pentru Windows — fără dependență de browser.',
+        'ultra-faq-4-a': 'Ținta este de 60 de cadre pe secundă stabile pe majoritatea calculatoarelor din ultimii 5 ani. Jocul va apărea pe Windows.',
         'ultra-faq-5-q': 'Cum intru în testul închis?',
         'ultra-faq-5-a': 'Intră pe Discord și abonează-te la newsletter — când se deschid înscrierile la alfa, abonații vor afla primii.',
         'ultra-news-eyebrow': 'Acces timpuriu',
@@ -22464,11 +22474,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'Mikor jelenik meg és hol játszhatok?',
         'ultra-faq-1-a': 'A játék zárt fejlesztésben van. Először alfa, aztán teljes kiadás. Tervek: 2026–2027. Kövesd a Discordot és iratkozz fel lent.',
         'ultra-faq-2-q': 'Milyen platformokra?',
-        'ultra-faq-2-a': 'Először Windows érkezik teljes értékű önálló Unity kliensként — letöltve és helyileg futtatva, böngésző nélkül. Ezt követi a macOS port. Mobilverzió is tervben van, de az érintőképernyős vezérlés őszintén szólva elmarad a billentyűzettől és egértől, ezért adaptált verzió lesz, nem fő platform.',
+        'ultra-faq-2-a': 'A játék először Windowsra jelenik meg: letöltöd és telepíted a számítógépedre, mint egy átlagos programot. Ezután macOS-verzió tervezett. Mobilverzió is szerepel a tervekben, de az érintésvezérlés érezhetően gyengébb a billentyűzetnél és az egérnél, ezért ez egy adaptált változat lesz, nem a fő.',
         'ultra-faq-3-q': 'A játék fizetős lesz?',
         'ultra-faq-3-a': 'Maga a játék ingyenes marad — a Free csomag a megjelenéskor is elérhető, és teljes értékűen lehet vele játszani. Efölött két fizetős előfizetés érkezik: VIP és Pro, ahol a Pro a magasabb szint, és mindent tartalmaz a VIP-ből és többet is. Alfa és béta szakaszban semmilyen előfizetés nincs — minden résztvevő Free-ként játszik, teljes hozzáféréssel a tesztekhez és a tartalomhoz.',
         'ultra-faq-4-q': 'Rendszerkövetelmények?',
-        'ultra-faq-4-a': 'Cél: stabil 60 FPS az elmúlt 5 év legtöbb eszközén. A játékot natív Unity kliensként szállítjuk Windowsra — böngészőfüggőség nélkül.',
+        'ultra-faq-4-a': 'A cél stabil 60 képkocka másodpercenként a legtöbb, az elmúlt 5 évben vásárolt számítógépen. A játék Windowsra jelenik meg.',
         'ultra-faq-5-q': 'Hogyan juthatok be a zárt tesztbe?',
         'ultra-faq-5-a': 'Lépj be a Discordunkba és iratkozz fel — amint megnyílik az alfa jelentkezés, a feliratkozók értesülnek elsőként.',
         'ultra-news-eyebrow': 'Korai hozzáférés',
@@ -22634,11 +22644,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'Πότε κυκλοφορεί και πού μπορώ να παίξω;',
         'ultra-faq-1-a': 'Το παιχνίδι είναι σε κλειστή ανάπτυξη. Πρώτα άλφα, μετά η πλήρης κυκλοφορία. Χρονοδιάγραμμα: 2026–2027. Ακολούθησε Discord και εγγράψου παρακάτω.',
         'ultra-faq-2-q': 'Σε ποιες πλατφόρμες;',
-        'ultra-faq-2-a': 'Πρώτα Windows ως πλήρης αυτόνομος Unity client — κατεβαίνει και τρέχει τοπικά, χωρίς browser. Στη συνέχεια προγραμματίζεται port για macOS. Η mobile έκδοση είναι στα σχέδια, αλλά τα touch controls υστερούν ειλικρινά έναντι πληκτρολογίου και ποντικιού, οπότε θα είναι προσαρμοσμένη έκδοση, όχι η κύρια πλατφόρμα.',
+        'ultra-faq-2-a': 'Το παιχνίδι θα κυκλοφορήσει πρώτα για Windows: θα το κατεβάσεις και θα το εγκαταστήσεις στον υπολογιστή σου όπως ένα κανονικό πρόγραμμα. Στη συνέχεια σχεδιάζεται έκδοση για macOS. Σχεδιάζεται και έκδοση για κινητά, αλλά ο χειρισμός αφής υστερεί αισθητά έναντι του πληκτρολογίου και του ποντικιού, οπότε θα είναι προσαρμοσμένη έκδοση και όχι η κύρια.',
         'ultra-faq-3-q': 'Θα είναι επί πληρωμή;',
         'ultra-faq-3-a': 'Το ίδιο το παιχνίδι παραμένει δωρεάν — το πλάνο Free είναι διαθέσιμο και στην κυκλοφορία και επιτρέπει πλήρες παιχνίδι. Πέρα από αυτό θα υπάρχουν δύο επί πληρωμή συνδρομές: VIP και Pro, με την Pro ως υψηλότερη βαθμίδα που περιλαμβάνει όλα τα VIP και περισσότερα. Στις φάσεις alpha και beta δεν υπάρχει καμία συνδρομή — όλοι οι συμμετέχοντες παίζουν ως Free με πλήρη πρόσβαση στις δοκιμές και το περιεχόμενο.',
         'ultra-faq-4-q': 'Απαιτήσεις συστήματος;',
-        'ultra-faq-4-a': 'Στόχος: σταθερά 60 FPS στις περισσότερες συσκευές των τελευταίων 5 ετών. Το παιχνίδι παραδίδεται ως native Unity client για Windows — χωρίς εξάρτηση από browser.',
+        'ultra-faq-4-a': 'Στόχος είναι σταθερά 60 καρέ ανά δευτερόλεπτο στους περισσότερους υπολογιστές των τελευταίων 5 ετών. Το παιχνίδι θα κυκλοφορήσει για Windows.',
         'ultra-faq-5-q': 'Πώς μπαίνω στο κλειστό τεστ;',
         'ultra-faq-5-a': 'Μπες στο Discord μας και εγγράψου στο newsletter — όταν ανοίξει η εγγραφή για την άλφα, οι συνδρομητές θα ενημερωθούν πρώτοι.',
         'ultra-news-eyebrow': 'Πρόωρη πρόσβαση',
@@ -22804,11 +22814,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'リリースはいつ、どこでプレイできますか？',
         'ultra-faq-1-a': 'ゲームは非公開開発中です。まずアルファ版、その後に正式リリース。予定：2026–2027。Discordをフォローし、以下で購読してください。',
         'ultra-faq-2-q': '対応プラットフォームは？',
-        'ultra-faq-2-a': 'まずはWindowsから——ブラウザ不要のフル機能スタンドアロンUnityクライアントを、ローカルにダウンロードして起動します。次にmacOSへの移植を予定。モバイル版も計画していますが、タッチ操作は正直キーボード+マウスに劣るため、メイン環境ではなく適応版という位置づけです。',
+        'ultra-faq-2-a': 'ゲームはまずWindows向けに公開されます。通常のプログラムと同じように、ダウンロードしてパソコンにインストールして遊びます。その後、macOS版を予定しています。モバイル版も計画していますが、タッチ操作はキーボードとマウスに比べて明らかに劣るため、メインではなく調整版になります。',
         'ultra-faq-3-q': '有料ですか？',
         'ultra-faq-3-a': 'ゲーム本体は引き続き無料です——Free プランは製品版でも利用でき、これだけで普通に遊べます。その上に有料サブスクリプションが2種類用意されます：VIP と Pro。Pro は上位プランで、VIP の全内容に加えてさらに上乗せがあります。アルファ・ベータ段階ではサブスクリプションは一切ありません——全参加者が Free としてプレイし、テストと全コンテンツに完全アクセスできます。',
         'ultra-faq-4-q': '動作環境は？',
-        'ultra-faq-4-a': '目標：直近5年の大半の端末で安定60 FPS。ゲームはWindows向けのネイティブUnityクライアントとして配布されます——ブラウザ依存はありません。',
+        'ultra-faq-4-a': '目標は、直近5年以内のほとんどのパソコンで安定した60FPS(1秒あたり60フレーム)です。ゲームはWindows向けに公開されます。',
         'ultra-faq-5-q': 'クローズドテストに参加するには？',
         'ultra-faq-5-a': 'Discordに参加し、以下のニュースレターを購読してください — アルファ募集が開始したら、購読者が最初に通知を受け取ります。',
         'ultra-news-eyebrow': '早期アクセス',
@@ -22974,11 +22984,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': '何时发布，在哪能玩？',
         'ultra-faq-1-a': '游戏正在封闭开发中。首先是 Alpha，然后是完整版。时间表：2026–2027。关注 Discord，并在下方订阅。',
         'ultra-faq-2-q': '支持哪些平台？',
-        'ultra-faq-2-a': '首发为 Windows——完整的独立 Unity 客户端，本地下载并运行，无需浏览器。随后计划推出 macOS 版本。移动版在规划中，但触屏操作坦率说不如键鼠，因此将是适配版本，而非主平台。',
+        'ultra-faq-2-a': '游戏将首先在 Windows 上发布：你需要像安装普通程序一样，把它下载并安装到电脑上。之后计划推出 macOS 版本。移动版也在计划中，但触屏操作明显不如键盘和鼠标，因此它会是适配版本，而不是主版本。',
         'ultra-faq-3-q': '游戏收费吗？',
         'ultra-faq-3-a': '游戏本体保持免费——Free 方案在正式版中同样可用，凭它就能完整地游玩。在此之上提供两种付费订阅：VIP 和 Pro，其中 Pro 是更高一档，包含 VIP 的全部内容并在此之上更进一步。Alpha 和 Beta 阶段不设任何订阅——所有参与者都以 Free 身份游玩，可完整访问测试与全部内容。',
         'ultra-faq-4-q': '系统要求是什么？',
-        'ultra-faq-4-a': '目标：近 5 年大多数设备稳定 60 FPS。游戏以面向 Windows 的原生 Unity 客户端形式发布——无任何浏览器依赖。',
+        'ultra-faq-4-a': '目标是在近 5 年内的大多数电脑上稳定达到每秒 60 帧。游戏将在 Windows 上发布。',
         'ultra-faq-5-q': '如何加入封闭测试？',
         'ultra-faq-5-a': '加入我们的 Discord 并订阅下方简报 — 当 Alpha 招募开启时，订阅者将率先得知。',
         'ultra-news-eyebrow': '抢先体验',
@@ -23144,11 +23154,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': '언제 출시되고 어디서 플레이하나요?',
         'ultra-faq-1-a': '게임은 비공개 개발 중입니다. 먼저 알파, 이후 정식 출시. 일정: 2026–2027. Discord를 팔로우하고 아래에서 구독하세요.',
         'ultra-faq-2-q': '어떤 플랫폼을 지원하나요?',
-        'ultra-faq-2-a': '먼저 Windows로 출시됩니다. 브라우저가 필요 없는 완전한 독립형 Unity 클라이언트로, 로컬에서 다운로드 후 실행합니다. 이후 macOS 포팅이 예정되어 있습니다. 모바일 버전도 계획 중이지만, 터치 조작은 솔직히 키보드·마우스에 비해 떨어지므로 메인 플랫폼이 아닌 적응형 버전이 될 예정입니다.',
+        'ultra-faq-2-a': '게임은 먼저 Windows로 출시됩니다. 일반 프로그램처럼 다운로드해서 컴퓨터에 설치하면 됩니다. 이후 macOS 버전을 계획하고 있습니다. 모바일 버전도 계획 중이지만 터치 조작은 키보드와 마우스보다 확실히 불편해서, 메인이 아닌 맞춤형 버전이 될 예정입니다.',
         'ultra-faq-3-q': '유료 게임인가요?',
         'ultra-faq-3-a': '게임 본편은 계속 무료입니다 — Free 플랜은 정식 출시에서도 제공되며, 이것만으로 본격적인 플레이가 가능합니다. 그 위에 두 가지 유료 구독이 추가됩니다: VIP와 Pro. Pro는 상위 등급으로, VIP의 모든 혜택을 포함하면서 그 이상을 제공합니다. 알파·베타 단계에서는 어떤 구독도 없으며 — 모든 참가자가 Free로 플레이하고 테스트와 전체 콘텐츠에 자유롭게 접근할 수 있습니다.',
         'ultra-faq-4-q': '시스템 요구 사항?',
-        'ultra-faq-4-a': '목표: 최근 5년의 대부분 기기에서 안정적인 60 FPS. 게임은 Windows용 네이티브 Unity 클라이언트로 배포되며 브라우저 의존성은 없습니다.',
+        'ultra-faq-4-a': '목표는 최근 5년 이내의 대부분 컴퓨터에서 초당 60프레임을 안정적으로 유지하는 것입니다. 게임은 Windows로 출시됩니다.',
         'ultra-faq-5-q': '클로즈드 테스트 참여 방법?',
         'ultra-faq-5-a': 'Discord에 참여하고 뉴스레터를 구독하세요 — 알파 신청이 열리면 구독자가 먼저 안내받습니다.',
         'ultra-news-eyebrow': '얼리 액세스',
@@ -23314,11 +23324,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'متى الإصدار وأين ألعب؟',
         'ultra-faq-1-a': 'اللعبة في تطوير مغلق. أولاً نسخة ألفا ثم الإصدار الكامل. الخطة: 2026–2027. تابع Discord واشترك في الأسفل.',
         'ultra-faq-2-q': 'على أي منصات؟',
-        'ultra-faq-2-a': 'تصدر اللعبة أولاً على Windows كعميل Unity مستقل كامل — يُنزَّل ويعمل محلياً، دون الحاجة إلى متصفح. ثم يُخطَّط لإصدار macOS. النسخة المحمولة في الخطط، لكن التحكم باللمس أدنى بصراحة من لوحة المفاتيح والفأرة، لذا ستكون نسخة مُكيَّفة لا منصة رئيسية.',
+        'ultra-faq-2-a': 'ستصدر اللعبة أولاً على Windows: ستحمّلها وتثبّتها على حاسوبك مثل أي برنامج عادي. بعد ذلك نخطط لإصدار macOS. هناك أيضاً خطة لنسخة للجوال، لكن التحكم باللمس أضعف بوضوح من لوحة المفاتيح والفأرة، لذا ستكون نسخة معدّلة وليست النسخة الرئيسية.',
         'ultra-faq-3-q': 'هل ستكون اللعبة مدفوعة؟',
         'ultra-faq-3-a': 'اللعبة ذاتها تبقى مجانية — خطة Free متاحة أيضاً في الإصدار النهائي وتتيح اللعب بشكل كامل. وفوقها سيتوفر اشتراكان مدفوعان: VIP وPro، حيث Pro هو المستوى الأعلى ويشمل كل ما في VIP ويزيد عليه. في مرحلتي ألفا وبيتا لا توجد أي اشتراكات — جميع المشاركين يلعبون بوصفهم Free مع وصول كامل للاختبارات والمحتوى.',
         'ultra-faq-4-q': 'ما متطلبات النظام؟',
-        'ultra-faq-4-a': 'الهدف: 60 إطاراً في الثانية بثبات على معظم الأجهزة في آخر 5 سنوات. تُسلَّم اللعبة كعميل Unity أصلي لنظام Windows — دون الاعتماد على المتصفح.',
+        'ultra-faq-4-a': 'الهدف هو 60 إطاراً في الثانية بثبات على معظم أجهزة الحاسوب في آخر 5 سنوات. ستصدر اللعبة على Windows.',
         'ultra-faq-5-q': 'كيف أدخل الاختبار المغلق؟',
         'ultra-faq-5-a': 'انضم إلى Discord واشترك في النشرة أدناه — عند فتح التسجيل للألفا، يُبلَّغ المشتركون أولاً.',
         'ultra-news-eyebrow': 'وصول مبكر',
@@ -23484,11 +23494,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'रिलीज़ कब है और कहाँ खेल सकते हैं?',
         'ultra-faq-1-a': 'खेल बंद विकास में है। पहले अल्फ़ा, फिर पूर्ण रिलीज़। योजना: 2026–2027। Discord को फ़ॉलो करें और नीचे सब्सक्राइब करें।',
         'ultra-faq-2-q': 'किन प्लेटफ़ॉर्म पर?',
-        'ultra-faq-2-a': 'पहले Windows पर — एक पूर्ण standalone Unity क्लाइंट के रूप में, जिसे लोकल पर डाउनलोड करके चलाया जाता है, बिना ब्राउज़र के। इसके बाद macOS पोर्ट की योजना है। मोबाइल संस्करण भी योजना में है, लेकिन टच नियंत्रण ईमानदारी से कीबोर्ड और माउस से कमतर हैं, इसलिए यह एक अनुकूलित संस्करण होगा, मुख्य प्लेटफ़ॉर्म नहीं।',
+        'ultra-faq-2-a': 'गेम सबसे पहले Windows पर आएगा: आप इसे आम प्रोग्राम की तरह डाउनलोड करके अपने कंप्यूटर पर इंस्टॉल करेंगे। इसके बाद macOS वर्शन की योजना है। मोबाइल वर्शन भी योजना में है, लेकिन टच कंट्रोल कीबोर्ड और माउस से काफ़ी कमज़ोर है, इसलिए वह मुख्य नहीं, बल्कि एक अनुकूलित वर्शन होगा।',
         'ultra-faq-3-q': 'क्या खेल भुगतान वाला होगा?',
         'ultra-faq-3-a': 'गेम स्वयं निःशुल्क बना रहता है — Free प्लान रिलीज़ में भी उपलब्ध है और इसी से आप पूरी तरह से खेल सकते हैं। इसके अलावा दो सशुल्क सदस्यताएँ होंगी: VIP और Pro, जहाँ Pro उच्चतर श्रेणी है और इसमें VIP की सभी सुविधाएँ तथा उससे अधिक शामिल हैं। अल्फा और बीटा चरणों में कोई भी सदस्यता नहीं है — सभी प्रतिभागी Free के रूप में खेलते हैं और परीक्षण व संपूर्ण सामग्री तक पूर्ण पहुँच प्राप्त करते हैं।',
         'ultra-faq-4-q': 'सिस्टम आवश्यकताएँ?',
-        'ultra-faq-4-a': 'लक्ष्य: पिछले 5 वर्षों के अधिकांश डिवाइसों पर स्थिर 60 FPS। गेम Windows के लिए नेटिव Unity क्लाइंट के रूप में वितरित किया जाता है — कोई ब्राउज़र निर्भरता नहीं।',
+        'ultra-faq-4-a': 'लक्ष्य है पिछले 5 वर्षों के ज़्यादातर कंप्यूटरों पर स्थिर 60 फ्रेम प्रति सेकंड। गेम Windows पर आएगा।',
         'ultra-faq-5-q': 'बंद परीक्षण में कैसे जुड़ें?',
         'ultra-faq-5-a': 'हमारे Discord में शामिल हों और न्यूज़लेटर सब्सक्राइब करें — जब अल्फ़ा साइनअप खुले, सब्सक्राइबर को सबसे पहले पता चलेगा।',
         'ultra-news-eyebrow': 'प्रारंभिक पहुँच',
@@ -23654,11 +23664,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'จะเปิดตัวเมื่อไหร่และเล่นได้ที่ไหน?',
         'ultra-faq-1-a': 'เกมอยู่ในการพัฒนาแบบปิด เริ่มจากอัลฟ่าก่อน แล้วตามด้วยการเปิดตัวเต็ม กำหนดการ: 2026–2027 ติดตาม Discord และสมัครด้านล่าง',
         'ultra-faq-2-q': 'รองรับแพลตฟอร์มใดบ้าง?',
-        'ultra-faq-2-a': 'เริ่มที่ Windows ในรูปแบบไคลเอนต์ Unity แบบสแตนด์อโลนเต็มรูปแบบ — ดาวน์โหลดและรันบนเครื่อง ไม่ต้องใช้เบราว์เซอร์ ต่อมามีแผนพอร์ตไปยัง macOS เวอร์ชันมือถืออยู่ในแผนเช่นกัน แต่ตามจริงการควบคุมแบบสัมผัสด้อยกว่าคีย์บอร์ดและเมาส์ จึงเป็นเวอร์ชันที่ปรับให้เหมาะสม ไม่ใช่แพลตฟอร์มหลัก',
+        'ultra-faq-2-a': 'เกมจะเปิดตัวบน Windows ก่อน: คุณดาวน์โหลดและติดตั้งลงคอมพิวเตอร์ได้เหมือนโปรแกรมทั่วไป จากนั้นมีแผนทำเวอร์ชัน macOS เวอร์ชันมือถือก็อยู่ในแผนเช่นกัน แต่การควบคุมด้วยหน้าจอสัมผัสสู้คีย์บอร์ดและเมาส์ได้ไม่ดีนัก จึงจะเป็นเวอร์ชันปรับปรุงเพิ่มเติม ไม่ใช่เวอร์ชันหลัก',
         'ultra-faq-3-q': 'เกมนี้จ่ายเงินไหม?',
         'ultra-faq-3-a': 'ตัวเกมเองยังคงเล่นฟรี — แพ็กเกจ Free มีให้บริการในเวอร์ชันรีลีสด้วย และเล่นได้เต็มรูปแบบ นอกเหนือจากนั้นจะมีสองแพ็กเกจสมาชิกแบบเสียเงิน คือ VIP และ Pro โดย Pro เป็นระดับสูงกว่า ครอบคลุมทุกอย่างของ VIP และมากกว่านั้น ในช่วงอัลฟ่าและเบต้าไม่มีระบบสมาชิกใดๆ — ผู้ร่วมทดสอบทุกคนเล่นในฐานะ Free และเข้าถึงการทดสอบและเนื้อหาทั้งหมดได้เต็มที่',
         'ultra-faq-4-q': 'ความต้องการของระบบ?',
-        'ultra-faq-4-a': 'เป้าหมาย: 60 FPS เสถียรบนอุปกรณ์ส่วนใหญ่ในรอบ 5 ปีที่ผ่านมา เกมส่งมอบเป็นไคลเอนต์ Unity เนทีฟสำหรับ Windows โดยไม่พึ่งพาเบราว์เซอร์',
+        'ultra-faq-4-a': 'เป้าหมายคือ 60 เฟรมต่อวินาทีอย่างเสถียรบนคอมพิวเตอร์ส่วนใหญ่ในช่วง 5 ปีที่ผ่านมา เกมจะเปิดตัวบน Windows',
         'ultra-faq-5-q': 'เข้าร่วมเทสต์แบบปิดได้อย่างไร?',
         'ultra-faq-5-a': 'เข้า Discord ของเราและสมัครรับจดหมายข่าว — เมื่อเปิดลงทะเบียนอัลฟ่า สมาชิกจะได้รับข่าวก่อน',
         'ultra-news-eyebrow': 'เข้าถึงก่อนใคร',
@@ -23824,11 +23834,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'Khi nào ra mắt và chơi ở đâu?',
         'ultra-faq-1-a': 'Trò chơi đang trong phát triển kín. Trước là bản alpha, rồi bản phát hành đầy đủ. Kế hoạch: 2026–2027. Theo dõi Discord và đăng ký bên dưới.',
         'ultra-faq-2-q': 'Hỗ trợ nền tảng nào?',
-        'ultra-faq-2-a': 'Windows ra mắt đầu tiên dưới dạng client Unity độc lập đầy đủ — tải về và chạy cục bộ, không cần trình duyệt. Tiếp theo là bản port macOS. Phiên bản di động cũng nằm trong kế hoạch, nhưng điều khiển cảm ứng thật sự kém hơn bàn phím và chuột, nên đây sẽ là phiên bản chuyển thể, không phải nền tảng chính.',
+        'ultra-faq-2-a': 'Trò chơi sẽ ra mắt trước trên Windows: bạn tải về và cài đặt vào máy tính như một chương trình thông thường. Sau đó dự kiến có bản macOS. Bản di động cũng nằm trong kế hoạch, nhưng điều khiển cảm ứng kém hơn rõ rệt so với bàn phím và chuột, nên đó sẽ là bản điều chỉnh chứ không phải bản chính.',
         'ultra-faq-3-q': 'Trò chơi có tính phí không?',
         'ultra-faq-3-a': 'Bản thân trò chơi vẫn miễn phí — gói Free vẫn có mặt khi phát hành chính thức và cho phép chơi đầy đủ. Trên gói Free sẽ có hai gói đăng ký trả phí: VIP và Pro, trong đó Pro là cấp cao hơn và bao gồm toàn bộ nội dung của VIP cộng thêm phần mở rộng. Trong giai đoạn alpha và beta hoàn toàn không có gói đăng ký nào — mọi người tham gia đều chơi với tư cách Free và có quyền truy cập đầy đủ vào bài thử nghiệm và nội dung.',
         'ultra-faq-4-q': 'Yêu cầu hệ thống?',
-        'ultra-faq-4-a': 'Mục tiêu: 60 FPS ổn định trên hầu hết thiết bị trong 5 năm gần đây. Trò chơi được phát hành dưới dạng client Unity gốc cho Windows — không phụ thuộc vào trình duyệt.',
+        'ultra-faq-4-a': 'Mục tiêu là 60 khung hình mỗi giây ổn định trên hầu hết máy tính trong 5 năm gần đây. Trò chơi sẽ ra mắt trên Windows.',
         'ultra-faq-5-q': 'Làm sao tham gia thử nghiệm kín?',
         'ultra-faq-5-a': 'Vào Discord của chúng tôi và đăng ký newsletter — khi mở đăng ký alpha, người đăng ký sẽ biết đầu tiên.',
         'ultra-news-eyebrow': 'Truy cập sớm',
@@ -23994,11 +24004,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'Kapan rilis dan di mana bisa dimainkan?',
         'ultra-faq-1-a': 'Game dalam pengembangan tertutup. Pertama alpha, lalu rilis penuh. Target: 2026–2027. Ikuti Discord dan berlangganan di bawah.',
         'ultra-faq-2-q': 'Di platform mana saja?',
-        'ultra-faq-2-a': 'Windows hadir lebih dulu sebagai klien Unity standalone penuh — diunduh dan dijalankan secara lokal, tanpa peramban. Selanjutnya direncanakan port macOS. Versi mobile juga dalam rencana, tetapi kontrol sentuh sejujurnya kalah dari keyboard dan mouse, sehingga akan menjadi versi adaptasi, bukan platform utama.',
+        'ultra-faq-2-a': 'Game ini akan dirilis lebih dulu di Windows: kamu mengunduh dan memasangnya di komputer seperti program biasa. Setelah itu direncanakan versi macOS. Versi seluler juga ada dalam rencana, tetapi kontrol sentuh jelas lebih buruk daripada keyboard dan mouse, jadi itu akan menjadi versi yang disesuaikan, bukan versi utama.',
         'ultra-faq-3-q': 'Apakah game berbayar?',
         'ultra-faq-3-a': 'Permainannya sendiri tetap gratis — paket Free tersedia juga di rilis dan dengannya kamu dapat bermain sepenuhnya. Di atasnya akan ada dua langganan berbayar: VIP dan Pro, di mana Pro adalah tingkat lebih tinggi dan mencakup seluruh isi VIP plus lebih banyak lagi. Pada tahap alfa dan beta tidak ada langganan apa pun — semua peserta bermain sebagai Free dengan akses penuh ke pengujian dan kontennya.',
         'ultra-faq-4-q': 'Kebutuhan sistem?',
-        'ultra-faq-4-a': 'Target: 60 FPS stabil pada kebanyakan perangkat 5 tahun terakhir. Game didistribusikan sebagai klien Unity asli untuk Windows — tanpa ketergantungan peramban.',
+        'ultra-faq-4-a': 'Targetnya 60 frame per detik yang stabil di sebagian besar komputer dalam 5 tahun terakhir. Game ini dirilis di Windows.',
         'ultra-faq-5-q': 'Bagaimana cara ikut tes tertutup?',
         'ultra-faq-5-a': 'Bergabunglah ke Discord kami dan berlangganan newsletter — saat pendaftaran alpha dibuka, pelanggan tahu lebih dulu.',
         'ultra-news-eyebrow': 'Akses awal',
@@ -24164,11 +24174,11 @@ async function doResetPassword() {
         'ultra-faq-1-q': 'Bila pelancaran dan di mana boleh main?',
         'ultra-faq-1-a': 'Permainan dalam pembangunan tertutup. Pertama alfa, kemudian pelancaran penuh. Jadual: 2026–2027. Ikut Discord dan langgan di bawah.',
         'ultra-faq-2-q': 'Di platform mana?',
-        'ultra-faq-2-a': 'Windows muncul dahulu sebagai klien Unity standalone yang lengkap — dimuat turun dan dijalankan secara tempatan, tanpa pelayar. Selepas itu, port macOS dirancang. Versi mudah alih juga dalam rancangan, tetapi kawalan sentuh secara jujur lebih lemah berbanding papan kekunci dan tetikus, jadi ia akan menjadi versi yang disesuaikan, bukan platform utama.',
+        'ultra-faq-2-a': 'Permainan ini akan dikeluarkan dahulu di Windows: anda memuat turun dan memasangnya pada komputer seperti program biasa. Selepas itu, versi macOS dirancang. Versi mudah alih juga dalam perancangan, tetapi kawalan sentuh jelas lebih lemah berbanding papan kekunci dan tetikus, jadi ia akan menjadi versi yang disesuaikan dan bukan versi utama.',
         'ultra-faq-3-q': 'Adakah permainan berbayar?',
         'ultra-faq-3-a': 'Permainan itu sendiri kekal percuma — pelan Free turut tersedia pada keluaran dan dengannya anda boleh bermain sepenuhnya. Selain itu akan ada dua langganan berbayar: VIP dan Pro, di mana Pro ialah tingkat lebih tinggi dan merangkumi semua kandungan VIP dan lebih lagi. Pada peringkat alfa dan beta tiada sebarang langganan — semua peserta bermain sebagai Free dengan akses penuh ke ujian dan kandungannya.',
         'ultra-faq-4-q': 'Keperluan sistem?',
-        'ultra-faq-4-a': 'Sasaran: 60 FPS stabil pada kebanyakan peranti 5 tahun kebelakangan. Permainan dihantar sebagai klien Unity asli untuk Windows — tanpa kebergantungan pelayar.',
+        'ultra-faq-4-a': 'Sasarannya ialah 60 bingkai sesaat yang stabil pada kebanyakan komputer dalam 5 tahun terakhir. Permainan ini dikeluarkan di Windows.',
         'ultra-faq-5-q': 'Bagaimana menyertai ujian tertutup?',
         'ultra-faq-5-a': 'Sertai Discord kami dan langgan surat berita — apabila pendaftaran alfa dibuka, pelanggan akan dimaklumkan dahulu.',
         'ultra-news-eyebrow': 'Akses awal',
@@ -24360,9 +24370,22 @@ async function doResetPassword() {
         'rme-saved': 'Все изменения сохранены',
         'rme-close-warn': 'Есть несохранённые изменения — нажми ещё раз, чтобы закрыть',
         'rme-saved-toast': 'План разработки обновлён',
-        'rme-err-save': 'Не удалось сохранить. Проверь настройки сохранения плана разработки',
+        'rme-err-save': 'Не удалось сохранить. Проверь правила Firestore для roadmap',
         'rme-make-current': 'Сделать текущим',
         'rm-all-done': 'Все пункты плана разработки выполнены',
+        'reauth-title': 'Подтверди, что это ты',
+        'reauth-placeholder': 'Текущий пароль',
+        'reauth-confirm': 'Подтвердить',
+        'reauth-text-email': 'Для смены email введи текущий пароль. Потом подтверди новый адрес по ссылке из письма.',
+        'reauth-text-pass': 'Для смены пароля введи текущий пароль.',
+        'reauth-wrong': 'Неверный пароль',
+        'reauth-empty': 'Введи текущий пароль',
+        'reauth-many': 'Слишком много попыток. Подожди пару минут',
+        'reauth-nopass': 'Ты входишь через Google или Discord, поэтому это изменение здесь недоступно',
+        'auth-err-recent': 'Войди в аккаунт заново и повтори действие',
+        'auth-err-email-used': 'Этот email уже занят',
+        'auth-err-weak': 'Слишком простой пароль',
+        'auth-err-network': 'Нет связи с сервером',
         'dev-btn-create-news': 'Создать новость',
         'participants-modal-title': 'Участники проекта',
         'participants-loading': 'Загрузка...',
@@ -24449,9 +24472,22 @@ async function doResetPassword() {
         'rme-saved': 'All changes saved',
         'rme-close-warn': 'Unsaved changes — press again to close',
         'rme-saved-toast': 'Roadmap updated',
-        'rme-err-save': 'Could not save. Check the plan-saving settings',
+        'rme-err-save': 'Could not save. Check the Firestore rules for roadmap',
         'rme-make-current': 'Make current',
         'rm-all-done': 'All roadmap items are complete',
+        'reauth-title': 'Confirm it\'s you',
+        'reauth-placeholder': 'Current password',
+        'reauth-confirm': 'Confirm',
+        'reauth-text-email': 'Enter your current password to change your email, then confirm the new address from the email we send.',
+        'reauth-text-pass': 'Enter your current password to change it.',
+        'reauth-wrong': 'Wrong password',
+        'reauth-empty': 'Enter your current password',
+        'reauth-many': 'Too many attempts. Wait a couple of minutes',
+        'reauth-nopass': 'You sign in with Google or Discord, so this can\'t be changed here',
+        'auth-err-recent': 'Sign in again and repeat the action',
+        'auth-err-email-used': 'This email is already in use',
+        'auth-err-weak': 'Password is too weak',
+        'auth-err-network': 'No connection to the server',
         'dev-btn-create-news': 'Create News',
         'participants-modal-title': 'Project Participants',
         'participants-loading': 'Loading...',
@@ -27461,7 +27497,7 @@ async function _e3LoadParticipants() {
   var X={
     ru:{'nav-home':'Главная','nav-arcade':'Мини-игра','nav-roadmap':'План разработки','nav-plans':'Подписки','nav-reviews':'Отзывы','nav-faq':'FAQ','nav-news':'Новости','nav-community':'Сообщество'},
     en:{'nav-home':'Home','nav-arcade':'Mini-game','nav-roadmap':'Roadmap','nav-plans':'Plans','nav-reviews':'Reviews','nav-faq':'FAQ','nav-news':'News','nav-community':'Community'},
-    uk:{'nav-home':'Головна','nav-arcade':'Міні-гра','nav-roadmap':'План розробки','nav-plans':'Підписки','nav-reviews':'Відгуки','nav-faq':'FAQ','nav-news':'Новини','nav-community':'Спільнота'},
+    uk:{'nav-home':'Головна','nav-arcade':'Міні-гра','nav-roadmap':'Дорожня карта','nav-plans':'Підписки','nav-reviews':'Відгуки','nav-faq':'FAQ','nav-news':'Новини','nav-community':'Спільнота'},
     de:{'nav-home':'Start','nav-arcade':'Minispiel','nav-roadmap':'Roadmap','nav-plans':'Abos','nav-reviews':'Bewertungen','nav-faq':'FAQ','nav-news':'News','nav-community':'Community'},
     es:{'nav-home':'Inicio','nav-arcade':'Minijuego','nav-roadmap':'Hoja de ruta','nav-plans':'Suscripciones','nav-reviews':'Reseñas','nav-faq':'FAQ','nav-news':'Noticias','nav-community':'Comunidad'},
     fr:{'nav-home':'Accueil','nav-arcade':'Mini-jeu','nav-roadmap':'Feuille de route','nav-plans':'Abonnements','nav-reviews':'Avis','nav-faq':'FAQ','nav-news':'Actus','nav-community':'Communauté'},
@@ -27739,7 +27775,7 @@ async function _e3LoadParticipants() {
     // статус и кнопки
     var d = dirty(), stEl = $('rmeStatus');
     stEl.classList.toggle('is-dirty', d && !saveErr); stEl.classList.toggle('is-err', !!saveErr);
-    stEl.textContent = saveErr ? tr('rme-err-save', 'Не удалось сохранить. Проверь настройки сохранения плана разработки')
+    stEl.textContent = saveErr ? tr('rme-err-save', 'Не удалось сохранить. Проверь правила Firestore для roadmap')
       : closeArmed ? tr('rme-close-warn', 'Есть несохранённые изменения — нажми ещё раз, чтобы закрыть')
       : d ? tr('rme-unsaved', 'Есть несохранённые изменения') : tr('rme-saved', 'Все изменения сохранены');
     $('rmeSaveBtn').disabled = !d || saving;
@@ -27764,7 +27800,7 @@ async function _e3LoadParticipants() {
     } catch (e) {
       saveErr = true;
       if (window.console) console.warn('[ROADMAP save]', e);
-      try { showToast(tr('rme-err-save', 'Не удалось сохранить. Проверь настройки сохранения плана разработки'), 'err'); } catch (_) {}
+      try { showToast(tr('rme-err-save', 'Не удалось сохранить. Проверь правила Firestore для roadmap'), 'err'); } catch (_) {}
     } finally {
       saving = false; rmeRender();
     }
@@ -27782,5 +27818,72 @@ async function _e3LoadParticipants() {
 })();
 </script>
 
+<script>
+/* Подтверждение личности: перед сменой email и пароля просим ТЕКУЩИЙ пароль (reauthenticate).
+   Email после этого всё равно меняется только после клика по ссылке в письме на новый адрес (verifyBeforeUpdateEmail). */
+(function () {
+  'use strict';
+  var resolver = null, busy = false;
+  function $(id) { return document.getElementById(id); }
+  function tr(k, fb) { try { return tt(k, fb); } catch (_) { return fb; } }
+  function hint(m) { var h = $('reauthHint'); if (h) h.textContent = m || ''; }
+  function finish(ok) {
+    var o = $('reauthOverlay'); if (o) o.classList.remove('show');
+    var p = $('reauthPass'); if (p) p.value = '';
+    hint(''); busy = false;
+    var b = $('reauthSendBtn'); if (b) b.disabled = false;
+    var r = resolver; resolver = null; if (r) r(!!ok);
+  }
+  window.reauthClose = function () { finish(false); };
+  window.reauthCloseOnBg = function (e) { if (e.target === e.currentTarget) finish(false); };
+  document.addEventListener('keydown', function (e) { var o = $('reauthOverlay'); if (e.key === 'Escape' && o && o.classList.contains('show')) finish(false); });
+
+  window._ev3FriendlyAuthErr = function (e) {
+    var c = (e && e.code) || '';
+    if (/requires-recent-login/.test(c)) return tr('auth-err-recent', 'Войди в аккаунт заново и повтори действие');
+    if (/email-already-in-use/.test(c))  return tr('auth-err-email-used', 'Этот email уже занят');
+    if (/weak-password/.test(c))         return tr('auth-err-weak', 'Слишком простой пароль');
+    if (/too-many-requests/.test(c))     return tr('reauth-many', 'Слишком много попыток. Подожди пару минут');
+    if (/network-request-failed/.test(c)) return tr('auth-err-network', 'Нет связи с сервером');
+    if (/invalid-email/.test(c))         return tr('pm-set-email-bad', 'Неверный формат email');
+    return (e && e.message) || String(e || '');
+  };
+
+  // Возвращает Promise<boolean>: true — пароль подтверждён. Бросает ошибку, если у аккаунта нет пароля.
+  window._ev3ReauthPrompt = async function (kind) {
+    var mod = await _fbAuth();
+    var user = mod.getAuth().currentUser;
+    if (!user) throw new Error('not_authenticated');
+    var hasPass = (user.providerData || []).some(function (p) { return p.providerId === 'password'; });
+    if (!hasPass) throw new Error(tr('reauth-nopass', 'Ты входишь через Google или Discord, поэтому это изменение здесь недоступно'));
+    if (resolver) finish(false);
+    $('reauthText').textContent = kind === 'email'
+      ? tr('reauth-text-email', 'Для смены email введи текущий пароль. Потом подтверди новый адрес по ссылке из письма.')
+      : tr('reauth-text-pass', 'Для смены пароля введи текущий пароль.');
+    hint('');
+    $('reauthOverlay').classList.add('show');
+    setTimeout(function () { try { $('reauthPass').focus(); } catch (_) {} }, 120);
+    return new Promise(function (res) { resolver = res; });
+  };
+
+  window.reauthSubmit = async function () {
+    if (busy) return;
+    var pass = $('reauthPass').value;
+    if (!pass) { hint(tr('reauth-empty', 'Введи текущий пароль')); return; }
+    busy = true; $('reauthSendBtn').disabled = true; hint('');
+    try {
+      var mod = await _fbAuth();
+      var user = mod.getAuth().currentUser;
+      await mod.reauthenticateWithCredential(user, mod.EmailAuthProvider.credential(user.email, pass));
+      finish(true);
+    } catch (e) {
+      var c = (e && e.code) || '';
+      hint(/wrong-password|invalid-credential|invalid-login/.test(c) ? tr('reauth-wrong', 'Неверный пароль') : window._ev3FriendlyAuthErr(e));
+      busy = false; $('reauthSendBtn').disabled = false;
+      try { $('reauthPass').select(); } catch (_) {}
+    }
+  };
+})();
+</script>
 </body>
 </html>
