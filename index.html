@@ -18129,10 +18129,13 @@ async function doRegister() {
 }
 
 // ===================================================
-// OAUTH — вход через Google Identity Services (без окна firebaseapp.com)
+// OAUTH — вход через Google Identity Services (popup, без One Tap)
 // ===================================================
-const GOOGLE_CLIENT_ID = '1015687496073-0kmv7q13fmc0gaegg7coe1aghigi7228.apps.googleusercontent.com';
-let _gisClient = null;
+// ВАЖНО: это должен быть Web client ID ИЗ ЭТОГО ЖЕ Firebase-проекта
+// (Firebase Console → Authentication → Google → Web SDK configuration),
+// либо добавь свой ID в "Safelist client IDs from external projects".
+const GOOGLE_CLIENT_ID = 'ВСТАВЬ_СЮДА_WEB_CLIENT_ID_ИЗ_FIREBASE.apps.googleusercontent.com';
+let _gisTokenClient = null;
 
 function _googleBtns() {
   return Array.from(document.querySelectorAll('.af-oauth')).filter(b => b.querySelector('[data-i18n="oauth-google"]'));
@@ -18152,24 +18155,33 @@ function _googleBusy(on) {
   });
 }
 
-async function _googleFinishLogin(idToken) {
+// Ждём, пока подгрузится скрипт accounts.google.com/gsi/client (он грузится async)
+function _gisReady(timeoutMs) {
+  return new Promise(resolve => {
+    const t0 = Date.now();
+    (function check() {
+      if (window.google && google.accounts && google.accounts.oauth2) return resolve(true);
+      if (Date.now() - t0 > (timeoutMs || 5000)) return resolve(false);
+      setTimeout(check, 100);
+    })();
+  });
+}
+
+async function _googleFinishLogin(accessToken) {
   try {
     const mod = await _fbAuth();
     const auth = mod.getAuth();
-    
-    // ПРАВКА: Передаем idToken первым параметром без null!
-    const cred = mod.GoogleAuthProvider.credential(idToken);
+
+    // credential(idToken, accessToken) — у нас access_token, поэтому первый аргумент null
+    const cred = mod.GoogleAuthProvider.credential(null, accessToken);
     const result = await mod.signInWithCredential(auth, cred);
     const user = result.user;
 
-    closeAuthModal(); showLoggedIn();
-    ev3Toast(tt('auth-toast-oauth-ok','Вы вошли через {provider}').replace('{provider}', 'Google'), 'ok');
-
-    // ник при первом входе — второстепенно, ошибки не мешают входу
+    // создаём профиль/ник при первом входе ДО showLoggedIn, чтобы шапка сразу показала ник
     try {
       if (db) {
         const existing = await db.collection('users').doc(user.uid).get();
-        if (!existing.exists) {
+        if (!existing.exists || !(existing.data() || {}).username) {
           const baseNick = ((user.email ? user.email.split('@')[0] : 'player').replace(/[^a-zA-Zа-яёА-ЯЁ0-9_]/g,'').slice(0,16)) || 'player';
           let nick = baseNick, attempt = 0;
           while (attempt < 5) {
@@ -18182,44 +18194,76 @@ async function _googleFinishLogin(idToken) {
         }
       }
     } catch (nickErr) { console.warn('[AUTH oauth nick setup]', nickErr); }
+
+    ev3Session = { access_token: 'firebase' };
+    ev3User = await _ev3BuildUser(user);
+    closeAuthModal();
+    showLoggedIn();
+    ev3Toast(tt('auth-toast-oauth-ok','Вы вошли через {provider}').replace('{provider}', 'Google'), 'ok');
   } catch (e) {
-    ev3Toast(ev3AuthMsg(e), 'err');
-    console.warn('[AUTH oauth]', e);
+    console.warn('[AUTH oauth]', e && e.code, e);
+    let msg;
+    if (e && e.code === 'auth/invalid-credential') {
+      // Для Google это НЕ «неверный пароль», а несовпадение Client ID с Firebase-проектом
+      msg = tt('auth-err-google-config', 'Вход через Google не настроен (Client ID не совпадает с проектом Firebase)');
+    } else if (e && e.code === 'auth/account-exists-with-different-credential') {
+      msg = tt('auth-err-google-exists', 'Этот email уже зарегистрирован другим способом — войди по email и паролю');
+    } else {
+      msg = ev3AuthMsg(e);
+    }
+    ev3Toast(msg, 'err');
   } finally {
     _googleBusy(false);
   }
 }
 
-function oauthSignIn(provider) {
+async function oauthSignIn(provider) {
   if (provider !== 'google') {
     ev3Toast(tt('auth-toast-oauth-soon','Вход через Discord скоро вернётся'), 'info');
-    return;
-  }
-  
-  if (!(window.google && google.accounts && google.accounts.id)) {
-    ev3Toast(tt('auth-err-network','Нет соединения. Проверь интернет'), 'err');
     return;
   }
 
   _googleBusy(true);
 
-  // ПРАВКА: Используем google.accounts.id для получения честного id_token
-  google.accounts.id.initialize({
-    client_id: GOOGLE_CLIENT_ID,
-    callback: (resp) => {
-      if (resp && resp.credential) {
-        _googleFinishLogin(resp.credential);
-      } else {
-        _googleBusy(false);
-      }
-    }
-  });
+  const ok = await _gisReady(5000);
+  if (!ok) {
+    _googleBusy(false);
+    ev3Toast(tt('auth-err-network','Нет соединения. Проверь интернет'), 'err');
+    return;
+  }
 
-  google.accounts.id.prompt((notification) => {
-    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-      _googleBusy(false);
+  try {
+    if (!_gisTokenClient) {
+      _gisTokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: GOOGLE_CLIENT_ID,
+        scope: 'openid email profile',
+        callback: (resp) => {
+          if (resp && resp.access_token) {
+            _googleFinishLogin(resp.access_token);
+          } else {
+            console.warn('[AUTH oauth] no access_token', resp);
+            _googleBusy(false);
+            if (resp && resp.error && resp.error !== 'access_denied') {
+              ev3Toast(tt('auth-err-unknown','Неизвестная ошибка. Попробуй позже'), 'err');
+            }
+          }
+        },
+        error_callback: (err) => {
+          // popup_closed — пользователь сам закрыл окно, молча сбрасываем кнопку
+          console.warn('[AUTH oauth popup]', err);
+          _googleBusy(false);
+          if (err && err.type === 'popup_failed_to_open') {
+            ev3Toast(tt('auth-err-popup','Браузер заблокировал окно входа. Разреши всплывающие окна'), 'warn');
+          }
+        }
+      });
     }
-  });
+    _gisTokenClient.requestAccessToken({ prompt: 'select_account' });
+  } catch (e) {
+    console.warn('[AUTH oauth init]', e);
+    _googleBusy(false);
+    ev3Toast(ev3AuthMsg(e), 'err');
+  }
 }
   
 // ===================================================
