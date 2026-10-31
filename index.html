@@ -1621,17 +1621,20 @@
     }
 
     .showcase-grid{
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 20px;
       position: relative;
       z-index: 5;
     }
     .showcase-grid > .showcase-card{
-      flex: 1 1 230px;
-      max-width: 320px;
-      min-width: 230px;
+      min-width: 0;
+    }
+    @media (max-width: 900px){
+      .showcase-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px){
+      .showcase-grid{ grid-template-columns: minmax(0, 1fr); }
     }
 
     .showcase-card{
@@ -1644,11 +1647,10 @@
         0 18px 40px rgba(0,0,0,0.35),
         inset 0 1px 0 rgba(255,255,255,0.2);
       transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-      transform-style: preserve-3d;
     }
 
     .showcase-card:hover{
-      transform: translateY(-6px) rotateX(3deg) rotateY(-3deg);
+      transform: translateY(-4px);
       border-color: rgba(255, 215, 120, 0.8);
       box-shadow:
         0 20px 50px rgba(0,0,0,0.4),
@@ -1674,6 +1676,21 @@
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.15);
       box-shadow: inset 0 0 24px rgba(0,0,0,0.5);
+      isolation: isolate;
+      /* Дистанции анимаций. Фолбэк в px — для браузеров без container query units. */
+      --run: 100px;    /* пробег игрока до правого края */
+      --shot: -100px;  /* полёт снаряда до щита */
+      --hitx: -70px;   /* полёт врага до игрока */
+      --brk: -30px;    /* полёт снаряда до пузыря щита */
+    }
+    @supports (width: 1cqw){
+      .preview{
+        container-type: inline-size;
+        --run: calc(100cqw - 88px);
+        --shot: calc(88px - 100cqw);
+        --hitx: calc(32px - var(--run));
+        --brk: calc(61px - 50cqw);
+      }
     }
     .preview::before{
       content:"";
@@ -1719,22 +1736,27 @@
       letter-spacing: 0.3px;
       font-weight: 500;
       line-height: 1.4;
+      min-height: calc(2 * 1.4em); /* одинаковая высота подписей → превью на одной линии */
     }
 
     .preview .ball{
-      width: 38px;
-      height: 38px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #ffe5e5, #ff5252 55%, #8b0d0d 100%);
+      /* Объёмный шар: тёмный красный низ, мягкий отсвет и маленький чёткий блик */
+      background:
+        radial-gradient(circle at 50% 38%, #f43f3f 0%, #d02024 46%, #90101a 82%, #5a070d 100%);
       position: absolute;
       left: 24px;
       top: 50%;
       transform: translateY(-50%);
       box-shadow:
-        0 8px 16px rgba(0,0,0,0.4),
-        0 0 18px rgba(255, 80, 80, 0.55),
-        inset 0 2px 4px rgba(255,255,255,0.55);
-      will-change: transform, opacity, filter;
+        inset 0 -6px 9px rgba(50, 0, 0, 0.55),
+        inset 0 2px 3px rgba(255, 190, 180, 0.45),
+        inset 0 0 0 1px rgba(80, 0, 0, 0.4),
+        0 6px 10px rgba(0,0,0,0.45),
+        0 0 14px rgba(255, 70, 70, 0.4);
+      will-change: transform, opacity;
       z-index: 2;
     }
 
@@ -1744,29 +1766,35 @@
       transform: translate(-50%, -50%);
     }
 
-    /* В карточке Удар FX игрок (красный шар) стоит слева (дефолтная позиция),
-       а серый шар-снаряд летит справа налево СЗАДИ игрока (z-index 1 < ball z-index 2). */
+    /* Карточка Удар FX: игрок стоит слева, серый шар летит на него справа,
+       в момент контакта игрок пульсирует, а враг отлетает вверх. */
     .showcase-card[data-anim="hit"] .ball{ z-index: 2; }
     .showcase-card[data-anim="hit"] .enemy{ z-index: 1; }
 
     .preview .ball::after{
       content: "";
       position: absolute;
-      inset: 6px;
+      left: 20%;
+      top: 13%;
+      width: 32%;
+      height: 20%;
       border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), transparent 60%);
-      opacity: 0.85;
+      background: radial-gradient(ellipse at 50% 45%, rgba(255,255,255,0.9), rgba(255,255,255,0) 72%);
+      transform: rotate(-30deg);
+      pointer-events: none;
     }
 
     .preview .ball .orb-crown{
       position: absolute;
-      top: -13px;
+      top: -18px;
       left: 50%;
-      transform: translateX(-50%);
-      width: 26px;
-      height: 16px;
+      transform: translateX(-50%) rotate(-6deg);
+      width: 32px;
+      height: 23px;
       display: block;
-      filter: drop-shadow(0 3px 4px rgba(0,0,0,0.45));
+      overflow: visible;
+      z-index: 1;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
       pointer-events: none;
       user-select: none;
       -webkit-user-select: none;
@@ -1774,9 +1802,9 @@
 
     .preview .trail{
       position: absolute;
-      left: 24px;
+      left: 44px;
       top: 50%;
-      width: 130px;
+      width: var(--run);
       height: 8px;
       border-radius: 999px;
       background: linear-gradient(90deg, rgba(255, 220, 130, 0.95), rgba(255, 140, 60, 0.5) 60%, transparent);
@@ -1789,8 +1817,9 @@
 
     .preview .flash{
       position: absolute;
-      left: 22px;
+      left: 32px;
       top: 50%;
+      margin-left: 0;
       width: 24px;
       height: 24px;
       border-radius: 50%;
@@ -1805,8 +1834,8 @@
       position: absolute;
       left: 24px;
       top: 50%;
-      width: 38px;
-      height: 38px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       background: radial-gradient(circle at 35% 35%, rgba(255, 160, 160, 0.7), rgba(255, 80, 80, 0.15));
       transform: translateY(-50%);
@@ -1831,7 +1860,7 @@
     .preview .projectile{
       position: absolute;
       right: 10px;
-      top: 45%;
+      top: calc(50% - 6px);
       width: 12px;
       height: 12px;
       border-radius: 50%;
@@ -1842,7 +1871,7 @@
 
     .preview .shield{
       position: absolute;
-      left: 20px;
+      left: 22px;
       top: 50%;
       width: 44px;
       height: 44px;
@@ -1856,7 +1885,7 @@
 
     .preview .shockwave-ring{
       position: absolute;
-      left: 18px;
+      left: 19px;
       top: 50%;
       width: 50px;
       height: 50px;
@@ -1869,7 +1898,7 @@
 
     .preview .spark{
       position: absolute;
-      left: 40px;
+      left: 62px;
       top: 50%;
       width: 6px;
       height: 6px;
@@ -1882,7 +1911,7 @@
 
     .preview .sparkle{
       position: absolute;
-      left: 52px;
+      left: 62px;
       top: 50%;
       width: 4px;
       height: 4px;
@@ -1998,7 +2027,9 @@
     }
 
     .showcase-card.is-paused .preview,
-    .showcase-card.is-paused .preview *{
+    .showcase-card.is-paused .preview *,
+    .showcase-card.is-offscreen .preview,
+    .showcase-card.is-offscreen .preview *{
       animation-play-state: paused !important;
     }
 
@@ -2036,6 +2067,7 @@
       animation: parrySpark 3s ease-out infinite;
     }
     .showcase-card[data-anim="parry"] .flash{
+      left: 54px;
       animation: parryFlash 3s ease-out infinite;
     }
     .showcase-card[data-anim="parry"] .sparkle{
@@ -2093,13 +2125,14 @@
     }
 
     @keyframes dashMove{
-      0%, 22% { transform: translate(0, -50%) scaleX(1) scaleY(1); }
-      30% { transform: translate(-4px, -50%) scaleX(0.85) scaleY(1.1); }
-      36% { transform: translate(140px, -50%) scaleX(1.15) scaleY(0.9); }
-      45% { transform: translate(140px, -50%) scaleX(1) scaleY(1); }
-      75% { transform: translate(140px, -50%); }
-      88% { transform: translate(140px, -50%); }
-      100% { transform: translate(0, -50%); }
+      0%, 22% { opacity: 1; transform: translate(0, -50%) scaleX(1) scaleY(1); }
+      30%     { opacity: 1; transform: translate(-4px, -50%) scaleX(0.85) scaleY(1.1); }
+      36%     { opacity: 1; transform: translate(var(--run), -50%) scaleX(1.15) scaleY(0.9); }
+      45%     { opacity: 1; transform: translate(var(--run), -50%) scaleX(1) scaleY(1); }
+      86%     { opacity: 1; transform: translate(var(--run), -50%) scaleX(1) scaleY(1); }
+      92%     { opacity: 0; transform: translate(var(--run), -50%) scaleX(1) scaleY(1); }
+      92.1%   { opacity: 0; transform: translate(0, -50%) scaleX(1) scaleY(1); }
+      100%    { opacity: 1; transform: translate(0, -50%) scaleX(1) scaleY(1); }
     }
 
     @keyframes dashTrail{
@@ -2111,9 +2144,9 @@
 
     @keyframes dashAfter{
       0%, 28% { opacity: 0; transform: translate(0, -50%) scale(1); }
-      36% { opacity: 0.65; transform: translate(60px, -50%) scale(0.95); }
-      48% { opacity: 0; transform: translate(120px, -50%) scale(0.85); }
-      100% { opacity: 0; }
+      36% { opacity: 0.65; transform: translate(calc(var(--run) * 0.45), -50%) scale(0.95); }
+      48% { opacity: 0; transform: translate(calc(var(--run) * 0.9), -50%) scale(0.85); }
+      100% { opacity: 0; transform: translate(calc(var(--run) * 0.9), -50%) scale(0.85); }
     }
 
     @keyframes dashDust{
@@ -2133,11 +2166,11 @@
     @keyframes parryShot{
       0%, 8% { transform: translate(0, 0); opacity: 0; }
       14% { opacity: 1; transform: translate(0, 0); }
-      40% { transform: translate(-110px, -2px); opacity: 1; }
-      44% { transform: translate(-110px, -2px); opacity: 1; }
-      60% { transform: translate(80px, -22px); opacity: 1; }
-      78% { transform: translate(140px, -32px); opacity: 0; }
-      100% { opacity: 0; }
+      40% { transform: translate(var(--shot), 0); opacity: 1; }
+      44% { transform: translate(var(--shot), 0); opacity: 1; }
+      60% { transform: translate(calc(var(--shot) * 0.3), -24px); opacity: 1; }
+      78% { transform: translate(0, -38px); opacity: 0; }
+      100% { transform: translate(0, -38px); opacity: 0; }
     }
 
     @keyframes parryShield{
@@ -2145,7 +2178,7 @@
       42% { opacity: 1; transform: translateY(-50%) scale(1.05); }
       52% { opacity: 1; transform: translateY(-50%) scale(1); }
       62% { opacity: 0; transform: translateY(-50%) scale(1.4); }
-      100% { opacity: 0; }
+      100% { opacity: 0; transform: translateY(-50%) scale(1.4); }
     }
 
     @keyframes parryRing{
@@ -2179,10 +2212,10 @@
     /* Игрок (красный шар, СЛЕВА) на 30-40% выпускает «волну удара» — пульс +
        яркий glow. Игрок остаётся непрозрачным. */
     @keyframes hitStrike{
-      0%, 25%  { transform: translate(0, -50%) scale(1);    filter: none; }
-      30%      { transform: translate(0, -50%) scale(1.14); filter: brightness(1.45) drop-shadow(0 0 10px rgba(255,90,90,0.8)); }
-      38%      { transform: translate(2px,-50%) scale(1.05);filter: brightness(1.2)  drop-shadow(0 0 6px  rgba(255,90,90,0.5)); }
-      50%      { transform: translate(0, -50%) scale(1);    filter: none; }
+      0%, 28%  { transform: translate(0, -50%) scale(1);    filter: none; }
+      32%      { transform: translate(0, -50%) scale(1.12); filter: brightness(1.35) drop-shadow(0 0 8px rgba(255,90,90,0.8)); }
+      40%      { transform: translate(-3px, -50%) scale(1.04); filter: brightness(1.15) drop-shadow(0 0 5px rgba(255,90,90,0.5)); }
+      52%      { transform: translate(0, -50%) scale(1);    filter: none; }
       100%     { transform: translate(0, -50%) scale(1);    filter: none; }
     }
 
@@ -2190,39 +2223,37 @@
        сам становится полупрозрачным (opacity: 0.5). Затем проходит за игроком
        (z-index: 1) и улетает влево. ИГРОК НЕ ПРОЗРАЧНЫЙ — только серый шар. */
     @keyframes hitEnemy{
-      0%       { transform: translate(0,    -50%) scale(0.95); opacity: 0; filter: none; }
-      8%       { transform: translate(0,    -50%) scale(1);    opacity: 1; filter: none; }
-      32%      { transform: translate(-50px, -50%) scale(1);   opacity: 1; filter: none; }
-      40%      { transform: translate(-75px, -50%) scale(1.04); opacity: 0.5; filter: brightness(1.2) blur(0.4px); }
-      55%      { transform: translate(-130px,-50%) scale(1);    opacity: 0.5; filter: blur(0.4px); }
-      70%      { transform: translate(-190px,-50%) scale(0.95); opacity: 0.45; filter: blur(0.4px); }
-      88%      { transform: translate(-260px,-50%) scale(0.9);  opacity: 0;   filter: blur(0.4px); }
-      100%     { transform: translate(-260px,-50%) scale(0.9);  opacity: 0;   filter: none; }
+      0%       { transform: translate(0, -50%) scale(0.95); opacity: 0; }
+      8%       { transform: translate(0, -50%) scale(1); opacity: 1; }
+      30%      { transform: translate(var(--hitx), -50%) scale(1); opacity: 1; }
+      34%      { transform: translate(calc(var(--hitx) - 4px), -50%) scale(0.92, 1.06); opacity: 1; }
+      62%      { transform: translate(calc(var(--hitx) * 0.45), calc(-50% - 54px)) scale(0.8); opacity: 0; }
+      100%     { transform: translate(calc(var(--hitx) * 0.45), calc(-50% - 54px)) scale(0.8); opacity: 0; }
     }
 
     /* Волна-кольцо, расходящаяся ОТ ИГРОКА (impact-ring находится внутри .ball) */
     @keyframes hitRing{
-      0%, 25%  { opacity: 0; transform: translate(-50%, -50%) scale(0.4); border-color: rgba(255,120,120,0); border-width: 2px; }
-      30%      { opacity: 1; transform: translate(-50%, -50%) scale(0.7); border-color: rgba(255,150,150,0.95); border-width: 3px; }
-      48%      { opacity: 0.55; transform: translate(-50%, -50%) scale(2.2); border-color: rgba(255,150,150,0.5); border-width: 1.5px; }
-      60%      { opacity: 0; transform: translate(-50%, -50%) scale(2.8); border-color: rgba(255,150,150,0); border-width: 1px; }
-      100%     { opacity: 0; }
+      0%, 28%  { opacity: 0; transform: translate(-50%, -50%) scale(0.4); border-color: rgba(255,120,120,0); border-width: 2px; }
+      32%      { opacity: 1; transform: translate(-50%, -50%) scale(0.7); border-color: rgba(255,150,150,0.95); border-width: 3px; }
+      50%      { opacity: 0.55; transform: translate(-50%, -50%) scale(1.9); border-color: rgba(255,150,150,0.5); border-width: 1.5px; }
+      62%      { opacity: 0; transform: translate(-50%, -50%) scale(2.4); border-color: rgba(255,150,150,0); border-width: 1px; }
+      100%     { opacity: 0; transform: translate(-50%, -50%) scale(2.4); }
     }
 
     /* Дополнительный sparkle-выхлоп от удара игрока */
     @keyframes hitParticle{
-      0%, 27%  { opacity: 0; transform: translate(-50%, -50%) scale(0.4); background: #ffd1d1; }
-      32%      { opacity: 1; transform: translate(-50%, -50%) translate(14px, -2px) scale(1.5); background: #fff4e0; }
-      45%      { opacity: 0; transform: translate(-50%, -50%) translate(28px, -4px) scale(2.0); }
-      100%     { opacity: 0; }
+      0%, 29%  { opacity: 0; transform: translate(-50%, -50%) scale(0.4); background: #ffd1d1; }
+      33%      { opacity: 1; transform: translate(-50%, -50%) translate(24px, -2px) scale(1.5); background: #fff4e0; }
+      46%      { opacity: 0; transform: translate(-50%, -50%) translate(38px, -4px) scale(2.0); }
+      100%     { opacity: 0; transform: translate(-50%, -50%) translate(38px, -4px) scale(2.0); }
     }
 
     /* Лёгкая тряска превью на момент удара (не нужна сильная — чтобы не отвлекать) */
     @keyframes hitShake{
-      0%, 28%, 50%, 100% { transform: translate(0, 0); }
-      32% { transform: translate(-2px, 1px); }
-      36% { transform: translate(2px, -1px); }
-      40% { transform: translate(-1px, 1px); }
+      0%, 30%, 46%, 100% { transform: translate(0, 0); }
+      34% { transform: translate(-1.5px, 1px); }
+      38% { transform: translate(1.5px, -1px); }
+      42% { transform: translate(-1px, 0.5px); }
     }
 
     @keyframes spawnPortal{
@@ -2269,7 +2300,7 @@
     .preview .combo-ghost{
       position: absolute;
       left: 24px; top: 50%;
-      width: 38px; height: 38px;
+      width: 40px; height: 40px;
       border-radius: 50%;
       background: radial-gradient(circle at 35% 35%, rgba(255, 220, 130, 0.55), rgba(255, 140, 60, 0.18));
       transform: translateY(-50%);
@@ -2301,33 +2332,35 @@
        Уменьшил дальность шага, чтобы шар не вылезал за край превью.
        Шаги: 0 → 50px → 100px → 130px (шар 38px → правый край шара ~192px). */
     @keyframes comboBall{
-      0%, 8%   { transform: translate(0, -50%); }
-      18%      { transform: translate(50px, -50%) scale(1.05); }
-      26%      { transform: translate(50px, -50%) scale(1); }
-      36%      { transform: translate(100px, -50%) scale(1.05); }
-      44%      { transform: translate(100px, -50%) scale(1); }
-      54%      { transform: translate(130px, -50%) scale(1.1); }
-      62%      { transform: translate(130px, -50%) scale(1); }
-      85%      { transform: translate(130px, -50%); }
-      100%     { transform: translate(0, -50%); }
+      0%, 8%   { opacity: 1; transform: translate(0, -50%) scale(1); }
+      18%      { opacity: 1; transform: translate(calc(var(--run) * 0.34), -50%) scale(1.05); }
+      26%      { opacity: 1; transform: translate(calc(var(--run) * 0.34), -50%) scale(1); }
+      36%      { opacity: 1; transform: translate(calc(var(--run) * 0.68), -50%) scale(1.05); }
+      44%      { opacity: 1; transform: translate(calc(var(--run) * 0.68), -50%) scale(1); }
+      54%      { opacity: 1; transform: translate(var(--run), -50%) scale(1.1); }
+      62%      { opacity: 1; transform: translate(var(--run), -50%) scale(1); }
+      86%      { opacity: 1; transform: translate(var(--run), -50%) scale(1); }
+      92%      { opacity: 0; transform: translate(var(--run), -50%) scale(1); }
+      92.1%    { opacity: 0; transform: translate(0, -50%) scale(1); }
+      100%     { opacity: 1; transform: translate(0, -50%) scale(1); }
     }
     @keyframes comboGhost1{
       0%, 14% { opacity: 0; transform: translate(0, -50%); }
-      20%     { opacity: 0.7; transform: translate(30px, -50%); }
-      36%     { opacity: 0; transform: translate(50px, -50%); }
-      100%    { opacity: 0; }
+      20%     { opacity: 0.7; transform: translate(calc(var(--run) * 0.2), -50%); }
+      36%     { opacity: 0; transform: translate(calc(var(--run) * 0.34), -50%); }
+      100%    { opacity: 0; transform: translate(calc(var(--run) * 0.34), -50%); }
     }
     @keyframes comboGhost2{
-      0%, 28% { opacity: 0; transform: translate(50px, -50%); }
-      36%     { opacity: 0.7; transform: translate(80px, -50%); }
-      52%     { opacity: 0; transform: translate(100px, -50%); }
-      100%    { opacity: 0; }
+      0%, 28% { opacity: 0; transform: translate(calc(var(--run) * 0.34), -50%); }
+      36%     { opacity: 0.7; transform: translate(calc(var(--run) * 0.52), -50%); }
+      52%     { opacity: 0; transform: translate(calc(var(--run) * 0.68), -50%); }
+      100%    { opacity: 0; transform: translate(calc(var(--run) * 0.68), -50%); }
     }
     @keyframes comboGhost3{
-      0%, 46% { opacity: 0; transform: translate(100px, -50%); }
-      54%     { opacity: 0.7; transform: translate(120px, -50%); }
-      72%     { opacity: 0; transform: translate(130px, -50%); }
-      100%    { opacity: 0; }
+      0%, 46% { opacity: 0; transform: translate(calc(var(--run) * 0.68), -50%); }
+      54%     { opacity: 0.7; transform: translate(calc(var(--run) * 0.84), -50%); }
+      72%     { opacity: 0; transform: translate(var(--run), -50%); }
+      100%    { opacity: 0; transform: translate(var(--run), -50%); }
     }
     @keyframes comboCount{
       0%, 14% { opacity: 0; transform: translateY(-4px) scale(0.85); }
@@ -2423,7 +2456,7 @@
     .showcase-card[data-anim="shield-break"] .shield-shard.s2{ --sx: 38px; --sy: -22px; --sr: 50deg; }
     .showcase-card[data-anim="shield-break"] .shield-shard.s3{ --sx: -34px; --sy: 24px; --sr: -120deg; }
     .showcase-card[data-anim="shield-break"] .shield-shard.s4{ --sx: 42px; --sy: 20px; --sr: 110deg; }
-    .showcase-card[data-anim="shield-break"] .shield-shard.s5{ --sx: 0; --sy: -32px; --sr: 0deg; }
+    .showcase-card[data-anim="shield-break"] .shield-shard.s5{ --sx: 0px; --sy: -32px; --sr: 0deg; }
     .showcase-card[data-anim="shield-break"] .action-label{
       animation: actionLabelPop 3.2s ease-out infinite;
       animation-delay: 0.05s;
@@ -2440,9 +2473,9 @@
     @keyframes sbIncoming{
       0%, 12%  { opacity: 0; transform: translate(0, -50%); }
       18%      { opacity: 1; transform: translate(0, -50%); }
-      40%      { opacity: 1; transform: translate(-100px, -50%); }
-      46%      { opacity: 0; transform: translate(-100px, -50%); }
-      100%     { opacity: 0; }
+      40%      { opacity: 1; transform: translate(var(--brk), -50%); }
+      44%      { opacity: 0; transform: translate(var(--brk), -50%); }
+      100%     { opacity: 0; transform: translate(var(--brk), -50%); }
     }
     @keyframes sbCrack{
       0%, 38% { opacity: 0; }
@@ -7505,7 +7538,7 @@ body:not(.hero-anim) .subtitle .ch{
 
 
 /* ── Карточки: один механизм движения (наклон + подъём в JS), без конфликта с :hover ── */
-.feature-card:hover, .showcase-card:hover { transform: none; }
+.feature-card:hover { transform: none; }
 .feature-card.tilt-3d, .showcase-card.tilt-3d {
   transition: transform .5s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease, border-color .3s ease;
 }
@@ -8706,27 +8739,47 @@ html, body{
       </symbol>
 
       <!-- Orb crown — золотая корона с тремя зубцами и драгоценностями -->
-      <symbol id="e3-orb-crown" viewBox="0 0 28 18">
-        <!-- Тень -->
-        <path d="M3 14.6 L5 5.4 L9 9.4 L14 3.4 L19 9.4 L23 5.4 L25 14.6 Z"
-              fill="rgba(0,0,0,0.35)" transform="translate(0.6,0.9)"/>
-        <!-- Корпус короны -->
-        <path d="M3 14 L5 4.8 L9 8.8 L14 2.8 L19 8.8 L23 4.8 L25 14 Z"
-              fill="url(#e3g-gold)" stroke="#7a4a00" stroke-width="0.55" stroke-linejoin="round"/>
-        <!-- Базовая полоска -->
-        <rect x="3" y="13.4" width="22" height="3" rx="0.4"
-              fill="url(#e3g-gold-soft)" stroke="#7a4a00" stroke-width="0.4"/>
-        <!-- Декор-точки на базе -->
-        <circle cx="7" cy="14.9" r="0.55" fill="#7a4a00" opacity="0.6"/>
-        <circle cx="14" cy="14.9" r="0.55" fill="#7a4a00" opacity="0.6"/>
-        <circle cx="21" cy="14.9" r="0.55" fill="#7a4a00" opacity="0.6"/>
-        <!-- Драгоценности на зубцах -->
-        <circle cx="14" cy="5.6" r="1.25" fill="#ff5566" stroke="#7a0f1a" stroke-width="0.3"/>
-        <circle cx="13.6" cy="5.2" r="0.4" fill="#ffd0d8" opacity="0.95"/>
-        <circle cx="5" cy="6.7" r="0.85" fill="#4ade80" stroke="#0a4a20" stroke-width="0.25"/>
-        <circle cx="23" cy="6.7" r="0.85" fill="#5cb6ff" stroke="#0a3a6a" stroke-width="0.25"/>
-        <!-- Блик -->
-        <path d="M5 5.4 L7 4.5" stroke="rgba(255,255,255,0.7)" stroke-width="0.5" stroke-linecap="round"/>
+      <symbol id="e3-orb-crown" viewBox="0 0 28 20">
+        <defs>
+          <linearGradient id="e3g-crown-gold" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FFF4B8"/>
+            <stop offset="38%" stop-color="#FFD24A"/>
+            <stop offset="75%" stop-color="#E19B0C"/>
+            <stop offset="100%" stop-color="#A66500"/>
+          </linearGradient>
+          <linearGradient id="e3g-crown-band" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FFE17A"/>
+            <stop offset="50%" stop-color="#E8A711"/>
+            <stop offset="100%" stop-color="#8F5600"/>
+          </linearGradient>
+          <radialGradient id="e3g-crown-pearl" cx="0.35" cy="0.3" r="0.8">
+            <stop offset="0%" stop-color="#FFFFFF"/>
+            <stop offset="60%" stop-color="#FFF0C8"/>
+            <stop offset="100%" stop-color="#D9A93A"/>
+          </radialGradient>
+          <radialGradient id="e3g-crown-ruby" cx="0.35" cy="0.3" r="0.8">
+            <stop offset="0%" stop-color="#FFB3BD"/>
+            <stop offset="45%" stop-color="#EF2F48"/>
+            <stop offset="100%" stop-color="#7D0618"/>
+          </radialGradient>
+        </defs>
+        <!-- Корпус: три зубца -->
+        <path d="M3.2 16 L2.2 5.8 L8.4 10.4 L14 3 L19.6 10.4 L25.8 5.8 L24.8 16 Z"
+              fill="url(#e3g-crown-gold)" stroke="#7a4700" stroke-width="0.6" stroke-linejoin="round"/>
+        <!-- Тени во впадинах -->
+        <path d="M8.4 10.4 L9.4 15 M19.6 10.4 L18.6 15" stroke="#b9770a" stroke-width="0.5" opacity="0.55" fill="none" stroke-linecap="round"/>
+        <!-- Обод (изогнут, чтобы «сидеть» на шаре) -->
+        <path d="M3 14 Q14 17 25 14 L24.6 17.6 Q14 20 3.4 17.6 Z"
+              fill="url(#e3g-crown-band)" stroke="#7a4700" stroke-width="0.55" stroke-linejoin="round"/>
+        <path d="M4.6 14.9 Q14 17.5 23.4 14.9" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="0.5" stroke-linecap="round"/>
+        <!-- Жемчужины на зубцах -->
+        <circle cx="2.2" cy="5" r="1.5" fill="url(#e3g-crown-pearl)" stroke="#8a5600" stroke-width="0.35"/>
+        <circle cx="14" cy="2.3" r="1.7" fill="url(#e3g-crown-pearl)" stroke="#8a5600" stroke-width="0.35"/>
+        <circle cx="25.8" cy="5" r="1.5" fill="url(#e3g-crown-pearl)" stroke="#8a5600" stroke-width="0.35"/>
+        <!-- Камни на ободе -->
+        <ellipse cx="14" cy="17.1" rx="1.8" ry="1.4" fill="url(#e3g-crown-ruby)" stroke="#5a0612" stroke-width="0.3"/>
+        <circle cx="8.2" cy="16.5" r="0.9" fill="#5cb6ff" stroke="#0a3a6a" stroke-width="0.25"/>
+        <circle cx="19.8" cy="16.5" r="0.9" fill="#4ade80" stroke="#0a4a20" stroke-width="0.25"/>
       </symbol>
 
       <!-- Player orb — кастомный игровой шар (без эмодзи) -->
@@ -8744,7 +8797,7 @@ html, body{
           </radialGradient>
         </defs>
         <!-- Корона сверху -->
-        <use href="#e3-orb-crown" x="16" y="0" width="28" height="18"/>
+        <use href="#e3-orb-crown" x="16" y="12" width="28" height="20"/>
         <!-- Тень шара -->
         <ellipse cx="30" cy="68" rx="14" ry="2.5" fill="rgba(0,0,0,0.35)"/>
         <!-- Шар -->
@@ -17406,6 +17459,16 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
         });
       });
 
+      // Не гоняем анимации карточек, пока они за пределами экрана
+      if ('IntersectionObserver' in window) {
+        const showcaseIO = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            entry.target.classList.toggle('is-offscreen', !entry.isIntersecting);
+          });
+        }, { rootMargin: '80px' });
+        document.querySelectorAll('.showcase-card').forEach(card => showcaseIO.observe(card));
+      }
+
       const sparkles = Array.from(document.querySelectorAll('.sparkle'));
       let sparkleMouseX = 0;
       let sparkleMouseY = 0;
@@ -19563,7 +19626,7 @@ async function doResetPassword() {
   })();
 
   // ----- 3D tilt on .tilt-3d (heroes + feature cards) -----
-  const tiltTargets = document.querySelectorAll('.tilt-3d, .feature-card, .showcase-card');
+  const tiltTargets = document.querySelectorAll('.tilt-3d, .feature-card');
   const canHover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
   tiltTargets.forEach(card => {
     card.classList.add('tilt-3d');
