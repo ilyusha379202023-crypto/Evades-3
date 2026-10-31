@@ -144,7 +144,6 @@
         linear-gradient(135deg, #05080f 0%, #0a1226 22%, #11214a 50%, #0a1226 78%, #05080f 100%);
       background-attachment: fixed, fixed, fixed, fixed, fixed, fixed;
       background-size: 220% 220%, 220% 220%, 220% 220%, 220% 220%, 240% 240%, 400% 400%;
-      animation: gradientShift 24s ease infinite;
       overflow-x: hidden;
       min-height: 100vh;
       position: relative;
@@ -19068,7 +19067,7 @@ async function doResetPassword() {
       H = bg.height = Math.floor(window.innerHeight * DPR);
       bg.style.width  = window.innerWidth + 'px';
       bg.style.height = window.innerHeight + 'px';
-      const target = Math.min(120, Math.floor(window.innerWidth * window.innerHeight / 14000));
+      const target = Math.min(55, Math.floor(window.innerWidth * window.innerHeight / 24000));
       if (particles.length < target) {
         while (particles.length < target) {
           particles.push({
@@ -19107,10 +19106,7 @@ async function doResetPassword() {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
         ctx.fillStyle = p.c || 'rgba(170,255,200,0.65)';
-        ctx.shadowColor = p.c || 'rgba(170,255,200,0.6)';
-        ctx.shadowBlur = 8 * DPR;
         ctx.fill();
-        ctx.shadowBlur = 0;
         for (let j = i+1; j < particles.length; j++){
           const q = particles[j];
           const ddx = p.x - q.x, ddy = p.y - q.y;
