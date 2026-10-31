@@ -8496,6 +8496,58 @@ html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover{ backgr
   <!-- ============ Конец глобальных SVG-определений ============ -->
 
   <style>
+    /* ───────── Окно «Подробнее» у новости ───────── */
+.nd-box{
+  position: relative; width: 100%; max-width: 560px; max-height: calc(100vh - 40px);
+  display: flex; flex-direction: column; overflow: hidden; text-align: left;
+  background:
+    radial-gradient(120% 60% at 50% -10%, rgba(255,200,58,0.16), transparent 60%),
+    linear-gradient(160deg, rgba(14,40,28,0.97), rgba(7,22,15,0.98));
+  backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255,205,110,0.32); border-radius: 28px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 60px rgba(255,190,60,0.12), inset 0 1px 0 rgba(255,255,255,0.12);
+  transform: scale(0.92) translateY(12px); transition: transform .35s cubic-bezier(.08,1.3,.18,1);
+}
+.forgot-modal-overlay.show .nd-box{ transform: none; }
+.nd-head{
+  flex: 0 0 auto; padding: 30px 64px 18px 32px;
+  border-bottom: 1px solid rgba(255,205,110,0.16);
+  background: linear-gradient(180deg, rgba(255,200,58,0.07), transparent);
+}
+.nd-tagrow{ display: flex; align-items: center; gap: 8px; margin-bottom: 12px; min-height: 22px; }
+.nd-tagrow:empty{ display: none; }
+.nd-title{
+  margin: 0; font-family: 'Exo 2','Orbitron',sans-serif; font-size: 26px; font-weight: 900; line-height: 1.25;
+  letter-spacing: .4px; color: #fff; word-break: break-word;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.4), 0 0 20px rgba(255,200,58,0.18);
+}
+.nd-meta{ display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 12px; }
+.nd-meta:empty{ display: none; }
+.nd-meta-i{ display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.55); }
+.nd-meta-i svg{ width: 15px; height: 15px; flex: none; fill: none; stroke: rgba(255,225,160,0.75); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.nd-meta-i[hidden]{ display: none; }
+.nd-body{
+  flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 22px 32px;
+  font-size: 16px; line-height: 1.7; color: rgba(255,255,255,0.86);
+  white-space: pre-wrap; word-break: break-word;
+}
+.nd-body::-webkit-scrollbar{ width: 8px; }
+.nd-body::-webkit-scrollbar-button{ display: none !important; width: 0; height: 0; }
+.nd-body::-webkit-scrollbar-track{ background: transparent; margin: 6px 0; }
+.nd-body::-webkit-scrollbar-thumb{ background: rgba(255,205,110,0.32); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+.nd-body::-webkit-scrollbar-thumb:hover{ background: rgba(255,205,110,0.55); background-clip: padding-box; border: 2px solid transparent; }
+.nd-foot{
+  flex: 0 0 auto; display: flex; justify-content: flex-end; padding: 16px 32px 24px;
+  border-top: 1px solid rgba(255,205,110,0.16); background: rgba(0,0,0,0.18);
+}
+.nd-foot .cn-btn{ flex: 0 0 auto; height: 50px; padding: 0 34px; }
+@media (max-width: 560px){
+  .nd-head{ padding: 24px 56px 16px 20px; }
+  .nd-title{ font-size: 21px; }
+  .nd-body{ padding: 18px 20px; font-size: 15px; }
+  .nd-foot{ padding: 14px 20px 20px; }
+  .nd-foot .cn-btn{ flex: 1; }
+}
 /* ============ Шапка: единая стеклянная панель в стиле сайта ============ */
 .topbar{
   position:fixed; top:12px; left:16px; right:16px; z-index:1002;
@@ -9656,14 +9708,19 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
 
 <!-- ─── MODAL: ПОЛНЫЙ ТЕКСТ НОВОСТИ ─── -->
 <div class="forgot-modal-overlay" id="newsDetailOverlay" onclick="closeNewsDetailOnBg(event)">
-  <div class="forgot-modal-box">
-    <button class="forgot-modal-close" onclick="closeNewsDetailModal()" aria-label="Закрыть"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-    <div class="forgot-icon-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></div>
-    <div class="news-detail-tagrow" id="newsDetailTag"></div>
-    <div class="forgot-title" id="newsDetailTitle"></div>
-    <div class="forgot-desc news-detail-body" id="newsDetailBody"></div>
-    <div class="forgot-btns">
-      <button class="forgot-btn-send" onclick="closeNewsDetailModal()" data-i18n="news-detail-close" style="flex:1;">Закрыть</button>
+  <div class="nd-box" role="dialog" aria-modal="true" aria-labelledby="newsDetailTitle">
+    <button class="cn-close" type="button" onclick="closeNewsDetailModal()" aria-label="Закрыть"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="nd-head">
+      <div class="nd-tagrow" id="newsDetailTag"></div>
+      <h2 class="nd-title" id="newsDetailTitle"></h2>
+      <div class="nd-meta">
+        <span class="nd-meta-i" id="newsDetailDateWrap"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span id="newsDetailDate"></span></span>
+        <span class="nd-meta-i" id="newsDetailAuthorWrap"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg><span id="newsDetailAuthor"></span></span>
+      </div>
+    </div>
+    <div class="nd-body" id="newsDetailBody"></div>
+    <div class="nd-foot">
+      <button type="button" class="cn-btn cn-btn-send" onclick="closeNewsDetailModal()"><span data-i18n="news-detail-close">Закрыть</span></button>
     </div>
   </div>
 </div>
@@ -17445,7 +17502,15 @@ async function _fbAuth() {
 // писать db.collection('x').doc('y').get()/.set(...) как раньше — менять сотни
 // мест по всему файлу не нужно.
 function _wrapDocSnap(d) {
-  return { id: d.id, exists: typeof d.exists === 'function' ? d.exists() : !!d.exists, data: () => d.data() };
+return {
+  id: d.id,
+  title: data.title || '',
+  body: data.body || '',
+  tag: data.tag || '',
+  pinned: !!data.pinned,
+  author: data.authorNick || '',
+  date: (data.createdAt && typeof data.createdAt.toDate === 'function') ? data.createdAt.toDate() : null
+};
 }
 function _wrapQuerySnap(snap) {
   return {
@@ -26364,55 +26429,32 @@ function openNewsDetail(id) {
   if (!n) return;
   document.getElementById('newsDetailTitle').textContent = n.title;
   document.getElementById('newsDetailBody').textContent = n.body;
-  document.getElementById('newsDetailTag').innerHTML = n.tag ? _e3NewsTagBadge(n.tag) : '';
+  document.getElementById('newsDetailTag').innerHTML =
+    (n.tag ? _e3NewsTagBadge(n.tag) : '') +
+    (n.pinned ? '<span class="news-pin-mark" title="' + _e3Esc(tt('news-pin-label','Закрепить вверху')) + '">' + _E3_PIN_SVG + '</span>' : '');
+
+  const dateWrap = document.getElementById('newsDetailDateWrap');
+  const authorWrap = document.getElementById('newsDetailAuthorWrap');
+  if (n.date) {
+    const loc = (typeof currentLang === 'string' && currentLang) || 'en';
+    let txt;
+    try { txt = n.date.toLocaleDateString(loc, { day: 'numeric', month: 'long', year: 'numeric' }); }
+    catch (_) { txt = n.date.toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric' }); }
+    document.getElementById('newsDetailDate').textContent = txt;
+    dateWrap.hidden = false;
+  } else { dateWrap.hidden = true; }
+  if (n.author) {
+    document.getElementById('newsDetailAuthor').textContent = n.author;
+    authorWrap.hidden = false;
+  } else { authorWrap.hidden = true; }
+
   document.getElementById('newsDetailOverlay').classList.add('show');
+  document.getElementById('newsDetailBody').scrollTop = 0;
   const readSet = _e3GetReadNewsSet();
   readSet.add(id);
   _e3SaveReadNewsSet(readSet);
   _e3RenderNews();
 }
-function closeNewsDetailModal() { document.getElementById('newsDetailOverlay').classList.remove('show'); }
-function closeNewsDetailOnBg(e) { if (e.target === e.currentTarget) closeNewsDetailModal(); }
-
-function _e3MarkAllNewsRead() {
-  if (!_e3NewsItems.length) return;
-  const readSet = _e3GetReadNewsSet();
-  let changed = false;
-  _e3NewsItems.forEach(n => { if (!readSet.has(n.id)) { readSet.add(n.id); changed = true; } });
-  if (changed) { _e3SaveReadNewsSet(readSet); setTimeout(_e3RenderNews, 1200); }
-}
-
-window.ev3InitNewsFeed = function () {
-  if (_e3NewsUnsub || !db) return;
-  try {
-    _e3NewsUnsub = db.collection('news').orderBy('createdAt', 'desc').limit(20)
-      .onSnapshot(snap => {
-        _e3NewsItems = snap.docs.map(d => {
-          const data = d.data() || {};
-          return { id: d.id, title: data.title || '', body: data.body || '', tag: data.tag || '', pinned: !!data.pinned };
-        });
-        // закреплённые — выше (sort стабилен, внутри групп порядок по дате сохраняется)
-        _e3NewsItems.sort((x, y) => (y.pinned ? 1 : 0) - (x.pinned ? 1 : 0));
-        _e3RenderNews();
-      }, err => { if (typeof console !== 'undefined') console.warn('[NEWS feed]', err); });
-  } catch (e) { if (typeof console !== 'undefined') console.warn('[NEWS feed init]', e); }
-  const bell = document.getElementById('navBell');
-  if (bell && !bell._e3ReadBound) {
-    bell._e3ReadBound = true;
-    bell.addEventListener('mouseenter', _e3MarkAllNewsRead);
-    bell.addEventListener('click', _e3MarkAllNewsRead);
-  }
-};
-window.ev3StopNewsFeed = function () {
-  if (_e3NewsUnsub) { try { _e3NewsUnsub(); } catch (_) {} _e3NewsUnsub = null; }
-  _e3NewsItems = [];
-  const badgeEl = document.getElementById('bellBadge');
-  if (badgeEl) badgeEl.style.display = 'none';
-  const listEl = document.getElementById('bellNewsList');
-  const emptyEl = document.getElementById('bellEmpty');
-  if (listEl) { listEl.style.display = 'none'; listEl.innerHTML = ''; }
-  if (emptyEl) emptyEl.style.display = '';
-};
 
 // ===================================================
 // СОЗДАТЬ НОВОСТЬ (только dev-аккаунт)
