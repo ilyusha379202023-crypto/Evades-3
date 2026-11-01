@@ -1766,8 +1766,9 @@
       transform: translate(-50%, -50%);
     }
 
-    /* Карточка Удар FX: игрок стоит слева, серый шар летит на него справа,
-       в момент контакта игрок пульсирует, а враг отлетает вверх. */
+    /* Карточка Удар FX: игрок стоит слева, серый шар летит на него справа.
+       В момент контакта игрок пульсирует, шар становится полупрозрачным
+       и идёт дальше прямо, проходя СКВОЗЬ игрока (z-index 1 < ball z-index 2). */
     .showcase-card[data-anim="hit"] .ball{ z-index: 2; }
     .showcase-card[data-anim="hit"] .enemy{ z-index: 1; }
 
@@ -1788,7 +1789,7 @@
       position: absolute;
       top: -18px;
       left: 50%;
-      transform: translateX(-50%) rotate(-6deg);
+      transform: translateX(-50%);
       width: 32px;
       height: 23px;
       display: block;
@@ -2083,7 +2084,7 @@
       animation: hitStrike 2.4s cubic-bezier(.7,0,.3,1) infinite;
     }
     .showcase-card[data-anim="hit"] .enemy{
-      animation: hitEnemy 2.4s ease-out infinite;
+      animation: hitEnemy 2.4s linear infinite;
     }
     .showcase-card[data-anim="hit"] .impact-ring{
       animation: hitRing 2.4s ease-out infinite;
@@ -2223,12 +2224,13 @@
        сам становится полупрозрачным (opacity: 0.5). Затем проходит за игроком
        (z-index: 1) и улетает влево. ИГРОК НЕ ПРОЗРАЧНЫЙ — только серый шар. */
     @keyframes hitEnemy{
-      0%       { transform: translate(0, -50%) scale(0.95); opacity: 0; }
-      8%       { transform: translate(0, -50%) scale(1); opacity: 1; }
-      30%      { transform: translate(var(--hitx), -50%) scale(1); opacity: 1; }
-      34%      { transform: translate(calc(var(--hitx) - 4px), -50%) scale(0.92, 1.06); opacity: 1; }
-      62%      { transform: translate(calc(var(--hitx) * 0.45), calc(-50% - 54px)) scale(0.8); opacity: 0; }
-      100%     { transform: translate(calc(var(--hitx) * 0.45), calc(-50% - 54px)) scale(0.8); opacity: 0; }
+      0%       { transform: translate(0, -50%) scale(0.95); opacity: 0; filter: none; }
+      8%       { transform: translate(0, -50%) scale(1); opacity: 1; filter: none; }
+      30%      { transform: translate(var(--hitx), -50%) scale(1); opacity: 1; filter: none; }
+      36%      { transform: translate(calc(var(--hitx) - 20px), -50%) scale(1.04); opacity: 0.5; filter: brightness(1.2); }
+      50%      { transform: translate(calc(var(--hitx) - 100px), -50%) scale(1); opacity: 0.5; filter: none; }
+      54%      { transform: translate(calc(var(--hitx) - 112px), -50%) scale(0.95); opacity: 0; filter: none; }
+      100%     { transform: translate(calc(var(--hitx) - 112px), -50%) scale(0.95); opacity: 0; filter: none; }
     }
 
     /* Волна-кольцо, расходящаяся ОТ ИГРОКА (impact-ring находится внутри .ball) */
