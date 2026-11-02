@@ -294,7 +294,7 @@
       height: 4px;
       background: white;
       border-radius: 50%;
-      animation: sparkleFloat 3s ease-in-out infinite;
+      animation: sparkleFloat 5s ease-in-out infinite;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
       pointer-events: none;
       z-index: 2;
@@ -8292,7 +8292,7 @@ html, body{
 .ev-spark{
   position:absolute; display:block; transform:translate(-50%,-50%) scale(0);
   filter:drop-shadow(0 0 4px rgba(255,236,150,.95)) drop-shadow(0 0 10px rgba(255,200,60,.7));
-  animation:evTwinkle 2.4s ease-in-out infinite both;
+  animation:evTwinkle 4.6s ease-in-out infinite both;
 }
 .ev-spark::before{
   content:""; position:absolute; inset:0;
@@ -8301,11 +8301,14 @@ html, body{
 }
 .ev-spark.is-white::before{ background:radial-gradient(circle, #fff 0 40%, #eaf4ff 70%, #bfe0ff 100%); }
 .ev-spark.is-white{ filter:drop-shadow(0 0 4px rgba(255,255,255,.95)) drop-shadow(0 0 10px rgba(160,205,255,.7)); }
+/* Плавно разгорается (~1 с), держится, плавно гаснет и делает паузу перед следующей вспышкой */
 @keyframes evTwinkle{
   0%{ transform:translate(-50%,-50%) scale(0) rotate(0deg); opacity:0; }
-  45%{ transform:translate(-50%,-50%) scale(1) rotate(45deg); opacity:1; }
-  55%{ transform:translate(-50%,-50%) scale(.85) rotate(60deg); opacity:1; }
-  100%{ transform:translate(-50%,-50%) scale(0) rotate(110deg); opacity:0; }
+  22%{ transform:translate(-50%,-50%) scale(1) rotate(25deg); opacity:1; }
+  38%{ transform:translate(-50%,-50%) scale(.82) rotate(40deg); opacity:.85; }
+  52%{ transform:translate(-50%,-50%) scale(1) rotate(55deg); opacity:1; }
+  74%{ transform:translate(-50%,-50%) scale(0) rotate(80deg); opacity:0; }
+  100%{ transform:translate(-50%,-50%) scale(0) rotate(80deg); opacity:0; }
 }
 @media (prefers-reduced-motion: reduce){
   .ev-title-shine .main-title .evc[data-ch]::after, .ev-sparks{ display:none !important; }
@@ -17585,7 +17588,7 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
         sparkle.className = 'sparkle';
         sparkle.style.left = Math.random() * 100 + '%';
         sparkle.style.top = Math.random() * 100 + '%';
-        sparkle.style.animationDelay = Math.random() * 3 + 's';
+        sparkle.style.animationDelay = Math.random() * 5 + 's';
         document.body.appendChild(sparkle);
       }
     }
@@ -29211,7 +29214,6 @@ async function _e3LoadParticipants() {
     var x = m + Math.random()*Math.max(0, W - 2*m), y = m + fy*Math.max(0, H - 2*m);
     el.style.left = x.toFixed(1) + 'px'; el.style.top = y.toFixed(1) + 'px';
     el.style.width = el.style.height = size.toFixed(0) + 'px';
-    el.style.animationDuration = (1.6 + Math.random()*1.8).toFixed(2) + 's';
     el.classList.toggle('is-white', Math.random() < 0.4);
   }
   function startSparkles(){
@@ -29224,7 +29226,11 @@ async function _e3LoadParticipants() {
     for (var i = 0; i < n; i++){
       var sp = document.createElement('i'); sp.className = 'ev-spark';
       placeSpark(sp);
-      sp.style.animationDelay = (Math.random()*2.4).toFixed(2) + 's';
+      // Длительность задаётся один раз: если менять её посреди анимации,
+      // искра перескакивает в другую фазу и резко мигает.
+      var dur = 4 + Math.random()*2.4;
+      sp.style.animationDuration = dur.toFixed(2) + 's';
+      sp.style.animationDelay = (Math.random()*dur).toFixed(2) + 's';
       sp.addEventListener('animationiteration', function(e){ placeSpark(e.currentTarget); });
       sparkBox.appendChild(sp);
     }
@@ -29233,7 +29239,15 @@ async function _e3LoadParticipants() {
     Array.prototype.forEach.call(sparkBox.children, placeSpark);
     if (!window.__evSparkResize){
       window.__evSparkResize = true;
-      window.addEventListener('resize', function(){ layoutSparkBox(); if (sparkBox) Array.prototype.forEach.call(sparkBox.children, placeSpark); });
+      // На телефоне resize срабатывает при каждом скролле (прячется адресная строка) —
+      // переставляем искры только если реально поменялась ширина экрана.
+      var lastSparkW = window.innerWidth;
+      window.addEventListener('resize', function(){
+        layoutSparkBox();
+        if (Math.abs(window.innerWidth - lastSparkW) < 2) return;
+        lastSparkW = window.innerWidth;
+        if (sparkBox) Array.prototype.forEach.call(sparkBox.children, placeSpark);
+      });
     }
   }
   function T(x, y, r, s){ return 'translate(' + (x-r) + 'px,' + (y-r) + 'px) scale(' + (s==null?1:s) + ')'; }
