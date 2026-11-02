@@ -6686,17 +6686,6 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
 }
 .feature-card:hover::after{ opacity: 1; }
 
-.download-button{ position: relative; z-index: 1; }
-.download-button::before{
-  content:"";
-  position: absolute; inset: -6px;
-  border-radius: inherit;
-  background: radial-gradient(circle, rgba(255,216,77,0.35), transparent 60%);
-  opacity: 0; transition: opacity .4s ease;
-  pointer-events: none; z-index: -1;
-  filter: blur(14px);
-}
-.download-button:hover::before{ opacity: 1; }
 
 @media (max-width: 760px){
   .e3-section{ margin: 80px auto; }
@@ -8303,6 +8292,102 @@ html, body{
 }
 .arcade-zr-win{ color: #ffe58a !important; text-shadow: 0 0 18px rgba(255,216,77,0.6) !important; }
 @media (max-width: 720px){ #arcadeZoneCanvas{ border-radius: 12px; } }
+</style>
+
+<style id="ev-download-btn-style">
+/* ===== Кнопка «Скачать» — новый вид (только оттенки серого, без движения) ===== */
+.download-wrap{ display:inline-block; position:relative; }
+.button-container .download-button{
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 32px 88px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: #f4f5f7;
+  border: 0;
+  border-radius: 999px;
+  cursor: not-allowed;
+  transform: none !important;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0 1px, rgba(0,0,0,0.03) 1px 3px),
+    linear-gradient(180deg, #c4c6ca 0%, #9a9da2 38%, #75787d 62%, #5d6065 100%);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.55),
+    0 12px 0 #3e4043,
+    0 13px 0 1px rgba(0,0,0,0.5),
+    0 26px 40px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.75),
+    inset 0 0 0 1px rgba(255,255,255,0.16),
+    inset 0 -10px 18px rgba(0,0,0,0.32);
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.18),
+    0 -1px 0 rgba(0,0,0,0.55),
+    0 3px 10px rgba(0,0,0,0.45);
+  transition: filter .3s ease, box-shadow .3s ease;
+  will-change: auto;
+}
+/* верхний стеклянный блик */
+.button-container .download-button::before{
+  content: "";
+  position: absolute;
+  left: 7%; right: 7%; top: 3px; bottom: auto;
+  inset: 3px 7% auto 7%;
+  height: 46%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.06));
+  opacity: 0.85;
+  filter: none;
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity .3s ease;
+}
+/* бегущий белый отблеск */
+.button-container .download-button::after{
+  content: "";
+  position: absolute;
+  top: -20%; bottom: -20%; left: 0;
+  width: 38%;
+  inset: -20% auto -20% 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: linear-gradient(100deg, transparent 0%, rgba(255,255,255,0) 20%, rgba(255,255,255,0.38) 50%, rgba(255,255,255,0) 80%, transparent 100%);
+  transform: translateX(-160%) skewX(-18deg);
+  pointer-events: none;
+  z-index: 1;
+  animation: evBtnSheen 5.5s ease-in-out 2.5s infinite;
+}
+@keyframes evBtnSheen{
+  0%   { transform: translateX(-160%) skewX(-18deg); }
+  28%  { transform: translateX(330%)  skewX(-18deg); }
+  100% { transform: translateX(330%)  skewX(-18deg); }
+}
+.button-container .download-button:hover{
+  filter: brightness(1.07) contrast(1.03);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.55),
+    0 12px 0 #3e4043,
+    0 13px 0 1px rgba(0,0,0,0.5),
+    0 28px 50px rgba(0,0,0,0.6),
+    0 0 34px rgba(255,255,255,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.85),
+    inset 0 0 0 1px rgba(255,255,255,0.24),
+    inset 0 -10px 18px rgba(0,0,0,0.3);
+}
+.button-container .download-button:hover::before{ opacity: 1; }
+.button-container .download-button:hover::after{ animation-duration: 1.6s; animation-delay: 0s; }
+.button-container .download-button:focus-visible{
+  outline: 2px solid rgba(255,255,255,0.55);
+  outline-offset: 6px;
+}
+@media (max-width: 560px){
+  .button-container .download-button{ padding: 24px 46px; font-size: 22px; letter-spacing: 2px; }
+}
+@media (prefers-reduced-motion: reduce){
+  .button-container .download-button::after{ animation: none; opacity: 0; }
+}
 </style>
 </head>
 
@@ -10103,7 +10188,7 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
     </div>
 
     <div class="button-container">
-      <span class="magnetic" data-magnetic><button class="download-button" data-i18n="download-btn">Скачать Evades 3</button></span>
+      <span class="download-wrap"><button class="download-button" data-i18n="download-btn">Скачать Evades 3</button></span>
 
       <!-- 3D замок + цепи: ОТКЛЮЧЕНО (откат по запросу пользователя) -->
       <div class="lock-cage" aria-hidden="true" hidden style="display:none">
@@ -18030,6 +18115,19 @@ async function _ev3BuildUser(fbUser) {
       meta.username = fallbackNick;
     } catch (_) {}
   }
+  // Самовосстановление записи «ник → email» (коллекция usernames). Без неё вход
+  // ПО НИКУ пишет «Пользователь не найден», хотя аккаунт жив (так бывает у
+  // аккаунтов, созданных до появления этой коллекции, или после сбоя смены ника).
+  // Запись создаётся только если её нет — чужие ники не перезаписываются.
+  try {
+    if (db && meta.username && fbUser.email) {
+      const nickLower = String(meta.username).toLowerCase();
+      const unameSnap = await db.collection('usernames').doc(nickLower).get();
+      if (!unameSnap.exists) {
+        await db.collection('usernames').doc(nickLower).set({ email: fbUser.email, uid: fbUser.uid });
+      }
+    }
+  } catch (_) {}
   const providers = (fbUser.providerData || []).map(p => {
     if (p.providerId === 'google.com') return 'google';
     if (p.providerId === 'password')   return 'email';
@@ -18507,7 +18605,7 @@ async function doLogin() {
   if (!idInput.includes('@')) {
     const resolved = await ev3ResolveNickToEmail(idInput);
     if (!resolved) {
-      setHint('li-email-hint', tt('auth-err-user-not-found','Пользователь не найден'),'err');
+      setHint('li-email-hint', tt('auth-err-nick-not-found','Ник не найден. Попробуй войти по email — после входа вход по нику снова заработает'),'err');
       setInpState(emailInp,'error');
       btn.disabled=false; btn.innerHTML='<span class="af-submit-shine"></span><span>'+tt('login-submit-btn','Войти →')+'</span>';
       return;
@@ -19740,18 +19838,7 @@ async function doResetPassword() {
     });
   });
 
-  // ----- Magnetic buttons -----
-  const magnets = document.querySelectorAll('[data-magnetic]');
-  magnets.forEach(wrap => {
-    const btn = wrap.querySelector('button, a') || wrap;
-    wrap.addEventListener('mousemove', e => {
-      const r = wrap.getBoundingClientRect();
-      const x = e.clientX - r.left - r.width/2;
-      const y = e.clientY - r.top - r.height/2;
-      btn.style.transform = `translate(${x*0.18}px, ${y*0.22}px)`;
-    });
-    wrap.addEventListener('mouseleave', () => { btn.style.transform = ''; });
-  });
+  // (Магнитная кнопка удалена: кнопка «Скачать» больше не двигается за курсором)
 
   // ----- FAQ accordion -----
   document.querySelectorAll('.faq-item').forEach(item => {
@@ -28937,6 +29024,7 @@ async function _e3LoadParticipants() {
 })();
 </script>
 
+<script id="ev-nick-login-tr">(function(){try{var T={"ru": "Ник не найден. Попробуй войти по email — после входа вход по нику снова заработает", "en": "Nickname not found. Try signing in with your email — after that, nickname sign-in will work again", "uk": "Нік не знайдено. Спробуй увійти через email — після входу вхід за ніком знову запрацює", "de": "Nickname nicht gefunden. Melde dich mit deiner E-Mail an – danach funktioniert die Anmeldung per Nickname wieder", "es": "Apodo no encontrado. Inicia sesión con tu email; después, el inicio con apodo volverá a funcionar", "fr": "Pseudo introuvable. Connecte-toi avec ton e-mail : ensuite, la connexion par pseudo fonctionnera à nouveau", "it": "Nickname non trovato. Accedi con l'email: dopo, l'accesso con il nickname funzionerà di nuovo", "pt": "Apelido não encontrado. Entre com seu e-mail — depois disso, o login pelo apelido voltará a funcionar", "pl": "Nie znaleziono nicku. Zaloguj się e-mailem — potem logowanie nickiem znowu zadziała", "tr": "Takma ad bulunamadı. E-postanla giriş yap — sonrasında takma adla giriş yeniden çalışır", "nl": "Nickname niet gevonden. Log in met je e-mail — daarna werkt inloggen met je nickname weer", "sv": "Smeknamnet hittades inte. Logga in med din e-post – sedan fungerar inloggning med smeknamn igen", "no": "Kallenavnet ble ikke funnet. Logg inn med e-post – etterpå fungerer innlogging med kallenavn igjen", "da": "Kaldenavnet blev ikke fundet. Log ind med din e-mail – derefter virker login med kaldenavn igen", "fi": "Nimimerkkiä ei löytynyt. Kirjaudu sähköpostilla – sen jälkeen nimimerkillä kirjautuminen toimii taas", "cs": "Přezdívka nebyla nalezena. Přihlas se e-mailem – potom bude přihlášení přezdívkou znovu fungovat", "ro": "Porecla nu a fost găsită. Conectează-te cu emailul — după aceea, conectarea cu porecla va funcționa din nou", "hu": "A becenév nem található. Jelentkezz be e-maillel – utána a becenévvel való belépés újra működik", "el": "Το ψευδώνυμο δεν βρέθηκε. Συνδέσου με το email σου — μετά η σύνδεση με ψευδώνυμο θα λειτουργεί ξανά", "ja": "ニックネームが見つかりません。メールアドレスでログインしてください。その後はニックネームでもログインできるようになります", "zh": "未找到该昵称。请使用邮箱登录——登录后即可重新使用昵称登录", "ko": "닉네임을 찾을 수 없습니다. 이메일로 로그인하세요. 그 후에는 닉네임 로그인이 다시 작동합니다", "ar": "لم يتم العثور على الاسم المستعار. سجّل الدخول بالبريد الإلكتروني، وبعدها سيعمل الدخول بالاسم المستعار مجددًا", "hi": "निकनेम नहीं मिला। ईमेल से लॉग इन करें — उसके बाद निकनेम से लॉग इन फिर से काम करेगा", "th": "ไม่พบชื่อเล่น ลองเข้าสู่ระบบด้วยอีเมล หลังจากนั้นการเข้าสู่ระบบด้วยชื่อเล่นจะใช้ได้อีกครั้ง", "vi": "Không tìm thấy biệt danh. Hãy đăng nhập bằng email — sau đó đăng nhập bằng biệt danh sẽ hoạt động lại", "id": "Nama panggilan tidak ditemukan. Masuk dengan email — setelah itu masuk dengan nama panggilan akan berfungsi lagi", "ms": "Nama samaran tidak ditemui. Log masuk dengan e-mel — selepas itu log masuk dengan nama samaran akan berfungsi semula"};if(typeof translations==="object"&&translations){for(var l in T){if(translations[l])translations[l]["auth-err-nick-not-found"]=T[l];}}}catch(e){}})();</script>
 <script id="ev-intro-script">
 /* =====================================================================
    EVADES.IO STYLE — 1) фон-арена  2) поочерёдное интро надписей
