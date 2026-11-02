@@ -8233,6 +8233,7 @@ html, body{
 .subtitle .ev-word{ display:inline-block; white-space:nowrap; }
 .main-title .ev-tw{ display:inline-block; white-space:nowrap; }
 .subtitle .ev-word + .ev-word{ margin-left:.45em; }
+.subtitle[dir="rtl"] .ev-word + .ev-word{ margin-left:0; margin-right:.45em; }
 .ev-word--speed .evc{ color:#fff; }
 .ev-word--tactic .evc{ color:#fff; }
 .evc{ display:inline-block; opacity:0; will-change:transform,opacity; transform-origin:50% 70%; }
@@ -8262,6 +8263,53 @@ html, body{
   position:absolute; left:0; top:0; white-space:nowrap; transform:translate(-50%,-100%);
   font:700 13px Tahoma, Verdana, Arial, sans-serif; color:#fff;
   -webkit-text-stroke:3px #000; paint-order:stroke fill; letter-spacing:.5px;
+}
+
+/* ===== EVADES 3: блик-волна по буквам, блёстки, мягкое «дыхание» (после интро) ===== */
+.main-title .evc{ position:relative; }
+.ev-title-shine .main-title .evc[data-ch]::after{
+  content:attr(data-ch); position:absolute; left:0; top:0; right:0; bottom:0;
+  color:transparent; -webkit-text-stroke:0; text-stroke:0; text-shadow:none; filter:none;
+  background:linear-gradient(100deg, transparent 38%, rgba(255,255,255,0) 41%, rgba(255,255,255,.95) 50%, rgba(255,246,200,0) 59%, transparent 62%);
+  background-size:320% 100%; background-repeat:no-repeat; background-position:160% 0;
+  -webkit-background-clip:text; background-clip:text;
+  animation:evLetterShine 6s ease-in-out infinite; animation-delay:calc(var(--i, 0) * 75ms + .3s);
+  pointer-events:none;
+}
+@keyframes evLetterShine{
+  0%{ background-position:160% 0; }
+  16%{ background-position:-60% 0; }
+  100%{ background-position:-60% 0; }
+}
+.ev-title-shine .title-section .title-stage{ animation:evTitleFloat 4.6s ease-in-out infinite; }
+@keyframes evTitleFloat{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-5px); } }
+.ev-title-shine .main-title.ev-wrapped{ animation:evTitleBreath 4.6s ease-in-out infinite !important; }
+@keyframes evTitleBreath{
+  0%,100%{ filter:drop-shadow(0 0 30px rgba(255,215,0,.55)); }
+  50%{ filter:drop-shadow(0 0 46px rgba(255,215,0,.85)) drop-shadow(0 0 90px rgba(255,170,40,.28)); }
+}
+.ev-sparks{ position:absolute; left:-7%; right:-7%; top:-30%; bottom:-30%; pointer-events:none; z-index:3; }
+.ev-spark{
+  position:absolute; display:block; transform:translate(-50%,-50%) scale(0);
+  filter:drop-shadow(0 0 4px rgba(255,236,150,.95)) drop-shadow(0 0 10px rgba(255,200,60,.7));
+  animation:evTwinkle 2.4s ease-in-out infinite both;
+}
+.ev-spark::before{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(circle, #fff 0 18%, #fff3b0 34%, #ffd84d 60%, #ffb020 100%);
+  clip-path:polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+}
+.ev-spark.is-white::before{ background:radial-gradient(circle, #fff 0 40%, #eaf4ff 70%, #bfe0ff 100%); }
+.ev-spark.is-white{ filter:drop-shadow(0 0 4px rgba(255,255,255,.95)) drop-shadow(0 0 10px rgba(160,205,255,.7)); }
+@keyframes evTwinkle{
+  0%{ transform:translate(-50%,-50%) scale(0) rotate(0deg); opacity:0; }
+  45%{ transform:translate(-50%,-50%) scale(1) rotate(45deg); opacity:1; }
+  55%{ transform:translate(-50%,-50%) scale(.85) rotate(60deg); opacity:1; }
+  100%{ transform:translate(-50%,-50%) scale(0) rotate(110deg); opacity:0; }
+}
+@media (prefers-reduced-motion: reduce){
+  .ev-title-shine .main-title .evc[data-ch]::after, .ev-sparks{ display:none !important; }
+  .ev-title-shine .title-section .title-stage, .ev-title-shine .main-title.ev-wrapped{ animation:none !important; }
 }
 
 @media (max-width: 600px){
@@ -18158,6 +18206,11 @@ async function _ev3BuildUser(fbUser) {
 }
 
 function clearSession() { ev3Session = null; ev3User = null; }
+// Текст ошибки для игрока: без кодов и технических сообщений Firebase.
+function _ev3PlayerErr(e) {
+  try { if (typeof window._ev3FriendlyAuthErr === 'function') return window._ev3FriendlyAuthErr(e); } catch (_) {}
+  return tt('auth-err-unknown', 'Неизвестная ошибка. Попробуй позже');
+}
 
 async function verifySession() {
   const mod = await _fbAuth();
@@ -18412,7 +18465,7 @@ async function open2faSetupModal() {
   const user = auth.currentUser;
   if (!user) return;
   if (!user.emailVerified) {
-    const fallback = tt('tfa-need-verified-email','Сначала подтверди email — без этого Firebase не разрешит включить 2FA. Письмо для подтверждения отправляется при регистрации.');
+    const fallback = tt('tfa-need-verified-email','Сначала подтверди email: без этого 2FA не включить. Ссылка для подтверждения пришла на почту при регистрации');
     document.getElementById('tfaQrLoading').innerHTML = '<span style="color:#FFAE9B;font-weight:800;display:block;line-height:1.4;">' + fallback + '</span>';
     return;
   }
@@ -18620,7 +18673,7 @@ async function doLogin() {
   if (!idInput.includes('@')) {
     const resolved = await ev3ResolveNickToEmail(idInput);
     if (!resolved) {
-      setHint('li-email-hint', tt('auth-err-nick-not-found','Ник не найден. Попробуй войти по email — после входа вход по нику снова заработает'),'err');
+      setHint('li-email-hint', tt('auth-err-nick-not-found','Такой ник не найден. Проверь, правильно ли он написан, или войди по email'),'err');
       setInpState(emailInp,'error');
       btn.disabled=false; btn.innerHTML='<span class="af-submit-shine"></span><span>'+tt('login-submit-btn','Войти →')+'</span>';
       return;
@@ -18694,7 +18747,7 @@ async function doRegister() {
     const mod = await _fbAuth();
     const auth = mod.getAuth();
     const nickLower = nick.toLowerCase();
-    if (!db) throw new Error('Firestore недоступен');
+    if (!db) throw new Error('no-db');
     const existingNick = await db.collection('usernames').doc(nickLower).get();
     if (existingNick.exists) {
       setHint('ri-nick-hint', tt('auth-err-nick-taken','Этот ник уже занят'),'err'); setInpState(nickInp,'error');
@@ -18801,7 +18854,7 @@ async function _googleFinishLogin(accessToken) {
     let msg;
     if (e && e.code === 'auth/invalid-credential') {
       // Для Google это НЕ «неверный пароль», а несовпадение Client ID с Firebase-проектом
-      msg = tt('auth-err-google-config', 'Вход через Google не настроен (Client ID не совпадает с проектом Firebase)');
+      msg = tt('auth-err-google-config', 'Вход через Google сейчас недоступен. Войди по email или нику');
     } else if (e && e.code === 'auth/account-exists-with-different-credential') {
       msg = tt('auth-err-google-exists', 'Этот email уже зарегистрирован другим способом — войди по email и паролю');
     } else {
@@ -18936,7 +18989,7 @@ async function _ev3UpdateUser(body) {
     // изменения (например, кристаллы) исчезали. Теперь при недоступной базе
     // бросаем понятную ошибку — вызывающий код (например, _ev3ClaimCrystals)
     // покажет тост с ошибкой и НЕ обновит счётчик, вместо ложного успеха.
-    if (!db) throw new Error(tt('pm-set-err-nodb','Нет соединения с базой данных. Попробуй ещё раз через пару секунд'));
+    if (!db) throw new Error(tt('pm-set-err-nodb','Не удалось связаться с сервером. Попробуй ещё раз через пару секунд'));
     const patch = Object.assign({}, body.data);
     if (typeof patch.username === 'string') {
       const newNickLower = patch.username.toLowerCase();
@@ -19009,7 +19062,7 @@ function populateProfileExtras() {
         _ev3SetHint('pmEditNickHint', tt('pm-set-saved', 'Сохранено!'), 'ok');
         try { showToast(tt('pm-toast-nick-ok', 'Ник обновлён')); } catch(_) {}
       } catch (e) {
-        _ev3SetHint('pmEditNickHint', tt('pm-set-err', 'Ошибка: ') + (e.message || ''), 'err');
+        _ev3SetHint('pmEditNickHint', tt('pm-set-err', 'Ошибка: ') + _ev3PlayerErr(e), 'err');
       } finally { nickBtn.disabled = false; }
     });
   }
@@ -19249,7 +19302,7 @@ async function _ev3ClaimCrystals() {
     setTimeout(() => { try { _ev3InitCrystals(); } catch(_) {} }, 500);
   } catch (e) {
     if (btn) btn.disabled = false;
-    try { showToast(tt('pm-set-err', 'Ошибка: ') + (e.message || '')); } catch(_) {}
+    try { showToast(tt('pm-set-err', 'Ошибка: ') + _ev3PlayerErr(e)); } catch(_) {}
   }
 }
 
@@ -19499,7 +19552,7 @@ async function doDeleteAccount() {
     try { showToast(tt('del-acc-toast-ok', 'Запрос на удаление отправлен. Аккаунт будет удалён в течение 7 дней. Чтобы отменить — войди снова.')); } catch(_) {}
   } catch (e) {
     if (btn) { btn.disabled = false; btn.textContent = orig; }
-    try { showToast(tt('del-acc-toast-err', 'Не удалось удалить аккаунт: ') + (e.message || '')); } catch(_) {}
+    try { showToast(tt('del-acc-toast-err', 'Не удалось удалить аккаунт: ') + _ev3PlayerErr(e)); } catch(_) {}
   }
 }
 function closeProfileModal() { document.getElementById('profileModalOverlay').classList.remove('show'); }
@@ -27131,7 +27184,7 @@ async function _e3LoadParticipants() {
     if (searchWrap) searchWrap.hidden = rows.length < 6;
     _e3RenderParticipants(rows, '');
   } catch (e) {
-    listEl.innerHTML = '<div class="participants-status">' + _e3Esc(tt('participants-error', 'Не удалось загрузить список (нет доступа)')) + '</div>';
+    listEl.innerHTML = '<div class="participants-status">' + _e3Esc(tt('participants-error', 'Не удалось загрузить список. Попробуй ещё раз позже')) + '</div>';
     if (typeof console !== 'undefined') console.warn('[PARTICIPANTS load]', e);
   }
 }
@@ -28420,7 +28473,7 @@ async function _e3LoadParticipants() {
     // статус и кнопки
     var d = dirty(), stEl = $('rmeStatus');
     stEl.classList.toggle('is-dirty', d && !saveErr); stEl.classList.toggle('is-err', !!saveErr);
-    stEl.textContent = saveErr ? tr('rme-err-save', 'Не удалось сохранить. Проверь правила Firestore для roadmap')
+    stEl.textContent = saveErr ? tr('rme-err-save', 'Не удалось сохранить. Проверь интернет и попробуй ещё раз')
       : closeArmed ? tr('rme-close-warn', 'Есть несохранённые изменения — нажми ещё раз, чтобы закрыть')
       : d ? tr('rme-unsaved', 'Есть несохранённые изменения') : tr('rme-saved', 'Все изменения сохранены');
     $('rmeSaveBtn').disabled = !d || saving;
@@ -28445,7 +28498,7 @@ async function _e3LoadParticipants() {
     } catch (e) {
       saveErr = true;
       if (window.console) console.warn('[ROADMAP save]', e);
-      try { showToast(tr('rme-err-save', 'Не удалось сохранить. Проверь правила Firestore для roadmap'), 'err'); } catch (_) {}
+      try { showToast(tr('rme-err-save', 'Не удалось сохранить. Проверь интернет и попробуй ещё раз'), 'err'); } catch (_) {}
     } finally {
       saving = false; rmeRender();
     }
@@ -28491,7 +28544,13 @@ async function _e3LoadParticipants() {
     if (/too-many-requests/.test(c))     return tr('reauth-many', 'Слишком много попыток. Подожди пару минут');
     if (/network-request-failed/.test(c)) return tr('auth-err-network', 'Нет связи с сервером');
     if (/invalid-email/.test(c))         return tr('pm-set-email-bad', 'Неверный формат email');
-    return (e && e.message) || String(e || '');
+    if (/permission-denied|unauthenticated/.test(c) || (e && e.message === 'not_authenticated')) return tr('auth-err-recent', 'Войди в аккаунт заново и повтори действие');
+    if (/unavailable|deadline-exceeded|network/.test(c) || (e && e.message === 'no-db')) return tr('pm-set-err-nodb', 'Не удалось связаться с сервером. Попробуй ещё раз через пару секунд');
+    // Свои понятные сообщения сайта (например «Этот ник уже занят») показываем как есть,
+    // а технические тексты Firebase и коды ошибок игроку не показываем.
+    var msg = (e && e.message) || '';
+    if (!c && msg && !/firebase|firestore|auth\/|permission|insufficient|internal|undefined|null|error/i.test(msg)) return msg;
+    return tr('auth-err-unknown', 'Неизвестная ошибка. Попробуй позже');
   };
 
   // Возвращает Promise<boolean>: true — пароль подтверждён. Бросает ошибку, если у аккаунта нет пароля.
@@ -29053,7 +29112,8 @@ async function _e3LoadParticipants() {
 })();
 </script>
 
-<script id="ev-nick-login-tr">(function(){try{var T={"ru": "Ник не найден. Попробуй войти по email — после входа вход по нику снова заработает", "en": "Nickname not found. Try signing in with your email — after that, nickname sign-in will work again", "uk": "Нік не знайдено. Спробуй увійти через email — після входу вхід за ніком знову запрацює", "de": "Nickname nicht gefunden. Melde dich mit deiner E-Mail an – danach funktioniert die Anmeldung per Nickname wieder", "es": "Apodo no encontrado. Inicia sesión con tu email; después, el inicio con apodo volverá a funcionar", "fr": "Pseudo introuvable. Connecte-toi avec ton e-mail : ensuite, la connexion par pseudo fonctionnera à nouveau", "it": "Nickname non trovato. Accedi con l'email: dopo, l'accesso con il nickname funzionerà di nuovo", "pt": "Apelido não encontrado. Entre com seu e-mail — depois disso, o login pelo apelido voltará a funcionar", "pl": "Nie znaleziono nicku. Zaloguj się e-mailem — potem logowanie nickiem znowu zadziała", "tr": "Takma ad bulunamadı. E-postanla giriş yap — sonrasında takma adla giriş yeniden çalışır", "nl": "Nickname niet gevonden. Log in met je e-mail — daarna werkt inloggen met je nickname weer", "sv": "Smeknamnet hittades inte. Logga in med din e-post – sedan fungerar inloggning med smeknamn igen", "no": "Kallenavnet ble ikke funnet. Logg inn med e-post – etterpå fungerer innlogging med kallenavn igjen", "da": "Kaldenavnet blev ikke fundet. Log ind med din e-mail – derefter virker login med kaldenavn igen", "fi": "Nimimerkkiä ei löytynyt. Kirjaudu sähköpostilla – sen jälkeen nimimerkillä kirjautuminen toimii taas", "cs": "Přezdívka nebyla nalezena. Přihlas se e-mailem – potom bude přihlášení přezdívkou znovu fungovat", "ro": "Porecla nu a fost găsită. Conectează-te cu emailul — după aceea, conectarea cu porecla va funcționa din nou", "hu": "A becenév nem található. Jelentkezz be e-maillel – utána a becenévvel való belépés újra működik", "el": "Το ψευδώνυμο δεν βρέθηκε. Συνδέσου με το email σου — μετά η σύνδεση με ψευδώνυμο θα λειτουργεί ξανά", "ja": "ニックネームが見つかりません。メールアドレスでログインしてください。その後はニックネームでもログインできるようになります", "zh": "未找到该昵称。请使用邮箱登录——登录后即可重新使用昵称登录", "ko": "닉네임을 찾을 수 없습니다. 이메일로 로그인하세요. 그 후에는 닉네임 로그인이 다시 작동합니다", "ar": "لم يتم العثور على الاسم المستعار. سجّل الدخول بالبريد الإلكتروني، وبعدها سيعمل الدخول بالاسم المستعار مجددًا", "hi": "निकनेम नहीं मिला। ईमेल से लॉग इन करें — उसके बाद निकनेम से लॉग इन फिर से काम करेगा", "th": "ไม่พบชื่อเล่น ลองเข้าสู่ระบบด้วยอีเมล หลังจากนั้นการเข้าสู่ระบบด้วยชื่อเล่นจะใช้ได้อีกครั้ง", "vi": "Không tìm thấy biệt danh. Hãy đăng nhập bằng email — sau đó đăng nhập bằng biệt danh sẽ hoạt động lại", "id": "Nama panggilan tidak ditemukan. Masuk dengan email — setelah itu masuk dengan nama panggilan akan berfungsi lagi", "ms": "Nama samaran tidak ditemui. Log masuk dengan e-mel — selepas itu log masuk dengan nama samaran akan berfungsi semula"};if(typeof translations==="object"&&translations){for(var l in T){if(translations[l])translations[l]["auth-err-nick-not-found"]=T[l];}}}catch(e){}})();</script>
+<script id="ev-player-msgs-tr">(function(){try{var T={"ru": {"rme-err-save": "Не удалось сохранить. Проверь интернет и попробуй ещё раз", "auth-err-google-config": "Вход через Google сейчас недоступен. Войди по email или нику", "tfa-need-verified-email": "Сначала подтверди email: без этого 2FA не включить. Ссылка для подтверждения пришла на почту при регистрации", "participants-error": "Не удалось загрузить список. Попробуй ещё раз позже", "auth-err-nick-not-found": "Такой ник не найден. Проверь, правильно ли он написан, или войди по email", "pm-set-err-nodb": "Не удалось связаться с сервером. Попробуй ещё раз через пару секунд"}, "en": {"rme-err-save": "Could not save. Check your connection and try again", "auth-err-google-config": "Google sign-in is unavailable right now. Sign in with your email or nickname", "tfa-need-verified-email": "Verify your email first: 2FA can’t be turned on without it. The verification link was sent to your inbox when you signed up", "participants-error": "Could not load the list. Please try again later", "auth-err-nick-not-found": "Nickname not found. Check the spelling or sign in with your email", "pm-set-err-nodb": "Could not reach the server. Try again in a few seconds"}, "uk": {"rme-err-save": "Не вдалося зберегти. Перевір інтернет і спробуй ще раз", "auth-err-google-config": "Вхід через Google зараз недоступний. Увійди за email або ніком", "tfa-need-verified-email": "Спершу підтверди email: без цього 2FA не увімкнути. Посилання для підтвердження прийшло на пошту під час реєстрації", "participants-error": "Не вдалося завантажити список. Спробуй ще раз пізніше", "auth-err-nick-not-found": "Такий нік не знайдено. Перевір, чи правильно він написаний, або увійди за email", "pm-set-err-nodb": "Не вдалося зв’язатися з сервером. Спробуй ще раз за кілька секунд"}, "de": {"rme-err-save": "Speichern fehlgeschlagen. Prüfe deine Verbindung und versuche es erneut", "auth-err-google-config": "Die Anmeldung mit Google ist gerade nicht verfügbar. Melde dich mit E-Mail oder Nickname an", "tfa-need-verified-email": "Bestätige zuerst deine E-Mail: Ohne sie lässt sich 2FA nicht aktivieren. Den Bestätigungslink hast du bei der Registrierung per E-Mail bekommen", "participants-error": "Die Liste konnte nicht geladen werden. Versuche es später erneut", "auth-err-nick-not-found": "Nickname nicht gefunden. Prüfe die Schreibweise oder melde dich mit deiner E-Mail an", "pm-set-err-nodb": "Server nicht erreichbar. Versuche es in ein paar Sekunden erneut"}, "es": {"rme-err-save": "No se pudo guardar. Revisa tu conexión e inténtalo de nuevo", "auth-err-google-config": "El inicio de sesión con Google no está disponible ahora. Entra con tu email o apodo", "tfa-need-verified-email": "Primero verifica tu email: sin eso no se puede activar la 2FA. El enlace de verificación llegó a tu correo al registrarte", "participants-error": "No se pudo cargar la lista. Inténtalo de nuevo más tarde", "auth-err-nick-not-found": "No se encontró ese apodo. Revisa cómo está escrito o entra con tu email", "pm-set-err-nodb": "No se pudo conectar con el servidor. Inténtalo de nuevo en unos segundos"}, "fr": {"rme-err-save": "Impossible d’enregistrer. Vérifie ta connexion et réessaie", "auth-err-google-config": "La connexion avec Google est indisponible pour le moment. Connecte-toi avec ton e-mail ou ton pseudo", "tfa-need-verified-email": "Confirme d’abord ton e-mail : sans ça, la 2FA ne peut pas être activée. Le lien de confirmation t’a été envoyé à l’inscription", "participants-error": "Impossible de charger la liste. Réessaie plus tard", "auth-err-nick-not-found": "Pseudo introuvable. Vérifie l’orthographe ou connecte-toi avec ton e-mail", "pm-set-err-nodb": "Impossible de joindre le serveur. Réessaie dans quelques secondes"}, "it": {"rme-err-save": "Impossibile salvare. Controlla la connessione e riprova", "auth-err-google-config": "L’accesso con Google non è disponibile al momento. Accedi con email o nickname", "tfa-need-verified-email": "Prima conferma la tua email: senza questo la 2FA non si può attivare. Il link di conferma ti è arrivato via email alla registrazione", "participants-error": "Impossibile caricare l’elenco. Riprova più tardi", "auth-err-nick-not-found": "Nickname non trovato. Controlla come è scritto o accedi con la tua email", "pm-set-err-nodb": "Impossibile contattare il server. Riprova tra qualche secondo"}, "pt": {"rme-err-save": "Não foi possível salvar. Verifique a conexão e tente novamente", "auth-err-google-config": "O login com Google está indisponível no momento. Entre com seu e-mail ou apelido", "tfa-need-verified-email": "Primeiro confirme seu e-mail: sem isso não é possível ativar a 2FA. O link de confirmação foi enviado ao seu e-mail no cadastro", "participants-error": "Não foi possível carregar a lista. Tente novamente mais tarde", "auth-err-nick-not-found": "Apelido não encontrado. Confira a grafia ou entre com seu e-mail", "pm-set-err-nodb": "Não foi possível conectar ao servidor. Tente novamente em alguns segundos"}, "pl": {"rme-err-save": "Nie udało się zapisać. Sprawdź połączenie i spróbuj ponownie", "auth-err-google-config": "Logowanie przez Google jest teraz niedostępne. Zaloguj się e-mailem lub nickiem", "tfa-need-verified-email": "Najpierw potwierdź e-mail: bez tego nie włączysz 2FA. Link potwierdzający przyszedł na pocztę przy rejestracji", "participants-error": "Nie udało się wczytać listy. Spróbuj ponownie później", "auth-err-nick-not-found": "Nie znaleziono takiego nicku. Sprawdź pisownię lub zaloguj się e-mailem", "pm-set-err-nodb": "Nie udało się połączyć z serwerem. Spróbuj ponownie za kilka sekund"}, "tr": {"rme-err-save": "Kaydedilemedi. Bağlantını kontrol edip tekrar dene", "auth-err-google-config": "Google ile giriş şu anda kullanılamıyor. E-posta veya takma adınla giriş yap", "tfa-need-verified-email": "Önce e-postanı doğrula: bu olmadan 2FA açılamaz. Doğrulama bağlantısı kayıt olurken e-postana gönderildi", "participants-error": "Liste yüklenemedi. Daha sonra tekrar dene", "auth-err-nick-not-found": "Bu takma ad bulunamadı. Yazımını kontrol et veya e-postanla giriş yap", "pm-set-err-nodb": "Sunucuya ulaşılamadı. Birkaç saniye sonra tekrar dene"}, "nl": {"rme-err-save": "Opslaan mislukt. Controleer je verbinding en probeer het opnieuw", "auth-err-google-config": "Inloggen met Google is nu niet beschikbaar. Log in met je e-mail of nickname", "tfa-need-verified-email": "Bevestig eerst je e-mail: zonder dat kun je 2FA niet aanzetten. De bevestigingslink is bij je registratie naar je mail gestuurd", "participants-error": "De lijst kon niet worden geladen. Probeer het later opnieuw", "auth-err-nick-not-found": "Nickname niet gevonden. Controleer de spelling of log in met je e-mail", "pm-set-err-nodb": "Kan de server niet bereiken. Probeer het over een paar seconden opnieuw"}, "sv": {"rme-err-save": "Det gick inte att spara. Kontrollera anslutningen och försök igen", "auth-err-google-config": "Inloggning med Google är inte tillgänglig just nu. Logga in med e-post eller smeknamn", "tfa-need-verified-email": "Bekräfta först din e-post: utan det går 2FA inte att aktivera. Bekräftelselänken skickades till din e-post när du registrerade dig", "participants-error": "Listan kunde inte laddas. Försök igen senare", "auth-err-nick-not-found": "Smeknamnet hittades inte. Kontrollera stavningen eller logga in med e-post", "pm-set-err-nodb": "Kunde inte nå servern. Försök igen om några sekunder"}, "no": {"rme-err-save": "Kunne ikke lagre. Sjekk tilkoblingen og prøv igjen", "auth-err-google-config": "Innlogging med Google er ikke tilgjengelig akkurat nå. Logg inn med e-post eller kallenavn", "tfa-need-verified-email": "Bekreft e-posten din først: uten det kan 2FA ikke slås på. Bekreftelseslenken ble sendt til e-posten din da du registrerte deg", "participants-error": "Kunne ikke laste listen. Prøv igjen senere", "auth-err-nick-not-found": "Fant ikke kallenavnet. Sjekk stavingen eller logg inn med e-post", "pm-set-err-nodb": "Får ikke kontakt med serveren. Prøv igjen om noen sekunder"}, "da": {"rme-err-save": "Kunne ikke gemme. Tjek din forbindelse og prøv igen", "auth-err-google-config": "Login med Google er ikke tilgængeligt lige nu. Log ind med e-mail eller kaldenavn", "tfa-need-verified-email": "Bekræft først din e-mail: uden det kan 2FA ikke slås til. Bekræftelseslinket blev sendt til din e-mail, da du oprettede dig", "participants-error": "Listen kunne ikke indlæses. Prøv igen senere", "auth-err-nick-not-found": "Kaldenavnet blev ikke fundet. Tjek stavningen eller log ind med e-mail", "pm-set-err-nodb": "Kunne ikke få forbindelse til serveren. Prøv igen om et par sekunder"}, "fi": {"rme-err-save": "Tallennus epäonnistui. Tarkista yhteys ja yritä uudelleen", "auth-err-google-config": "Google-kirjautuminen ei ole nyt käytettävissä. Kirjaudu sähköpostilla tai nimimerkillä", "tfa-need-verified-email": "Vahvista ensin sähköpostisi: ilman sitä 2FA:ta ei voi ottaa käyttöön. Vahvistuslinkki lähetettiin sähköpostiisi rekisteröityessäsi", "participants-error": "Luetteloa ei voitu ladata. Yritä myöhemmin uudelleen", "auth-err-nick-not-found": "Nimimerkkiä ei löytynyt. Tarkista kirjoitusasu tai kirjaudu sähköpostilla", "pm-set-err-nodb": "Palvelimeen ei saatu yhteyttä. Yritä uudelleen hetken päästä"}, "cs": {"rme-err-save": "Uložení se nezdařilo. Zkontroluj připojení a zkus to znovu", "auth-err-google-config": "Přihlášení přes Google teď není dostupné. Přihlas se e-mailem nebo přezdívkou", "tfa-need-verified-email": "Nejdřív potvrď e-mail: bez toho 2FA nezapneš. Odkaz pro potvrzení ti přišel do pošty při registraci", "participants-error": "Seznam se nepodařilo načíst. Zkus to později", "auth-err-nick-not-found": "Taková přezdívka neexistuje. Zkontroluj, jak je napsaná, nebo se přihlas e-mailem", "pm-set-err-nodb": "Nepodařilo se spojit se serverem. Zkus to znovu za pár sekund"}, "ro": {"rme-err-save": "Nu s-a putut salva. Verifică conexiunea și încearcă din nou", "auth-err-google-config": "Conectarea cu Google nu este disponibilă acum. Conectează-te cu emailul sau porecla", "tfa-need-verified-email": "Mai întâi confirmă emailul: fără asta 2FA nu poate fi activată. Linkul de confirmare ți-a fost trimis la înregistrare", "participants-error": "Lista nu a putut fi încărcată. Încearcă mai târziu", "auth-err-nick-not-found": "Porecla nu a fost găsită. Verifică dacă e scrisă corect sau conectează-te cu emailul", "pm-set-err-nodb": "Nu s-a putut contacta serverul. Încearcă din nou peste câteva secunde"}, "hu": {"rme-err-save": "Nem sikerült menteni. Ellenőrizd a kapcsolatot, és próbáld újra", "auth-err-google-config": "A Google-bejelentkezés most nem érhető el. Lépj be e-maillel vagy becenévvel", "tfa-need-verified-email": "Előbb erősítsd meg az e-mail-címed: enélkül a 2FA nem kapcsolható be. A megerősítő linket regisztrációkor küldtük el", "participants-error": "Nem sikerült betölteni a listát. Próbáld újra később", "auth-err-nick-not-found": "Nincs ilyen becenév. Ellenőrizd az írásmódot, vagy lépj be e-maillel", "pm-set-err-nodb": "Nem érhető el a szerver. Próbáld újra pár másodperc múlva"}, "el": {"rme-err-save": "Η αποθήκευση απέτυχε. Έλεγξε τη σύνδεσή σου και δοκίμασε ξανά", "auth-err-google-config": "Η σύνδεση με Google δεν είναι διαθέσιμη τώρα. Συνδέσου με email ή ψευδώνυμο", "tfa-need-verified-email": "Επιβεβαίωσε πρώτα το email σου: χωρίς αυτό δεν ενεργοποιείται το 2FA. Ο σύνδεσμος επιβεβαίωσης στάλθηκε στο email σου κατά την εγγραφή", "participants-error": "Δεν ήταν δυνατή η φόρτωση της λίστας. Δοκίμασε ξανά αργότερα", "auth-err-nick-not-found": "Δεν βρέθηκε αυτό το ψευδώνυμο. Έλεγξε την ορθογραφία ή συνδέσου με email", "pm-set-err-nodb": "Δεν ήταν δυνατή η σύνδεση με τον διακομιστή. Δοκίμασε ξανά σε λίγα δευτερόλεπτα"}, "ja": {"rme-err-save": "保存できませんでした。接続を確認して、もう一度お試しください", "auth-err-google-config": "現在Googleでログインできません。メールアドレスまたはニックネームでログインしてください", "tfa-need-verified-email": "先にメールアドレスを確認してください。確認しないと2FAを有効にできません。確認リンクは登録時にメールで送られています", "participants-error": "リストを読み込めませんでした。しばらくしてからもう一度お試しください", "auth-err-nick-not-found": "このニックネームは見つかりません。綴りを確認するか、メールアドレスでログインしてください", "pm-set-err-nodb": "サーバーに接続できませんでした。数秒後にもう一度お試しください"}, "zh": {"rme-err-save": "保存失败。请检查网络连接后重试", "auth-err-google-config": "暂时无法使用 Google 登录。请使用邮箱或昵称登录", "tfa-need-verified-email": "请先验证邮箱：未验证无法开启 2FA。验证链接已在注册时发送到你的邮箱", "participants-error": "无法加载列表，请稍后重试", "auth-err-nick-not-found": "未找到该昵称。请检查拼写，或使用邮箱登录", "pm-set-err-nodb": "无法连接服务器，请几秒后重试"}, "ko": {"rme-err-save": "저장하지 못했습니다. 연결을 확인하고 다시 시도하세요", "auth-err-google-config": "지금은 Google 로그인을 사용할 수 없습니다. 이메일이나 닉네임으로 로그인하세요", "tfa-need-verified-email": "먼저 이메일을 인증하세요. 인증하지 않으면 2FA를 켤 수 없습니다. 인증 링크는 가입할 때 메일로 발송되었습니다", "participants-error": "목록을 불러오지 못했습니다. 나중에 다시 시도하세요", "auth-err-nick-not-found": "닉네임을 찾을 수 없습니다. 철자를 확인하거나 이메일로 로그인하세요", "pm-set-err-nodb": "서버에 연결할 수 없습니다. 몇 초 후 다시 시도하세요"}, "ar": {"rme-err-save": "تعذّر الحفظ. تحقّق من الاتصال وحاول مرة أخرى", "auth-err-google-config": "تسجيل الدخول عبر Google غير متاح حاليًا. سجّل الدخول بالبريد الإلكتروني أو الاسم المستعار", "tfa-need-verified-email": "أكّد بريدك الإلكتروني أولًا: لا يمكن تفعيل 2FA بدون ذلك. أُرسل رابط التأكيد إلى بريدك عند التسجيل", "participants-error": "تعذّر تحميل القائمة. حاول مرة أخرى لاحقًا", "auth-err-nick-not-found": "لم يُعثر على هذا الاسم المستعار. تحقّق من كتابته أو سجّل الدخول بالبريد الإلكتروني", "pm-set-err-nodb": "تعذّر الاتصال بالخادم. حاول مرة أخرى بعد بضع ثوانٍ"}, "hi": {"rme-err-save": "सेव नहीं हो सका। अपना कनेक्शन जाँचें और फिर से कोशिश करें", "auth-err-google-config": "अभी Google से लॉगिन उपलब्ध नहीं है। ईमेल या निकनेम से लॉगिन करें", "tfa-need-verified-email": "पहले अपना ईमेल वेरिफ़ाई करें: इसके बिना 2FA चालू नहीं होगा। वेरिफ़िकेशन लिंक रजिस्ट्रेशन के समय आपके ईमेल पर भेजा गया था", "participants-error": "सूची लोड नहीं हो सकी। कुछ देर बाद फिर से कोशिश करें", "auth-err-nick-not-found": "यह निकनेम नहीं मिला। स्पेलिंग जाँचें या ईमेल से लॉगिन करें", "pm-set-err-nodb": "सर्वर से कनेक्ट नहीं हो सका। कुछ सेकंड बाद फिर से कोशिश करें"}, "th": {"rme-err-save": "บันทึกไม่สำเร็จ ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง", "auth-err-google-config": "ขณะนี้ไม่สามารถเข้าสู่ระบบด้วย Google ได้ กรุณาเข้าสู่ระบบด้วยอีเมลหรือชื่อเล่น", "tfa-need-verified-email": "ยืนยันอีเมลก่อน หากไม่ยืนยันจะเปิด 2FA ไม่ได้ ลิงก์ยืนยันถูกส่งไปที่อีเมลของคุณตอนสมัคร", "participants-error": "โหลดรายการไม่สำเร็จ ลองใหม่อีกครั้งภายหลัง", "auth-err-nick-not-found": "ไม่พบชื่อเล่นนี้ ตรวจสอบการสะกด หรือเข้าสู่ระบบด้วยอีเมล", "pm-set-err-nodb": "เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ ลองอีกครั้งในอีกไม่กี่วินาที"}, "vi": {"rme-err-save": "Không thể lưu. Hãy kiểm tra kết nối và thử lại", "auth-err-google-config": "Hiện không thể đăng nhập bằng Google. Hãy đăng nhập bằng email hoặc biệt danh", "tfa-need-verified-email": "Hãy xác minh email trước: chưa xác minh thì không bật được 2FA. Liên kết xác minh đã được gửi vào email khi bạn đăng ký", "participants-error": "Không thể tải danh sách. Hãy thử lại sau", "auth-err-nick-not-found": "Không tìm thấy biệt danh này. Hãy kiểm tra chính tả hoặc đăng nhập bằng email", "pm-set-err-nodb": "Không thể kết nối máy chủ. Hãy thử lại sau vài giây"}, "id": {"rme-err-save": "Gagal menyimpan. Periksa koneksi dan coba lagi", "auth-err-google-config": "Masuk dengan Google sedang tidak tersedia. Masuk dengan email atau nama panggilan", "tfa-need-verified-email": "Verifikasi email dulu: tanpa itu 2FA tidak bisa diaktifkan. Tautan verifikasi dikirim ke email saat kamu mendaftar", "participants-error": "Gagal memuat daftar. Coba lagi nanti", "auth-err-nick-not-found": "Nama panggilan tidak ditemukan. Periksa ejaannya atau masuk dengan email", "pm-set-err-nodb": "Tidak dapat terhubung ke server. Coba lagi dalam beberapa detik"}, "ms": {"rme-err-save": "Gagal menyimpan. Semak sambungan dan cuba lagi", "auth-err-google-config": "Log masuk dengan Google tidak tersedia buat masa ini. Log masuk dengan e-mel atau nama samaran", "tfa-need-verified-email": "Sahkan e-mel dahulu: tanpanya 2FA tidak boleh dihidupkan. Pautan pengesahan dihantar ke e-mel semasa anda mendaftar", "participants-error": "Gagal memuatkan senarai. Cuba lagi kemudian", "auth-err-nick-not-found": "Nama samaran tidak ditemui. Semak ejaannya atau log masuk dengan e-mel", "pm-set-err-nodb": "Tidak dapat menghubungi pelayan. Cuba lagi dalam beberapa saat"}};if(typeof translations==="object"&&translations){for(var l in T){if(!translations[l])translations[l]={};for(var k in T[l])translations[l][k]=T[l][k];}}}catch(e){}})();</script>
+
 <script id="ev-intro-script">
 /* =====================================================================
    EVADES.IO STYLE — 1) фон-арена  2) поочерёдное интро надписей
@@ -29075,11 +29135,32 @@ async function _e3LoadParticipants() {
     anims.forEach(function(a){ try{ a.cancel(); }catch(_){} }); anims = [];
     if (fx && fx.parentNode) fx.parentNode.removeChild(fx);
     fx = null;
-    document.body.classList.remove('ev-intro-done','ev-title-glow');
+    stopSparkles();
+    document.body.classList.remove('ev-intro-done','ev-title-glow','ev-title-shine');
   }
   function esc(c){ return c==='&'?'&amp;':c==='<'?'&lt;':c==='>'?'&gt;':c; }
-  function chars(str){
-    return Array.from(str).map(function(c){ return '<span class="evc">' + (c===' ' ? '\u00A0' : esc(c)) + '</span>'; }).join('');
+  // Арабский/иврит/хинди и т.п. нельзя резать на буквы (рвутся связки и порядок) —
+  // для них анимируем целые слова. Остальное режем по графемам (а не по code point),
+  // чтобы диакритика (вьетнамский, тайский) не отваливалась от букв.
+  var COMPLEX_RE = /[\u0590-\u08FF\u0900-\u0DFF\u0F00-\u0FFF\u1000-\u109F\u1780-\u17FF]/;
+  var RTL_RE = /[\u0590-\u08FF]/;
+  function units(str){
+    if (COMPLEX_RE.test(str)) return str.split(/(\s+)/).filter(function(x){ return x.length; });
+    try {
+      if (window.Intl && Intl.Segmenter){
+        return Array.from(new Intl.Segmenter(undefined, { granularity:'grapheme' }).segment(str), function(x){ return x.segment; });
+      }
+    } catch(_){}
+    return Array.from(str);
+  }
+  function chars(str, withData){
+    var i = 0;
+    return units(str).map(function(c){
+      if (/^\s+$/.test(c)) return '<span class="evc evc-sp">\u00A0</span>';
+      var safe = Array.from(c).map(esc).join('');
+      var extra = withData ? ' data-ch="' + safe.replace(/"/g,'&quot;') + '" style="--i:' + (i++) + '"' : '';
+      return '<span class="evc"' + extra + '>' + safe + '</span>';
+    }).join('');
   }
   function ball(color, r, extraCls){
     var b = document.createElement('div');
@@ -29104,6 +29185,35 @@ async function _e3LoadParticipants() {
       return { x: r.left - base.left + r.width/2, y: r.top - base.top + r.height/2, w:r.width, h:r.height };
     });
   }
+  // Блёстки вокруг «EVADES 3»: мерцают и каждый раз появляются в новом месте
+  var sparkBox = null;
+  function stopSparkles(){ if (sparkBox && sparkBox.parentNode) sparkBox.parentNode.removeChild(sparkBox); sparkBox = null; }
+  function placeSpark(el){
+    // по краям и поверх букв, но не строго в центре — чтобы не мешать читать
+    var x = Math.random()*100, y = Math.random()*100;
+    if (y > 28 && y < 72 && Math.random() < 0.55) y = Math.random() < 0.5 ? Math.random()*24 : 76 + Math.random()*24;
+    var size = 8 + Math.random()*16;
+    el.style.left = x.toFixed(1) + '%'; el.style.top = y.toFixed(1) + '%';
+    el.style.width = el.style.height = size.toFixed(0) + 'px';
+    el.style.animationDuration = (1.6 + Math.random()*1.8).toFixed(2) + 's';
+    el.classList.toggle('is-white', Math.random() < 0.4);
+  }
+  function startSparkles(){
+    stopSparkles();
+    if (REDUCED) return;
+    var stage = document.querySelector('.title-section .title-stage');
+    if (!stage) return;
+    sparkBox = document.createElement('div'); sparkBox.className = 'ev-sparks'; sparkBox.setAttribute('aria-hidden','true');
+    var n = window.innerWidth < 600 ? 9 : 16;
+    for (var i = 0; i < n; i++){
+      var sp = document.createElement('i'); sp.className = 'ev-spark';
+      placeSpark(sp);
+      sp.style.animationDelay = (Math.random()*2.4).toFixed(2) + 's';
+      sp.addEventListener('animationiteration', function(e){ placeSpark(e.currentTarget); });
+      sparkBox.appendChild(sp);
+    }
+    stage.appendChild(sparkBox);
+  }
   function T(x, y, r, s){ return 'translate(' + (x-r) + 'px,' + (y-r) + 'px) scale(' + (s==null?1:s) + ')'; }
 
   // ---------- ФАЗА 1: «Скорость.» — герой проносится, буквы вылетают за ним ----------
@@ -29113,33 +29223,44 @@ async function _e3LoadParticipants() {
     var base = section.getBoundingClientRect(), c = centers(list, base);
     var fs = parseFloat(getComputedStyle(word).fontSize) || 34;
     var r = Math.max(9, fs*0.36), y = c[0].y;
-    var x0 = c[0].x - c[0].w/2 - 140, x1 = c[c.length-1].x + c[c.length-1].w/2 + 140, D = 760;
-    // Шлейф скорости + сам герой (Magmax)
+    // Границы слова (не зависят от языка и длины надписи)
+    var minL = Infinity, maxR = -Infinity;
+    c.forEach(function(p){ minL = Math.min(minL, p.x - p.w/2); maxR = Math.max(maxR, p.x + p.w/2); });
+    // Направление: для RTL-языков первая буква справа — шар бежит справа налево
+    var dir = (c.length > 1 && c[0].x > c[c.length-1].x) ? -1 : 1;
+    // Шар появляется вплотную к первой букве и исчезает сразу за последней
+    var x0 = dir > 0 ? minL - r*0.6 : maxR + r*0.6;
+    var x1 = dir > 0 ? maxR + r*0.6 : minL - r*0.6;
+    var dist = Math.abs(x1 - x0) || 1;
+    // Одинаковая скорость на всех языках: длинное слово — дольше, короткое — быстрее
+    var D = Math.round(Math.min(1150, Math.max(420, dist / 0.62)));
+    var fadeIn = Math.min(0.12, 70 / D), fadeOut = Math.max(0.88, 1 - 90 / D);
+    // Шлейф скорости + сам герой (Blaze)
     for (var g = 5; g >= 0; g--){
       var b = ball('#ff2b2b', r*(g ? 1 - g*0.09 : 1));
       var rr = r*(g ? 1 - g*0.09 : 1), peak = g ? 0.42 - g*0.06 : 1;
       if (g) b.style.border = '0';
       anim(b, [
         { transform:T(x0,y,rr), opacity:0 },
-        { transform:T(x0+(x1-x0)*0.1,y,rr), opacity:peak, offset:0.1 },
-        { transform:T(x0+(x1-x0)*0.86,y,rr), opacity:peak, offset:0.86 },
+        { transform:T(x0+(x1-x0)*fadeIn,y,rr), opacity:peak, offset:fadeIn },
+        { transform:T(x0+(x1-x0)*fadeOut,y,rr), opacity:peak, offset:fadeOut },
         { transform:T(x1,y,rr), opacity:0 }
       ], { duration:D, delay:start + g*28, easing:'linear' });
     }
-    var name = document.createElement('div'); name.className='ev-name'; name.textContent='Magmax'; fx.appendChild(name);
+    var name = document.createElement('div'); name.className='ev-name'; name.textContent='Blaze'; fx.appendChild(name);
     anim(name, [
       { transform:'translate('+x0+'px,'+(y-r-6)+'px) translate(-50%,-100%)', opacity:0 },
-      { opacity:1, offset:0.12 }, { opacity:1, offset:0.84 },
+      { opacity:1, offset:fadeIn }, { opacity:1, offset:fadeOut },
       { transform:'translate('+x1+'px,'+(y-r-6)+'px) translate(-50%,-100%)', opacity:0 }
     ], { duration:D, delay:start, easing:'linear' });
     // Буквы «сдуваются» в место ровно в момент, когда шар пролетает мимо
-    var endT = start;
+    var endT = start, sx = -34*dir, bx = 7*dir, kx = -2*dir, sk = -22*dir, sk2 = 9*dir, sk3 = -2*dir;
     list.forEach(function(el, i){
-      var t = start + D * (c[i].x - x0) / (x1 - x0) - 20;
+      var t = start + D * Math.abs(c[i].x - x0) / dist - 20;
       anim(el, [
-        { opacity:0, transform:'translateX(-34px) scaleX(1.7) scaleY(.55) skewX(-22deg)' },
-        { opacity:1, transform:'translateX(7px) scaleX(.88) scaleY(1.12) skewX(9deg)', offset:0.5 },
-        { opacity:1, transform:'translateX(-2px) scaleX(1.03) scaleY(.98) skewX(-2deg)', offset:0.78 },
+        { opacity:0, transform:'translateX('+sx+'px) scaleX(1.7) scaleY(.55) skewX('+sk+'deg)' },
+        { opacity:1, transform:'translateX('+bx+'px) scaleX(.88) scaleY(1.12) skewX('+sk2+'deg)', offset:0.5 },
+        { opacity:1, transform:'translateX('+kx+'px) scaleX(1.03) scaleY(.98) skewX('+sk3+'deg)', offset:0.78 },
         { opacity:1, transform:'none' }
       ], { duration:420, delay:t, easing:'cubic-bezier(.2,.8,.3,1)' });
       endT = Math.max(endT, t + 420);
@@ -29189,7 +29310,7 @@ async function _e3LoadParticipants() {
     var fs = parseFloat(getComputedStyle(title).fontSize) || 108;
     var r = Math.max(12, fs*0.2), STEP = 135, FLY = 320, endT = start, k = 0;
     list.forEach(function(el, i){
-      if (el.textContent === '\u00A0'){ el.style.opacity = '1'; return; }
+      if (el.textContent === '\u00A0' || el.classList.contains('evc-sp')){ el.style.opacity = '1'; return; }
       var t = start + k*STEP, x = c[i].x, y = c[i].y, col = HERO_COLORS[k % HERO_COLORS.length];
       var last = i === list.length - 1;
       var sx = x + (k%2 ? -1 : 1) * (60 + (k*37)%50), sy = y + fs*0.9;
@@ -29226,17 +29347,26 @@ async function _e3LoadParticipants() {
     if (!section || !sub || !title) return false;
 
     var text = sub.textContent.replace(/\s+/g,' ').trim();
-    var parts = text.split(' '), first = parts.shift() || '', rest = parts.join(' ');
+    // «Tốc độ. Chiến thuật.» → «Tốc độ.» + «Chiến thuật.» (раньше резалось по первому пробелу)
+    var mm = text.match(/^(.+?[.!?。！？।])\s*(.*)$/);
+    var first, rest;
+    if (mm && mm[2]) { first = mm[1]; rest = mm[2]; }
+    else { var parts = text.split(' '); first = parts.shift() || ''; rest = parts.join(' '); }
+    if (RTL_RE.test(text)) sub.setAttribute('dir', 'rtl'); else sub.removeAttribute('dir');
     sub.innerHTML = '<span class="ev-word ev-word--speed">' + chars(first) + '</span>' +
                     (rest ? '<span class="ev-word ev-word--tactic">' + chars(rest) + '</span>' : '');
     sub.classList.add('ev-wrapped');
     var tText = title.getAttribute('data-title') || title.textContent.trim();
-    title.innerHTML = tText.split(/\s+/).map(function(w){ return '<span class="ev-tw">' + chars(w) + '</span>'; }).join(' ');
+    var ci = 0;
+    title.innerHTML = tText.split(/\s+/).map(function(w){
+      var h = chars(w, true).replace(/--i:(\d+)/g, function(){ return '--i:' + (ci++); });
+      return '<span class="ev-tw">' + h + '</span>';
+    }).join(' ');
     title.classList.add('ev-wrapped');
 
     document.body.classList.add('hero-anim');
     if (REDUCED || !document.body.animate){
-      document.body.classList.add('ev-intro-done','ev-title-glow','ui-ready');
+      document.body.classList.add('ev-intro-done','ev-title-glow','ui-ready','ev-title-shine');
       return true;
     }
     fx = document.createElement('div'); fx.className = 'ev-fx'; fx.setAttribute('aria-hidden','true');
@@ -29252,8 +29382,9 @@ async function _e3LoadParticipants() {
           var e3 = phaseTitle(section, title, 0);
           later(function(){ document.body.classList.add('ev-title-glow'); }, Math.max(0, e3 - 500));
           later(function(){
-            document.body.classList.add('ev-intro-done','ui-ready');
+            document.body.classList.add('ev-intro-done','ui-ready','ev-title-shine');
             if (fx) fx.innerHTML = '';
+            startSparkles();
           }, e3 + 150);
         }, e2 + 180);
       }, e1 + 120);
