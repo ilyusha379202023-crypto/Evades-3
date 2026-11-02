@@ -18006,15 +18006,30 @@ async function _fbAuth() {
 // писать db.collection('x').doc('y').get()/.set(...) как раньше — менять сотни
 // мест по всему файлу не нужно.
 function _wrapDocSnap(d) {
-return {
-  id: d.id,
-  title: data.title || '',
-  body: data.body || '',
-  tag: data.tag || '',
-  pinned: !!data.pinned,
-  author: data.authorNick || '',
-  date: (data.createdAt && typeof data.createdAt.toDate === 'function') ? data.createdAt.toDate() : null
-};
+  // Compat-формат снимка документа: .id, .exists (свойство), .data().
+  // (Раньше здесь по ошибке оказался кусок маппинга новостей с неопределённой
+  // переменной `data` — любое чтение базы падало, и сайт не видел ни роль
+  // разработчика, ни ник, ни кристаллы из Firestore.)
+  const ex = typeof d.exists === 'function' ? d.exists() : !!d.exists;
+  return {
+    id: d.id,
+    exists: ex,
+    ref: d.ref,
+    data: () => (ex ? (d.data() || {}) : undefined)
+  };
+}
+// Маппинг документа коллекции `news` в объект для колокольчика/модалки.
+function _e3MapNewsDoc(doc) {
+  const data = doc.data() || {};
+  return {
+    id: doc.id,
+    title: data.title || '',
+    body: data.body || '',
+    tag: data.tag || '',
+    pinned: !!data.pinned,
+    author: data.authorNick || '',
+    date: (data.createdAt && typeof data.createdAt.toDate === 'function') ? data.createdAt.toDate() : null
+  };
 }
 function _wrapQuerySnap(snap) {
   return {
@@ -26961,6 +26976,20 @@ function openNewsDetail(id) {
   _e3SaveReadNewsSet(readSet);
   _e3RenderNews();
 }
+
+// Живая подписка на ленту новостей (закреплённые сверху, затем новые).
+function _e3SubscribeNews() {
+  try {
+    if (!db || _e3NewsUnsub) return;
+    _e3NewsUnsub = db.collection('news').onSnapshot(snap => {
+      const items = snap.docs.map(_e3MapNewsDoc);
+      items.sort((a, b) => (b.pinned - a.pinned) || ((b.date ? b.date.getTime() : 0) - (a.date ? a.date.getTime() : 0)));
+      _e3NewsItems = items;
+      _e3RenderNews();
+    }, err => { _e3NewsUnsub = null; if (window.console) console.warn('[NEWS] чтение недоступно:', err && err.code || err); });
+  } catch (e) { if (window.console) console.warn('[NEWS]', e); }
+}
+_e3SubscribeNews();
 
 // ===================================================
 // СОЗДАТЬ НОВОСТЬ (только dev-аккаунт)
