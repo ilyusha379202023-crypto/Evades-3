@@ -2229,7 +2229,7 @@
       letter-spacing: 1px;
     }
 
-    :where(html:not([dir="rtl"])) .preview{
+    .preview{
       position: relative;
       height: 170px;
       border-radius: 18px;
@@ -2237,24 +2237,6 @@
         radial-gradient(circle at 20% 25%, rgba(255,216,77,0.10), transparent 55%),
         radial-gradient(circle at 80% 75%, rgba(255,200,58,0.08), transparent 55%),
         linear-gradient(180deg, #0f131a 0%, #090c10 100%);
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.15);
-      box-shadow: inset 0 0 24px rgba(0,0,0,0.5);
-      isolation: isolate;
-      /* Дистанции анимаций. Фолбэк в px — для браузеров без container query units. */
-      --run: 100px;    /* пробег игрока до правого края */
-      --shot: -100px;  /* полёт снаряда до щита */
-      --hitx: -70px;   /* полёт врага до игрока */
-      --brk: -30px;    /* полёт снаряда до пузыря щита */
-    }
-:where(html[dir="rtl"]) .preview{
-      position: relative;
-      height: 170px;
-      border-radius: 18px;
-      background:
-        radial-gradient(circle at 20% 25%, rgba(255,216,77,0.10), transparent 55%),
-        radial-gradient(circle at 80% 75%, rgba(255,200,58,0.08), transparent 55%),
-        linear-gradient(-180deg, #0f131a 0%, #090c10 100%);
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.15);
       box-shadow: inset 0 0 24px rgba(0,0,0,0.5);
@@ -2274,7 +2256,7 @@
         --brk: calc(61px - 50cqw);
       }
     }
-    :where(html:not([dir="rtl"])) .preview::before{
+    .preview::before{
       content:"";
       position:absolute; inset:0;
       background-image:
@@ -2285,18 +2267,7 @@
       -webkit-mask-image: radial-gradient(ellipse at center, #000 50%, transparent 100%);
       pointer-events:none;
     }
-:where(html[dir="rtl"]) .preview::before{
-      content:"";
-      position:absolute; inset:0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-        linear-gradient(-90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
-      background-size: 22px 22px;
-      mask-image: radial-gradient(ellipse at center, #000 50%, transparent 100%);
-      -webkit-mask-image: radial-gradient(ellipse at center, #000 50%, transparent 100%);
-      pointer-events:none;
-    }
-    :where(html:not([dir="rtl"])) .preview .action-label{
+    .preview .action-label{
       position:absolute;
       top:10px; left:50%; transform: translateX(-50%) translateY(-4px);
       font-size: 11px; font-weight: 900; letter-spacing: 1.6px;
@@ -2308,32 +2279,11 @@
       will-change: transform, opacity;
       text-shadow: 0 1px 2px rgba(0,0,0,0.4);
     }
-:where(html[dir="rtl"]) .preview .action-label{
-      position:absolute;
-      top:10px; right:50%; transform: translateX(50%) translateY(-4px);
-      font-size: 11px; font-weight: 900; letter-spacing: 1.6px;
-      color:#fff;
-      padding: 4px 10px; border-radius: 999px;
-      background: linear-gradient(-90deg, rgba(255,216,77,0.85), rgba(255,200,58,0.85));
-      box-shadow: 0 4px 14px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.4);
-      opacity: 0; pointer-events:none;
-      will-change: transform, opacity;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
-    }
-    :where(html:not([dir="rtl"])) .preview .progress-bar{
+    .preview .progress-bar{
       position:absolute; left:0; right:0; bottom:0;
       height: 3px;
       background: linear-gradient(90deg, transparent, rgba(255,216,77,0.95), rgba(255,200,58,0.95), transparent);
       transform-origin: left center;
-      will-change: transform, opacity;
-      animation: progressSweep var(--anim-dur, 3s) linear infinite;
-      opacity: 0.85;
-    }
-:where(html[dir="rtl"]) .preview .progress-bar{
-      position:absolute; right:0; left:0; bottom:0;
-      height: 3px;
-      background: linear-gradient(-90deg, transparent, rgba(255,216,77,0.95), rgba(255,200,58,0.95), transparent);
-      transform-origin: right center;
       will-change: transform, opacity;
       animation: progressSweep var(--anim-dur, 3s) linear infinite;
       opacity: 0.85;
@@ -2353,7 +2303,7 @@
       min-height: calc(2 * 1.4em); /* одинаковая высота подписей → превью на одной линии */
     }
 
-    :where(html:not([dir="rtl"])) .preview .ball{
+    .preview .ball{
       width: 40px;
       height: 40px;
       border-radius: 50%;
@@ -2373,36 +2323,11 @@
       will-change: transform, opacity;
       z-index: 2;
     }
-:where(html[dir="rtl"]) .preview .ball{
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      /* Объёмный шар: тёмный красный низ, мягкий отсвет и маленький чёткий блик */
-      background:
-        radial-gradient(circle at 50% 38%, #f43f3f 0%, #d02024 46%, #90101a 82%, #5a070d 100%);
-      position: absolute;
-      right: 24px;
-      top: 50%;
-      transform: translateY(-50%);
-      box-shadow:
-        inset 0 -6px 9px rgba(50, 0, 0, 0.55),
-        inset 0 2px 3px rgba(255, 190, 180, 0.45),
-        inset 0 0 0 1px rgba(80, 0, 0, 0.4),
-        0 6px 10px rgba(0,0,0,0.45),
-        0 0 14px rgba(255, 70, 70, 0.4);
-      will-change: transform, opacity;
-      z-index: 2;
-    }
 
-    :where(html:not([dir="rtl"])) .preview .ball--spawn{
+    .preview .ball--spawn{
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
-    }
-:where(html[dir="rtl"]) .preview .ball--spawn{
-      right: 50%;
-      top: 50%;
-      transform: translate(50%, -50%);
     }
 
     /* Карточка Удар FX: игрок стоит слева, серый шар летит на него справа.
@@ -2411,7 +2336,7 @@
     .showcase-card[data-anim="hit"] .ball{ z-index: 2; }
     .showcase-card[data-anim="hit"] .enemy{ z-index: 1; }
 
-    :where(html:not([dir="rtl"])) .preview .ball::after{
+    .preview .ball::after{
       content: "";
       position: absolute;
       left: 20%;
@@ -2423,20 +2348,8 @@
       transform: rotate(-30deg);
       pointer-events: none;
     }
-:where(html[dir="rtl"]) .preview .ball::after{
-      content: "";
-      position: absolute;
-      right: 20%;
-      top: 13%;
-      width: 32%;
-      height: 20%;
-      border-radius: 50%;
-      background: radial-gradient(ellipse at 50% 45%, rgba(255,255,255,0.9), rgba(255,255,255,0) 72%);
-      transform: rotate(30deg);
-      pointer-events: none;
-    }
 
-    :where(html:not([dir="rtl"])) .preview .ball .orb-crown{
+    .preview .ball .orb-crown{
       position: absolute;
       top: -18px;
       left: 50%;
@@ -2451,23 +2364,8 @@
       user-select: none;
       -webkit-user-select: none;
     }
-:where(html[dir="rtl"]) .preview .ball .orb-crown{
-      position: absolute;
-      top: -18px;
-      right: 50%;
-      transform: translateX(50%);
-      width: 32px;
-      height: 23px;
-      display: block;
-      overflow: visible;
-      z-index: 1;
-      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
-      pointer-events: none;
-      user-select: none;
-      -webkit-user-select: none;
-    }
 
-    :where(html:not([dir="rtl"])) .preview .trail{
+    .preview .trail{
       position: absolute;
       left: 44px;
       top: 50%;
@@ -2481,22 +2379,8 @@
       filter: blur(1.5px);
       will-change: transform, opacity;
     }
-:where(html[dir="rtl"]) .preview .trail{
-      position: absolute;
-      right: 44px;
-      top: 50%;
-      width: var(--run);
-      height: 8px;
-      border-radius: 999px;
-      background: linear-gradient(-90deg, rgba(255, 220, 130, 0.95), rgba(255, 140, 60, 0.5) 60%, transparent);
-      opacity: 0;
-      transform: translateY(-50%) scaleX(0.2);
-      transform-origin: right center;
-      filter: blur(1.5px);
-      will-change: transform, opacity;
-    }
 
-    :where(html:not([dir="rtl"])) .preview .flash{
+    .preview .flash{
       position: absolute;
       left: 32px;
       top: 50%;
@@ -2510,22 +2394,8 @@
       filter: blur(1px);
       will-change: transform, opacity;
     }
-:where(html[dir="rtl"]) .preview .flash{
-      position: absolute;
-      right: 32px;
-      top: 50%;
-      margin-right: 0;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #fff4c0 0%, rgba(255,200,58,0.6) 40%, transparent 75%);
-      opacity: 0;
-      transform: translateY(-50%) scale(0.5);
-      filter: blur(1px);
-      will-change: transform, opacity;
-    }
 
-    :where(html:not([dir="rtl"])) .preview .afterimage{
+    .preview .afterimage{
       position: absolute;
       left: 24px;
       top: 50%;
@@ -2538,21 +2408,8 @@
       filter: blur(2.5px);
       will-change: transform, opacity;
     }
-:where(html[dir="rtl"]) .preview .afterimage{
-      position: absolute;
-      right: 24px;
-      top: 50%;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, rgba(255, 160, 160, 0.7), rgba(255, 80, 80, 0.15));
-      transform: translateY(-50%);
-      opacity: 0;
-      filter: blur(2.5px);
-      will-change: transform, opacity;
-    }
 
-    :where(html:not([dir="rtl"])) .preview .dust{
+    .preview .dust{
       position: absolute;
       left: 36px;
       top: 70%;
@@ -2564,20 +2421,8 @@
       filter: blur(1.2px);
       will-change: transform, opacity;
     }
-:where(html[dir="rtl"]) .preview .dust{
-      position: absolute;
-      right: 36px;
-      top: 70%;
-      width: 20px;
-      height: 8px;
-      border-radius: 999px;
-      background: radial-gradient(ellipse, rgba(255, 230, 160, 0.85), transparent 70%);
-      opacity: 0;
-      filter: blur(1.2px);
-      will-change: transform, opacity;
-    }
 
-    :where(html:not([dir="rtl"])) .preview .projectile{
+    .preview .projectile{
       position: absolute;
       right: 10px;
       top: calc(50% - 6px);
@@ -2588,34 +2433,10 @@
       box-shadow: 0 0 12px rgba(255, 120, 180, 0.9);
       will-change: transform, opacity;
     }
-:where(html[dir="rtl"]) .preview .projectile{
-      position: absolute;
-      left: 10px;
-      top: calc(50% - 6px);
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #ff8a8a, #7c1cff);
-      box-shadow: 0 0 12px rgba(255, 120, 180, 0.9);
-      will-change: transform, opacity;
-    }
 
-    :where(html:not([dir="rtl"])) .preview .shield{
+    .preview .shield{
       position: absolute;
       left: 22px;
-      top: 50%;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 2px solid rgba(120, 220, 255, 0.8);
-      box-shadow: 0 0 16px rgba(120, 220, 255, 0.8);
-      opacity: 0;
-      transform: translateY(-50%) scale(0.8);
-      will-change: transform, opacity;
-    }
-:where(html[dir="rtl"]) .preview .shield{
-      position: absolute;
-      right: 22px;
       top: 50%;
       width: 44px;
       height: 44px;
@@ -2640,21 +2461,9 @@
       will-change: transform, opacity;
     }
 
-    :where(html:not([dir="rtl"])) .preview .spark{
+    .preview .spark{
       position: absolute;
       left: 62px;
-      top: 50%;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #ffe7a3;
-      box-shadow: 0 0 10px rgba(255, 235, 160, 0.9);
-      opacity: 0;
-      will-change: transform, opacity;
-    }
-:where(html[dir="rtl"]) .preview .spark{
-      position: absolute;
-      right: 62px;
       top: 50%;
       width: 6px;
       height: 6px;
@@ -2679,7 +2488,7 @@
     }
 
     /* Серый 3D-шар-снаряд (атакующий) */
-    :where(html:not([dir="rtl"])) .preview .enemy{
+    .preview .enemy{
       position: absolute;
       right: 18px;
       top: 50%;
@@ -2695,25 +2504,9 @@
         0 0 14px rgba(180, 195, 215, 0.45);
       will-change: transform, opacity;
     }
-:where(html[dir="rtl"]) .preview .enemy{
-      position: absolute;
-      left: 18px;
-      top: 50%;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      transform: translateY(-50%);
-      background: radial-gradient(circle at 32% 30%, #f3f6fa 0%, #b9c0c9 35%, #6e7682 70%, #2c333d 100%);
-      box-shadow:
-        inset 0 -6px 10px rgba(0,0,0,0.55),
-        inset 0 3px 6px rgba(255,255,255,0.45),
-        0 8px 16px rgba(0,0,0,0.45),
-        0 0 14px rgba(180, 195, 215, 0.45);
-      will-change: transform, opacity;
-    }
 
     /* Лёгкий бликовый highlight сверху-слева для 3D-эффекта */
-    :where(html:not([dir="rtl"])) .preview .enemy::after{
+    .preview .enemy::after{
       content: "";
       position: absolute;
       left: 22%;
@@ -2725,20 +2518,8 @@
       filter: blur(0.5px);
       pointer-events: none;
     }
-:where(html[dir="rtl"]) .preview .enemy::after{
-      content: "";
-      position: absolute;
-      right: 22%;
-      top: 18%;
-      width: 30%;
-      height: 22%;
-      border-radius: 50%;
-      background: radial-gradient(ellipse, rgba(255,255,255,0.85), rgba(255,255,255,0) 70%);
-      filter: blur(0.5px);
-      pointer-events: none;
-    }
 
-    :where(html:not([dir="rtl"])) .preview .impact-ring{
+    .preview .impact-ring{
       position: absolute;
       left: 50%;
       top: 50%;
@@ -2748,18 +2529,6 @@
       border: 2px solid rgba(255, 220, 130, 0.9);
       opacity: 0;
       transform: translate(-50%, -50%) scale(0.6);
-      will-change: transform, opacity;
-    }
-:where(html[dir="rtl"]) .preview .impact-ring{
-      position: absolute;
-      right: 50%;
-      top: 50%;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      border: 2px solid rgba(255, 220, 130, 0.9);
-      opacity: 0;
-      transform: translate(50%, -50%) scale(0.6);
       will-change: transform, opacity;
     }
 
@@ -2777,7 +2546,7 @@
       will-change: transform, opacity;
     }
 
-    :where(html:not([dir="rtl"])) .preview .portal{
+    .preview .portal{
       position: absolute;
       left: 50%;
       top: 50%;
@@ -2790,21 +2559,8 @@
       opacity: 0;
       will-change: transform, opacity;
     }
-:where(html[dir="rtl"]) .preview .portal{
-      position: absolute;
-      right: 50%;
-      top: 50%;
-      width: 68px;
-      height: 68px;
-      border-radius: 50%;
-      border: 2px solid rgba(120, 220, 255, 0.8);
-      box-shadow: 0 0 20px rgba(120, 220, 255, 0.8);
-      transform: translate(50%, -50%) scale(0.7);
-      opacity: 0;
-      will-change: transform, opacity;
-    }
 
-    :where(html:not([dir="rtl"])) .preview .spawn-aura{
+    .preview .spawn-aura{
       position: absolute;
       left: 50%;
       top: 50%;
@@ -2813,18 +2569,6 @@
       border-radius: 50%;
       border: 2px solid rgba(255, 220, 150, 0.8);
       transform: translate(-50%, -50%) scale(0.6);
-      opacity: 0;
-      will-change: transform, opacity;
-    }
-:where(html[dir="rtl"]) .preview .spawn-aura{
-      position: absolute;
-      right: 50%;
-      top: 50%;
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 2px solid rgba(255, 220, 150, 0.8);
-      transform: translate(50%, -50%) scale(0.6);
       opacity: 0;
       will-change: transform, opacity;
     }
@@ -2887,12 +2631,8 @@
     .showcase-card[data-anim="parry"] .spark{
       animation: parrySpark 3s ease-out infinite;
     }
-    :where(html:not([dir="rtl"])) .showcase-card[data-anim="parry"] .flash{
+    .showcase-card[data-anim="parry"] .flash{
       left: 54px;
-      animation: parryFlash 3s ease-out infinite;
-    }
-:where(html[dir="rtl"]) .showcase-card[data-anim="parry"] .flash{
-      right: 54px;
       animation: parryFlash 3s ease-out infinite;
     }
     .showcase-card[data-anim="parry"] .sparkle{
@@ -3108,7 +2848,7 @@
     }
 
     /* === COMBO ANIMATION === */
-    :where(html:not([dir="rtl"])) .preview .combo-counter{
+    .preview .combo-counter{
       position: absolute;
       top: 14px; right: 16px;
       padding: 4px 12px;
@@ -3123,35 +2863,9 @@
       will-change: transform, opacity;
       z-index: 3;
     }
-:where(html[dir="rtl"]) .preview .combo-counter{
-      position: absolute;
-      top: 14px; left: 16px;
-      padding: 4px 12px;
-      border-radius: 999px;
-      background: linear-gradient(-135deg, #FFEFA8, #FFC83A 50%, #C49100);
-      color: #1a0f00;
-      font-size: 13px; font-weight: 900;
-      letter-spacing: 0.5px;
-      box-shadow: 0 6px 18px rgba(255,200,58,0.45), inset 0 1px 0 rgba(255,255,255,0.5);
-      opacity: 0;
-      transform: translateY(-4px) scale(0.85);
-      will-change: transform, opacity;
-      z-index: 3;
-    }
-    :where(html:not([dir="rtl"])) .preview .combo-ghost{
+    .preview .combo-ghost{
       position: absolute;
       left: 24px; top: 50%;
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, rgba(255, 220, 130, 0.55), rgba(255, 140, 60, 0.18));
-      transform: translateY(-50%);
-      opacity: 0;
-      filter: blur(2px);
-      will-change: transform, opacity;
-    }
-:where(html[dir="rtl"]) .preview .combo-ghost{
-      position: absolute;
-      right: 24px; top: 50%;
       width: 40px; height: 40px;
       border-radius: 50%;
       background: radial-gradient(circle at 35% 35%, rgba(255, 220, 130, 0.55), rgba(255, 140, 60, 0.18));
@@ -3228,7 +2942,7 @@
     }
 
     /* === SHIELD BREAK ANIMATION === */
-    :where(html:not([dir="rtl"])) .preview .shield-bubble{
+    .preview .shield-bubble{
       position: absolute;
       left: 50%; top: 50%;
       width: 70px; height: 70px;
@@ -3236,17 +2950,6 @@
       border: 2.5px solid rgba(120, 220, 255, 0.85);
       box-shadow: 0 0 22px rgba(120, 220, 255, 0.6), inset 0 0 20px rgba(120, 220, 255, 0.25);
       transform: translate(-50%, -50%) scale(1);
-      will-change: transform, opacity, border-color;
-      background: radial-gradient(circle at 35% 30%, rgba(180, 240, 255, 0.18), transparent 60%);
-    }
-:where(html[dir="rtl"]) .preview .shield-bubble{
-      position: absolute;
-      right: 50%; top: 50%;
-      width: 70px; height: 70px;
-      border-radius: 50%;
-      border: 2.5px solid rgba(120, 220, 255, 0.85);
-      box-shadow: 0 0 22px rgba(120, 220, 255, 0.6), inset 0 0 20px rgba(120, 220, 255, 0.25);
-      transform: translate(50%, -50%) scale(1);
       will-change: transform, opacity, border-color;
       background: radial-gradient(circle at 35% 30%, rgba(180, 240, 255, 0.18), transparent 60%);
     }
@@ -3258,7 +2961,7 @@
       border: 1px solid rgba(180, 240, 255, 0.4);
       pointer-events: none;
     }
-    :where(html:not([dir="rtl"])) .preview .shield-crack{
+    .preview .shield-crack{
       position: absolute;
       left: 50%; top: 50%;
       width: 60px; height: 2px;
@@ -3268,17 +2971,7 @@
       filter: drop-shadow(0 0 4px rgba(180, 240, 255, 0.9));
       will-change: opacity, transform;
     }
-:where(html[dir="rtl"]) .preview .shield-crack{
-      position: absolute;
-      right: 50%; top: 50%;
-      width: 60px; height: 2px;
-      background: linear-gradient(-90deg, transparent, rgba(255,255,255,0.95) 50%, transparent);
-      transform: translate(50%, -50%) rotate(0deg);
-      opacity: 0;
-      filter: drop-shadow(0 0 4px rgba(180, 240, 255, 0.9));
-      will-change: opacity, transform;
-    }
-    :where(html:not([dir="rtl"])) .preview .shield-shard{
+    .preview .shield-shard{
       position: absolute;
       left: 50%; top: 50%;
       width: 14px; height: 6px;
@@ -3289,18 +2982,7 @@
       opacity: 0;
       will-change: transform, opacity;
     }
-:where(html[dir="rtl"]) .preview .shield-shard{
-      position: absolute;
-      right: 50%; top: 50%;
-      width: 14px; height: 6px;
-      border-radius: 2px;
-      background: linear-gradient(-135deg, rgba(180, 240, 255, 0.95), rgba(80, 180, 230, 0.6));
-      box-shadow: 0 0 8px rgba(120, 220, 255, 0.7);
-      transform: translate(50%, -50%);
-      opacity: 0;
-      will-change: transform, opacity;
-    }
-    :where(html:not([dir="rtl"])) .preview .shield-incoming{
+    .preview .shield-incoming{
       position: absolute;
       right: 14px; top: 50%;
       width: 14px; height: 14px;
@@ -3311,25 +2993,10 @@
       opacity: 0;
       will-change: transform, opacity;
     }
-:where(html[dir="rtl"]) .preview .shield-incoming{
-      position: absolute;
-      left: 14px; top: 50%;
-      width: 14px; height: 14px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #ff8a8a, #c41818);
-      box-shadow: 0 0 14px rgba(255, 80, 80, 0.85);
-      transform: translateY(-50%);
-      opacity: 0;
-      will-change: transform, opacity;
-    }
     .showcase-card[data-anim="shield-break"]{ --anim-dur: 3.2s; }
-    :where(html:not([dir="rtl"])) .showcase-card[data-anim="shield-break"] .ball{
+    .showcase-card[data-anim="shield-break"] .ball{
       left: 50%; top: 50%;
       transform: translate(-50%, -50%);
-    }
-:where(html[dir="rtl"]) .showcase-card[data-anim="shield-break"] .ball{
-      right: 50%; top: 50%;
-      transform: translate(50%, -50%);
     }
     .showcase-card[data-anim="shield-break"] .shield-bubble{
       animation: sbBubble 3.2s ease-out infinite;
@@ -3340,21 +3007,13 @@
     .showcase-card[data-anim="shield-break"] .shield-crack{
       animation: sbCrack 3.2s ease-out infinite;
     }
-    :where(html:not([dir="rtl"])) .showcase-card[data-anim="shield-break"] .shield-crack.c2{
+    .showcase-card[data-anim="shield-break"] .shield-crack.c2{
       animation-delay: 0.04s;
       transform: translate(-50%, -50%) rotate(60deg);
     }
-:where(html[dir="rtl"]) .showcase-card[data-anim="shield-break"] .shield-crack.c2{
-      animation-delay: 0.04s;
-      transform: translate(50%, -50%) rotate(-60deg);
-    }
-    :where(html:not([dir="rtl"])) .showcase-card[data-anim="shield-break"] .shield-crack.c3{
+    .showcase-card[data-anim="shield-break"] .shield-crack.c3{
       animation-delay: 0.08s;
       transform: translate(-50%, -50%) rotate(-45deg);
-    }
-:where(html[dir="rtl"]) .showcase-card[data-anim="shield-break"] .shield-crack.c3{
-      animation-delay: 0.08s;
-      transform: translate(50%, -50%) rotate(45deg);
     }
     .showcase-card[data-anim="shield-break"] .shield-shard{
       animation: sbShard 3.2s ease-out infinite;
@@ -11417,6 +11076,8 @@ html, body{
 }
 </style>
 <style id="ev-rtl">
+.preview{direction:ltr}
+
 /* ================= RTL (арабский / иврит) =================
    Зеркальные версии правил сгенерированы рядом с оригиналами
    (:where(html[dir="rtl"]) …). Здесь — только особые случаи. */
