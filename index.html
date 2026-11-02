@@ -8288,7 +8288,7 @@ html, body{
   0%,100%{ filter:drop-shadow(0 0 30px rgba(255,215,0,.55)); }
   50%{ filter:drop-shadow(0 0 46px rgba(255,215,0,.85)) drop-shadow(0 0 90px rgba(255,170,40,.28)); }
 }
-.ev-sparks{ position:absolute; left:-7%; right:-7%; top:-30%; bottom:-30%; pointer-events:none; z-index:3; }
+.ev-sparks{ position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none; z-index:3; overflow:visible; }
 .ev-spark{
   position:absolute; display:block; transform:translate(-50%,-50%) scale(0);
   filter:drop-shadow(0 0 4px rgba(255,236,150,.95)) drop-shadow(0 0 10px rgba(255,200,60,.7));
@@ -29188,12 +29188,28 @@ async function _e3LoadParticipants() {
   // Блёстки вокруг «EVADES 3»: мерцают и каждый раз появляются в новом месте
   var sparkBox = null;
   function stopSparkles(){ if (sparkBox && sparkBox.parentNode) sparkBox.parentNode.removeChild(sparkBox); sparkBox = null; }
+  // Блёстки живут строго в границах надписи EVADES 3 (и никогда не вылезают за экран)
+  function layoutSparkBox(){
+    if (!sparkBox) return;
+    var stage = sparkBox.parentNode, t = document.querySelector('.title-section .main-title');
+    if (!stage || !t) return;
+    var sr = stage.getBoundingClientRect(), tr = t.getBoundingClientRect(), vw = document.documentElement.clientWidth || window.innerWidth;
+    var L = Math.max(tr.left, 6), R = Math.min(tr.right, vw - 6);
+    sparkBox.style.left = (L - sr.left).toFixed(1) + 'px';
+    sparkBox.style.top = (tr.top - sr.top).toFixed(1) + 'px';
+    sparkBox.style.width = Math.max(0, R - L).toFixed(1) + 'px';
+    sparkBox.style.height = tr.height.toFixed(1) + 'px';
+  }
   function placeSpark(el){
     // по краям и поверх букв, но не строго в центре — чтобы не мешать читать
-    var x = Math.random()*100, y = Math.random()*100;
-    if (y > 28 && y < 72 && Math.random() < 0.55) y = Math.random() < 0.5 ? Math.random()*24 : 76 + Math.random()*24;
-    var size = 8 + Math.random()*16;
-    el.style.left = x.toFixed(1) + '%'; el.style.top = y.toFixed(1) + '%';
+    var W = (sparkBox && sparkBox.clientWidth) || 300, H = (sparkBox && sparkBox.clientHeight) || 100;
+    var mobile = window.innerWidth < 600;
+    var size = (mobile ? 7 : 8) + Math.random()*(mobile ? 10 : 16);
+    var m = size*0.75 + 6; // запас под свечение, чтобы искра целиком была внутри
+    var fy = Math.random();
+    if (fy > .3 && fy < .7 && Math.random() < 0.55) fy = Math.random() < 0.5 ? Math.random()*.26 : .74 + Math.random()*.26;
+    var x = m + Math.random()*Math.max(0, W - 2*m), y = m + fy*Math.max(0, H - 2*m);
+    el.style.left = x.toFixed(1) + 'px'; el.style.top = y.toFixed(1) + 'px';
     el.style.width = el.style.height = size.toFixed(0) + 'px';
     el.style.animationDuration = (1.6 + Math.random()*1.8).toFixed(2) + 's';
     el.classList.toggle('is-white', Math.random() < 0.4);
@@ -29213,6 +29229,12 @@ async function _e3LoadParticipants() {
       sparkBox.appendChild(sp);
     }
     stage.appendChild(sparkBox);
+    layoutSparkBox();
+    Array.prototype.forEach.call(sparkBox.children, placeSpark);
+    if (!window.__evSparkResize){
+      window.__evSparkResize = true;
+      window.addEventListener('resize', function(){ layoutSparkBox(); if (sparkBox) Array.prototype.forEach.call(sparkBox.children, placeSpark); });
+    }
   }
   function T(x, y, r, s){ return 'translate(' + (x-r) + 'px,' + (y-r) + 'px) scale(' + (s==null?1:s) + ')'; }
 
@@ -29226,8 +29248,8 @@ async function _e3LoadParticipants() {
     // Границы слова (не зависят от языка и длины надписи)
     var minL = Infinity, maxR = -Infinity;
     c.forEach(function(p){ minL = Math.min(minL, p.x - p.w/2); maxR = Math.max(maxR, p.x + p.w/2); });
-    // Направление: для RTL-языков первая буква справа — шар бежит справа налево
-    var dir = (c.length > 1 && c[0].x > c[c.length-1].x) ? -1 : 1;
+    // Направление: в арабском/иврите (RTL) шар бежит справа налево, в остальных — слева направо
+    var dir = (word.closest('[dir="rtl"]') || getComputedStyle(word).direction === 'rtl') ? -1 : 1;
     // Шар появляется вплотную к первой букве и исчезает сразу за последней
     var x0 = dir > 0 ? minL - r*0.6 : maxR + r*0.6;
     var x1 = dir > 0 ? maxR + r*0.6 : minL - r*0.6;
