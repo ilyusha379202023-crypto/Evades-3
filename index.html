@@ -11075,6 +11075,209 @@ html, body{
   .button-container .download-button::after{ animation: none; opacity: 0; }
 }
 </style>
+<style id="ev-dl-unlock">
+/* ===== Кнопка «Скачать Evades 3» — разблокирована (альфа) ===== */
+:root{ --dl-fd: 1; }
+:root[dir="rtl"]{ --dl-fd: -1; }
+
+.button-container .download-button{ cursor: pointer; }
+.button-container .download-button .dl-src,
+.button-container .download-button .dl-alpha-src{ display: none; }
+
+/* зелёный слой под текстом: плавно проявляется при наведении */
+.download-button .dl-green{
+  position: absolute; inset: 0; z-index: -2; border-radius: inherit;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0 1px, rgba(0,0,0,0.03) 1px 3px),
+    linear-gradient(180deg, #9bffbf 0%, #3fe07d 36%, #1fba5b 62%, #12944b 100%);
+  opacity: 0; transition: opacity .45s ease .05s; pointer-events: none;
+}
+.button-container.dl-armed .download-button .dl-green{ opacity: 1; }
+
+/* текст кнопки: «Скачать» + [Evades 3 → альфа-версию] */
+.download-button .dl-vis{
+  position: relative; display: inline-flex; align-items: center;
+  white-space: nowrap; line-height: 1.25;
+}
+.download-button .dl-pre,
+.download-button .dl-post{ white-space: pre; }
+.download-button .dl-slot{
+  position: relative; display: inline-block; height: 1.25em;
+  width: var(--w-name, 8em);
+  transition: width .5s cubic-bezier(.2,.9,.25,1) 0s;
+}
+.button-container.dl-armed .download-button .dl-slot{
+  width: var(--w-alpha, 12em);
+  transition-delay: .45s;           /* сначала зачёркивание, потом расширение */
+}
+.download-button .dl-name,
+.download-button .dl-alpha{
+  position: absolute; top: 0; inset-inline-start: 0; white-space: nowrap;
+  transition: opacity .3s ease, transform .4s cubic-bezier(.2,.9,.25,1), filter .3s ease;
+}
+.download-button .dl-name{ opacity: 1; transform: none; transition-delay: 0s; }
+.download-button .dl-alpha{ opacity: 0; transform: translateY(55%); filter: blur(3px); }
+.button-container.dl-armed .download-button .dl-name{
+  opacity: 0; transform: translateY(-45%); filter: blur(2px);
+  transition-delay: .5s;
+}
+.button-container.dl-armed .download-button .dl-alpha{
+  opacity: 1; transform: none; filter: none;
+  transition-delay: .6s;
+}
+/* линия зачёркивания «рисуется» поверх Evades 3 */
+.download-button .dl-name::after{
+  content: ""; position: absolute; top: 54%; inset-inline-start: -3%;
+  width: 0; height: 3px; border-radius: 2px;
+  background: #ff4d4d; box-shadow: 0 0 8px rgba(255,60,60,.85), 0 1px 0 rgba(0,0,0,.35);
+  transition: width .3s ease 0s;
+}
+.button-container.dl-armed .download-button .dl-name::after{
+  width: 106%; transition-delay: .1s;
+}
+
+/* зелёная кнопка: тот же объём, но зелёная «ножка» и свечение */
+.button-container.dl-armed .download-button{
+  color: #ffffff;
+  filter: brightness(1.04);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.55),
+    0 12px 0 #0b6a33,
+    0 13px 0 1px rgba(0,0,0,0.5),
+    0 26px 40px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.8),
+    inset 0 0 0 1px rgba(255,255,255,0.2),
+    inset 0 -10px 18px rgba(0,70,28,0.35),
+    0 0 46px rgba(61,255,130,0.55);
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.22),
+    0 -1px 0 rgba(0,80,30,0.65),
+    0 3px 10px rgba(0,70,25,0.5);
+}
+.button-container .download-button{ transition: filter .3s ease, box-shadow .45s ease, color .3s ease; }
+
+/* плашка «В разработке» улетает дугой с вращением и возвращается обратно */
+.button-container.dl-armed .dev-badge{
+  animation: dlBadgeFly 1.1s linear forwards;
+  pointer-events: none;
+}
+.button-container.dl-back .dev-badge{
+  animation: dlBadgeBack .8s linear forwards, statusGlow 2.6s ease-in-out .8s infinite;
+}
+@keyframes dlBadgeFly{
+  0.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 0.0px), 0.0px, 0) rotate(calc(var(--dl-fd,1) * 4.0deg)) scale(1.0); }
+  5.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 3.4px), -5.0px, 0) rotate(calc(var(--dl-fd,1) * 10.4deg)) scale(0.996); }
+  10.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 13.2px), -19.2px, 0) rotate(calc(var(--dl-fd,1) * 28.6deg)) scale(0.985); }
+  15.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 28.6px), -40.6px, 0) rotate(calc(var(--dl-fd,1) * 57.5deg)) scale(0.967); }
+  20.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 48.9px), -67.2px, 0) rotate(calc(var(--dl-fd,1) * 95.5deg)) scale(0.943); }
+  25.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 73.4px), -96.7px, 0) rotate(calc(var(--dl-fd,1) * 141.5deg)) scale(0.914); }
+  30.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 101.5px), -126.9px, 0) rotate(calc(var(--dl-fd,1) * 194.1deg)) scale(0.881); }
+  35.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 132.4px), -155.9px, 0) rotate(calc(var(--dl-fd,1) * 251.9deg)) scale(0.845); }
+  40.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 165.4px), -182.0px, 0) rotate(calc(var(--dl-fd,1) * 313.8deg)) scale(0.806); }
+  45.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 199.9px), -203.6px, 0) rotate(calc(var(--dl-fd,1) * 378.2deg)) scale(0.766); }
+  50.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 235.0px), -220.0px, 0) rotate(calc(var(--dl-fd,1) * 444.0deg)) scale(0.725); }
+  55.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 270.1px), -230.5px, 0) rotate(calc(var(--dl-fd,1) * 509.8deg)) scale(0.684); }
+  60.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 304.6px), -235.2px, 0) rotate(calc(var(--dl-fd,1) * 574.2deg)) scale(0.644); }
+  65.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 337.6px), -234.5px, 0) rotate(calc(var(--dl-fd,1) * 636.1deg)) scale(0.605); }
+  70.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 368.5px), -229.2px, 0) rotate(calc(var(--dl-fd,1) * 693.9deg)) scale(0.569); }
+  75.0%{ opacity:0.833; transform: translate3d(calc(var(--dl-fd,1) * 396.6px), -220.4px, 0) rotate(calc(var(--dl-fd,1) * 746.5deg)) scale(0.536); }
+  80.0%{ opacity:0.667; transform: translate3d(calc(var(--dl-fd,1) * 421.1px), -209.7px, 0) rotate(calc(var(--dl-fd,1) * 792.5deg)) scale(0.507); }
+  85.0%{ opacity:0.5; transform: translate3d(calc(var(--dl-fd,1) * 441.4px), -198.7px, 0) rotate(calc(var(--dl-fd,1) * 830.5deg)) scale(0.483); }
+  90.0%{ opacity:0.333; transform: translate3d(calc(var(--dl-fd,1) * 456.8px), -189.1px, 0) rotate(calc(var(--dl-fd,1) * 859.4deg)) scale(0.465); }
+  95.0%{ opacity:0.167; transform: translate3d(calc(var(--dl-fd,1) * 466.6px), -182.4px, 0) rotate(calc(var(--dl-fd,1) * 877.6deg)) scale(0.454); }
+  100.0%{ opacity:0; transform: translate3d(calc(var(--dl-fd,1) * 470.0px), -180.0px, 0) rotate(calc(var(--dl-fd,1) * 884.0deg)) scale(0.45); }
+}
+@keyframes dlBadgeBack{
+  0.0%{ opacity:0; transform: translate3d(calc(var(--dl-fd,1) * 470.0px), -180.0px, 0) rotate(calc(var(--dl-fd,1) * 884.0deg)) scale(0.45); }
+  5.0%{ opacity:0.167; transform: translate3d(calc(var(--dl-fd,1) * 466.6px), -182.4px, 0) rotate(calc(var(--dl-fd,1) * 877.6deg)) scale(0.454); }
+  10.0%{ opacity:0.333; transform: translate3d(calc(var(--dl-fd,1) * 456.8px), -189.1px, 0) rotate(calc(var(--dl-fd,1) * 859.4deg)) scale(0.465); }
+  15.0%{ opacity:0.5; transform: translate3d(calc(var(--dl-fd,1) * 441.4px), -198.7px, 0) rotate(calc(var(--dl-fd,1) * 830.5deg)) scale(0.483); }
+  20.0%{ opacity:0.667; transform: translate3d(calc(var(--dl-fd,1) * 421.1px), -209.7px, 0) rotate(calc(var(--dl-fd,1) * 792.5deg)) scale(0.507); }
+  25.0%{ opacity:0.833; transform: translate3d(calc(var(--dl-fd,1) * 396.6px), -220.4px, 0) rotate(calc(var(--dl-fd,1) * 746.5deg)) scale(0.536); }
+  30.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 368.5px), -229.2px, 0) rotate(calc(var(--dl-fd,1) * 693.9deg)) scale(0.569); }
+  35.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 337.6px), -234.5px, 0) rotate(calc(var(--dl-fd,1) * 636.1deg)) scale(0.605); }
+  40.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 304.6px), -235.2px, 0) rotate(calc(var(--dl-fd,1) * 574.2deg)) scale(0.644); }
+  45.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 270.1px), -230.5px, 0) rotate(calc(var(--dl-fd,1) * 509.8deg)) scale(0.684); }
+  50.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 235.0px), -220.0px, 0) rotate(calc(var(--dl-fd,1) * 444.0deg)) scale(0.725); }
+  55.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 199.9px), -203.6px, 0) rotate(calc(var(--dl-fd,1) * 378.2deg)) scale(0.766); }
+  60.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 165.4px), -182.0px, 0) rotate(calc(var(--dl-fd,1) * 313.8deg)) scale(0.806); }
+  65.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 132.4px), -155.9px, 0) rotate(calc(var(--dl-fd,1) * 251.9deg)) scale(0.845); }
+  70.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 101.5px), -126.9px, 0) rotate(calc(var(--dl-fd,1) * 194.1deg)) scale(0.881); }
+  75.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 73.4px), -96.7px, 0) rotate(calc(var(--dl-fd,1) * 141.5deg)) scale(0.914); }
+  80.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 48.9px), -67.2px, 0) rotate(calc(var(--dl-fd,1) * 95.5deg)) scale(0.943); }
+  85.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 28.6px), -40.6px, 0) rotate(calc(var(--dl-fd,1) * 57.5deg)) scale(0.967); }
+  90.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 13.2px), -19.2px, 0) rotate(calc(var(--dl-fd,1) * 28.6deg)) scale(0.985); }
+  95.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 3.4px), -5.0px, 0) rotate(calc(var(--dl-fd,1) * 10.4deg)) scale(0.996); }
+  100.0%{ opacity:1; transform: translate3d(calc(var(--dl-fd,1) * 0.0px), 0.0px, 0) rotate(calc(var(--dl-fd,1) * 4.0deg)) scale(1.0); }
+}
+
+/* подсказка под кнопкой */
+.dl-hint-row{ display: flex; justify-content: center; margin: -14px 0 34px; padding: 0 16px; transition: opacity .4s ease; }
+.dl-hint{
+  display: inline-flex; align-items: center; gap: 10px;
+  font: 600 14px/1.3 'Rajdhani','Exo 2',system-ui,sans-serif; letter-spacing: 1px; text-align: center;
+  color: rgba(255,255,255,.74); text-shadow: 0 1px 6px rgba(0,0,0,.6);
+  padding: 8px 16px; border-radius: 999px;
+  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.dl-hint svg{ width: 18px; height: 18px; flex: 0 0 auto; animation: dlHintNudge 1.8s ease-in-out infinite; }
+@keyframes dlHintNudge{ 0%,100%{ transform: translate(0,0); } 50%{ transform: translate(-3px,-3px); } }
+.button-container.dl-armed + .dl-hint-row{ opacity: .35; }
+@media (hover: none){ .dl-hint-row{ display: none; } }
+
+/* окно-предупреждение об альфа-версии */
+.dl-modal{ position: fixed; inset: 0; z-index: 10050; display: none; align-items: center; justify-content: center; padding: 18px; }
+.dl-modal.is-open{ display: flex; animation: dlFade .22s ease both; }
+.dl-modal-backdrop{ position: absolute; inset: 0; background: rgba(4,7,14,.76); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.dl-modal-card{
+  position: relative; width: min(94vw, 520px); max-height: 92vh; overflow: auto;
+  padding: 30px 30px 22px; border-radius: 20px; text-align: start;
+  font-family: 'Exo 2', system-ui, sans-serif; color: #eaf0ff;
+  background: linear-gradient(180deg, #14213f 0%, #0b1428 100%);
+  border: 1px solid rgba(255,196,110,.45);
+  box-shadow: 0 30px 80px rgba(0,0,0,.65), 0 0 50px rgba(255,170,70,.18), inset 0 1px 0 rgba(255,255,255,.12);
+  animation: dlPop .32s cubic-bezier(.2,1.3,.3,1) both;
+}
+.dl-modal-badge{
+  width: 54px; height: 54px; border-radius: 16px; margin-bottom: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font: 900 30px/1 'Orbitron','Exo 2',sans-serif; color: #1b0a05;
+  background: linear-gradient(180deg, #ffe5b0, #ffc480);
+  box-shadow: 0 8px 22px rgba(255,170,70,.35), inset 0 1px 0 rgba(255,255,255,.7);
+}
+.dl-modal-card h2{ font: 800 24px/1.2 'Exo 2',sans-serif; margin: 0 0 10px; color: #ffd9a0; letter-spacing: .5px; }
+.dl-modal-lead{ font-size: 15px; line-height: 1.55; color: #d6def2; margin: 0 0 12px; }
+.dl-modal-list{ margin: 0 0 14px; padding: 0; list-style: none; }
+.dl-modal-list li{ position: relative; padding-block: 5px; padding-inline-start: 24px; font-size: 15px; line-height: 1.45; color: #eaf0ff; }
+.dl-modal-list li::before{ content: "!"; position: absolute; inset-inline-start: 0; top: 5px; width: 16px; height: 16px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font: 800 11px/1 'Exo 2',sans-serif; color: #1b0a05; background: #ffc480; }
+.dl-modal-note{ font-size: 13px; line-height: 1.5; color: #aab6d4; margin: 0 0 20px; padding: 10px 12px; border-radius: 10px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); }
+.dl-modal-actions{ display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap; }
+.dl-btn-cancel, .dl-btn-ok{
+  font: 800 15px/1 'Exo 2',sans-serif; letter-spacing: .5px; padding: 14px 22px; border-radius: 999px; cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; justify-content: center; border: 0; transition: transform .15s ease, filter .2s ease, box-shadow .2s ease;
+}
+.dl-btn-cancel{ color: #dfe7fb; background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); }
+.dl-btn-cancel:hover{ background: rgba(255,255,255,.14); }
+.dl-btn-ok{ color: #fff; background: linear-gradient(180deg, #3fe07d, #14a24a); box-shadow: 0 6px 0 #0b6a33, 0 12px 24px rgba(20,200,90,.35), inset 0 1px 0 rgba(255,255,255,.6); text-shadow: 0 1px 2px rgba(0,60,20,.6); }
+.dl-btn-ok:hover{ filter: brightness(1.08); transform: translateY(-1px); }
+.dl-btn-ok:active{ transform: translateY(3px); box-shadow: 0 3px 0 #0b6a33, 0 6px 14px rgba(20,200,90,.3), inset 0 1px 0 rgba(255,255,255,.6); }
+.dl-btn-cancel:focus-visible, .dl-btn-ok:focus-visible{ outline: 2px solid #fff; outline-offset: 3px; }
+.dl-modal-meta{ margin-top: 16px; font-size: 12px; color: #7f8cab; text-align: center; letter-spacing: .5px; }
+@keyframes dlFade{ from{ opacity: 0; } to{ opacity: 1; } }
+@keyframes dlPop{ from{ opacity: 0; transform: translateY(14px) scale(.94); } to{ opacity: 1; transform: none; } }
+@media (max-width: 560px){
+  .dl-modal-card{ padding: 24px 20px 18px; }
+  .dl-modal-actions{ flex-direction: column-reverse; }
+  .dl-btn-cancel, .dl-btn-ok{ width: 100%; }
+}
+@media (prefers-reduced-motion: reduce){
+  .button-container.dl-armed .dev-badge{ animation: none; opacity: 0; }
+  .button-container.dl-back .dev-badge{ animation: none; opacity: 1; transform: rotate(4deg); }
+  .download-button .dl-hint svg, .dl-hint svg{ animation: none; }
+}
+</style>
 <style id="ev-rtl">
 .preview{direction:ltr}
 
@@ -12983,7 +13186,7 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
     </div>
 
     <div class="button-container">
-      <span class="download-wrap"><button class="download-button" data-i18n="download-btn">Скачать Evades 3</button></span>
+      <span class="download-wrap"><button class="download-button" id="dlBtn" type="button" aria-haspopup="dialog"><span class="dl-green" aria-hidden="true"></span><span class="dl-src" data-i18n="download-btn">Скачать Evades 3</span><span class="dl-alpha-src" data-i18n="dl-alpha">альфа-версию</span><span class="dl-vis" aria-hidden="true"><span class="dl-pre">Скачать </span><span class="dl-slot"><span class="dl-name">Evades 3</span><span class="dl-alpha">альфа-версию</span></span><span class="dl-post"></span></span></button></span>
 
       <!-- 3D замок + цепи: ОТКЛЮЧЕНО (откат по запросу пользователя) -->
       <div class="lock-cage" aria-hidden="true" hidden style="display:none">
@@ -13141,6 +13344,13 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
     </div>
 
 
+
+    <div class="dl-hint-row">
+      <div class="dl-hint">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3l14 7-6 2-2 6z"/></svg>
+        <span data-i18n="dl-hint">Наведи курсор на кнопку «Скачать Evades 3»</span>
+      </div>
+    </div>
 
     <div class="follow-dev-container">
       <a class="follow-dev-link" href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener" data-i18n="follow-dev">Следить за разработкой</a>
@@ -20547,7 +20757,7 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
           const tag = (node.tagName || '').toLowerCase();
 
           // Кнопка скачать — запрет (проверяем первым)
-          if (node.classList && node.classList.contains('download-button')) return 'no';
+          if (node.classList && node.classList.contains('download-button')) return 'arrow';
 
           // Кнопки и ссылки — стрелка
           if (tag === 'a' || tag === 'button') return 'arrow';
@@ -32297,6 +32507,141 @@ async function _e3LoadParticipants() {
     }, 250);
     return true;
   };
+})();
+</script>
+<div class="dl-modal" id="dlModal" role="dialog" aria-modal="true" aria-labelledby="dlWarnTitle">
+  <div class="dl-modal-backdrop" data-dl-close></div>
+  <div class="dl-modal-card">
+    <div class="dl-modal-badge" aria-hidden="true">α</div>
+    <h2 id="dlWarnTitle" data-i18n="dl-warn-title">Это альфа-версия</h2>
+    <p class="dl-modal-lead" data-i18n="dl-warn-lead">Evades 3 пока находится в ранней разработке. Эта сборка нестабильна и предназначена для тестирования.</p>
+    <ul class="dl-modal-list">
+      <li data-i18n="dl-warn-li1">Возможны вылеты, зависания и ошибки.</li>
+      <li data-i18n="dl-warn-li2">Часть функций не готова или может измениться.</li>
+      <li data-i18n="dl-warn-li3">Прогресс и данные могут быть сброшены при обновлениях.</li>
+    </ul>
+    <p class="dl-modal-note" data-i18n="dl-warn-smart">Windows может показать предупреждение SmartScreen: установщик пока не имеет цифровой подписи. Нажмите «Подробнее» → «Выполнить в любом случае».</p>
+    <div class="dl-modal-actions">
+      <button type="button" class="dl-btn-cancel" data-dl-close data-i18n="dl-warn-cancel">Отмена</button>
+      <a class="dl-btn-ok" id="dlConfirm" href="downloads/Evades3_Setup.exe" download data-i18n="dl-warn-ok">Всё равно скачать</a>
+    </div>
+    <div class="dl-modal-meta">Evades 3 · v0.1.0 alpha · Windows (x64)</div>
+  </div>
+</div>
+<script id="ev-dl-unlock-js">
+(function(){
+  'use strict';
+  var DOWNLOAD_URL = 'downloads/Evades3_Setup.exe';   // <- путь к установщику на сайте
+  var ALPHA = {"ru": "альфа-версию", "en": "alpha version", "uk": "альфа-версію", "de": "Alpha-Version", "es": "versión alfa", "fr": "version alpha", "it": "versione alpha", "pt": "versão alfa", "pl": "wersję alfa", "tr": "alfa sürümünü", "nl": "alfaversie", "sv": "alfaversionen", "no": "alfaversjonen", "fi": "alfaversio", "da": "alfaversionen", "cs": "alfa verzi", "ro": "versiunea alfa", "hu": "alfa verziót", "el": "έκδοση άλφα", "ja": "アルファ版", "zh": "Alpha 版", "ko": "알파 버전", "ar": "النسخة التجريبية (ألفا)", "he": "גרסת אלפא", "hi": "अल्फा संस्करण", "th": "เวอร์ชันอัลฟา", "vi": "phiên bản alpha", "id": "versi alfa", "ms": "versi alfa"};
+  var TXT = {"ru": {"dl-hint": "Наведи курсор на кнопку «Скачать Evades 3»", "dl-warn-title": "Это альфа-версия", "dl-warn-lead": "Evades 3 пока находится в ранней разработке. Эта сборка нестабильна и предназначена для тестирования.", "dl-warn-li1": "Возможны вылеты, зависания и ошибки.", "dl-warn-li2": "Часть функций не готова или может измениться.", "dl-warn-li3": "Прогресс и данные могут быть сброшены при обновлениях.", "dl-warn-smart": "Windows может показать предупреждение SmartScreen: установщик пока не имеет цифровой подписи. Нажмите «Подробнее» → «Выполнить в любом случае».", "dl-warn-cancel": "Отмена", "dl-warn-ok": "Всё равно скачать"}, "en": {"dl-hint": "Hover over the “Download Evades 3” button", "dl-warn-title": "This is an alpha version", "dl-warn-lead": "Evades 3 is still in early development. This build is unstable and meant for testing.", "dl-warn-li1": "Crashes, freezes and bugs are possible.", "dl-warn-li2": "Some features are unfinished or may change.", "dl-warn-li3": "Progress and data may be reset between updates.", "dl-warn-smart": "Windows may show a SmartScreen warning because the installer is not digitally signed yet. Click “More info” → “Run anyway”.", "dl-warn-cancel": "Cancel", "dl-warn-ok": "Download anyway"}, "uk": {"dl-hint": "Наведи курсор на кнопку «Завантажити Evades 3»", "dl-warn-title": "Це альфа-версія", "dl-warn-lead": "Evades 3 поки що на ранньому етапі розробки. Ця збірка нестабільна й призначена для тестування.", "dl-warn-li1": "Можливі вильоти, зависання та помилки.", "dl-warn-li2": "Частина функцій не готова або може змінитися.", "dl-warn-li3": "Прогрес і дані можуть бути скинуті під час оновлень.", "dl-warn-smart": "Windows може показати попередження SmartScreen: інсталятор поки не має цифрового підпису. Натисніть «Докладніше» → «Все одно виконати».", "dl-warn-cancel": "Скасувати", "dl-warn-ok": "Усе одно завантажити"}};
+
+  /* 1. переводы: альфа-слово для всех языков, остальные тексты ru/en/uk (прочие языки берут en) */
+  try{
+    if (typeof translations === 'object' && translations){
+      Object.keys(ALPHA).forEach(function(l){
+        if (!translations[l]) translations[l] = {};
+        translations[l]['dl-alpha'] = ALPHA[l];
+      });
+      Object.keys(TXT).forEach(function(l){
+        if (!translations[l]) translations[l] = {};
+        for (var k in TXT[l]) translations[l][k] = TXT[l][k];
+      });
+    }
+  }catch(_){}
+
+  var btn   = document.getElementById('dlBtn');
+  var wrap  = btn && btn.closest('.button-container');
+  var modal = document.getElementById('dlModal');
+  var okBtn = document.getElementById('dlConfirm');
+  if (!btn || !wrap || !modal) return;
+  okBtn.setAttribute('href', DOWNLOAD_URL);
+
+  var src   = btn.querySelector('.dl-src');
+  var asrc  = btn.querySelector('.dl-alpha-src');
+  var preEl = btn.querySelector('.dl-pre');
+  var postEl= btn.querySelector('.dl-post');
+  var slot  = btn.querySelector('.dl-slot');
+  var nameEl= btn.querySelector('.dl-name');
+  var alphaEl=btn.querySelector('.dl-alpha');
+  var NAME  = 'Evades 3';
+
+  /* 2. подпись кнопки: «<до> [Evades 3 → альфа-версию] <после>» на любом языке */
+  function measure(){
+    var n = nameEl.offsetWidth, a = alphaEl.offsetWidth;
+    if (n && a){
+      slot.style.setProperty('--w-name',  n + 'px');
+      slot.style.setProperty('--w-alpha', a + 'px');
+    }
+  }
+  function rebuild(){
+    var full  = (src.textContent || '').trim();
+    var alpha = (asrc.textContent || '').trim();
+    var i = full.indexOf(NAME), pre = '', post = '', name = NAME;
+    if (i < 0){ name = full; }
+    else { pre = full.slice(0, i); post = full.slice(i + NAME.length); }
+    preEl.textContent = pre; postEl.textContent = post;
+    nameEl.textContent = name; alphaEl.textContent = alpha;
+    btn.setAttribute('aria-label', full + ' — ' + alpha);
+    measure();
+  }
+  function reapply(){
+    try{
+      var l = (typeof currentLang === 'string' && currentLang) || localStorage.getItem('selectedLanguage') || 'ru';
+      if (typeof applyTranslations === 'function') applyTranslations(l);
+    }catch(_){}
+    rebuild();
+  }
+  reapply();
+  document.addEventListener('e3LangChanged', rebuild);
+  try{ new MutationObserver(rebuild).observe(src, {childList:true, characterData:true, subtree:true}); }catch(_){}
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  window.addEventListener('resize', measure);
+  window.addEventListener('load', function(){ rebuild(); });
+
+  /* 3. наведение: зелёная кнопка + улёт плашки «В разработке» */
+  var hovered = false, focused = false, armed = false;
+  function update(){
+    var want = hovered || focused || modal.classList.contains('is-open');
+    if (want === armed) return;
+    armed = want;
+    if (armed){ measure(); wrap.classList.remove('dl-back'); wrap.classList.add('dl-armed'); }
+    else { wrap.classList.remove('dl-armed'); wrap.classList.add('dl-back'); }
+  }
+  btn.addEventListener('pointerenter', function(e){ if (e.pointerType === 'touch') return; hovered = true;  update(); });
+  btn.addEventListener('pointerleave', function(){ hovered = false; update(); });
+  btn.addEventListener('focus', function(){ try{ focused = btn.matches(':focus-visible'); }catch(_){ focused = false; } update(); });
+  btn.addEventListener('blur',  function(){ focused = false; update(); });
+
+  /* 4. клик: предупреждение об альфе */
+  var lastFocus = null;
+  function openModal(){
+    lastFocus = document.activeElement;
+    modal.classList.add('is-open');
+    document.documentElement.style.overflow = 'hidden';
+    update();
+    var c = modal.querySelector('.dl-btn-cancel'); if (c) c.focus();
+  }
+  function closeModal(){
+    if (!modal.classList.contains('is-open')) return;
+    modal.classList.remove('is-open');
+    document.documentElement.style.overflow = '';
+    update();
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  btn.addEventListener('click', function(e){ e.preventDefault(); openModal(); });
+  modal.addEventListener('click', function(e){ if (e.target.closest('[data-dl-close]')) closeModal(); });
+  okBtn.addEventListener('click', function(){ setTimeout(closeModal, 250); });
+  document.addEventListener('keydown', function(e){
+    if (!modal.classList.contains('is-open')) return;
+    if (e.key === 'Escape'){ e.preventDefault(); closeModal(); return; }
+    if (e.key === 'Tab'){
+      var f = modal.querySelectorAll('.dl-btn-cancel, .dl-btn-ok');
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    }
+  });
 })();
 </script>
 </body>
