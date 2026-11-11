@@ -23055,7 +23055,7 @@ async function doResetPassword() {
         }).join('');
         track.hidden = false;
         empty.hidden = true;
-      } catch { /* network or missing table — keep empty state */ }
+      } catch (e) { console.warn('[REVIEWS]', e); }
     })();
 
     // --- Rating form ---
@@ -23199,8 +23199,15 @@ async function doResetPassword() {
           renderRatingState();
         }
       } catch (err) {
-        toast(tt('ultra-rating-toast-net','Нет соединения. Проверь интернет'),'');
         if (typeof console !== 'undefined') console.warn('[RATING]', err);
+        const _code = err && err.code;
+        if (_code === 'permission-denied') {
+          toast(tt('ultra-rating-toast-err','Не удалось отправить отзыв (нет прав). Войди заново и попробуй ещё раз'),'');
+        } else if (_code === 'unavailable' || _code === 'deadline-exceeded' || !navigator.onLine) {
+          toast(tt('ultra-rating-toast-net','Нет соединения. Проверь интернет'),'');
+        } else {
+          toast(tt('ultra-rating-toast-err','Не удалось отправить. Попробуй ещё раз'),'');
+        }
       } finally {
         if (submit) { submit.disabled = false; if (submit.dataset._label) { submit.textContent = submit.dataset._label; delete submit.dataset._label; } }
       }
@@ -30323,14 +30330,14 @@ async function _e3LoadParticipants() {
   const _dgKeys = Object.create(null);
   window.addEventListener('keydown', (e) => {
     if (!dg) return;
-    const k = e.key.toLowerCase();
+    const k = (e.key || '').toLowerCase();
     if (['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(k)) {
       _dgKeys[k] = true;
       e.preventDefault();
     }
   });
   window.addEventListener('keyup', (e) => {
-    const k = e.key.toLowerCase();
+    const k = (e.key || '').toLowerCase();
     if (_dgKeys[k]) _dgKeys[k] = false;
   });
 
