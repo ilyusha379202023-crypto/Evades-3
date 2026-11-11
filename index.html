@@ -5,8 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script>
   /* Арабский и иврит: весь сайт сразу справа налево (ещё до отрисовки, без мигания) */
+  /* Автоопределение языка: сохранённый выбор -> язык браузера/системы -> английский */
+  window.__e3DetectLang = function(){
+    var SUP = ['ru','en','uk','de','es','fr','it','pt','pl','tr','nl','sv','no','fi','da','cs','ro','hu','el','ja','zh','ko','ar','he','hi','th','vi','id','ms'];
+    var ALIAS = { nb:'no', nn:'no', in:'id', iw:'he' };
+    try {
+      var saved = localStorage.getItem('selectedLanguage');
+      if (saved && SUP.indexOf(saved) !== -1) return saved;
+    } catch(_){}
+    var list = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || 'en'];
+    for (var i = 0; i < list.length; i++){
+      var b = String(list[i] || '').toLowerCase().split('-')[0];
+      b = ALIAS[b] || b;
+      if (SUP.indexOf(b) !== -1) return b;
+    }
+    return 'en';
+  };
   (function(){ try {
-    var l = localStorage.getItem('selectedLanguage') || 'ru';
+    var l = window.__e3DetectLang();
     document.documentElement.lang = l;
     document.documentElement.dir = (l === 'ar' || l === 'he') ? 'rtl' : 'ltr';
   } catch(_){} })();
@@ -20561,7 +20577,7 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
         });
       });
 
-      const savedLang = localStorage.getItem('selectedLanguage') || 'ru';
+      const savedLang = (window.__e3DetectLang && window.__e3DetectLang()) || localStorage.getItem('selectedLanguage') || 'ru';
       changeLanguage(savedLang);
 
       if (!prefersReducedMotion) createSparkles(50);
@@ -32586,7 +32602,7 @@ async function _e3LoadParticipants() {
   }
   function reapply(){
     try{
-      var l = (typeof currentLang === 'string' && currentLang) || localStorage.getItem('selectedLanguage') || 'ru';
+      var l = (window.__e3DetectLang && window.__e3DetectLang()) || 'ru';
       if (typeof applyTranslations === 'function') applyTranslations(l);
     }catch(_){}
     rebuild();
