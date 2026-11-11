@@ -21067,10 +21067,10 @@ function _wrapQuerySnap(snap) {
 }
 function _makeQueryShim(getRef) {
   return {
-    where: (f, op, v) => _makeQueryShim(async () => _fsMod.query(await getRef(), _fsMod.where(f, op, v))),
-    orderBy: (f, dir) => _makeQueryShim(async () => _fsMod.query(await getRef(), _fsMod.orderBy(f, dir))),
-    limit: (n) => _makeQueryShim(async () => _fsMod.query(await getRef(), _fsMod.limit(n))),
-    get: async () => _wrapQuerySnap(await _fsMod.getDocs(await getRef())),
+    where: (f, op, v) => _makeQueryShim(async () => { const _r = await getRef(); return _fsMod.query(_r, _fsMod.where(f, op, v)); }),
+    orderBy: (f, dir) => _makeQueryShim(async () => { const _r = await getRef(); return _fsMod.query(_r, _fsMod.orderBy(f, dir)); }),
+    limit: (n) => _makeQueryShim(async () => { const _r = await getRef(); return _fsMod.query(_r, _fsMod.limit(n)); }),
+    get: async () => { const _r = await getRef(); return _wrapQuerySnap(await _fsMod.getDocs(_r)); },
     onSnapshot: (cb, errCb) => {
       let unsub = () => {};
       let cancelled = false;
@@ -21090,9 +21090,9 @@ db = {
       doc(id) {
         const getDocRef = async () => { const firestoreDb = await _fbInit(); return _fsMod.doc(firestoreDb, name, id); };
         return {
-          get: async () => _wrapDocSnap(await _fsMod.getDoc(await getDocRef())),
-          set: async (data, opts) => _fsMod.setDoc(await getDocRef(), data, opts || {}),
-          delete: async () => _fsMod.deleteDoc(await getDocRef())
+          get: async () => { const _r = await getDocRef(); return _wrapDocSnap(await _fsMod.getDoc(_r)); },
+          set: async (data, opts) => { const _r = await getDocRef(); return _fsMod.setDoc(_r, data, opts || {}); },
+          delete: async () => { const _r = await getDocRef(); return _fsMod.deleteDoc(_r); }
         };
       },
       add: async (data) => { const firestoreDb = await _fbInit(); return _fsMod.addDoc(_fsMod.collection(firestoreDb, name), data); }
