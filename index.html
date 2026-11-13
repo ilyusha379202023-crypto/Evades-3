@@ -12207,7 +12207,6 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
     <a href="#subscriptions" data-nav="subscriptions" data-i18n="nav-plans">Подписки</a>
     <a href="#reviews" data-nav="reviews" data-i18n="nav-reviews">Отзывы</a>
     <a href="#faq" data-nav="faq" data-i18n="nav-faq">FAQ</a>
-    <a href="#news" data-nav="news" data-i18n="nav-news">Новости</a>
     <a href="#social" data-nav="social" data-i18n="nav-community">Сообщество</a>
   </nav>
   <div class="topbar-right">
@@ -14242,27 +14241,6 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
             <span class="faq-caret">+</span>
           </button>
           <div class="faq-a"><div class="faq-a-inner" data-i18n="ultra-faq-5-a">Зайди в наш Discord и подпишись на рассылку ниже — как только откроется набор на закрытый бета-тест, подписчики узнают первыми.</div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ E3 ULTRA UPGRADE: NEWSLETTER ============ -->
-    <section class="e3-section reveal reveal-zoom" id="news" aria-labelledby="nw-title">
-      <div class="news-box">
-        <div class="news-content">
-          <div class="e3-eyebrow" style="margin-bottom:14px;"><span class="dot"></span><span data-i18n="ultra-news-eyebrow">Ранний доступ</span></div>
-          <h2 id="nw-title" class="news-title" data-i18n="ultra-news-title">Получи приглашение первым</h2>
-          <p class="news-sub" data-i18n="ultra-news-sub">Подпишись — пришлём приглашение в альфа-тест, пресс-кит и эксклюзивный скин для раннего сообщества.</p>
-          <form class="news-form" id="newsForm" autocomplete="off" novalidate>
-            <input class="news-input" id="newsEmail" type="email" placeholder="you@evades3.com" aria-label="email" data-i18n-placeholder="ultra-news-placeholder" />
-            <button class="news-btn" type="submit" data-i18n="ultra-news-btn">Подписаться</button>
-          </form>
-          <div class="news-perks">
-            <span class="news-perk"><b>✓</b><span data-i18n="ultra-news-perk-1">Без спама</span></span>
-            <span class="news-perk"><b>✓</b><span data-i18n="ultra-news-perk-2">Приоритет в альфу</span></span>
-            <span class="news-perk"><b>✓</b><span data-i18n="ultra-news-perk-3">Эксклюзив-скин</span></span>
-          </div>
-
         </div>
       </div>
     </section>
@@ -32568,7 +32546,7 @@ async function _e3LoadParticipants() {
 <script id="ev-dl-unlock-js">
 (function(){
   'use strict';
-  var DOWNLOAD_URL = 'https://github.com/ilyusha379202023-crypto/Evades-3/releases/latest/download/Evades3Setup.exe';   // <- путь к установщику на сайте
+  var DOWNLOAD_URL = 'https://github.com/ilyusha379202023-crypto/Evades-3/releases/latest/download/Evades3_Setup.exe';   // <- путь к установщику на сайте
   var ALPHA = {"ru": "альфа-версию", "en": "alpha version", "uk": "альфа-версію", "de": "Alpha-Version", "es": "versión alfa", "fr": "version alpha", "it": "versione alpha", "pt": "versão alfa", "pl": "wersję alfa", "tr": "alfa sürümünü", "nl": "alfaversie", "sv": "alfaversionen", "no": "alfaversjonen", "fi": "alfaversio", "da": "alfaversionen", "cs": "alfa verzi", "ro": "versiunea alfa", "hu": "alfa verziót", "el": "έκδοση άλφα", "ja": "アルファ版", "zh": "Alpha 版", "ko": "알파 버전", "ar": "النسخة التجريبية (ألفا)", "he": "גרסת אלפא", "hi": "अल्फा संस्करण", "th": "เวอร์ชันอัลฟา", "vi": "phiên bản alpha", "id": "versi alfa", "ms": "versi alfa"};
   var TXT = {"ru": {"dl-hint": "Наведи курсор на кнопку «Скачать Evades 3»", "dl-warn-title": "Это альфа-версия", "dl-warn-lead": "Evades 3 пока находится в ранней разработке. Эта сборка нестабильна и предназначена для тестирования.", "dl-warn-li1": "Возможны вылеты, зависания и ошибки.", "dl-warn-li2": "Часть функций не готова или может измениться.", "dl-warn-li3": "Прогресс и данные могут быть сброшены при обновлениях.", "dl-warn-smart": "Windows может показать предупреждение SmartScreen: установщик пока не имеет цифровой подписи. Нажмите «Подробнее» → «Выполнить в любом случае».", "dl-warn-cancel": "Отмена", "dl-warn-ok": "Всё равно скачать"}, "en": {"dl-hint": "Hover over the “Download Evades 3” button", "dl-warn-title": "This is an alpha version", "dl-warn-lead": "Evades 3 is still in early development. This build is unstable and meant for testing.", "dl-warn-li1": "Crashes, freezes and bugs are possible.", "dl-warn-li2": "Some features are unfinished or may change.", "dl-warn-li3": "Progress and data may be reset between updates.", "dl-warn-smart": "Windows may show a SmartScreen warning because the installer is not digitally signed yet. Click “More info” → “Run anyway”.", "dl-warn-cancel": "Cancel", "dl-warn-ok": "Download anyway"}, "uk": {"dl-hint": "Наведи курсор на кнопку «Завантажити Evades 3»", "dl-warn-title": "Це альфа-версія", "dl-warn-lead": "Evades 3 поки що на ранньому етапі розробки. Ця збірка нестабільна й призначена для тестування.", "dl-warn-li1": "Можливі вильоти, зависання та помилки.", "dl-warn-li2": "Частина функцій не готова або може змінитися.", "dl-warn-li3": "Прогрес і дані можуть бути скинуті під час оновлень.", "dl-warn-smart": "Windows може показати попередження SmartScreen: інсталятор поки не має цифрового підпису. Натисніть «Докладніше» → «Все одно виконати».", "dl-warn-cancel": "Скасувати", "dl-warn-ok": "Усе одно завантажити"}};
 
