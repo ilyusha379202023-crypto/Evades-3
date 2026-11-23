@@ -32755,6 +32755,13 @@ async function _e3LoadParticipants() {
   } } catch(_){}
 })();
 </script>
+<script id="ev-dl-os-i18n">
+(function(){ var T = {"ru": {"dl-warn-os": "Только Windows 10 и 11 (x64)"}, "en": {"dl-warn-os": "Windows 10 and 11 only (x64)"}, "uk": {"dl-warn-os": "Лише Windows 10 і 11 (x64)"}};
+  try { if (typeof translations === "object" && translations) {
+    for (var l in T){ if (!translations[l]) translations[l] = {}; for (var k in T[l]) translations[l][k] = T[l][k]; }
+  } } catch(_){}
+})();
+</script>
 <div class="dl-modal" id="dlModal" role="dialog" aria-modal="true" aria-labelledby="dlWarnTitle">
   <div class="dl-modal-backdrop" data-dl-close></div>
   <div class="dl-modal-card">
@@ -32771,7 +32778,7 @@ async function _e3LoadParticipants() {
       <button type="button" class="dl-btn-cancel" data-dl-close data-i18n="dl-warn-cancel">Отмена</button>
       <a class="dl-btn-ok" id="dlConfirm" href="https://github.com/ilyusha379202023-crypto/Evades-3/releases/latest/download/Evades3Setup.exe" download data-i18n="dl-warn-ok">Всё равно скачать</a>
     </div>
-    <div class="dl-modal-meta">Evades 3 · v0.1.0 alpha · Windows (x64)</div>
+    <div class="dl-modal-meta">Evades 3 · v0.2.0 alpha · <span data-i18n="dl-warn-os">Только Windows 10 и 11 (x64)</span></div>
   </div>
 </div>
 <script id="ev-dl-unlock-js">
