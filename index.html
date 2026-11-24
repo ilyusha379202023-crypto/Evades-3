@@ -12203,6 +12203,7 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
   <nav class="site-nav" id="siteNav" aria-label="Разделы сайта">
     <a href="#" data-nav="top" data-i18n="nav-home">Главная</a>
     <a href="#arcade" data-nav="arcade" data-i18n="nav-arcade">Мини-игра</a>
+    <a href="#heroes" data-nav="heroes" data-i18n="nav-heroes">Герои и миры</a>
     <a href="#roadmap" data-nav="roadmap" data-i18n="nav-roadmap">План разработки</a>
     <a href="#news" data-nav="news" data-i18n="nav-news">Новости</a>
     <a href="#subscriptions" data-nav="subscriptions" data-i18n="nav-plans">Подписки</a>
@@ -13864,7 +13865,70 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
       </div>
     </div>
 
-    <!-- ============ E3 ULTRA UPGRADE: ROADMAP ============ -->
+<!-- ============ E3 HEROES & WORLDS ============ -->
+<style id="e3-heroes-style">
+#heroes .hm-wrap{max-width:1180px;margin:0 auto}
+.hm-sub{font-family:'Orbitron',sans-serif;font-weight:700;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--e3-gold);margin:34px 0 16px;display:flex;align-items:center;gap:14px}
+.hm-sub::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--e3-border-lit),transparent)}
+.hm-grid{display:grid;gap:18px}
+.hm-grid-w{grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr))}
+.hm-grid-h{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.hm-card{--c:#ffd84d;position:relative;display:flex;flex-direction:column;gap:10px;padding:20px 22px;border-radius:18px;overflow:hidden;border:1px solid var(--e3-border);background:linear-gradient(160deg,color-mix(in srgb,var(--c) 14%,transparent),rgba(255,255,255,.03) 60%);backdrop-filter:blur(10px);box-shadow:var(--e3-shadow-lg);transition:transform .3s var(--e3-ease),border-color .3s}
+.hm-card::before{content:"";position:absolute;inset-inline:0;top:0;height:3px;background:linear-gradient(90deg,var(--c),transparent)}
+.hm-card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--c) 60%,transparent)}
+.hm-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.hm-num{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:var(--c)}
+.hm-pill{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;padding:3px 10px;border-radius:999px;border:1px solid var(--e3-border-lit);color:rgba(255,255,255,.8)}
+.hm-name{font-family:'Exo 2','Orbitron',sans-serif;font-weight:800;font-size:clamp(20px,2.2vw,26px);letter-spacing:1px;color:#fff}
+.hm-world .hm-name{color:var(--c)}
+.hm-desc{font-family:'Rajdhani',sans-serif;font-weight:600;font-size:16px;line-height:1.45;color:rgba(255,255,255,.88)}
+.hm-feat{font-family:'Rajdhani',sans-serif;font-weight:600;font-size:15px;line-height:1.4;color:rgba(255,255,255,.62)}
+.hm-reward{margin-top:auto;padding-top:12px;border-top:1px solid var(--e3-border);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;color:rgba(255,255,255,.7)}
+.hm-rw{color:#fff}
+.hm-ball{width:62px;height:62px;border-radius:50%;margin-bottom:2px;background:var(--c);background:radial-gradient(circle at 32% 26%,color-mix(in srgb,var(--c) 35%,#fff) 0%,var(--c) 42%,color-mix(in srgb,var(--c) 40%,#000) 100%);box-shadow:0 0 26px color-mix(in srgb,var(--c) 55%,transparent),inset 0 -6px 12px rgba(0,0,0,.35)}
+.hm-hero .hm-name{color:var(--c)}
+.hm-unlock{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;color:rgba(255,255,255,.62)}
+.hm-wn{color:#fff}
+.hm-abil{list-style:none;display:flex;flex-direction:column;gap:12px;margin-top:6px}
+.hm-abil li{display:flex;gap:12px;align-items:flex-start}
+.hm-abil kbd{flex:none;width:28px;height:28px;display:grid;place-items:center;border-radius:8px;font-family:'Orbitron',sans-serif;font-weight:700;font-size:13px;color:#1a1300;background:linear-gradient(135deg,#ffd84d,#ffa22e)}
+.hm-abil b{display:block;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:16px;color:#fff}
+.hm-ad{display:block;font-family:'Rajdhani',sans-serif;font-weight:600;font-size:14.5px;line-height:1.4;color:rgba(255,255,255,.7)}
+/* Кнопка «Наверх» больше не налезает на кнопку ИИ-помощника: стоит над ней */
+html:not([dir="rtl"]) #e3-back-top{right:30px;bottom:100px}
+@media(max-width:760px){html:not([dir="rtl"]) #e3-back-top{right:33px;bottom:98px}}
+@media(max-width:520px){html:not([dir="rtl"]) #e3-back-top{right:22px;bottom:84px}}
+</style>
+    <section class="e3-section reveal" id="heroes" aria-labelledby="hm-title">
+      <div class="e3-section-head">
+        <div class="e3-eyebrow"><span class="dot"></span><span data-i18n="hm-eyebrow">Мир игры</span></div>
+        <h2 id="hm-title" class="e3-title"><span data-i18n="hm-title-a">Герои</span> <span class="accent" data-i18n="hm-title-b">и миры</span></h2>
+        <p class="e3-lead" data-i18n="hm-lead">Семь героев и шесть миров. За Victory в мире открывается новый герой.</p>
+      </div>
+      <div class="hm-wrap">
+        <h3 class="hm-sub" data-i18n="hm-worlds">Миры</h3>
+        <div class="hm-grid hm-grid-w">
+          <article class="hm-card hm-world reveal" data-delay="1" style="--c:#9fe7a4"><div class="hm-top"><span class="hm-num"><span data-i18n="hm-world">Мир</span> 1</span><span class="hm-pill" data-i18n="hm-arenas">40 арен</span></div><h4 class="hm-name">Prime Plaza</h4><p class="hm-desc" data-i18n="hm-w-primeplaza-d">Первый мир, где учимся уворачиваться.</p><p class="hm-feat" data-i18n="hm-w-primeplaza-f">С Area 21 — магниты, с Area 31 — пульсары.</p><div class="hm-reward"><span data-i18n="hm-reward">Награда:</span> <span class="hm-rw" data-i18n="hm-h-spark">Искра</span></div></article>
+          <article class="hm-card hm-world reveal" data-delay="2" style="--c:#8fd8ff"><div class="hm-top"><span class="hm-num"><span data-i18n="hm-world">Мир</span> 2</span><span class="hm-pill" data-i18n="hm-arenas">40 арен</span></div><h4 class="hm-name">Crystal Cavern</h4><p class="hm-desc" data-i18n="hm-w-crystalcavern-d">Зеркала, делящиеся шары Splitter и обманчивые Mirage.</p><p class="hm-feat" data-i18n="hm-w-crystalcavern-f">С Area 21 — тройные снайперы, с Area 31 — морозные кристаллы.</p><div class="hm-reward"><span data-i18n="hm-reward">Награда:</span> <span class="hm-rw" data-i18n="hm-h-prism">Призма</span></div></article>
+          <article class="hm-card hm-world reveal" data-delay="3" style="--c:#ff9a5c"><div class="hm-top"><span class="hm-num"><span data-i18n="hm-world">Мир</span> 3</span><span class="hm-pill" data-i18n="hm-arenas">40 арен</span></div><h4 class="hm-name">Volcanic Vale</h4><p class="hm-desc" data-i18n="hm-w-volcanicvale-d">Горячие шары, Bomber Ball, круги жара и лава, а с Area 11 — лавовые вулканчики.</p><p class="hm-feat" data-i18n="hm-w-volcanicvale-f">С Area 21 — огненные кометы, с Area 31 — огнедышащие шары.</p><div class="hm-reward"><span data-i18n="hm-reward">Награда:</span> <span class="hm-rw" data-i18n="hm-h-magma">Магма</span></div></article>
+          <article class="hm-card hm-world reveal" data-delay="1" style="--c:#c9a2ff"><div class="hm-top"><span class="hm-num"><span data-i18n="hm-world">Мир</span> 4</span><span class="hm-pill" data-i18n="hm-arenas">40 арен</span></div><h4 class="hm-name">Mystic Maze</h4><p class="hm-desc" data-i18n="hm-w-mysticmaze-d">Загадочный лабиринт.</p><p class="hm-feat" data-i18n="hm-w-mysticmaze-f">С Area 21 — Цепь душ, с Area 31 — Отражения.</p><div class="hm-reward"><span data-i18n="hm-reward">Награда:</span> <span class="hm-rw" data-i18n="hm-h-oracle">Оракул</span></div></article>
+          <article class="hm-card hm-world reveal" data-delay="2" style="--c:#8fe6ff"><div class="hm-top"><span class="hm-num"><span data-i18n="hm-world">Мир</span> 5</span><span class="hm-pill" data-i18n="hm-arenas">40 арен</span></div><h4 class="hm-name">Skybound Summit</h4><p class="hm-desc" data-i18n="hm-w-skyboundsummit-d">Ветер, вихри, облака и Gust Ball. В Area 20 ждёт BOSS «Повелитель бурь».</p><p class="hm-feat" data-i18n="hm-w-skyboundsummit-f">С Area 21 — грозовые шары, с Area 31 — градовые тучи.</p><div class="hm-reward"><span data-i18n="hm-reward">Награда:</span> <span class="hm-rw" data-i18n="hm-h-zephyr">Зефир</span></div></article>
+          <article class="hm-card hm-world reveal" data-delay="3" style="--c:#5fb8ff"><div class="hm-top"><span class="hm-num"><span data-i18n="hm-world">Мир</span> 6</span><span class="hm-pill" data-i18n="hm-arenas">40 арен</span></div><h4 class="hm-name">Aqua Abyss</h4><p class="hm-desc" data-i18n="hm-w-aquaabyss-d">Под водой: следи за воздухом и плыви от пузыря к пузырю. Медузы, угри, рыбы-ежи и течения. В Area 20 ждёт BOSS «Левиафан».</p><p class="hm-feat" data-i18n="hm-w-aquaabyss-f">С Area 21 — кальмары с чернилами, с Area 31 — морские мины.</p><div class="hm-reward"><span data-i18n="hm-reward">Награда:</span> <span class="hm-rw" data-i18n="hm-h-pearl">Жемчуг</span></div></article>
+        </div>
+        <h3 class="hm-sub" data-i18n="hm-heroes">Герои</h3>
+        <div class="hm-grid hm-grid-h">
+          <article class="hm-card hm-hero reveal" data-delay="1" style="--c:#c40000"><div class="hm-ball" aria-hidden="true"></div><h4 class="hm-name" data-i18n="hm-h-ruby">Рубин</h4><p class="hm-unlock"><span data-i18n="hm-start">Доступен с самого начала</span></p><ul class="hm-abil"><li><kbd>J</kbd><div><b data-i18n="hm-ruby-a1">Quick Step</b><span class="hm-ad" data-i18n="hm-ruby-a1-d">Быстрый рывок.</span></div></li><li><kbd>K</kbd><div><b data-i18n="hm-ruby-a2">Phase Pulse</b><span class="hm-ad" data-i18n="hm-ruby-a2-d">Враги вокруг на время становятся полупрозрачными и неопасными.</span></div></li></ul></article>
+          <article class="hm-card hm-hero reveal" data-delay="2" style="--c:#ffdb29"><div class="hm-ball" aria-hidden="true"></div><h4 class="hm-name" data-i18n="hm-h-spark">Искра</h4><p class="hm-unlock"><span data-i18n="hm-unlock">Награда за Victory в</span> <span class="hm-wn">Prime Plaza</span></p><ul class="hm-abil"><li><kbd>J</kbd><div><b data-i18n="hm-spark-a1">Электрощит</b><span class="hm-ad" data-i18n="hm-spark-a1-d">Поглощает одно попадание.</span></div></li><li><kbd>K</kbd><div><b data-i18n="hm-spark-a2">Магнит</b><span class="hm-ad" data-i18n="hm-spark-a2-d">Притягивает близкие пеллеты.</span></div></li></ul></article>
+          <article class="hm-card hm-hero reveal" data-delay="3" style="--c:#73e6ff"><div class="hm-ball" aria-hidden="true"></div><h4 class="hm-name" data-i18n="hm-h-prism">Призма</h4><p class="hm-unlock"><span data-i18n="hm-unlock">Награда за Victory в</span> <span class="hm-wn">Crystal Cavern</span></p><ul class="hm-abil"><li><kbd>J</kbd><div><b data-i18n="hm-prism-a1">Кристальная метка</b><span class="hm-ad" data-i18n="hm-prism-a1-d">Ставит метку; повторное нажатие мгновенно возвращает шар к ней.</span></div></li><li><kbd>K</kbd><div><b data-i18n="hm-prism-a2">Кристальный луч</b><span class="hm-ad" data-i18n="hm-prism-a2-d">Враги на линии луча вмерзают в кристалл и стоят на месте.</span></div></li></ul></article>
+          <article class="hm-card hm-hero reveal" data-delay="4" style="--c:#ff6b1a"><div class="hm-ball" aria-hidden="true"></div><h4 class="hm-name" data-i18n="hm-h-magma">Магма</h4><p class="hm-unlock"><span data-i18n="hm-unlock">Награда за Victory в</span> <span class="hm-wn">Volcanic Vale</span></p><ul class="hm-abil"><li><kbd>J</kbd><div><b data-i18n="hm-magma-a1">Огненный след</b><span class="hm-ad" data-i18n="hm-magma-a1-d">За шаром остаётся лава, в ней враги замедляются.</span></div></li><li><kbd>K</kbd><div><b data-i18n="hm-magma-a2">Базальтовая броня</b><span class="hm-ad" data-i18n="hm-magma-a2-d">Несколько секунд шар неуязвим, но стоит на месте.</span></div></li></ul></article>
+          <article class="hm-card hm-hero reveal" data-delay="1" style="--c:#9e66ff"><div class="hm-ball" aria-hidden="true"></div><h4 class="hm-name" data-i18n="hm-h-oracle">Оракул</h4><p class="hm-unlock"><span data-i18n="hm-unlock">Награда за Victory в</span> <span class="hm-wn">Mystic Maze</span></p><ul class="hm-abil"><li><kbd>J</kbd><div><b data-i18n="hm-oracle-a1">Сжатие</b><span class="hm-ad" data-i18n="hm-oracle-a1-d">Шар уменьшается вдвое и проскакивает в узкие щели.</span></div></li><li><kbd>K</kbd><div><b data-i18n="hm-oracle-a2">Ясновидение</b><span class="hm-ad" data-i18n="hm-oracle-a2-d">Видно, куда полетят шары рядом; невидимые Phantom Ball становятся видны.</span></div></li></ul></article>
+          <article class="hm-card hm-hero reveal" data-delay="2" style="--c:#66f2b8"><div class="hm-ball" aria-hidden="true"></div><h4 class="hm-name" data-i18n="hm-h-zephyr">Зефир</h4><p class="hm-unlock"><span data-i18n="hm-unlock">Награда за Victory в</span> <span class="hm-wn">Skybound Summit</span></p><ul class="hm-abil"><li><kbd>J</kbd><div><b data-i18n="hm-zephyr-a1">Порыв</b><span class="hm-ad" data-i18n="hm-zephyr-a1-d">Волна ветра отбрасывает врагов вокруг.</span></div></li><li><kbd>K</kbd><div><b data-i18n="hm-zephyr-a2">Попутный ветер</b><span class="hm-ad" data-i18n="hm-zephyr-a2-d">Ускорение и иммунитет к ветру.</span></div></li></ul></article>
+          <article class="hm-card hm-hero reveal" data-delay="3" style="--c:#66d1ff"><div class="hm-ball" aria-hidden="true"></div><h4 class="hm-name" data-i18n="hm-h-pearl">Жемчуг</h4><p class="hm-unlock"><span data-i18n="hm-unlock">Награда за Victory в</span> <span class="hm-wn">Aqua Abyss</span></p><ul class="hm-abil"><li><kbd>J</kbd><div><b data-i18n="hm-pearl-a1">Пузырь</b><span class="hm-ad" data-i18n="hm-pearl-a1-d">Шар в прозрачном пузыре: враги и нехватка воздуха его не выбивают.</span></div></li><li><kbd>K</kbd><div><b data-i18n="hm-pearl-a2">Водоворот</b><span class="hm-ad" data-i18n="hm-pearl-a2-d">Воронка затягивает врагов и замедляет их, сквозь стены не тянет.</span></div></li></ul></article>
+        </div>
+      </div>
+    </section>
+
+        <!-- ============ E3 ULTRA UPGRADE: ROADMAP ============ -->
     <section class="e3-section reveal" id="roadmap" aria-labelledby="rm-title">
       <div class="e3-section-head">
         <div class="e3-eyebrow"><span class="dot"></span><span data-i18n="ultra-roadmap-eyebrow">План разработки</span></div>
@@ -33308,6 +33372,206 @@ async function _e3LoadParticipants() {
   "upd-012-g1-i2": "Під час першого входу в нову зону шкала прокачування одразу заповнюється на частину. Це бонус за просування вперед.",
   "upd-012-g1-i3": "Досвід для наступного рівня тепер росте помітно повільніше. Раніше на високих рівнях прокачування майже не рухалося, тепер покращення доступні й далі.",
   "upd-011-g1-i1": "Таймер після дотику до ворога тепер збільшується в міру проходження арен."
+ }
+};
+  try{
+    if (typeof translations === 'object' && translations){
+      for (var lang in translations){
+        var src = X[lang] || X.en;
+        for (var k in src){ if (X[lang] || translations[lang][k] == null) translations[lang][k] = src[k]; }
+      }
+      var active = (typeof currentLang === 'string' && currentLang) || localStorage.getItem('selectedLanguage') || 'ru';
+      if (typeof applyTranslations === 'function') applyTranslations(active);
+    }
+  }catch(e){}
+})();
+</script>
+<script>
+/* Раздел «Герои и миры»: переводы (ru, en, uk; остальные языки берут английский) */
+(function(){
+  var X = {
+ "ru": {
+  "nav-heroes": "Герои и миры",
+  "hm-eyebrow": "Мир игры",
+  "hm-lead": "Семь героев и шесть миров. За Victory в мире открывается новый герой.",
+  "hm-title-a": "Герои",
+  "hm-title-b": "и миры",
+  "hm-worlds": "Миры",
+  "hm-heroes": "Герои",
+  "hm-world": "Мир",
+  "hm-arenas": "40 арен",
+  "hm-reward": "Награда:",
+  "hm-start": "Доступен с самого начала",
+  "hm-unlock": "Награда за Victory в",
+  "hm-h-ruby": "Рубин",
+  "hm-h-spark": "Искра",
+  "hm-h-prism": "Призма",
+  "hm-h-magma": "Магма",
+  "hm-h-oracle": "Оракул",
+  "hm-h-zephyr": "Зефир",
+  "hm-h-pearl": "Жемчуг",
+  "hm-w-primeplaza-d": "Первый мир, где учимся уворачиваться.",
+  "hm-w-primeplaza-f": "С Area 21 — магниты, с Area 31 — пульсары.",
+  "hm-w-crystalcavern-d": "Зеркала, делящиеся шары Splitter и обманчивые Mirage.",
+  "hm-w-crystalcavern-f": "С Area 21 — тройные снайперы, с Area 31 — морозные кристаллы.",
+  "hm-w-volcanicvale-d": "Горячие шары, Bomber Ball, круги жара и лава, а с Area 11 — лавовые вулканчики.",
+  "hm-w-volcanicvale-f": "С Area 21 — огненные кометы, с Area 31 — огнедышащие шары.",
+  "hm-w-mysticmaze-d": "Загадочный лабиринт.",
+  "hm-w-mysticmaze-f": "С Area 21 — Цепь душ, с Area 31 — Отражения.",
+  "hm-w-skyboundsummit-d": "Ветер, вихри, облака и Gust Ball. В Area 20 ждёт BOSS «Повелитель бурь».",
+  "hm-w-skyboundsummit-f": "С Area 21 — грозовые шары, с Area 31 — градовые тучи.",
+  "hm-w-aquaabyss-d": "Под водой: следи за воздухом и плыви от пузыря к пузырю. Медузы, угри, рыбы-ежи и течения. В Area 20 ждёт BOSS «Левиафан».",
+  "hm-w-aquaabyss-f": "С Area 21 — кальмары с чернилами, с Area 31 — морские мины.",
+  "hm-ruby-a1": "Quick Step",
+  "hm-ruby-a1-d": "Быстрый рывок.",
+  "hm-ruby-a2": "Phase Pulse",
+  "hm-ruby-a2-d": "Враги вокруг на время становятся полупрозрачными и неопасными.",
+  "hm-spark-a1": "Электрощит",
+  "hm-spark-a1-d": "Поглощает одно попадание.",
+  "hm-spark-a2": "Магнит",
+  "hm-spark-a2-d": "Притягивает близкие пеллеты.",
+  "hm-prism-a1": "Кристальная метка",
+  "hm-prism-a1-d": "Ставит метку; повторное нажатие мгновенно возвращает шар к ней.",
+  "hm-prism-a2": "Кристальный луч",
+  "hm-prism-a2-d": "Враги на линии луча вмерзают в кристалл и стоят на месте.",
+  "hm-magma-a1": "Огненный след",
+  "hm-magma-a1-d": "За шаром остаётся лава, в ней враги замедляются.",
+  "hm-magma-a2": "Базальтовая броня",
+  "hm-magma-a2-d": "Несколько секунд шар неуязвим, но стоит на месте.",
+  "hm-oracle-a1": "Сжатие",
+  "hm-oracle-a1-d": "Шар уменьшается вдвое и проскакивает в узкие щели.",
+  "hm-oracle-a2": "Ясновидение",
+  "hm-oracle-a2-d": "Видно, куда полетят шары рядом; невидимые Phantom Ball становятся видны.",
+  "hm-zephyr-a1": "Порыв",
+  "hm-zephyr-a1-d": "Волна ветра отбрасывает врагов вокруг.",
+  "hm-zephyr-a2": "Попутный ветер",
+  "hm-zephyr-a2-d": "Ускорение и иммунитет к ветру.",
+  "hm-pearl-a1": "Пузырь",
+  "hm-pearl-a1-d": "Шар в прозрачном пузыре: враги и нехватка воздуха его не выбивают.",
+  "hm-pearl-a2": "Водоворот",
+  "hm-pearl-a2-d": "Воронка затягивает врагов и замедляет их, сквозь стены не тянет."
+ },
+ "en": {
+  "nav-heroes": "Heroes & worlds",
+  "hm-eyebrow": "The game",
+  "hm-lead": "Seven heroes and six worlds. Winning a world with Victory unlocks a new hero.",
+  "hm-title-a": "Heroes",
+  "hm-title-b": "& worlds",
+  "hm-worlds": "Worlds",
+  "hm-heroes": "Heroes",
+  "hm-world": "World",
+  "hm-arenas": "40 arenas",
+  "hm-reward": "Reward:",
+  "hm-start": "Available from the start",
+  "hm-unlock": "Reward for Victory in",
+  "hm-h-ruby": "Ruby",
+  "hm-h-spark": "Spark",
+  "hm-h-prism": "Prism",
+  "hm-h-magma": "Magma",
+  "hm-h-oracle": "Oracle",
+  "hm-h-zephyr": "Zefir",
+  "hm-h-pearl": "Zhemchug",
+  "hm-w-primeplaza-d": "The first world, where you learn to dodge.",
+  "hm-w-primeplaza-f": "From Area 21: magnets. From Area 31: pulsars.",
+  "hm-w-crystalcavern-d": "Mirrors, splitting Splitter balls and deceptive Mirage balls.",
+  "hm-w-crystalcavern-f": "From Area 21: triple snipers. From Area 31: frost crystals.",
+  "hm-w-volcanicvale-d": "Hot balls, Bomber Ball, heat circles and lava, plus lava volcanoes from Area 11.",
+  "hm-w-volcanicvale-f": "From Area 21: fire comets. From Area 31: fire-breathing balls.",
+  "hm-w-mysticmaze-d": "A mysterious maze.",
+  "hm-w-mysticmaze-f": "From Area 21: Soul Chain. From Area 31: Reflections.",
+  "hm-w-skyboundsummit-d": "Wind, whirlwinds, clouds and the Gust Ball. In Area 20 the BOSS “Storm Lord” awaits.",
+  "hm-w-skyboundsummit-f": "From Area 21: thunder balls. From Area 31: hail clouds.",
+  "hm-w-aquaabyss-d": "Underwater: watch your air and swim from bubble to bubble. Jellyfish, eels, pufferfish and currents. In Area 20 the BOSS “Leviathan” awaits.",
+  "hm-w-aquaabyss-f": "From Area 21: squids with ink. From Area 31: sea mines.",
+  "hm-ruby-a1": "Quick Step",
+  "hm-ruby-a1-d": "A quick dash.",
+  "hm-ruby-a2": "Phase Pulse",
+  "hm-ruby-a2-d": "Enemies around you turn translucent and harmless for a while.",
+  "hm-spark-a1": "Electroshield",
+  "hm-spark-a1-d": "Absorbs one hit.",
+  "hm-spark-a2": "Magnet",
+  "hm-spark-a2-d": "Pulls in nearby pellets.",
+  "hm-prism-a1": "Crystal Mark",
+  "hm-prism-a1-d": "Places a mark; pressing again instantly returns the ball to it.",
+  "hm-prism-a2": "Crystal Beam",
+  "hm-prism-a2-d": "Enemies on the beam’s line freeze in crystal and stand still.",
+  "hm-magma-a1": "Fire Trail",
+  "hm-magma-a1-d": "Lava stays behind the ball and slows enemies in it.",
+  "hm-magma-a2": "Basalt Armor",
+  "hm-magma-a2-d": "For a few seconds the ball is invulnerable, but stands still.",
+  "hm-oracle-a1": "Squeeze",
+  "hm-oracle-a1-d": "The ball shrinks to half size and slips through tight gaps.",
+  "hm-oracle-a2": "Clairvoyance",
+  "hm-oracle-a2-d": "Shows where nearby balls will fly; invisible Phantom Balls become visible.",
+  "hm-zephyr-a1": "Gust",
+  "hm-zephyr-a1-d": "A wave of wind pushes enemies away.",
+  "hm-zephyr-a2": "Tailwind",
+  "hm-zephyr-a2-d": "A speed boost and immunity to wind.",
+  "hm-pearl-a1": "Bubble",
+  "hm-pearl-a1-d": "The ball sits in a clear bubble: enemies and lack of air cannot knock it out.",
+  "hm-pearl-a2": "Whirlpool",
+  "hm-pearl-a2-d": "A whirlpool pulls enemies in and slows them, but not through walls."
+ },
+ "uk": {
+  "nav-heroes": "Герої та світи",
+  "hm-eyebrow": "Світ гри",
+  "hm-lead": "Сім героїв і шість світів. За Victory у світі відкривається новий герой.",
+  "hm-title-a": "Герої",
+  "hm-title-b": "і світи",
+  "hm-worlds": "Світи",
+  "hm-heroes": "Герої",
+  "hm-world": "Світ",
+  "hm-arenas": "40 арен",
+  "hm-reward": "Нагорода:",
+  "hm-start": "Доступний із самого початку",
+  "hm-unlock": "Нагорода за Victory в",
+  "hm-h-ruby": "Рубін",
+  "hm-h-spark": "Іскра",
+  "hm-h-prism": "Призма",
+  "hm-h-magma": "Магма",
+  "hm-h-oracle": "Оракул",
+  "hm-h-zephyr": "Зефір",
+  "hm-h-pearl": "Перлина",
+  "hm-w-primeplaza-d": "Перший світ, де вчимося ухилятися.",
+  "hm-w-primeplaza-f": "З Area 21 — магніти, з Area 31 — пульсари.",
+  "hm-w-crystalcavern-d": "Дзеркала, кулі Splitter, що діляться, і оманливі Mirage.",
+  "hm-w-crystalcavern-f": "З Area 21 — потрійні снайпери, з Area 31 — морозні кристали.",
+  "hm-w-volcanicvale-d": "Гарячі кулі, Bomber Ball, кола жару та лава, а з Area 11 — лавові вулканчики.",
+  "hm-w-volcanicvale-f": "З Area 21 — вогняні комети, з Area 31 — вогнедишні кулі.",
+  "hm-w-mysticmaze-d": "Загадковий лабіринт.",
+  "hm-w-mysticmaze-f": "З Area 21 — Ланцюг душ, з Area 31 — Відображення.",
+  "hm-w-skyboundsummit-d": "Вітер, вихори, хмари та Gust Ball. В Area 20 чекає BOSS «Володар бур».",
+  "hm-w-skyboundsummit-f": "З Area 21 — грозові кулі, з Area 31 — градові хмари.",
+  "hm-w-aquaabyss-d": "Під водою: стеж за повітрям і пливи від бульбашки до бульбашки. Медузи, вугри, риби-їжаки та течії. В Area 20 чекає BOSS «Левіафан».",
+  "hm-w-aquaabyss-f": "З Area 21 — кальмари з чорнилом, з Area 31 — морські міни.",
+  "hm-ruby-a1": "Quick Step",
+  "hm-ruby-a1-d": "Швидкий ривок.",
+  "hm-ruby-a2": "Phase Pulse",
+  "hm-ruby-a2-d": "Вороги навколо на деякий час стають напівпрозорими та безпечними.",
+  "hm-spark-a1": "Електрощит",
+  "hm-spark-a1-d": "Поглинає одне влучання.",
+  "hm-spark-a2": "Магніт",
+  "hm-spark-a2-d": "Притягує близькі пелети.",
+  "hm-prism-a1": "Кристалічна мітка",
+  "hm-prism-a1-d": "Ставить мітку; повторне натискання миттєво повертає кулю до неї.",
+  "hm-prism-a2": "Кристалічний промінь",
+  "hm-prism-a2-d": "Вороги на лінії променя вмерзають у кристал і стоять на місці.",
+  "hm-magma-a1": "Вогняний слід",
+  "hm-magma-a1-d": "За кулею залишається лава, у ній вороги сповільнюються.",
+  "hm-magma-a2": "Базальтова броня",
+  "hm-magma-a2-d": "Кілька секунд куля невразлива, але стоїть на місці.",
+  "hm-oracle-a1": "Стиснення",
+  "hm-oracle-a1-d": "Куля зменшується вдвічі й прослизає у вузькі шпарини.",
+  "hm-oracle-a2": "Ясновидіння",
+  "hm-oracle-a2-d": "Видно, куди полетять найближчі кулі; невидимі Phantom Ball стають видимими.",
+  "hm-zephyr-a1": "Порив",
+  "hm-zephyr-a1-d": "Хвиля вітру відкидає ворогів навколо.",
+  "hm-zephyr-a2": "Попутний вітер",
+  "hm-zephyr-a2-d": "Прискорення та імунітет до вітру.",
+  "hm-pearl-a1": "Бульбашка",
+  "hm-pearl-a1-d": "Куля в прозорій бульбашці: вороги й нестача повітря її не вибивають.",
+  "hm-pearl-a2": "Вир",
+  "hm-pearl-a2-d": "Воронка затягує ворогів і сповільнює їх, крізь стіни не тягне."
  }
 };
   try{
