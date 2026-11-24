@@ -21671,7 +21671,7 @@ async function confirm2faDisable() {
   if (!user) return;
   const factors = mod.multiFactor(user).enrolledFactors;
   if (factors.length === 0) return;
-  if (!confirm(tt('tfa-disable-confirm','Отключить двухфакторную аутентификацию? Защита аккаунта будет снижена.'))) return;
+  if (!(await e3ConfirmDialog(tt('tfa-disable-confirm','Отключить двухфакторную аутентификацию? Защита аккаунта будет снижена.'), tt('tfa-disable-yes','Отключить')))) return;
   try {
     await mod.multiFactor(user).unenroll(factors[0]);
     ev3Toast(tt('tfa-disabled','2FA отключена'), 'shield');
@@ -33584,6 +33584,141 @@ async function _e3LoadParticipants() {
     }
   }catch(e){}
 })();
+</script>
+
+<!-- ===== Кастомные подсказки и confirm в стиле сайта (вместо белых браузерных) ===== -->
+<style>
+#e3-tip{
+  position: fixed; left: 0; top: 0; z-index: 2147483000;
+  max-width: min(320px, calc(100vw - 24px));
+  padding: 7px 13px;
+  background: rgba(10,20,30,0.94);
+  color: #fef6e8;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.4);
+  font: 600 12px/1.4 'Exo 2', system-ui, sans-serif;
+  letter-spacing: .2px;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity .16s ease, transform .16s ease;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+#e3-tip.on{ opacity: 1; transform: translateY(0); }
+</style>
+<div id="e3-tip" role="tooltip"></div>
+<script>
+(function(){
+  var tip = document.getElementById('e3-tip');
+  var cur = null, tmr = null;
+
+  function textOf(el){
+    var t = el.getAttribute('title');
+    if (t != null && t !== ''){
+      // забираем нативный title, чтобы браузер не показал своё белое окно
+      el.setAttribute('data-e3t', t);
+      el.removeAttribute('title');
+      if (!el.hasAttribute('aria-label') && !el.textContent.trim()) el.setAttribute('aria-label', t);
+      return t;
+    }
+    return el.getAttribute('data-e3t') || '';
+  }
+  function find(node){
+    while (node && node.nodeType === 1){
+      if (node.tagName !== 'IFRAME' && (node.hasAttribute('title') || node.hasAttribute('data-e3t'))) return node;
+      node = node.parentNode;
+    }
+    return null;
+  }
+  function place(el){
+    var r = el.getBoundingClientRect();
+    var tw = tip.offsetWidth, th = tip.offsetHeight, m = 8;
+    var x = r.left + r.width/2 - tw/2;
+    var y = r.top - th - 10;
+    if (y < m) y = r.bottom + 10;
+    x = Math.max(m, Math.min(x, window.innerWidth - tw - m));
+    tip.style.left = x + 'px';
+    tip.style.top = y + 'px';
+  }
+  function show(el){
+    var t = textOf(el);
+    if (!t) return;
+    cur = el;
+    tip.textContent = t;
+    tip.style.left = '-9999px';
+    clearTimeout(tmr);
+    tmr = setTimeout(function(){
+      if (cur !== el) return;
+      place(el);
+      tip.classList.add('on');
+    }, 120);
+  }
+  function hide(){
+    cur = null; clearTimeout(tmr);
+    tip.classList.remove('on');
+  }
+
+  document.addEventListener('mouseover', function(e){
+    var el = find(e.target);
+    if (!el){ if (cur) hide(); return; }
+    if (el !== cur) show(el);
+  }, true);
+  document.addEventListener('mouseout', function(e){
+    if (!cur) return;
+    var to = e.relatedTarget;
+    if (to && cur.contains(to)) return;
+    hide();
+  }, true);
+  document.addEventListener('focusin', function(e){ var el = find(e.target); if (el) show(el); });
+  document.addEventListener('focusout', hide);
+  document.addEventListener('mousedown', hide, true);
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') hide(); });
+  window.addEventListener('scroll', hide, true);
+  window.addEventListener('resize', hide);
+})();
+
+/* Кастомный confirm (замена window.confirm) — использует стили существующего окна выхода */
+window.e3ConfirmDialog = function(message, yesLabel){
+  return new Promise(function(resolve){
+    var tr = function(k, d){ try { return (typeof tt === 'function') ? tt(k, d) : d; } catch(e){ return d; } };
+    var ov = document.createElement('div');
+    ov.className = 'confirm-modal-overlay';
+    ov.innerHTML =
+      '<div class="confirm-modal-box">' +
+        '<div class="confirm-icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M12 8v5M12 16h.01"/></svg></div>' +
+        '<div class="confirm-text"></div>' +
+        '<div class="confirm-btns">' +
+          '<button type="button" class="confirm-btn-cancel"></button>' +
+          '<button type="button" class="confirm-btn-yes"></button>' +
+        '</div>' +
+      '</div>';
+    ov.querySelector('.confirm-text').textContent = message;
+    ov.querySelector('.confirm-btn-cancel').textContent = tr('confirm-cancel', 'Отмена');
+    ov.querySelector('.confirm-btn-yes').textContent = yesLabel || 'OK';
+    ov.style.zIndex = 2147483001;
+    document.body.appendChild(ov);
+    requestAnimationFrame(function(){ ov.classList.add('show'); });
+    var done = false;
+    function close(v){
+      if (done) return; done = true;
+      document.removeEventListener('keydown', onKey, true);
+      ov.classList.remove('show');
+      setTimeout(function(){ ov.remove(); }, 250);
+      resolve(v);
+    }
+    function onKey(e){
+      if (e.key === 'Escape'){ e.preventDefault(); e.stopPropagation(); close(false); }
+      else if (e.key === 'Enter'){ e.preventDefault(); e.stopPropagation(); close(true); }
+    }
+    document.addEventListener('keydown', onKey, true);
+    ov.addEventListener('click', function(e){ if (e.target === ov) close(false); });
+    ov.querySelector('.confirm-btn-cancel').onclick = function(){ close(false); };
+    ov.querySelector('.confirm-btn-yes').onclick = function(){ close(true); };
+    ov.querySelector('.confirm-btn-yes').focus();
+  });
+};
 </script>
 </body>
 </html>
