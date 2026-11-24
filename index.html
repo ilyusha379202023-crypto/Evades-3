@@ -21671,7 +21671,7 @@ async function confirm2faDisable() {
   if (!user) return;
   const factors = mod.multiFactor(user).enrolledFactors;
   if (factors.length === 0) return;
-  if (!(await e3ConfirmDialog(tt('tfa-disable-confirm','Отключить двухфакторную аутентификацию? Защита аккаунта будет снижена.'), tt('tfa-disable-yes','Отключить')))) return;
+  if (!(await e3Confirm({ title: tt('tfa-disable-title','Отключить 2FA?'), text: tt('tfa-disable-confirm','Отключить двухфакторную аутентификацию? Защита аккаунта будет снижена.'), yes: tt('tfa-disable-yes','Да, отключить'), no: tt('confirm-cancel','Отмена') }))) return;
   try {
     await mod.multiFactor(user).unenroll(factors[0]);
     ev3Toast(tt('tfa-disabled','2FA отключена'), 'shield');
@@ -33074,6 +33074,33 @@ async function _e3LoadParticipants() {
 @media (prefers-reduced-motion:reduce){#e3a-root *,#e3a-root *::before,#e3a-root *::after{animation:none!important;transition:none!important}}
 </style>
 
+<style id="e3-ai-fab-style">
+/* Кнопка ИИ-помощника: перелив «как у ИИ» на всей кнопке, в цветах сайта (фиолетовый, небесный, розовый, золото) */
+#e3a-root #e3a-fab{
+  background:linear-gradient(135deg,#7c3aed 0%,#5b6cff 22%,#38bdf8 45%,#f472b6 72%,#ffb84d 100%);
+  background-size:260% 260%;
+  animation:e3aFlow 6s ease-in-out infinite alternate;
+  border:0;
+  box-shadow:0 10px 28px rgba(124,58,237,.55),0 0 30px rgba(56,189,248,.38),0 0 42px rgba(244,114,182,.32);
+}
+/* стеклянный блик сверху */
+#e3a-root #e3a-fab::before{
+  content:'';display:block;position:absolute;inset:0;border-radius:50%;padding:0;pointer-events:none;animation:none;
+  background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.55) 0%,rgba(255,255,255,.12) 38%,transparent 60%);
+  -webkit-mask:none;mask:none;
+}
+#e3a-root #e3a-fab::after{box-shadow:0 0 0 0 rgba(168,110,255,.6);animation:e3aPulseAI 2.6s ease-out infinite}
+#e3a-root.open #e3a-fab::after{animation:none}
+#e3a-root #e3a-fab:hover{
+  transform:scale(1.06);
+  box-shadow:0 14px 34px rgba(124,58,237,.7),0 0 38px rgba(56,189,248,.55),0 0 52px rgba(244,114,182,.48);
+}
+#e3a-root #e3a-fab svg{position:relative;z-index:1}
+#e3a-root #e3a-fab svg.sp path{fill:#fff}
+#e3a-root #e3a-fab svg.sp{filter:drop-shadow(0 0 7px rgba(255,255,255,.75)) drop-shadow(0 1px 2px rgba(60,20,120,.45))}
+@keyframes e3aFlow{0%{background-position:0% 20%}100%{background-position:100% 80%}}
+@keyframes e3aPulseAI{0%{box-shadow:0 0 0 0 rgba(168,110,255,.6)}70%,100%{box-shadow:0 0 0 18px rgba(168,110,255,0)}}
+</style>
 <div id="e3a-root" aria-live="polite">
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="e3a-grad" x1="4" y1="3" x2="29" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff6c2"/><stop offset=".45" stop-color="#ffd84d"/><stop offset="1" stop-color="#ff7ac8"/></linearGradient></defs></svg>
   <button id="e3a-fab" type="button" aria-expanded="false" aria-controls="e3a-panel">
@@ -33585,140 +33612,128 @@ async function _e3LoadParticipants() {
   }catch(e){}
 })();
 </script>
-
-<!-- ===== Кастомные подсказки и confirm в стиле сайта (вместо белых браузерных) ===== -->
-<style>
-#e3-tip{
-  position: fixed; left: 0; top: 0; z-index: 2147483000;
-  max-width: min(320px, calc(100vw - 24px));
-  padding: 7px 13px;
-  background: rgba(10,20,30,0.94);
-  color: #fef6e8;
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 10px;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.4);
-  font: 600 12px/1.4 'Exo 2', system-ui, sans-serif;
-  letter-spacing: .2px;
-  text-align: center;
-  pointer-events: none;
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity .16s ease, transform .16s ease;
-  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
-}
-#e3-tip.on{ opacity: 1; transform: translateY(0); }
+<style id="e3-tip-style">
+#e3-tip{position:fixed;left:0;top:0;z-index:2147483000;max-width:min(320px,calc(100vw - 16px));padding:8px 13px;border-radius:12px;
+  font-family:'Exo 2',system-ui,sans-serif;font-weight:600;font-size:13px;line-height:1.4;text-align:center;color:#fff;
+  background:linear-gradient(160deg,rgba(40,32,82,.96),rgba(14,19,34,.97));border:1px solid rgba(255,255,255,.22);
+  box-shadow:0 14px 36px rgba(0,0,0,.5),0 0 22px rgba(124,58,237,.25),inset 0 1px 0 rgba(255,255,255,.1);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);pointer-events:none;
+  opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .15s ease,transform .15s ease,visibility .15s}
+#e3-tip.below{transform:translateY(-4px)}
+#e3-tip.on{opacity:1;visibility:visible;transform:none}
+#e3-tip::after{content:"";position:absolute;left:var(--ax,50%);bottom:-5px;width:9px;height:9px;margin-left:-5px;background:rgba(14,19,34,.97);
+  border-right:1px solid rgba(255,255,255,.22);border-bottom:1px solid rgba(255,255,255,.22);transform:rotate(45deg)}
+#e3-tip.below::after{bottom:auto;top:-5px;background:rgba(40,32,82,.96);border:0;border-left:1px solid rgba(255,255,255,.22);border-top:1px solid rgba(255,255,255,.22)}
+@media(prefers-reduced-motion:reduce){#e3-tip{transition:none}}
 </style>
-<div id="e3-tip" role="tooltip"></div>
 <script>
+/* Свои подсказки вместо белых системных (title) и свой confirm вместо окна браузера */
 (function(){
-  var tip = document.getElementById('e3-tip');
-  var cur = null, tmr = null;
+  var X = {"ru": {"tfa-disable-title": "Отключить 2FA?", "tfa-disable-yes": "Да, отключить"}, "en": {"tfa-disable-title": "Turn off 2FA?", "tfa-disable-yes": "Yes, turn off"}, "uk": {"tfa-disable-title": "Вимкнути 2FA?", "tfa-disable-yes": "Так, вимкнути"}};
+  try{
+    if (typeof translations === 'object' && translations){
+      for (var lang in translations){
+        var src = X[lang] || X.en;
+        for (var k in src){ if (X[lang] || translations[lang][k] == null) translations[lang][k] = src[k]; }
+      }
+    }
+  }catch(e){}
 
-  function textOf(el){
-    var t = el.getAttribute('title');
-    if (t != null && t !== ''){
-      // забираем нативный title, чтобы браузер не показал своё белое окно
-      el.setAttribute('data-e3t', t);
-      el.removeAttribute('title');
-      if (!el.hasAttribute('aria-label') && !el.textContent.trim()) el.setAttribute('aria-label', t);
-      return t;
+  /* ---- подсказки ---- */
+  if (!window.matchMedia || !matchMedia('(hover: none)').matches){
+    var tip = document.createElement('div');
+    tip.id = 'e3-tip'; tip.setAttribute('role','tooltip');
+    document.body.appendChild(tip);
+    var cur = null, timer = 0;
+
+    function find(n){
+      while (n && n.nodeType === 1){
+        if (n.tagName !== 'IFRAME' && (n.hasAttribute('title') || n.hasAttribute('data-e3tip'))) return n;
+        n = n.parentNode;
+      }
+      return null;
     }
-    return el.getAttribute('data-e3t') || '';
-  }
-  function find(node){
-    while (node && node.nodeType === 1){
-      if (node.tagName !== 'IFRAME' && (node.hasAttribute('title') || node.hasAttribute('data-e3t'))) return node;
-      node = node.parentNode;
+    function take(el){            // забираем title, чтобы системная подсказка не появилась
+      var v = el.getAttribute('title');
+      if (v !== null){
+        if (v.trim()){
+          el.setAttribute('data-e3tip', v);
+          if (!el.hasAttribute('aria-label') && !(el.textContent || '').trim()) el.setAttribute('aria-label', v);
+        }
+        el.removeAttribute('title');
+      }
+      return el.getAttribute('data-e3tip') || '';
     }
-    return null;
-  }
-  function place(el){
-    var r = el.getBoundingClientRect();
-    var tw = tip.offsetWidth, th = tip.offsetHeight, m = 8;
-    var x = r.left + r.width/2 - tw/2;
-    var y = r.top - th - 10;
-    if (y < m) y = r.bottom + 10;
-    x = Math.max(m, Math.min(x, window.innerWidth - tw - m));
-    tip.style.left = x + 'px';
-    tip.style.top = y + 'px';
-  }
-  function show(el){
-    var t = textOf(el);
-    if (!t) return;
-    cur = el;
-    tip.textContent = t;
-    tip.style.left = '-9999px';
-    clearTimeout(tmr);
-    tmr = setTimeout(function(){
-      if (cur !== el) return;
-      place(el);
+    function hide(){
+      clearTimeout(timer); tip.classList.remove('on');
+    }
+    function show(el, text){
+      tip.textContent = text;
+      var r = el.getBoundingClientRect();
+      var tw = tip.offsetWidth, th = tip.offsetHeight, vw = document.documentElement.clientWidth;
+      var x = Math.max(8, Math.min(r.left + r.width / 2 - tw / 2, vw - tw - 8));
+      var y = r.top - th - 10, below = false;
+      if (y < 8){ y = r.bottom + 10; below = true; }
+      tip.style.left = x + 'px'; tip.style.top = y + 'px';
+      tip.style.setProperty('--ax', Math.max(16, Math.min(tw - 16, r.left + r.width / 2 - x)) + 'px');
+      tip.classList.toggle('below', below);
       tip.classList.add('on');
-    }, 120);
-  }
-  function hide(){
-    cur = null; clearTimeout(tmr);
-    tip.classList.remove('on');
+    }
+    document.addEventListener('mouseover', function(e){
+      var el = find(e.target);
+      if (el === cur) return;
+      hide(); cur = el;
+      if (!el) return;
+      var s = take(el);
+      if (!s){ cur = null; return; }
+      timer = setTimeout(function(){ if (cur === el && document.contains(el)) show(el, s); }, 160);
+    }, true);
+    document.addEventListener('mouseout', function(e){
+      if (cur && !cur.contains(e.relatedTarget)){ hide(); cur = null; }
+    }, true);
+    ['mousedown','click','wheel','keydown'].forEach(function(n){ document.addEventListener(n, function(){ hide(); }, true); });
+    window.addEventListener('scroll', hide, true);
+    document.addEventListener('focusin', function(e){
+      var el = find(e.target);
+      if (!el || !(e.target.matches && e.target.matches(':focus-visible'))) return;
+      var s = take(el); if (s){ cur = el; show(el, s); }
+    });
+    document.addEventListener('focusout', function(){ hide(); cur = null; });
   }
 
-  document.addEventListener('mouseover', function(e){
-    var el = find(e.target);
-    if (!el){ if (cur) hide(); return; }
-    if (el !== cur) show(el);
-  }, true);
-  document.addEventListener('mouseout', function(e){
-    if (!cur) return;
-    var to = e.relatedTarget;
-    if (to && cur.contains(to)) return;
-    hide();
-  }, true);
-  document.addEventListener('focusin', function(e){ var el = find(e.target); if (el) show(el); });
-  document.addEventListener('focusout', hide);
-  document.addEventListener('mousedown', hide, true);
-  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') hide(); });
-  window.addEventListener('scroll', hide, true);
-  window.addEventListener('resize', hide);
+  /* ---- окно подтверждения в стиле сайта ---- */
+  window.e3Confirm = function(o){
+    o = o || {};
+    return new Promise(function(resolve){
+      var ov = document.createElement('div');
+      ov.className = 'confirm-modal-overlay';
+      ov.innerHTML = '<div class="confirm-modal-box" role="alertdialog" aria-modal="true">'
+        + '<div class="confirm-icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 3.5l9.5 16.5h-19z"/><line x1="12" y1="10" x2="12" y2="14"/><line x1="12" y1="17" x2="12" y2="17.01"/></svg></div>'
+        + '<div class="confirm-title"></div><div class="confirm-text"></div>'
+        + '<div class="confirm-btns"><button class="confirm-btn-cancel" type="button"></button><button class="confirm-btn-yes" type="button"></button></div></div>';
+      var q = function(s){ return ov.querySelector(s); };
+      q('.confirm-title').textContent = o.title || '';
+      q('.confirm-text').textContent = o.text || '';
+      q('.confirm-btn-cancel').textContent = o.no || 'OK';
+      q('.confirm-btn-yes').textContent = o.yes || 'OK';
+      document.body.appendChild(ov);
+      var done = false;
+      function close(v){
+        if (done) return; done = true;
+        document.removeEventListener('keydown', onKey, true);
+        ov.classList.remove('show');
+        setTimeout(function(){ ov.remove(); }, 300);
+        resolve(v);
+      }
+      function onKey(e){ if (e.key === 'Escape'){ e.preventDefault(); close(false); } }
+      document.addEventListener('keydown', onKey, true);
+      ov.addEventListener('click', function(e){ if (e.target === ov) close(false); });
+      q('.confirm-btn-cancel').addEventListener('click', function(){ close(false); });
+      q('.confirm-btn-yes').addEventListener('click', function(){ close(true); });
+      requestAnimationFrame(function(){ ov.classList.add('show'); q('.confirm-btn-cancel').focus(); });
+    });
+  };
 })();
-
-/* Кастомный confirm (замена window.confirm) — использует стили существующего окна выхода */
-window.e3ConfirmDialog = function(message, yesLabel){
-  return new Promise(function(resolve){
-    var tr = function(k, d){ try { return (typeof tt === 'function') ? tt(k, d) : d; } catch(e){ return d; } };
-    var ov = document.createElement('div');
-    ov.className = 'confirm-modal-overlay';
-    ov.innerHTML =
-      '<div class="confirm-modal-box">' +
-        '<div class="confirm-icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M12 8v5M12 16h.01"/></svg></div>' +
-        '<div class="confirm-text"></div>' +
-        '<div class="confirm-btns">' +
-          '<button type="button" class="confirm-btn-cancel"></button>' +
-          '<button type="button" class="confirm-btn-yes"></button>' +
-        '</div>' +
-      '</div>';
-    ov.querySelector('.confirm-text').textContent = message;
-    ov.querySelector('.confirm-btn-cancel').textContent = tr('confirm-cancel', 'Отмена');
-    ov.querySelector('.confirm-btn-yes').textContent = yesLabel || 'OK';
-    ov.style.zIndex = 2147483001;
-    document.body.appendChild(ov);
-    requestAnimationFrame(function(){ ov.classList.add('show'); });
-    var done = false;
-    function close(v){
-      if (done) return; done = true;
-      document.removeEventListener('keydown', onKey, true);
-      ov.classList.remove('show');
-      setTimeout(function(){ ov.remove(); }, 250);
-      resolve(v);
-    }
-    function onKey(e){
-      if (e.key === 'Escape'){ e.preventDefault(); e.stopPropagation(); close(false); }
-      else if (e.key === 'Enter'){ e.preventDefault(); e.stopPropagation(); close(true); }
-    }
-    document.addEventListener('keydown', onKey, true);
-    ov.addEventListener('click', function(e){ if (e.target === ov) close(false); });
-    ov.querySelector('.confirm-btn-cancel').onclick = function(){ close(false); };
-    ov.querySelector('.confirm-btn-yes').onclick = function(){ close(true); };
-    ov.querySelector('.confirm-btn-yes').focus();
-  });
-};
 </script>
 </body>
 </html>
