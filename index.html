@@ -12204,6 +12204,7 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
     <a href="#" data-nav="top" data-i18n="nav-home">Главная</a>
     <a href="#arcade" data-nav="arcade" data-i18n="nav-arcade">Мини-игра</a>
     <a href="#roadmap" data-nav="roadmap" data-i18n="nav-roadmap">План разработки</a>
+    <a href="#news" data-nav="news" data-i18n="nav-news">Новости</a>
     <a href="#subscriptions" data-nav="subscriptions" data-i18n="nav-plans">Подписки</a>
     <a href="#reviews" data-nav="reviews" data-i18n="nav-reviews">Отзывы</a>
     <a href="#faq" data-nav="faq" data-i18n="nav-faq">FAQ</a>
@@ -13966,7 +13967,46 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
       </div>
     </section>
 
-    <!-- ============ ПОДПИСКИ: VIP / PRO ============ -->
+<!-- ============ E3 NEWS: ОБНОВЛЕНИЯ ИГРЫ ============ -->
+<style id="e3-news-style">
+#news .e3n-wrap{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+.e3n-card{position:relative;background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1px solid var(--e3-border);border-radius:18px;padding:22px 26px;backdrop-filter:blur(10px);box-shadow:var(--e3-shadow-lg);transition:border-color .3s var(--e3-ease),transform .3s var(--e3-ease)}
+.e3n-card::before{content:"";position:absolute;inset-block:18px;inset-inline-start:0;width:3px;border-radius:3px;background:linear-gradient(180deg,var(--e3-gold),transparent)}
+.e3n-card:hover{border-color:var(--e3-border-lit)}
+.e3n-big{border-color:rgba(255,216,77,.35);padding:28px 30px}
+.e3n-head{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:14px}
+.e3n-ver{font-family:'Orbitron',sans-serif;font-weight:900;font-size:13px;letter-spacing:1px;padding:5px 12px;border-radius:999px;color:#1a1300;background:linear-gradient(135deg,#ffd84d,#ffa22e)}
+.e3n-name{font-family:'Exo 2','Orbitron',sans-serif;font-weight:800;font-size:clamp(18px,2.4vw,26px);letter-spacing:1px;text-transform:uppercase;color:#fff}
+.e3n-badge{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700;padding:4px 10px;border-radius:999px;color:var(--e3-emerald);border:1px solid rgba(74,222,128,.45);background:rgba(74,222,128,.1)}
+.e3n-date{margin-inline-start:auto;font-family:'Rajdhani',sans-serif;font-weight:600;font-size:15px;letter-spacing:1px;color:rgba(255,255,255,.6)}
+.e3n-lead{font-family:'Rajdhani',sans-serif;font-weight:600;font-size:clamp(16px,1.8vw,19px);color:rgba(255,255,255,.85);margin-bottom:18px}
+.e3n-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px}
+.e3n-group{background:rgba(255,255,255,.04);border:1px solid var(--e3-border);border-radius:14px;padding:16px 18px}
+.e3n-gt{font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:var(--e3-gold);margin-bottom:10px}
+.e3n-list-ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.e3n-list-ul li{position:relative;padding-inline-start:18px;font-family:'Rajdhani',sans-serif;font-weight:600;font-size:16px;line-height:1.45;color:rgba(255,255,255,.82)}
+.e3n-list-ul li::before{content:"";position:absolute;inset-inline-start:0;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--e3-gold);box-shadow:0 0 8px rgba(255,216,77,.6)}
+.e3n-list-ul li strong{color:#fff;font-weight:700}
+.e3n-more{display:flex;justify-content:center;margin-top:8px}
+.e3n-more a{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:999px;border:1px solid var(--e3-border-lit);color:#fff;text-decoration:none;font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:700;background:var(--e3-glass);transition:border-color .3s,background .3s}
+.e3n-more a:hover{border-color:var(--e3-gold);background:var(--e3-glass-str)}
+@media(max-width:600px){.e3n-card,.e3n-big{padding:18px 16px}.e3n-date{margin-inline-start:0;width:100%}}
+</style>
+    <section class="e3-section reveal" id="news" aria-labelledby="upd-title">
+      <div class="e3-section-head">
+        <div class="e3-eyebrow"><span class="dot"></span><span data-i18n="upd-eyebrow">Что нового</span></div>
+        <h2 id="upd-title" class="e3-title"><span data-i18n="upd-title-a">Обновления</span> <span class="accent" data-i18n="upd-title-b">игры</span></h2>
+        <p class="e3-lead" data-i18n="upd-lead">Все обновления Evades 3: от новых миров и героев до мелких улучшений.</p>
+      </div>
+      <div class="e3n-wrap">
+        <article class="e3n-card e3n-big reveal" data-delay="1" id="update-020"><div class="e3n-head"><span class="e3n-ver">v0.2.0</span><span class="e3n-name"><span data-i18n="upd-label">Обновление</span> 0.2.0</span><span class="e3n-badge" data-i18n="upd-latest">Последнее</span></div><div class="e3n-body"><p class="e3n-lead" data-i18n="upd-020-lead">Большое обновление: два новых мира, два новых героя и много улучшений.</p><div class="e3n-groups"><div class="e3n-group"><h3 class="e3n-gt" data-i18n="upd-020-g1">Новые миры</h3><ul class="e3n-list-ul"><li data-i18n="upd-020-g1-i1"><strong>Skybound Summit.</strong> Мир над MM. Здесь дует ветер: полосы со стрелками и порывы сносят вас в сторону. Вихри затягивают к центру, облака замедляют, а Gust Ball толкает шары волной. Среди врагов появились облачный шар, шар-пёрышко и шар-валун. В Area 20 вас ждёт BOSS «Повелитель бурь».</li><li data-i18n="upd-020-g1-i2"><strong>Aqua Abyss.</strong> Подводный мир, где у шара есть запас воздуха в виде кольца вокруг него. Если воздух кончится, шар будет выбит. Воздух пополняют пузыри. Вас будут сносить течения, а ещё здесь появились новые враги: Drop, Jelly, Eel и Puffer. В конце вас ждёт BOSS «Левиафан».</li></ul></div><div class="e3n-group"><h3 class="e3n-gt" data-i18n="upd-020-g2">Новые герои</h3><ul class="e3n-list-ul"><li data-i18n="upd-020-g2-i1"><strong>Зефир.</strong> Способности «Порыв» и «Попутный ветер» (ускорение и иммунитет к ветру).</li><li data-i18n="upd-020-g2-i2"><strong>Жемчуг.</strong> Способности «Пузырь» и «Водоворот» (затягивает врагов, но сквозь стены не тянет).</li><li data-i18n="upd-020-g2-i3">Оба героя видны другим игрокам по сети.</li></ul></div><div class="e3n-group"><h3 class="e3n-gt" data-i18n="upd-020-g3">Аксессуары</h3><ul class="e3n-list-ul"><li data-i18n="upd-020-g3-i1"><strong>«Облачко»:</strong> награда за Victory в Skybound Summit.</li><li data-i18n="upd-020-g3-i2"><strong>«Морская звезда»:</strong> награда за Victory в Aqua Abyss.</li><li data-i18n="upd-020-g3-i3">«Пламенный венец» перерисован: теперь это дуга огня по верху шара.</li></ul></div><div class="e3n-group"><h3 class="e3n-gt" data-i18n="upd-020-g4">Прокачка и пеллеты</h3><ul class="e3n-list-ul"><li data-i18n="upd-020-g4-i1">Красный пеллет теперь даёт заметную часть шкалы: сначала четверть, затем одну восьмую, потом одну шестнадцатую. Каждый новый уровень вдвое длиннее предыдущего.</li><li data-i18n="upd-020-g4-i2">Чем глубже зона, тем больше опыта даёт каждый пеллет, и собирать их остаётся выгодно.</li><li data-i18n="upd-020-g4-i3">Все цветные пеллеты теперь дают столько же опыта, сколько красный.</li><li data-i18n="upd-020-g4-i4">Бонус к шкале даётся только за первый шаг на следующую Area в том же мире (например, из Area 1 в Area 2). За переход в другой мир, телепорт и Victory бонуса нет.</li></ul></div><div class="e3n-group"><h3 class="e3n-gt" data-i18n="upd-020-g5">Скорость</h3><ul class="e3n-list-ul"><li data-i18n="upd-020-g5-i1">Скорость теперь считается мягче, и движение ощущается ровнее. Цифры на карточке героя остались прежними.</li><li data-i18n="upd-020-g5-i2">В стартовой безопасной зоне каждого мира (слева от Area 1) скорость равна 10.</li></ul></div><div class="e3n-group"><h3 class="e3n-gt" data-i18n="upd-020-g6">Внешний вид и интерфейс</h3><ul class="e3n-list-ul"><li data-i18n="upd-020-g6-i1">У каждого мира появился свой вид. Skybound Summit: небо, облака и штрихи ветра. MM: мгла, туманность и руны, стены лабиринта со светящимся краем. Aqua Abyss: вода, блики и дно.</li><li data-i18n="upd-020-g6-i2">Подсказки зон теперь показываются по одной. Новая ждёт, пока закроется предыдущая.</li><li data-i18n="upd-020-g6-i3">Обновлены карточки героев, меню, окно «Как играть», сетевой интерфейс и чат.</li></ul></div><div class="e3n-group"><h3 class="e3n-gt" data-i18n="upd-020-g7">Производительность</h3><ul class="e3n-list-ul"><li data-i18n="upd-020-g7-i1">Игра стала намного плавнее: FPS вырос с 20 до 60.</li><li data-i18n="upd-020-g7-i2">Далёкие враги и пеллеты «засыпают», пока вы рядом с ними не окажетесь. Ветер и течения для них тоже не считаются.</li><li data-i18n="upd-020-g7-i3">Убран лишний вывод в консоль при касании безопасной зоны.</li></ul></div></div></div></article>
+        <article class="e3n-card reveal" data-delay="2" id="update-012"><div class="e3n-head"><span class="e3n-ver">v0.1.2</span><span class="e3n-name"><span data-i18n="upd-label">Обновление</span> 0.1.2</span><span class="e3n-date">18.11.2026</span></div><div class="e3n-body"><ul class="e3n-list-ul"><li data-i18n="upd-012-g1-i1">Пеллеты теперь дают больше опыта, чем глубже зона: чем дальше вы заходите, тем выгоднее их собирать.</li><li data-i18n="upd-012-g1-i2">При первом заходе в новую зону шкала прокачки сразу заполняется на часть. Это бонус за продвижение вперёд.</li><li data-i18n="upd-012-g1-i3">Опыт для следующего уровня теперь растёт заметно медленнее. Раньше на высоких уровнях прокачка почти не двигалась, теперь улучшения доступны и дальше.</li></ul></div></article>
+        <article class="e3n-card reveal" data-delay="3" id="update-011"><div class="e3n-head"><span class="e3n-ver">v0.1.1</span><span class="e3n-name"><span data-i18n="upd-label">Обновление</span> 0.1.1</span><span class="e3n-date">13.11.2026</span></div><div class="e3n-body"><ul class="e3n-list-ul"><li data-i18n="upd-011-g1-i1">Таймер после касания врага теперь увеличивается по мере прохождения арен.</li></ul></div></article>
+        <div class="e3n-more"><a href="https://discord.gg/kSVnmDRqDs" target="_blank" rel="noopener" data-i18n="upd-more">Свежие новости — в Discord</a></div>
+      </div>
+    </section>
+
+        <!-- ============ ПОДПИСКИ: VIP / PRO ============ -->
     <section class="e3-section reveal" id="subscriptions" aria-labelledby="sub-title">
       <div class="e3-section-head">
         <div class="e3-eyebrow"><span class="dot"></span><span data-i18n="sub-eyebrow">Больше возможностей</span></div>
@@ -33142,5 +33182,145 @@ async function _e3LoadParticipants() {
 </script>
 <!-- ============ /E3 ASSISTANT ============ -->
 
+<script>
+/* Раздел «Обновления игры»: переводы (ru, en, uk; остальные языки берут английский) */
+(function(){
+  var X = {
+ "ru": {
+  "upd-eyebrow": "Что нового",
+  "upd-title-a": "Обновления",
+  "upd-title-b": "игры",
+  "upd-lead": "Все обновления Evades 3: от новых миров и героев до мелких улучшений.",
+  "upd-label": "Обновление",
+  "upd-latest": "Последнее",
+  "upd-more": "Свежие новости — в Discord",
+  "upd-020-lead": "Большое обновление: два новых мира, два новых героя и много улучшений.",
+  "upd-020-g1-i1": "<strong>Skybound Summit.</strong> Мир над MM. Здесь дует ветер: полосы со стрелками и порывы сносят вас в сторону. Вихри затягивают к центру, облака замедляют, а Gust Ball толкает шары волной. Среди врагов появились облачный шар, шар-пёрышко и шар-валун. В Area 20 вас ждёт BOSS «Повелитель бурь».",
+  "upd-020-g1-i2": "<strong>Aqua Abyss.</strong> Подводный мир, где у шара есть запас воздуха в виде кольца вокруг него. Если воздух кончится, шар будет выбит. Воздух пополняют пузыри. Вас будут сносить течения, а ещё здесь появились новые враги: Drop, Jelly, Eel и Puffer. В конце вас ждёт BOSS «Левиафан».",
+  "upd-020-g1": "Новые миры",
+  "upd-020-g2-i1": "<strong>Зефир.</strong> Способности «Порыв» и «Попутный ветер» (ускорение и иммунитет к ветру).",
+  "upd-020-g2-i2": "<strong>Жемчуг.</strong> Способности «Пузырь» и «Водоворот» (затягивает врагов, но сквозь стены не тянет).",
+  "upd-020-g2-i3": "Оба героя видны другим игрокам по сети.",
+  "upd-020-g2": "Новые герои",
+  "upd-020-g3-i1": "<strong>«Облачко»:</strong> награда за Victory в Skybound Summit.",
+  "upd-020-g3-i2": "<strong>«Морская звезда»:</strong> награда за Victory в Aqua Abyss.",
+  "upd-020-g3-i3": "«Пламенный венец» перерисован: теперь это дуга огня по верху шара.",
+  "upd-020-g3": "Аксессуары",
+  "upd-020-g4-i1": "Красный пеллет теперь даёт заметную часть шкалы: сначала четверть, затем одну восьмую, потом одну шестнадцатую. Каждый новый уровень вдвое длиннее предыдущего.",
+  "upd-020-g4-i2": "Чем глубже зона, тем больше опыта даёт каждый пеллет, и собирать их остаётся выгодно.",
+  "upd-020-g4-i3": "Все цветные пеллеты теперь дают столько же опыта, сколько красный.",
+  "upd-020-g4-i4": "Бонус к шкале даётся только за первый шаг на следующую Area в том же мире (например, из Area 1 в Area 2). За переход в другой мир, телепорт и Victory бонуса нет.",
+  "upd-020-g4": "Прокачка и пеллеты",
+  "upd-020-g5-i1": "Скорость теперь считается мягче, и движение ощущается ровнее. Цифры на карточке героя остались прежними.",
+  "upd-020-g5-i2": "В стартовой безопасной зоне каждого мира (слева от Area 1) скорость равна 10.",
+  "upd-020-g5": "Скорость",
+  "upd-020-g6-i1": "У каждого мира появился свой вид. Skybound Summit: небо, облака и штрихи ветра. MM: мгла, туманность и руны, стены лабиринта со светящимся краем. Aqua Abyss: вода, блики и дно.",
+  "upd-020-g6-i2": "Подсказки зон теперь показываются по одной. Новая ждёт, пока закроется предыдущая.",
+  "upd-020-g6-i3": "Обновлены карточки героев, меню, окно «Как играть», сетевой интерфейс и чат.",
+  "upd-020-g6": "Внешний вид и интерфейс",
+  "upd-020-g7-i1": "Игра стала намного плавнее: FPS вырос с 20 до 60.",
+  "upd-020-g7-i2": "Далёкие враги и пеллеты «засыпают», пока вы рядом с ними не окажетесь. Ветер и течения для них тоже не считаются.",
+  "upd-020-g7-i3": "Убран лишний вывод в консоль при касании безопасной зоны.",
+  "upd-020-g7": "Производительность",
+  "upd-012-g1-i1": "Пеллеты теперь дают больше опыта, чем глубже зона: чем дальше вы заходите, тем выгоднее их собирать.",
+  "upd-012-g1-i2": "При первом заходе в новую зону шкала прокачки сразу заполняется на часть. Это бонус за продвижение вперёд.",
+  "upd-012-g1-i3": "Опыт для следующего уровня теперь растёт заметно медленнее. Раньше на высоких уровнях прокачка почти не двигалась, теперь улучшения доступны и дальше.",
+  "upd-011-g1-i1": "Таймер после касания врага теперь увеличивается по мере прохождения арен."
+ },
+ "en": {
+  "upd-eyebrow": "What’s new",
+  "upd-title-a": "Game",
+  "upd-title-b": "updates",
+  "upd-lead": "Every Evades 3 update: from new worlds and heroes to small improvements.",
+  "upd-label": "Update",
+  "upd-latest": "Latest",
+  "upd-more": "Fresh news in Discord",
+  "upd-020-lead": "A big update: two new worlds, two new heroes and lots of improvements.",
+  "upd-020-g1-i1": "<strong>Skybound Summit.</strong> A world above MM. Wind blows here: arrow strips and gusts push you sideways. Whirlwinds pull you toward the center, clouds slow you down, and the Gust Ball pushes balls away with a wave. New enemies include the cloud ball, feather ball and boulder ball. In Area 20 the BOSS “Storm Lord” awaits.",
+  "upd-020-g1-i2": "<strong>Aqua Abyss.</strong> An underwater world where your ball has an air supply shown as a ring around it. If the air runs out, the ball is knocked out. Bubbles refill the air. Currents will carry you away, and there are new enemies: Drop, Jelly, Eel and Puffer. At the end the BOSS “Leviathan” waits.",
+  "upd-020-g1": "New worlds",
+  "upd-020-g2-i1": "<strong>Zefir.</strong> Abilities “Gust” and “Tailwind” (a speed boost and immunity to wind).",
+  "upd-020-g2-i2": "<strong>Zhemchug.</strong> Abilities “Bubble” and “Whirlpool” (pulls enemies in, but not through walls).",
+  "upd-020-g2-i3": "Both heroes are visible to other players online.",
+  "upd-020-g2": "New heroes",
+  "upd-020-g3-i1": "<strong>“Little Cloud”:</strong> a reward for Victory in Skybound Summit.",
+  "upd-020-g3-i2": "<strong>“Starfish”:</strong> a reward for Victory in Aqua Abyss.",
+  "upd-020-g3-i3": "The “Flame Crown” was redrawn: it is now an arc of fire over the top of the ball.",
+  "upd-020-g3": "Accessories",
+  "upd-020-g4-i1": "The red pellet now fills a noticeable part of the bar: first a quarter, then an eighth, then a sixteenth. Each new level is twice as long as the previous one.",
+  "upd-020-g4-i2": "The deeper the zone, the more experience each pellet gives, so collecting them stays worthwhile.",
+  "upd-020-g4-i3": "All colored pellets now give as much experience as the red one.",
+  "upd-020-g4-i4": "The bar bonus is given only for the first step into the next Area in the same world (for example, from Area 1 to Area 2). Moving to another world, teleporting and Victory give no bonus.",
+  "upd-020-g4": "Leveling and pellets",
+  "upd-020-g5-i1": "Speed is now calculated more smoothly, so movement feels more even. The numbers on the hero card stay the same.",
+  "upd-020-g5-i2": "In the starting safe zone of each world (to the left of Area 1) the speed is 10.",
+  "upd-020-g5": "Speed",
+  "upd-020-g6-i1": "Each world now has its own look. Skybound Summit: sky, clouds and wind streaks. MM: haze, nebula and runes, with maze walls that have a glowing edge. Aqua Abyss: water, glints and the seabed.",
+  "upd-020-g6-i2": "Zone hints are now shown one at a time. A new one waits until the previous one is closed.",
+  "upd-020-g6-i3": "Hero cards, the menu, the “How to play” window, the online interface and the chat were updated.",
+  "upd-020-g6": "Look and interface",
+  "upd-020-g7-i1": "The game is much smoother: FPS went up from 20 to 60.",
+  "upd-020-g7-i2": "Distant enemies and pellets “fall asleep” until you get close to them. Wind and currents are not calculated for them either.",
+  "upd-020-g7-i3": "Removed extra console output when touching the safe zone.",
+  "upd-020-g7": "Performance",
+  "upd-012-g1-i1": "Pellets now give more experience the deeper the zone: the further you go, the more worthwhile it is to collect them.",
+  "upd-012-g1-i2": "On your first entry into a new zone the leveling bar fills partly right away. It is a bonus for moving forward.",
+  "upd-012-g1-i3": "The experience needed for the next level now grows much more slowly. Before, leveling barely moved at high levels; now upgrades stay available further on.",
+  "upd-011-g1-i1": "The timer after touching an enemy now increases as you progress through the arenas."
+ },
+ "uk": {
+  "upd-eyebrow": "Що нового",
+  "upd-title-a": "Оновлення",
+  "upd-title-b": "гри",
+  "upd-lead": "Усі оновлення Evades 3: від нових світів і героїв до дрібних покращень.",
+  "upd-label": "Оновлення",
+  "upd-latest": "Останнє",
+  "upd-more": "Свіжі новини — у Discord",
+  "upd-020-lead": "Велике оновлення: два нових світи, два нових герої та багато покращень.",
+  "upd-020-g1-i1": "<strong>Skybound Summit.</strong> Світ над MM. Тут віє вітер: смуги зі стрілками та пориви зносять вас убік. Вихори затягують до центру, хмари сповільнюють, а Gust Ball штовхає кулі хвилею. Серед ворогів з’явилися хмарна куля, куля-пір’їнка та куля-валун. В Area 20 на вас чекає BOSS «Володар бур».",
+  "upd-020-g1-i2": "<strong>Aqua Abyss.</strong> Підводний світ, де в кулі є запас повітря у вигляді кільця навколо неї. Якщо повітря закінчиться, кулю буде вибито. Повітря поповнюють бульбашки. Вас зноситимуть течії, а ще тут з’явилися нові вороги: Drop, Jelly, Eel і Puffer. Наприкінці на вас чекає BOSS «Левіафан».",
+  "upd-020-g1": "Нові світи",
+  "upd-020-g2-i1": "<strong>Зефір.</strong> Здібності «Порив» і «Попутний вітер» (прискорення та імунітет до вітру).",
+  "upd-020-g2-i2": "<strong>Перлина.</strong> Здібності «Бульбашка» і «Вир» (затягує ворогів, але крізь стіни не тягне).",
+  "upd-020-g2-i3": "Обидва герої видимі іншим гравцям по мережі.",
+  "upd-020-g2": "Нові герої",
+  "upd-020-g3-i1": "<strong>«Хмаринка»:</strong> нагорода за Victory у Skybound Summit.",
+  "upd-020-g3-i2": "<strong>«Морська зірка»:</strong> нагорода за Victory в Aqua Abyss.",
+  "upd-020-g3-i3": "«Полум’яний вінець» перемальовано: тепер це дуга вогню по верху кулі.",
+  "upd-020-g3": "Аксесуари",
+  "upd-020-g4-i1": "Червоний пелет тепер дає помітну частину шкали: спершу чверть, потім одну восьму, далі одну шістнадцяту. Кожен новий рівень удвічі довший за попередній.",
+  "upd-020-g4-i2": "Чим глибша зона, тим більше досвіду дає кожен пелет, тож збирати їх і далі вигідно.",
+  "upd-020-g4-i3": "Усі кольорові пелети тепер дають стільки ж досвіду, скільки червоний.",
+  "upd-020-g4-i4": "Бонус до шкали дається лише за перший крок до наступної Area в тому самому світі (наприклад, з Area 1 в Area 2). За перехід в інший світ, телепорт і Victory бонусу немає.",
+  "upd-020-g4": "Прокачування та пелети",
+  "upd-020-g5-i1": "Швидкість тепер рахується м’якше, і рух відчувається рівніше. Цифри на картці героя залишилися колишніми.",
+  "upd-020-g5-i2": "У стартовій безпечній зоні кожного світу (ліворуч від Area 1) швидкість дорівнює 10.",
+  "upd-020-g5": "Швидкість",
+  "upd-020-g6-i1": "У кожного світу з’явився свій вигляд. Skybound Summit: небо, хмари та штрихи вітру. MM: імла, туманність і руни, стіни лабіринту зі світним краєм. Aqua Abyss: вода, відблиски та дно.",
+  "upd-020-g6-i2": "Підказки зон тепер показуються по одній. Нова чекає, доки закриється попередня.",
+  "upd-020-g6-i3": "Оновлено картки героїв, меню, вікно «Як грати», мережевий інтерфейс і чат.",
+  "upd-020-g6": "Вигляд та інтерфейс",
+  "upd-020-g7-i1": "Гра стала набагато плавнішою: FPS зріс з 20 до 60.",
+  "upd-020-g7-i2": "Далекі вороги та пелети «засинають», доки ви не опинитеся поруч. Вітер і течії для них теж не рахуються.",
+  "upd-020-g7-i3": "Прибрано зайвий вивід у консоль під час дотику до безпечної зони.",
+  "upd-020-g7": "Продуктивність",
+  "upd-012-g1-i1": "Пелети тепер дають більше досвіду, чим глибша зона: чим далі ви заходите, тим вигідніше їх збирати.",
+  "upd-012-g1-i2": "Під час першого входу в нову зону шкала прокачування одразу заповнюється на частину. Це бонус за просування вперед.",
+  "upd-012-g1-i3": "Досвід для наступного рівня тепер росте помітно повільніше. Раніше на високих рівнях прокачування майже не рухалося, тепер покращення доступні й далі.",
+  "upd-011-g1-i1": "Таймер після дотику до ворога тепер збільшується в міру проходження арен."
+ }
+};
+  try{
+    if (typeof translations === 'object' && translations){
+      for (var lang in translations){
+        var src = X[lang] || X.en;
+        for (var k in src){ if (X[lang] || translations[lang][k] == null) translations[lang][k] = src[k]; }
+      }
+      var active = (typeof currentLang === 'string' && currentLang) || localStorage.getItem('selectedLanguage') || 'ru';
+      if (typeof applyTranslations === 'function') applyTranslations(active);
+    }
+  }catch(e){}
+})();
+</script>
 </body>
 </html>
