@@ -33173,6 +33173,8 @@ async function _e3LoadParticipants() {
   border:1px solid rgba(168,140,255,.38);
   box-shadow:0 10px 26px rgba(0,0,0,.45),0 0 22px rgba(124,58,237,.3);
 }
+/* Пока чат ИИ-помощника открыт — кнопка «Наверх» скрыта, чтобы не перекрывать окно чата */
+html:has(#e3a-root.open) #e3-back-top{opacity:0 !important;pointer-events:none !important;transform:translateY(20px) scale(.8) !important}
 </style>
 <style id="e3a-think-style">
 /* Ожидание ответа: мини-арена — шар уворачивается от врагов и собирает пеллеты */
