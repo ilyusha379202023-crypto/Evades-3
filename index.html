@@ -11271,7 +11271,47 @@ html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover{ backgr
 :where(html[dir="rtl"]) .sub-group,
 :where(html[dir="rtl"]) .sub-list,
 :where(html[dir="rtl"]) .sub-list li{ text-align: right; }
-  </style>
+  
+/* ===== Quick fixes: бейдж «Скоро», пройденный этап Альфа ===== */
+.feature-soon{
+  position: absolute; top: 12px; inset-inline-end: 12px; z-index: 2;
+  padding: 3px 10px; border-radius: 999px;
+  font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
+  color: #ffe995; background: rgba(255,216,77,0.14); border: 1px solid rgba(255,216,77,0.45);
+  pointer-events: none;
+}
+.feature-card.is-soon .feature-icon{ opacity: .8; }
+.rm2-alpha{
+  position: relative; display: flex; align-items: center; gap: 20px;
+  max-width: 1160px; margin: 0 auto 34px; padding: 22px 26px;
+  border-radius: 24px; border: 1px solid rgba(45,212,191,0.45);
+  background: linear-gradient(160deg, rgba(45,212,191,0.12), rgba(255,255,255,0.03));
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--e3-shadow-lg), 0 0 36px rgba(45,212,191,0.10), inset 0 1px 0 rgba(255,255,255,0.09);
+  color: inherit; text-decoration: none; text-align: start;
+  transition: transform .35s var(--e3-ease), box-shadow .35s ease, border-color .35s ease;
+}
+.rm2-alpha:hover{ transform: translateY(-4px); border-color: rgba(45,212,191,0.75); }
+.rm2-alpha-node{
+  flex: 0 0 48px; width: 48px; height: 48px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; color: #080a0e;
+  background: radial-gradient(circle at 30% 30%, #fff, #2dd4bf 65%, #0e5d57);
+  box-shadow: 0 0 0 5px rgba(45,212,191,0.16), 0 0 20px rgba(45,212,191,0.6);
+}
+.rm2-alpha-node svg{ width: 22px; height: 22px; }
+.rm2-alpha-body{ display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1; }
+.rm2-alpha-head{ display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.rm2-alpha-chip{ padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: .5px; border: 1px solid rgba(45,212,191,0.5); background: rgba(45,212,191,0.15); color: #bff1ea; }
+.rm2-alpha-title{ font-family: 'Exo 2','Orbitron',sans-serif; font-weight: 900; font-size: 20px; color: #fff; line-height: 1.2; }
+.rm2-alpha-text{ font-size: 14px; line-height: 1.5; color: rgba(255,255,255,0.78); }
+.rm2-alpha-link{ flex: 0 0 auto; font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; color: #7ff0dd; white-space: nowrap; }
+@media (max-width: 640px){
+  .rm2-alpha{ flex-wrap: wrap; padding: 20px; gap: 14px; }
+  .rm2-alpha-link{ width: 100%; }
+  .rm2-alpha:hover{ transform: none; }
+}
+#newsletter .news-box{ margin-top: 0; }
+</style>
   <!-- ============ Firebase SDK (compat, для совместимости с существующим классическим <script>) ============ -->
   <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
@@ -12683,7 +12723,7 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
     <a href="#roadmap" data-nav="roadmap" data-i18n="nav-roadmap">План разработки</a>
     <a href="#news" data-nav="news" data-i18n="nav-news">Новости</a>
     <a href="#subscriptions" data-nav="subscriptions" data-i18n="nav-plans">Подписки</a>
-    <a href="#reviews" data-nav="reviews" data-i18n="nav-reviews">Отзывы</a>
+    <a href="#reviews" data-nav="reviews" data-i18n="nav-reviews" style="display:none;">Отзывы</a>
     <a href="#faq" data-nav="faq" data-i18n="nav-faq">FAQ</a>
     <a href="#social" data-nav="social" data-i18n="nav-community">Сообщество</a>
   </nav>
@@ -13938,19 +13978,22 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
             <div class="feature-text" data-i18n="featureAnim-text">Плавные современные анимации, делающие игру живой и динамичной</div>
           </div>
 
-          <div class="feature-card">
+          <div class="feature-card is-soon">
+            <span class="feature-soon" data-i18n="feature-soon">Скоро</span>
             <span class="feature-icon" aria-hidden="true"><svg class="fi-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path class="fi-a" d="M3.5 8.5 8 12l4-6.5 4 6.5 4.5-3.5-1.6 9.5H5.1z"></path><path d="M5.5 21h13"></path></svg></span>
             <div class="feature-title" data-i18n="feature3-title">VIP привилегии</div>
             <div class="feature-text" data-i18n="feature3-text">Эксклюзивные режимы и уникальные награды</div>
           </div>
 
-          <div class="feature-card">
+          <div class="feature-card is-soon">
+            <span class="feature-soon" data-i18n="feature-soon">Скоро</span>
             <span class="feature-icon" aria-hidden="true"><svg class="fi-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M4 6h16M4 12h16M4 18h16"></path><circle class="fi-a" cx="15.5" cy="6" r="1.9"></circle><circle class="fi-a" cx="8.5" cy="12" r="1.9"></circle><circle class="fi-a" cx="13" cy="18" r="1.9"></circle></svg></span>
             <div class="feature-title" data-i18n="feature4-title">PRO статус</div>
             <div class="feature-text" data-i18n="feature4-text">Расширенная кастомизация и особые возможности</div>
           </div>
 
-          <div class="feature-card">
+          <div class="feature-card is-soon">
+            <span class="feature-soon" data-i18n="feature-soon">Скоро</span>
             <span class="feature-icon" aria-hidden="true"><svg class="fi-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path class="fi-a" d="M4.5 19.5 5.6 15 15.8 4.8a2.2 2.2 0 0 1 3.1 3.1L8.7 18.1z"></path><path d="M14 6.6 17.1 9.7M4 21h7"></path></svg></span>
             <div class="feature-title" data-i18n="feature5-title">Редактор карт и персонажей</div>
             <div class="feature-text" data-i18n="feature5-text">Создавай свои карты и персонажей, делись ими с миром</div>
@@ -13962,7 +14005,8 @@ body.topbar-compact .e3-section{ scroll-margin-top:160px; }
             <div class="feature-text" data-i18n="feature6-text">Огромный выбор крутых скинов для персонализации</div>
           </div>
 
-          <div class="feature-card">
+          <div class="feature-card is-soon">
+            <span class="feature-soon" data-i18n="feature-soon">Скоро</span>
             <span class="feature-icon" aria-hidden="true"><svg class="fi-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path class="fi-a" d="M7 3.5h10V9a5 5 0 0 1-10 0z"></path><path d="M7 5.5H3.8v1.2A3.3 3.3 0 0 0 7 10M17 5.5h3.2v1.2A3.3 3.3 0 0 1 17 10M12 14.2V18M8.5 21h7M9.5 18h5"></path></svg></span>
             <div class="feature-title" data-i18n="feature7-title">Система рангов</div>
             <div class="feature-text" data-i18n="feature7-text">Поднимайся по лестнице от новичка до легенды</div>
@@ -14434,6 +14478,16 @@ html:not([dir="rtl"]) #e3-back-top{right:30px;bottom:100px}
           <div class="rm2-bar-row"><div class="rm2-bar" style="--p:0%;"><i></i></div><b>0%</b></div>
         </div>
       </div>
+      <!-- Пройденный этап: Альфа (вне .rm2-stages — не влияет на подсчёт прогресса/редактор) -->
+      <a class="rm2-alpha reveal" href="#news" data-delay="1">
+        <span class="rm2-alpha-node" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+        <span class="rm2-alpha-body">
+          <span class="rm2-alpha-head"><span class="rm2-stage-kicker"><span data-i18n="rm2-stage-word">Этап</span> 0</span><span class="rm2-alpha-chip" data-i18n="ultra-roadmap-done">Готово</span></span>
+          <span class="rm2-alpha-title" data-i18n="rm-alpha-title">Альфа-версия вышла</span>
+          <span class="rm2-alpha-text" data-i18n="rm-alpha-text">3 обновления: от v0.1.1 до v0.2.0. Уже в игре — 6 миров, 240 арен, 7 героев, боссы и онлайн-мультиплеер.</span>
+        </span>
+        <span class="rm2-alpha-link" data-i18n="rm-alpha-link">Что нового →</span>
+      </a>
       <div class="rm2-stages">
         <article class="rm2-stage is-now reveal" data-delay="1" style="--p:0%;">
           <span class="rm2-node" aria-hidden="true">1</span>
@@ -14793,7 +14847,7 @@ html:not([dir="rtl"]) #e3-back-top{right:30px;bottom:100px}
     </section>
 
     <!-- ============ E3 UPGRADE: COMMUNITY REVIEWS ============ -->
-    <section class="e3-section reveal" id="reviews" aria-labelledby="rv-title">
+    <section class="e3-section reveal" id="reviews" aria-labelledby="rv-title" style="display:none;">
       <div class="e3-section-head">
         <div class="e3-eyebrow"><span class="dot"></span><span data-i18n="ultra-reviews-eyebrow">Сообщество</span></div>
         <h2 id="rv-title" class="e3-title"><span data-i18n="ultra-reviews-title-a">Отзывы</span> <span class="accent" data-i18n="ultra-reviews-title-b">игроков</span></h2>
@@ -14857,6 +14911,27 @@ html:not([dir="rtl"]) #e3-back-top{right:30px;bottom:100px}
             <span class="faq-caret">+</span>
           </button>
           <div class="faq-a"><div class="faq-a-inner" data-i18n="ultra-faq-5-a">Зайди в наш Discord и подпишись на рассылку ниже — как только откроется набор на закрытый бета-тест, подписчики узнают первыми.</div></div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============ E3: NEWSLETTER — набор в закрытый бета-тест ============ -->
+    <section class="e3-section reveal" id="newsletter" aria-labelledby="nl-title">
+      <div class="news-box">
+        <div class="news-content">
+          <div class="e3-eyebrow" style="margin-bottom:14px;"><span class="dot"></span><span data-i18n="ultra-news-eyebrow">Ранний доступ</span></div>
+          <h2 id="nl-title" class="news-title" data-i18n="ultra-news-title">Получи приглашение первым</h2>
+          <p class="news-sub" data-i18n="ultra-news-sub">Подпишись — пришлём приглашение в закрытый бета-тест, пресс-кит и эксклюзивный скин для раннего сообщества.</p>
+          <form class="news-form" id="newsForm" novalidate="">
+            <input class="news-input" id="newsEmail" type="email" inputmode="email" autocomplete="email" placeholder="you@evades3.com" data-i18n-placeholder="ultra-news-placeholder" aria-label="Email">
+            <button class="news-btn" type="submit" data-i18n="ultra-news-btn">Подписаться</button>
+          </form>
+          <div class="news-perks">
+            <span class="news-perk"><b>✓</b><span data-i18n="ultra-news-perk-1">Без спама</span></span>
+            <span class="news-perk"><b>✓</b><span data-i18n="ultra-news-perk-2">Приоритет в бету</span></span>
+            <span class="news-perk"><b>✓</b><span data-i18n="ultra-news-perk-3">Эксклюзив-скин</span></span>
+          </div>
         </div>
       </div>
     </section>
@@ -23750,7 +23825,12 @@ async function doResetPassword() {
           .get();
         const data = snap.docs.map(d => d.data());
         const filtered = data.filter(r => (r && r.comment && String(r.comment).trim().length >= 3));
-        if (filtered.length === 0) return;
+        // Раздел «Отзывы» (и пункт меню) показываем, только когда одобренных отзывов >= 3.
+        const MIN_PUBLIC_REVIEWS = 3;
+        if (filtered.length < MIN_PUBLIC_REVIEWS) return;
+        const rvSec = document.getElementById('reviews');
+        if (rvSec) rvSec.style.display = '';
+        document.querySelectorAll('a[href="#reviews"]').forEach(a => { a.style.display = ''; });
         // Карусель включается только когда отзывов достаточно (>= 4).
         // Иначе показываем статично, по центру, без дублирования и бегущей строки.
         const MARQUEE_THRESHOLD = 4;
@@ -24002,20 +24082,24 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'Цель — стабильные 60 кадров в секунду на большинстве компьютеров последних 5 лет. Игра выйдет на Windows.',
         'ultra-faq-5-q': 'Как попасть в закрытый бета-тест?',
         'ultra-faq-5-a': 'Зайди в наш Discord и подпишись на рассылку ниже — как только откроется набор на закрытый бета-тест, подписчики узнают первыми.',
+        'feature-soon': 'Скоро',
+        'rm-alpha-title': 'Альфа-версия вышла',
+        'rm-alpha-text': '3 обновления: от v0.1.1 до v0.2.0. Уже в игре — 6 миров, 240 арен, 7 героев, боссы и онлайн-мультиплеер.',
+        'rm-alpha-link': 'Что нового →',
 
         'ultra-news-eyebrow': 'Ранний доступ',
         'ultra-news-title': 'Получи приглашение первым',
-        'ultra-news-sub': 'Подпишись — пришлём приглашение в альфа-тест, пресс-кит и эксклюзивный скин для раннего сообщества.',
+        'ultra-news-sub': 'Подпишись — пришлём приглашение в закрытый бета-тест, пресс-кит и эксклюзивный скин для раннего сообщества.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Подписаться',
         'ultra-news-btn-sending': 'Отправляем…',
         'ultra-news-toast-invalid': 'Введите корректный email',
-        'ultra-news-toast-ok': 'Готово! Ты в списке, напишем как откроется альфа',
+        'ultra-news-toast-ok': 'Готово! Ты в списке, напишем, как откроется бета',
         'ultra-news-toast-dup': 'Этот email уже подписан',
         'ultra-news-toast-err': 'Что-то пошло не так, попробуй ещё раз',
         'ultra-news-toast-net': 'Нет соединения. Проверь интернет и попробуй снова',
         'ultra-news-perk-1': 'Без спама',
-        'ultra-news-perk-2': 'Приоритет в альфу',
+        'ultra-news-perk-2': 'Приоритет в бету',
         'ultra-news-perk-3': 'Эксклюзив-скин',
         'ultra-reviews-eyebrow': 'Сообщество',
         'ultra-reviews-title-a': 'Отзывы',
@@ -24195,20 +24279,24 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'The goal is a stable 60 frames per second on most computers from the last 5 years. The game launches on Windows.',
         'ultra-faq-5-q': 'How can I join the closed beta test?',
         'ultra-faq-5-a': 'Join our Discord and subscribe to the newsletter below — when closed beta test signups open, subscribers will know first.',
+        'feature-soon': 'Soon',
+        'rm-alpha-title': 'Alpha is out',
+        'rm-alpha-text': '3 updates, from v0.1.1 to v0.2.0. Already in the game: 6 worlds, 240 arenas, 7 heroes, bosses and online multiplayer.',
+        'rm-alpha-link': 'What’s new →',
 
         'ultra-news-eyebrow': 'Early access',
         'ultra-news-title': 'Get your invite first',
-        'ultra-news-sub': 'Subscribe — we will send you an alpha-test invitation, press kit and exclusive early-community skin.',
+        'ultra-news-sub': 'Subscribe — we’ll send you a closed beta invitation, the press kit and an exclusive early-community skin.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Subscribe',
         'ultra-news-btn-sending': 'Sending…',
         'ultra-news-toast-invalid': 'Please enter a valid email',
-        'ultra-news-toast-ok': 'Done! You are on the list, we\u2019ll ping you when alpha opens',
+        'ultra-news-toast-ok': 'Done! You’re on the list, we’ll ping you when the beta opens',
         'ultra-news-toast-dup': 'This email is already subscribed ✓',
         'ultra-news-toast-err': 'Something went wrong, please try again',
         'ultra-news-toast-net': 'No connection. Check your internet and try again',
         'ultra-news-perk-1': 'No spam',
-        'ultra-news-perk-2': 'Alpha priority',
+        'ultra-news-perk-2': 'Beta priority',
         'ultra-news-perk-3': 'Exclusive skin',
         'ultra-reviews-eyebrow': 'Community',
         'ultra-reviews-title-a': 'Player',
@@ -24388,20 +24476,24 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'Ціль — стабільні 60 кадрів на секунду на більшості комп’ютерів останніх 5 років. Гра вийде на Windows.',
         'ultra-faq-5-q': 'Як потрапити в закритий бета-тест?',
         'ultra-faq-5-a': 'Зайди в наш Discord і підпишись на розсилку нижче — коли відкриється набір на закритий бета-тест, підписники дізнаються першими.',
+        'feature-soon': 'Скоро',
+        'rm-alpha-title': 'Альфа-версія вийшла',
+        'rm-alpha-text': '3 оновлення: від v0.1.1 до v0.2.0. Вже в грі — 6 світів, 240 арен, 7 героїв, боси та онлайн-мультиплеєр.',
+        'rm-alpha-link': 'Що нового →',
 
         'ultra-news-eyebrow': 'Ранній доступ',
         'ultra-news-title': 'Отримай запрошення першим',
-        'ultra-news-sub': 'Підпишись — надішлемо запрошення в альфа-тест, прес-кіт та ексклюзивний скін ранньої спільноти.',
+        'ultra-news-sub': 'Підпишись — надішлемо запрошення в закритий бета-тест, прес-кіт та ексклюзивний скін ранньої спільноти.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Підписатись',
         'ultra-news-btn-sending': 'Надсилаємо…',
         'ultra-news-toast-invalid': 'Введіть коректний email',
-        'ultra-news-toast-ok': 'Готово! Ти у списку, напишемо як відкриється альфа',
+        'ultra-news-toast-ok': 'Готово! Ти у списку, напишемо, як відкриється бета',
         'ultra-news-toast-dup': 'Цей email вже підписаний ✓',
         'ultra-news-toast-err': 'Щось пішло не так, спробуй ще раз',
         'ultra-news-toast-net': 'Немає з’єднання. Перевір інтернет і спробуй знову',
         'ultra-news-perk-1': 'Без спаму',
-        'ultra-news-perk-2': 'Пріоритет у альфу',
+        'ultra-news-perk-2': 'Пріоритет у бету',
         'ultra-news-perk-3': 'Ексклюзив-скін',
         'ultra-reviews-eyebrow': 'Спільнота',
         'ultra-reviews-title-a': 'Відгуки',
@@ -24570,17 +24662,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'Das Ziel sind stabile 60 Bilder pro Sekunde auf den meisten Computern der letzten 5 Jahre. Das Spiel erscheint für Windows.',
         'ultra-faq-5-q': 'Wie komme ich in den geschlossenen Betatest?',
         'ultra-faq-5-a': 'Tritt unserem Discord bei und abonniere den Newsletter unten — sobald die Anmeldung zum geschlossenen Betatest öffnet, erfahren Abonnenten es zuerst.',
+        'feature-soon': 'Bald',
+        'rm-alpha-title': 'Die Alpha ist da',
+        'rm-alpha-text': '3 Updates, von v0.1.1 bis v0.2.0. Schon im Spiel: 6 Welten, 240 Arenen, 7 Helden, Bosse und Online-Multiplayer.',
+        'rm-alpha-link': 'Neuigkeiten →',
         'ultra-news-eyebrow': 'Früher Zugang',
         'ultra-news-title': 'Erhalte als Erster eine Einladung',
-        'ultra-news-sub': 'Abonniere — wir senden dir eine Alpha-Einladung, das Presskit und einen exklusiven Community-Skin.',
+        'ultra-news-sub': 'Abonniere — wir senden dir eine Einladung zur geschlossenen Beta, das Presskit und einen exklusiven Community-Skin.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Abonnieren', 'ultra-news-btn-sending': 'Senden…',
         'ultra-news-toast-invalid': 'Bitte gültige E-Mail eingeben',
-        'ultra-news-toast-ok': 'Fertig! Du bist auf der Liste, wir melden uns bei Alpha-Start',
+        'ultra-news-toast-ok': 'Fertig! Du bist auf der Liste, wir melden uns zum Beta-Start',
         'ultra-news-toast-dup': 'Diese E-Mail ist bereits abonniert ✓',
         'ultra-news-toast-err': 'Etwas ist schiefgelaufen, bitte erneut versuchen',
         'ultra-news-toast-net': 'Keine Verbindung. Internet prüfen und erneut versuchen',
-        'ultra-news-perk-1': 'Kein Spam', 'ultra-news-perk-2': 'Alpha-Priorität', 'ultra-news-perk-3': 'Exklusiver Skin',
+        'ultra-news-perk-1': 'Kein Spam', 'ultra-news-perk-2': 'Beta-Priorität', 'ultra-news-perk-3': 'Exklusiver Skin',
         'ultra-reviews-eyebrow': 'Community',
         'ultra-reviews-title-a': 'Spieler',
         'ultra-reviews-title-b': 'bewertungen',
@@ -24742,17 +24838,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'El objetivo son 60 fotogramas por segundo estables en la mayoría de los ordenadores de los últimos 5 años. El juego saldrá para Windows.',
         'ultra-faq-5-q': '¿Cómo entro en la beta cerrada?',
         'ultra-faq-5-a': 'Únete a nuestro Discord y suscríbete al boletín de abajo: cuando se abran las inscripciones a la beta cerrada, los suscriptores serán los primeros en saberlo.',
+        'feature-soon': 'Pronto',
+        'rm-alpha-title': 'La alfa ya está aquí',
+        'rm-alpha-text': '3 actualizaciones, de v0.1.1 a v0.2.0. Ya en el juego: 6 mundos, 240 arenas, 7 héroes, jefes y multijugador online.',
+        'rm-alpha-link': 'Novedades →',
         'ultra-news-eyebrow': 'Acceso anticipado',
         'ultra-news-title': 'Consigue la invitación primero',
-        'ultra-news-sub': 'Suscríbete — te enviaremos una invitación a la alfa, el press kit y un skin exclusivo para la comunidad temprana.',
+        'ultra-news-sub': 'Suscríbete — te enviaremos una invitación a la beta cerrada, el press kit y un skin exclusivo para la comunidad temprana.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Suscribirse', 'ultra-news-btn-sending': 'Enviando…',
         'ultra-news-toast-invalid': 'Introduce un email válido',
-        'ultra-news-toast-ok': '¡Listo! Estás en la lista, te avisaremos cuando abra la alfa',
+        'ultra-news-toast-ok': '¡Listo! Estás en la lista, te avisaremos cuando abra la beta',
         'ultra-news-toast-dup': 'Este email ya está suscrito ✓',
         'ultra-news-toast-err': 'Algo salió mal, inténtalo de nuevo',
         'ultra-news-toast-net': 'Sin conexión. Revisa tu internet e inténtalo de nuevo',
-        'ultra-news-perk-1': 'Sin spam', 'ultra-news-perk-2': 'Prioridad en la alfa', 'ultra-news-perk-3': 'Skin exclusivo',
+        'ultra-news-perk-1': 'Sin spam', 'ultra-news-perk-2': 'Prioridad en la beta', 'ultra-news-perk-3': 'Skin exclusivo',
         'ultra-reviews-eyebrow': 'Comunidad',
         'ultra-reviews-title-a': 'Opiniones',
         'ultra-reviews-title-b': 'de jugadores',
@@ -24914,17 +25014,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'L’objectif est d’atteindre 60 images par seconde stables sur la plupart des ordinateurs de moins de 5 ans. Le jeu sortira sur Windows.',
         'ultra-faq-5-q': 'Comment rejoindre la bêta fermée ?',
         'ultra-faq-5-a': 'Rejoins notre Discord et abonne-toi à la newsletter ci-dessous : dès que les inscriptions à la bêta fermée ouvriront, les abonnés seront les premiers prévenus.',
+        'feature-soon': 'Bientôt',
+        'rm-alpha-title': 'L’alpha est disponible',
+        'rm-alpha-text': '3 mises à jour, de v0.1.1 à v0.2.0. Déjà dans le jeu : 6 mondes, 240 arènes, 7 héros, des boss et le multijoueur en ligne.',
+        'rm-alpha-link': 'Nouveautés →',
         'ultra-news-eyebrow': 'Accès anticipé',
         'ultra-news-title': 'Reçois l\u2019invitation en premier',
-        'ultra-news-sub': 'Abonne-toi — nous enverrons une invitation à l\u2019alpha, le press kit et un skin exclusif pour la communauté.',
+        'ultra-news-sub': 'Abonne-toi — nous t’enverrons une invitation à la bêta fermée, le press kit et un skin exclusif pour la communauté.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'S\u2019abonner', 'ultra-news-btn-sending': 'Envoi…',
         'ultra-news-toast-invalid': 'Entre un email valide',
-        'ultra-news-toast-ok': 'Parfait ! Tu es sur la liste, on te prévient à l\u2019ouverture de l\u2019alpha',
+        'ultra-news-toast-ok': 'Parfait ! Tu es sur la liste, on te prévient à l’ouverture de la bêta',
         'ultra-news-toast-dup': 'Cet email est déjà abonné ✓',
         'ultra-news-toast-err': 'Une erreur est survenue, réessaie',
         'ultra-news-toast-net': 'Pas de connexion. Vérifie ton internet et réessaie',
-        'ultra-news-perk-1': 'Pas de spam', 'ultra-news-perk-2': 'Priorité alpha', 'ultra-news-perk-3': 'Skin exclusif',
+        'ultra-news-perk-1': 'Pas de spam', 'ultra-news-perk-2': 'Priorité bêta', 'ultra-news-perk-3': 'Skin exclusif',
         'ultra-reviews-eyebrow': 'Communauté',
         'ultra-reviews-title-a': 'Avis',
         'ultra-reviews-title-b': 'des joueurs',
@@ -25086,17 +25190,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'L’obiettivo sono 60 fotogrammi al secondo stabili sulla maggior parte dei computer degli ultimi 5 anni. Il gioco uscirà su Windows.',
         'ultra-faq-5-q': 'Come entro nella beta chiusa?',
         'ultra-faq-5-a': 'Entra nel nostro Discord e iscriviti alla newsletter qui sotto: appena si apriranno le iscrizioni alla beta chiusa, gli iscritti lo sapranno per primi.',
+        'feature-soon': 'Presto',
+        'rm-alpha-title': 'L’alpha è uscita',
+        'rm-alpha-text': '3 aggiornamenti, dalla v0.1.1 alla v0.2.0. Già nel gioco: 6 mondi, 240 arene, 7 eroi, boss e multiplayer online.',
+        'rm-alpha-link': 'Novità →',
         'ultra-news-eyebrow': 'Accesso anticipato',
         'ultra-news-title': 'Ricevi l\u2019invito per primo',
-        'ultra-news-sub': 'Iscriviti — invieremo un invito alla alpha, il press kit e una skin esclusiva per la community.',
+        'ultra-news-sub': 'Iscriviti — invieremo un invito alla beta chiusa, il press kit e una skin esclusiva per la community.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Iscriviti', 'ultra-news-btn-sending': 'Invio…',
         'ultra-news-toast-invalid': 'Inserisci un email valido',
-        'ultra-news-toast-ok': 'Fatto! Sei in lista, ti avvisiamo all\u2019apertura dell\u2019alpha',
+        'ultra-news-toast-ok': 'Fatto! Sei in lista, ti avvisiamo all’apertura della beta',
         'ultra-news-toast-dup': 'Questa email è già iscritta ✓',
         'ultra-news-toast-err': 'Qualcosa è andato storto, riprova',
         'ultra-news-toast-net': 'Nessuna connessione. Controlla internet e riprova',
-        'ultra-news-perk-1': 'Niente spam', 'ultra-news-perk-2': 'Priorità alpha', 'ultra-news-perk-3': 'Skin esclusiva',
+        'ultra-news-perk-1': 'Niente spam', 'ultra-news-perk-2': 'Priorità beta', 'ultra-news-perk-3': 'Skin esclusiva',
         'ultra-reviews-eyebrow': 'Community',
         'ultra-reviews-title-a': 'Recensioni',
         'ultra-reviews-title-b': 'dei giocatori',
@@ -25258,17 +25366,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'O objetivo são 60 quadros por segundo estáveis na maioria dos computadores dos últimos 5 anos. O jogo será lançado para Windows.',
         'ultra-faq-5-q': 'Como entrar no beta fechado?',
         'ultra-faq-5-a': 'Entre no nosso Discord e assine a newsletter abaixo: assim que as inscrições para o beta fechado abrirem, os assinantes serão os primeiros a saber.',
+        'feature-soon': 'Em breve',
+        'rm-alpha-title': 'O alfa foi lançado',
+        'rm-alpha-text': '3 atualizações, da v0.1.1 à v0.2.0. Já no jogo: 6 mundos, 240 arenas, 7 heróis, chefes e multijogador online.',
+        'rm-alpha-link': 'Novidades →',
         'ultra-news-eyebrow': 'Acesso antecipado',
         'ultra-news-title': 'Receba o convite primeiro',
-        'ultra-news-sub': 'Inscreva-se — enviaremos um convite para a alfa, o press kit e uma skin exclusiva para a comunidade inicial.',
+        'ultra-news-sub': 'Inscreva-se — enviaremos um convite para o beta fechado, o press kit e uma skin exclusiva para a comunidade inicial.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Inscrever-se', 'ultra-news-btn-sending': 'Enviando…',
         'ultra-news-toast-invalid': 'Insira um email válido',
-        'ultra-news-toast-ok': 'Pronto! Você está na lista, avisaremos quando o alfa abrir',
+        'ultra-news-toast-ok': 'Pronto! Você está na lista, avisaremos quando o beta abrir',
         'ultra-news-toast-dup': 'Este email já está inscrito ✓',
         'ultra-news-toast-err': 'Algo deu errado, tente de novo',
         'ultra-news-toast-net': 'Sem conexão. Verifique a internet e tente novamente',
-        'ultra-news-perk-1': 'Sem spam', 'ultra-news-perk-2': 'Prioridade no alfa', 'ultra-news-perk-3': 'Skin exclusiva',
+        'ultra-news-perk-1': 'Sem spam', 'ultra-news-perk-2': 'Prioridade no beta', 'ultra-news-perk-3': 'Skin exclusiva',
         'ultra-reviews-eyebrow': 'Comunidade',
         'ultra-reviews-title-a': 'Opiniões',
         'ultra-reviews-title-b': 'dos jogadores',
@@ -25430,17 +25542,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'Celem jest stabilne 60 klatek na sekundę na większości komputerów z ostatnich 5 lat. Gra ukaże się na Windows.',
         'ultra-faq-5-q': 'Jak dołączyć do zamkniętych testów bety?',
         'ultra-faq-5-a': 'Dołącz do naszego Discorda i zapisz się do newslettera poniżej — gdy ruszą zapisy na zamknięte testy bety, subskrybenci dowiedzą się pierwsi.',
+        'feature-soon': 'Wkrótce',
+        'rm-alpha-title': 'Alfa już jest',
+        'rm-alpha-text': '3 aktualizacje, od v0.1.1 do v0.2.0. Już w grze: 6 światów, 240 aren, 7 bohaterów, bossowie i multiplayer online.',
+        'rm-alpha-link': 'Co nowego →',
         'ultra-news-eyebrow': 'Wczesny dostęp',
         'ultra-news-title': 'Odbierz zaproszenie jako pierwszy',
-        'ultra-news-sub': 'Zapisz się — wyślemy zaproszenie do alfy, press kit i ekskluzywny skin wczesnej społeczności.',
+        'ultra-news-sub': 'Zapisz się — wyślemy zaproszenie do zamkniętej bety, press kit i ekskluzywny skin wczesnej społeczności.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Subskrybuj', 'ultra-news-btn-sending': 'Wysyłanie…',
         'ultra-news-toast-invalid': 'Wprowadź poprawny email',
-        'ultra-news-toast-ok': 'Gotowe! Jesteś na liście, damy znać gdy ruszy alfa',
+        'ultra-news-toast-ok': 'Gotowe! Jesteś na liście, damy znać, gdy ruszy beta',
         'ultra-news-toast-dup': 'Ten email jest już zapisany ✓',
         'ultra-news-toast-err': 'Coś poszło nie tak, spróbuj jeszcze raz',
         'ultra-news-toast-net': 'Brak połączenia. Sprawdź internet i spróbuj ponownie',
-        'ultra-news-perk-1': 'Bez spamu', 'ultra-news-perk-2': 'Priorytet w alfie', 'ultra-news-perk-3': 'Ekskluzywny skin',
+        'ultra-news-perk-1': 'Bez spamu', 'ultra-news-perk-2': 'Priorytet w becie', 'ultra-news-perk-3': 'Ekskluzywny skin',
         'ultra-reviews-eyebrow': 'Społeczność',
         'ultra-reviews-title-a': 'Opinie',
         'ultra-reviews-title-b': 'graczy',
@@ -25602,17 +25718,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'Hedef, son 5 yılın çoğu bilgisayarında saniyede sabit 60 kare. Oyun Windows için çıkacak.',
         'ultra-faq-5-q': 'Kapalı beta testine nasıl katılabilirim?',
         'ultra-faq-5-a': 'Discord sunucumuza katıl ve aşağıdaki bültene abone ol — kapalı beta testi başvuruları açıldığında aboneler ilk öğrenenler olacak.',
+        'feature-soon': 'Yakında',
+        'rm-alpha-title': 'Alfa yayında',
+        'rm-alpha-text': 'v0.1.1’den v0.2.0’a 3 güncelleme. Oyunda şimdiden: 6 dünya, 240 arena, 7 kahraman, bosslar ve çevrimiçi çok oyunculu mod.',
+        'rm-alpha-link': 'Yenilikler →',
         'ultra-news-eyebrow': 'Erken erişim',
         'ultra-news-title': 'Daveti ilk sen al',
-        'ultra-news-sub': 'Abone ol — alfa davetini, press kit\u2019i ve erken topluluğa özel kostümü göndereceğiz.',
+        'ultra-news-sub': 'Abone ol — kapalı beta davetini, press kit’i ve erken topluluğa özel kostümü göndereceğiz.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Abone ol', 'ultra-news-btn-sending': 'Gönderiliyor…',
         'ultra-news-toast-invalid': 'Geçerli bir email gir',
-        'ultra-news-toast-ok': 'Tamamdır! Listedesin, alfa açıldığında haber vereceğiz',
+        'ultra-news-toast-ok': 'Tamamdır! Listedesin, beta açıldığında haber vereceğiz',
         'ultra-news-toast-dup': 'Bu email zaten kayıtlı ✓',
         'ultra-news-toast-err': 'Bir şeyler ters gitti, tekrar dene',
         'ultra-news-toast-net': 'Bağlantı yok. İnternetini kontrol et ve tekrar dene',
-        'ultra-news-perk-1': 'Spam yok', 'ultra-news-perk-2': 'Alfa önceliği', 'ultra-news-perk-3': 'Özel kostüm',
+        'ultra-news-perk-1': 'Spam yok', 'ultra-news-perk-2': 'Beta önceliği', 'ultra-news-perk-3': 'Özel kostüm',
         'ultra-reviews-eyebrow': 'Topluluk',
         'ultra-reviews-title-a': 'Oyuncu',
         'ultra-reviews-title-b': 'yorumları',
@@ -25774,17 +25894,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'Het doel is een stabiele 60 beelden per seconde op de meeste computers van de afgelopen 5 jaar. De game verschijnt op Windows.',
         'ultra-faq-5-q': 'Hoe kom ik in de gesloten bètatest?',
         'ultra-faq-5-a': 'Word lid van onze Discord en abonneer je op de nieuwsbrief hieronder — zodra de aanmeldingen voor de gesloten bètatest openen, horen abonnees het als eerste.',
+        'feature-soon': 'Binnenkort',
+        'rm-alpha-title': 'De alpha is uit',
+        'rm-alpha-text': '3 updates, van v0.1.1 tot v0.2.0. Al in de game: 6 werelden, 240 arena’s, 7 helden, bazen en online multiplayer.',
+        'rm-alpha-link': 'Wat is nieuw →',
         'ultra-news-eyebrow': 'Vroege toegang',
         'ultra-news-title': 'Ontvang als eerste een uitnodiging',
-        'ultra-news-sub': 'Abonneer — we sturen je een alpha-uitnodiging, de presskit en een exclusieve community-skin.',
+        'ultra-news-sub': 'Abonneer — we sturen je een uitnodiging voor de gesloten bèta, de presskit en een exclusieve community-skin.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Abonneren', 'ultra-news-btn-sending': 'Verzenden…',
         'ultra-news-toast-invalid': 'Voer een geldig email in',
-        'ultra-news-toast-ok': 'Klaar! Je staat op de lijst, we laten het weten als de alpha opent',
+        'ultra-news-toast-ok': 'Klaar! Je staat op de lijst, we laten het weten als de bèta opent',
         'ultra-news-toast-dup': 'Dit email is al geabonneerd ✓',
         'ultra-news-toast-err': 'Er ging iets mis, probeer opnieuw',
         'ultra-news-toast-net': 'Geen verbinding. Controleer je internet en probeer opnieuw',
-        'ultra-news-perk-1': 'Geen spam', 'ultra-news-perk-2': 'Alpha-prioriteit', 'ultra-news-perk-3': 'Exclusieve skin',
+        'ultra-news-perk-1': 'Geen spam', 'ultra-news-perk-2': 'Bèta-prioriteit', 'ultra-news-perk-3': 'Exclusieve skin',
         'ultra-reviews-eyebrow': 'Community',
         'ultra-reviews-title-a': 'Beoordelingen',
         'ultra-reviews-title-b': 'van spelers',
@@ -25946,17 +26070,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'Målet är stabila 60 bilder per sekund på de flesta datorer från de senaste 5 åren. Spelet släpps på Windows.',
         'ultra-faq-5-q': 'Hur kommer jag med i den slutna betatesten?',
         'ultra-faq-5-a': 'Gå med i vår Discord och prenumerera på nyhetsbrevet nedan — när anmälan till den slutna betatesten öppnar får prenumeranter veta först.',
+        'feature-soon': 'Snart',
+        'rm-alpha-title': 'Alfan är släppt',
+        'rm-alpha-text': '3 uppdateringar, från v0.1.1 till v0.2.0. Redan i spelet: 6 världar, 240 arenor, 7 hjältar, bossar och online-multiplayer.',
+        'rm-alpha-link': 'Nyheter →',
         'ultra-news-eyebrow': 'Tidig åtkomst',
         'ultra-news-title': 'Få inbjudan först',
-        'ultra-news-sub': 'Prenumerera — vi skickar en alfa-inbjudan, pressmapp och en exklusiv community-skin.',
+        'ultra-news-sub': 'Prenumerera — vi skickar en inbjudan till den slutna betan, pressmapp och en exklusiv community-skin.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Prenumerera', 'ultra-news-btn-sending': 'Skickar…',
         'ultra-news-toast-invalid': 'Ange en giltig e-post',
-        'ultra-news-toast-ok': 'Klart! Du är på listan, vi hör av oss när alfan öppnar',
+        'ultra-news-toast-ok': 'Klart! Du är på listan, vi hör av oss när betan öppnar',
         'ultra-news-toast-dup': 'Denna e-post är redan prenumererad ✓',
         'ultra-news-toast-err': 'Något gick fel, försök igen',
         'ultra-news-toast-net': 'Ingen anslutning. Kontrollera internet och försök igen',
-        'ultra-news-perk-1': 'Ingen spam', 'ultra-news-perk-2': 'Alfa-prioritet', 'ultra-news-perk-3': 'Exklusiv skin',
+        'ultra-news-perk-1': 'Ingen spam', 'ultra-news-perk-2': 'Beta-prioritet', 'ultra-news-perk-3': 'Exklusiv skin',
         'ultra-reviews-eyebrow': 'Community',
         'ultra-reviews-title-a': 'Spelar',
         'ultra-reviews-title-b': 'recensioner',
@@ -26118,17 +26246,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'Målet er stabile 60 bilder per sekund på de fleste datamaskiner fra de siste 5 årene. Spillet kommer til Windows.',
         'ultra-faq-5-q': 'Hvordan kommer jeg med i den lukkede betatesten?',
         'ultra-faq-5-a': 'Bli med i Discord og abonner på nyhetsbrevet nedenfor — når påmeldingen til den lukkede betatesten åpner, får abonnentene vite det først.',
+        'feature-soon': 'Snart',
+        'rm-alpha-title': 'Alfaen er ute',
+        'rm-alpha-text': '3 oppdateringer, fra v0.1.1 til v0.2.0. Allerede i spillet: 6 verdener, 240 arenaer, 7 helter, bosser og online flerspiller.',
+        'rm-alpha-link': 'Nyheter →',
         'ultra-news-eyebrow': 'Tidlig tilgang',
         'ultra-news-title': 'Få invitasjonen først',
-        'ultra-news-sub': 'Abonner — vi sender en alfa-invitasjon, presskit og en eksklusiv community-skin.',
+        'ultra-news-sub': 'Abonner — vi sender en invitasjon til den lukkede betaen, presskit og en eksklusiv community-skin.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Abonner', 'ultra-news-btn-sending': 'Sender…',
         'ultra-news-toast-invalid': 'Oppgi en gyldig e-post',
-        'ultra-news-toast-ok': 'Ferdig! Du er på listen, vi gir beskjed når alfa åpner',
+        'ultra-news-toast-ok': 'Ferdig! Du er på listen, vi gir beskjed når betaen åpner',
         'ultra-news-toast-dup': 'Denne e-posten er allerede abonnert ✓',
         'ultra-news-toast-err': 'Noe gikk galt, prøv igjen',
         'ultra-news-toast-net': 'Ingen tilkobling. Sjekk internett og prøv igjen',
-        'ultra-news-perk-1': 'Ingen spam', 'ultra-news-perk-2': 'Alfa-prioritet', 'ultra-news-perk-3': 'Eksklusiv skin',
+        'ultra-news-perk-1': 'Ingen spam', 'ultra-news-perk-2': 'Beta-prioritet', 'ultra-news-perk-3': 'Eksklusiv skin',
         'ultra-reviews-eyebrow': 'Community',
         'ultra-reviews-title-a': 'Spiller',
         'ultra-reviews-title-b': 'anmeldelser',
@@ -26290,17 +26422,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'Tavoitteena on vakaa 60 kuvaa sekunnissa useimmilla viimeisen 5 vuoden tietokoneilla. Peli julkaistaan Windowsille.',
         'ultra-faq-5-q': 'Miten pääsen suljettuun beta-testiin?',
         'ultra-faq-5-a': 'Liity Discordiimme ja tilaa uutiskirje alta — kun suljetun beta-testin ilmoittautuminen avautuu, tilaajat saavat tiedon ensimmäisinä.',
+        'feature-soon': 'Tulossa',
+        'rm-alpha-title': 'Alpha on julkaistu',
+        'rm-alpha-text': '3 päivitystä, v0.1.1:stä v0.2.0:aan. Pelissä jo nyt: 6 maailmaa, 240 areenaa, 7 sankaria, pomot ja verkkomoninpeli.',
+        'rm-alpha-link': 'Uutta →',
         'ultra-news-eyebrow': 'Varhainen pääsy',
         'ultra-news-title': 'Saat kutsun ensimmäisenä',
-        'ultra-news-sub': 'Tilaa — lähetämme alpha-kutsun, presskitin ja varhaisyhteisön eksklusiivisen skinin.',
+        'ultra-news-sub': 'Tilaa — lähetämme kutsun suljettuun betaan, presskitin ja varhaisyhteisön eksklusiivisen skinin.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Tilaa', 'ultra-news-btn-sending': 'Lähetetään…',
         'ultra-news-toast-invalid': 'Anna kelvollinen sähköposti',
-        'ultra-news-toast-ok': 'Valmista! Olet listalla, ilmoitamme kun alpha avautuu',
+        'ultra-news-toast-ok': 'Valmista! Olet listalla, ilmoitamme kun beta avautuu',
         'ultra-news-toast-dup': 'Tämä sähköposti on jo tilattu ✓',
         'ultra-news-toast-err': 'Jotain meni pieleen, yritä uudelleen',
         'ultra-news-toast-net': 'Ei yhteyttä. Tarkista internet ja yritä uudelleen',
-        'ultra-news-perk-1': 'Ei roskapostia', 'ultra-news-perk-2': 'Alpha-etusija', 'ultra-news-perk-3': 'Eksklusiivinen skin',
+        'ultra-news-perk-1': 'Ei roskapostia', 'ultra-news-perk-2': 'Beta-etusija', 'ultra-news-perk-3': 'Eksklusiivinen skin',
         'ultra-reviews-eyebrow': 'Yhteisö',
         'ultra-reviews-title-a': 'Pelaajien',
         'ultra-reviews-title-b': 'arviot',
@@ -26462,17 +26598,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'Målet er stabile 60 billeder i sekundet på de fleste computere fra de seneste 5 år. Spillet udkommer til Windows.',
         'ultra-faq-5-q': 'Hvordan kommer jeg med i den lukkede betatest?',
         'ultra-faq-5-a': 'Kom ind på vores Discord og tilmeld dig nyhedsbrevet nedenfor — når tilmeldingen til den lukkede betatest åbner, får abonnenterne det først at vide.',
+        'feature-soon': 'Snart',
+        'rm-alpha-title': 'Alfaen er ude',
+        'rm-alpha-text': '3 opdateringer, fra v0.1.1 til v0.2.0. Allerede i spillet: 6 verdener, 240 arenaer, 7 helte, bosser og online multiplayer.',
+        'rm-alpha-link': 'Nyheder →',
         'ultra-news-eyebrow': 'Tidlig adgang',
         'ultra-news-title': 'Få invitationen først',
-        'ultra-news-sub': 'Tilmeld dig — vi sender alfa-invitation, presskit og en eksklusiv community-skin.',
+        'ultra-news-sub': 'Tilmeld dig — vi sender en invitation til den lukkede beta, presskit og en eksklusiv community-skin.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Tilmeld', 'ultra-news-btn-sending': 'Sender…',
         'ultra-news-toast-invalid': 'Indtast en gyldig e-mail',
-        'ultra-news-toast-ok': 'Klar! Du er på listen, vi giver besked når alfa åbner',
+        'ultra-news-toast-ok': 'Klar! Du er på listen, vi giver besked, når betaen åbner',
         'ultra-news-toast-dup': 'Denne e-mail er allerede tilmeldt ✓',
         'ultra-news-toast-err': 'Noget gik galt, prøv igen',
         'ultra-news-toast-net': 'Ingen forbindelse. Tjek internettet og prøv igen',
-        'ultra-news-perk-1': 'Ingen spam', 'ultra-news-perk-2': 'Alfa-prioritet', 'ultra-news-perk-3': 'Eksklusiv skin',
+        'ultra-news-perk-1': 'Ingen spam', 'ultra-news-perk-2': 'Beta-prioritet', 'ultra-news-perk-3': 'Eksklusiv skin',
         'ultra-reviews-eyebrow': 'Community',
         'ultra-reviews-title-a': 'Spiller',
         'ultra-reviews-title-b': 'anmeldelser',
@@ -26634,17 +26774,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'Cílem je stabilních 60 snímků za sekundu na většině počítačů z posledních 5 let. Hra vyjde na Windows.',
         'ultra-faq-5-q': 'Jak se dostat do uzavřeného betatestu?',
         'ultra-faq-5-a': 'Připoj se k našemu Discordu a přihlas se k odběru newsletteru níže — jakmile se otevře registrace do uzavřeného betatestu, odběratelé se to dozvědí jako první.',
+        'feature-soon': 'Brzy',
+        'rm-alpha-title': 'Alfa je venku',
+        'rm-alpha-text': '3 aktualizace, od v0.1.1 po v0.2.0. Už ve hře: 6 světů, 240 arén, 7 hrdinů, bossové a online multiplayer.',
+        'rm-alpha-link': 'Co je nového →',
         'ultra-news-eyebrow': 'Předběžný přístup',
         'ultra-news-title': 'Získej pozvánku první',
-        'ultra-news-sub': 'Přihlas se — pošleme pozvánku do alfy, press kit a exkluzivní skin rané komunity.',
+        'ultra-news-sub': 'Přihlas se — pošleme pozvánku do uzavřené bety, press kit a exkluzivní skin rané komunity.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Odebírat', 'ultra-news-btn-sending': 'Odesílání…',
         'ultra-news-toast-invalid': 'Zadej platný e-mail',
-        'ultra-news-toast-ok': 'Hotovo! Jsi v seznamu, dáme vědět, až se alfa otevře',
+        'ultra-news-toast-ok': 'Hotovo! Jsi v seznamu, dáme vědět, až se beta otevře',
         'ultra-news-toast-dup': 'Tento e-mail je již zapsán ✓',
         'ultra-news-toast-err': 'Něco se pokazilo, zkus to znovu',
         'ultra-news-toast-net': 'Žádné připojení. Zkontroluj internet a zkus to znovu',
-        'ultra-news-perk-1': 'Žádný spam', 'ultra-news-perk-2': 'Priorita v alfě', 'ultra-news-perk-3': 'Exkluzivní skin',
+        'ultra-news-perk-1': 'Žádný spam', 'ultra-news-perk-2': 'Priorita v betě', 'ultra-news-perk-3': 'Exkluzivní skin',
         'ultra-reviews-eyebrow': 'Komunita',
         'ultra-reviews-title-a': 'Recenze',
         'ultra-reviews-title-b': 'hráčů',
@@ -26806,17 +26950,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'Ținta este de 60 de cadre pe secundă stabile pe majoritatea calculatoarelor din ultimii 5 ani. Jocul va apărea pe Windows.',
         'ultra-faq-5-q': 'Cum intru în beta-testul închis?',
         'ultra-faq-5-a': 'Intră pe Discord-ul nostru și abonează-te la newsletter mai jos — imediat ce se deschid înscrierile pentru beta-testul închis, abonații vor afla primii.',
+        'feature-soon': 'În curând',
+        'rm-alpha-title': 'Alfa a fost lansată',
+        'rm-alpha-text': '3 actualizări, de la v0.1.1 la v0.2.0. Deja în joc: 6 lumi, 240 de arene, 7 eroi, boși și multiplayer online.',
+        'rm-alpha-link': 'Noutăți →',
         'ultra-news-eyebrow': 'Acces timpuriu',
         'ultra-news-title': 'Primește invitația primul',
-        'ultra-news-sub': 'Abonează-te — vom trimite o invitație la alfa, press kit și un skin exclusiv pentru comunitatea timpurie.',
+        'ultra-news-sub': 'Abonează-te — vom trimite o invitație la beta închisă, press kit și un skin exclusiv pentru comunitatea timpurie.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Abonează-te', 'ultra-news-btn-sending': 'Se trimite…',
         'ultra-news-toast-invalid': 'Introdu un email valid',
-        'ultra-news-toast-ok': 'Gata! Ești pe listă, te anunțăm când se deschide alfa',
+        'ultra-news-toast-ok': 'Gata! Ești pe listă, te anunțăm când se deschide beta',
         'ultra-news-toast-dup': 'Acest email este deja abonat ✓',
         'ultra-news-toast-err': 'Ceva nu a mers, încearcă din nou',
         'ultra-news-toast-net': 'Fără conexiune. Verifică internetul și încearcă din nou',
-        'ultra-news-perk-1': 'Fără spam', 'ultra-news-perk-2': 'Prioritate la alfa', 'ultra-news-perk-3': 'Skin exclusiv',
+        'ultra-news-perk-1': 'Fără spam', 'ultra-news-perk-2': 'Prioritate la beta', 'ultra-news-perk-3': 'Skin exclusiv',
         'ultra-reviews-eyebrow': 'Comunitate',
         'ultra-reviews-title-a': 'Recenziile',
         'ultra-reviews-title-b': 'jucătorilor',
@@ -26978,17 +27126,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'A cél stabil 60 képkocka másodpercenként a legtöbb, az elmúlt 5 évben vásárolt számítógépen. A játék Windowsra jelenik meg.',
         'ultra-faq-5-q': 'Hogyan kerülhetek be a zárt bétatesztbe?',
         'ultra-faq-5-a': 'Csatlakozz a Discordunkhoz, és iratkozz fel az alábbi hírlevélre — amint megnyílik a jelentkezés a zárt bétatesztre, a feliratkozók tudják meg először.',
+        'feature-soon': 'Hamarosan',
+        'rm-alpha-title': 'Megjelent az alfa',
+        'rm-alpha-text': '3 frissítés, a v0.1.1-től a v0.2.0-ig. Már a játékban: 6 világ, 240 aréna, 7 hős, főellenségek és online többjátékos mód.',
+        'rm-alpha-link': 'Újdonságok →',
         'ultra-news-eyebrow': 'Korai hozzáférés',
         'ultra-news-title': 'Kapd meg elsőként a meghívót',
-        'ultra-news-sub': 'Iratkozz fel — küldünk egy alfa meghívót, a press kitet és egy exkluzív korai közösségi skint.',
+        'ultra-news-sub': 'Iratkozz fel — küldünk egy meghívót a zárt bétába, a press kitet és egy exkluzív korai közösségi skint.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Feliratkozás', 'ultra-news-btn-sending': 'Küldés…',
         'ultra-news-toast-invalid': 'Adj meg érvényes e-mailt',
-        'ultra-news-toast-ok': 'Kész! A listán vagy, szólunk ha nyílik az alfa',
+        'ultra-news-toast-ok': 'Kész! A listán vagy, szólunk, ha nyílik a béta',
         'ultra-news-toast-dup': 'Ez az e-mail már fel van iratkozva ✓',
         'ultra-news-toast-err': 'Valami félrement, próbáld újra',
         'ultra-news-toast-net': 'Nincs kapcsolat. Ellenőrizd a netet és próbáld újra',
-        'ultra-news-perk-1': 'Spammentes', 'ultra-news-perk-2': 'Alfa prioritás', 'ultra-news-perk-3': 'Exkluzív skin',
+        'ultra-news-perk-1': 'Spammentes', 'ultra-news-perk-2': 'Béta prioritás', 'ultra-news-perk-3': 'Exkluzív skin',
         'ultra-reviews-eyebrow': 'Közösség',
         'ultra-reviews-title-a': 'Játékos',
         'ultra-reviews-title-b': 'vélemények',
@@ -27150,17 +27302,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'Στόχος είναι σταθερά 60 καρέ ανά δευτερόλεπτο στους περισσότερους υπολογιστές των τελευταίων 5 ετών. Το παιχνίδι θα κυκλοφορήσει για Windows.',
         'ultra-faq-5-q': 'Πώς μπαίνω στην κλειστή δοκιμή beta;',
         'ultra-faq-5-a': 'Μπες στο Discord μας και γράψου στο ενημερωτικό δελτίο παρακάτω — μόλις ανοίξουν οι δηλώσεις συμμετοχής για την κλειστή δοκιμή beta, οι συνδρομητές θα το μάθουν πρώτοι.',
+        'feature-soon': 'Σύντομα',
+        'rm-alpha-title': 'Η άλφα κυκλοφόρησε',
+        'rm-alpha-text': '3 ενημερώσεις, από v0.1.1 έως v0.2.0. Ήδη στο παιχνίδι: 6 κόσμοι, 240 αρένες, 7 ήρωες, bosses και online multiplayer.',
+        'rm-alpha-link': 'Τι νέο υπάρχει →',
         'ultra-news-eyebrow': 'Πρόωρη πρόσβαση',
         'ultra-news-title': 'Πάρε πρώτος την πρόσκληση',
-        'ultra-news-sub': 'Εγγράψου — θα στείλουμε πρόσκληση άλφα, το press kit και ένα αποκλειστικό skin της πρώιμης κοινότητας.',
+        'ultra-news-sub': 'Εγγράψου — θα στείλουμε πρόσκληση στην κλειστή beta, το press kit και ένα αποκλειστικό skin της πρώιμης κοινότητας.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Εγγραφή', 'ultra-news-btn-sending': 'Αποστολή…',
         'ultra-news-toast-invalid': 'Βάλε έγκυρο email',
-        'ultra-news-toast-ok': 'Έτοιμο! Είσαι στη λίστα, θα σε ειδοποιήσουμε όταν ανοίξει η άλφα',
+        'ultra-news-toast-ok': 'Έτοιμο! Είσαι στη λίστα, θα σε ειδοποιήσουμε όταν ανοίξει η beta',
         'ultra-news-toast-dup': 'Αυτό το email είναι ήδη εγγεγραμμένο ✓',
         'ultra-news-toast-err': 'Κάτι πήγε στραβά, δοκίμασε ξανά',
         'ultra-news-toast-net': 'Χωρίς σύνδεση. Έλεγξε το internet και δοκίμασε ξανά',
-        'ultra-news-perk-1': 'Χωρίς spam', 'ultra-news-perk-2': 'Προτεραιότητα στην άλφα', 'ultra-news-perk-3': 'Αποκλειστικό skin',
+        'ultra-news-perk-1': 'Χωρίς spam', 'ultra-news-perk-2': 'Προτεραιότητα στη beta', 'ultra-news-perk-3': 'Αποκλειστικό skin',
         'ultra-reviews-eyebrow': 'Κοινότητα',
         'ultra-reviews-title-a': 'Κριτικές',
         'ultra-reviews-title-b': 'παικτών',
@@ -27322,17 +27478,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': '目標は、直近5年以内のほとんどのパソコンで安定した60FPS(1秒あたり60フレーム)です。ゲームはWindows向けに公開されます。',
         'ultra-faq-5-q': 'クローズドベータテストに参加するには？',
         'ultra-faq-5-a': 'Discordに参加し、下のニュースレターを購読してください。クローズドベータテストの募集が始まったら、購読者に真っ先にお知らせします。',
+        'feature-soon': '近日',
+        'rm-alpha-title': 'アルファ版リリース済み',
+        'rm-alpha-text': 'v0.1.1 から v0.2.0 まで3回のアップデート。すでに6つのワールド、240のアリーナ、7人のヒーロー、ボス、オンラインマルチプレイを搭載。',
+        'rm-alpha-link': '新着情報 →',
         'ultra-news-eyebrow': '早期アクセス',
         'ultra-news-title': '誰より先に招待を受け取ろう',
-        'ultra-news-sub': '購読すると、アルファ招待、プレスキット、初期コミュニティ限定スキンをお届けします。',
+        'ultra-news-sub': '購読すると、クローズドベータへの招待、プレスキット、初期コミュニティ限定スキンをお届けします。',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': '購読する', 'ultra-news-btn-sending': '送信中…',
         'ultra-news-toast-invalid': '有効なメールを入力してください',
-        'ultra-news-toast-ok': '完了！リストに登録しました。アルファ開始時にお知らせします',
+        'ultra-news-toast-ok': '完了！リストに登録しました。ベータ開始時にお知らせします',
         'ultra-news-toast-dup': 'このメールは既に登録されています ✓',
         'ultra-news-toast-err': '問題が発生しました。再度お試しください',
         'ultra-news-toast-net': '接続がありません。インターネットを確認して再試行してください',
-        'ultra-news-perk-1': 'スパムなし', 'ultra-news-perk-2': 'アルファ優先', 'ultra-news-perk-3': '限定スキン',
+        'ultra-news-perk-1': 'スパムなし', 'ultra-news-perk-2': 'ベータ優先', 'ultra-news-perk-3': '限定スキン',
         'ultra-reviews-eyebrow': 'コミュニティ',
         'ultra-reviews-title-a': 'プレイヤー',
         'ultra-reviews-title-b': 'レビュー',
@@ -27494,17 +27654,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': '目标是在近 5 年内的大多数电脑上稳定达到每秒 60 帧。游戏将在 Windows 上发布。',
         'ultra-faq-5-q': '如何参加封闭 Beta 测试？',
         'ultra-faq-5-a': '加入我们的 Discord 并订阅下方的通讯——封闭 Beta 测试开放报名后，订阅者将第一时间获知。',
+        'feature-soon': '即将推出',
+        'rm-alpha-title': 'Alpha 版已发布',
+        'rm-alpha-text': '从 v0.1.1 到 v0.2.0 共 3 次更新。游戏中已有 6 个世界、240 个竞技场、7 位英雄、Boss 以及在线多人模式。',
+        'rm-alpha-link': '更新内容 →',
         'ultra-news-eyebrow': '抢先体验',
         'ultra-news-title': '率先收到邀请',
-        'ultra-news-sub': '订阅 — 我们将发送 Alpha 邀请、新闻包以及早期社区专属皮肤。',
+        'ultra-news-sub': '订阅 — 我们将发送封闭测试邀请、新闻包以及早期社区专属皮肤。',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': '订阅', 'ultra-news-btn-sending': '发送中…',
         'ultra-news-toast-invalid': '请输入有效的邮箱',
-        'ultra-news-toast-ok': '完成！你已在名单上，Alpha 开启时会通知你',
+        'ultra-news-toast-ok': '完成！你已在名单上，测试开启时会通知你',
         'ultra-news-toast-dup': '此邮箱已订阅 ✓',
         'ultra-news-toast-err': '出错了，请重试',
         'ultra-news-toast-net': '无连接。请检查网络后重试',
-        'ultra-news-perk-1': '无垃圾邮件', 'ultra-news-perk-2': 'Alpha 优先', 'ultra-news-perk-3': '专属皮肤',
+        'ultra-news-perk-1': '无垃圾邮件', 'ultra-news-perk-2': '测试优先', 'ultra-news-perk-3': '专属皮肤',
         'ultra-reviews-eyebrow': '社区',
         'ultra-reviews-title-a': '玩家',
         'ultra-reviews-title-b': '评价',
@@ -27666,17 +27830,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': '목표는 최근 5년 이내의 대부분 컴퓨터에서 초당 60프레임을 안정적으로 유지하는 것입니다. 게임은 Windows로 출시됩니다.',
         'ultra-faq-5-q': '비공개 베타 테스트에는 어떻게 참여하나요?',
         'ultra-faq-5-a': 'Discord에 참여하고 아래 뉴스레터를 구독하세요. 비공개 베타 테스트 모집이 시작되면 구독자에게 가장 먼저 알려 드립니다.',
+        'feature-soon': '곧 출시',
+        'rm-alpha-title': '알파 버전 출시',
+        'rm-alpha-text': 'v0.1.1부터 v0.2.0까지 3번의 업데이트. 이미 6개 월드, 240개 아레나, 7명의 영웅, 보스, 온라인 멀티플레이를 즐길 수 있습니다.',
+        'rm-alpha-link': '새 소식 →',
         'ultra-news-eyebrow': '얼리 액세스',
         'ultra-news-title': '초대장을 가장 먼저 받기',
-        'ultra-news-sub': '구독하면 알파 초대, 프레스킷, 초기 커뮤니티 전용 스킨을 보내드립니다.',
+        'ultra-news-sub': '구독하면 비공개 베타 초대, 프레스킷, 초기 커뮤니티 전용 스킨을 보내드립니다.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': '구독하기', 'ultra-news-btn-sending': '전송 중…',
         'ultra-news-toast-invalid': '유효한 이메일을 입력하세요',
-        'ultra-news-toast-ok': '완료! 목록에 등록되었습니다. 알파가 열리면 알려드립니다',
+        'ultra-news-toast-ok': '완료! 목록에 등록되었습니다. 베타가 열리면 알려드립니다',
         'ultra-news-toast-dup': '이 이메일은 이미 구독되어 있습니다 ✓',
         'ultra-news-toast-err': '문제가 발생했습니다. 다시 시도해 주세요',
         'ultra-news-toast-net': '연결 없음. 인터넷을 확인하고 다시 시도하세요',
-        'ultra-news-perk-1': '스팸 없음', 'ultra-news-perk-2': '알파 우선', 'ultra-news-perk-3': '전용 스킨',
+        'ultra-news-perk-1': '스팸 없음', 'ultra-news-perk-2': '베타 우선', 'ultra-news-perk-3': '전용 스킨',
         'ultra-reviews-eyebrow': '커뮤니티',
         'ultra-reviews-title-a': '플레이어',
         'ultra-reviews-title-b': '리뷰',
@@ -27838,17 +28006,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'الهدف هو 60 إطاراً في الثانية بثبات على معظم أجهزة الحاسوب في آخر 5 سنوات. ستصدر اللعبة على Windows.',
         'ultra-faq-5-q': 'كيف أنضم إلى اختبار بيتا المغلق؟',
         'ultra-faq-5-a': 'انضم إلى Discord واشترك في النشرة أدناه — عند فتح التسجيل في اختبار بيتا المغلق، سيعرف المشتركون أولاً.',
+        'feature-soon': 'قريبًا',
+        'rm-alpha-title': 'تم إطلاق نسخة ألفا',
+        'rm-alpha-text': '3 تحديثات من v0.1.1 إلى v0.2.0. متوفر الآن في اللعبة: 6 عوالم و240 ساحة و7 أبطال وزعماء ولعب جماعي عبر الإنترنت.',
+        'rm-alpha-link': 'ما الجديد ←',
         'ultra-news-eyebrow': 'وصول مبكر',
         'ultra-news-title': 'احصل على الدعوة أولاً',
-        'ultra-news-sub': 'اشترك — سنرسل دعوة ألفا والبرس كيت وسكن حصري للمجتمع المبكر.',
+        'ultra-news-sub': 'اشترك — سنرسل دعوة للبيتا المغلقة والبرس كيت وسكن حصري للمجتمع المبكر.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'اشترك', 'ultra-news-btn-sending': 'جاري الإرسال…',
         'ultra-news-toast-invalid': 'يرجى إدخال بريد إلكتروني صالح',
-        'ultra-news-toast-ok': 'تم! أنت في القائمة، سنخبرك عند فتح الألفا',
+        'ultra-news-toast-ok': 'تم! أنت في القائمة، سنخبرك عند فتح البيتا',
         'ultra-news-toast-dup': 'هذا البريد مشترك بالفعل ✓',
         'ultra-news-toast-err': 'حدث خطأ، حاول مرة أخرى',
         'ultra-news-toast-net': 'لا يوجد اتصال. تحقق من الإنترنت وحاول مجددًا',
-        'ultra-news-perk-1': 'بدون سبام', 'ultra-news-perk-2': 'أولوية ألفا', 'ultra-news-perk-3': 'سكن حصري',
+        'ultra-news-perk-1': 'بدون سبام', 'ultra-news-perk-2': 'أولوية البيتا', 'ultra-news-perk-3': 'سكن حصري',
         'ultra-reviews-eyebrow': 'المجتمع',
         'ultra-reviews-title-a': 'آراء',
         'ultra-reviews-title-b': 'اللاعبين',
@@ -28010,17 +28182,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'लक्ष्य है पिछले 5 वर्षों के ज़्यादातर कंप्यूटरों पर स्थिर 60 फ्रेम प्रति सेकंड। गेम Windows पर आएगा।',
         'ultra-faq-5-q': 'बंद बीटा टेस्ट में कैसे शामिल हों?',
         'ultra-faq-5-a': 'हमारे Discord से जुड़ें और नीचे न्यूज़लेटर के लिए सब्सक्राइब करें — जैसे ही बंद बीटा टेस्ट के लिए पंजीकरण खुलेगा, सब्सक्राइबर सबसे पहले जानेंगे।',
+        'feature-soon': 'जल्द',
+        'rm-alpha-title': 'अल्फ़ा संस्करण जारी',
+        'rm-alpha-text': 'v0.1.1 से v0.2.0 तक 3 अपडेट। गेम में पहले से: 6 दुनिया, 240 एरीना, 7 हीरो, बॉस और ऑनलाइन मल्टीप्लेयर।',
+        'rm-alpha-link': 'नया क्या है →',
         'ultra-news-eyebrow': 'प्रारंभिक पहुँच',
         'ultra-news-title': 'निमंत्रण पहले पाएँ',
-        'ultra-news-sub': 'सब्सक्राइब करें — हम अल्फ़ा निमंत्रण, प्रेस-किट और शुरुआती समुदाय के लिए एक विशेष स्किन भेजेंगे।',
+        'ultra-news-sub': 'सब्सक्राइब करें — हम क्लोज़्ड बीटा का निमंत्रण, प्रेस-किट और शुरुआती समुदाय के लिए एक विशेष स्किन भेजेंगे।',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'सब्सक्राइब', 'ultra-news-btn-sending': 'भेज रहे हैं…',
         'ultra-news-toast-invalid': 'कृपया मान्य ईमेल डालें',
-        'ultra-news-toast-ok': 'हो गया! आप सूची में हैं, अल्फ़ा खुलते ही बताएँगे',
+        'ultra-news-toast-ok': 'हो गया! आप सूची में हैं, बीटा खुलते ही बताएँगे',
         'ultra-news-toast-dup': 'यह ईमेल पहले से सब्सक्राइब है ✓',
         'ultra-news-toast-err': 'कुछ गलत हुआ, फिर कोशिश करें',
         'ultra-news-toast-net': 'कनेक्शन नहीं। इंटरनेट जाँचें और फिर कोशिश करें',
-        'ultra-news-perk-1': 'कोई स्पैम नहीं', 'ultra-news-perk-2': 'अल्फ़ा प्राथमिकता', 'ultra-news-perk-3': 'विशेष स्किन',
+        'ultra-news-perk-1': 'कोई स्पैम नहीं', 'ultra-news-perk-2': 'बीटा प्राथमिकता', 'ultra-news-perk-3': 'विशेष स्किन',
         'ultra-reviews-eyebrow': 'समुदाय',
         'ultra-reviews-title-a': 'खिलाड़ियों',
         'ultra-reviews-title-b': 'की समीक्षाएँ',
@@ -28182,17 +28358,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'เป้าหมายคือ 60 เฟรมต่อวินาทีอย่างเสถียรบนคอมพิวเตอร์ส่วนใหญ่ในช่วง 5 ปีที่ผ่านมา เกมจะเปิดตัวบน Windows',
         'ultra-faq-5-q': 'จะเข้าร่วมการทดสอบเบต้าแบบปิดได้อย่างไร?',
         'ultra-faq-5-a': 'เข้าร่วม Discord ของเรา แล้วสมัครรับจดหมายข่าวด้านล่าง — เมื่อเปิดรับสมัครทดสอบเบต้าแบบปิด ผู้ติดตามจะได้รู้เป็นกลุ่มแรก',
+        'feature-soon': 'เร็วๆ นี้',
+        'rm-alpha-title': 'เปิดตัวเวอร์ชันอัลฟ่าแล้ว',
+        'rm-alpha-text': 'อัปเดต 3 ครั้ง ตั้งแต่ v0.1.1 ถึง v0.2.0 ในเกมตอนนี้มี 6 โลก 240 อารีน่า 7 ฮีโร่ บอส และโหมดออนไลน์หลายผู้เล่น',
+        'rm-alpha-link': 'มีอะไรใหม่ →',
         'ultra-news-eyebrow': 'เข้าถึงก่อนใคร',
         'ultra-news-title': 'รับคำเชิญเป็นคนแรก',
-        'ultra-news-sub': 'สมัครเลย — เราจะส่งคำเชิญอัลฟ่า เพรสคิต และสกินพิเศษของชุมชนยุคแรก',
+        'ultra-news-sub': 'สมัครเลย — เราจะส่งคำเชิญเบต้าแบบปิด เพรสคิต และสกินพิเศษของชุมชนยุคแรก',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'สมัคร', 'ultra-news-btn-sending': 'กำลังส่ง…',
         'ultra-news-toast-invalid': 'กรุณาใส่อีเมลที่ถูกต้อง',
-        'ultra-news-toast-ok': 'เรียบร้อย! คุณอยู่ในรายชื่อ เราจะแจ้งเมื่ออัลฟ่าเปิด',
+        'ultra-news-toast-ok': 'เรียบร้อย! คุณอยู่ในรายชื่อ เราจะแจ้งเมื่อเบต้าเปิด',
         'ultra-news-toast-dup': 'อีเมลนี้สมัครไว้แล้ว ✓',
         'ultra-news-toast-err': 'เกิดข้อผิดพลาด ลองอีกครั้ง',
         'ultra-news-toast-net': 'ไม่มีการเชื่อมต่อ ตรวจสอบอินเทอร์เน็ตแล้วลองใหม่',
-        'ultra-news-perk-1': 'ไม่มีสแปม', 'ultra-news-perk-2': 'สิทธิ์อัลฟ่าก่อน', 'ultra-news-perk-3': 'สกินพิเศษ',
+        'ultra-news-perk-1': 'ไม่มีสแปม', 'ultra-news-perk-2': 'สิทธิ์เบต้าก่อน', 'ultra-news-perk-3': 'สกินพิเศษ',
         'ultra-reviews-eyebrow': 'ชุมชน',
         'ultra-reviews-title-a': 'รีวิว',
         'ultra-reviews-title-b': 'จากผู้เล่น',
@@ -28354,17 +28534,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'Mục tiêu là 60 khung hình mỗi giây ổn định trên hầu hết máy tính trong 5 năm gần đây. Trò chơi sẽ ra mắt trên Windows.',
         'ultra-faq-5-q': 'Làm sao để tham gia thử nghiệm beta kín?',
         'ultra-faq-5-a': 'Tham gia Discord của chúng tôi và đăng ký nhận bản tin bên dưới — khi mở đăng ký thử nghiệm beta kín, người đăng ký sẽ biết đầu tiên.',
+        'feature-soon': 'Sắp có',
+        'rm-alpha-title': 'Bản alpha đã ra mắt',
+        'rm-alpha-text': '3 bản cập nhật, từ v0.1.1 đến v0.2.0. Đã có trong game: 6 thế giới, 240 đấu trường, 7 anh hùng, boss và chơi mạng trực tuyến.',
+        'rm-alpha-link': 'Có gì mới →',
         'ultra-news-eyebrow': 'Truy cập sớm',
         'ultra-news-title': 'Nhận lời mời đầu tiên',
-        'ultra-news-sub': 'Đăng ký — chúng tôi sẽ gửi lời mời alpha, press kit và skin độc quyền cho cộng đồng sớm.',
+        'ultra-news-sub': 'Đăng ký — chúng tôi sẽ gửi lời mời beta kín, press kit và skin độc quyền cho cộng đồng sớm.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Đăng ký', 'ultra-news-btn-sending': 'Đang gửi…',
         'ultra-news-toast-invalid': 'Vui lòng nhập email hợp lệ',
-        'ultra-news-toast-ok': 'Xong! Bạn đã có trong danh sách, chúng tôi sẽ báo khi alpha mở',
+        'ultra-news-toast-ok': 'Xong! Bạn đã có trong danh sách, chúng tôi sẽ báo khi beta mở',
         'ultra-news-toast-dup': 'Email này đã đăng ký ✓',
         'ultra-news-toast-err': 'Đã xảy ra lỗi, vui lòng thử lại',
         'ultra-news-toast-net': 'Không có kết nối. Kiểm tra internet và thử lại',
-        'ultra-news-perk-1': 'Không spam', 'ultra-news-perk-2': 'Ưu tiên alpha', 'ultra-news-perk-3': 'Skin độc quyền',
+        'ultra-news-perk-1': 'Không spam', 'ultra-news-perk-2': 'Ưu tiên beta', 'ultra-news-perk-3': 'Skin độc quyền',
         'ultra-reviews-eyebrow': 'Cộng đồng',
         'ultra-reviews-title-a': 'Đánh giá',
         'ultra-reviews-title-b': 'người chơi',
@@ -28526,17 +28710,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'Targetnya 60 frame per detik yang stabil di sebagian besar komputer dalam 5 tahun terakhir. Game ini dirilis di Windows.',
         'ultra-faq-5-q': 'Bagaimana cara ikut uji coba beta tertutup?',
         'ultra-faq-5-a': 'Gabung ke Discord kami dan berlangganan buletin di bawah — begitu pendaftaran uji coba beta tertutup dibuka, pelanggan akan tahu lebih dulu.',
+        'feature-soon': 'Segera',
+        'rm-alpha-title': 'Versi alpha sudah rilis',
+        'rm-alpha-text': '3 pembaruan, dari v0.1.1 hingga v0.2.0. Sudah ada di game: 6 dunia, 240 arena, 7 pahlawan, bos, dan multipemain online.',
+        'rm-alpha-link': 'Yang baru →',
         'ultra-news-eyebrow': 'Akses awal',
         'ultra-news-title': 'Dapatkan undangan lebih dulu',
-        'ultra-news-sub': 'Berlangganan — kami akan mengirim undangan alpha, press kit, dan skin eksklusif komunitas awal.',
+        'ultra-news-sub': 'Berlangganan — kami akan mengirim undangan beta tertutup, press kit, dan skin eksklusif komunitas awal.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Berlangganan', 'ultra-news-btn-sending': 'Mengirim…',
         'ultra-news-toast-invalid': 'Masukkan email yang valid',
-        'ultra-news-toast-ok': 'Selesai! Kamu ada di daftar, kami akan kabari saat alpha dibuka',
+        'ultra-news-toast-ok': 'Selesai! Kamu ada di daftar, kami akan kabari saat beta dibuka',
         'ultra-news-toast-dup': 'Email ini sudah berlangganan ✓',
         'ultra-news-toast-err': 'Ada yang salah, coba lagi',
         'ultra-news-toast-net': 'Tidak ada koneksi. Periksa internet dan coba lagi',
-        'ultra-news-perk-1': 'Tanpa spam', 'ultra-news-perk-2': 'Prioritas alpha', 'ultra-news-perk-3': 'Skin eksklusif',
+        'ultra-news-perk-1': 'Tanpa spam', 'ultra-news-perk-2': 'Prioritas beta', 'ultra-news-perk-3': 'Skin eksklusif',
         'ultra-reviews-eyebrow': 'Komunitas',
         'ultra-reviews-title-a': 'Ulasan',
         'ultra-reviews-title-b': 'pemain',
@@ -28698,17 +28886,21 @@ async function doResetPassword() {
         'ultra-faq-4-a': 'Sasarannya ialah 60 bingkai sesaat yang stabil pada kebanyakan komputer dalam 5 tahun terakhir. Permainan ini dikeluarkan di Windows.',
         'ultra-faq-5-q': 'Bagaimana untuk menyertai ujian beta tertutup?',
         'ultra-faq-5-a': 'Sertai Discord kami dan langgan surat berita di bawah — sebaik sahaja pendaftaran ujian beta tertutup dibuka, pelanggan akan tahu dahulu.',
+        'feature-soon': 'Akan datang',
+        'rm-alpha-title': 'Versi alfa telah dilancarkan',
+        'rm-alpha-text': '3 kemas kini, dari v0.1.1 hingga v0.2.0. Sudah ada dalam permainan: 6 dunia, 240 arena, 7 wira, bos dan berbilang pemain dalam talian.',
+        'rm-alpha-link': 'Apa yang baharu →',
         'ultra-news-eyebrow': 'Akses awal',
         'ultra-news-title': 'Dapatkan jemputan dahulu',
-        'ultra-news-sub': 'Langgan — kami akan hantar jemputan alfa, press kit dan skin eksklusif komuniti awal.',
+        'ultra-news-sub': 'Langgan — kami akan hantar jemputan beta tertutup, press kit dan skin eksklusif komuniti awal.',
         'ultra-news-placeholder': 'you@evades3.com',
         'ultra-news-btn': 'Langgan', 'ultra-news-btn-sending': 'Menghantar…',
         'ultra-news-toast-invalid': 'Masukkan e-mel yang sah',
-        'ultra-news-toast-ok': 'Siap! Anda dalam senarai, kami akan maklumkan apabila alfa dibuka',
+        'ultra-news-toast-ok': 'Siap! Anda dalam senarai, kami akan maklumkan apabila beta dibuka',
         'ultra-news-toast-dup': 'E-mel ini sudah dilanggan ✓',
         'ultra-news-toast-err': 'Sesuatu tidak kena, cuba semula',
         'ultra-news-toast-net': 'Tiada sambungan. Semak internet dan cuba semula',
-        'ultra-news-perk-1': 'Tiada spam', 'ultra-news-perk-2': 'Keutamaan alfa', 'ultra-news-perk-3': 'Skin eksklusif',
+        'ultra-news-perk-1': 'Tiada spam', 'ultra-news-perk-2': 'Keutamaan beta', 'ultra-news-perk-3': 'Skin eksklusif',
         'ultra-reviews-eyebrow': 'Komuniti',
         'ultra-reviews-title-a': 'Ulasan',
         'ultra-reviews-title-b': 'pemain',
@@ -32058,7 +32250,7 @@ async function _e3LoadParticipants() {
     var cur = 'top';
     links.forEach(function(a){
       var el = document.getElementById(a.getAttribute('data-nav'));
-      if (a.getAttribute('data-nav') !== 'top' && el && el.getBoundingClientRect().top <= line) cur = a.getAttribute('data-nav');
+      if (a.getAttribute('data-nav') !== 'top' && el && el.offsetParent !== null && el.getBoundingClientRect().top <= line) cur = a.getAttribute('data-nav');
     });
     var sc = scroller();
     if (sc.scrollTop > 0 && sc.scrollTop + sc.clientHeight >= sc.scrollHeight - 4) cur = links[links.length-1].getAttribute('data-nav');
