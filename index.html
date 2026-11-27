@@ -6865,6 +6865,26 @@ body{ scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent
 }
 .news-input.is-ok   { border-color: rgba(74,222,128,0.8); }
 .news-input.is-bad  { border-color: rgba(255,77,109,0.8); animation: inputShake .4s var(--e3-ease); }
+/* Автозаполнение браузера: поле не должно белеть */
+.news-input:-webkit-autofill,
+.news-input:-webkit-autofill:hover,
+.news-input:-webkit-autofill:focus,
+.news-input:-webkit-autofill:active{
+  -webkit-text-fill-color: #fff !important;
+  -webkit-box-shadow: 0 0 0 1000px #0b0e12 inset !important;
+  box-shadow: 0 0 0 1000px #0b0e12 inset !important;
+  caret-color: #fff;
+  transition: background-color 9999s ease-in-out 0s, color 9999s ease-in-out 0s;
+}
+.news-input:-webkit-autofill:focus{
+  -webkit-box-shadow: 0 0 0 1000px #0b0e12 inset, 0 0 0 4px rgba(255,216,77,0.15) !important;
+  box-shadow: 0 0 0 1000px #0b0e12 inset, 0 0 0 4px rgba(255,216,77,0.15) !important;
+}
+.news-input:autofill{
+  -webkit-text-fill-color: #fff !important;
+  box-shadow: 0 0 0 1000px #0b0e12 inset !important;
+  caret-color: #fff;
+}
 @keyframes inputShake{ 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
 :where(html:not([dir="rtl"])) .news-btn{
   position: relative; overflow: hidden;
